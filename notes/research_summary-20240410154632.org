@@ -1,0 +1,277 @@
+:PROPERTIES:
+:ID:       ae44fe2d-68c0-41f8-bc4f-08992e3090ed
+:END:
+#+TITLE: Research summary
+#+SUBTITLE: Inherent structures of the deep Boltzmann machine
+#+FILETAGS: :fleeting: :phd: :submission:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+#+BEGIN: clocktable :maxlevel 2 :scope nil :emphasize nil
+#+CAPTION: Clock summary at [2024-04-10 Wed 22:48]
+| Headline     | Time   |
+|--------------+--------|
+| *Total time* | *0:00* |
+#+END
+
+The deep Boltzmann machine (DBM) is a statistical model for parametric inference [cite:@salakhutdinov2009deep]. The state of a DBM with \(L\) hidden layers is a set of binary variables \(\boldsymbol{\sigma} \equiv (\sigma_{il} \in \{\pm 1\})_{l=0 \ldots L}^{i = 1 \ldots N_{l}}\). \(\boldsymbol{N} \equiv (N_{l})_{l=0\ldots L}\) is the number of units in each of the \(L+1\) layers. The set of DBM configurations live in a state space \(\mathcal{S} \equiv \{\pm 1\}^{N_{0}} \times \{\pm 1\}^{N_{1}} \times \cdots \times \{\pm 1\}^{N_{L}}\) so that \(|\mathcal{S}| = \prod_{l=0}^{L} 2^{N_{l}}\). The joint probability density function \(p (\boldsymbol{\sigma})\) that assigns objective probabilities to \(\boldsymbol{\sigma} \in \mathcal{S}\) is
+
+\begin{align*}
+p (\boldsymbol{\sigma}) = \mathcal{Z}^{-1} \exp \big[- H_{\boldsymbol{J}} (\boldsymbol{\sigma}) \big] \quad \mathcal{Z} \equiv \sum_{\boldsymbol{\sigma}} \exp \big[- H_{\boldsymbol{J}} (\boldsymbol{\sigma}) \big].  \tag{1}
+\end{align*}
+
+It is called the Gibbs-Boltzmann distribution.  \(\mathcal{Z}\), called the partition function, ensures \(\sum_{\boldsymbol{\sigma}} p (\boldsymbol{\sigma}) \equiv 1\). \(H_{\boldsymbol{J}} (\boldsymbol{\sigma})\), the Hamiltonian or energy function, is a real-valued function of the state \(\boldsymbol{\sigma}\) parametrized by a set of real numbers \(\boldsymbol{J} \equiv (\boldsymbol{J_{l}})_{l=0 \ldots L-1}\) where \(\boldsymbol{J}_{l} \equiv (J_{ijl})_{i=0 \ldots N_{l}}^{j=1 \ldots N_{l+1}}\).  \(J_{ijl}\) is called the interaction energy coefficient (or simply the coupling) between spin \(i\) in layer \(l\) with spin \(j\) in layer \(l+1\). Note that we will use unit and (Ising) spin interchangeably to describe the variable \(\sigma_{il}\). For the DBM, a functional form for \(H_{\boldsymbol{J}} (\boldsymbol{\sigma})\) is
+
+\begin{equation*}
+H_{\boldsymbol{J}} (\boldsymbol{\sigma}) = - \sum_{l=0}^{L-1} \sum_{i=1}^{N_l}
+\sum_{j=1}^{N_{l+1}} \sigma_{il} J_{ijl} \sigma_{j(l+1)}. \tag{2}
+\end{equation*}
+
+We will use the following prior for the set of couplings \(\boldsymbol{J}\) [cite:@nishimori2001spsg]
+
+\begin{equation*}
+p_{J}(J_{ijl}) \equiv \big(\widehat{N}_{l} / 2 \pi J^2 \big)^{1/2} \exp \big[- (\widehat{N}_{l} / 2 J^{2}) \thinspace J_{ijl}^{2} \thinspace \big] \qquad \widehat{N} \equiv \sqrt{N_{l} N_{l+1}}. \tag{3}
+\end{equation*}
+
+where \(J\) is a positive real number and \((\widehat{N}_{l})_{l=0 \ldots L-1}\) is the set of pair-wise geometric mean of the number of units in adjacent layers [cite:@hartnett2018replica]. We will denote cumulants [cite:@kardar2007spop] of some quantity \(\mathcal{O}\) with respect to (3) with \(\left \langle \mathcal{O} \right \rangle_{J}\). Let us now define some geometric parameters for the DBM - the /total number of spins/ \(N\), the /proportions/ \((\alpha_{l})_{l=0\ldots L}\) of the units in each layer relative to the visible layer \((l = 0)\)  and the /inter-layer ratios/ \((\gamma_{l})_{l=0 \ldots L-1}\) and \((\nu_{l})_{l=1 \ldots L}\)
+
+\begin{equation*}
+N \equiv \sum_{l} N_l
+\qquad
+\alpha_l \equiv N_l /N_{0} 
+\qquad
+\gamma_{l}^{2} \equiv N_{l+1} / N_{l}
+\qquad
+\nu_{l}^{2} \equiv N_{l-1} / N_{l} \tag{4a}
+\end{equation*}
+
+which yield trivial identities
+
+\begin{align*}
+\alpha_{0} \equiv 1,
+\qquad \qquad
+\gamma_{l}^{-1} \equiv \nu_{l+1}
+\qquad \qquad
+\nu_{l}^{-1} \equiv \gamma_{l-1}
+\qquad \qquad
+\widehat{N}_{l} = N_{0} \sqrt{\alpha_l \alpha_{l+1}} \tag{4b}
+\end{align*}
+
+#+begin_src latex
+\begin{figure}[h]
+  \centering
+  \begin{tikzpicture}[
+    neuron/.style={circle, draw=black!80, fill=#1!60, very thick, minimum size=5.5mm},
+    clear/.style={draw=none},
+    node distance=1.5cm,
+    fill=none,
+    ]
+
+    % Define the neurons with color
+    \node[neuron=blue] (V1) {};
+    \node[neuron=red] (V2) [right of=V1] {};
+
+    \node[neuron=red] (H11) [above of=V1, xshift=-0.6cm] {};
+    \node[neuron=blue] (H12) [right of=H11] {};
+    \node[neuron=red] (H13) [right of=H12] {};
+
+    \node[neuron=blue] (H21) [above of=H11] {};
+    \node[neuron=red] (H22) [right of=H21] {};
+    \node[neuron=blue] (H23) [right of=H22] {};
+
+    \node[neuron=red] (H31) [above of=H21, xshift=0.6cm] {};
+    \node[neuron=blue] (H32) [right of=H31] {};
+
+    % Connect neurons without labels
+    \foreach \i in {1,2}
+    \foreach \j in {1,2,3}
+    \draw (V\i) -- (H1\j);
+
+    \foreach \i in {1,2,3}
+    \foreach \j in {1,2,3}
+    \draw (H1\i) -- (H2\j);
+
+    \foreach \i in {1,2,3}
+    \foreach \j in {1,2}
+    \draw (H2\i) -- (H3\j);
+
+    % Add the density labels
+    \node[clear] at (H31.east) [left=14mm] {\(\alpha_3 = 1.0\)};
+    \node[clear] at (H21.east) [left=8mm] {\(\alpha_2 = 1.5\)};
+    \node[clear] at (H11.east) [left=8mm] {\(\alpha_1 = 1.5\)};
+    \node[clear] at (V1.east) [left=14mm] {\(\alpha_0 = 1.0\)};
+
+    \node[clear] at (H21.north) [left=5mm, yshift=5mm] {\(\widehat{N}_{2} = \sqrt{6}\)};
+    \node[clear] at (H21.south) [left=5mm, yshift=-4mm] {\(\widehat{N}_{1} = \sqrt{9}\)};
+    \node[clear] at (H11.south) [left=5mm, yshift=-4mm] {\(\widehat{N}_{0} = \sqrt{6}\)};
+
+    \node[clear] at (H23.north) [right=-2mm, yshift=10mm] {\(\nu_{3} = \sqrt{3/2}\)};
+    \node[clear] at (H23.north) [right=-2mm, yshift=5mm] {\(\gamma_{2} = \sqrt{2/3}\)};
+    \node[clear] at (H23.south) [right=2mm, yshift=-1mm] {\(\nu_{2} = \sqrt{3/3}\)};
+    \node[clear] at (H23.south) [right=2mm, yshift=-6mm] {\(\gamma_{1} = \sqrt{3/3}\)};
+    \node[clear] at (H13.south) [right=-2mm, yshift=-4mm] {\(\nu_{1} = \sqrt{2/3}\)};
+    \node[clear] at (H13.south) [right=-2mm, yshift=-9mm] {\(\gamma_{0} = \sqrt{3/2}\)};
+
+  \end{tikzpicture}
+  \caption{An illustration of a DBM with \(L = 3\) and \(N = 10\). The two colors are representations for the values \(\sigma_{il} = \pm 1\). The geometric parameters of (4a) and (4b) are illustrated.}
+\end{figure}
+#+end_src
+
+We define a set of real numbers called the /single site energies/ [cite:@tanaka1980analytic] \((\lambda_{il})_{l=0 \ldots L}^{i= 1 \ldots N_{l}}\), one for each of the DBM's units
+
+\[
+\lambda_{i l} \equiv \sigma_{i l} \bigg( \sum_{j=1}^{N_{l+1}} J_{ijl} \sigma_{j (l+1)} (1 - \delta_{lL}) + \sum_{j=1}^{N_{l-1}} J_{ji(l-1)} \sigma_{j (l-1)} (1 - \delta_{l0}) \bigg) \tag{5}
+\]
+
+with spectator variables \(J_{ijL} = \sigma_{i(-1)} = \sigma_{j(L+1)} \equiv 1\) for all possible values of the free indices. Combined with the Kronecker deltas \(\delta_{lL}\) and \(\delta_{l0}\) appearing in the combination \((1 - \delta_{lL})\) and \((1 - \delta_{l0})\), this allows us to treat the edge layers \(\boldsymbol{\sigma}_{0}\) and \(\boldsymbol{\sigma}_{L}\) with unidirectional connectivity on equal footing with the bulk layers \((\boldsymbol{\sigma}_{l})_{l=1 \ldots L-1}\). 
+
+The energy function \(H_{\boldsymbol{J}} (\boldsymbol{\sigma})\) in terms of the single site energies is given by \(H_{\boldsymbol{J}} (\boldsymbol{\sigma}) = (1/2)^{-1} \sum_{il} \lambda_{il}\). The /inherent structures/ [cite:@Stillinger1983InherentSI], [cite:@biroli1999inherent] of the DBM are also easily defined in terms of the single site energies as the configurations \((\boldsymbol{\sigma})_{\text {IS }}\) for which \(\lambda_{il} > 0\) for all values of \(i\) and \(l\). In other words, $(\boldsymbol{\sigma})_{\text {IS}}$ are stable against the flips of a single spin.
+
+Let \(\mathcal{N}_{s}\) denote the /number/ of inherent structures of a DBM with an architecture \(\boldsymbol{N}\) and weights drawn from a Gaussian prior \(p_{J}(J_{ijl})\). We are interested in computing a complexity function \(\mathcal{C}_{J} (\boldsymbol{N})\) for an ensemble of such DBMs. We define it as \(\mathcal{C}_{J} (\boldsymbol{N}) \equiv N_{0}^{-1} \ln \langle \mathcal{N}_{s} \rangle_{J}\), i.e., the expected number of inherent structures over the prior of Gaussian couplings, normalized by the number of units in the first layer.
+
+In this setting, \(\mathcal{C}_{J} (\boldsymbol{N})\) acts as a direct mapping from the /network architecture/, as defined by \(\boldsymbol{N}\) - the distribution of units across the layers in the model, to the number of modes of the joint distribution \(p (\boldsymbol{\sigma})\) - the /model capacity/ (but see the closing remark). We call this function the *Inherent Structure Capacity (ISC)* [cite:@bansal2018using]. Using the techniques detailed in [cite:@singh1995fixed],[cite:@gutfreund1988attractors], [cite:@bray1981metastable], [cite:@tanaka1980analytic], we can show that a possible functional form for \(\mathcal{C}_{J} (\boldsymbol{N})\) is
+
+\begin{align*}
+\mathcal{C}_{J} (\boldsymbol{N}) &\equiv \underset{\{(x_{l}, y_{l})_{l}\}}{\operatorname{saddle}} \thinspace \bigg \{- \frac{1}{2} \sum_{l=0}^{L-1} \sqrt{\alpha_{l} \alpha_{l+1}} \thinspace \big(x_{l}^{2} + y_{l}^{2} \big) + \frac{1}{2} \sum_{l=1}^{L-1} \alpha_{l} \ln \bigg [1 + \operatorname{erf} \bigg(\frac{- (x_{l} + x_{l-1}) + i (y_{l} - y_{l-1})}{\sqrt{2 (\gamma_{l} + \nu_{l})}} \bigg) \bigg ] \\
+&\qquad \qquad + \frac{1}{2} \ln \bigg [1 + \operatorname{erf} \bigg(\frac{- x_{0} + i y_{0}}{\sqrt{2 \gamma_{0}}} \bigg) \bigg] + \frac{\alpha_{L}}{2} \ln \bigg [1 + \operatorname{erf} \bigg(\frac{- x_{L-1} - i y_{L-1}}{\sqrt{2 \nu_{L}}} \bigg) \bigg ] \bigg \}. \tag{6}
+\end{align*}
+
+With
+
+\begin{align*}
+\theta_{l} &\equiv
+\begin{cases}
+2^{-1/2} \thinspace \gamma_{0}^{-1/2}, & l = 0 \\
+2^{-1/2} \thinspace (\gamma_{l} + \nu_{l})^{-1/2}, & 0 < l < L - 1 \\
+2^{-1/2} \thinspace \nu_{L}^{-1/2}, & l = L - 1\\
+\end{cases}
+&
+\omega_{l} &\equiv
+\begin{cases}
+- x_{0} + i y_{0}, & l = 0 \\
+- (x_{l} + x_{l-1}) + i (y_{l} - y_{l-1}), & 0 < l < L - 1\\
+- x_{L-1} - i y_{L-1}, & l = L - 1\\
+\end{cases},
+\end{align*}
+
+The fixed point equations that must be iterated to obtain the saddle \(\big\{(x_{l}^{\text{max}} , y_{l}^{\text{max}})_{l=0 \ldots L-1} \big \}\) are
+
+\begin{align*}
+x_{l} &= - \frac{\gamma_{l}^{-1} \theta_{l}}{\sqrt{2 \pi}} \exp \big[- (\theta_{l} \thinspace \omega_{l})^{2} \big] \bigg[1 + \operatorname{erf}\big( \theta_{l} \thinspace \omega_{l} \big) \bigg]^{-1} \\
+&\qquad - \frac{\gamma_{l} \theta_{l+1}}{\sqrt{2 \pi}} \exp \big[- (\theta_{l+1} \thinspace \omega_{l+1})^{2} \big] \bigg[1 + \operatorname{erf}\big( \theta_{l+1} \thinspace \omega_{l+1} \big) \bigg]^{-1} \tag{7a}
+\end{align*}
+
+\begin{align*}
+i y_{l} &= - \frac{\gamma_{l}^{-1} \theta_{l}}{\sqrt{2 \pi}} \exp \big[- (\theta_{l} \thinspace \omega_{l})^{2} \big] \bigg[1 + \operatorname{erf}\big( \theta_{l} \thinspace \omega_{l} \big) \bigg]^{-1} \\
+&\qquad + \frac{\gamma_{l} \theta_{l+1}}{\sqrt{2 \pi}} \exp \big[- (\theta_{l+1} \thinspace \omega_{l+1})^{2} \big] \bigg[1 + \operatorname{erf}\big( \theta_{l+1} \thinspace \omega_{l+1} \big) \bigg]^{-1}. \tag{7b}
+\end{align*}
+
+We will now investigate whether the ISC derived here (6) reproduces the key results derived by Bansal et. al. (2018) [cite:@bansal2018using] using conceptually distinct arguments. These results concern DBMs with a single hidden layer (\(L=1\), called /restricted Boltzmann machines/) and two hidden layers \(L = 2\). For ease of comparison, we repeat the necessary notation and definitions and begin our comparison with *Corollary 1*:
+
+#+NAME: Inherent Structure Capacity
+#+ATTR_LATEX: :environment definition
+#+begin_definition latex
+For an \(L\)-layered DBM with \(m_1, \ldots, m_L\) hidden units and \(n\) visible units we define the Inherent Structure Capacity (ISC), denoted by \(C(n, m_1, \ldots, m_L)\), to be the logarithm (divided by \(n\)) of the expected number of modes of all possible distributions generated over the visible units by the DBM.
+
+\[
+C(n, m_1, \ldots, m_L) = \frac{1}{n} \log_2 \mathbb{E}_{\theta} 
+\left[ \lvert \{ v : H(v) \geq 1 \} \rvert \right] \tag{8}
+\]
+
+where \(\mathcal{H}(v) \triangleq \left\{ \{h_l\}_{l=1}^L | (v, \{h_l\}_{l=1}^L) \text{ is one-flip stable state} \right\}\).
+\hfill \blacksquare
+#+end_definition
+
+#+NAME: Large \( m \) limit
+#+ATTR_LATEX: :environment corollary
+#+begin_corollary latex
+For the set \(\textbf{RBM}_{n,m}\)
+
+\[
+\lim_{m \to \infty} C(n, m) = \log_2 1.5 = 0.585
+\]
+
+where \(C(n, m)\) is defined in (8).
+\hfill \blacksquare
+#+end_corollary
+
+For the RBM (\(L=1\)), (6) reduces to \(\mathcal{C}_{J} (\alpha_{1})\)
+
+\begin{align*}
+\mathcal{C}_{J} (\alpha_{1}) &\equiv \underset{\{x, y\}}{\operatorname{saddle}} \thinspace \bigg \{- \frac{1}{2} \sqrt{\alpha_{1}} \thinspace \big(x^{2} + y^{2} \big) + \frac{1}{2} \ln \bigg [1 + \operatorname{erf} \bigg(\frac{- x + i y}{\sqrt{2 \gamma_{0}}} \bigg) \bigg] + \frac{\alpha_{1}}{2} \ln \bigg [1 + \operatorname{erf} \bigg(\frac{- x - i y}{\sqrt{2 \nu_{1}}} \bigg) \bigg ] \bigg \} \tag{9}
+\end{align*}
+
+In our use of Laplace's method in deriving (6), we assumed \(N_{0} \to \infty\), so the analogue of this result is the case where \(N_{1} \to \infty\) in a way that \(N_{1} / N_{0} \equiv \alpha_{1}\) is finite. We numerically solve for the saddle \(\{x^{\text{max}}, y^{\text{max}}\}\) and substitute in (9) to obtain the response of \(\mathcal{C}_{J} (\alpha_{1})\) to \(\alpha_{1}\) (Fig. 2). Note that we have plotted \(\mathcal{C}_{J} (\alpha_{1}) \equiv N_{0}^{-1} \log_{2} \langle \mathcal{N}_{s} \rangle_{J}\) (base \(2\) logarithm) to facilitate comparison. Similar to the behaviour of \(\lim_{m \to \infty} C(n, m)\) as a function of \(m/n\), we observe that the function \(\mathcal{C}_{J} (\alpha_{1})\) saturates to a limiting value as a function of \(\alpha_{1}\). We note however that the saturation limit for \(\mathcal{C}_{J} (\alpha_{1})\) \(\approx 0.506 \) is significantly lower than \(\lim_{m \to \infty} C(n, m) = \log_2 1.5 = 0.585\) from *Corollary 1*.
+
+#+begin_src latex
+  \begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.8\linewidth]{~/core/bench/rbm.png}
+    \caption{The Inherent Structure Capacity (\(\mathcal{C}_{J} (\alpha_{1})\)) as a function of the geometric parameter \(\alpha_{1}\) for a restricted Boltzmann machine (RBM) with a single hidden layer \((L=1)\). The saturation of \(\mathcal{C}_{J}\) indicates the limiting ISC value as \(\alpha_{1}\) increases, highlighting the diminishing returns on model capacity.}
+    \label{fig:sub1}
+  \end{figure}
+#+end_src
+
+Next we consider:
+
+#+NAME: (Layer 1 Wide, Layer 2 Narrow)
+#+ATTR_LATEX: :environment corollary
+#+begin_corollary latex
+For an \(\boldsymbol{R} \boldsymbol{B} \boldsymbol{M}_{n, m_1, m_2}\left(n, m_1>0\right.\) and \(\left.m_2 \geq 0\right)\), if \(\alpha_1=\frac{m_1}{n}>\frac{1}{\beta}\) and \(\alpha_2=\frac{m_2}{n}<\beta\), where \(\beta = 0.05\), then
+
+\begin{align*}
+\mathcal{C}\left(n, m_1, m_2\right) \leq\left(1+\alpha_2\right) \log _2(1.5)
+\end{align*}
+\hfill \blacksquare
+#+end_corollary
+
+For a DBM with 2 hidden layers (\(L = 2\)), (6) reduces to \(\mathcal{C}_{J} (\alpha_{1}, \alpha_{2})\)
+
+\begin{align*}
+\mathcal{C}_{J} (\alpha_{1}, \alpha_{2}) &\equiv \underset{\{x_{0}, x_{1}, y_{0}, y_{1}\}}{\operatorname{saddle}} \thinspace \bigg \{- \frac{1}{2} \bigg[ \sqrt{\alpha_{1}} \thinspace \big(x_{0}^{2} + y_{0}^{2} \big) + \sqrt{\alpha_{1} \alpha_{2}} \thinspace \big(x_{1}^{2} + y_{1}^{2} \big) \bigg] + \frac{1}{2} \ln \bigg [1 + \operatorname{erf} \bigg(\frac{- x_{0} + i y_{0}}{\sqrt{2 \gamma_{0}}} \bigg) \bigg] \\
+&\qquad + \frac{\alpha_{1}}{2} \ln \bigg [1 + \operatorname{erf} \bigg(\frac{- (x_{1} + x_{0}) + i (y_{1} - y_{0})}{\sqrt{2 (\gamma_{1} + \nu_{1})}} \bigg) \bigg ] + \frac{\alpha_{2}}{2} \ln \bigg [1 + \operatorname{erf} \bigg(\frac{- x_{1} - i y_{1}}{\sqrt{2 \nu_{2}}} \bigg) \bigg ] \bigg \} \tag{10}
+\end{align*}
+
+The analogue of *Corollary 2* is the scenario where \(N_{0}\), \(N_{1}\), and \(N_{2}\) all approach \(\infty\) but uphold the proportions \(\alpha_{1} \equiv N_{1} / N_{0} > \beta^{-1} = 20 \gg 1\) and \(\alpha_{2} \equiv N_{2} / N_{0} < \beta = 0.05 \ll 1\). Once again, we numerically solve for the saddle \(\{x_{0}^{\text{max}}, x_{1}^{\text{max}} y_{0}^{\text{max}}, y_{1}^{\text{max}}\}\) and substitute in (10) to obtain \(\mathcal{C}_{J} (\alpha_{1}, \alpha_{2})\). The behaviour of \(\mathcal{C}_{J} (\alpha_{1}, \alpha_{2})\) re-iterates the conclusion from [cite:@bansal2018using]: in this regime, ISC is saturated for an RBM \((\alpha_{2} = 0)\) and can only be increased by shunting further units to a second hidden layer (making \(\alpha_{2} > 0\)). For small values of \(\alpha_{2}\), \(\mathcal{C}_{J} (\alpha_{1}, \alpha_{2})\) increases linearly as a function of \(\alpha_{2}\) (Fig. 3). Note that \(\mathcal{C}_{J} (\alpha_{1}, \alpha_{2})\) starts increasing from approximately the saturation limit of \(\mathcal{C}_{J} (\alpha_{1})\) \(\approx 0.506 \) achieved by (9) (See Fig. 2). Next we turn our attention to:
+
+#+begin_src latex
+  \begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.7\linewidth]{~/core/bench/dbm.png}
+    \caption{The Inherent Structure Capacity (\(\mathcal{C}_{J} (\alpha_{1}, \alpha_{2})\)) as a function of the geometric parameter for the second hidden layer (\(\alpha_{2}\)) for a Deep Boltzmann Machine (DBM) with two hidden layers \((L=2)\). The interplay between \(\alpha_{1}\) and \(\alpha_{2}\) demonstrates how adding units to the second hidden layer can enhance ISC beyond the saturation point achieved by a single-layer RBM.}
+    \label{fig:sub2}
+  \end{figure}
+#+end_src
+
+#+NAME: Network design under a budget
+#+ATTR_LATEX: :environment corollary
+#+begin_corollary latex
+For an \(\boldsymbol{R} \boldsymbol{B} \boldsymbol{M}_{n, m_1, m_2}\left(n, m_1>0\right.\) and \(\left.m_2 \geq 0\right)\), if there is a budget of \(\mathrm{cn}^2\) on the total number of parameters, i.e, \(\alpha_1\left(1+\alpha_2\right)=c\) then the maximum possible ISC, \(\max _{\alpha_1, \alpha_2} \mathcal{C}\left(n, \alpha_1, \alpha_2\right) \leq \tilde{U}\left(n, \alpha_1^*, \alpha_2^*\right)\) where
+
+\begin{align*}
+\tilde{U}\left(n, \alpha_1^*, \alpha_2^*\right)= \begin{cases}\min \left(1, \sqrt{c} \log _2(1.29)\right) & \text { if } c \geq 1 \\ c \log _2\left[1-\frac{1}{2} \operatorname{erf}\left(-\sqrt{\frac{1}{\pi c}}\right)\right] & \text { if } c<1\end{cases}
+\end{align*}
+\hfill \blacksquare
+#+end_corollary
+
+The number of parameters, say \(p\), for a DBM with 2 hidden layers (\(L=2\)) is \(p = N_{0} \times N_{1} + N_{1} \times N_{2} = N_{0}^{2}  \alpha_{1} \big(1 + \alpha_{2} \big)\), so with a budget of \(p = c N_{0}^{2}\) parameters, the curve \(\alpha_{1} (1 + \alpha_{2} ) = c\) separates realizable networks from non-realizable ones in the \(\alpha_{1} - \alpha_{2}\) plane. We show a heat-map of \(\mathcal{C}_{J} (\alpha_{1}, \alpha_{2})\) for realizable networks when \(c = 0.5\) (Fig. 4) and \(c = 10.0\) (Fig. 5). When \(c < 1\), the ISC is maximal for \(\alpha_{1} = c\), \(\alpha_{2} = 0\), i.e, under a tight budget, there is no gain in model capacity through multi-layering.
+
+#+begin_src latex
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=.7\linewidth]{~/core/bench/budget_0.5.png}
+  \caption{\textbf{Tight budget} \((c < 1)\): An RBM maximizes model capacity (\(\alpha_{2} = 0\)).}
+\end{figure}
+#+end_src
+
+#+begin_src latex
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=.7\linewidth]{~/core/bench/budget_10.0.png}
+  \caption{\textbf{Flexible budget} \((c \geq 1)\): Multi-layering (DBM with 2 hidden layers) maximizes model capacity for some optimal value of (\(\alpha_{1} \neq 0, \alpha_{2} \neq 0\)).}
+\end{figure}
+#+end_src
+
+When \(c \geq 1\), there exists an optimum \(\alpha_{1}^{\text{max}} \neq 0, \alpha_{2}^{\text{max}} \neq 0\) that maximizes the ISC. While these results are qualitatively in line with the predictions of *Corollary 3*, we note once again, that the optimal value of \(\alpha_{1}^{\text{max}}\) we obtain is higher than what is predicted(\(\alpha_{1}^{\text{max}} = \sqrt{c}\)) as a consequence of *Corollary 3.*
+
+As a closing remark, we mention that in the above analysis, we have assumed that the number of modes of the joint distribution \(p (\boldsymbol{\sigma})\) is equal to the number of modes of the marginal distribution \(\sum_{\boldsymbol{\sigma}_{1}} \ldots \sum_{\boldsymbol{\sigma}_{L}} p (\boldsymbol{\sigma})\) over the visible units, clearly a non-trivial fact when  \(L \geq 2\) [cite:@bansal2018using]. It is only the modes of  \(\sum_{\boldsymbol{\sigma}_{1}} \ldots \sum_{\boldsymbol{\sigma}_{L}} p (\boldsymbol{\sigma})\) that are relevant in the context of a DBM's model capacity but in the analysis presented above, we have really computed the modes of the joint distribution \(p (\boldsymbol{\sigma})\). Further work will investigate whether this assumption is tenable and explore the possibility of extending the analysis so as to relax it entirely.
+
+#+print_bibliography:
