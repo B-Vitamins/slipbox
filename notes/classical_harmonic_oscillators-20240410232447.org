@@ -1,0 +1,49 @@
+:PROPERTIES:
+:ID:       2eea2039-7175-4635-8256-224892e7134e
+:END:
+#+TITLE: Classical harmonic oscillators
+#+FILETAGS: :problem: :SPOP: :statmech:
+#+TEXTBOOK: Statistical mechanics of particles by Mehran Kardar
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+* 4.1 Classical harmonic oscillators
+*Consider* \(N\) *harmonic oscillators with coordinates and momenta* \(\left\{q_i, p_i\right\}\), *and subject to a Hamiltonian*
+
+    \[
+    H \left(\left\{q_i, p_i\right\}\right)=\sum_{i=1}^N\left[\frac{p_i^2}{2 m}+\frac{m \omega^2 q_i^2}{2}\right]
+   \]
+
+** 4.1.1
+*Calculate the entropy* \(S\), *as a function of the total energy* \(E\).
+
+    #+begin_hint latex
+    By appropriate change of scale, the surface of constant energy can be deformed into a sphere. You may then ignore the difference between the surface area and volume for \(N \gg 1\). A more elegant method is to implement this deformation through a canonical transformation.
+    #+end_hint
+
+    Transform the variables \(p_i \rightarrow \sqrt{m\omega} p_i, \quad q_i \rightarrow q_i/ \sqrt{m\omega}\). This constitutes a canonical transformation, leading to a revised Hamiltonian \(H(\{q_i, p_i\}) = 2^{-1} \sum_{i} \omega \big( p_i^2 + q_i^2 \big)\). For a system with energy \(E\), the accessible phase space is defined by an ellipsoid for the original Hamiltonian and a sphere in \(2N\) dimensions for the transformed Hamiltonian. The volume \(V_d\) of a hypersphere in \(2N\) dimensions can be approximated by its surface area, given as \(V_{d} = S_{d} R^{d} / d\), \(S_{d} = 2 \pi^{d / 2} / \Gamma (d / 2)\), \(R = 2E / \omega h\). \(h\) is introduced in \(R\) due to the phase space measure \(\prod_{i} \mathrm{d} q_i \mathrm{d} p_i / h\). The surface area \(\Omega(E)\) and thus entropy \(S(E)\) for fixed \(E\), using  \(N ! \approx N^{N} \exp (-N)\), is
+
+    \begin{align*}
+    \Omega(E) = &\frac{2 \pi^{N}}{(N-1) !} \cdot \frac{1}{2 N} \cdot\bigg(\frac{2 E}{h \omega}\bigg)^{N} \approx\bigg(\frac{2 \pi E}{h \omega}\bigg)^{N} \cdot \frac{1}{N !}, \qquad S \approx N k_B \ln \bigg[ \frac{2 \pi e E}{N h \omega} \bigg]. \tag{4.1.1}
+    \end{align*}
+
+** 4.1.2
+*Calculate the energy* \(E\), *and heat capacity* \(C\), *as functions of temperature* \(T\), *and* \(N\).
+
+  From the relationship \(T^{-1} = (\partial_{E} S)_{N}\) and \(C = (D_{T} E)_{N}\) we get
+
+   \begin{align*}
+   E = N k_B T, \qquad \qquad C=N k_B. \tag{4.1.2}
+   \end{align*}
+
+** 4.1.3
+*Find the joint probability density* \(P(p, q)\) *for a single oscillator. Hence calculate the mean kinetic energy, and mean potential energy for each oscillator.*
+
+    \begin{align*}
+    P(p, q) & = h^{-1} \frac{\Omega\left(N-1, E_{N-1}\right)}{\Omega(N, E)} \approx \frac{\omega}{2 \pi} \cdot \frac{N}{E} \cdot \frac{1}{e} \cdot\left(\frac{E_{N-1}}{E_{N}}\right)^{N} \\
+    & =\frac{1}{2 \pi K_{B} T} \cdot \frac{\omega}{e} \cdot\bigg(\frac{N K_{B} T-p^{2} / 2 m-m \omega^{2} q^{2} / 2}{N K_{B} T}\bigg)^{N} \\
+    & =\frac{1}{2 \pi K_{B} T} \cdot \frac{\omega}{e}\bigg(1-\frac{1}{N}\bigg[\frac{p^{2}}{2 m K_{B} T}+\frac{m \omega^{2} q^{2} }{2 K_{B} T}\bigg]\bigg)^{N} \\
+    & \approx \frac{\omega}{2 \pi} \cdot \frac{1}{k_{B} T} \cdot \exp \bigg\{-\frac{1}{K_{B} T}\left(\frac{p^{2}}{2 m}+\frac{m \omega^{2} q^{2} }{2}\right)\bigg\}. \tag{4.1.3}
+    \end{align*}
+
+    The approximations are of the form \(N-1 \approx N \text { for } N \gg 1\) and as \(N \to \infty\), \(\big(1 +  x / N \big)^{N} \to \exp \thinspace (x)\). The mean kinetic energy and mean potential energy is given by \(\langle p^2 / 2m \rangle = \langle m\omega^2 q^2 / 2 \rangle = \langle E \rangle /2 = k_B T / 2\).
+
+
