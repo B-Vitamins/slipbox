@@ -1,0 +1,42 @@
+#+TITLE: slipbox
+#+OPTIONS: toc:nil todo:nil ^:{}
+
+The Zettelkasten (German for "slip box") is a method of *knowledge management* and *note-taking* developed by sociologist Niklas Luhmann. This system utilizes a series of numbered notes, each containing a single piece of information linked to related notes. Luhmann began his Zettelkasten in the early 1950s, introducing a method that allowed for non-linear reading and writing through interlinked notes. You can browse Luhmann's Zettelkästen here:
+
+- [[https://niklas-luhmann-archiv.de/bestand/zettelkasten/zettel/ZK_1_NB_1_1_V][Zettelkasten I]]
+- [[https://niklas-luhmann-archiv.de/bestand/zettelkasten/zettel/ZK_2_NB_1_1_V][Zettelkasten II]]
+
+This here is my slipbox, powered by [[https://www.orgroam.com/][Org Roam]].
+
+** Overview of the Zettelkasten system
+:PROPERTIES:
+:ID:       76e5ec3e-c4fc-4539-8171-1b4f844ffa0c
+:END:
+An authentic account of the system is available in the essay [[http://luhmann.surge.sh/communicating-with-slip-boxes][Communicating with Slip Boxes]] by Luhmann himself. Each note in the Zettelkasten is given a fixed number which abstracts from any content-based order. This numbering system facilitates:
+
+1) *Arbitrary Internal Branching*. Notes can interconnect not just end-to-end but at any point within the text, facilitating a multi-dimensional web of links. For example, a note numbered 57/12 can branch out to 57/13, or to 57/12a, depending on the development needs of the content. This enables dynamic internal growth of ideas.
+
+2) *Linking Capabilities*. The fixed numbering allows for extensive cross-referencing among notes. This system supports the accumulation of references to central concepts, enhancing the contextual richness of the information without the need for duplicative storage.
+
+3) *Register*. To navigate the non-linear, non-systematic order of notes, a register/index is essential. This register, updated continuously, complements the fixed numbering to aid in the rediscovery of notes.
+
+*** Note Types
+
+- *Fleeting Notes*: These are quick captures of ideas or information, meant to be either developed into permanent notes or discarded.
+- *Permanent Notes*: Divided into:
+  + *Literature Notes*: Annotations or summaries of sources (e.g., books, articles).
+  + *Concept Notes*: These are detailed and self-explanatory notes that delve deeper into specific concepts.
+
+** Zettelkasten and Hypertext
+:PROPERTIES:
+:ID:       c3c24915-81fb-43b0-85c6-d527949cfc3a
+:END:
+Niklas Luhmann, a German sociologist, developed the Zettelkasten in the early 1950s, using an analog medium to accomplish what engineers and computer scientists would only achieve digitally decades later. His method, sophisticated yet manual, prefigured the digital hypertext systems that power contemporary information management systems.
+
+The foundational idea of interconnected information systems was first imagined by Vannevar Bush in his 1945 essay [[https://www.w3.org/History/1945/vbush/vbush.shtml][As We May Think]], published in *The Atlantic*. Bush envisioned the *Memex*, a device designed for individuals to store all their books, records, and communications in a mechanized system that could be consulted rapidly and flexibly. His vision was further explored in [[https://worrydream.com/refs/Bush_1967_-_Memex_Revisited.pdf][Memex Revisited]], which expanded on the concepts of data linking and retrieval.
+
+In the mid-1960s, inspired by Bush's vision, Ted Nelson coined the term [[https://en.wikipedia.org/wiki/Hyperlink][link]] and initiated [[https://xanadu.com/][Project Xanadu]], which aimed to create a global network of interlinked texts. Simultaneously, Douglas Engelbart's team at the Stanford Research Institute pioneered practical hyperlink implementations with their revolutionary [[https://dougengelbart.org/content/view/112/][NLS system]], showcased in the [[https://www.dougengelbart.org/content/view/374/#][Mother of All Demos]].
+
+The concept of hyperlinks was further advanced in the 1980s by Ben Shneiderman and his team with the [[http://www.cs.umd.edu/projects/hcil/hyperties/][HyperTIES system]], which introduced visually distinct hyperlinks. This innovation facilitated the creation of [[http://www.cs.umd.edu/projects/hcil/pubs/books/hypertext-hands-on.shtml][Hypertext Hands-On!]], a first of its kind book/software package giving a definite account of the [[https://en.wikipedia.org/wiki/Hypertext][Hypertext]]
+
+The culmination of these innovations was Tim Berners-Lee's 1989 proposal of a "distributed hypertext system" to CERN, which led to the development of the [[https://www.w3.org/History/1989/proposal.html][Mesh]], later known as the [[https://en.wikipedia.org/wiki/World_Wide_Web][World Wide Web]]. This marked the beginning of the internet as a global hypertext system.
