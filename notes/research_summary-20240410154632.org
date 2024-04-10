@@ -5,12 +5,6 @@
 #+SUBTITLE: Inherent structures of the deep Boltzmann machine
 #+FILETAGS: :fleeting: :phd: :submission:
 #+SETUPFILE: ~/.config/emacs/setup/setupfile.org
-#+BEGIN: clocktable :maxlevel 2 :scope nil :emphasize nil
-#+CAPTION: Clock summary at [2024-04-10 Wed 22:48]
-| Headline     | Time   |
-|--------------+--------|
-| *Total time* | *0:00* |
-#+END
 
 The deep Boltzmann machine (DBM) is a statistical model for parametric inference [cite:@salakhutdinov2009deep]. The state of a DBM with \(L\) hidden layers is a set of binary variables \(\boldsymbol{\sigma} \equiv (\sigma_{il} \in \{\pm 1\})_{l=0 \ldots L}^{i = 1 \ldots N_{l}}\). \(\boldsymbol{N} \equiv (N_{l})_{l=0\ldots L}\) is the number of units in each of the \(L+1\) layers. The set of DBM configurations live in a state space \(\mathcal{S} \equiv \{\pm 1\}^{N_{0}} \times \{\pm 1\}^{N_{1}} \times \cdots \times \{\pm 1\}^{N_{L}}\) so that \(|\mathcal{S}| = \prod_{l=0}^{L} 2^{N_{l}}\). The joint probability density function \(p (\boldsymbol{\sigma})\) that assigns objective probabilities to \(\boldsymbol{\sigma} \in \mathcal{S}\) is
 
