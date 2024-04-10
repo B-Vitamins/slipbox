@@ -31,6 +31,7 @@ An authentic account of the system is available in the essay [[http://luhmann.su
 :PROPERTIES:
 :ID:       c3c24915-81fb-43b0-85c6-d527949cfc3a
 :END:
+
 Niklas Luhmann, a German sociologist, developed the Zettelkasten in the early 1950s, using an analog medium to accomplish what engineers and computer scientists would only achieve digitally decades later. His method, sophisticated yet manual, prefigured the digital hypertext systems that power contemporary information management systems.
 
 The foundational idea of interconnected information systems was first imagined by /Vannevar Bush/ in his 1945 essay [[https://www.w3.org/History/1945/vbush/vbush.shtml][As We May Think]], published in *The Atlantic*. Bush envisioned the *Memex*, a device designed for individuals to store all their books, records, and communications in a mechanized system that could be consulted rapidly and flexibly. His vision was further explored in [[https://worrydream.com/refs/Bush_1967_-_Memex_Revisited.pdf][Memex Revisited]], which expanded on the concepts of data linking and retrieval.
