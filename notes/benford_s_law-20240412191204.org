@@ -1,0 +1,33 @@
+:PROPERTIES:
+:ID:       0d2fdffa-e91f-467b-8384-d7febc40590e
+:END:
+#+TITLE: Benford's law
+#+FILETAGS: :problem: :SPOP: :statmech:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+#+BEGIN: clocktable :maxlevel 2 :scope nil :emphasize nil
+#+CAPTION: Clock summary at [2024-04-12 Fri 19:31]
+| Headline          | Time   |
+|-------------------+--------|
+| *Total time*      | *0:15* |
+|-------------------+--------|
+| 2.5 Benford's law | 0:15   |
+#+END
+* 2.5 Benford's law
+:LOGBOOK:
+CLOCK: [2024-04-12 Fri 19:16]--[2024-04-12 Fri 19:31] =>  0:15
+:END:
+ *Benford's law describes the observed probabilities of the first digit in a great variety of data sets, such as stock prices. Rather counter-intuitively, the digits* \(1\) *through* \(9\) *occur with probabilities* \(0.301,\,0.176,\,0.125,\,0.097,\,0.079,\,0.067,\,0.058,\,0.051,\,0.046\) *respectively. The key observation is that this distribution is invariant under a change of scale, for example, if the stock prices were converted from dollars to Persian rials! Find a formula that fits the above probabilities on the basis of this observation.*
+
+We have \(p(i)=\sum_n \int_{b^n i}^{b^n(i+1)} p (x)\,dx\), where \(\sum_n\) is a sum over all orders of magnitude. The key observation is that \(p(i)\) is scale invariant. This is equivalent to asserting that the integral inside the summation has no \(n\) dependence. Let's change scale to \(\log_b\). A simple application of the [[id:50471612-d516-4025-8add-a0f7a659edba][Mean value theorem]] yields
+
+\begin{align*}
+p(i) = \sum_n \int_{n+\ln (i)}^{n+\ln (i+1)} p(y)\,dy = \sum_n \int_{\ln (i)}^{\ln (i+1)} p(y)\,dy = \sum_n c_i \, [\ln (i+1) - \ln (i)].
+\end{align*}
+
+Scale invariance implies \(c_i=1 / n \quad \forall i\). Thus we are left with
+
+\begin{align*}
+p(i)=\log _b(i+1)-\log _b(i).
+\end{align*}
+
+This is Benford's law. Using \(\sum_i p(i)=1\), one can easily retrieve the probabilities \(0.301,\,0.176,\,0.125,\,0.097,\,0.079,\,0.067,\,0.058,\,0.051,\,0.046\). What's happening essentially is that the logarithm of \(x\) has a uniform distribution. Repeated sampling will thus yield variable that is distributed according to the log-normal distribution. Newcomb gave the above expression for \(p(i)\) long before Benford (see [[id:575f8aa2-6fa2-492f-9d05-746c93e98776][Stigler's law of eponymy]]). His observation was that in the log tables that he and his fellow astronomers used had the pages for \(1\) were much more worn out than other digits!
