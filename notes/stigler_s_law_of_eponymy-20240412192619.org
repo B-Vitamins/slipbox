@@ -1,0 +1,8 @@
+:PROPERTIES:
+:ID:       575f8aa2-6fa2-492f-9d05-746c93e98776
+:END:
+#+TITLE: Stigler's law of eponymy
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+*Stigler's law of eponymy*, proposed by University of Chicago statistics professor /Stephen Stigler/ in his 1980 publication /Stigler’s law of eponymy/ states that no scientific discovery is named after its original discoverer.
