@@ -5,7 +5,7 @@
 #+FILETAGS: :problem: :SPOP: :statmech:
 #+SETUPFILE: ~/.config/emacs/setup/setupfile.org
 #+BEGIN: clocktable :maxlevel 2 :scope nil :emphasize nil
-#+CAPTION: Clock summary at [2024-04-12 Fri 18:39]
+#+CAPTION: Clock summary at [2024-04-13 Sat 00:28]
 | Headline                   | Time   |
 |----------------------------+--------|
 | *Total time*               | *0:17* |
@@ -29,7 +29,7 @@ CLOCK: [2024-04-12 Fri 18:22]--[2024-04-12 Fri 18:39] =>  0:17
 &\Rightarrow \int_{n \sigma \leqslant|x-\lambda|} \,p(x) \,dx \leqslant \frac{1}{n^2} \qquad n \neq 0.
 \end{align*}
 
-Note that \(n \leqslant 1\) is trivially true. Tchebycheff's in equality dictates bounds for an integral beyond the distance \(n\sigma\) from the mean for /any/ arbitrary PDF. In fact, /any/ even cumulant will do, you need not stick to the variance
+Note that \(n \leqslant 1\) is trivially true. Tchebycheff's inequality dictates bounds for an integral beyond the distance \(n\sigma\) from the mean for /any/ arbitrary PDF. In fact, /any/ even cumulant will do, you need not stick to the variance
 
 \begin{aligned}
 \int_{\lvert x-\lambda \rvert \geqslant l} \, p(x) \,dx \leqslant \frac{\left\langle x^m\right\rangle_c}{l^m}, \quad m=2 n, \qquad n=1,\,2,\,3, \ldots.
