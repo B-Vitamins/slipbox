@@ -3,6 +3,7 @@
 :END:
 #+TITLE: Research summary
 #+SUBTITLE: Inherent structures of the deep Boltzmann machine
+#+CATEGORY: notes
 #+FILETAGS: :fleeting: :phd: :submission:
 #+SETUPFILE: ~/.config/emacs/setup/setupfile.org
 
@@ -269,3 +270,217 @@ When \(c \geq 1\), there exists an optimum \(\alpha_{1}^{\text{max}} \neq 0, \al
 As a closing remark, we mention that in the above analysis, we have assumed that the number of modes of the joint distribution \(p (\boldsymbol{\sigma})\) is equal to the number of modes of the marginal distribution \(\sum_{\boldsymbol{\sigma}_{1}} \ldots \sum_{\boldsymbol{\sigma}_{L}} p (\boldsymbol{\sigma})\) over the visible units, clearly a non-trivial fact when  \(L \geq 2\) [cite:@bansal2018using]. It is only the modes of  \(\sum_{\boldsymbol{\sigma}_{1}} \ldots \sum_{\boldsymbol{\sigma}_{L}} p (\boldsymbol{\sigma})\) that are relevant in the context of a DBM's model capacity but in the analysis presented above, we have really computed the modes of the joint distribution \(p (\boldsymbol{\sigma})\). Further work will investigate whether this assumption is tenable and explore the possibility of extending the analysis so as to relax it entirely.
 
 #+print_bibliography:
+* Appendix                                                         :noexport:
+** Expection over the Gaussian prior
+We start our analysis by invoking an area formula:
+
+\[
+\mathcal{N}_{s} = \frac{1}{2} \int_0^{\infty} \prod_{l=0}^L \prod_{i=1}^{N_l} \mathrm{~d} \lambda_{il} \sum_{\boldsymbol{\sigma}} \prod_{l=0}^L \prod_{i=1}^{N_l} \delta \bigg(\lambda_{il} - \sigma_{i l} \bigg[ \sum_{j=1}^{N_{l+1}} J_{ijl} \sigma_{j (l+1)} (1 - \delta_{lL}) + \sum_{j=1}^{N_{l-1}} J_{ji(l-1)} \sigma_{j (l-1)} (1 - \delta_{l0}) \bigg] \bigg).
+\]
+
+The factor of \(1/2\) compensates for the trivial degeneracy under \(\sigma_{il} \to - \sigma_{il}\). Using the integral representation of the \(\delta\) function, \(\delta(x)=\frac{1}{2 \pi} \int_{-\infty}^{\infty} \mathrm{d} k \exp (- i k x)\), with real valued variables \((k_{il})_{l=0 \ldots L}^{i=1 \ldots N_{l}}\) we write
+
+\begin{align*}
+2 \thinspace \mathcal{N}_{s} &= (2 \pi i)^{-N} \int_0^{\infty} \prod_{l=0}^L \prod_{i=1}^{N_l} \mathrm{d} \lambda_{il} \sum_{\boldsymbol{\sigma}}  \int_{-i\infty}^{i\infty} \prod_{l=0}^L \prod_{i=1}^{N_l} \mathrm{d} k_{il} \exp \bigg\{ \sum_{il} k_{il} \lambda_{il} - \sum_{l=0}^{L-1} \sum_{i=1}^{N_{l}} \sum_{j=1}^{N_{l+1}} J_{ijl} [k_{il} + k_{j(l+1)}] \sigma_{i l} \sigma_{j (l+1)} \bigg\} \tag{6}
+\end{align*}
+
+Finding the expectation over the Guassian prior \(\langle \mathcal{N}_{s} \rangle_{J}\) amounts to evaluating the integral \(\langle \mathcal{N}_{s} \rangle \equiv \int_{-\infty}^{\infty} \prod_{l=0}^{L-1} \prod_{i=1}^{N_{l}}  \prod_{j=1}^{N_{l+1}} \mathrm{d} J_{ijl} \thinspace p (J_{ijl}) \mathcal{N}_{s}\). To that end, we isolate all \(J_{ijl}\) dependent terms and define
+
+\begin{align*}
+\mathcal{J} \equiv \prod_{ijl} \int_{-\infty}^{\infty} \bigg(\frac{\widehat{N}_{l}}{2 \pi J^2} \bigg)^{1/2}
+\big( \mathrm{d} J_{ijl} \big) \exp \bigg \{- \frac{\widehat{N}_{l}}{2 J^2} J_{ijl}^{2} - J_{ijl} \big[ k_{il} + k_{j(l+1)} \big] \sigma_{il} \sigma_{j(l + 1)} \bigg\},
+\end{align*}
+
+Using the result
+
+\[
+\int_{-\infty}^{\infty} \mathrm{~d}x \exp \bigg( - \frac{1}{2} a x^{2} + b x \bigg) = \bigg(\frac{2 \pi}{a} \bigg)^{1/2} \exp \bigg(\frac{b^2}{2a} \bigg) \qquad a > 0
+\]
+
+with \(a = \widehat{N}_{l} / J^{2}\) and \(b = - \big[ k_{il} + k_{j(l+1)} \big] \sigma_{il} \sigma_{j(l + 1)}\), \(\mathcal{J}\) evaluates to
+
+\begin{align*}
+\mathcal{J} = \exp \bigg(\frac{J^{2}}{2} \sum_{l=0}^{L-1} \sum_{i=1}^{N_{l}} \sum_{j=1}^{N_{l+1}} \frac{1}{\widehat{N}_{l}} \big[k_{il} + k_{j(l+1)} \big]^{2} \bigg ).
+\end{align*}
+
+The spin degrees of freedom have been eliminated so that the sum over configurations \(\sum_{\boldsymbol{\sigma}}\) yields a overall factor of \(2^{N}\). Let us rescale variables \(k_{il} \to k_{il} / J\) and \(\lambda_{il} \to J \thinspace \lambda_{il} \). Writing the binomial expansion of \(\big[k_{il} + k_{j(l+1)} \big]^{2}\), we sum over the free indices \(j\) and \(i\) on the quadratic terms \(k_{il}^{2}\) and \(k_{j(l+1)}^{2}\) respectively to obtain the prefactors \((N_{l+1} / N_{l})^{1/2}\) and \((N_{l} /N_{l+1})^{1/2}\) (recall \(\widehat{N}_{l} \equiv \sqrt{N_{l} N_{l+1}}\) from (4)). Next we identify \((N_{l+1} / N_{l})^{1/2} \equiv \gamma_{l}\) and \((N_{l} /N_{l+1})^{1/2} \equiv \gamma_{l}^{-1} \equiv \nu_{l+1}\) (4). At this point, substituting \(\mathcal{J}\) into (6), we are left with
+
+\begin{align*}
+2 \thinspace \langle \mathcal{N}_{s} \rangle_{J} = (i \pi)^{-N} &\int_0^{\infty} \prod_{ i l} \mathrm{d} \lambda_{il} \int_{-i\infty}^{i\infty} \prod_{i l} \mathrm{d} k_{il} \exp \bigg(\sum_{il} k_{il} \lambda_{il} \bigg) \\
+&\times \exp \bigg\{\frac{1}{2} \sum_{l=0}^{L - 1} \sum_{i=1}^{N_{l}} \gamma_{l} k_{il}^{2} + \frac{1}{2} \sum_{l=0}^{L - 1} \sum_{j=1}^{N_{l+1}} \nu_{l+1} k_{j (l+1)}^{2} + \sum_{l=0}^{L-1} \frac{1}{\widehat{N}_{l}} \sum_{ij} k_{il} k_{j(l+1)} \bigg \} \tag{7}
+\end{align*}
+** Hubbard-Stratonovich transformations
+Next we make a mean-field approximation and linearize the cross terms \(k_{il} k_{j(l+1)}\) appearing in (7). Using auxiliary variables \((x_{l})_{l=0 \ldots L-1}\), and \((y_{l})_{l=0 \ldots L-1}\), we write
+
+\begin{align*}
+\exp \bigg \{\frac{1}{\widehat{N}_{l}} \sum_{ij} k_{il} k_{j(l+1)} \bigg \} &= \bigg(\frac{\widehat{N}_{l}}{\pi}\bigg) \int_{-\infty}^{\infty} \mathrm{d} x_{l} \exp \bigg\{- \widehat{N}_{l} \thinspace x_{l}^{2} + \bigg( \sum_{i=1}^{N_{l}} k_{il} x_{l} + \sum_{j=1}^{N_{l+1}} k_{j(l+1)} x_{l} \bigg) \bigg\} \\
+&\qquad \int_{-\infty}^{\infty} \mathrm{d} y_{l} \times \exp \bigg\{- \widehat{N}_{l} \thinspace y_{l}^{2} - i \bigg( \sum_{i=1}^{N_{l}} k_{il} y_{l} - \sum_{j=1}^{N_{l+1}} k_{j(l+1)} y_{l} \bigg)  \bigg\} \tag{8}
+\end{align*}
+
+We have used an integral transform
+
+\begin{align*}
+\exp \bigg(\frac{b c}{a} \bigg) = (a / \pi) \bigg( \int_{-\infty}^{\infty} \mathrm{d} x \exp \big[  - a x^{2} + (b + c) x \big] \bigg) \bigg( \int_{-\infty}^{\infty} \mathrm{d} y \exp \big[ - a y^{2} - i (b - c) y \big] \bigg), \qquad a > 0 \tag{9}
+\end{align*}
+
+#+begin_src python :exports none
+from sympy import symbols, exp, integrate, oo, I, pi, simplify
+# Re-initialize symbols (for clarity in this standalone script)
+a, b, c, x, y = symbols('a b c x y')
+# Define the integrals with the assumption a > 0 explicitly stated where necessary
+integral_x = integrate(exp(-a*x**2 + (b + c)*x), (x, -oo, oo), conds='none')
+integral_y = integrate(exp(-a*y**2 - I*(b - c)*y), (y, -oo, oo), conds='none')
+# Calculate the product of the two integrals, then multiply by (a / pi)
+product_scaled = (a / pi) * integral_x * integral_y
+# Simplify the expression
+result = simplify(product_scaled)
+# Print the result in LaTeX
+result
+#+end_src
+
+with \(a = \widehat{N}_{l}\), \(b = \sum_{i=1}^{N_{l}} k_{il}\) and \(c = \sum_{j=1}^{N_{l+1}} k_{j(l+1)}\). Substitution in (8) yields
+
+\begin{align*}
+2 \thinspace \langle \mathcal{N}_{s} \rangle_{J} &= (i \pi)^{- N} \int_{-\infty}^{\infty} \prod_{l=0}^{L-1} \big(\widehat{N}_{l} / \pi \big)  \big( \mathrm{d} y_{l} \mathrm{d} x_{l} \big) \exp \bigg\{ - \sum_{l=0}^{L-1} \widehat{N}_{l} \big( x_{l}^{2} + y_{l}^{2} \big) \bigg\} \int_0^{\infty} \prod_{ i l} \mathrm{d} \lambda_{il} \\
+&\times \int_{-\infty}^{\infty} \prod_{l=1}^{L-1} \prod_{i=1}^{N_{l}} \mathrm{d} k_{il} \exp \bigg\{\sum_{l=1}^{L - 1} \sum_{i=1}^{N_{l}} \bigg(- \frac{1}{2} \big( \gamma_{l} + \nu_{l} \big) k_{il}^{2} + i \big[(x_{l} + x_{l-1}) - i (y_{l} - y_{l-1}) + \lambda_{il} \big] k_{il} \bigg) \bigg\} \\
+&\qquad \qquad \qquad \times \int_{-\infty}^{\infty} \prod_{i=1}^{N_{0}} \mathrm{d} k_{i0} \exp \bigg\{ \sum_{i=1}^{N_{0}} \bigg(- \frac{1}{2} \gamma_{0} k_{i0}^{2}  + i \big[x_{0} - i y_{0} + \lambda_{i0} \big]  k_{i0} \bigg) \bigg \} \\
+&\qquad \qquad \qquad \qquad \qquad \times \int_{-\infty}^{\infty} \prod_{i=1}^{N_{L}} \mathrm{d} k_{iL} \exp \bigg\{\sum_{i=1}^{N_{L}} \bigg( - \frac{1}{2} \nu_{L} k_{iL}^{2} + i \big[ x_{L-1} + i y_{L-1} + \lambda_{iL} \big] k_{iL} \bigg) \bigg \}. \tag{10}
+\end{align*}
+
+We have effected \(k_{il} \to i k_{il}\) for the variables \((k_{il})_{l=0 \ldots L}^{i=1 \ldots N_{l}}\) so that the integral is along the real line. We use the result
+
+\[
+\int_{-\infty}^{\infty} \mathrm{~d}x \exp \bigg( - \frac{1}{2} a x^{2} + i b x \bigg) = \bigg(\frac{2 \pi}{a} \bigg)^{1/2} \exp \bigg(- \frac{b^2}{2a} \bigg) \qquad a > 0,
+\]
+
+with appropriately chosen \(a\) and \(b\) to evaluate the \(k_{il}\) integrals. For \(l = 0\), \(a = \gamma_{0}\) and \(b = (x_{0} - i y_{0} + \lambda_{i0})\). For \(0 < l < L\), \(a = (\gamma_{l} + \nu_{l})\) and \(b = (x_{l} + x_{l-1} - i (y_{l} - y_{l-1}) + \lambda_{il})\). For \(l = L\), \(a = \nu_{L}\) and \(b = (x_{L-1} + i y_{L-1} + \lambda_{iL})\). After evaluation,
+
+\begin{align*}
+2& \thinspace \langle \mathcal{N}_{s} \rangle_{J} = \pi^{-N} \pi^{N/2} \bigg(\frac{2}{\gamma_{0}}\bigg)^{N_{0}/2} \bigg(\frac{2}{\nu_{L}}\bigg)^{N_{L}/2} \prod_{l=1}^{L-1} \bigg(\frac{2}{\gamma_{l} + \nu_{l}} \bigg)^{N_{l}/2} \\
+&\quad \int_{-\infty}^{\infty} \prod_{l=0}^{L-1} \big(\widehat{N}_{l} / \pi \big)  \big( \mathrm{d} y_{l} \mathrm{d} x_{l} \big)  \exp \bigg\{ - \sum_{l=0}^{L-1} \widehat{N}_{l} \big( x_{l}^{2} + y_{l}^{2} \big) \bigg\} \\
+&\quad \times \int_0^{\infty} \prod_{i=1}^{N_0} \mathrm{d} \lambda_{i0} \exp \bigg \{ \sum_{i=1}^{N_{0}} \bigg( -\frac{\lambda_{i0}^{2}}{2 \gamma_{0}} + \frac{\lambda_{i0} \big(- x_{0} + i y_{0}\big)}{\gamma_{0}} \bigg) \bigg \} \\
+&\quad \times \int_0^{\infty} \prod_{i=1}^{N_L} \mathrm{d} \lambda_{iL} \exp \bigg \{  \sum_{i=1}^{N_{L}} \bigg(- \frac{\lambda_{iL}^{2}}{2 \nu_{L}} + \frac{\lambda_{iL} \big(- x_{L-1} - i y_{L-1}\big)}{\nu_{L}} \bigg) \bigg\} \\
+&\quad \times  \int_0^{\infty} \prod_{l=1}^{L-1} \prod_{i=1}^{N_l} \mathrm{d} \lambda_{il} \exp \bigg\{ \sum_{l=1}^{L - 1} \sum_{i=1}^{N_{l}} \bigg( - \frac{\lambda_{il}^{2}}{2 (\gamma_{l} + \nu_{l})} + \frac{\lambda_{il} \big[- (x_{l} + x_{l-1}) + i (y_{l} - y_{l-1})\big]}{(\gamma_{l} + \nu_{l})} \bigg) \bigg \} \\
+&\quad \times  \exp \bigg\{ - \sum_{l=1}^{L - 1} \sum_{i=1}^{N_{l}} \frac{\big[(x_{l} + x_{l-1}) - i (y_{l} - y_{l-1})\big]^{2}}{2 (\gamma_{l} + \nu_{l})} - \sum_{i=1}^{N_{0}} \frac{\big(x_{0} - i y_{0}\big)^{2}}{2 \gamma_{0}} - \sum_{i=1}^{N_{L}} \frac{\big(x_{L-1} + i y_{L-1}\big)^{2}}{2 \nu_{L}} \bigg\} \tag{11}
+\end{align*}
+
+** Half integral over site spin energy
+Next we will evaluate the half integrals over the site spin energies \((\lambda_{il})_{l=0 \ldots L}^{i=1 \ldots N_{l}}\) using the result
+
+\begin{align*}
+\int_0^{\infty} \exp \bigg(-\frac{1}{2} a x^2+b x\bigg) d x=\bigg(\frac{\pi}{2 a}\bigg)^{\frac{1}{2}} \exp \bigg(\frac{b^2}{2 a}\bigg)\bigg[1+\operatorname{erf}\bigg(\frac{b}{\sqrt{2 a}}\bigg)\bigg] \qquad a > 0.
+\end{align*}
+
+For \(l=0\), \(a = \gamma_{0}^{-1}\) and \(b = \frac{- x_{0} + i y_{0}}{\gamma_{0}}\). For \(0 < l < L\), \(a = (\gamma_{l} + \nu_{l})^{-1}\) and \(b = \frac{-(x_{l} + x_{l-1}) + i (y_{l} - y_{l-1})}{\gamma_{l} + \nu_{l}}\). For \(l = L\), \(a = \nu_{L}^{-1}\) and \(b = \frac{- x_{L-1} - i y_{L-1}}{\nu_{L}}\). Observe that the \(\exp \big(b^{2} / 2 a\big)\) part of each of these integrals when combined will form the exponential factor
+
+\begin{align*}
+\exp \bigg\{ \sum_{l=1}^{L - 1} \sum_{i=1}^{N_{l}} \frac{\big[(x_{l} + x_{l-1}) - i (y_{l} - y_{l-1})\big]^{2}}{2 (\gamma_{l} + \nu_{l})} + \sum_{i=1}^{N_{0}} \frac{\big(x_{0} - i y_{0}\big)^{2}}{2 \gamma_{0}} + \sum_{i=1}^{N_{L}} \frac{\big(x_{L-1} + i y_{L-1}\big)^{2}}{2 \nu_{L}} \bigg\}.
+\end{align*}
+
+This same form appears in (11) but with the argument of the exponential negated, so these factors will combine to unity. Furthermore, the resulting combination of prefactors
+
+\begin{align*}
+\pi^{N/2} \bigg(\frac{\gamma_{0}}{2} \bigg)^{N_{0}/2} \prod_{l=1}^{L-1} \bigg(\frac{\gamma_{l} + \nu_{l}}{2} \bigg)^{N_{l}/2} \bigg(\frac{\nu_{L}}{2} \bigg)^{N_{L}/2},
+\end{align*}
+
+are reciprocals of the one occuring in (11) (the \(\pi^{N/2}\) is the reciprocal of \(\pi^{-N} \pi^{N/2}\)). These  prefactors also combine to unity. We are left with
+
+\begin{align*}
+\bigg [1 + \operatorname{erf} \bigg(\frac{- x_{0} + i y_{0}}{\sqrt{2 \gamma_{0}}} \bigg) \bigg ]^{N_{0}} \prod_{l=1}^{L-1} \bigg [1 + \operatorname{erf} \bigg(\frac{- (x_{l} + x_{l-1}) + i (y_{l} - y_{l-1})}{\sqrt{2 (\gamma_{l} + \nu_{l})}} \bigg) \bigg ]^{N_{l}} \bigg [1 + \operatorname{erf} \bigg(\frac{- x_{L-1} - i y_{L-1}}{\sqrt{2\nu_{L}}} \bigg) \bigg ]^{N_{L}}
+\end{align*}
+
+which we will exponentiate using the identity \(x = \exp (\ln x )\) to get
+
+\begin{align*}
+&\exp \bigg \{ N_{0} \ln \bigg [1 + \operatorname{erf} \bigg(\frac{- x_{0} + i y_{0}}{\sqrt{2 \gamma_{0}}} \bigg) \bigg ]  \bigg\} \exp \bigg \{ N_{0} \thinspace \alpha_{L} \ln \bigg [1 + \operatorname{erf} \bigg(\frac{- x_{L-1} - i y_{L-1}}{\sqrt{2 \nu_{L}}} \bigg) \bigg ]  \bigg\} \\
+&\qquad \times \exp \bigg \{ N_{0} \sum_{l=1}^{L-1} \alpha_{l} \ln \bigg [1 + \operatorname{erf} \bigg(\frac{- (x_{l} + x_{l-1}) + i (y_{l} - y_{l-1})}{\sqrt{2 (\gamma_{l} + \nu_{l})}} \bigg) \bigg ]  \bigg\} \\
+\end{align*}
+
+Notice that we have used \(\alpha_{l} \equiv N_{l} / N_{0}\) (4) and now the argument of all the exponential factors are of \(\mathcal{O} (N_{0}) \). The exponential factor \(\exp \big( - \sum_{l=0}^{L-1} \widehat{N}_{l} \big[ x_{l}^{2} + y_{l}^{2} \big] \big)\) appearing in (11) is also of \(\mathcal{O} (N_{0})\) since \(\widehat{N}_{l} \equiv \sqrt{N_{l} N_{l+1}} = N_{0} \sqrt{\alpha_{l} \alpha_{l+1}}\). Putting all the pieces together, we are left with the following form for \(\langle \mathcal{N}_{s} \rangle_{J}\)
+
+\begin{align*}
+&2 \thinspace \langle \mathcal{N}_{s} \rangle_{J} = \bigg(\prod_{l=0}^{L-1} \frac{N_{0} \alpha_{l} \alpha_{l+1}}{\pi} \bigg) \int_{-\infty}^{\infty} \mathrm{d} y_{l} \int_{-\infty}^{\infty} \mathrm{d} x_{l} \exp \bigg\{- N_{0} \sum_{l=0}^{L-1} \sqrt{\alpha_{l} \alpha_{l+1}} \big( x_{l}^{2} + y_{l}^{2} \big)\bigg\} \\
+&\qquad \times \exp \bigg \{ N_{0} \ln \bigg [1 + \operatorname{erf} \bigg(\frac{- x_{0} + i y_{0}}{\sqrt{2 \gamma_{0}}} \bigg) \bigg ] +  N_{0} \thinspace \alpha_{L} \ln \bigg [1 + \operatorname{erf} \bigg(\frac{- x_{L-1} - i y_{L-1}}{\sqrt{2 \nu_{L}}} \bigg) \bigg ]  \bigg\} \\
+&\qquad \qquad \qquad \times \exp \bigg \{ N_{0} \sum_{l=1}^{L-1} \alpha_{l} \ln \bigg [1 + \operatorname{erf} \bigg(\frac{- (x_{l} + x_{l-1}) + i (y_{l} - y_{l-1})}{\sqrt{2 (\gamma_{l} + \nu_{l})}} \bigg) \bigg ]  \bigg\} \tag{12}
+\end{align*}
+
+** Steepest descent approximation
+The integral can now be evaluated using the method of steepest descent in the limit \(N_{0} \to \infty\). 
+
+\begin{align*}
+\lim_{N_{0} \to \infty} N_{0}^{-1} \ln \left \langle \mathcal{N}_{s} \right \rangle_{J} = & \lim_{N_{0} \to \infty} \bigg[ \mathcal{C}_{J} (\boldsymbol{N}) - \frac{1}{2N_{0}} \ln \bigg(\frac{N_{0} \lvert \mathcal{C}_{J}^{\prime \prime} (\boldsymbol{N}) \rvert}{2 \pi} \bigg) + \mathcal{O} \bigg(\frac{1}{N_{0}^{2}} \bigg) \bigg],
+\end{align*}
+
+where we have identified the right hand side as the leading order behaviour, in the limit \(N_{0} \to \infty\), of the complexity function or the ISC:
+
+\begin{align*}
+\mathcal{C}_{J} (\boldsymbol{N}) &\equiv \underset{\{x_{l}, y_{l}\}}{\operatorname{saddle}} \thinspace \bigg \{- \frac{1}{2} \sum_{l=0}^{L-1} \sqrt{\alpha_{l} \alpha_{l+1}} \thinspace \big(x_{l}^{2} + y_{l}^{2} \big) + \frac{1}{2} \sum_{l=1}^{L-1} \alpha_{l} \ln \bigg [1 + \operatorname{erf} \bigg(\frac{- (x_{l} + x_{l-1}) + i (y_{l} - y_{l-1})}{\sqrt{2 (\gamma_{l} + \nu_{l})}} \bigg) \bigg ] \\
+&\qquad \qquad + \frac{1}{2} \ln \bigg [1 + \operatorname{erf} \bigg(\frac{- x_{0} + i y_{0}}{\sqrt{2 \gamma_{0}}} \bigg) \bigg] + \frac{\alpha_{L}}{2} \ln \bigg [1 + \operatorname{erf} \bigg(\frac{- x_{L-1} - i y_{L-1}}{\sqrt{2 \nu_{L}}} \bigg) \bigg ] \bigg \} \tag{13}
+\end{align*}
+
+With
+
+\begin{align*}
+\Theta_{l} &\equiv
+\begin{cases}
+2^{-1/2} \thinspace \gamma_{0}^{-1/2}, & l = 0 \\
+2^{-1/2} \thinspace (\gamma_{l} + \nu_{l})^{-1/2}, & 0 < l < L - 1 \\
+2^{-1/2} \thinspace \nu_{L}^{-1/2}, & l = L - 1\\
+\end{cases}
+&
+\Delta_{l} &\equiv
+\begin{cases}
+- x_{0} + i y_{0}, & l = 0 \\
+- (x_{l} + x_{l-1}) + i (y_{l} - y_{l-1}), & 0 < l < L - 1\\
+- x_{L-1} - i y_{L-1}, & l = L - 1\\
+\end{cases},
+\end{align*}
+
+The fixed point equations that must be iterated to obtain the saddle \(\big\{x_{l}^{\text{max}} , y_{l}^{\text{max}} \big \}_{l=0 \ldots L-1} \) are
+
+\begin{align*}
+x_{l} &= - \frac{\gamma_{l}^{-1} \Theta_{l}}{\sqrt{2 \pi}} \exp \big[- (\Theta_{l} \thinspace \Delta_{l})^{2} \big] \bigg[1 + \operatorname{erf}\big( \Theta_{l} \thinspace \Delta_{l} \big) \bigg]^{-1} \\
+&\qquad - \frac{\gamma_{l} \Theta_{l+1}}{\sqrt{2 \pi}} \exp \big[- (\Theta_{l+1} \thinspace \Delta_{l+1})^{2} \big] \bigg[1 + \operatorname{erf}\big( \Theta_{l+1} \thinspace \Delta_{l+1} \big) \bigg]^{-1} \tag{14a}
+\end{align*}
+
+\begin{align*}
+i y_{l} &= - \frac{\gamma_{l}^{-1} \Theta_{l}}{\sqrt{2 \pi}} \exp \big[- (\Theta_{l} \thinspace \Delta_{l})^{2} \big] \bigg[1 + \operatorname{erf}\big( \Theta_{l} \thinspace \Delta_{l} \big) \bigg]^{-1} \\
+&\qquad + \frac{\gamma_{l} \Theta_{l+1}}{\sqrt{2 \pi}} \exp \big[- (\Theta_{l+1} \thinspace \Delta_{l+1})^{2} \big] \bigg[1 + \operatorname{erf}\big( \Theta_{l+1} \thinspace \Delta_{l+1} \big) \bigg]^{-1}. \tag{14b}
+\end{align*}
+** The Hessian
+\begin{align*}
+\frac{\partial \mathcal{C}_J}{\partial x}&=-\sqrt{\alpha_1} x - \frac{1}{\sqrt{2 \pi \gamma_0}} \exp \bigg(-\frac{x^2-2 i x y-y^2}{2 \gamma_0} \bigg) \bigg[1+\operatorname{erf}\left(\frac{-x+i y}{\sqrt{2 \gamma_0}}\right) \bigg]^{-1} \\ &\qquad - \frac{\alpha_1}{\sqrt{2 \pi \nu_1}} \exp \bigg(-\frac{x^2+2 i x y-y^2}{2 \nu_1} \bigg) \bigg[ 1+\operatorname{erf}\left(\frac{-x-i y}{\sqrt{2 \nu_1}}\right) \bigg]^{-1}
+\end{align*}
+
+\begin{align*}
+\frac{\partial \mathcal{C}_J}{\partial y}&=-\sqrt{\alpha_1} y +\frac{i}{\sqrt{2 \gamma_0}} \exp \bigg(-\frac{x^2-2 i x y-y^2}{2 \gamma_0} \bigg) \bigg[1+\operatorname{erf}\left(\frac{-x+i y}{\sqrt{2 \gamma_0}}\right) \bigg]^{-1} \\ &\qquad - \frac{i \alpha_1}{\sqrt{2 \pi \nu_1}} \exp \bigg(-\frac{x^2+2 i x y-y^2}{2 \nu_1} \bigg) \bigg[ 1+\operatorname{erf}\left(\frac{-x-i y}{\sqrt{2 \nu_1}}\right) \bigg]^{-1}
+\end{align*}
+
+
+\begin{align*}
+\frac{\partial^{2} \mathcal{C}_J}{\partial x^{2}}&=-\sqrt{\alpha_1} + \frac{\gamma_0^{-3/2}}{\sqrt{2 \pi}} (x - i y) \thinspace \exp \bigg(-\frac{x^2-2 i x y-y^2}{2 \gamma_0} \bigg) \bigg[1+\operatorname{erf}\left(\frac{-x+i y}{\sqrt{2 \gamma_0}}\right) \bigg]^{-1}\\
+&\qquad- \frac{1}{\pi \gamma_0} \exp \bigg(-\frac{x^2-2 i x y-y^2}{\gamma_0} \bigg) \bigg[1+\operatorname{erf}\left(\frac{-x+i y}{\sqrt{2 \gamma_0}}\right) \bigg]^{-2} \\ 
+&\qquad+ \frac{\alpha_{1} \nu_{1}^{-3/2}}{\sqrt{2 \pi}} (x + i y) \thinspace \exp \bigg(-\frac{x^2+2 i x y-y^2}{2 \nu_1} \bigg) \bigg[1+\operatorname{erf}\left(\frac{-x-i y}{\sqrt{2 \nu_1}}\right) \bigg]^{-1}\\
+&\qquad- \frac{\alpha_{1}}{\pi \nu_1} \exp \bigg(-\frac{x^2+2 i x y-y^2}{\nu_1} \bigg) \bigg[1+\operatorname{erf}\left(\frac{-x-i y}{\sqrt{2 \nu_1}}\right) \bigg]^{-2} \\ 
+\end{align*}
+
+\begin{align*}
+\frac{\partial^{2} \mathcal{C}_J}{\partial y^{2}}&=-\sqrt{\alpha_1} + \frac{i \gamma_{0}^{-3/2}}{\sqrt{2 \pi}} (y + i x) \exp \bigg(-\frac{x^2-2 i x y-y^2}{2 \gamma_0} \bigg) \bigg[1+\operatorname{erf}\left(\frac{-x+i y}{\sqrt{2 \gamma_0}}\right) \bigg]^{-1} \\
+&\qquad+ \frac{1}{\pi \gamma_0} \exp \bigg(-\frac{x^2-2 i x y-y^2}{\gamma_0} \bigg) \bigg[1+\operatorname{erf}\left(\frac{-x+i y}{\sqrt{2 \gamma_0}}\right) \bigg]^{-2} \\ 
+&\qquad- \frac{i \alpha_{1} \nu_{1}^{-3/2}}{\sqrt{2 \pi}} (y - i x) \thinspace \exp \bigg(-\frac{x^2+2 i x y-y^2}{2 \nu_1} \bigg) \bigg[1+\operatorname{erf}\left(\frac{-x-i y}{\sqrt{2 \nu_1}}\right) \bigg]^{-1}\\
+&\qquad- \frac{\alpha_{1}}{\pi \nu_1} \exp \bigg(-\frac{x^2+2 i x y-y^2}{\nu_1} \bigg) \bigg[1+\operatorname{erf}\left(\frac{-x-i y}{\sqrt{2 \nu_1}}\right) \bigg]^{-2} \\ 
+\end{align*}
+
+\begin{align*}
+\frac{\partial^{2} \mathcal{C}_J}{\partial y \partial x}&= \frac{\gamma_0^{-3/2}}{\sqrt{2 \pi}} (y + i x) \thinspace \exp \bigg(-\frac{x^2-2 i x y-y^2}{2 \gamma_0} \bigg) \bigg[1+\operatorname{erf}\left(\frac{-x+i y}{\sqrt{2 \gamma_0}}\right) \bigg]^{-1}\\
+&\qquad+ \frac{i}{\pi \gamma_0} \exp \bigg(-\frac{x^2-2 i x y-y^2}{\gamma_0} \bigg) \bigg[1+\operatorname{erf}\left(\frac{-x+i y}{\sqrt{2 \gamma_0}}\right) \bigg]^{-2} \\ 
+&\qquad+ \frac{\alpha_{1} \nu_{1}^{-3/2}}{\sqrt{2 \pi}} (y - i x) \thinspace \exp \bigg(-\frac{x^2+2 i x y-y^2}{2 \nu_1} \bigg) \bigg[1+\operatorname{erf}\left(\frac{-x-i y}{\sqrt{2 \nu_1}}\right) \bigg]^{-1}\\
+&\qquad+ \frac{i \alpha_{1}}{\pi \nu_1} \exp \bigg(-\frac{x^2+2 i x y-y^2}{\nu_1} \bigg) \bigg[1+\operatorname{erf}\left(\frac{-x-i y}{\sqrt{2 \nu_1}}\right) \bigg]^{-2} \\ 
+\end{align*}
+
+\begin{align*}
+\frac{\partial^{2} \mathcal{C}_J}{\partial x \partial y}&= - \frac{\gamma_0^{-3/2}}{\sqrt{2 \pi}} (y + i x) \thinspace \exp \bigg(-\frac{x^2-2 i x y-y^2}{2 \gamma_0} \bigg) \bigg[1+\operatorname{erf}\left(\frac{-x+i y}{\sqrt{2 \gamma_0}}\right) \bigg]^{-1}\\
+&\qquad+ \frac{i}{\pi \gamma_0} \exp \bigg(-\frac{x^2-2 i x y-y^2}{\gamma_0} \bigg) \bigg[1+\operatorname{erf}\left(\frac{-x+i y}{\sqrt{2 \gamma_0}}\right) \bigg]^{-2} \\ 
+&\qquad- \frac{\alpha_{1} \nu_{1}^{-3/2}}{\sqrt{2 \pi}} (y - i x) \thinspace \exp \bigg(-\frac{x^2+2 i x y-y^2}{2 \nu_1} \bigg) \bigg[1+\operatorname{erf}\left(\frac{-x-i y}{\sqrt{2 \nu_1}}\right) \bigg]^{-1}\\
+&\qquad+ \frac{i \alpha_{1}}{\pi \nu_1} \exp \bigg(-\frac{x^2+2 i x y-y^2}{\nu_1} \bigg) \bigg[1+\operatorname{erf}\left(\frac{-x-i y}{\sqrt{2 \nu_1}}\right) \bigg]^{-2} \\ 
+\end{align*}

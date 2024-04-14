@@ -2,6 +2,7 @@
 :ID:       2eea2039-7175-4635-8256-224892e7134e
 :END:
 #+TITLE: Classical harmonic oscillators
+#+CATEGORY: notes
 #+FILETAGS: :problem: :SPOP: :statmech:
 #+TEXTBOOK: Statistical mechanics of particles by Mehran Kardar
 #+SETUPFILE: ~/.config/emacs/setup/setupfile.org

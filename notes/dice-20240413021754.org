@@ -2,10 +2,11 @@
 :ID:       91e39ba2-fe8b-485c-8386-e7912c415064
 :END:
 #+TITLE: Dice
+#+CATEGORY: notes
 #+FILETAGS: :problem: :SPOP: :statmech:
 #+SETUPFILE: ~/.config/emacs/setup/setupfile.org
 #+BEGIN: clocktable :maxlevel 2 :scope nil :emphasize nil
-#+CAPTION: Clock summary at [2024-04-13 Sat 17:13]
+#+CAPTION: Clock summary at [2024-04-14 Sun 05:17]
 | Headline     | Time   |
 |--------------+--------|
 | *Total time* | *0:26* |

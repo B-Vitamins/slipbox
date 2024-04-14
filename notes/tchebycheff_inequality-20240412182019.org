@@ -4,8 +4,8 @@
 #+TITLE: Tchebycheff inequality
 #+FILETAGS: :problem: :SPOP: :statmech:
 #+SETUPFILE: ~/.config/emacs/setup/setupfile.org
-#+BEGIN: clocktable :maxlevel 2 :scope nil :emphasize nil
-#+CAPTION: Clock summary at [2024-04-13 Sat 00:28]
+#+BEGIN: clocktable :maxlevel 2 :scope file :emphasize nil
+#+CAPTION: Clock summary at [2024-04-14 Sun 05:51]
 | Headline                   | Time   |
 |----------------------------+--------|
 | *Total time*               | *0:17* |

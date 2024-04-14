@@ -4,8 +4,8 @@
 #+TITLE: Optimal selection
 #+FILETAGS: :problem: :SPOP: :statmech:
 #+SETUPFILE: ~/.config/emacs/setup/setupfile.org
-#+BEGIN: clocktable :maxlevel 2 :scope nil :emphasize nil
-#+CAPTION: Clock summary at [2024-04-12 Fri 19:11]
+#+BEGIN: clocktable :maxlevel 2 :scope file :emphasize nil
+#+CAPTION: Clock summary at [2024-04-14 Sun 05:50]
 | Headline              | Time   |
 |-----------------------+--------|
 | *Total time*          | *0:26* |
