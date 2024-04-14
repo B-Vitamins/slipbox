@@ -1,0 +1,1674 @@
+:PROPERTIES:
+:ID:       de8fd72d-10b5-45e4-b2a0-541291da66f9
+:END:
+#+TITLE: Mean field approximations
+#+FILETAGS: :concept: :slides: :presentation:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+#+STARTUP: beamer indent hidestars
+#+LANGUAGE:  en
+#+OPTIONS:   H:2 num:t toc:f \n:nil @:t ::t |:t ^:t -:t f:t *:t <:t
+#+OPTIONS:   TeX:t LaTeX:t skip:nil d:nil todo:t pri:nil tags:not-in-toc
+#+EXPORT_SELECT_TAGS: export
+#+EXPORT_EXCLUDE_TAGS: noexport
+#+LaTeX_CLASS_OPTIONS: [8pt]
+#+LaTeX_CLASS: beamer
+#+LATEX_HEADER: \usepackage{listings}
+#+LATEX_HEADER: \usepackage{amsmath}
+#+LATEX_HEADER: \usepackage{multimedia}
+#+LATEX_HEADER: \newcommand\mitdbar{\text{\ulcshape\slshape đ}}
+#+OPTIONS: H:2
+* Weiss mean field theory
+** Spins in a Gibbs canonical ensemble
++ Consider the /total Hamiltonian/ for a *lattice spin system*
+
+   \begin{align*}
+   \boxed{
+   H (\boldsymbol{S} , \boldsymbol{J}, h) =-\sum_{(i j) \in B} J_{ij} S_{i} S_{j}-h \sum_{i=1}^{N} S_{i} .
+   }
+   \end{align*}
+
++ $\boldsymbol{S} = \left \lbrace S_i  \right \rbrace_{i=1 \cdots N}$ represents a *spin configuration*. $\boldsymbol{J} = \left \lbrace J_{ij}  \right \rbrace_{i = 1 \cdots N, j = 1 \cdots N}$ is the set of *coupling constants*. $h$ is the (intensive) *magnetic field strength*.
+
++ $(ij)$ represents a *bond* between spin $S_i$ and $S_j$.
+
++ $B$ is the set of all bonds in the *lattice* under consideration. $N_B \equiv \left \lvert B  \right \rvert$ is the total number of bonds. If $z$ is the *coordination number* we have the relation $N_B = N z /2$.
+
++ $H_{S} \equiv -\sum_{(i j) \in B} J_{ij} S_{i} S_{j}$ is the /internal Hamiltonian/, representing the intrinsic spin-spin interactions within the system in the absence of a external magnetic field.
+
++ $H_F \equiv - h \sum_i S_i$ is the /field Hamiltonian/, representing the work done against the external field $h$. The /total Hamiltonian/ is the sum of the /internal Hamiltonian/ and the /field Hamiltonian/.
+** Spins in a Gibbs canonical ensemble
++ The *Gibbs-Boltzmann distribution* - giving /unbiased estimates/ of the probability of a *microstate* in a *Gibbs canonical ensemble* - is
+
+\begin{align*}
+p_{(\beta, \boldsymbol{J},  h)} (\boldsymbol{S}) = \dfrac{\exp \left \lbrace - \beta \left[ -\sum_{(i j) \in B} J_{ij} S_{i} S_{j}-h \sum_{i=1}^{N} S_{i} \right]  \right \rbrace}{\mathcal{Z} (\beta, \boldsymbol{J},  h)}
+\end{align*}
+
++ $\mathcal{Z} (\beta, \boldsymbol{J},  h)$ is the *Gibbs partition function*
+
+\begin{align*}
+\mathcal{Z} (\beta, \boldsymbol{J},  h) &= \operatorname{Tr} \exp \left \lbrace - \beta H (\boldsymbol{S}, \boldsymbol{J}, h) \right \rbrace  \\
+& \equiv  \sum_{\boldsymbol{S}} \exp \left \lbrace  \beta \left[ \sum_{(i j) \in B} J_{ij} S_{i} S_{j} + h \sum_{i=1}^{N} S_{i} \right]  \right \rbrace.
+\end{align*}
+
++ The (intensive) *Gibbs free energy* is
+
+\begin{align*}
+-\beta f (\beta, \boldsymbol{J}, h) &= N^{-1} \ln \operatorname{Tr} \exp \left \lbrace - \beta H (\boldsymbol{S}, \boldsymbol{J}, h) \right \rbrace \\
+&= N^{-1} \ln \sum_{\boldsymbol{S}} \exp \left \lbrace  \beta \left[ \sum_{(i j) \in B} J_{ij} S_{i} S_{j} + h \sum_{i=1}^{N} S_{i} \right]  \right \rbrace
+\end{align*}
+
+** Non-interacting spins
++ This is the case when $H_S$ vanishes. The Gibbs-Boltzmann distribution
+
+  \begin{align*}
+  p_{(\beta, h) }\left( \boldsymbol{S} \right)=\frac{1}{\mathcal{Z}} \exp \left[\beta h \sum_{i=1}^{N} S_{i}\right]
+  \end{align*}
+
++ The partition function
+
+\begin{align*}
+\mathcal{Z} (\beta, h) = \operatorname{Tr} \exp \left \lbrace \beta h \sum_{i=1}^N S_i  \right \rbrace
+\end{align*}
+
++ The free energy
+
+\begin{align*}
+-\beta f (\beta,h) = N^{-1} \ln \operatorname{Tr} \exp \left \lbrace \beta h \sum_{i=1}^{N} S_i  \right \rbrace
+\end{align*}
+
+** Non-interacting spins
++ When $\left \lbrace S_i  \right \rbrace$ are *Ising spins* i.e, $\left \lbrace S_i  \right \rbrace = \left\{\sigma_{i}= \pm 1\right\}$ we have the partition function/
+
+  \begin{align*}
+  \boxed{
+  \mathcal{Z} (\beta, h) = \prod_{i} \operatorname{Tr} \exp \left \lbrace \beta h \sigma_i \right \rbrace = \left[\exp \left \lbrace \beta h \right \rbrace + \exp \left \lbrace - \beta h \right \rbrace \right]^N = \left[2 \cosh \beta h \right]^N
+  }
+  \end{align*}
+
++ The /free energy/
+
+\begin{align*}
+\boxed{
+-\beta f (\beta, h) = \ln \left[2 \cosh \left(\beta h \right) \right].
+}
+\end{align*}
+
++ The /equation of state/ is
+
+  \begin{align*}
+  \boxed{
+  m=- \partial_h f (\beta, h) = \tanh \left(\beta h \right)
+  }
+  \end{align*}
+** Weiss mean field theory
++ Now consider the case where the total /Hamiltonian/ retains both spin-spin $(H_S)$ and spin-field interactions $(H_F)$ but spin-spin interactions are /uniform/, i.e., $J_{ij} \equiv J \thinspace \forall \thinspace (i,j)$.
+
+\begin{align*}
+H (\boldsymbol{S} , J, h) =-J \sum_{(i j) \in B} S_{i} S_{j}-h \sum_{i=1}^{N} S_{i} .
+\end{align*}
+
++ The *Weiss mean field theory* prescription is to decompose the spin variable $S_i$ appearing in a *interaction energy* term into its *mean* $m_i$ and a *deviation* $\delta S_i = S_i - m_i$ about the mean.
+
++ Under this assumption, we obtain a rewrite of the Hamiltonian (upto first order in $\delta S_{i}$)
+
+\begin{align*}
+H_{\text{MF}} & =-J \sum_{(i j) \in B}\left(m_i+\delta S_{i}\right)\left(m_j+\delta S_{j}\right)-h \sum_{i} S_{i} \\
+& \approx-J m_i m_j^{} N_{B}-J m_i \sum_{(i j) \in B}\left(\delta S_{i}+\delta S_{j}\right)-h \sum_{i} S_{i} .
+\end{align*}
+
+** Weiss  MFT: mean field Hamiltonian
+
++ The *coordination number* $z$ is the number of bonds emanating from a given site. It is possible to convert the /sum over bonds/ $\sum_{(i j) \in B}\left(\delta S_{i}+\delta S_{j}\right)$ to a product of the coordination number and a /sum over sites/
+
+\begin{align*}
+\sum_{(i j) \in B}\left(\delta S_{i}+\delta S_{j}\right) = z \sum_{i} \delta S_i
+\end{align*}
+
++ With $h_{\text{eff}} \equiv (J m z + h)$, using  $S_i = m_i + \delta S_i$, $N_B = Nz/2$, and the assumption $m_i \equiv m \quad  \forall \thinspace i$ (translational invariance) yields the *mean field Hamiltonian*
+
+\begin{align*}
+\boxed{
+H_{\text{Weiss}} (\boldsymbol{S}, m, J, h) = \dfrac{N z J m^2}{2} - h_{\text{eff}} \sum_{i}^{N} S_i
+}
+\end{align*}
+
+** Weiss MFT: partition function and free energy
++ The (Gibbs) /partition function/
+
+  \begin{align*}
+  \boxed{
+  \mathcal{Z}_{\text{Weiss}} (\beta, m, J, h) = \exp \left \lbrace - \beta N z J m^2 /2 \right \rbrace \operatorname{Tr} \exp \left[ \beta h_{\text{eff}} \sum_{i} S_{i}\right]
+  }
+  \end{align*}
+
++ The (Gibbs) /free energy/
+
+  \begin{align*}
+  - \beta f_{\text{Weiss}} (\beta, m, J, h) &= - \dfrac{J z m^2 }{2} + N^{-1}^{} \ln \operatorname{Tr} \exp \left[\beta h_{\text{eff}} \sum_{i} S_{i} \right] \\
+  \end{align*}
+
+  The $\operatorname{Tr}$ operation in the expression above is over spin configurations $\lbrace \boldsymbol{S} \rbrace$. It is possible to perform the $\operatorname{Tr}$ /independently over individual spins/ because the sum over spins $\sum_i S_i$ appearing in the argument of the exponential is a *linear form*. We obtain the following rewrite
+
+  \begin{align*}
+  \boxed{
+ -\beta f_{\text{Weiss}} (\beta, m, J, h) = - \dfrac{J z m^2}{2} + N^{-1} \sum_i \ln \operatorname{Tr} \exp \left[\beta h_{\text{eff}} S_{i} \right]
+  }
+  \end{align*}
+
+** Weiss MFT for the Ising model
++ For *Ising spins* $S_i = \sigma_i \in \left \lbrace 1, -1  \right \rbrace$; therefore
+
+\begin{align*}
+\mathcal{Z}_{\text{Weiss}} (\beta, m, J, h) &= \exp \left \lbrace - \beta J N m^2/2 \right \rbrace \prod_{i} \operatorname{Tr} \exp \left \lbrace \beta h_{\text{eff}} \sigma_i \right \rbrace \\
+&= \exp \left \lbrace - \beta J N m^2 /2 \right \rbrace \left[ \exp \left \lbrace \beta h_{\text{eff}} \right \rbrace + \exp \left \lbrace - \beta h_{\text{eff}} \right \rbrace \right]^{N}
+\end{align*}
+
++ The (Gibbs) /partition function/
+
+\begin{align*}
+\boxed{
+\mathcal{Z}_{\text{Weiss}} (\beta, m, J, h) = \exp \left \lbrace - \beta J N m^2 /2 \right \rbrace \left[2 \cosh \beta h_{\text{eff}} \right]^N.
+}
+\end{align*}
+
++ The (Gibbs) /free energy/
+
+\begin{align*}
+\boxed{
+- \beta f_{\text{Weiss}}  (\beta, m, J, h) = - \dfrac{J z m^2}{2} + \ln \left[ 2 \cosh \beta h_{\text{eff}} \right]
+}
+\end{align*}
+
++ The /equation of state/ is
+
+\begin{align*}
+\boxed{
+m (\beta, m, J, h) = \tanh \left( \beta h_{\text{eff}} \right).
+}
+\end{align*}
+** Weiss MFT for Ising model
+#+begin_src latex
+  \begin{figure}
+    \centering
+    \includegraphics[width=10cm]{fixed-point-iteration.png}
+    \caption{\textbf{Fixed point iteration}. The fixed points and their stability is determined by the temperature $\beta$. Depending on the fixed points, initial values of $m$ converges on a solution representing a paramagnet (left) or a ferromagnetic (right).}
+  \end{figure}
+#+end_src
+*** A figure :noexport:
+#+begin_src python
+  import numpy as np
+  import matplotlib.pyplot as plt
+  from math import tanh
+  from scipy.optimize import fsolve
+
+  def fixed_point_iteration_plot(beta):
+    # Parameters
+    h = 0.1
+    J = 1.0
+    z = 4.0
+
+    # Functions
+    def y_m(m):
+        return m
+
+    def y_tanh(beta, h, m):
+        return np.tanh(beta * (J * np.array(m) * z + h))
+
+    def fixed_point_iteration(beta, h, m_init, max_iter=1000):
+        m_iter = [m_init]
+        for i in range(max_iter):
+            m_new = y_tanh(beta, h, m_iter[-1])
+            m_iter.append(m_new)
+        return m_iter
+
+    def find_fixed_points(beta, h):
+        func = lambda m: m - y_tanh(beta, h, m)
+        m_roots = np.array([fsolve(func, m_guess) for m_guess in np.linspace(-1, 1, 1000)]).flatten()
+        m_roots = np.unique(np.round(m_roots, decimals=5))
+
+        # Determine stability of fixed points
+        stable = []
+        unstable = []
+        for m_root in m_roots:
+            derivative = 1 - beta * (J * z + h) * (1 - y_tanh(beta, h, m_root)**2)
+            if derivative < 1:
+                stable.append(m_root)
+            else:
+                unstable.append(m_root)
+        return stable, unstable
+
+    m_init = 0.3
+    m_iter = fixed_point_iteration(beta, h, m_init)
+    stable, unstable = find_fixed_points(beta, h)
+
+    # Create the x-axis points
+    m_values = np.linspace(-1, 1, 1000)
+
+    # Plot y = m
+    plt.plot(m_values, y_m(m_values), 'k', label='$y = m$', linewidth=2)
+
+    # Plot y = tanh(beta * h * m)
+    plt.plot(m_values, y_tanh(beta, h, m_values), 'g', label='$y = \\tanh(\\beta h_{eff} m)$', linewidth=2)
+
+    # Plot the fixed point iteration
+    for i in range(len(m_iter) - 1):
+        plt.plot([m_iter[i], m_iter[i]], [m_iter[i], m_iter[i + 1]], 'r', linewidth=2)
+        plt.plot([m_iter[i], m_iter[i + 1]], [m_iter[i + 1], m_iter[i + 1]], 'r', linewidth=2)
+        if i != 0:
+            plt.plot(m_iter[i], m_iter[i + 1], 'ro', markerfacecolor='none', markersize=5)
+
+    # Plot starting point in blue
+    plt.plot(m_iter[0], m_iter[0], 'bo', markersize=5)
+
+    # Drop a dotted line from starting point to x-axis
+    plt.plot([m_iter[0], m_iter[0]], [m_iter[0], -1], 'b--', linewidth=1)
+    plt.text(m_iter[0], -1.1, f'{m_iter[0]:.2f}', fontsize=16, ha='center', va='center', rotation=45)
+    plt.text(m_iter[0], m_iter[0], 'S', fontsize=12, ha='right', va='bottom')
+
+    # Drop a dotted line from ending point to x-axis
+    plt.plot([m_iter[-1], m_iter[-1]], [m_iter[-1], -1], 'r--', linewidth=1)
+    plt.text(m_iter[-1], -1.1, f'{m_iter[-1]:.2f}', fontsize=16, ha='center', va='center', rotation=45)
+    plt.text(m_iter[-1], m_iter[-1], 'E', fontsize=12, ha='right', va='bottom')
+
+    m_init_neg = -0.3  # New negative starting point
+    m_iter_neg = fixed_point_iteration(beta, h, m_init_neg)  # Fixed point iteration for the negative starting point
+
+    # Plot the fixed point iteration for the negative starting point
+    for i in range(len(m_iter_neg) - 1):
+        plt.plot([m_iter_neg[i], m_iter_neg[i]], [m_iter_neg[i], m_iter_neg[i + 1]], 'r', linewidth=2)
+        plt.plot([m_iter_neg[i], m_iter_neg[i + 1]], [m_iter_neg[i + 1], m_iter_neg[i + 1]], 'r', linewidth=2)
+        if i != 0:
+            plt.plot(m_iter_neg[i], m_iter_neg[i + 1], 'ro', markerfacecolor='none', markersize=5)
+
+    # Plot starting point in blue for the negative starting point
+    plt.plot(m_iter_neg[0], m_iter_neg[0], 'bo', markersize=5)
+
+    # Drop a dotted line from the negative starting point to the x-axis
+    plt.plot([m_iter_neg[0], m_iter_neg[0]], [m_iter_neg[0], -1], 'b--', linewidth=1)
+    plt.text(m_iter_neg[0], -1.1, f'{m_iter_neg[0]:.2f}', fontsize=16, ha='center', va='center', rotation=45)
+    plt.text(m_iter_neg[0], m_iter_neg[0], 'S', fontsize=12, ha='right', va='bottom')
+
+    # Drop a dotted line from the ending point of the negative starting point to the x-axis
+    plt.plot([m_iter_neg[-1], m_iter_neg[-1]], [m_iter_neg[-1], -1], 'r--', linewidth=1)
+    plt.text(m_iter_neg[-1], -1.1, f'{m_iter_neg[-1]:.2f}', fontsize=16, ha='center', va='center', rotation=45)
+    plt.text(m_iter_neg[-1], m_iter_neg[-1], 'E', fontsize=12, ha='right', va='bottom')
+
+    # Set the axis labels and legend
+    plt.legend(fontsize=20)
+
+    # Customize plot limits
+    plt.xlim(-1, 1)
+    plt.ylim(-1, 1)
+    plt.xticks(np.arange(-1, 1.1, 0.1), [])
+    plt.yticks(np.arange(-1, 1.1, 0.1), [])
+
+    # Remove ticks, create a black box, and set a white background
+    ax = plt.gca()
+    ax.tick_params(axis='both', which='both', direction='in', length=4, width=1.0)
+    ax.tick_params(axis='both', which='major', bottom=True, top=True, left=True, right=True, labelbottom=False, labelleft=False)
+    ax.spines['top'].set_visible(True)
+    ax.spines['right'].set_visible(True)
+    ax.spines['bottom'].set_linewidth(1)
+    ax.spines['left'].set_linewidth(1)
+    ax.set_facecolor('white')
+
+    # Remove grid lines and legend box
+    legend = plt.legend(fontsize=12)
+
+    ax.set_xticks(np.arange(-1, 1.1, 0.1), minor=True)
+    ax.set_yticks(np.arange(-1, 1.1, 0.1), minor=True)
+
+  # Create the figure with two subplots
+  plt.figure(figsize=(16, 6))
+
+  # Plot for beta = 0.15
+  plt.subplot(1, 2, 1)
+  fixed_point_iteration_plot(0.15)
+  plt.title('$\\beta = 0.15$', fontsize=22)
+
+  # Plot for beta = 0.45
+  plt.subplot(1, 2, 2)
+  fixed_point_iteration_plot(0.45)
+  plt.title('$\\beta = 0.45$', fontsize=22)
+
+  # Save the figure and close the plot
+  plt.tight_layout()
+  plt.savefig('fixed-point-iteration.png', dpi=400)
+  plt.close()
+#+end_src
+* Curie-Weiss model
+** Curie-Weiss model
++ The Weiss MFT approximation becomes an /exact solution/ in the case of the *Curie-Weiss model* with *infinite-range interactions* - all possible pairs $(ij)$ for $i \neq j$ are members of $B$. The Hamiltonian for such a system is
+
+\begin{align*}
+H (\boldsymbol{S} , J, h) =- \dfrac{J}{2N} \sum _{i \neq j} S_{i} S_{j}-h \sum_{i=1}^{N} S_{i} .
+\end{align*}
+
++ The first sum on the right hand side runs over all pairs of different sites $(i, j)$ with $i \neq j$.
++ The factor $2$ in the denominator is to account for /double counting/.
++ The factor $N$ is to ensure that the free energy is *extensive*.
+** Curie-Weiss model
++ Make the approximation
+
+  \begin{align*}
+  \sum_{i \neq j} S_i S_j = \left( \sum_{i} S_{i} \right)^2 - \sum_{i}\left(S_{i}^{2}\right) \approx \left( \sum_{i} S_{i} \right)^2 
+  \end{align*}
+
+  The justification is that for large $N$, $\left( \sum_{i} S_{i} \right)^2$ - which is $\mathcal{O} (N^2)$ - dominates the sum $\sum_{i}\left(S_{i}^{2}\right)$ - which is $\mathcal{O} (N)$. 
+
++ The partition function of this model is
+
+\begin{align*}
+\mathcal{Z}_{\text{Curie-Weiss}} = \operatorname{Tr} \exp \left(\frac{\beta J}{2 N}\left(\sum_{i} S_{i}\right)^{2} + \beta h \sum_{i} S_{i}\right)
+\end{align*}
+
+** Curie-Weiss model
+
++ In order to evaluate the trace over /individual spins independently/, the quadratic form $\left(\sum_{i} S_{i}\right)^{2}$ in the exponent must be linearized. We appeal to a *Hubbard Stratonovich transformation*
+
+  \begin{align*}
+  \exp \left \lbrace \dfrac{a x^2}{2} \right \rbrace =\sqrt{\frac{a N}{2 \pi}} \int_{-\infty}^{\infty} \mathrm{d} m \exp \left[ -N \left(\frac{a m^{2}}{2}\right) +\sqrt{N} a m x \right].
+  \end{align*}
+
++ For /Ising spins/ $S_i = \sigma_i \in \left \lbrace 1, -1  \right \rbrace$, the substitutions $a=\beta J$ and $x=\frac{\sum_{i} \sigma_{i}}{\sqrt{N}}$ yields
+
+  \begin{align*}
+  \mathcal{Z}_{\text{Curie-Weiss}} &= \sqrt{\frac{\beta J N}{2 \pi}} \int_{-\infty}^{\infty} \mathrm{d} m \exp \left(-\frac{N \beta J m^{2}}{2} \right) \cdot \operatorname{Tr} \exp \left(\beta J m \sum_{i} \sigma_{i}+\beta h \sum_{i} \sigma_{i}\right) \\
+  &=\sqrt{\frac{\beta J N}{2 \pi}} \int_{-\infty}^{\infty} \mathrm{d} m \exp \left[- N \left(\frac{\beta J m^{2}}{2} + \log \{2 \cosh \beta(J m+h)\} \right)\right].
+  \end{align*}
+
+** Curie-Weiss model
++ The argument of integral $\int_{-\infty}^{\infty} \mathrm{d} m \exp \left[- N \left(\frac{\beta J m^{2}}{2} + \log \{2 \cosh \beta(J m+h)\} \right)\right]$ is $\mathcal{O} (N)$ - it may be evaluated via *saddle point integration* which states that an integral of the form $\mathcal{J}=\int \mathrm{d} x \exp (N \phi(x))$ can be approximated as
+
+  \begin{align*}
+  \boxed{
+  \mathcal{J} \approx \mathrm{e}^{N \phi\left(x_{\max }\right)} \int \mathrm{d} x \exp \left[-\frac{N}{2}\left|\phi^{\prime \prime}\left(x_{\max }\right)\right|\left(x-x_{\max }\right)^2\right] \approx \sqrt{\frac{2 \pi}{N\left|\phi^{\prime \prime}\left(x_{\max }\right)\right|}} \mathrm{e}^{N \phi\left(x_{\max }\right)}
+  }
+  \end{align*}
+
+  in the *thermodynamic limit* $N \to \infty$. It is also called the method of *steepest descent*.
+
++ The *saddle point condition*
+
+   \begin{align*}
+   \partial_m \left(-\frac{\beta J}{2} m^{2}+\log \{2 \cosh \beta(J m+h)\}\right)=0
+   \end{align*}
+
+  yields the /equation of state/
+
+  \begin{align*}
+   \boxed{
+   m \left( \beta, m, J, h \right) = \tanh \beta(J m+h) .
+   }
+  \end{align*}
+
++ The transformations $J \to J/N$ and $z \to N$ in the equation of state obtained earlier $m (\beta, m, J, h) = \tanh  \beta \left( J m z + h \right)$ renders it to this form.
+* Edwards-Anderson model
+** The Edwards Anderson model
++ In non-uniform spin-spin interactions, $J_{ij}$ between a spin pair $(i, j)$ depends on $i$ and $j$. An additional step - a *configuration average* must be evaluated before standard mean field approximations apply. The total Hamiltonian for this case - dubbed the *Edwards-Anderson model* - is:
+
+\begin{align*}
+H = - \sum_{(i j) \in B} J_{ij} S_{i} S_{j} - h \sum_{i=1}^{N} S_{i} .
+\end{align*}
+
++ To evaluate the /configuration average/, an appropriate ensemble for the disorder $\left \lbrace J_{ij} \right \rbrace$ must be assumed. Note that this ensemble is separate from the Gibb's canonical ensemble of equilibrium states. The distribution $P(J_{ij})$ can model various phenomena such
+
+  + *Site randomness in structural glasses*: $P(J_{ij})$ can represent the variation in interaction strengths between particles due to the irregular arrangement of atoms or molecules in a disordered material.
+
+ + *Bond randomness in spin glasses*: $P(J_{ij})$ can capture the heterogeneity in magnetic interactions between spins, which results from the presence of both ferromagnetic and antiferromagnetic bonds in the system.
+
+ + *Randomness in memorization patterns in the Hopfield model*: $P(J_{ij})$ can model the distribution of synaptic connections or weights between neurons, reflecting the irregularities in stored memory patterns.
+** Replica method: configuration average
++ We deal with systems that have *quenched disorder* - on the time scale over which the spins $\boldsymbol{S} \equiv \left \lbrace S_i  \right \rbrace$ fluctuate, the $\boldsymbol{J} \equiv\left\{J_{i j}\right\}$ are constants for all practical purposes. Begin as
+
+\begin{align*}
+- \beta f(\beta, h, \boldsymbol{J}) = N^{-1} \ln \operatorname{Tr} \exp \left \lbrace - \beta H  \right \rbrace = N^{-1} \ln \mathcal{Z}.
+\end{align*}
+
++ Then evaluate the *configuration average*. /The configuration average is over the distribution of disorder, not the Gibb-Boltzmann distribution of the (Gibbs) canonical ensemble./ The $[\cdots]$ notation disambiguates this.
+
+\begin{align*}
+- \beta [f] (\beta, h) = N^{-1} [\ln \mathcal{Z}]= N^{-1} \int \prod_{(i j)} \mathrm{d} J_{i j} P\left(J_{i j}\right) \ln \mathcal{Z} .
+\end{align*}
+
++ Evaluating a configuration average is justified by the *self-averaging* nature of the (Gibbs) free energy per degree of freedom $f(\beta, h, \boldsymbol{J}) \equiv G(\beta, h, \boldsymbol{J}) / N$
+
+\begin{align*}
+\lim _{N \rightarrow \infty} f(\beta, h, J)= \left[ f \right] (\beta, h) \qquad \text{and} \qquad \left \langle f^2  \right \rangle_c = \mathcal{O} \left( \dfrac{1}{N} \right)
+\end{align*}
+
++ The /quenched/ nature of the disorder warrants order in which the configuration average and the ensemble (thermal) average is evaluated.
+** Replica method: a mathematical identity
+
++ A configuration average typically invoke a mathematical identity that, for a /strictly positive variable/, relates its /logarithm/ to a limiting value of a /polynomial/ in it
+
+\begin{align*}
+[\ln \mathcal{Z}]=\lim _{n \rightarrow 0} \frac{\left[\mathcal{Z}^{n}\right]-1}{n}.
+\end{align*}
+
++ This is done because it so happens that no one is known to have figured out how to directly evaluate $[\ln \mathcal{Z}]$ analytically for any model. Some people have figured out how to evaluate $\left[\mathcal{Z}^{n}\right]$ analytically for some models.
+
++ $\mathcal{Z}^n$ allows interpretation as the *joint partition function* of $n$ identical copies of a system with the partition function $\mathcal{Z}$.
+
++ The typical argument is to assert that $n$ *replicas* /of the system are being spawned for the purposes of evaluating/ $\left[ \mathcal{Z}^n \right]$. The program then proceeds by assuming a finite integer value of $n$, and at a stage when its convenient, the $n \to 0$ limit is invoked to obtain $\left[ \ln \mathcal{Z} \right]$.
+
++ Notionally, by the standards of classical equilibrium statistical mechanics, this is indefensible. The only rescue is when the predictions of this stunt checks out against empirical observations.
+** Replica method: a mathematical identity
+#+begin_src latex
+\begin{figure}
+  \centering
+  \includegraphics[width=8cm,height=6cm]{replica-trick.png}
+  \caption{\textbf{Replica trick}: as $n \to 0$, $n^{-1} (x^n - 1) \to \ln x$.}
+\end{figure}
+#+end_src
+
+*** Figure :noexport:
+#+begin_src python :noexport:
+  import numpy as np
+  import matplotlib.pyplot as plt
+
+  # Define the function
+  def y_func(x, n):
+      return (x**n - 1) / n
+
+  # Set the x values
+  x_vals = np.linspace(0.01, 5, num=1000)
+
+  # Set the n values
+  n_vals = [5, 2, 1.2, 0.5, 0.07]
+  text_locs_x = [1.3, 2.6, 3.3, 4.0, 4.2]
+  text_locs_y = [4.5, 4.1, 3.5, 2.4, 1.7]
+
+  # Create the plot
+  fig, ax = plt.subplots(figsize=(8, 6))
+
+  # Plot the curves
+  for n in n_vals:
+      y_vals = y_func(x_vals, n)
+      color = {5: 'yellow', 2: 'orange', 1.2: 'orangered', 0.5: 'darkred', 0.07: 'firebrick'}[n]
+      ax.plot(x_vals, y_vals, color=color, label=f"n={n}", linewidth=1.5)
+
+  # Plot ln(x)
+  ax.plot(x_vals, np.log(x_vals), color='black', label="ln(x)", linewidth=2)
+
+  # Set the axis limits
+  ax.set_xlim(-1, 5)
+  ax.set_ylim(-1, 5)
+
+  # Add the x and y axis
+  ax.axhline(y=0, color='black', linewidth=1)
+  ax.axvline(x=0, color='black', linewidth=1)
+
+  # Add the title and axis labels
+  ax.set_xlabel("$x$", fontsize=14)
+  ax.set_ylabel("$n^{-1} (x^n-1)$", fontsize=14)
+
+  # Add n values to the curves
+  for i, _ in enumerate(n_vals):
+      ax.text(text_locs_x[i], text_locs_y[i], f"n={n_vals[i]}", fontsize=20, color='k')
+
+  # Remove ticklabels
+  ax.tick_params(axis='both', which='both', labelsize=0)
+
+  # Remove ticks, create a black box, and set a white background
+  ax = plt.gca()
+  ax.tick_params(axis='both', which='both', direction='in', length=4, width=1.0)
+  ax.tick_params(axis='both', which='major', bottom=True, top=True, left=True, right=True, labelbottom=False, labelleft=False)
+  ax.spines['top'].set_visible(False)
+  ax.spines['right'].set_visible(False)
+  ax.spines['bottom'].set_linewidth(1)
+  ax.spines['left'].set_linewidth(1)
+  ax.set_facecolor('white')
+
+  # Add a grid
+  ax.grid(True, linestyle='--', alpha=0.5)
+
+  # Show the plot
+  plt.tight_layout()
+  plt.savefig('replica-trick.png', dpi = 400)
+#+end_src
+
+#+RESULTS:
+: None
+
+* Sherrington-Kirkpatrick model
+** Sherrington-Kirkpatrick model
++ The *Sherrington Kirkpatrick model* has a Hamiltonian
+
+\begin{align*}
+H (\boldsymbol{S}, \boldsymbol{J}, h)=- \dfrac{1}{2} \sum_{i,j} J_{i j} S_{i} S_{j}-h \sum_{i} S_{i} .
+\end{align*}
+
++ The interaction $J_{i j}$ is a quenched variable with the Gaussian distribution function
+
+  \begin{align*}
+  P\left(J_{i j}\right)= \sqrt{\frac{N}{2 \pi J^2}} \exp \left\{-\frac{N}{2 J^{2}}\left(J_{i j}-\frac{J_{0}}{N}\right)^{2}\right\} .
+  \end{align*}
+
+  The mean and variance of this distribution are both $\mathcal{O} \left(1 / N \right)$:
+
+  \begin{align*}
+  \left[J_{i j}\right]=\frac{J_{0}}{N}, \quad\left[\left(\Delta J_{i j}\right)^{2}\right]=\frac{J^{2}}{N} .
+  \end{align*}
+
++ As before, The factor $2$ in the denominator is to account for /double counting/, the factor of $N$ that makes the free energy /extensive/ has been absorbed in the definition of $P(J_{ij})$.
+** Replica analysis of SK model: game plan
+1) We have to evaluate the *replica average of the* $n^{\text{th}}$ *power of the partition function*. The first step is an integral over the disorder - /it will couple spins from different replicas/ now requiring specification of a *replica index* in addition to a *site index* for any spin. Here $n$ is the number of replicas.
+2) Reduce the arguments of the exponential on the right hand side of the resulting equation to /quadratic forms/.
+3) Use the /Hubbard Stratonovich transformation/ to introduce *auxiliary fields* and turn quadratic forms in the exponential into /linear forms/. This also turns an /algebraic equation/ into an /integral equation/.
+4) Turn the /trace over configurations/ into a /product of independent traces over replicas for individual sites/. This will enable manipulation of the integral on the right hand side of the equation in a way that the integrand is a single $\exp(\cdot)$ function and its argument is a sum of terms each of which are of $\mathcal{O} (N)$.
+5) Evaluate the integral by the method of /steepest descent/. Expand the resulting $\exp(\cdot)$ as a /Taylor series/ in its argument to first order.
+6) Use the the identity $[\log \mathcal{Z}]=\lim _{n \rightarrow 0} \frac{\left[\mathcal{Z}^{n}\right]-1}{n}$ to obtain the *disorder averaged free energy*.
+** Step 1: Integral over disorder
+
++ The entity of interest is
+
+  \begin{align*}
+  \left[Z^{n}\right](\beta, h, J_0, J)=\int\left(\prod_{i<j} \mathrm{~d} J_{i j} P\left(J_{i j}\right)\right) \operatorname{Tr} \exp \left(\beta \sum_{i<j} J_{i j} \sum_{\alpha=1}^{n} S_{i}^{\alpha} S_{j}^{\alpha}+\beta h \sum_{i=1}^{N} \sum_{\alpha=1}^{n} S_{i}^{\alpha}\right),
+  \end{align*}
+
+  where $\alpha$ is the replica index.
+
++ For the integral over the disorder, we are concerned about terms that are $J_{ij}$ dependent. For a given bond $(ij)$, the integral over the disorder is 
+
+  \begin{align*}
+  &\int \mathrm{~d} J_{i j} \exp \left(-\frac{N}{2 J^{2}}\left(J_{i j}-\frac{J_{0}}{N}\right)^{2} + \beta J_{i j} \sum_{\alpha=1}^{n} S_{i}^{\alpha} S_{j}^{\alpha}\right) \approx \exp \left \lbrace \dfrac{ \beta^{2} J^{2}}{2N} \sum_{\alpha, \beta} S_{i}^{\alpha} S_{j}^{\alpha} S_{i}^{\beta} S_{j}^{\beta} \right \rbrace.
+  \end{align*}
+
++ $[Z^n](\beta, h, J_0, J)$ now stands
+
+  \begin{align*}
+  \operatorname{Tr} \exp \left\{\frac{1}{N} \sum_{i<j}\left(\frac{\beta^{2} J^{2}}{2} \sum_{\alpha, \beta} S_{i}^{\alpha} S_{j}^{\alpha} S_{i}^{\beta} S_{j}^{\beta}+\beta J_{0} \sum_{\alpha} S_{i}^{\alpha} S_{j}^{\alpha}\right)+\beta h \sum_{i} \sum_{\alpha} S_{i}^{\alpha}\right\}.
+  \end{align*}
+
+** Step 2: Reduction to quadratic form
++ Next reduce $\sum_{i<j}\sum_{\alpha,\beta}S_{i}^{\alpha}S_{j}^{\alpha}S_{i}^{\beta}S_{j}^{\beta}$ into a /quadratic form/ by making some approximations valid for large $N$
+
+  \begin{align*}
+  \sum_{i<j}\sum_{\alpha,\beta}S_{i}^{\alpha}S_{j}^{\alpha}S_{i}^{\beta}S_{j}^{\beta} &= \dfrac{1}{2} \sum_{\alpha, \beta} \left( \sum_{i} S_{i}^{\alpha} S_{i}^{\beta} \right)^{2} - \dfrac{1}{2} \sum_{\alpha, \beta} \sum_{i} \left(S_{i}^{\alpha} S_{i}^{\beta}\right)^{2} \\
+  &= \dfrac{n N^{2}}{2} + \sum_{\alpha < \beta} \left( \sum_{i} S_{i}^{\alpha} S_{i}^{\beta} \right)^{2} - \dfrac{1}{2} \sum_{\alpha, \beta} \sum_{i} \left(S_{i}^{\alpha} S_{i}^{\beta}\right)^{2} \\
+  &\approx \dfrac{n N^{2}}{2} + \sum_{\alpha < \beta} \left( \sum_{i} S_{i}^{\alpha} S_{i}^{\beta} \right)^{2}.
+ \end{align*} 
+
++ Same approximation for $\sum_{i < j} \sum_{\alpha} S_{i}^{\alpha} S_{j}^{\alpha}$
+
+  \begin{align*}
+  \sum_{i < j} \sum_{\alpha} S_{i}^{\alpha} S_{j}^{\alpha} &= \dfrac{1}{2} \sum_{\alpha} \left( \sum_{i} S_{i}^{\alpha} \right)^{2} - \dfrac{1}{2} \sum_{\alpha} \sum_{i} \left( S_{i}^{\alpha} \right)^{2} \\
+  &= \sum_{i<j} \sum_{\alpha} S_{i}^{\alpha} S_{j}^{\alpha} \approx \dfrac{1}{2} \sum_{\alpha} \left( \sum_{i} S_{i}^{\alpha} \right)^{2}
+  \end{align*}
+
+** Step 3: Hubbard-Stratonovich-transformation
++ The same HS transform as earlier will do
+
+ \begin{align*}
+ \exp \left \lbrace \dfrac{a x^{2}}{2} \right \rbrace = \sqrt{\dfrac{a N}{2 \pi}} \int_{-\infty}^{\infty} dm \exp \left \lbrace - \dfrac{N a m^2}{2} + \sqrt{N} a m x  \right \rbrace.
+ \end{align*}
+
++ For the sum $\left(\sum_{i} S_{i}^{\alpha} S_{i}^{\beta}\right)^{2}$ we substitute $a = \beta^{2} J^{2}$ and $x = N^{-1/2} \left(\sum_{i} S_{i}^{\alpha} S_{i}^{\beta}\right)$
+
+\begin{align*}
+\exp \left \lbrace \dfrac{\beta^{2} J^{2}}{2N} \left( \sum_{i} S_{i}^{\alpha} S_{i}^{\beta} \right)^{2} \right \rbrace = \beta J \sqrt{\dfrac{N}{2 \pi}} \int_{}^{} d q_{\alpha \beta} \exp \left \lbrace - \dfrac{N \beta^{2} J^{2}}{2} q_{\alpha \beta}^{2} + \beta^{2} J^{2} q_{\alpha \beta} \sum_{i} S_{i}^{\alpha} S_{i}^{\beta} \right \rbrace.
+\end{align*}
+
++ Similarly, for the sum $\left(\sum_{i} S_{i}^{\alpha}\right)^{2}$ we substitute $a = \beta J_{0}$ and $x = N^{-1/2} \left( \sum_{i} S_{i}^{\alpha} \right)$
+
+\begin{align*}
+\exp \left \lbrace \dfrac{\beta J_{0}}{2N} \left( \sum_{i} S_{i}^{\alpha} \right)^{2} \right \rbrace = \sqrt{\dfrac{\beta J_{0} N}{2 \pi}} \int_{}^{} d m_{\alpha} \exp \left \lbrace - \dfrac{N \beta J_{0}}{2} m_{\alpha}^{2} + \beta J_{0} m_{\alpha} \sum_{i} S_{i}^{\alpha} \right \rbrace.
+\end{align*}
+** Step 4: product of trace over replicas for individual sites
++ Substituting the HS transforms we get
+
+\begin{align*}
+{\left[\mathcal{Z}^{n}\right] (\beta, h, J_0, J) } & =\exp \left(\frac{N \beta^{2} J^{2} n}{4}\right) \int \prod_{\alpha<\beta} \mathrm{d} q_{\alpha \beta} \int \prod_{\alpha} \mathrm{d} m_{\alpha} \\
+& \cdot \exp \left(-\frac{N \beta^{2} J^{2}}{2} \sum_{\alpha<\beta} q_{\alpha \beta}^{2}-\frac{N \beta J_{0}}{2} \sum_{\alpha} m_{\alpha}^{2}\right) \\
+& \cdot \operatorname{Tr} \exp \left(\beta^{2} J^{2} \sum_{\alpha<\beta} q_{\alpha \beta} \sum_{i} S_{i}^{\alpha} S_{i}^{\beta}+\beta \sum_{\alpha}\left(J_{0} m_{\alpha}+h\right) \sum_{i} S_{i}^{\alpha}\right) .
+\end{align*}
+
++ Momentarily restrict attention to the last factor that is apparently preventing a steepest descent evaluation. Explicitly writing the sums represented by $\operatorname{Tr}$
+
+\begin{align*}
+&\operatorname{Tr} \exp \left(\beta^{2} J^{2} \sum_{\alpha<\beta} q_{\alpha \beta} \sum_{i} S_{i}^{\alpha} S_{i}^{\beta}+\beta \sum_{\alpha}\left(J_{0} m_{\alpha}+h\right) \sum_{i} S_{i}^{\alpha}\right) \\
+& \equiv \sum_{S_{1} = \pm 1} \sum_{S_{2} = \pm 1} \dotso \sum_{S_{N} = \pm 1} \exp \left(\beta^{2} J^{2} \sum_{\alpha<\beta} q_{\alpha \beta} \sum_{i} S_{i}^{\alpha} S_{i}^{\beta}+\beta \sum_{\alpha}\left(J_{0} m_{\alpha}+h\right) \sum_{i} S_{i}^{\alpha}\right).
+\end{align*}
+
+** Step 4: product of trace over replicas for individual sites
++ Because of the HS transform, the exponent has linear forms instead of quadratic; a factorization is straightforward
+
+\begin{align*}
+&\sum_{S_{1} = \pm 1} \sum_{S_{2} = \pm 1} \dotso \sum_{S_{N} = \pm 1} \exp \left(\beta^{2} J^{2} \sum_{\alpha<\beta} q_{\alpha \beta} \sum_{i} S_{i}^{\alpha} S_{i}^{\beta}+\beta \sum_{\alpha}\left(J_{0} m_{\alpha}+h\right) \sum_{i} S_{i}^{\alpha}\right) \\
+&\qquad \qquad= \left[\sum_{S_{1} = \pm 1} \exp \left \lbrace \beta^{2} J^{2} \sum_{\alpha<\beta} q_{\alpha \beta} S_{1}^{\alpha} S_{1}^{\beta}+\beta \sum_{\alpha}\left(J_{0} m_{\alpha}+h\right) S_{1}^{\alpha}\right \rbrace \right] \times \dotso \\
+&\qquad \qquad \qquad \dotso \times \left[\sum_{S_{N} = \pm 1} \exp \left \lbrace \beta^{2} J^{2} \sum_{\alpha<\beta} q_{\alpha \beta} S_{N}^{\alpha} S_{N}^{\beta}+\beta \sum_{\alpha}\left(J_{0} m_{\alpha}+h\right) \sum_{i} S_{N}^{\alpha}\right \rbrace \right] \\
+& \qquad \qquad \qquad \qquad = \left \lbrace \sum_{S = \pm 1} \exp \left(\beta^{2} J^{2} \sum_{\alpha<\beta} q_{\alpha \beta} S^{\alpha} S^{\beta}+\beta \sum_{\alpha}\left(J_{0} m_{\alpha}+h\right) S^{\alpha}\right) \right \rbrace^{N}.
+\end{align*}
++ The site-independence of the sum is acknowledged by dropping the site index in the final expression.
+** Step 4: product of trace over replicas for individual sites
++ The $\operatorname{Tr}$ symbol can now be redefined and "exponentiated". Suppose $\operatorname{Tr}$ now represents the sum over the variables at any given site across replicas $\left(\sum_{S^{\alpha}}\right)$. Then we have
+
+\begin{align*}
+&\operatorname{Tr} \exp \left(\beta^{2} J^{2} \sum_{\alpha<\beta} q_{\alpha \beta} \sum_{i} S_{i}^{\alpha} S_{i}^{\beta}+\beta \sum_{\alpha}\left(J_{0} m_{\alpha}+h\right) \sum_{i} S_{i}^{\alpha}\right) = \\
+& \qquad \qquad \left\{\operatorname{Tr} \exp \left(\beta^{2} J^{2} \sum_{\alpha<\beta} q_{\alpha \beta} S^{\alpha} S^{\beta}+\beta \sum_{\alpha}\left(J_{0} m_{\alpha}+h\right) S^{\alpha}\right)\right\}^{N} \\
+& \qquad \qquad \qquad \qquad \equiv \exp \left(N \ln \operatorname{Tr} \mathrm{e}^{L}\right),
+\end{align*}
+
+where
+
+\begin{align*}
+L (\beta, J, J_0, h, \boldsymbol{m}, \boldsymbol{q}) \equiv \beta^{2} J^{2} \sum_{\alpha<\beta} q_{\alpha \beta} S^{\alpha} S^{\beta}+\beta \sum_{\alpha}\left(J_{0} m_{\alpha}+h\right) S^{\alpha} .
+\end{align*}
+
+** Step 5: Steepest descent
++ Bringing in the other factors, the full expression for ${\left[\mathcal{Z}^{n}\right] }$ is
+
+  \begin{align*}
+  {\left[\mathcal{Z}^{n}\right] (\beta, h, J_0, J) } = &\exp \left(\frac{N \beta^{2} J^{2} n}{4}\right) \int \prod_{\alpha<\beta} \mathrm{d} q_{\alpha \beta } \int \prod_{\alpha} \mathrm{d} m_{\alpha} \times \\
+  & \exp \Bigg [ - N \Bigg( \frac{\beta^{2} J^{2}}{2} \sum_{\alpha<\beta} q_{\alpha \beta}^{2  }-\frac{\beta J_{0}}{2} \sum_{\alpha} m_{\alpha}^{2}+ \ln \operatorname{Tr} \exp \left \lbrace L  \right \rbrace \Bigg) \Bigg ]
+  \end{align*}
+
++ Invoking steepest descent followed by writing the exponential as a taylor series in its argument to first order
+
+  \begin{align*}
+  &\left[\mathcal{Z}^{n}\right] (\beta, h, J_0, J, \boldsymbol{m}, \boldsymbol{q}) \\
+  & \quad \quad \approx \exp \left(-\frac{N \beta^{2} J^{2}}{2} \sum_{\alpha<\beta} q_{\alpha \beta}^{2}-\frac{N \beta J_{0}}{2} \sum_{\alpha} m_{\alpha}^{2}+N \ln \operatorname{Tr} \mathrm{e}^{L}+\frac{N}{4} \beta^{2} J^{2} n\right) \\
+  & \quad \quad \approx 1 + nN \left\{-\frac{\beta^{2} J^{2}}{4 n} \sum_{\alpha \neq \beta} q_{\alpha \beta}^{2}-\frac{\beta J_{0}}{2 n} \sum_{\alpha} m_{\alpha}^{2}+\frac{1}{n} \ln \operatorname{Tr} \mathrm{e}^{L}+\frac{1}{4} \beta^{2} J^{2}\right\} 
+  \end{align*}
+
+** Step 6: invoking the identity
++ Notice that $\boldsymbol{m}$, $\boldsymbol{q}$ have entered the set of arguments for $\left[\mathcal{Z}^{n}\right]$. For interpreting the previous expression as the steepest descent evaluation of the integral that defines the configuration average of the $n^{\text{th}}$ power of $\mathcal{Z}$, $\boldsymbol{m}$ and $\boldsymbol{q}$ must always be understood as $\boldsymbol{m} \equiv \left \lbrace m_{\alpha,\text{max}}  \right \rbrace$ and $\boldsymbol{q} \equiv \left \lbrace q_{\alpha, \beta, \text{max}} \right \rbrace$ that maximizes the integrand
+
+  \begin{align*}
+  \exp \Bigg [ - N \Bigg( \frac{\beta^{2} J^{2}}{2} \sum_{\alpha<\beta} q_{\alpha \beta}^{2  }-\frac{\beta J_{0}}{2} \sum_{\alpha} m_{\alpha}^{2}+ \ln \operatorname{Tr} \exp \left \lbrace L  \right \rbrace \Bigg) \Bigg ].
+  \end{align*}
+
++ The free energy until this point was just a function that returned the /equilibrium value/ $E - TS$ for a given parametrization of the system of interest. Because the Gibbs free energy is equal to the Helmholtz free energy at thermal equilibrium, it may have been interpreted as either of them. Now we have a Gibbs free energy *functional* - it is a *thermodynamic potential* or an *objective function* that a state of thermal equilibrium /minimizes/. The minimization is with respect to functions $\boldsymbol{m}$ and $\boldsymbol{q}$. We will however continue to use $f$ and $G$ interchangeably and use the presence of constraining variables such as $\boldsymbol{m}$ and $\boldsymbol{q}$ to inform us of the function versus functional nature.
+
++ It is now convenient to invoke the identity $-\beta[f] = \lim_{n \rightarrow 0} \frac{\left[\mathcal{Z}^{n}\right]-1}{n N}$ to obtain
+
+  \begin{align*}
+   &-\beta[f]_{\text{replica}} (\beta, h, J_0, J, \boldsymbol{m}, \boldsymbol{q}) \\
+   & \qquad \qquad =  \lim _{n \rightarrow 0} \left( -\frac{\beta^{2} J^{2}}{4 n} \sum_{\alpha \neq \beta} q_{\alpha \beta}^{2}  -\frac{\beta J_{0}}{2 n} \sum_{\alpha} m_{\alpha}^{2} +\frac{1}{4} \beta^{2} J^{2}  + \frac{1}{n} \ln \operatorname{Tr} \exp \left \lbrace L  \right \rbrace \right).
+  \end{align*}
+
+** SK model: interpretation of the disorder averaged free energy
+
++ The /disorder averaged free energy/ for the SK model is
+
+  \begin{align*}
+  \boxed{
+   -\beta[f]_{\text{replica}} = \lim _{n \rightarrow 0} \left( -\frac{\beta^{2} J^{2}}{4 n} \sum_{\alpha \neq \beta} q_{\alpha \beta}^{2}  -\frac{\beta J_{0}}{2 n} \sum_{\alpha} m_{\alpha}^{2  }+\frac{1}{4} \beta^{2} J^{2}  + \frac{1}{n} \ln \operatorname{Tr} \exp \left \lbrace L  \right \rbrace \right)
+  }
+  \end{align*}
+
++ The /first term/ corresponds to the (mean field) /interaction of spins from different replicas/ quantified by their *overlap* (similarity) $q_{\alpha \beta}$.
+
++ The /second term/ corresponds to the (mean field) /interaction of spins from a given replica/ quantified by their (intensive) /magnetization/ $m_{\alpha}$.
+
++ The /third term/ is a constant that comes from the /self-interaction of the spins/.
+
++ The /final term/ represents the /entropic contribution to the free energy/ since $S (\beta, h, J_0, J) \equiv - \left \langle \ln p_{\beta, h, J_0, J} (\boldsymbol{S})  \right \rangle$.
+
+** SK model: saddle point condition for $q_{\alpha \beta}$
++ The /saddle-point condition/ when the free energy is extremized with respect to the variable $q_{\alpha \beta}(\alpha \neq \beta)$ is
+
+  \begin{align*}
+  \boxed{
+  q_{\alpha \beta} (\beta, h, J_0, J, \boldsymbol{m})  = \frac{1}{\beta^{2} J^{2}} \frac{\partial}{\partial q_{\alpha \beta}} \log \operatorname{Tr} \mathrm{e}^{L}=\frac{\operatorname{Tr} S^{\alpha} S^{\beta} \mathrm{e}^{L}}{\operatorname{Tr} \mathrm{e}^{L}} \equiv \left\langle S^{\alpha} S^{\beta}\right\rangle_{L},
+  }
+  \end{align*}
+
+  where $\langle\cdots\rangle_{L}$ represents an average by the weight $\mathrm{e}^{L}$.
+
++ This condition $q_{\alpha \beta} (\beta, h, J_0, J) = \left \langle S^{\alpha} S^{\beta} \right \rangle_L$ is equivalent to
+
+  \begin{align*}
+  \boxed{
+  q_{\alpha \beta} (\beta, h, J_0, J, \boldsymbol{m}) = \left[\frac{\operatorname{Tr} S_{i}^{\alpha} S_{i}^{\beta} \exp \left(-\beta \sum_{\gamma} H_{\gamma}\right)}{\operatorname{Tr} \exp \left(-\beta \sum_{\gamma} H_{\gamma}\right)}\right]
+  }
+  \end{align*}
+
+  where $H_{\gamma}$ is the Hamiltonian for the $\gamma^{\text{th}}$ replica
+
+  \begin{align*}
+  H_{\gamma }(\boldsymbol{S}, \boldsymbol{J}, h) \equiv -\sum_{i<j} J_{i j} S_{i}^{\gamma} S_{j}^{\gamma}-h \sum_{i} S_{i}^{\gamma}.
+  \end{align*}
+
+** SK model: saddle point condition for $m_{\alpha}$
++ The /saddle-point condition/ when the free energy is extremized with respect to the variable $m_{\alpha}$ is
+
+  \begin{align*}
+  \boxed{
+  m_{\alpha} (\beta, h, J_0, J, \boldsymbol{m})  = \frac{1}{\beta J_{0}} \frac{\partial}{\partial m_{\alpha}} \log \operatorname{Tr} \mathrm{e}^{L}=\frac{\operatorname{Tr} S^{\alpha} \mathrm{e}^{L}}{\operatorname{Tr} \mathrm{e}^{L}} \equiv \left\langle S^{\alpha}\right\rangle_{L}.
+  }
+  \end{align*}
+
+  where $\langle\cdots\rangle_{L}$, once again, represents an average by the weight $\mathrm{e}^{L}$.
+
++ The condition $m_{\alpha} = \left \langle S^{\alpha}  \right \rangle_L$ is equivalent to
+
+  \begin{align*}
+  \boxed{
+  m_{\alpha} (\beta, h, J_0, J, \boldsymbol{m}) = \left[\frac{\operatorname{Tr} S_{i}^{\alpha} \exp \left(-\beta \sum_{\gamma} H_{\gamma}\right)}{\operatorname{Tr} \exp \left(-\beta \sum_{\gamma} H_{\gamma}\right)}\right]
+  }
+  \end{align*}
+
+  where $H_{\gamma}$, once again, is the Hamiltonian for the $\gamma^{\text{th}}$ replica
+
+  \begin{align*}
+  H_{\gamma} (\boldsymbol{S}, \boldsymbol{J}, h) \equiv -\sum_{i<j} J_{i j} S_{i}^{\gamma} S_{j}^{\gamma}-h \sum_{i} S_{i}^{\gamma}.
+  \end{align*}
+
+** SK model: order parameters
++ Because the $\operatorname{Tr}$ operation over all replicas other than $\alpha$ and $\beta$ are spectators in both the the numerator and the denominator
+
+  \begin{align*}
+  q_{\alpha \beta} (\beta, h, J_0, J, \boldsymbol{m}) = \left[\frac{\operatorname{Tr} S_{i}^{\alpha} \mathrm{e}^{-\beta H_{\alpha}}}{\operatorname{Tr} \mathrm{e}^{-\beta H_{\alpha}}} \frac{\operatorname{Tr} S_{i}^{\beta} \mathrm{e}^{-\beta H_{\beta}}}{\operatorname{Tr} \mathrm{e}^{-\beta H_{\beta}}}\right]=\left[\langle S_{i}^{\alpha}\rangle \langle S_{i}^{\beta}\rangle\right],
+  \end{align*}
+
+  \begin{align*}
+  m_{\alpha} (\beta, h, J_0, J, \boldsymbol{m}) = \left[ \frac{\operatorname{Tr} S^{\alpha} \mathrm{e}^{-\beta H_{\alpha}}}{\operatorname{Tr} \mathrm{e}^{-\beta H_{\alpha}}} \right]  = \left[\left\langle S_{i}^{\alpha}\right\rangle\right].
+  \end{align*}
+
++ If we choose a *Replica symmetric (RS) ansatz*, a further simplification is obtained
+
+  \begin{align*}
+  \boxed{
+  q_{\alpha \beta} (\beta, h, J_0, J, \boldsymbol{m}) = \left[\left\langle S_{i}^{\alpha}\right\rangle\left\langle S_{i}^{\beta}\right\rangle\right] = \left[\left\langle S_{i}\right\rangle^{2}\right] \equiv q (\beta, h, J_0, J, m)
+  }
+  \end{align*}
+
+  \begin{align*}
+  \boxed{
+  m_{\alpha} (\beta, h, J_0, J, \boldsymbol{m}) = \left[\left\langle S_{i}^{\alpha}\right\rangle\right] = \left[ \left \langle S_{i}  \right \rangle \right] \equiv m (\beta, h, J_0, J, m)
+  }
+  \end{align*}
+
++ $m$ is the *ferromagnetic order parameter*. $q$ is called the *spin glass order parameter*.
+** SK model: RS free energy
+
++ The expression for the disorder averaged free energy previously derived
+
+  \begin{align*}
+  -\beta[f]_{\text{replica}} (\beta, h, J_0, J, \boldsymbol{m}, \boldsymbol{q})  = \lim _{n \rightarrow 0} \Bigg ( -\frac{\beta^{2} J^{2}}{4 n} \sum_{\alpha \neq \beta} q_{\alpha \beta}^{2} &-\frac{\beta J_{0}}{2 n} \sum_{\alpha} m^2_{\alpha }^{}\\
+  & +\frac{1}{n} \log \operatorname{Tr} \mathrm{e}^{L} + \frac{\beta^{2} J^{2}}{4} \Bigg )
+  \end{align*}
+
+  under the assumption of an RS ansatz reduces to
+
+  \begin{align*}
+   -\beta[f]_{\text{RS}} (\beta, h, J_0, J, m, q) = \lim_{n \to 0} \Bigg ( \frac{\beta^{2} J^{2}}{4 n} [-n(n-1) q^{2} ]  & - \frac{\beta J_{0}}{2 n} n m^{2 }\\
+   & +\frac{1}{n} \log \operatorname{Tr} \mathrm{e}^{L} + \frac{\beta^{2} J^{2}}{4} \Bigg )
+  \end{align*}
+** SK model: RS equations of state
++ In order to obtain the fixed point equations for $m$ and $q$, we must take variations of $-\beta[f] (\beta, h, J_0, J, m, q)$ with respect to $m$ and $q$ respectively. Before we can do that, the third term $\frac{1}{n} \log \operatorname{Tr} \mathrm{e}^{L}$ needs to be evaluated. Recall $L \equiv \beta^{2} J^{2} \sum_{\alpha<\beta} q S^{\alpha} S^{\beta}+\beta \sum_{\alpha}\left(J_{0} m+h\right) S^{\alpha}$ in
+
+  \begin{align*}
+  \dfrac{1}{n} \ln \operatorname{Tr} \exp \left(\beta^{2} J^{2} q \sum_{\alpha<\beta} \sum_{i} S_{i}^{\alpha} S_{i}^{\beta}+\beta \sum_{\alpha}\left(J_{0} m + h\right) \sum_{i} S_{i}^{\alpha}\right)
+  \end{align*}
+
++ The evaluation is via the Hubbard-Stratonovich transform
+
+  \begin{align*}
+  & \ln \operatorname{Tr} \mathrm{e}^{L}=\ln \operatorname{Tr} \sqrt{\frac{\beta^{2} J^{2} q}{2 \pi}} \int \mathrm{d} z \\
+  & \cdot \exp \left(-\frac{\beta^{2} J^{2} q}{2} z^{2}+\beta^{2} J^{2} q z \sum_{\alpha} S^{\alpha}-\frac{n}{2} \beta^{2} J^{2} q+\beta\left(J_{0} m+h\right) \sum_{\alpha} S^{\alpha}\right) \\
+  & =\ln \int \mathrm{D} z \exp \left(n \ln 2 \cosh \left(\beta J \sqrt{q} z+\beta J_{0} m+\beta h\right)-\frac{n}{2} \beta^{2} J^{2} q\right) \\
+  & =\ln \left(1+n \int \mathrm{D} z \ln 2 \cosh \beta h_{\text{eff}} (z)-\frac{n}{2} \beta^{2} J^{2} q+\mathcal{O}\left(n^{2}\right)\right)
+  \end{align*}
+
+  Here $\mathrm{D} z=\mathrm{d} z \exp \left(-z^{2} / 2\right) / \sqrt{2 \pi}$, and $h_{\text{eff}} (z)=J \sqrt{q} z+ J_{0} m+h$. 
+
+** SK model: RS equations of state
++ Substituting this evaluation in the RS ansatz disorder average free energy and evaluating the $n \to 0$ limit
+
+  \begin{align*}
+  \boxed{
+  -\beta[f]_{\text{RS}} (\beta, h, J_0, J, m, q)= \frac{\beta^{2} J^{2}}{4}(1-q)^{2}-\frac{1}{2} \beta J_{0} m^{2}+\int \mathrm{D} z \log 2 \cosh \beta h_{\text{eff}} (z).
+  }
+  \end{align*}
+
++ Demanding vanishing variations of the above free energy with respect to $m$ yields
+
+  \begin{align*}
+  \boxed{
+  m (\beta, h, J_0, J, m) = \int \mathrm{D} z \tanh \beta h_{\text{eff}} (z).
+  }
+  \end{align*}
+
+  The randomness in the disorder has the /net effect of creating Gaussian distributed internal fields/.
+
++ Demanding vanishing variations of the above free energy with respect to $q$ yields
+
+  \begin{align*}
+  \frac{\beta^{2} J^{2}}{2}(q-1)+\int \mathrm{D} z(\tanh \beta h_{\text{eff}} (z)) \cdot \frac{\beta J}{2 \sqrt{q}} z=0.
+  \end{align*}
+
+ Upon *partial integration*, it reduces to
+
+  \begin{align*}
+  \boxed{
+  q (\beta, h, J_0, J, m) = 1-\int \mathrm{D} z \operatorname{sech}^{2} \beta h_{\text{eff}} (z)=\int \mathrm{D} z \tanh ^{2} \beta h_{\text{eff}} (z).}
+  \end{align*}
+** SK model: a spin glass phase
+
++ In the *paramagnetic phase* at high temperatures, $\left\langle S_{i}\right\rangle$ vanishes at each site $i$ so that
+
+  \begin{align*}
+  m (\beta, h, J_0, J, m) = 0 \qquad \text{and} \qquad q (\beta, h, J_0, J, m) = 0.
+  \end{align*}
+
++ In the *ferromagnetic phase* at low temperatures, the spins have uniform ordering in space. Asuming a positive direction of orientation i.e., $\left\langle S_{i}\right\rangle>0$ at most sites we have
+
+  \begin{align*}
+  m (\beta, h, J_0, J, m) > 0 \qquad \text{and} \qquad q (\beta, h, J_0, J, m) > 0.
+  \end{align*}
+
++ The SK model admits another /low temperature/ scenario where a given spin does not fluctuate over /observation timescales/ ("frozen in time") - in general $\left\langle S_{i}\right\rangle$ is non-vanishing. The ferromagnetic order parameter $m$, the /configuration average/ of $\left\langle S_{i}\right\rangle$, still vanishes ("randomly oriented"). The spin glass order parameter $q$ however, the /configuration average of a strictly positive quantity/ $\left \langle S_i  \right \rangle^2$, is in general non-vanishing
+
+  \begin{align*}
+  m=\left[\left\langle S_{i}\right\rangle\right]=0, \qquad q \equiv \left[ \left \langle S_i  \right \rangle^2 \right] \neq 0.
+  \end{align*}
+
+  This is the *spin glass phase* at low temperatures, where we have
+
+  \begin{align*}
+  m (\beta, h, J_0, J, m) = 0 \qquad \text{and} \qquad q (\beta, h, J_0, J, m) > 0.
+  \end{align*}
+
+* Thouless-Anderson-Palmer equations
+** Thouless-Anderson-Palmer equations for the SK model
++ Thouless, Anderson, and Palmer (TAP) wrote down a set of equations for the (intensive) /site magnetization/ of the SK model for a given  $\boldsymbol{J}$, i.e., without the configuration average
+
+  \begin{align*}
+  \boxed{
+  m_{i } (\beta, \boldsymbol{h}, \boldsymbol{J}, \boldsymbol{m}) = \tanh \beta\left(\sum_{j} J_{i j} m_{j}+h_{i}- m_i \sum_{j} J_{i j}^{2}\left(1-m_{j}^{2}\right) \right)
+  }
+  \end{align*}
+
++ The TAP equations are obtained as an extremization of the free energy functional
+
+  \begin{align*}
+  -\beta f_{\mathrm{TAP}} (\beta, \boldsymbol{h}, \boldsymbol{J}, \boldsymbol{m}) =
+  &  - \frac{1}{2} \sum_{i}\left[\left(1+m_{i}\right) \log \frac{1+m_{i}}{2}+\left(1-m_{i}\right) \log \frac{1-m_{i}}{2}\right] \\
+  &  + \frac{\beta}{2} \left( \sum_{i \neq j} J_{i j} m_{i} m_{j}-\sum_{i} h_{i} m_{i} \right)\\
+  &  + \frac{\beta^2}{4} \sum_{i \neq j} J_{i j}^{2}\left(1-m_{i}^{2}\right)\left(1-m_{j}^{2}\right).
+  \end{align*}
+
+** TAP equations for the SK model: Plefka's expansion
+
++ Turn off the external field. To obtain $f_{\mathrm{TAP}} (\beta, \boldsymbol{J}, \boldsymbol{m})$, we will use the original *Plefka's expansion* with the *free energy functional*
+
+  \begin{align*}
+  -\beta G (\beta, \boldsymbol{J}, \boldsymbol{m}, \alpha) =\ln \operatorname{Tr} \exp \left \lbrace - \beta H (\boldsymbol{S}, \boldsymbol{J}, \alpha, \boldsymbol{h}) \right \rbrace - \beta \sum_{i} h_{i} (\beta, \boldsymbol{J}, \boldsymbol{m}, \alpha) \thinspace m_{i},
+  \end{align*}
+ where
+
+  \begin{align*}
+  H (\boldsymbol{S}, \boldsymbol{J}, \alpha, \boldsymbol{h}) = \alpha \sum_{i < j} J_{ij} S_i S_j - \sum_{i} h_{i} (\beta, \boldsymbol{J}, \boldsymbol{m}, \alpha) S_{i}.
+  \end{align*}
+
++ $h_{i}(\beta, \boldsymbol{J}, \boldsymbol{m}, \alpha)$ is a *Lagrange multiplier* to enforce the constraint $m_{i}=\left\langle S_{i}\right\rangle_{\alpha}$.
+
++ $\sum_{i} h_{i}(\beta, \boldsymbol{J}, \boldsymbol{m}, \alpha) \thinspace m_{i}$ effects a *Legendre transform* from $\boldsymbol{h} (\beta, \boldsymbol{J}, \boldsymbol{m}, \alpha)$ to *conjugate variable* $\boldsymbol{m} (\beta, \boldsymbol{J}, \boldsymbol{m}, \alpha)$.
+
++ $G (\beta, \boldsymbol{J}, \boldsymbol{m}, \alpha)$ will be expanded in a power series in $\alpha$ about $\alpha = 0$ to second order for a specific $\boldsymbol{m}$ and $\boldsymbol{J}$. The TAP free energy will be recovered by evaluating the terms at $\alpha = 1$. The claim is thus
+
+  \begin{align*}
+  f_{\text{TAP}} = G (\beta, \boldsymbol{J}, \boldsymbol{m}, 0)
+  + \partial_{\alpha} G (\beta, \boldsymbol{J}, \boldsymbol{m}, 0)
+  + \partial_{\alpha}^2 G (\beta, \boldsymbol{J}, \boldsymbol{m}, 0).
+  \end{align*}
+
+** TAP equations for the SK model: Plefka's expansion
+
++ The first term is
+
+  \begin{align*}
+  G (\beta, \boldsymbol{J}, \boldsymbol{m}, 0) & =T \sum_{i}\left(\frac{1+m_{i}}{2} \log \frac{1+m_{i}}{2}+\frac{1-m_{i}}{2} \log \frac{1-m_{i}}{2}\right) \\
+  \end{align*}
+
++ The second term (recall $H_S$ is the /internal Hamiltonian/) is
+
+  \begin{align*}
+  \partial_{\alpha} G (\beta, \boldsymbol{J}, \boldsymbol{m}, 0) = \left \langle H_S  \right \rangle_{\alpha} = - \dfrac{1}{2} \sum_{i \neq j} J_{ij} m_i m_j
+  \end{align*}
+
++ Using the Maxwell relation 
+
+  \begin{align*}
+  \partial_{\alpha} h_{i} (\beta, \boldsymbol{J}, \boldsymbol{m}, \alpha) = \partial_{\alpha} \partial_{m_i} G (\beta, \boldsymbol{J}, \boldsymbol{m}, \alpha) = -\sum_{j}^{\prime} J_{i j} m_{j}
+  \end{align*}
+
+  where the sum is restricted so that $j \neq i$, the third term is
+
+  \begin{align*}
+   \partial_{\alpha}^2 G (\beta, \boldsymbol{J}, \boldsymbol{m}, 0) &= - \beta \left \langle H_S \left( H_S - \left \langle H_S  \right \rangle_{\alpha} - \sum_i \partial_{\alpha} h_i (S_i - m_i) \right) \right \rangle_{\alpha} \\
+   &= -\frac{\beta}{2} \sum_{i \neq j} J_{i j}^{2}\left(1-m_{i}^{2}\right)\left(1-m_{j}^{2}\right).
+  \end{align*}
+
+** TAP equations for the SK model: Cavity method
++ The object of interest is the local magnetization $m_{i}_{} = \left\langle S_{i}\right\rangle$ within a single valley. With the *local field* $h_{i}=\sum_{j} J_{i j} S_{j}$ (assuming no external field), the average is over
+
+  \begin{align*}
+  P_{i} (S_i) \propto \int d h_{i} P_{i} \left( S_i, h_{i} \right)
+  \end{align*}
+
++ To obtain the joint distribution $P_{i}(S_i, h_{i})$ of $S_i$ and the local field $h_{i}$ *assume*
+
+  \begin{align*}
+  P_{i}(S_i, h_{i}) \equiv \exp \left \lbrace \beta h_{i} S_i \right \rbrace \operatorname{Tr}_{\boldsymbol{S} \backslash S_{i}} \delta\left(h_{i}-\sum_{j} J_{i j} S_{j}\right) P \left(\boldsymbol{S} \backslash S_{i}\right) \propto \exp \left \lbrace \beta h_{i} S_i \right \rbrace P_{i} \left( h_{i} \backslash S_{i}\right)
+  \end{align*}
+
+  where $P \left(\boldsymbol{S} \backslash S_{i}\right)$ is the joint distribution for the given valley of an auxiliary system that has its $i^{\text{th}}$ spin removed - equivalent to demanding vanishing $J_{ij}$ for $j \neq i$.
+
++ Now *assume* that $P_{i} \left( h_{i} \backslash S_{i }\right)$ takes the form
+
+  \begin{align*}
+  P_{i} \left(h_{i} \backslash S_{i}\right)= (2 \pi V_{i}^{2} )^{-1/2} \exp \left\{- (2 V_i)^{-1} \left( h_{i}- \left \langle h_{i} \right \rangle_{\backslash i} \right)^{2} \right\}.
+  \end{align*}
+
++ This yields as a consequence
+
+  \begin{align*}
+  \boxed{
+  m_{i}_{} = \tanh \beta\left\langle h_{i}_{ }\right\rangle_{\backslash i}
+  }
+  \end{align*}
+
+** TAP equations for the SK model: Cavity method
+
++ For the mean $\left \langle h_{i}  \right \rangle_{\backslash i}$ of local field /assert/
+
+  \begin{align*}
+  \left \langle h_{i} \right \rangle_{\backslash i} &= \left \langle h_{i }\right \rangle - V_{i}\left \langle S_{i }\right \rangle = \operatorname{Tr}_{S_{i}} \int \mathrm{d} h_{i} \thinspace h_{i} P_{}_{i} \left( S_{i}, h_{i }\right) - V_i \left \langle S_i \right \rangle \\
+  & = \sum_j J_{ij} \left \langle S_j \right \rangle - V_i \left \langle S_i \right \rangle =  \sum_j J_{ij} m_j - V_i m_i.
+  \end{align*}
+
+  Here $V_{i} m_{i}$ is the *cavity correction*.
+
++ For the variance $V_i$ of the local field /assert/
+
+  \begin{align*}
+  V_{i} & = \sum_{j, k} J_{i j} J_{i k}\left(\left\langle S_{j} S_{k}\right\rangle_{\backslash i}-\left\langle S_{j}\right\rangle_{\backslash i}\left\langle S_{k}\right\rangle_{\backslash i}\right) \\
+    & \approx \sum_{j} J_{i j}^{2}\left(1-\left\langle S_{j}\right\rangle_{\backslash i}^{2}\right) \approx \sum_{j} J_{i j}^{2}\left(1-\left\langle S_{j}\right\rangle^{2}\right)=\sum_{j} J_{i j}^{2}\left(1-m_{j}^{2}\right).
+ \end{align*} 
+
++ We have used independence of $J_{i j}$ and $J_{i k}$ for $k \neq j$ and the fact that within a /valley/
+
+  \begin{align*}
+  \lim_{N \to \infty} \frac{1}{N^{2}} \sum_{k \neq j}\left(\left\langle S_{k} S_{j}\right\rangle-\left\langle S_{k}\right\rangle\left\langle S_{j}\right\rangle\right)^{2} = 0.
+  \end{align*}
+
++ This recovers the /TAP equations/.
+** Recovering RS ansatz equations of state from the TAP equations
+
++ Start from
+
+  \begin{align*}
+  J_{i j}=\frac{J_{0}}{N}+\frac{J}{\sqrt{N}} z_{i j}
+  \end{align*}
+
+  where $z_{i j}$ is a standard Gaussian random variable. Then
+
+  \begin{align*}
+  \left\langle h_{i}_{ }\right\rangle_{\backslash i} &= {J_{0}}{N} \sum_{j} m_{j }+ \frac{J}{\sqrt{N}} \sum_{j} z_{i j} m_{j}-V_{i} m_{i} \\
+  &= J_0 m + \frac{J}{\sqrt{N}} \sum_{j} z_{i j} m_{j}-V_{i} m_{i}.
+  \end{align*}
+
++ Here $m$ is the /ferromagnetic order parameter/. *Assume* $y_{ij} \equiv \sqrt{J} z_{ij} m_{j}$ is an /independent/, /quenched/ random variable so that the contribution from site $j$ and $j^{\prime} \neq j$ are independent. This lends the interpretation of the whole expression as the thermal average of the *cavity field*.
+
+** Recovering RS ansatz equations of state from the TAP equations
+
++ With $y_i \equiv \sqrt{J} \sum_j y_{ij}$ and $z$ a standard Gaussian quenched random variable
+
+  \begin{align*}
+  \left\langle h_{i}_{ }\right\rangle_{\backslash i} &= J_0 m + \dfrac{1}{\sqrt{N}} \left(\left \langle y_i \right \rangle_c + z \sqrt{\left \langle y^2_i \right \rangle_c} \right).
+  \end{align*}
+
++ By appeal to the *central limit theorem*, the mean $\left \langle y_i \right \rangle_c$ vanishes and the variance $\left \langle y_i^2 \right \rangle_{c} \equiv J \sum_{j} \sum_{k }y_{ij} y_{ik} = \sum_{j} m_{j}^{2} \equiv J N q$ so that
+
+  \begin{align*}
+  \left\langle h_{i}_{ }\right\rangle_{\backslash i} = J_0 m + \sqrt{J q} z
+  \end{align*}
+
++ An average of $m_i$ and $m_i^2$ over the distribution of $z$ recovers the RS ansatz equations of state for $m$ and $q$
+
+  \begin{align*}
+  m=\int \mathrm{D} z \tanh \beta\left(J_{0} m+\sqrt{J q} z\right), \qquad q = \int \mathrm{D} z \tanh^2 \beta\left(J_{0} m+\sqrt{J q} z\right).
+  \end{align*}
+
++ The TAP equations for the SK model are a system of coupled, non-linear equations for $N$ variables. /They hold more information than the equation of state for the macroscopic order parameters/ $m$ /and/ $q$ /obtained from the RS ansatz./
+* Variational mean-field theory
+** Maximum likelihood estimation
++ Let $\boldsymbol{v} \in \mathbb{R}^N$ be an $N$ dimensional *observable*.
++ $\mathcal{D} = \left \lbrace \boldsymbol{v}_1, \cdots, \boldsymbol{v}_d  \right \rbrace$ is a *dataset* of $d$ observations of $\boldsymbol{v}$.
++ /Assume/ $\boldsymbol{v}_1, \cdots, \boldsymbol{v}_d$ are independent and identically distributed samples from a *distribution* $f(\boldsymbol{v} \mid \boldsymbol{\theta})$, where $\boldsymbol{\theta}$ is a *parameter* vector from a *parameter space* $\boldsymbol{\Theta}$ that parametrizes $f$. Represent this assumption as a *hypothesis* $\mathcal{H}$.
+
++ Define the *likelihood function* $\mathcal{L} \left( \boldsymbol{\theta} \mid \mathcal{D}, \mathcal{H} \right)$ (upto an overall multiplication)
+
+  \begin{align*}
+  \mathcal{L} \left( \boldsymbol{\theta} \mid \mathcal{D}, \mathcal{H} \right) \equiv f\left(\boldsymbol{v}_1, \cdots, \boldsymbol{v}_d \mid \boldsymbol{\theta}\right)= \prod_{i=1}^{d} f(\boldsymbol{v}_i \mid \boldsymbol{\theta})
+  \end{align*}
+
++ Convenient to work with the *log-likelihood* instead, both in analytical and numerical calculations.
+
+\begin{align*}
+\ln \mathcal{L} \left( \boldsymbol{\theta} \mid \boldsymbol{v} \right) = \ln \prod_{i=1}^{d} f (\boldsymbol{v_i} \mid \boldsymbol{\theta}) = \sum_{i=1}^{d} \ln f (\boldsymbol{v_i} \mid \boldsymbol{\theta}).
+\end{align*}
+
+** Maximum likelihood estimation
++ A *maximum likelihood estimator* (MLE) is a machine (function) $\boldsymbol{\hat{\theta}}: \mathbb{R}^d \to \boldsymbol{\Theta}$ that takes a dataset $\mathcal{D}$ and returns a parameter vector $\boldsymbol{\hat{\theta}}$ that maximizes the likelihood function
+
+\[
+\hat{\boldsymbol{\theta}}=\underset{\boldsymbol{\theta} \in \boldsymbol{\Theta}}{\arg \max } \thinspace \mathcal{L} \left(\boldsymbol{\theta} \mid \mathcal{D}, \mathcal{H} \right).
+\]
+
++ The /necessary/ conditions for the existence of an MLE:
+
+  1) $\ln \mathcal{L} \left( \boldsymbol{\theta} \mid \boldsymbol{v} \right)$ be *differentiable function* of $\boldsymbol{\theta}$,
+
+  2) The gradient $\nabla_{\boldsymbol{\theta}}\mathcal{L} \left( \boldsymbol{\hat{\theta}} \mid \boldsymbol{v} \right)$ must *identically vanish*,
+
+  3) The Hessian matrix $\mathbf{H} (\hat{\boldsymbol{\theta}})$ must be *negative semi-definite*.
+** Example 1: Uniform distribution
+*Observable*: $x \in [a,b]$, *Dataset*: $\mathcal{D} = \left \lbrace x_1, \cdots, x_d  \right \rbrace$
+
+*Distribution*: $f(x \mid a,b) = \frac{1}{b-a}$ for $a \leq x \leq b$
+
+*Log-likelihood function*:
+
+\begin{align*}
+\ln\mathcal{L}(a,b \mid \mathcal{D}) = -d\ln(b-a)
+\end{align*}
+
+*Maximum likelihood estimators*:
+
+\begin{align*}
+\hat{a} = \min(\mathcal{D}) \\
+\hat{b} = \max(\mathcal{D})
+\end{align*} 
+
++ The interval constraint is formally taken care of using /Lagrange multipliers/.
++ More intuitively, we want to have the smallest possible value for $b-a$ consistent with dataset $\mathcal{D}$.
+** Example 2: Bernoulli distribution
+*Observable*: $x \in \left \lbrace 0, 1  \right \rbrace$, *Dataset*: $\mathcal{D} = \left \lbrace x_1, \cdots, x_d  \right \rbrace$
+
+*Distribution*: $f(x \mid p) = p^{x} (1-p)^{1-x}$
+
+*Log-likelihood function*: 
+
+\begin{align*}
+\left(\sum_{i=1}^d x_i \right)\ln p + \left( d- \sum_{i=1}^d x_i \right) \ln(1-p)
+\end{align*}
+
+*Maximum likelihood estimator*
+
+\begin{align*}
+\hat{p} = \frac{1}{d} \sum_{i=1}^{d} x_i
+\end{align*}
+
++ $\hat{p}$ is *unbiased*; $\mathbb{E} (\hat{p}) = p$.
++ If hypothesis posits a finite set $\left \lbrace p_1, p_2, \dotso, p_k  \right \rbrace$ for the possiblities of $p$, proceed via direct enumeration: given that $n$ out of $d$ outcomes are $x = 1$, compute ${d \choose n} p_i^n (1-p_i)^{d-n}$ for all $p_i \in \left \lbrace p_1, p_2, \cdots, p_k  \right \rbrace$ and choose the one that is maximal.
+** Example 3: Gaussian distribution
+
+*Observable*: $x \in \mathbb{R}$, *Dataset*: $\mathcal{D} = \left \lbrace x_1, \cdots, x_d  \right \rbrace$
+
+*Distribution*: $f(x \mid \mu, \sigma^2) = \frac{1}{\sqrt{2\pi\sigma^2}} \exp \left \lbrace - \frac{(x - \mu)^2}{2 \sigma^2}  \right \rbrace$
+
+*Log-likelihood function*: 
+
+\begin{align*}
+\ln \mathcal{L} \left( \mu, \sigma^2 \mid \mathcal{D} \right) = - \frac{d}{2} \left( \ln 2 + \ln \pi + 2 \ln \sigma \right) - \sum_{i=1}^{d} \frac{(x_i - \mu)^2}{2 \sigma^2}
+\end{align*}
+*Maximum likelihood estimators:*
+
+\begin{align*}
+\hat{\mu} = \frac{1}{d} \sum_{i=1}^{d} x_i \quad \text{and} \quad \hat{\sigma^2} = \frac{1}{d} \sum_{i=1}^{d} (x_i - \hat{\mu})^2
+\end{align*}
+
++ $\hat{\mu}$ is an *unbiased*; $\mathbb{E} (\mu) = \mu$ while $\hat{\sigma}$ is a *biased*; $\mathbb{E}(\hat{\sigma^2}) = \left(\frac{n-1}{n} \right) \sigma^2$.
++ In this case, the system that needed solving turned out be /decoupled/, it may not be the case in general.
+** Example 4: Poisson distribution
+*Observable:* $x \in \mathbb{N}$, *Dataset*: $\mathcal{D} = \left \lbrace x_1, \cdots, x_d  \right \rbrace$
+
+*Distribution*: $f(x \mid \lambda) = \frac{\lambda^{x} e^{-\lambda}}{x!}$
+
+*Log-likelihood function*:
+
+\begin{align*} 
+\ln \mathcal{L}(\lambda \mid \mathcal{D}) = \left( \sum_{i}^{d} x_i \right) \ln \lambda - n \lambda - \sum_{i=1}^{d} \ln x_i!
+\end{align*}
+
+*Maximum likelihood estimator*:
+
+\begin{align*}
+\hat{\lambda} = \frac{1}{d} \sum_{i=1}^{d} x_i
+\end{align*}
+
+Obtained by solving for
+
+\begin{align*}
+D_{\lambda} \ln \mathcal{L} \left( \lambda \mid \mathcal{D} \right) = 0 \quad , \quad D_{\lambda}^{2} \ln \mathcal{L} \left( \lambda \mid \mathcal{D} \right) < 0
+\end{align*}
+
+** Variational mean-field theory
++ The variational method approximates an intractible distribution $P (\boldsymbol{S})$ by a tractible distribution $Q (\boldsymbol{S})$ from among a family of distributions $\mathcal{M}$ such that it minimizes a certain distance measure $D(Q, P)$. $D(Q, P)$ is typically chosen as the relative entropy, or Kullback-Leibler divergence $K L(Q \| P)$.
+
+\begin{align*}
+K L(Q \| P)=\sum_{\mathbf{S}} Q(\mathbf{S}) \ln \frac{Q(\mathbf{S})}{P(\mathbf{S})}=\left\langle\ln Q [\boldsymbol{S}] - \ln P [\boldsymbol{S}] \right\rangle_Q
+\end{align*}
+
++ The KL divergence is not symmetric in $P$ and $Q$. The reason for choosing $K L(Q \| P)$ over $K L(P \| Q)$ is so that we need only evaluate expectations with respect to the tractible distribution $Q$.
+
++ When $P$ is Gibbs Boltzmann distribution $P \left( \boldsymbol{S} \right) = \frac{ \exp \left \lbrace - H \left[ \boldsymbol{S} \right]  \right \rbrace}{\mathcal{Z}}$ the KL divergence reduces to
+
+  \begin{align*}
+  K L(Q \| P) &= \ln \mathcal{Z} - \left \langle \ln Q (\boldsymbol{S})  \right \rangle_Q - \left \langle H \left[ \boldsymbol{S} \right]  \right \rangle_Q \\
+  & \equiv \ln \mathcal{Z} + E \left[ Q \right] - S \left[ Q \right] \\
+  & \equiv \ln \mathcal{Z} + F \left[ Q \right]
+  \end{align*}
+
+** Variational mean-field theory
+
++ $S[Q] = \left \langle \ln Q (\boldsymbol{S})  \right \rangle_Q$ is the *Shannon entropy* of the distribution $Q$
+
+  \begin{align*}
+  S[Q]=-\sum_{\boldsymbol{S}} Q(\boldsymbol{S}) \ln Q(\boldsymbol{S})
+  \end{align*}
+
++ $E [Q] = \left \langle H \left[ \boldsymbol{S} \right]  \right \rangle_Q$ is called the *variational energy*
+
+
+  \begin{align*}
+  E[Q]=\sum_{\boldsymbol{S}} Q(\boldsymbol{S}) H[\boldsymbol{S}]
+  \end{align*}
+
++ $\ln \mathcal{Z}$ is a constant, so we really just need to minimize the *variational free energy* $F \left[ Q \right] = E \left[ Q \right] - S \left[ Q \right]$
+
+    \begin{align*}
+    \boxed{
+    \hat{Q}=\underset{Q \in \mathcal{M}}{\arg \min } \thinspace F \left[ Q (\boldsymbol{S}) \right]
+    }
+    \end{align*}
+
+** Recovering Weiss MFT using varitional MFT
++ Introduce *single-site distribution function*
+
+\begin{align*}
+Q_{j} \left( S_{j} \right) = \operatorname{Tr} Q \left( \boldsymbol{S} \right) \delta \left( S_i, S_{j} \right)
+\end{align*}
+
++ Approximate the Gibbs-Boltzmann distribution as a product of single-site distribution functions
+
+\begin{align*}
+P (\boldsymbol{S}) \simeq Q (\boldsymbol{S}) = \prod_i Q_i (S_i)
+\end{align*}
+
++ The free enery functional is
+
+\begin{align*}
+F_H \left[ Q (\boldsymbol{S}) \right]= & \operatorname{Tr}\left\{H(\boldsymbol{S}) \prod_{i} Q_{i}\left(S_{i}\right)\right\}+T \operatorname{Tr}\left\{\prod_{i} Q_{i}\left(S_{i}\right) \sum_{i} \log Q_{i}\left(S_{i}\right)\right\}.
+\end{align*}
+
++ The first term is simply the *internal energy* while the second term is the *entropy* scaled by the *temperature*.
+** Recovering Weiss MFT using variational MFT
+
++ The /internal energy/ term $\operatorname{Tr}\left\{H(\boldsymbol{S}) \prod_{i} Q_{i}\left(S_{i}\right)\right\}$ is simplified as
+
+\begin{align*}
+\operatorname{Tr}\left\{H(\boldsymbol{S}) \prod_{i} Q_{i}\left(S_{i}\right)\right\} &= -J \sum_{(ij) \in B} \operatorname{Tr} S_i S_j Q_i (S_i) Q_j (S_j) \prod_{k\neq i,j }\operatorname{Tr} Q_k (S_k) -h \sum_{i} \operatorname{Tr} S_i Q_i (S_i) \\
+&= -J \sum_{(i j) \in B} \operatorname{Tr} S_{i} S_{j} Q_{i}\left(S_{i}\right) Q_{j}\left(S_{j}\right) -h \sum_{i} \operatorname{Tr} S_i Q_i (S_i)
+\end{align*}
+
++ The /entropy/ term $\operatorname{Tr}\left\{\prod_{i} Q_{i}\left(S_{i}\right) \sum_{i} \log Q_{i}\left(S_{i}\right)\right\}$ is simplified likewise as
+
+\begin{align*}
+\operatorname{Tr}\left\{\prod_{i} Q_{i}\left(S_{i}\right) \sum_{i} \log Q_{i}\left(S_{i}\right)\right\} &= \sum_i \operatorname{Tr} Q_i (S_i) \ln Q_i (S_i) \prod_{j \neq i} \operatorname{Tr} Q_j (S_j) \\
+&= \sum_{i} \operatorname{Tr} Q_{i}\left(S_{i}\right) \ln Q_{i}\left(S_{i}\right).
+\end{align*}
+
++ In both places we have used the normalization $\operatorname{Tr} P_i (S_i) = 1$.
+** Recovering Weiss MFT using variational MFT
+
++ The free energy functional reduces to
+
+\begin{align*}
+F_H \left[ Q (\boldsymbol{S}) \right]= & \operatorname{Tr}\left\{H(\boldsymbol{S}) \prod_{i} Q_{i}\left(S_{i}\right)\right\}+T \operatorname{Tr}\left\{\prod_{i} Q_{i}\left(S_{i}\right) \sum_{i} \log Q_{i}\left(S_{i}\right)\right\} \\
+=-J & \sum_{(i j) \in B} \operatorname{Tr} S_{i} S_{j} Q_{i}\left(S_{i}\right) Q_{j}\left(S_{j}\right)-h \sum_{i} \operatorname{Tr} S_{i} Q_{i}\left(S_{i}\right) +T \sum_{i} \operatorname{Tr} Q_{i}\left(S_{i}\right) \ln Q_{i}\left(S_{i}\right).
+\end{align*}
+
++ With $m_j \equiv \operatorname{Tr} S_j Q_j (S_j)$ and $I \equiv \left \lbrace j \mid (ij) \in B \right \rbrace$, variations of $F_H \left[ Q (\boldsymbol{S}) \right]$ subject to normalization yields
+
+\begin{align*}
+\frac{\delta F \left( Q (\boldsymbol{S}), \lambda  \right)}{\delta Q_{i}\left(S_{i}\right)}=-J \sum_{j \in I} S_{i} m_{j}-h S_{i}+T \ln Q_{i}\left(S_{i}\right)+T+\lambda=0.
+\end{align*}
+
++ On solving for $Q_{i} (S_i)$
+
+\begin{align*}
+Q_i \left( S_i \right) = \dfrac{ \exp \left \lbrace \beta J \sum_{j \in I} S_i m_j + \beta h S_i  \right \rbrace}{Z_{\text{MF}}}.
+\end{align*}
+** Example: Ising model
++ For Ising spins $S_i \in \left \lbrace 1, -1  \right \rbrace$
+
+\begin{align*}
+Q_i \left( S_i \right) = \dfrac{1 + m_i S_i}{2}
+\end{align*}
+
++ The free energy may now be written as a functional over the *site magnetization*
+
+\begin{align*}
+F \left[ m_i \right] = & -J \sum_{(i j) \in B} m_{i} m_{j}-h \sum_{i} m_{i} \\
+& +T \sum_{i}\left(\frac{1+m_{i}}{2} \log \frac{1+m_{i}}{2}+\frac{1-m_{i}}{2} \log \frac{1-m_{i}}{2}\right) .
+\end{align*}
+
++ Variations of $F \left[ m_i \right]$ with respect to $m_i$ yields
+
+\begin{align*}
+m_{i}=\tanh \beta\left(J \sum_{j \in I} m_{j}+h\right).
+\end{align*}
+
++ For a translationally invariant system this reduces to the same expression obtained via Weiss mean field theory
+
+\begin{align*}
+m = \tanh \beta \left( J z m + h \right).
+\end{align*}
+
+** Example: Ising model :noexport:
+
+#+begin_src python :results output
+  import numpy as np
+
+  def fixed_point_iteration(J, h, beta, m_init, max_iter=1000, tol=1e-6, print_info=False):
+      N = len(m_init)  # Number of nodes
+      m = np.copy(m_init)  # Initialize magnetization vector
+      m_prev = np.zeros(N)  # Store the previous magnetization vector for convergence check
+
+      for t in range(max_iter):
+          for i in range(N):
+              m_prev[i] = m[i]  # Store the previous value of magnetization for the i-th node
+              m_sum = np.dot(J[i], m)  # Calculate the sum of interaction between nodes
+              m[i] = np.tanh(beta / 2 * (m_sum + h[i]))  # Update the magnetization for the i-th node
+
+          if np.linalg.norm(m - m_prev) < tol:  # Check for convergence
+              if print_info:
+                  print(f"Converged in {t+1} iterations.")
+              break
+      else:
+          if print_info:
+              print(f"Reached maximum iterations ({max_iter}) without convergence.")
+
+      return m
+
+  def gaussian_J_matrix(N, J0, J, seed=None):
+      np.random.seed(seed)  # Set the seed for reproducibility (optional)
+      J_matrix = np.random.normal(J0 / N, np.sqrt(J ** 2 / N), (N, N))
+      np.fill_diagonal(J_matrix, 0)  # Set diagonal elements to 0
+      return J_matrix
+
+  def tap_magnetization_iteration(beta, J, h, m_init, max_iter=1000, tol=1e-6, print_info=False):
+      N = len(m_init)
+      m = np.copy(m_init)
+      m_prev = np.zeros(N)
+
+      def tap_magnetization_iterator(beta, J, m, h):
+          N = len(m)
+          m_new = np.copy(m)
+
+          for i in range(N):
+              m_sum = np.dot(J[i], m) - beta * J[i, i] * (1 - m[i] ** 2) * m[i]
+              m_new[i] = np.tanh(beta * (m_sum + h[i]))
+
+          return m_new
+
+      for t in range(max_iter):
+          m_prev = np.copy(m)
+          m = tap_magnetization_iterator(beta, J, m, h)
+
+          if np.linalg.norm(m - m_prev) < tol:  # Check for convergence
+              if print_info:
+                  print(f"Converged in {t+1} iterations.")
+                  break
+              else:
+                  if print_info:
+                      print(f"Reached maximum iterations ({max_iter}) without convergence.")
+
+      return m
+
+  N = 100
+
+  # Constant J matrix with diagonals set to 0
+  J_const = np.full((N, N), 0.5)
+  np.fill_diagonal(J_const, 0)
+
+  # Example usage
+  J0 = 0.5
+  J = 1.5
+  J_SK = gaussian_J_matrix(N, J0, J)
+  J_simple = np.random.rand(N, N)
+
+  m_init = np.random.uniform(-1, 1, N)  # Initialize m with a uniform distribution from -1 to 1
+  h = np.random.rand(N)  # Initialize h with random values, one for each node
+
+  h = np.random.rand(N)
+  beta = 0.1
+
+  # Run fixed point iteration for both cases with print_info enabled
+  # magnetizations_const_J = fixed_point_iteration(J_const, h, beta, m_init, print_info=True)
+  # print("Magnetizations (constant J):\n", magnetizations_const_J)
+
+  # magnetizations_rand_J = fixed_point_iteration(J_SK, h, beta, m_init, print_info=True)
+  # print("Magnetizations (random J, Naive):\n", magnetizations_rand_J)
+
+  m_tap = tap_magnetization_iteration(beta, J_simple, h, m_init, max_iter=1000, print_info=True)
+  print("Magnetizations (random J, TAP):\n", m_tap)
+#+end_src
+
+#+RESULTS:
+#+begin_example
+Converged in 6 iterations.
+Magnetizations (random J, TAP):
+ [0.99992876 0.99992013 0.99988833 0.99990526 0.99990845 0.99996131
+ 0.99994952 0.99990752 0.9999169  0.99985028 0.99988406 0.99994908
+ 0.99992382 0.99988873 0.99995804 0.99991044 0.99996738 0.99986763
+ 0.99985417 0.99996577 0.99996182 0.99990156 0.99987851 0.99991306
+ 0.99988129 0.99997527 0.99995247 0.99984912 0.99990562 0.99988166
+ 0.99988699 0.99994865 0.99985414 0.9998982  0.99974031 0.99985662
+ 0.99995399 0.99993373 0.99992384 0.9999114  0.99991434 0.99988681
+ 0.99991506 0.99995311 0.99990891 0.99991029 0.99992441 0.99984208
+ 0.99972183 0.99979348 0.99985327 0.99993739 0.99990961 0.99991187
+ 0.99992078 0.99994797 0.99979677 0.99989445 0.99997007 0.99992553
+ 0.99987474 0.99994393 0.99980212 0.99986756 0.99995904 0.99995176
+ 0.99988242 0.99990946 0.99991776 0.99994476 0.9998991  0.99994921
+ 0.99996289 0.99983213 0.99995966 0.99988899 0.99991466 0.99991601
+ 0.99993333 0.99983672 0.99984034 0.99981382 0.999905   0.99996953
+ 0.99987883 0.999942   0.99975783 0.99990887 0.99988325 0.99992929
+ 0.99991562 0.99993759 0.9997579  0.99989662 0.99975422 0.99994739
+ 0.99993356 0.99993991 0.99990931 0.999591  ]
+#+end_example
+
+#+begin_src python :results output
+  import numpy as np
+  from scipy.integrate import quad
+  from scipy.stats import norm
+
+  def tap_magnetization_iteration_improved(beta, J, h, max_iter=1000, tol=1e-6, print_info=False):
+      N = len(h)
+
+      # Calculate q using the fixed point equation
+      def integrand(z, beta, q, h):
+          return (np.tanh(h + beta * np.sqrt(q) * z) ** 2) * norm.pdf(z)
+
+      def find_fixed_point_q(beta, h, tol=1e-6, max_iter=100):
+          q = 0.5
+          for _ in range(max_iter):
+              q_new = np.mean([quad(integrand, -np.inf, np.inf, args=(beta, q, h_i))[0] for h_i in h])
+              if np.abs(q_new - q) < tol:
+                  break
+              q = q_new
+          return q
+
+      q_init = find_fixed_point_q(beta, h)
+
+      # Initialize the magnetization state
+      m = np.zeros((2, N))
+      m[0, :] = np.sqrt(q_init)
+
+      def tap_magnetization_iterator_improved(beta, J, m, h):
+          N = len(m[0])
+          m_new = np.zeros(N)
+          q = np.mean(m[0] ** 2)
+
+          for i in range(N):
+              m_sum = np.dot(J[i] / np.sqrt(N), m[0]) - beta**2 * (1 - q) * m[1, i]
+              m_new[i] = np.tanh(beta * (m_sum + h[i]))
+
+          return m_new
+
+      for t in range(max_iter):
+          m[1, :] = m[0, :]
+          m[0, :] = tap_magnetization_iterator_improved(beta, J, m, h)
+
+          if np.linalg.norm(m[0] - m[1]) < tol:  # Check for convergence
+              if print_info:
+                  print(f"Converged in {t+1} iterations.")
+              break
+      else:
+          if print_info:
+              print(f"Reached maximum iterations ({max_iter}) without convergence.")
+
+      return m[0]
+
+  # Define the input parameters
+  N = 100
+  beta = 0.1
+  J = np.random.rand(N, N)
+  h = np.random.rand(N)
+
+  # Call the function with the input parameters
+  m_final = tap_magnetization_iteration_improved(beta, J, h, max_iter=1000, tol=1e-6, print_info=True)
+
+  # Print the final magnetization values
+  print("Final magnetization values:")
+  print(m_final)
+#+end_src
+
+#+RESULTS:
+#+begin_example
+Converged in 22 iterations.
+Final magnetization values:
+[0.14812438 0.1110618  0.10622239 0.07469878 0.09397081 0.1242689
+ 0.12198917 0.10124817 0.08879623 0.04781248 0.07666495 0.07090919
+ 0.096462   0.09975953 0.06417435 0.1410214  0.06692183 0.05005716
+ 0.11165473 0.09120775 0.1228168  0.13756595 0.07231846 0.08635823
+ 0.06369731 0.10908854 0.11475501 0.05213947 0.06238809 0.07692839
+ 0.05705433 0.06366623 0.07351446 0.13585109 0.12941209 0.13910195
+ 0.10489842 0.06650329 0.07859141 0.12569555 0.05778047 0.08732212
+ 0.14332531 0.14784197 0.13786597 0.10752695 0.04784714 0.0899344
+ 0.05327329 0.08456194 0.07062776 0.12744718 0.07917801 0.0881339
+ 0.11281682 0.1060175  0.06588288 0.07374079 0.10814351 0.10011108
+ 0.1346027  0.08296234 0.12136828 0.11868041 0.09885679 0.10986971
+ 0.06675263 0.0703632  0.08085024 0.14291374 0.11991097 0.12798334
+ 0.12607604 0.13113526 0.11988023 0.08656709 0.1234619  0.13579099
+ 0.12644334 0.06038032 0.09718402 0.11945954 0.07203055 0.07312478
+ 0.04845929 0.11428716 0.0517134  0.05654402 0.10288975 0.09859159
+ 0.11567913 0.11646192 0.12364919 0.11258015 0.09615954 0.09473786
+ 0.09442506 0.11719093 0.12541212 0.07581429]
+#+end_example
+
+* Bethe-Peierls's approximation
+** Bethe lattice
++ A *Bethe lattice*, also known as a *Cayley tree*, is an *infinite*, *undirected* *graph* with a constant *degree* (or /coordination number/) $z$.
++ A Bethe lattice does not fall under the classification of *Bravais lattices* or *crystal systems* - they do not represent the arrangement of atoms in a crystal lattice.
+#+begin_src latex
+  \begin{figure}
+    \centering
+    \includegraphics[width=6cm]{bethe_lattice.png}
+    \caption{\textbf{A Bethe lattice with $z=3$, showing nodes till the third three generations}.}
+  \end{figure}
+#+end_src
+*** A Bethe lattice                                               :noexport:
+#+begin_src dot :file square-lattice.png :export none :eval never-export
+  graph square_lattice {
+      rotate = 100
+      graph [bgcolor=transparent, layout=neato, splines=false, scale=0.9]
+      edge [color=gray, penwidth=0.4, len=0.4]
+
+      a1 [label="", shape=circle, color=gray, fillcolor=grey60, style=filled, width=0.2, fixedsize=true]
+      a2 [label="", shape=circle, color=gray, fillcolor=grey60, style=filled, width=0.2, fixedsize=true]
+      a3 [label="", shape=circle, color=gray, fillcolor=black, style=filled, width=0.2, fixedsize=true]
+      a4 [label="", shape=circle, color=gray, fillcolor=grey60, style=filled, width=0.2, fixedsize=true]
+      a5 [label="", shape=circle, color=gray, fillcolor=grey60, style=filled, width=0.2, fixedsize=true]
+      b1 [label="", shape=circle, color=gray, fillcolor=grey60, style=filled, width=0.2, fixedsize=true]
+      b2 [label="", shape=circle, color=gray, fillcolor=pink, style=filled, width=0.2, fixedsize=true]
+      b3 [label="", shape=circle, color=gray, fillcolor=black, style=filled, width=0.2, fixedsize=true]
+      b4 [label="", shape=circle, color=gray, fillcolor=pink, style=filled, width=0.2, fixedsize=true]
+      b5 [label="", shape=circle, color=gray, fillcolor=grey60, style=filled, width=0.2, fixedsize=true]
+      c1 [label="", shape=circle, color=gray, fillcolor=black, style=filled, width=0.2, fixedsize=true]
+      c2 [label="", shape=circle, color=gray, fillcolor=black, style=filled, width=0.2, fixedsize=true]
+      c3 [label="", shape=circle, color=gray, fillcolor=black, style=filled, width=0.2, fixedsize=true]
+      c4 [label="", shape=circle, color=gray, fillcolor=black, style=filled, width=0.2, fixedsize=true]
+      c5 [label="", shape=circle, color=gray, fillcolor=black, style=filled, width=0.2, fixedsize=true]
+      d1 [label="", shape=circle, color=gray, fillcolor=grey, style=filled, width=0.2, fixedsize=true]
+      d2 [label="", shape=circle, color=gray, fillcolor=pink, style=filled, width=0.2, fixedsize=true]
+      d3 [label="", shape=circle, color=gray, fillcolor=black, style=filled, width=0.2, fixedsize=true]
+      d4 [label="", shape=circle, color=gray, fillcolor=pink, style=filled, width=0.2, fixedsize=true]
+      d5 [label="", shape=circle, color=gray, fillcolor=grey60, style=filled, width=0.2, fixedsize=true]
+      e1 [label="", shape=circle, color=gray, fillcolor=grey60, style=filled, width=0.2, fixedsize=true]
+      e2 [label="", shape=circle, color=gray, fillcolor=grey60, style=filled, width=0.2, fixedsize=true]
+      e3 [label="", shape=circle, color=gray, fillcolor=black, style=filled, width=0.2, fixedsize=true]
+      e4 [label="", shape=circle, color=gray, fillcolor=grey60, style=filled, width=0.2, fixedsize=true]
+      e5 [label="", shape=circle, color=gray, fillcolor=grey60, style=filled, width=0.2, fixedsize=true]
+
+      a1 -- a2 -- a3 -- a4 -- a5
+      a1 -- b1
+      a2 -- b2 
+      a3 -- b3 [color=olivedrab1, penwidth=1.0, len=0.4]
+      a4 -- b4
+      a5 -- b5
+      b1 -- b2
+      b2 -- b3 [color=olivedrab1, penwidth=1.0, len=0.4]
+      b3 -- b4 [color=olivedrab1, penwidth=1.0, len=0.4]
+      b4 -- b5
+      b1 -- c1
+      b2 -- c2 [color=olivedrab1, penwidth=1.0, len=0.4]
+      b3 -- c3 [color=lightgreen, penwidth=1.0, len=0.4]
+      b4 -- c4 [color=olivedrab1, penwidth=1.0, len=0.4]
+      b5 -- c5
+      c1 -- c2 [color=olivedrab1, penwidth=1.0, len=0.4]
+      c2 -- c3 [color=lightgreen, penwidth=1.0, len=0.4]
+      c3 -- c4 [color=lightgreen, penwidth=1.0, len=0.4]
+      c4 -- c5 [color=olivedrab1, penwidth=1.0, len=0.4]
+      c1 -- d1
+      c2 -- d2 [color=olivedrab1, penwidth=1.0, len=0.4]
+      c3 -- d3 [color=lightgreen, penwidth=1.0, len=0.4]
+      c4 -- d4 [color=olivedrab1, penwidth=1.0, len=0.4]
+      c5 -- d5
+      d1 -- d2
+      d2 -- d3 [color=olivedrab1, penwidth=1.0, len=0.4]
+      d3 -- d4 [color=olivedrab1, penwidth=1.0, len=0.4]
+      d4 -- d5
+      d1 -- e1
+      d2 -- e2
+      d3 -- e3 [color=olivedrab1, penwidth=1.0, len=0.4]
+      d4 -- e4
+      d5 -- e5
+      e1 -- e2 -- e3 -- e4 -- e5
+  }
+#+end_src
+
+#+begin_src dot :file bethefied_square.png :export none :eval never-export
+  graph BetheLattice {
+    graph [bgcolor=transparent]
+    node [label="", shape=circle, color=gray, fillcolor=black, style=filled, width=0.2, fixedsize=true]
+    edge [color=gray, penwidth=0.4, len=0.4]
+    layout=neato
+
+    0
+
+    // Depth 1 nodes
+    1
+    2
+    3
+    4
+
+    // Depth 2 nodes
+    11 [label="", shape=circle, color=gray, fillcolor=pink, style=filled, width=0.2, fixedsize=true]
+    12
+    13 [label="", shape=circle, color=gray, fillcolor=pink, style=filled, width=0.2, fixedsize=true]
+    21 [label="", shape=circle, color=gray, fillcolor=pink, style=filled, width=0.2, fixedsize=true]
+    22 [label="", shape=circle, color=gray, fillcolor=pink, style=filled, width=0.2, fixedsize=true]
+    23
+    31 [label="", shape=circle, color=gray, fillcolor=pink, style=filled, width=0.2, fixedsize=true]
+    32 [label="", shape=circle, color=gray, fillcolor=pink, style=filled, width=0.2, fixedsize=true]
+    33
+    41 [label="", shape=circle, color=gray, fillcolor=pink, style=filled, width=0.2, fixedsize=true]
+    42 [label="", shape=circle, color=gray, fillcolor=pink, style=filled, width=0.2, fixedsize=true]
+    43
+
+    // Connecting the nodes
+    0 -- {1, 2, 3, 4} [color=lightgreen, penwidth=1.0, len=0.4]
+    1 -- {11, 12, 13} [color=olivedrab1, penwidth=1.0, len=0.4]
+    2 -- {21, 22, 23} [color=olivedrab1, penwidth=1.0, len=0.4]
+    3 -- {31, 32, 33} [color=olivedrab1, penwidth=1.0, len=0.4]
+    4 -- {41, 42, 43} [color=olivedrab1, penwidth=1.0, len=0.4]
+  }
+#+end_src
+
+** Bethe-Peierls's approximation
++ The *Bethe-Peierls's approximation* is
+
+  \begin{align*}
+  P (\boldsymbol{S}) \approx \prod_{ij } Q_{ij}(S_i, S_j)  \prod_i \left[ Q_i (S_i) \right]^{(1-z)}
+  \end{align*}
+
+  where
+
+  \begin{align*}
+  Q_i (\sigma_i) \equiv \operatorname{Tr} Q (\boldsymbol{S}) \delta (S_i, \sigma_i) \qquad \text{and} \qquad Q_{ij} (\sigma_i, \sigma_j) \equiv \operatorname{Tr} Q (\boldsymbol{S}) \delta (S_i, \sigma_i) \delta (S_j, \sigma_j).
+  \end{align*}
+
+#+begin_src latex
+  \begin{figure}[ht]
+    \begin{minipage}[b]{0.45\linewidth}
+      \centering
+      \includegraphics[width=0.6\textwidth]{square_lattice.png}
+      \caption{part of a square lattice in 2D. The nodes in pink are part of cycles.}
+      \label{fig:a}
+    \end{minipage}
+    \hspace{0.5cm}
+    \begin{minipage}[b]{0.45\linewidth}
+      \centering
+      \includegraphics[width=0.6\textwidth]{bethefied_square_lattice.png}
+      \caption{To make the Bethe approximation is to break the cycles.}
+      \label{fig:b}
+    \end{minipage}
+  \end{figure}
+#+end_src
+** Bethe-Peierls's approximation
++ Consider (disordered) Ising spins on a Bethe lattice. With $c_{ij} \equiv \left \langle S_i S_j  \right \rangle - \left \langle S_i  \right \rangle \left \langle S_j  \right \rangle$, the *connected correlation function*
+
+  \begin{align*}
+  Q_i (S_i) = \dfrac{1 + m_i S_i}{2}, \qquad Q_{ij} (S_i, S_j) = \dfrac{\left( 1 + m_i S_i \right) \left( 1 + m_j S_j \right) + c_{ij} S_i S_j}{4}.
+  \end{align*}
+
++ The free energy functional is
+
+  \begin{align*}
+   - \beta & G_{\text{Bethe}}\left(\beta, \boldsymbol{h}, \boldsymbol{J}, z, \boldsymbol{m}, \boldsymbol{c} \right) =  \\
+   &\beta \left[\sum_{i \neq j} J_{i j}\left(c_{i j}+m_i m_j\right) +\sum_i h_i m_i\right] 
+   - \sum_i (1-z)\left[H\left(\frac{1+m_i}{2}\right)+H\left(\frac{1-m_i}{2}\right)\right] \\
+   & \qquad \qquad - \sum_{i \neq j}\left[ H \left(\frac{\left(1+m_i\right)\left(1+m_j\right)+c_{ij}}{4} \right) + H\left(\frac{\left(1-m_i\right)\left(1-m_j\right)+c_{i j}}{4}\right) \\
+   & \qquad \qquad \qquad \left .\left.+H\left(\frac{\left(1+m_i\right)\left(1-m_j\right)-c_{i j}}{4}\right)+H\left(\frac{\left(1-m_i\right)\left(1+m_j\right)-c_{i j}}{4}\right)\right] \\
+  \end{align*}
+  where $H(x) = -x \ln x$.
+
+** Bethe-Peierls's approximation
+
++ Solving $\partial_{c_{ij}} G_{\text{Bethe}} = 0$ for $J_{ij}$ yields
+
+  \begin{align*}
+  J_{ij} = \dfrac{1}{4} \ln \left[\frac{\left(\left(1+m_i\right)\left(1+m_j\right)+c_{i j}\right)\left(\left(1-m_i\right)\left(1-m_j\right)+c_{i j}\right)}{\left(\left(1+m_i\right)\left(1-m_j\right)-c_{i j}\right)\left(\left(1-m_i\right)\left(1+m_j\right)-c_{i j}\right)}\right].
+  \end{align*}
+
++ With $t_{ij} \equiv \tanh \left( J_{ij} \right)$ solving the equation above for $c_{ij}$ yields
+
+  \begin{align*}
+  2 t_{ij} c_{i j}\left(m_i, m_j, t_{i j}\right)= 1+t_{i j}^2-\sqrt{\left(1-t_{i j}^2\right)^2-4 t_{i j}\left(m_i-t_{i j} m_j\right)\left(m_j-t_{i j} m_i\right)}-m_i m_j .
+  \end{align*}
+
++ $c_{ij}$ may be /eliminated/ from the Bethe free energy. Thereafter, solving $\partial_{m_{i}} G_{\text{Bethe}} = 0$ for $m_{i}$ yields
+
+  \begin{align*}
+  \boxed{
+  m_i=\tanh \left[h_i+\sum_j \tanh^{-1} \left(t_{i j} f\left(m_j, m_i, t_{i j}\right)\right)\right]
+  }
+  \end{align*}
+
+ where
+
+  \begin{align*}
+  f\left(m_j, m_i, t_{ij}\right)=\frac{1-t_{ij}^2-\sqrt{\left(1-t_{ij}^2 \right)^2-4 t\left(m_j-m_i t_{ij} \right)\left(m_i-m_j t_{ij} \right)}}{2 t_{ij} \left(m_i-m_j t_{ij} \right)}.
+  \end{align*}
+
+* Linear response corrections
+** Linear response correction to Weiss MFT
+** Linear response correction to TAP equations
+** Linear response correction to Bethe approximation

@@ -1,0 +1,229 @@
+:PROPERTIES:
+:ID:       5dd3ad52-435b-4588-a659-a92f59e5517a
+:END:
+#+TITLE: Annual research progress report 2023
+#+AUTHOR: Ayan Das
+#+FILETAGS: :fleeting: :report: :submission:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+* Problem statement
+The entity under investigation is an /artificial neural network/ called the *Deep Boltzmann Machines* (DBMs) - a class of models used in /unsupervised machine learning/ tasks, known for learning complex representations of high-dimensional data. Current methods for determining the optimal architecture of DBMs more often than not resort to trial-and-error. Understanding how the distribution of units across the layers affects their ability to learn representations is interesting both from a theoretical (ability to interpret) and practical standpoint (savings on training time).
+
+We model Deep Boltzmann Machines (DBMs) as disordered systems of Ising spins on a multi-layered, bipartite lattice. Our aim is to contrast /deep and narrow/ architectures—comprising many layers with fewer nodes in each—with /shallow and wide/ architectures—that have fewer layers but more nodes in each.  The criterion for comparison is the *complexity* \(\Sigma\) which we define as the (normalized) logarithm of the expected number of local minima in the DBM's energy function over the prior of couplings. This serves as a proxy for the architecture's *representation capacity*. The questions we seek answers to are:
+
+#+BEGIN_CENTER
++ /Does a deep and narrow architecture, with \(M_0, M_1, \ldots, M_K\) units (\(M = \sum_{k=0}^{K} M_{k} \) total units) such that \(M_k \sim\mathcal{O}(M_{0})\) achieve a representational capacity \(\Sigma (\{M_{k}\})\) at par or better in comparison to a shallow and wide architecture with \(N_0, N_1, \ldots, N_L\) units (\(N = \sum_{l=0}^{L} N_{l}\) total units) such that \(N_l \sim \mathcal{O} (N_{0}^{p})\) with \(p \geq 1\)? In other words, for \(K > L\) but \(M \ll N\), is  \(\Sigma (\{M_{k}\}) \gg \Sigma (\{N_{l}\})\)?/
+
++ /With the total number of hidden layers \(L\) fixed, how does \(\Sigma \(\{N_l\})\) respond to an unbounded increase in the units of the last hidden layer \(N_{L} \to \infty\)? [cite:@bansal2018isc] demonstrate for the \(L=1\) case (called the restricted Boltzmann machine) that the complexity in fact saturates i.e., 
+
+  \begin{align*}
+  \lim_{N_{1} \to \infty}\Sigma (N_{0}, N_{1}) \sim \mathcal{O} (1)
+  \end{align*}
+
+  and on increasing to \(L=2\), behaves like \(\Sigma (N_{0}, N_{1}, N_{2}) \sim \mathcal{O} (\gamma)\) where \(\gamma = \sqrt{N_{2}/N_{1}}\) is the inter-layer ratio. Does this behavior generalize to the case of the DBM, i.e., for \(L \geq 2\)?
+
++ /What is the response of the representation capacity as a function of the two way inter-layer ratios \(\gamma_l = N_{l+1}/N_{l}\) and \(\nu_l = N_{l-1}/N_{l}\) where \(l\) indexes the different layers? What is the behavior in the special case \(\gamma_{l} = \gamma\) and \(\nu_{l} = \nu\) for all \(l\) and \(L \to \infty\)?/
+#+END_CENTER
+
+#+begin_src latex
+\begin{figure}[h]
+\centering
+\begin{minipage}[b]{0.25\linewidth}
+   \includegraphics[width=\linewidth]{rbm-dot.png}
+\end{minipage}
+\hspace{0.05\linewidth}
+\begin{minipage}[b]{0.25\linewidth}
+   \includegraphics[width=\linewidth]{rbm-circo.png}
+\end{minipage}
+\hspace{0.05\linewidth}
+\begin{minipage}[b]{0.25\linewidth}
+   \includegraphics[width=\linewidth]{rbm-neato.png}
+\end{minipage}
+\caption{\textbf{Restricted Boltzmann machines}: All of these represent the same RBM. Interpretation of nodes of any one type (black or white) as \textit{visible} or \textit{hidden} is arbitrary. The key thing to notice is 1) a given visible (hidden) spin \textit{is not} coupled to \textit{any} other visible (hidden) spin; the lattice is \textbf{bipartite}, 2) a given visible (hidden) spin \textit{is} coupled to \textit{every} other hidden (visible) spin; the lattice is \textbf{fully-connected}.}
+\end{figure}
+#+end_src
+
+To answer these questions we seek to adapt to the case of the DBM existing analytical methods and computational techniques, extensively used in the analysis of frustrated systems that manifest a high degree of meta-stability. We intend to explore, and hopefully surmount, the unique challenges that the context of this specific model brings.
+* Research progress
+I started working on this research problem from start of April 2023. During the months of April, May, and June I was engaged in background building, based on the guidance of my advisors. This involved learning about
+
+1) Mean-field theory
+2) Variational mean-field theory
+3) Replica method applied to the Edwards-Anderson model and Sherrington-Kirkpatrick model
+4) The restricted Boltzmann machine, its properties, and training algorithms
+5) The TAP equations and Plefka's expansion
+6) Single-spin-flip stable states and complexity
+
+July onward, I made first attempts at reproducing results from existing literature and applying the above techniques to the case of the DBM. To better understand the mechanics of the RBM, I implemented a mean-field training algorithm based on the TAP equations, reproducing the results from [cite:@gabrié2015tap]. Building on the results in [cite:@hartnett2018bipartite] where the authors apply the replica method to case of the RBM (a DBM with one hidden layer, i.e., \(L=1\)), I derived the equation of state for general case of a DBM with \(L\) hidden layers.
+
+From early August, I shifted focus to questions that are of a more directly relevant nature in the context of my research problem - namely enumeration of the DBM's single-spin-flip stable states. Concurrently, I started formulating a concrete problem statement - the help I received from Prof. Chiranjib and Prof. Chandan was instrumental for this. I surveyed the various techniques that have been used for the calculation of complexity [cite:@bray1980metastable], [cite:@parisi95:_mean_field_equat_spin_model], [cite:@edwards1980ground], [cite:@esposti02:_energ_lands_statis_random_orthog_model]. Initially I developed a TAP equation for the DBM as a segue to applying the method from the [cite:@bray1980metastable]. After discussions with my advisors and thesis advisory committee members, it was evident that if quantifying the representation capacity of DBMs is the goal, then I must directly compute the critical points of the Hamiltonian instead of the Gibbs free energy ([cite:@bray1980metastable] enumerate the minima of the free energy).
+
+Thereafter, I adopted a different scheme which is borrowed from [cite:@singh1995:_fixed_pts_hopfiled_random_asymmetric]. The involved nature of the calculation and lack of mathematical maturity on my part has kept me from taking that calculation to its conclusion - it is a work in progress. A significant part of August was spent in studying a Monte Carlo method that allows an (effectively) unbiased random walk in the space of meta-stable states [cite:@schnabel2018distribution], [cite:@schnabel2020counting]. The method involves a multi-canonical sampling using the Wang-Landau algorithm. The method performs particularly well for Hamiltonian with nearest neighbor interactions [cite:@schnabel2017dynamic] as in the Edwards-Anderson model. The unique aspect of the method is that it allows for the determination of a a concrete number for the number of meta-stable states, even for systems with thousands of spins.
+
+From the beginning of September, I have focused on implementing this scheme myself and as of today, I have a working implementation. Though in principle, the method is applicable for DBM in a straighforward manner, the non-local nature of interactions in the DBM make the task computationally demanding, relative to a Hamiltonian with local interactions. Projections based on some informal bench-marks indicate that a direct numerical investigation of relative large systems (\(\mathcal{O}(1000)\)) should be feasible in reasonable compute times even on serialized execution. Apart from further iterations and refinement of the problem statement with my advisors, making progress on the analytic calculations of the DBM's complexity and using the implementation discussed above to perform numerical experiments will be my primary focus going forward.
+** The DBM's equation of state
+A Hamiltonian inspired by the deep Boltzmann machine (DBM) with \(L\) hidden layers and periodic boundary conditions \(l \equiv (l + L + 1) \mod (L+1)\) is
+
+\begin{equation*}
+H_{\boldsymbol{J}, \boldsymbol{N}} (\boldsymbol{\sigma}) = - \sum_{l=0}^{L} \sum_{i=1}^{N_l}
+\sum_{j=1}^{N_{l+1}} \sigma_{il} J_{ijl} \sigma_{j(l+1)}.
+\end{equation*}
+
+#+begin_src latex
+  \begin{figure}[ht]
+    \begin{minipage}[b]{0.45\linewidth}
+      \centering
+      \includegraphics[width=0.6\textwidth]{circular-dbm.png}
+      \caption{The last hidden layer connects back with the visible layer (black).}
+      \label{fig:a}
+    \end{minipage}
+    \hspace{0.5cm}
+    \begin{minipage}[b]{0.45\linewidth}
+      \centering
+      \includegraphics[width=0.6\textwidth]{vanilla-dbm.png}
+      \caption{A regular DBM with analogous nodes and connectivity profiles.}
+      \label{fig:b}
+    \end{minipage}
+  \end{figure}
+#+end_src
+
+We /assume/ that coefficients for the exchange interactions between the spins of layer \(l\) and \(l+1\) are distributed according to the density function
+
+\begin{equation*}
+P(J_{ijl}) \equiv \sqrt{\dfrac{\widehat{N}_{l}}{2 \pi J^2}} \exp \left \lbrace - \dfrac{\widehat{N}_{l}}{2 J^2} \left( J_{ijl} - \dfrac{J_0}{\widehat{N}_{l}} \right)^{2} \right \rbrace
+\end{equation*}
+
+where \(\widehat{N}_{l} \equiv \sqrt{N_l N_{l+1}\).We will denote with respect to this distribution using \([\cdots]\). For later use, we introduce a number of geometric parameters - the /total spin number/, the /layer density/ and two-way /inter-layer ratios/
+
+\begin{equation*}
+N \equiv \sum_{l=0}^{L} N_l,
+\qquad
+\alpha_l \equiv \frac{N_l}{N},
+\qquad
+\gamma_{l}^{2} \equiv \dfrac{N_{l+1}}{N_{l}},
+\qquad
+\nu_{l}^{2} \equiv \dfrac{N_{l-1}}{N_{l}},
+\end{equation*}
+
+which yield trivial identities
+
+\begin{align*}
+\sum_{l=0}^{L} \alpha_l = 1,
+\qquad
+\frac{\gamma_{l}}{\nu_{l}} = \sqrt{\frac{\alpha_{l+1}}{\alpha_{l-1}}}
+\qquad
+\widehat{N}_{l} = N \sqrt{\alpha_l \alpha_{(l+1)}}.
+\end{align*}
+
+The quenched average of the replicated partition function \([ \mathcal{Z}^{n} ]_{\beta}\)
+
+\begin{align*}
+[\mathcal{Z}^{n}]_{\beta} = \int \left(\prod_{l} \prod_{ij} dJ_{ijl} P (J_{ijl}) \right) \operatorname{Tr}_{\boldsymbol{\sigma}}^{n} \exp 
+\left( \beta \sum_{l} \sum_{ij} J_{ijl} \sum_{a} \sigma_{il}^{a} \sigma_{j(l+1)}^{a} \right)
+\end{align*}
+
+upon evaluation yields
+
+\begin{align*}
+[ \mathcal{Z}^{n} ]_{\beta} = C \operatorname{Tr}
+\exp \bigg\{\dfrac{1}{N} 
+\sum_{l= 0}^{L} \dfrac{1}{\sqrt{\alpha_l \alpha_{l+1}}}
+&\bigg[ 
+\frac{\beta^2 J^2}{2} \sum_{a \neq b} \sum_{ij} \sigma_{il}^{a} \sigma_{il}^{b} 
+\sigma_{j(l+1)}^{a}  \sigma_{j(l+1)}^{b} \\
+&\qquad \qquad + 
+\beta J_{0} \sum_{a} \sum_{ij} \sigma_{il}^{a} \sigma_{j(l+1)}^{a} 
+\bigg]
+\bigg\}
+\end{align*}
+
+where \(\operatorname{Tr}\) is notation for \(\sum_{\boldsymbol{\sigma^{a}}}\) and \(C = \exp \left \lbrace \sum_{l=0}^{L} \frac{\widehat{N} \beta^2 J^2 n}{2}  \right \rbrace\). On introducing auxiliary variables \((q^{(l)})_{l=0}^{L}\) and  \((m^{(l)})_{l=0}^{L}\) and invoking a Hubbard–Stratonovich like integral transform we get
+
+\begin{align*}
+\left[\mathcal{Z}^n\right]_{\beta} = &\exp \left( \sum_{l=0}^{L} \dfrac{\widehat{N} \beta^2 J^2 n}{2} \right)\int \prod_{a \neq b} \prod_{l=0}^L \mathcal{D} (q_{ab}^{(l)}) \mathcal{D} (m_{a}^{(l)}) \thinspace
+\exp \left(
+N \sum_{l=0}^L \alpha_{l} \ln \operatorname{Tr} \exp (\mathcal{L}_{l})
+\right) \\
+&\quad 
+\times \exp \left\{ - N \sum_{l=0}^L \sqrt{\alpha_l \alpha_{l+1}} \left[\frac{\beta^2 J^2}{2} \sum_{a \neq b} q_{a b}^{(l)} q_{a b}^{(l+1)} + \frac{\beta J_0}{2} \sum_a m_a^{(l)} m_a^{(l+1)} \right] \right\},
+\end{align*}
+where
+
+\begin{align*}
+\mathcal{L}_l &\equiv \frac{\beta^2 J^2}{2} \sum_{a \neq b} \bigg( \sum_{\left | k - l  \right | = 1} q_{ab}^{(k)} \bigg) \thinspace \sigma_{l}^a \sigma_{l}^b + \frac{\beta J_0}{2} \sum_a \bigg( \sum_{\left | k - l  \right | = 1} m_a^{(k)} \bigg) \thinspace \sigma_{l}^a,
+\end{align*}
+
+The equality is up to a overall \(\mathcal{O} (N^2)\) multiplicative factor on the right hand side whose contribution to the (intensive) free energy vanishes in the thermodynamic limit. The quenched free energy is then obtained via the method of steepest descent
+
+\begin{align*}
+- \beta [f] \approx & \max_{\{\boldsymbol{q}, \boldsymbol{m}\}} \bigg\{ \lim_{{n \to 0}} \sum_{{l}} \bigg[ - \frac{\beta^2 J^2}{2n} \sum_{|k - l| = 1} \sqrt{\alpha_l \alpha_{k}} \bigg(\sum_{{a \neq b}} q_{ab}^{(l)} q_{ab}^{(k)} - n \bigg) \\
+&\qquad \qquad - \frac{{\beta J_0}}{2n} \sum_{|k - l| = 1} \sqrt{\alpha_l \alpha_{k}} \bigg(\sum_{a} m_{a}^{(l)} m_{a}^{(k)} \bigg) + \frac{{\alpha_l \ln \operatorname{Tr} \exp (\mathcal{L}_{l})}}{n} \bigg] \bigg\},
+\end{align*}
+
+the saddle-point equation for the variables \((q^{(l)})_{l=0}^{L}\) and \((m^{(l)})_{l=0}^{L}\) being
+
+\begin{align*}
+\gamma_l q_{ab}^{(l+1)} + \nu_{l} q_{ab}^{(l-1)} = \sum_{{\lvert k - l  \rvert = 1}} \langle \sigma_{k}^{a} \sigma_{k}^{b} \rangle_{\mathcal{L}_l},
+\end{align*}
+
+\begin{align*}
+\gamma_l m_{a}^{(l+1)} + \nu_{l} m_{a}^{(l-1)} = \sum_{{\lvert k - l  \rvert = 1}} \langle \sigma_{k}^{a}\rangle_{\mathcal{L}_l},
+\end{align*}
+
+where for arbitrary observable \(\mathcal{O}\) we have defined 
+
+\begin{align*}
+\langle \mathcal{O} \rangle_{\mathcal{L}_l} \equiv (\operatorname{Tr}_{\mathcal{O}}^n \exp \left(\mathcal{L}_l\right))^{-1} \operatorname{Tr}_{\mathcal{O}}^n \mathcal{O} \exp \left(\mathcal{L}_l\right)
+\end{align*}
+** Calculation of complexity
+A construction for the /number/ of *inherent structures* (IS) of the DBM is
+
+\begin{align*}
+\mathcal{N} (\{J_{ijl}\}) &= \int_0^{\infty} \mathrm{D}(\lambda_{il}) \int_{-\infty}^{\infty} \mathrm{D}(k_{il}) \exp \left( - i \sum_{l=0}^{L} \sum_{i=1}^{N_l} k_{il} \lambda_{il} \right) \\
+&\qquad \qquad \times \operatorname{tr}
+\exp \bigg\{ i \sum_{ijl} J_{ijl} \bigg(k_{il} \sigma_{il} \sigma_{j(l+1)} + \sigma_{il} \sigma_{j(l+1)} k_{i(l+1)} \bigg) \bigg\},
+\end{align*}
+
+where \(\mathrm{D}(\epsilon_{il}) \equiv \prod_{il} \epsilon_{il}\) and \(\mathrm{D}(k_{il}) \equiv \prod_{il} \frac{k_{il}}{2 \pi}\).
+
+The /expected number of inherent structures/ over the prior of couplings \(P(J_{ijl})\) is
+
+\begin{align*}
+\mathcal{N}\left(J_0, J\right) &= \bigg( \prod_{l=0}^{L} \frac{\widehat{N}_{l}}{2 \pi J^2} \bigg)^{1/2} \int_0^{\infty} \mathrm{D}(\lambda_{il}) \int_{-\infty}^{\infty} \mathrm{D} (k_{il}) \exp \bigg( - i \sum_{il} k_{il} \lambda_{il} \bigg) \\
+&\times \operatorname{tr}
+\exp \bigg\{- \sum_{ijl} \frac{1}{\widehat{N}_l} \bigg[ \frac{J^2}{2} (k_{il} + k_{j (l+1)})^2 - i J_0 \bigg( k_{il} \sigma_{il} \sigma_{j(l+1)} + \sigma_{il} \sigma_{j(l+1)} k_{j(l+1)} \bigg) \bigg\}
+\end{align*}
+
+By introducing auxiliary variables \((x_{l}, \bar{x}_l)_{l=0}^{L}\) and  \((y_{l}, \bar{y}_l)_{l=0}^{L}\), we decouple the spin interaction terms via an integral transform and obtain
+
+\begin{align*}
+\mathcal{N}\left(J_0, J\right) &= - C \int_{-\infty}^{\infty} \mathrm{d} x_{l} \, \mathrm{d} \bar{x}_{l} \, \mathrm{d} y_{l} \, \mathrm{d} \bar{y}_{l} \int_0^{\infty} \mathrm{D}(\lambda_{il}) \int_{-\infty}^{\infty} \mathrm{D} (k_{il}) \\
+&\times \operatorname{tr} \exp \bigg\{- \frac{J^2}{2} \sum_{ijl} \frac{1}{\widehat{N}_l} (k_{il} + k_{j (l+1)})^2 + i \sum_{il} k_{il} \sigma_{il}(x_{l} + i\bar{x}_{l}) - i \sum_{il} k_{il} \lambda_{il} \bigg\} \\
+&\quad \qquad \times \exp \bigg\{N J_{0} \sum_{l} \alpha_l \bigg[ x_{l}^2 - \sqrt{2}x_{l}y_{l} + y_{l}^2 - \frac{1}{2}(\bar{x}_{l}^2 + \bar{y}_{l}^2) \bigg] \bigg\} \\
+&\qquad \qquad \qquad \times \exp \bigg \{ \sum_{jl} \left[\gamma_{l}^{-1} \sigma_{j(l+1)} + \nu^{-1}_{l} \sigma_{j(l-1)}\right](y_{l} + i\bar{y}_{l}) \bigg\}.
+\end{align*}
+
+Applying the same integral transform using auxiliary variables \((u_{l}, \bar{u}_l)_{l=0}^{L}\) and  \((v_{l}, \bar{v}_l)_{l=0}^{L}\) we can decouple the \(\{k_{il}\}\) variables and perform the integral over them. On doing so we obtain
+
+
+\begin{align*}
+&\mathcal{N} \left(J_0, J\right) \\
+&= - C \int_{-\infty}^{\infty} \mathrm{d} x_{l} \, \mathrm{d} \bar{x}_{l} \, \mathrm{d} y_{l} \, \mathrm{d} \bar{y}_{l} \int_{-\infty}^{\infty} \mathrm{d} u_l\, \mathrm{d}\bar{u}_l\, \mathrm{d}v_l \, \mathrm{d}\bar{v}_l \int_0^{\infty} \mathrm{D}(\lambda_{il}) \\
+&\quad \times 
+\exp \bigg\{N \sum_{l} \frac{\alpha_{l} J^2}{2} \bigg[2^{-1/2} \big(\bar{x}_l^2 + \bar{y}_l^2\big) - 2^{1/2} \big(x_l^2 - \sqrt{2}x_l y_l + y_l^2\big) \bigg] \bigg\} \\
+&\quad \times 
+\exp \bigg\{N \sum_{l} \alpha_{l} J_{0} \bigg[ 2^{-1/2} \big(\bar{u}_l^2 + \bar{v}_{l-1}^2\big) - 2^{1/2} \big(u_l^2 - \sqrt{2}u_l v_{l-1} + v_{l-1}^2\big) \bigg] \bigg\} \\
+&\quad \times 
+\exp \bigg\{N \sum_{l} \alpha_{l} R(l) \bigg[ \frac{J^{2}}{2} \big(u_l^{2} - \bar{u}_l^{2} \big) + \frac{1}{2J^{2}} \big(x_l^{2} - \bar{x}_l^{2} \big) + \frac{J^{2}}{2} \big(v_{l-1}^{2} - \bar{v}_{l-1}^{2} \big) \bigg] \bigg\} \\
+&\quad \times
+\exp \bigg\{\sum_{il} \frac{R(l)}{J^{2}} \bigg[- \frac{\lambda_{il}^{2}}{2} +  \lambda_{il} \bigg( [\bar{v}_{l-1} - i v_{l-1}] - J^{-2} (ix_{l} + \bar{x}_{l}) \sigma_{il} + [\bar{u}_{l} - i u_{l}] \bigg) \bigg\} \\
+&\quad \times
+\exp \bigg\{N \sum_{l} \alpha_{l} R(l) \bigg[i J^{2} \bar{u}_{l} u_{l} - \frac{i}{J^{2}} \bar{x}_{l} x_{l} + i J^{2} \bar{v}_{l-1} v_{l-1} + J^{2} (u_{l} + i \bar{u}_{l}) (v_{l-1} + i \bar{v}_{l-1}) \bigg]  \bigg\} \\
+&\quad \times
+\exp \bigg\{\sum_{l} \bigg[
+(x_{l} - i \bar{x}_{l})
+(v_{l} + i \bar{v}_{l} + u_{l} + i \bar{u}_{l}) \sum_{i} \sigma_{il} +
+\sum_{j} \sum_{|k-l|=1} (y_{l} + i\bar{y}_{l}) \bigg(\frac{\alpha_{l}}{\alpha_k} \bigg)^{1/2} \sigma_{j(l+1)} \bigg]
+\bigg\}.
+\end{align*}
+
+The next step two steps are an integral over the \(\{\lambda_{il}\}\) variables followed by the sum over the spin configuration. I expect a steepest-descent approximation will be applicable thereafter which will reduce the problem to solving a set of \(8L\) saddle point equations.

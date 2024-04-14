@@ -1,0 +1,277 @@
+:PROPERTIES:
+:ID:       70ccd501-0efc-4d9a-b1cd-87b7030f10ca
+:END:
+#+TITLE: Complexity using MCMC
+#+FILETAGS: :fleeting: :presentation: :slides:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+#+STARTUP: beamer indent hidestars
+#+LANGUAGE:  en
+#+OPTIONS:   H:2 num:t toc:f \n:nil @:t ::t |:t ^:t -:t f:t *:t <:t
+#+OPTIONS:   TeX:t LaTeX:t skip:nil d:nil todo:t pri:nil tags:not-in-toc
+#+EXPORT_SELECT_TAGS: export
+#+EXPORT_EXCLUDE_TAGS: noexport
+#+LaTeX_CLASS_OPTIONS: [8pt]
+#+LaTeX_CLASS: beamer
+#+LATEX_HEADER: \usepackage{listings}
+#+LATEX_HEADER: \usepackage{amsmath}
+#+LATEX_HEADER: \usepackage{multimedia}
+#+LATEX_HEADER: \newcommand\mitdbar{\text{\ulcshape\slshape đ}}
+#+LATEX_HEADER: \usepackage{amsmath}
+#+LATEX_HEADER: \usepackage{algorithm}
+#+LATEX_HEADER: \usepackage{algpseudocode}
+#+OPTIONS: H:2
+* Algorithms
+** Basin Hopping Algorithm
+\begin{algorithm}[H]
+\caption{Basin hopping}
+\begin{algorithmic}[1]
+\State $\boldsymbol{\mu}$ = \text{RandomConfiguration}(\boldsymbol{\Omega})
+\State $\boldsymbol{\rho} = \text{LocalMinimisation}(\boldsymbol{\mu})$;
+\State $n = 0$;
+\While{$n < \text{MAX ITERS}$}
+    \State $\boldsymbol{\nu} = \text{RandomPerturbation}(\boldsymbol{\mu})$;
+    \State $\boldsymbol{\rho} = \text{LocalMinimisation}(\boldsymbol{\nu})$;
+    \State $r \sim \text{Uniform}(0,1)$;
+    \State $A(\boldsymbol{\mu} \to \boldsymbol{\rho}) \gets \min \left(1, \dfrac{\exp f(\boldsymbol{\mu})}{\exp f (\boldsymbol{\rho})} \right)$;
+    \If{$r < A(\boldsymbol{\mu} \to \boldsymbol{\rho})$}
+        \State $\boldsymbol{\mu} \gets \boldsymbol{\rho}$;
+    \EndIf
+    \State $n \gets n + 1$;
+\EndWhile
+\end{algorithmic}
+\end{algorithm}
+** Wang Landau Algorithm
+\begin{algorithm}[H]
+\caption{Wang and Landau Algorithm}
+\label{alg:wang_landau}
+States \boldsymbol{\mu} occupy a configuration space $\boldsymbol{\Omega}$. $E (\boldsymbol{\mu})$ is a cost function with a bounded range $E \in = [E_{\text{min}}, \thinspace E_{\text{max}}]$. $S (E(\boldsymbol{\mu}))$ is an entropy function. The estimator is the \textit{density of states}  $g(E) = \exp(S(E))$. The interval $[E_{\text{min}}, \thinspace E_{\text{max}}]$ is divided into $N$ discrete values $N = (E_{\text{max}} - E_{\text{min}})/ \Delta$.
+\begin{algorithmic}[1]
+\State $S(E_{i}) \gets 0$ for all $E_{i} = 1 \dots N$
+\State $\ln f \gets 1$
+\State $\boldsymbol{\mu}$ = \text{RandomConfiguration}(\boldsymbol{\Omega})
+\While{$\ln f > \ln f_{\mathrm{stop}}$}
+    \State $\boldsymbol{\nu} \sim \mathbf{W}(\boldsymbol{\mu} \to \boldsymbol{\nu})$
+    \State $A(\boldsymbol{\mu} \to \boldsymbol{\nu}) \gets \min \left(1, \thinspace \dfrac{\exp S(E(\boldsymbol{\mu}))}{\exp S(E(\boldsymbol{\nu}))} \dfrac{\mathbf{W} (\boldsymbol{\nu} \to \boldsymbol{\mu})}{\mathbf{W}(\boldsymbol{\mu} \to \boldsymbol{\nu})} \right)$
+    \State $r \sim \text{Uniform}(0,1)$
+    \If{$ r < A(\boldsymbol{\mu} \to \boldsymbol{\nu})$}
+        \State $\boldsymbol{\mu} \gets \boldsymbol{\nu}$
+    \EndIf
+    \State $H(E(\boldsymbol{\mu})) \gets H(E(\boldsymbol{\mu})) + 1$
+    \State $S(E_i(\boldsymbol{\mu})) \gets S(E_i(\boldsymbol{\mu})) + \ln f$
+      \If {$\text{Flat} (H)$}
+      \State $\ln f \gets \ln f / 2$
+      \EndIf
+\EndWhile
+\end{algorithmic}
+\end{algorithm}
+** Schnabel and Janke Algorithm
+The basic idea is to embed the Wang and Landau iteration in the Basin Hopping algorithm.
+\begin{algorithm}[H]
+\caption{Schnabel and Janke Algorithm}
+The estimator is the \textit{density of states of inherent structures}  $g(E(\boldsymbol{\rho})) = \exp(S(E(\boldsymbol{\rho})))$.
+\begin{algorithmic}[1]
+\State $S(E_{i}) \gets 0$ for all $E_{i} = 1 \dots N$
+\State $\ln f \gets 1$
+\State $\boldsymbol{\mu}$ = \text{RandomConfiguration}(\boldsymbol{\Omega})
+\State $\boldsymbol{\rho} = \text{LocalMinimisation}(\boldsymbol{\mu})$;
+\While{$\ln f > \ln f_{\mathrm{stop}}$}
+    \State $\boldsymbol{\nu} = \text{RandomPerturbation}(\boldsymbol{\mu})$;
+    \State $\boldsymbol{\eta} = \text{LocalMinimisation}(\boldsymbol{\nu})$;
+    \State $A(\boldsymbol{\rho} \to \boldsymbol{\eta}) \gets \min \left(1, \thinspace \dfrac{\exp S(E(\boldsymbol{\rho}))}{\exp S(E(\boldsymbol{\eta}))} \dfrac{\mathbf{W}(\boldsymbol{\nu} \to \boldsymbol{\eta} )}{\mathbf{W} (\boldsymbol{\mu} \to \boldsymbol{\rho})} \right)$
+    \State $r \sim \text{Uniform}(0,1)$
+    \If{$r < A(\boldsymbol{\eta} \to \boldsymbol{\rho})$}
+        \State $\boldsymbol{\mu} \gets \boldsymbol{\nu}$;
+        \State $\boldsymbol{\rho} \gets \boldsymbol{\eta}$;
+    \EndIf
+    \State $H(E(\boldsymbol{\rho})) \gets H(E(\boldsymbol{\rho})) + 1$
+    \State $S(E_i(\boldsymbol{\rho})) \gets S(E_i(\boldsymbol{\rho})) + \ln f$
+      \If {$\text{Flat} (H)$}
+      \State $\ln f \gets \ln f / 2$
+      \EndIf
+\EndWhile
+\end{algorithmic}
+\end{algorithm}
+This can easily be iterated if \(\mathbf{W} (\boldsymbol{\eta} \to \boldsymbol{\rho})\) is known.
+** Local Minimization
+\begin{algorithm}[H]
+\caption{Local Minimisation}
+This routine takes a state $\boldsymbol{\mu}$ to an local minima $\boldsymbol{\rho}$ by flipping one among the set of spins with positive energy $e_p(\boldsymbol{\mu})$ at random. This is done till the number of spins with positive energy $n_p(\boldsymbol{\mu}) = 0$. $\mathcal{N} (\mu_i)$ is the set of neighbors of the $i^{\text{th}}$ spin $\mu_i$.
+\label{alg:local_minimization}
+\begin{algorithmic}[1]
+\State $n_p(\boldsymbol{\mu}) \gets \text{CountPositive} (\boldsymbol{\mu})$;
+\While{$n_p(\boldsymbol{\mu}) > 0$}
+\State $e_p(\boldsymbol{\mu}) \gets \text{SelectPositiveSpins} (\boldsymbol{\mu})$;
+\State $\mu_i \sim \text{Uniform} (e_p(\boldsymbol{\mu}))$
+\State $\mu_i \gets \text{Flip}(\mu_i)$
+\State $e(\mu_i) \gets - e(\mu_i)$
+    \For {$\mu_j$ in $\mathcal{N} (\mu_i)$}
+          \State $e(\mu_j) \gets e(\mu_j) - 2 \thinspace \mu_i J_{ij} \mu_j$;
+    \EndFor
+\State $n_p(\boldsymbol{\mu}) \gets \text{CountPositive} (\boldsymbol{\mu})$;
+\EndWhile
+\State $\boldsymbol{\rho} \gets \boldsymbol{\mu}$
+\State \Return $\boldsymbol{\rho}$
+\end{algorithmic}
+\end{algorithm}
+** Determining \(\mathbf{W} (\boldsymbol{\eta} \to \boldsymbol{\rho})\)
++ \( n_p(\boldsymbol{\mu}) \) and \( n_n(\boldsymbol{\mu}) \) are the number of spins in the configuration \( \boldsymbol{\mu}\) with positive and negative energy.
++ Probability that a sequence \(\{\boldsymbol{\mu}_0, \boldsymbol{\mu}_1, \ldots, \boldsymbol{\mu}_f \equiv \rho\}\) is realized by the $\text{LocalMinimization}$ routine given a starting configuration $\boldsymbol{\mu}_{0}$:
+\[
+P(\boldsymbol{\mu}_0, \boldsymbol{\mu}_1, \ldots, \boldsymbol{\mu}_f|\boldsymbol{\mu}_0) = \prod_{i=0}^{f-1} \frac{1}{n_p(\boldsymbol{\mu}_i)}
+\]
++ Probability that a sequence \(\{\boldsymbol{\mu}_0, \boldsymbol{\mu}_1, \ldots, \boldsymbol{\mu}_f \equiv \rho\}\) is realized by the $\text{LocalMinimization}$ routine given a starting configuration $\boldsymbol{\mu}_{f}$:
+\[
+P(\boldsymbol{\mu}_0, \boldsymbol{\mu}_1, \ldots, \boldsymbol{\mu}_f|\boldsymbol{\mu}_f) = \prod_{i=1}^{f} \frac{1}{n_n(\boldsymbol{\mu}_i)}
+\]
++ Using Bayes theorem:
+
+\[
+P(\boldsymbol{\mu}_f) = \frac{P(\boldsymbol{\mu}_0, \boldsymbol{\mu}_1, \ldots, \boldsymbol{\mu}_f|\boldsymbol{\mu}_0) P(\boldsymbol{\mu}_0)}{P(\boldsymbol{\mu}_0, \boldsymbol{\mu}_1, \ldots, \boldsymbol{\mu}_f|\boldsymbol{\mu}_f)}
+\]
++ Therefore
+\[
+\mathbf{W} (\boldsymbol{\mu} \to \boldsymbol{\rho}) = \frac{P(\boldsymbol{\mu}, \boldsymbol{\mu}_1, \ldots, \boldsymbol{\mu}_f|\boldsymbol{\mu}_f)}{P(\boldsymbol{\mu}, \boldsymbol{\mu}_1, \ldots, \boldsymbol{\mu}_f|\boldsymbol{\mu})} =  \frac{\prod_{i=0}^{f-1}n_p(\boldsymbol{\mu}_i)}{\prod_{i=1}^{f} n_n(\boldsymbol{\mu}_i)}
+\]
+* Results
+** RBM Complexity
+#+begin_src latex
+\begin{figure}[h]
+\centering
+   \includegraphics[width=\linewidth]{rbm_complexity.png}
+\end{figure}
+#+end_src
+** N = 300
+\begin{table}[H]
+\begin{center}
+$N_v = 100$, $N_h = 200$,  $E(\rho_{\mathrm{ref}}) =-2552.279$\\
+\vspace{2mm} % Adds a bit of vertical space
+\begin{tabular}{ccccc}
+\hline
+Time & $\ln f $                   & A(\rho, \rho^{\prime})    & MC Steps \\
+\hline
+00h 00m 15s & $1.00 \times 10^{0}$     & 0.030678  & $1.5e6$  \\
+00h 02m 37s & $5.00 \times 10^{-1}$    & 0.029477  & $1.7e6$  \\
+00h 04m 22s & $2.50 \times 10^{-1}$    & 0.023072   & $2.4e6$  \\
+00h 07m 21s & $1.25 \times 10^{-1}$    & 0.018968   & $3.0e6$  \\
+00h 11m 16s & $6.25 \times 10^{-2}$    & 0.014378   & $4.1e6$  \\
+00h 17m 33s & $3.12 \times 10^{-2}$    & 0.010712   & $5.6e6$  \\
+00h 36m 31s & $1.56 \times 10^{-2}$    & 0.007462   & $8.3e6$  \\
+01h 09m 52s & $7.81 \times 10^{-3}$    & 0.004013  & $1.6e7$  \\
+02h 03m 39s & $3.90 \times 10^{-3}$    & 0.002214   & $2.9e7$  \\
+04h 30m 20s & $1.95 \times 10^{-3}$    & 0.001279   & $5.1e7$  \\
+09h 26m 35s & $9.77 \times 10^{-4}$    & 0.000685   & $9.8e7$  \\
+20h 24m 25s & $4.88 \times 10^{-4}$    & 0.000348   & $2.0e8$  \\
+20h 24m 25s & $2.44 \times 10^{-4}$    & 0.000195  & $3.6e8$  \\
+\hline
+\end{tabular}
+\label{tab:simulation}
+\caption{$f_{\mathrm{threshold}}(H(D_H(\rho, \rho_{\mathrm{ref}}))) = 0.12$, $\ln f_{\mathrm{stop}} = 0.00001$}
+\label{tab:simulation_data}
+\end{center}
+\end{table}
+** N = 300
+#+begin_src latex
+\begin{figure}[h]
+\centering
+   \includegraphics[width=\linewidth]{63086.png}
+\end{figure}
+#+end_src
+** N = 400
+\begin{table}[H]
+\begin{center}
+$N_v = 100$, $N_h = 300$,  $E(\rho_{\mathrm{ref}}) =-3422.391$\\
+\vspace{2mm} % Adds a bit of vertical space
+\begin{tabular}{cccc}
+\hline
+Time & $\ln f $                   & A(\rho, \rho^{\prime})    & MC Steps \\
+\hline
+00h 02m 46s & $1.00 \times 10^{0}$ & 0.022684 & $3.7 \times 10^{6}$  \\
+00h 05m 58s & $5.00 \times 10^{-1}$ & 0.020730 & $4.7 \times 10^{6}$  \\
+00h 07m 38s & $2.50 \times 10^{-1}$ & 0.019275 & $5.3 \times 10^{6}$  \\
+00h 21m 25s & $1.25 \times 10^{-1}$ & 0.012618 & $9.4 \times 10^{6}$  \\
+00h 44m 45s & $6.25 \times 10^{-2}$ & 0.008001 & $1.6 \times 10^{7}$  \\
+01h 15m 07s & $3.12 \times 10^{-2}$ & 0.005455 & $2.6 \times 10^{7}$  \\
+01h 29m 45s & $1.56 \times 10^{-2}$ & 0.004726 & $3.0 \times 10^{7}$  \\
+01h 38m 55s & $7.81 \times 10^{-3}$ & 0.004337 & $3.3 \times 10^{7}$  \\
+03h 02m 38s & $3.90 \times 10^{-3}$ & 0.002500 & $5.9 \times 10^{7}$  \\
+03h 26m 00s & $1.95 \times 10^{-3}$ & 0.002255 & $6.5 \times 10^{7}$  \\
+05h 47m 39s & $9.77 \times 10^{-4}$ & 0.001376 & $1.1 \times 10^{8}$  \\
+06h 37m 52s & $4.88 \times 10^{-4}$ & 0.001207 & $1.2 \times 10^{8}$  \\
+09h 50m 09s & $2.44 \times 10^{-4}$ & 0.001090 & $1.5 \times 10^{8}$  \\
+11h 39m 31s & $1.22 \times 10^{-4}$ & 0.000716 & $2.1 \times 10^{8}$  \\
+20h 12m 57s & $6.10 \times 10^{-5}$ & 0.000473 & $2.1 \times 10^{8}$  \\
+\hline
+\end{tabular}
+\caption{$f_{\mathrm{threshold}}(H(D_H(\rho, \rho_{\mathrm{ref}}))) = 0.13$, $\ln f_{\mathrm{stop}} = 0.00001$}
+\label{tab:simulation_data}
+\end{center}
+\end{table}
+** N = 400
+#+begin_src latex
+\begin{figure}[h]
+\centering
+   \includegraphics[width=\linewidth]{41971.png}
+\end{figure}
+#+end_src
+** N = 500
+\begin{table}[H]
+\begin{center}
+$N_v = 100$, $N_h = 400$,  $E(\rho_{\mathrm{ref}}) =-4931.399$\\
+\vspace{2mm} % Adds a bit of vertical space
+\begin{tabular}{cccc}
+\hline
+Time & $\ln \thinspace f $                   & A(\rho, \rho^{\prime})    & MC Steps \\
+\hline
+00h 05m 23s & $1.00 \times 10^{0}$ & 0.019109 & $6.2 \times 10^{6}$  \\
+00h 12m 01s & $5.00 \times 10^{-1}$ & 0.017556 & $7.9 \times 10^{6}$  \\
+00h 28m 14s & $2.50 \times 10^{-1}$ & 0.013698 & $1.2 \times 10^{7}$  \\
+00h 49m 00s & $1.25 \times 10^{-1}$ & 0.010607 & $1.7 \times 10^{7}$  \\
+00h 54m 24s & $6.25 \times 10^{-2}$ & 0.009972 & $1.9 \times 10^{7}$  \\
+01h 22m 13s & $3.12 \times 10^{-2}$ & 0.007480 & $2.6 \times 10^{7}$  \\
+02h 25m 15s & $1.56 \times 10^{-2}$ & 0.004765 & $4.2 \times 10^{7}$  \\
+03h 00m 53s & $7.81 \times 10^{-3}$ & 0.003974 & $5.0 \times 10^{7}$  \\
+07h 15m 54s & $3.90 \times 10^{-3}$ & 0.001852 & $1.1 \times 10^{8}$  \\
+08h 57m 47s & $1.95 \times 10^{-3}$ & 0.001524 & $1.4 \times 10^{8}$  \\
+12h 05m 11s & $9.77 \times 10^{-4}$ & 0.001201 & $1.8 \times 10^{8}$  \\
+13h 41m 48s & $4.88 \times 10^{-4}$ & 0.001088 & $2.0 \times 10^{8}$  \\
+20h 02m 51s & $2.44 \times 10^{-4}$ & 0.000792 & $2.1 \times 10^{8}$  \\
+\hline
+\end{tabular}
+\caption{$f_{\mathrm{threshold}}(H(D_H(\rho, \rho_{\mathrm{ref}}))) = 0.14$, $\ln f_{\mathrm{stop}} = 0.00001$}
+\label{tab:simulation_data}
+\end{center}
+\end{table}
+
+** N = 500
+#+begin_src latex
+\begin{figure}[h]
+\centering
+   \includegraphics[width=\linewidth]{49308.png}
+\end{figure}
+#+end_src
+** N = 600
+\begin{table}[H]
+\begin{center}
+$N_v = 100$, $N_h = 500$,  $E(\rho_{\mathrm{ref}}) =-5189.714$\\
+\vspace{2mm} % Adds a bit of vertical space
+\begin{tabular}{cccc}
+\hline
+Time & $\ln \thinspace f $                   & A(\rho, \rho^{\prime})    & MC Steps \\
+\hline
+00h 06m 37s & $1.00 \times 10^{0}$ & 0.018964 & $8.8 \times 10^{6}$  \\
+00h 08m 18s & $5.00 \times 10^{-1}$ & 0.018767 & $9.1 \times 10^{6}$  \\
+01h 09m 22s & $2.50 \times 10^{-1}$ & 0.011066 & $2.2 \times 10^{7}$  \\
+03h 00m 30s & $1.25 \times 10^{-1}$ & 0.007115 & $4.7 \times 10^{7}$  \\
+03h 24m 49s & $6.25 \times 10^{-2}$ & 0.006603 & $5.2 \times 10^{7}$  \\
+03h 35m 16s & $3.12 \times 10^{-2}$ & 0.006376 & $5.4 \times 10^{7}$  \\
+08h 39m 25s & $1.56 \times 10^{-2}$ & 0.003151 & $1.2 \times 10^{8}$  \\
+09h 53m 02s & $7.81 \times 10^{-3}$ & 0.002894 & $1.3 \times 10^{8}$  \\
+11h 52m 20s & $3.90 \times 10^{-3}$ & 0.002472 & $1.6 \times 10^{8}$  \\
+13h 31m 09s & $1.95 \times 10^{-3}$ & 0.002228 & $1.7 \times 10^{8}$  \\
+19h 48m 10s & $9.77 \times 10^{-4}$ & 0.001625 & $1.7 \times 10^{8}$  \\
+\hline
+\end{tabular}
+\caption{$f_{\mathrm{threshold}}(D_H(\rho, \rho_{\mathrm{ref}})) = 0.15$, $\ln f_{\mathrm{stop}} = 0.00001$}
+\label{tab:simulation_data}
+\end{center}
+\end{table}
