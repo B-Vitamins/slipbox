@@ -1,0 +1,61 @@
+:PROPERTIES:
+:ID:       99217c52-b39a-4d41-bbfc-5ae812d51764
+:END:
+#+TITLE: Random deposition
+#+FILETAGS: :problem: :SPOP: :statmech:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+#+BEGIN: clocktable :maxlevel 2 :scope nil :emphasize nil
+#+CAPTION: Clock summary at [2024-04-17 Wed 19:29]
+| Headline     | Time   |
+|--------------+--------|
+| *Total time* | *0:00* |
+#+END
+* 2.9 Random deposition
+:LOGBOOK:
+CLOCK: [2024-04-17 Wed 21:30]--[2024-04-17 Wed 23:26] =>  1:56
+:END:
+*A mirror is plated by evaporating a gold electrode in vacuum by passing an electric current. The gold atoms fly off in all directions, and a portion of them sticks to the glass (or to other gold atoms already on the glass plate). Assume that each column of deposited atoms is independent of neighboring columns, and that the average deposition rate is \( d \) layers per second.*
+
+Next: [[id:606f5026-eb51-4aa7-8783-1ae9756bd686][Diode]]
+
+** 2.9.1
+*What is the probability of \( m \) atoms deposited at a site after a time \( t \)? What fraction of the glass is not covered by any gold atoms?*
+
+The random deposition described above is a Poisson process. Let us work out how the [[id:45bd3e37-0464-4358-99a3-79707a816cd5][Poisson distribution]] emerges naturally when modelling an arrival process using first principles. In a given time interval \(\Delta t\), the probability of an arrival is \(\Delta p\). The probability of \(n\) arrivals in time \(t\) is
+
+\begin{align*}
+p(n)= \binom{t / \Delta t}{n} (\Delta p)^n(1-\Delta p)^{t / \Delta t-n} = \frac{(t \Delta p / \Delta t) \cdots(t \Delta p / \Delta t-(n-1) \Delta p)}{n!}(1-\Delta p)^{t / \Delta t-n}.
+\end{align*}
+
+The average number of arrivals in time \(t\) is
+
+\begin{align*}
+\sum_{k=0}^{t / \Delta t} k \binom{t / \Delta t}{n} (\Delta p)^k(1-\Delta p)^{t / \Delta t -k} =\frac{\Delta p}{\Delta t} t \equiv \lambda t,
+\end{align*}
+
+where we have introduced a proportionality constant \(\lambda\) to define the relation \(\Delta p \equiv \lambda \Delta t\). In encodes the simple fact that the probability of an arrival is directly proportional to the time interval over which it is awaited. Substituting \(\Delta t=\Delta p / \lambda\) in the expression for \(p(n)\), the \(\Delta t \to 0\) limit can be evaluated and yields the Poisson PDF
+
+\begin{align*}
+p(n)= \lim_{1/\Delta p \rightarrow \infty} \frac{(\lambda  t)^n}{n!}\bigg(1+ \frac{(-\lambda t)}{1/\Delta p}\bigg)^{1 / \Delta p} =\frac{(\lambda t)^n e^{- \lambda t}}{n!}.
+\end{align*}
+
+It describes an arrival process: given time \(t\) has elapsed, the probability of \(n\) arrivals having occured during this period is given by \(p(n)\). The proportionality constant \(\lambda\) is the /average rate of arrival/, it has dimensions of \(t^{-1}\). Across a large number of observations of \(n\) keeping \(t\) fixed, we will observe that \( \langle n \rangle_{c} = \lambda t \). Thus, the probability \( p(m) \) of \( m \) atoms having deposited at a site after a time \( t \), given an average deposition rate of \(d\) layers per second is \( p(m)=(dt)^m \exp (-d t) / m ! \).
+
+** 2.9.2
+*What is the variance in the thickness?*
+
+We can appeal to the fact that all the cumulants of the [[id:45bd3e37-0464-4358-99a3-79707a816cd5][Poisson distribution]] are equal to \( \langle m \rangle \), thus so is \( \langle m^{2} \rangle_{c} \), the variance. In this case, since \( \langle m \rangle = dt \), \( \langle m^{2} \rangle_{c} = dt\). However, let us work it out explicitly for the sake of completeness. First, we will explicitly show that \( \langle m \rangle = dt \). By definition
+
+\begin{align*}
+\langle m \rangle = \sum_{m=0}^{\infty} \frac{m (dt)^m \exp (-dt)}{m!} = \exp (-dt) \, dt \sum_{m=1}^{\infty} \frac{(dt)^{m-1}}{(m-1)!} = \exp (-dt) \, dt \, \exp (dt) = dt.
+\end{align*}
+
+Now, let us calculate the second moment \( \langle m^2 \rangle \). By definition
+
+\begin{align*}
+\langle m^2 \rangle &= \sum_{m=0}^{\infty} \frac{m(m - 1 + 1)}{m !}(d t)^m \exp (-dt) \\ &=\sum_{m=2}^{\infty} \frac{m(m-1)}{m !}(d t)^m \exp (-dt)+\sum_{m=1}^{\infty} \frac{m}{m !}(d t)^m \exp (-dt)\\
+&= \exp (-dt) \, (dt)^2 \sum_{m=2}^{\infty} \frac{(dt)^{m-2}}{(m-2)!} + \exp (-dt) \, dt \sum_{m=1}^{\infty} \frac{(d t)^{m-1}}{(m-1)!} \\
+&= \exp (-dt) \, (dt)^2 \, \exp (dt) + \exp (-dt) \, dt \, \exp (dt) = (d t)^2 + d t.
+\end{align*}
+
+The variance is \(\langle m \rangle_{c} \equiv \langle m^{2} \rangle - \langle m \rangle^{2} = dt\). 
