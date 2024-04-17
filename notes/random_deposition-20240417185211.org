@@ -5,10 +5,12 @@
 #+FILETAGS: :problem: :SPOP: :statmech:
 #+SETUPFILE: ~/.config/emacs/setup/setupfile.org
 #+BEGIN: clocktable :maxlevel 2 :scope nil :emphasize nil
-#+CAPTION: Clock summary at [2024-04-17 Wed 19:29]
-| Headline     | Time   |
-|--------------+--------|
-| *Total time* | *0:00* |
+#+CAPTION: Clock summary at [2024-04-17 Wed 23:27]
+| Headline              | Time   |
+|-----------------------+--------|
+| *Total time*          | *1:56* |
+|-----------------------+--------|
+| 2.9 Random deposition | 1:56   |
 #+END
 * 2.9 Random deposition
 :LOGBOOK:
