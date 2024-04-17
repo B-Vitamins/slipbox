@@ -5,7 +5,7 @@
 #+FILETAGS: :problem: :SPOP: :statmech:
 #+SETUPFILE: ~/.config/emacs/setup/setupfile.org
 #+BEGIN: clocktable :maxlevel 2 :scope file :emphasize nil
-#+CAPTION: Clock summary at [2024-04-14 Sun 05:50]
+#+CAPTION: Clock summary at [2024-04-17 Wed 19:36]
 | Headline        | Time   |
 |-----------------+--------|
 | *Total time*    | *1:28* |
@@ -17,6 +17,9 @@
 CLOCK: [2024-04-12 Fri 22:30]--[2024-04-12 Fri 23:58] =>  1:28
 :END:
 *Consider the velocity of a gas particle in one dimension* \( (-\infty < v < \infty) \).
+
+Next: [[id:91e39ba2-fe8b-485c-8386-e7912c415064][Dice]]
+
 ** 2.6.1
 *Find the unbiased probability density* \( P_1(v) \), *subject only to the constraint that the average speed is* \( c \), *that is,* \( \langle |v| \rangle = c\).
 

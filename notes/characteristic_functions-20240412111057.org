@@ -5,7 +5,7 @@
 #+FILETAGS: :problem: :SPOP: :statmech:
 #+SETUPFILE: ~/.config/emacs/setup/setupfile.org
 #+BEGIN: clocktable :maxlevel 2 :scope file :emphasize nil
-#+CAPTION: Clock summary at [2024-04-14 Sun 05:50]
+#+CAPTION: Clock summary at [2024-04-17 Wed 19:32]
 | Headline                     | Time   |
 |------------------------------+--------|
 | *Total time*                 | *4:44* |
@@ -17,6 +17,8 @@
 CLOCK: [2024-04-12 Fri 11:15]--[2024-04-12 Fri 15:59] =>  4:44
 :END:
 *Calculate the characteristic function, the mean, and the variance of the following probability density functions.*
+
+Next: [[id:70bdc644-aa9c-4b05-88f7-9c4e5cbe9f3e][Directed random walk]]
 
 The characteristic function is the Fourier transform of the PDF [cite:@kardar2007spop]
 

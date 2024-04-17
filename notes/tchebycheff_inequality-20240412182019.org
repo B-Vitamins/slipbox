@@ -5,7 +5,7 @@
 #+FILETAGS: :problem: :SPOP: :statmech:
 #+SETUPFILE: ~/.config/emacs/setup/setupfile.org
 #+BEGIN: clocktable :maxlevel 2 :scope file :emphasize nil
-#+CAPTION: Clock summary at [2024-04-14 Sun 05:51]
+#+CAPTION: Clock summary at [2024-04-17 Wed 19:33]
 | Headline                   | Time   |
 |----------------------------+--------|
 | *Total time*               | *0:17* |
@@ -21,6 +21,8 @@ CLOCK: [2024-04-12 Fri 18:22]--[2024-04-12 Fri 18:39] =>  0:17
 \[ \int_{|x-\lambda|\geq n\sigma} dx\, p(x) \leq \frac{1}{n^2}. \]
 
 *Hint: Start with the integral defining* \( \sigma^2 \), *and break it up into parts corresponding to* \( |x - \lambda| > n\sigma \) *and* \( |x - \lambda| < n\sigma \).
+
+Next: [[id:965c9ac7-0ec9-42ba-9f4b-431d977535d4][Optimal selection]]
 
 \begin{align*}
 \int_{-\infty}^{\infty}(x-\lambda)^2 & p(x) \,dx = \sigma^2 \\

@@ -5,7 +5,7 @@
 #+FILETAGS: :problem: :SPOP: :statmech:
 #+SETUPFILE: ~/.config/emacs/setup/setupfile.org
 #+BEGIN: clocktable :maxlevel 2 :scope file
-#+CAPTION: Clock summary at [2024-04-17 Wed 16:12]
+#+CAPTION: Clock summary at [2024-04-17 Wed 19:32]
 | Headline                 | Time   |
 |--------------------------+--------|
 | *Total time*             | *0:55* |
@@ -17,6 +17,9 @@
 CLOCK: [2024-04-12 Fri 17:22]--[2024-04-12 Fri 18:17] =>  0:55
 :END:
 *The motion of a particle in three dimensions is a series of independent steps of length* \(l\). *Each step makes an angle* \( \theta \) *with the* \(z\) *axis, with a probability density* \( p(\theta) = 2 \cos^2(\theta/2) / \pi; \) *while the angle* \( \phi \) *is uniformly distributed between* \(0\) *and* \( 2\pi \). *(Note that the solid angle factor of* \( \sin \theta \) *is already included in the definition of* \( p(\theta) \), *which is correctly normalized to unity.) The particle (walker) starts at the origin and makes a large number of steps* \( N \).
+
+Next: [[id:f58465bf-212c-469b-aab3-4a54eafee50c][Tchebycheff inequality]]
+
 ** 2.2.1 
 *Calculate the expectation values* \(\langle z \rangle\), \(\langle x \rangle\), \(\langle y \rangle\), \(\langle z^2 \rangle\), \(\langle x^2 \rangle\), *and* \(\langle y^2 \rangle\), *and the covariances* \(\langle xy \rangle\), \(\langle xz \rangle\), *and* \(\langle yz \rangle\).
 

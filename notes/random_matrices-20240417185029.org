@@ -1,0 +1,75 @@
+:PROPERTIES:
+:ID:       17d12082-ff2e-4076-a54c-9f40ad7964b3
+:END:
+#+TITLE: Random matrices
+#+FILETAGS: :problem: :SPOP: :statmech:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+#+BEGIN: clocktable :maxlevel 2 :scope nil :emphasize nil
+#+CAPTION: Clock summary at [2024-04-17 Wed 21:08]
+| Headline            | Time   |
+|---------------------+--------|
+| *Total time*        | *1:14* |
+|---------------------+--------|
+| 2.8 Random matrices | 1:14   |
+#+END
+* 2.8 Random matrices
+:LOGBOOK:
+CLOCK: [2024-04-17 Wed 20:48]--[2024-04-17 Wed 21:08] =>  0:20
+CLOCK: [2024-04-17 Wed 19:52]--[2024-04-17 Wed 20:46] =>  0:54
+:END:
+*As a model for energy levels of complex nuclei, Wigner considered \(N \times N\) symmetric matrices whose elements are random. Let us assume that each element \(M_{ij}\) (for \(i \geq j\)) is an independent random variable taken from the probability density function*
+
+\[ p(M_{ij}) = \frac{1}{2a} \quad \text{for} \quad -a < M_{ij} < a, \quad \text{and} \quad p(M_{ij}) = 0 \quad \text{otherwise}. \]
+
+Next: [[id:99217c52-b39a-4d41-bbfc-5ae812d51764][Random deposition]]
+
+** 2.8.1
+*Calculate the characteristic function for each element \( M_{ij} \).*
+
+Each entry is random and equiprobable. The [[id:f5d85255-1e37-41cb-b961-7c1a6992fc97][Characteristic function]] is thus that of a uniform
+
+\begin{align*}
+\tilde{p} (k)= \frac{\sin (a k)}{a k}.
+\end{align*}
+
+** 2.8.2
+*Calculate the characteristic function for the trace of the matrix, \( T = tr M = \sum_{i} M_{ii} \).*
+
+\begin{align*}
+\tilde{p}_T(k) & \equiv\langle\exp (-i k T)\rangle \\
+& =\bigg\langle\prod_{i=1}^N \exp \left(-i k M_{i i}\right)\bigg\rangle \\
+& =\prod_{i=1}^N\langle\exp \left(-i k M_{i i}\right)\rangle=\bigg(\frac{\sin (a k)}{a k}\bigg)^N
+\end{align*}
+
+We have used the fact that the matrix entries are independent and identically distributed.
+
+** 2.8.3
+*What does the central limit theorem imply about the probability density function of the trace at large \( N \)?*
+
+Because the matrix entries are independent and identically distributed, we have \( \langle T \rangle_{c} = 0 \) and \( \langle T^{2} \rangle_{c} = N \langle M_{ii}^{2} \rangle = N a^2 /3 \). Appeal the central limit theorem allows us to assert that the random variables \( t = T / \sqrt{N} \) is normally distributed with the probability density function
+
+\[p(t)=\sqrt{\frac{3}{2 \pi a^2}} \exp \left(\frac{-3 t^2}{2 a^2}\right).\]
+
+** 2.8.4
+*For large \( N \), each eigenvalue \( \lambda_\alpha \) ( \( \alpha = 1, 2, \ldots, N \) ) of the matrix \( M \) is distributed according to a probability density function*
+
+\[ p(\lambda) = \frac{2}{\pi \lambda_0^2} \sqrt{1 - \frac{\lambda^2}{\lambda_0^2}} \quad \text{for} \quad -\lambda_0 < \lambda < \lambda_0, \quad \text{and} \quad p(\lambda) = 0 \quad \text{otherwise}. \]
+
+*(known as the Wigner semicircle rule). Find the variance of \( \lambda \). (Hint: Changing variables to \( \lambda = \lambda_0 \sin \theta \) simplifies the integrals.)*
+
+Notice that the mass about \(p(\lambda)\) is equal and immediately assert \( \langle \lambda \rangle = \langle \lambda  \rangle_c = 0 \), so that \( \langle \lambda^{2} \rangle_{c} = \langle \lambda^{2} \rangle \). Using the substitution \(\lambda = \lambda_{0} \sin \theta \), the integral for \( \langle \lambda^{2} \rangle \) simplifies
+
+\[
+\langle\lambda^2\rangle_c &= 2 \int_{-\lambda_0}^{\lambda_0} \frac{d \lambda \cdot \lambda^2}{\pi \lambda_0} \sqrt{1-\frac{\lambda^2}{\lambda_0^2}} = \frac{2 \lambda_0^2}{\pi} \int_{-\pi / 2}^{\pi / 2} d \theta \cos ^2 \theta \sin ^2 \theta = \frac{2 \lambda_0^2}{\pi} \cdot \frac{\pi}{8}=\lambda_0^2 / 4.
+\]
+
+** 2.8.5
+*If, in the previous result, we have \( \lambda_0^2 = 4Na^2/3 \), can the eigenvalues be independent of each other?*
+
+First, we recall that the trace is the sum of eigenvalues \(T=\sum_{i=1}^N \lambda_i\). We therefore have
+
+\[\langle T^2\rangle_c=\bigg \langle \bigg(\sum_{i=1}^N \lambda_i \bigg) \bigg(\sum_{j=1}^N \lambda_j \bigg) \bigg \rangle=\bigg \langle\sum_{ij}^N \lambda_i \lambda_j \bigg \rangle =\sum_{ij}^N\langle\lambda_i \lambda_j\rangle=\sum_{i=j}^N\langle\lambda_i^2\rangle+\sum_{i \neq j}^N\langle\lambda_i \lambda_j\rangle\]
+
+ If the eigenvalues were independent, we would have identically vanishing \( \langle \lambda_{i} \lambda_{j} \rangle \) for \(i \neq j\). As such \(\sum_{i \neq j}^N\langle\lambda_i \lambda_j\rangle\) must also vanish. But \(\sum_{i \neq j}^N\langle\lambda_i \lambda_j\rangle=\langle T^2\rangle_c-\sum_{i=j}^N\langle\lambda_i^2\rangle=\frac{N a^2}{3}-\frac{N^2 a^2}{3} \neq 0\) is non-vanishing. As a consequence, the eigenvalues cannot be independent of each other.
+
+

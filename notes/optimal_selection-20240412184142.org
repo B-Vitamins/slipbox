@@ -5,7 +5,7 @@
 #+FILETAGS: :problem: :SPOP: :statmech:
 #+SETUPFILE: ~/.config/emacs/setup/setupfile.org
 #+BEGIN: clocktable :maxlevel 2 :scope file :emphasize nil
-#+CAPTION: Clock summary at [2024-04-14 Sun 05:50]
+#+CAPTION: Clock summary at [2024-04-17 Wed 19:34]
 | Headline              | Time   |
 |-----------------------+--------|
 | *Total time*          | *0:26* |
@@ -17,6 +17,9 @@
 CLOCK: [2024-04-12 Fri 18:45]--[2024-04-12 Fri 19:11] =>  0:26
 :END:
 *In many specialized populations, there is little variability among the members. Is this a natural consequence of optimal selection?*
+
+Next: [[id:0d2fdffa-e91f-467b-8384-d7febc40590e][Benford's law]]
+
 ** 2.4.1
 *Let* \( \{r_a\} \) *be* \( n \) *random numbers, each independently chosen from a probability density* \( p(r) \), *with* \( r \) *in* \([0, 1]\). *Calculate the probability density* \( P_n \,(x) \) *for the largest value of* \(r\) *in the set* \(\{r_1, \ldots, r_n\}\).
 
