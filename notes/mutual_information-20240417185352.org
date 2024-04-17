@@ -1,0 +1,78 @@
+:PROPERTIES:
+:ID:       0254a8eb-08e7-464b-b34f-467e4289f2f0
+:END:
+#+TITLE: Mutual information
+#+FILETAGS: :problem: :SPOP: :statmech:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+#+BEGIN: clocktable :maxlevel 2 :scope nil :emphasize nil
+#+CAPTION: Clock summary at [2024-04-18 Thu 02:35]
+| Headline                | Time   |
+|-------------------------+--------|
+| *Total time*            | *0:46* |
+|-------------------------+--------|
+| 2.11 Mutual information | 0:46   |
+#+END
+* 2.11 Mutual information
+:LOGBOOK:
+CLOCK: [2024-04-18 Thu 01:55]--[2024-04-18 Thu 02:34] =>  0:39
+CLOCK: [2024-04-18 Thu 01:28]--[2024-04-18 Thu 01:35] =>  0:07
+:END:
+*Consider random variables* \(x\) *and* \(y\), *distributed according to a joint probability* \(p(x,\, y)\). *The mutual information between the two variables is defined by*
+
+\[M(x, \, y) = \sum_{xy} p(x, \, y) \ln \bigg( \frac{p(x, \, y)}{p_x(x) \, p_y(y)} \bigg),\]
+
+*where* \(p_x\) *and* \(p_y\) *denote the unconditional probabilities for* \(x\) *and* \(y\).
+
+Next: [[id:cf7e86d2-be63-4d92-924b-3dda1ccdac66][Semi-flexible polymer in two dimensions]]
+
+** 2.11.1
+*Relate* \(M(x,\,y)\) *to the entropies* \(S(x,\,y)\), \(S(x)\), *and* \(S(y)\) *obtained from the corresponding probabilities.*
+
+\begin{align*}
+M(x, \, y) &\equiv \sum_{xy} p(x, \, y) \ln \left(\frac{p(x, \, y)}{p_x(x) \, p_y(y)}\right) \\
+&= \sum_{xy} p(x, \, y) \ln p(x, \, y)-\sum_{x} \ln p_x(x) \sum_{y}p(x,\,y) - \sum_{y} \ln p_y(y) \sum_{x} p(x,\,y) \\
+&\equiv \sum_{xy} p(x,\,y) \ln p(x,\,y)- \sum_x p_x(x) \ln p_x(x) - \sum_y p(y) \ln p_y(y) \\
+&\equiv S(x) + S(y) - S(x,\,y).
+\end{align*}
+
+** 2.11.2
+*Calculate the mutual information for the joint Gaussian form*
+
+\[ p(x, y) \propto \exp \left( -\frac{a x^2}{2} - \frac{b y^2}{2} - cxy \right). \]
+
+Some combination of the normalization constants of \(p(x,\,y)\), \(p(x)\), and \(p(y)\) will appear in the evaluation of \(M(x,\,y)\) so there's no getting around calculating them.
+
+\begin{align*}
+\iint_{-\infty}^{\infty} dy\,dx\,\exp &\left(-\frac{a}{2} x^2-\frac{b}{2} y^2-c x y\right) \\
+&=\int_{-\infty}^{\infty} dy\,\exp \left(-\frac{b}{2} y^2\right) \int_{-\infty}^{\infty} dx\, \exp \left(-\frac{a}{2} x^2-c x y\right) \\
+&=\int_{-\infty}^{\infty} dy\,\exp \left(-\frac{b}{2} y^2\right) \sqrt{\frac{2 \pi}{a}} \exp \left(\frac{c^2 y^2}{2 a}\right) \\
+&=\sqrt{\frac{2 \pi}{a}} \int_{-\infty}^{\infty} d y \exp \left[-\frac{1}{2}\left(\frac{a b-c^2}{2}\right) y^2\right] \\
+&=\sqrt{\frac{2 \pi}{a}} \sqrt{\frac{2 \pi a}{a b-c^2}}=2 \pi / \sqrt{a b-c^2}
+\end{align*}
+
+The properly normalized joint PDF is therefore
+
+\[
+p(x, y) = \frac{\sqrt{a b-c^2}}{2 \pi} \exp \left(-\frac{a x^2}{2}-\frac{b y^2}{2}-c x y\right).
+\]
+
+Similarly, the properly normalized marginals are
+
+\begin{align*}
+p(x) &= \frac{\sqrt{a b-c^2}}{\sqrt{2 \pi b}} \exp \bigg\{-\frac{1}{2} \bigg(\frac{x}{[a-(c^2/ b)]^{-1/2}}\bigg)^2 \bigg\},
+\end{align*}
+
+\begin{align*}
+p(y) &= \frac{\sqrt{a b-c^2}}{\sqrt{2 \pi a}} \exp \bigg\{-\frac{1}{2} \bigg(\frac{y}{[b-(c^2/ a)]^{-1/2}}\bigg)^2 \bigg\},
+\end{align*}
+
+The mutual information is
+
+\begin{align*}
+M(x, y) &= \sum_{x, y} p(x, y)\left[\ln ([1- (c^2/a b)]^{-1 / 2})-c x y - (c^2/2 b)\,x^2 - (c^2/2 a)\,y^2\right] \\
+& =\ln ([1-(c^2/ a b)]^{-1 / 2})- (c^2/2 b)\,\int_{-\infty}^{\infty} x^2\,p_x(x)\,d x \\
+& - (c^2/2 a)\,\int_{-\infty}^{\infty} y^2\,p_y(y)\,dy -c \int_{-\infty}^{\infty} dx\, x\, \int_{-\infty}^{\infty} dy\, y \, p(x, y).
+\end{align*}
+
+The three integrals add up to zero so that the first term is the only survivor. The mutual information \(M (x,\,y)\) is thus \(M (x,\,y) = \ln ([1-(c^2/a b)]^{-1/2})\).
+
