@@ -1,0 +1,88 @@
+:PROPERTIES:
+:ID:       606f5026-eb51-4aa7-8783-1ae9756bd686
+:END:
+#+TITLE: Diode
+#+FILETAGS: :problem: :SPOP: :statmech:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+#+BEGIN: clocktable :maxlevel 2 :scope nil :emphasize nil
+#+CAPTION: Clock summary at [2024-04-18 Thu 01:23]
+| Headline     | Time   |
+|--------------+--------|
+| *Total time* | *1:51* |
+|--------------+--------|
+| 2.10 Diode   | 1:51   |
+#+END
+* 2.10 Diode
+:LOGBOOK:
+CLOCK: [2024-04-17 Wed 23:32]--[2024-04-18 Thu 01:23] =>  1:51
+:END:
+*The current \( I \) across a diode is related to the applied voltage \( V \) via \( I = I_0[\exp(eV/kT) - 1] \). The diode is subject to a random potential \( V \) of zero mean and variance \( \sigma^2 \), which is Gaussian distributed. Find the probability density \( p(I) \) for the current \( I \) flowing through the diode. Find the most probable value for \( I \), the mean value of \( I \), and indicate them on a sketch of \( p(I) \).*
+
+Next: [[id:0254a8eb-08e7-464b-b34f-467e4289f2f0][Mutual information]]
+
+Given \( I=I_0[\exp (e V / k T)-1]\) and \(V \sim N\left(0, \sigma^2\right) \), we have \( p(I) d I=\sum_i p\left(V_i\right) \, d V_i \). Since \(V= (K T/ e) \ln (1+I/I_0)\) and we can write \(p(I) &= p(V)\left|\frac{d V}{d I}\right|\).
+
+\begin{align*}
+p(I) &= p(V)\left|\frac{d V}{d I}\right| \\
+&= \exp \bigg\{-\frac{1}{2}\left(\frac{K T}{\sigma e}\right)^2 \ln (1+I/I_0) \ln (1+I/I_0)\bigg\} \times \frac{K T}{e} (1+I/I_0)^{-1} I_{0}^{-1} (2 \pi \sigma^2)^{-1/2} \\
+&= \exp \bigg\{- \ln (1+I/I_0) \bigg[\frac{1}{2}\left(\frac{K T}{\sigma e}\right)^2 \ln (1+I/I_0) + 1\bigg] \bigg\} \times \frac{1}{I_{0}} \frac{K T}{e} (2 \pi \sigma^2)^{-1/2} \\
+&= \frac{1}{(I_0+I) (\sigma e / KT)} \cdot \frac{1}{\sqrt{2 \pi}} \exp \bigg\{-\frac{1}{2}\bigg(\frac{\ln (I_0+I)-\ln I_0}{\sigma e / K T}\bigg)^2\bigg\} \\
+&= \frac{1}{I (\sigma e / KT)} \cdot \frac{1}{\sqrt{2 \pi}} \exp \bigg\{-\frac{1}{2}\bigg(\frac{\ln I - \ln I_0}{\sigma e / K T}\bigg)^2\bigg\}.
+\end{align*}
+
+In the final step we have scaled \(I \to I - I_{0}\); the Jacobian associated with this transformation is unity. It is clear that the current readings are samples from a [[id:52439cfd-3214-4edf-8492-6eaa6159143d][Log-normal distribution]]. The mean is \(I_0 \exp \big\{ (\sigma e / K T)^{2}/2  \big\} > I_{0}\) and the most-probable value is \(I_0 \exp \big\{-(e \sigma/K T)^2\big \} < I_{0}\).
+
+#+begin_src latex :file ~/.local/images/spop-2.10.png :results file graphics
+  \begin{tikzpicture}[scale=0.8] % Adjust scale for overall size
+  \begin{axis}[
+      axis lines=left,
+      xlabel={$I$},
+      ylabel={$p(I)$},
+      ymax=0.2,
+      ymin=0, % Adjust to avoid extra space below
+      xmax=10,
+      xmin=0, % Adjust to avoid extra space to the left
+      clip=false,
+      domain=0.1:10,
+      samples=100,
+      smooth,
+      xtick=\empty,
+      ytick=\empty,
+      x axis line style={-},
+      y axis line style={-},
+      xlabel style={at={(axis description cs:1,0)}, anchor=north},
+      ylabel style={at={(axis description cs:0,1)}, rotate=-90, anchor=south}
+  ]
+  % Define the parameters
+    \def\Io{4} % I_0
+  \def\sigma{1} % sigma
+
+  % Probability density function
+  \addplot[black] {1/(x*\sigma) * 1/sqrt(2*pi) * exp(-0.5*((ln(x/\Io)/\sigma)^2))};
+
+  % Define the most probable and mean values
+  \pgfmathsetmacro{\Imp}{\Io * exp(-(\sigma^2))}
+  \pgfmathsetmacro{\Imean}{\Io * exp((\sigma^2)/2)}
+
+  % Coordinate for I_0 on the curve
+  \pgfmathsetmacro{\pIo}{1/(\Io*\sigma) * 1/sqrt(2*pi) * exp(-0.5*((ln(\Io/\Io)/\sigma)^2))}
+  \coordinate (I0) at (axis cs:\Io,\pIo);
+
+  % Coordinate for most probable I on the curve
+  \pgfmathsetmacro{\pImp}{1/(\Imp*\sigma) * 1/sqrt(2*pi) * exp(-0.5*((ln(\Imp/\Io)/\sigma)^2))}
+  \coordinate (Imp) at (axis cs:\Imp,\pImp);
+
+  % Coordinate for mean I on the curve
+  \pgfmathsetmacro{\pImean}{1/(\Imean*\sigma) * 1/sqrt(2*pi) * exp(-0.5*((ln(\Imean/\Io)/\sigma)^2))}
+  \coordinate (Imean) at (axis cs:\Imean,\pImean);
+
+  % Vertical lines for I_0, most probable I, and mean I
+  \draw[dashed, thick] (I0) -- (axis cs:\Io,0) node[below] {$I_0$};
+  \draw[dashed, thick] (Imp) -- (axis cs:{\Io*exp(-\sigma^2)},0) node[below] {$I_{\text{mp}}$};
+  \draw[dashed, thick] (Imean) -- (axis cs:{\Io*exp(0.5*\sigma^2)},0) node[below] {$\langle I \rangle$};
+  \end{axis}
+  \end{tikzpicture}
+#+end_src
+
+#+RESULTS:
+[[file:~/.local/images/spop-2.10.png]]
