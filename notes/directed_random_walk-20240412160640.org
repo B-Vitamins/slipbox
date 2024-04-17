@@ -5,7 +5,7 @@
 #+FILETAGS: :problem: :SPOP: :statmech:
 #+SETUPFILE: ~/.config/emacs/setup/setupfile.org
 #+BEGIN: clocktable :maxlevel 2 :scope file
-#+CAPTION: Clock summary at [2024-04-14 Sun 05:50]
+#+CAPTION: Clock summary at [2024-04-17 Wed 16:12]
 | Headline                 | Time   |
 |--------------------------+--------|
 | *Total time*             | *0:55* |
@@ -54,9 +54,9 @@ Since
 &=l^2 / 4,
 \end{aligned}
 
-\begin{aligned}
+\begin{align*}
 \langle y_i^2\rangle = \langle x_i^2\rangle = l^2 / 4,
-\end{aligned}
+\end{align*}
 
 and
 
