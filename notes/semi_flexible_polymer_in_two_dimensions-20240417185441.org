@@ -1,0 +1,205 @@
+:PROPERTIES:
+:ID:       cf7e86d2-be63-4d92-924b-3dda1ccdac66
+:END:
+#+TITLE: Semi-flexible polymer in two dimensions
+#+FILETAGS: :problem: :SPOP: :statmech:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+#+BEGIN: clocktable :maxlevel 2 :scope nil :emphasize nil
+#+CAPTION: Clock summary at [2024-04-18 Thu 19:37]
+| Headline                             | Time   |
+|--------------------------------------+--------|
+| *Total time*                         | *3:01* |
+|--------------------------------------+--------|
+| 2.12 Semi-flexible polymer in two... | 3:01   |
+#+END
+* 2.12 Semi-flexible polymer in two dimensions
+:LOGBOOK:
+CLOCK: [2024-04-18 Thu 16:35]--[2024-04-18 Thu 19:36] =>  3:01
+:END:
+*Configurations of a model polymer can be described by either a set of vectors* \( \{\boldsymbol{t}_i\} \) *of length \( a \) in two dimensions (for \( i = 1, \ldots, N \)), or alternatively by the angles* \( \{\phi_i\} \) *between successive vectors, as indicated in the figure below.*
+
+#+begin_src latex :file ~/.local/images/spop-2.12.png :results file graphics
+  \begin{tikzpicture}[vector/.style={-Stealth, thick}, dashed line/.style={dashed, thick}, angle line/.style={dashed, thick}]
+
+    \coordinate (origin) at (0.0, 0.0);
+    \coordinate (t1_end) at (1.0, 1.0);
+    \coordinate (t2_end) at (1.6666666666666667, 2.6666666666666665);
+    \coordinate (t3_end) at (3.3333333333333335, 2.0);
+    \coordinate (tN-1_end) at (5.333333333333333, 2.0);
+    \coordinate (tN_end) at (6.0, 1.0);
+    \coordinate (R_end) at (4.666666666666667, 0.3333333333333333);
+
+    \draw[vector] (origin) -- (t1_end) node[midway, above left] {$\boldsymbol{t}_{1}$};
+    \draw[vector] (t1_end) -- (t2_end) node[midway, above left] {$\boldsymbol{t}_{2}$};
+    \draw[vector] (t2_end) -- (t3_end) node[midway, above] {$\boldsymbol{t}_{3}$};
+    \draw[dashed line] (t3_end) -- (tN-1_end); % Dashed line implies vectors in between
+    \draw[vector] (tN-1_end) -- (tN_end) node[midway, above right] {$\boldsymbol{t}_{N-1}$};
+    \draw[vector] (tN_end) -- (R_end) node[midway, above] {$\boldsymbol{t}_{N}$};
+    \draw[vector] (origin) -- (R_end) node[midway, below] {$\boldsymbol{R}$};
+
+    \draw[angle line] (t1_end) -- ($ (t1_end) + (1.025,1.025) $) node[above, left] {$\phi_{1}$};
+    \draw[angle line] (tN_end) -- ($ (tN_end) + (0.67,-1.0) $) node[midway, below, left] {$\phi_{N-1}$};
+
+  \end{tikzpicture}
+#+end_src
+
+#+RESULTS:
+[[file:~/.local/images/spop-2.12.png]]
+
+*The polymer is at a temperature* \( T \), *and subject to an energy*
+
+\[ H = -\kappa \sum_{i=1}^{N-1} \boldsymbol{t}_i \cdot \boldsymbol{t}_{i+1} = - \kappa a^2 \sum_{i=1}^{N-1} \cos \phi_i, \]
+
+*where \( \kappa \) is related to the bending rigidity, such that the probability of any configuration is proportional to* \(\exp(-H/k_{B}T)\).
+
+Next: [[id:ba7b329c-ce05-4a32-82d0-18f4d4d14645][Foraging]]
+
+** 2.12.1
+*Show that* \( \langle \boldsymbol{t}_{m} \cdot \boldsymbol{t}_{n} \rangle \propto \exp(-|n - m|/\xi)\), *and obtain an expression for the persistence length* \( l_p = a \xi \). *(You can leave the answer as the ratio of simple integrals.)*
+
+#+begin_src latex :file ~/.local/images/spop-2.12.1.png :results file graphics
+  \begin{tikzpicture}[
+    vector/.style={-Stealth, thick},
+    angle style/.style={angle eccentricity=1.2, draw, angle radius=0.7cm},
+    dashed circle/.style={dashed},
+    arc style/.style={dotted, bend right, decoration={markings, mark=at position 0.5 with {\node[transform shape] {$\dots$};}}, postaction={decorate}}
+  ]
+
+    \coordinate (center) at (0,0);
+    \def\radius{2cm}
+
+    \draw[dashed circle] (center) circle[radius=\radius];
+
+    \draw[vector] (center) -- node[at end, below right] {$\boldsymbol{t}_{N}$} ++(0:\radius);
+    \draw[vector] (center) -- node[at end, above right] {$\boldsymbol{t}_{1}$} ++(25:\radius);
+    \draw[vector] (center) -- node[at end, above left] {$\boldsymbol{t}_{2}$} ++(105:\radius);
+    \draw[vector] (center) -- node[at end, below right] {$\boldsymbol{t}_{3}$} ++(185:\radius);
+    \draw[vector] (center) -- node[at end, below right] {$\boldsymbol{t}_{N-1}$} ++(285:\radius);
+
+    \draw[vector, angle style] (25:\radius/4) arc (25:105:\radius/4) node[midway, above] {$\phi_{1}$};
+    \draw[vector, angle style] (105:\radius/3) arc (105:185:\radius/3) node[midway, above] {$\phi_{2}$};
+    \draw[vector, angle style] (285:\radius/4) arc (285:360:\radius/4) node[midway, right] {$\phi_{N-1}$};
+
+    \draw[arc style] (185:\radius/1.5) arc (185:285:\radius/1.55);
+  
+  \end{tikzpicture}
+#+end_src
+
+#+RESULTS:
+[[file:~/.local/images/spop-2.12.1.png]]
+
+Without loss of generality, let \(n  - 1 \geq m\). From the schematic above, it is clear that
+
+\begin{align*}
+\langle \boldsymbol{t}_{m} \cdot \boldsymbol{t}_n \rangle &= a^2 \bigg \langle \cos \bigg( \sum_{k=m}^{n-1} \phi_k \bigg) \bigg \rangle = \frac{a^2}{2^{n-m}} \bigg( \prod_{k=m}^{n-1} \big \langle \big[ \exp (i \phi_{k}) + \exp (- i \phi_{k}) \big] \big \rangle \bigg) \\
+&= \frac{a^2}{2^{n-m}} \bigg( \prod_{k=m}^{n-1} \big \langle \big[ \exp (i \phi_{k}) + \exp (- i \phi_{k}) \big] \big \rangle \bigg) = a^{2} \prod_{k=m}^{n-1} \big \langle \cos \phi_{k} \big \rangle \\
+&= a^{2} \big \langle \cos \phi \big \rangle^{n - m} = a^{2} \Bigg( \frac{\int_{0}^{2 \pi} d\phi\, \cos \phi \exp \{ (\kappa a^{2} / K_{B} T) \, \phi \}}{\int_{0}^{2\pi} d\phi\, \exp \{ (\kappa a^{2} / K_{B} T) \, \phi \}} \Bigg)^{n-m} \\
+&\propto \exp \Bigg \{ - \lvert n - m \rvert \ln \Bigg( \frac{\int_{0}^{2\pi} d\phi\, \exp \{ (\kappa a^{2} / K_{B} T) \, \phi \}}{\int_{0}^{2 \pi} d\phi\, \cos \phi \exp \{ (\kappa a^{2} / K_{B} T) \, \phi \}} \Bigg) \Bigg \}.
+\end{align*}
+
+Comparing the expression above with \(\langle \boldsymbol{t}_{m} \cdot \boldsymbol{t}_{n} \rangle \propto \exp(-|n - m|/\xi)\), it is clear that
+
+\[
+\xi = \Bigg[ \ln \Bigg( \frac{\int_{0}^{2\pi} d\phi\, \exp \{ (\kappa a^{2} / K_{B} T) \, \phi \}}{\int_{0}^{2 \pi} d\phi\, \cos \phi \exp \{ (\kappa a^{2} / K_{B} T) \, \phi \}} \Bigg) \Bigg]^{-1},
+\]
+
+and using the relation \(l_{p} = a\,\xi\)
+
+\[
+l_{p} = a\, \xi = a \Bigg[ \ln \Bigg( \frac{\int_{0}^{2\pi} d\phi\, \exp \{ (\kappa a^{2} / K_{B} T) \, \phi \}}{\int_{0}^{2 \pi} d\phi\, \cos \phi \exp \{ (\kappa a^{2} / K_{B} T) \, \phi \}} \Bigg) \Bigg]^{-1}.
+\]
+** 2.12.2
+*Consider the end-to-end distance* \( \boldsymbol{R} \) *as illustrated in the figure. Obtain an expression for* \( \langle R^2 \rangle \) *in the limit of* \( N \gg 1 \).
+
+Given that \(\boldsymbol{R}=\sum_{n=1}^{N-1} \boldsymbol{t}_n\), we have  \(R^{2} = \boldsymbol{R} \cdot \boldsymbol{R} = \sum_{mn}^{N-1} \boldsymbol{t}_{m} \cdot \boldsymbol{t}_{n} \), and thus
+
+\[
+\langle R^2 \rangle = \sum_{mn}^{N-1} \langle \boldsymbol{t}_m \cdot \boldsymbol{t}_n \rangle = \sum_{mn}^{N-1} a^2 \exp \left(-|n-m|/\xi\right).
+\]
+
+#+begin_src latex :file ~/.local/images/spop-2.12.2.png :results file graphics
+  \begin{tikzpicture}[
+    dot/.style={circle, fill, minimum size=#1, inner sep=0pt, outer sep=0pt},
+    scale=0.75, every node/.style={scale=0.75},
+    label font/.style={font=\normalsize}
+  ]
+
+    \def\gridWidth{5}
+    \def\gridHeight{5}
+
+    \def\xlabels{{"$1$","$2$","$3$","$\ldots$","$N-1$"}}
+    \def\ylabels{{"$1$","$2$","$3$","$\vdots$","$N-1$"}}
+
+    \def\maxSize{12pt}
+    \def\minSize{3pt}
+
+    \draw[step=1, gray, very thin] (0,0) grid (\gridWidth,\gridHeight);
+
+    \foreach \x in {1,...,\gridWidth} {
+      \foreach \y in {1,...,\gridHeight} {
+        \pgfmathsetmacro\nodeSize{\maxSize - abs(\x-\y)*(\maxSize-\minSize)/(\gridWidth-1)}
+        \node[dot=\nodeSize] at (\x-0.5,\gridHeight-\y+0.5) {};
+      }
+    }
+
+    \foreach \x [count=\xi] in {1,...,\gridWidth} {
+      \node[label font] at (\xi-0.5, \gridHeight+0.5) {\pgfmathparse{\xlabels[\x-1]}\pgfmathresult};
+    }
+
+    \foreach \y [count=\yi] in {1,...,\gridHeight} {
+      \node[label font] at (-0.5, \gridHeight-\yi+0.5) {\pgfmathparse{\ylabels[\y-1]}\pgfmathresult};
+    }
+
+    \node[anchor=west font] at (\gridWidth + 1.0, \gridHeight/2) {$n$};
+    \node[anchor=north font] at (\gridWidth/2, -0.5) {$m$};
+
+  \end{tikzpicture}
+#+end_src
+
+#+RESULTS:
+[[file:~/.local/images/spop-2.12.2.png]]
+
+Consider the schematic. The terms fall off exponentially about \( \lvert n - m \rvert = 0 \). To zeroth order, we could keep the largest blobs and assert \( \langle R^{2} \rangle \approx a^2 N \). We can do better by observing that for a given \(n\) and \( m < n \), we have a geometric series with coefficient and common ratio both equal to \( \exp (- 1/ \xi) \). Therefore, for \( N \gg 1 \), we can assert
+
+\[
+\langle R^2 \rangle \approx a^2 N \big[1 + 2 \exp (- 1/\xi) / (1 - \exp (- 1 / \xi))  \big].
+\]
+
+** 2.12.3
+*Find the probability* \( p(\boldsymbol{R} ) \) *in the limit of* \( N \gg 1 \).
+
+Given that \(\boldsymbol{R}=\sum_{n=1}^{N-1} \boldsymbol{t}_n\), we can appeal to the central limit theorem and assert that the density \( p (\boldsymbol{R}) \) assumes a Gaussian form in two dimensions. We already have \( \langle R^2 \rangle \), so we need only calculate \( \langle R \rangle \) to write down the actual form. To that end, notice that under the transformation \(\phi_i \rightarrow-\phi_i\), the mirror image of the polymer about the \(y\)-axis is obtained. Since \(\phi_{i}\) enters the Boltzmann weight via the cosine (an even function of its argument), it is invariant under the transformation \( \phi_{i} \to - \phi_{i} \). This means that \( \boldsymbol{R}  \) and \( - \boldsymbol{R}  \) occur with the same probability. It immediately follows that \( \langle \boldsymbol{R}  \rangle = 0 \). Now, the covariance matrix is
+
+\begin{align*}
+\begin{bmatrix}
+\langle R_{x}^2 \rangle & 0 \\
+0 & \langle R_{y}^2 \rangle
+\end{bmatrix} =
+\begin{bmatrix}
+\langle R^2 \rangle / 2 & 0 \\
+0 & \langle R^2 \rangle / 2
+\end{bmatrix}
+\end{align*}
+
+where we have used the fact that \( \phi_{i} \) is independent and identically distributed to assert \( \langle R_{x} R_{y} \rangle = \langle R_{y} R_{x} \rangle = 0 \), and the rotational invariance of the Hamiltonian to assert \( \langle R_{x} \rangle = \langle R_{y} \rangle = \langle R \rangle/2 \). The determinant of the covariance matrix is \( \langle R^2 \rangle^{2} / 4 \), thus the normalization for the two dimension Gaussian is \( 1 / \sqrt{4 \pi^{2} \langle R^2 \rangle^{2}/4} = 1 / \pi \langle R^2 \rangle \). Thus, \( p (\boldsymbol{R} ) \) assumes the form \( p (\boldsymbol{R}) = \pi^{-1} \langle R^{2} \rangle^{-1} \exp (\boldsymbol{R} \cdot \boldsymbol{R} / \langle R^{2} \rangle) \).
+
+** 2.12.4
+*If the ends of the polymer are pulled apart by a force* \( \boldsymbol{F}  \), *the probabilities for polymer configurations are modified by the Boltzmann weight* \( \exp \left(\frac{\boldsymbol{F} \cdot \boldsymbol{R} }{k_BT}\right) \). *By expanding this weight, or otherwise, show that*
+
+\[ \langle \boldsymbol{R}  \rangle = K^{-1} \boldsymbol{F}  + \mathcal{O} (F^3), \]
+
+*and give an expression for the Hookian constant* \( K \) *in terms of quantities calculated before.*
+
+When the ends of the polymer are pulled apart by a force \( \boldsymbol{F}  \), the symmetry under the transformation \( \phi_{i} \to -\phi_{i} \) is broken, and \( \langle \boldsymbol{R}  \rangle \) becomes non-vanishing. We have
+
+\begin{align*}
+\langle \boldsymbol{R}  \rangle=\frac{\langle \boldsymbol{R}  \exp (\beta \boldsymbol{F}  \cdot \boldsymbol{R})\rangle}{\langle\exp (\beta \boldsymbol{F}  \cdot \boldsymbol{R} )\rangle}
+\end{align*}
+
+However, for sufficiently small forces, we can expand \( \exp (\beta \boldsymbol{F}  \cdot \boldsymbol{R}) \) in powers of \( \boldsymbol{F}  \) about \( \boldsymbol{F} = \boldsymbol{0} \). we have
+
+\[
+\langle R_{n}  \rangle \propto \langle R_{n} \exp (\beta F_{m} R_{m})  \rangle = \langle R_{n}  \rangle + \beta F_{m} \langle R_{m} R_{n} \rangle  + \frac{\beta^{2} F_{m}^{2} \langle R_{m}^{2} R_{n} \rangle}{2} + \mathcal{O} (F^{3}).
+\]
+
+Since the expansion is about \( \boldsymbol{F} = \boldsymbol{0} \), odd powers of \(\boldsymbol{R} \) vanish due to the symmetry discussed in 2.12.3. Furthermore, \( \langle R_{m} R_{n} \rangle = \langle R^{2} \rangle / 2 \), because rotational invariance is restored. Finally, if we assume \( \langle \exp (\beta \boldsymbol{F} \cdot \boldsymbol{R}  ) \rangle = 1 \) for \( \boldsymbol{F} \approx \boldsymbol{0} \), we are left with \( \langle \boldsymbol{R}  \rangle =  \beta \boldsymbol{F} \langle R^{2} \rangle/2 + \mathcal{O} (F^{3})\) which is of the form \( \langle \boldsymbol{R}  \rangle = K^{-1} \boldsymbol{F}  + \mathcal{O} (F^3) \) if \( K = 2 K_{B} T / \langle R^{2} \rangle \).
