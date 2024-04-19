@@ -48,7 +48,7 @@ The sum of the terms involving \( f'(\langle x \rangle)(x_i - \langle x \rangle)
 \sum_{i=1}^n p_i (x_i - \langle x \rangle) = 0.
 \]
 
-This simplifies the inequality to
+This simplifies to [[id:56afc0f9-990f-4e3c-ab03-44b5571eb321][Jensen's inequality]]
 
 \[
 \langle f(x) \rangle \geq f(\langle x \rangle).
