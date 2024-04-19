@@ -1,0 +1,68 @@
+:PROPERTIES:
+:ID:       34b7a24f-52de-4df5-bb04-be2c86a23e48
+:END:
+#+TITLE: Jensen's inequality and Kullback-Liebler divergence
+#+FILETAGS: :problem: :SPOP: :statmech:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+#+BEGIN: clocktable :maxlevel 2 :scope nil :emphasize nil
+#+CAPTION: Clock summary at [2024-04-19 Fri 05:35]
+| Headline                        | Time   |
+|---------------------------------+--------|
+| *Total time*                    | *1:34* |
+|---------------------------------+--------|
+| 2.14 Jensen's inequality and... | 1:34   |
+#+END
+* 2.14 Jensen's inequality and Kullback-Liebler divergence
+:LOGBOOK:
+CLOCK: [2024-04-19 Fri 05:15]--[2024-04-19 Fri 05:35] =>  0:20
+CLOCK: [2024-04-19 Fri 03:56]--[2024-04-19 Fri 05:10] =>  1:14
+:END:
+*A convex function* \(f(x)\) *always lies above the tangent at any point, i.e.* \(f(x) \geq f(y)+f^{\prime}(y)(x-y)\) *for all* \(y\).
+
+Next: [[id:386bac1f-f9d0-4175-b9c4-f8cadae238fc][The book of records]]
+
+** 2.14.1 
+*Show that for a convex function* \(\langle f(x)\rangle \geq f(\langle x\rangle)\).
+
+Consider \( x_1, x_2, \ldots, x_n \) as points within the domain of \( f \) and corresponding probability masses \( p_1,\,p_2,\,\ldots,\,p_n \), such that \( \sum_{i=1}^n p_i = 1 \). By definition
+
+\[
+\langle x \rangle = \sum_{i=1}^n p_i\,x_i \qquad \qquad \langle f(x) \rangle = \sum_{i=1}^n p_i f(x_i)
+\]
+
+Now substitute \( y = \langle x \rangle \) in the convexity property \(f(x) \geq f(y) + f'(y)(x-y)\) to obtain for any \( x_i \) in the domain of \( f \)
+
+\[
+f(x_i) \geq f(\langle x \rangle) + f'(\langle x \rangle)(x_i - \langle x \rangle)
+\]
+
+Using the probability masses \( p_1,\,p_2,\,\ldots,\,p_n \), we form the expectations
+
+\[
+\sum_{i=1}^n p_i f(x_i) \geq \sum_{i=1}^n p_i \left(f(\langle x \rangle) + f'(\langle x \rangle)(x_i - \langle x \rangle)\right)
+\]
+
+The sum of the terms involving \( f'(\langle x \rangle)(x_i - \langle x \rangle) \) equals zero due to the definition of the expectation
+
+\[
+\sum_{i=1}^n p_i (x_i - \langle x \rangle) = 0.
+\]
+
+This simplifies the inequality to
+
+\[
+\langle f(x) \rangle \geq f(\langle x \rangle).
+\]
+
+** 2.14.2
+*The Kullback-Liebler divergence of two probability distributions* \(p(x)\) *and* \(q(x)\) *is defined as* \(D(p \mid q) \equiv \int d x p(x) \ln [p(x) / q(x)]\). *Use Jensen's inequality to prove that* \(D(p \mid q) \geq 0\).
+
+We use Jensen's inequality \( \langle f(x) \rangle \geq f(\langle x \rangle) \) with \( f(x) = - \ln x \) to get \( \langle - \ln x \rangle \geq - \ln \langle x \rangle \). It follows that
+
+\[\int dx\,p(x)\big[-\ln (q(x)/p(x)) \big] \geq - \ln &\bigg(\int dx\,p(x)\,\big[q(x)/p(x)\big]\bigg)\]
+
+Now we rewrite the left hand side as \( \int dx\,p(x)\big[\ln (p(x)/q(x)) \big] \) and simplify the right hand side to \( -\ln \big(\int dx\,q(x)\big) = - \ln (1) = 0 \). The resulting relation is the non-negativity of the [[id:a72ac711-488c-4ab4-b483-9d3b5cc233fc][Kullback-Liebler divergence]]
+
+\[
+\int dx\,p(x)\,\big[\ln (q(x)/p(x))\big] \equiv D(p \mid q) \geq 0.
+\]
