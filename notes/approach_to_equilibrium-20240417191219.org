@@ -1,0 +1,63 @@
+:PROPERTIES:
+:ID:       d0e163af-e5e9-4a00-bbde-6856b144032b
+:END:
+#+TITLE: Approach to equilibrium
+#+FILETAGS: :problem: :SPOP: :statmech:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+#+BEGIN: clocktable :maxlevel 2 :scope nil :emphasize nil
+#+CAPTION: Clock summary at [2024-04-20 Sat 12:26]
+| Headline                     | Time   |
+|------------------------------+--------|
+| *Total time*                 | *2:56* |
+|------------------------------+--------|
+| 2.17 Approach to equilibrium | 2:56   |
+#+END
+* 2.17 Approach to equilibrium
+:LOGBOOK:
+CLOCK: [2024-04-20 Sat 08:44]--[2024-04-20 Sat 11:40] =>  2:56
+:END:
+*For a dynamical system described by parameters* \(\mathbf{x}=\left\{x_{i}\right\}\), *we can define time dependent correlation functions* \(C_{i j}(t)=\langle x_{i}(t) x_{j}(0)\rangle\).
+
+** 2.17.1
+*Show that time translational invariance* \((C(t)=C(t+\tau))\), *combined with time reversal symmetry* \((C(t)=C(-t))\) - *both characteristics of equilibrium* - *implies* \(C_{i j}(t)=C_{j i}(t)\).
+
+Setting \( \tau = t \) in \(C_{ij}(-t) = C_{ij} (-t + \tau)\) yields \(C_{ij}(-t) = C_{ji} (t)\). But \(C_{ij}(-t) = C_{i j}(t)\). Therefore \( C_{ij}(t) = C_{ji}(t) \).
+
+** 2.17.2
+*If the equilibrium weight for small fluctuations is Gaussian distributed, with density function*
+
+\begin{align*}
+c=\sqrt{\frac{\operatorname{det}[K]}{(2 \pi)^{n}}} \exp \left[-\frac{1}{2} \sum_{i j} K_{i j} x_{i} x_{j}\right]
+\end{align*}
+
+*relate* \(C_{i j}(0)\) *to the (positive definite) matrix* \([K]\).
+
+At equilibrium, \(\mathbf{x}=\left\{x_{i}\right\}\) are the fluctuations in the equilibrium value of the parameters in the dynamical system. If \( S (\mathbf{x}) \) denotes the entropy of the system, then the probability density \( p (\mathbf{x}) \) for a fluctuation \( \mathbf{x} \) is \( p(\mathbf{x}) \propto \exp (S(\mathbf{x})/K_B) \). For sufficiently small fluctuations, we can expand \( S (\mathbf{x}) \) in a [[id:1d3383f5-5945-4d7f-b7b6-e8971afe319d][Taylor series]]
+
+\[
+S (\mathbf{x}_{\text{eq}} + \mathbf{x}) \approx S (\mathbf{x}_{\text{eq}}) + 2^{-1} \sum_{ij} (\partial_{x_i}\,\partial_{x_j} S(\mathbf{x}_{\text{eq}}))\, x_{i} x_{j}.
+\]
+
+With \(  \)\( K_{ij} \equiv - (\partial_{x_i}\,\partial_{x_j} S(\mathbf{x}_{\text{eq}})) / K_{B} \), we have \( p(\mathbf{x}) \propto \exp \big(- 2^{-1} \sum_{ij} K_{ij} x_{i} x_{j}\big)\). When properly normalized, we are left with a multivariate Gaussian distribution of the form
+
+\[p (\mathbf{x}) = (2 \pi)^{-n/2} (\det \mathbf{K})^{1/2} \exp \bigg(- 2^{-1} \sum_{i j} K_{i j} x_{i} x_{j} \bigg).\]
+where \(\boldsymbol{K} \equiv \Sigma^{-1}\) is the inverse of the covariance matrix - called the precision matrix. Given \( \langle x_i x_j \rangle_c = \Sigma_{ij} \), we have \(C_{ij} (0) = \langle x_i(0) \,x_j(0) \rangle_c = \langle x_i\,x_j \rangle_c = K^{-1}_{ij} \).
+
+** 2.17.3
+*Conjugate variables (forces) are defined by* \(J=-\partial_{x} \ln p(\mathbf{x})\). *Show that* \(\langle J x\rangle=\delta\).
+
+The conjugate force for the generalized displacement \( x_i \) is
+
+\[
+J_i = - \partial_{x_i} \ln p(\mathbf{x}) = 2^{-1} \,\partial_{x_i} \bigg(\sum_{i j} K_{i j} x_i x_j\bigg)= \sum_j K_{i j} x_j.
+\]
+We then have
+
+\[
+\langle J_i x_k \rangle= \bigg \langle\bigg(\sum_j K_{i j} x_j\bigg) x_k \bigg \rangle =\sum_j K_{i j}\left\langle x_j x_k\right\rangle=\sum_j K_{i j} \, [K^{-1}]_{j k} = [K K^{-1}]_{ik} = \delta_{i k}.
+\]
+
+** 2.17.4
+*In a generalized form of gradient descent, relaxation to equilibrium follows* \(\dot{x}_{i}=\) \(-\mu_{i} J=-\mu_{i} K \quad x\), *where* \(\left\{\mu_{a b}\right\}\) *are kinetic coefficients. By considering* \(D_{t} C_{i j} (0)\) *show that the matrix* \(\mu\) *must be symmetric. (This is an example of an Onsager relation).*
+
+Since \(C_{ij} (t) = C_{ji} (t)\), we have \(\langle (\mathrm{D}_t x_i (t)) x_j (0) \rangle = \langle (\mathrm{D}_t x_j (t)) x_i (0)  \rangle\), or \(\mu_{ik} \langle J_{k} (t) \, x_{j} (0) \rangle = \mu_{jk} \langle J_{k} (t) \, x_{i} (0) \rangle\). At \( t = 0 \), we have \(\mu_{ik} \langle J_{k} x_{j} \rangle = \mu_{jk} \langle J_{k} x_{i} \rangle\). Using \( \langle J_i x_k \rangle = \delta_{ik} \) from (2.17.3) we get \(\mu_{ik} \delta_{kj} = \mu_{jk} \delta_{ki} \) and thus \( \mu_{ij} = \mu_{ji} \).
