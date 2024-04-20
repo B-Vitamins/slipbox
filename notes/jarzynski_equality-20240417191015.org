@@ -1,0 +1,119 @@
+:PROPERTIES:
+:ID:       71074a92-d485-49e0-b3e7-4adb0098106f
+:END:
+#+TITLE: Jarzynski equality
+#+FILETAGS: :problem: :SPOP: :statmech:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+#+BEGIN: clocktable :maxlevel 2 :scope nil :emphasize nil
+#+CAPTION: Clock summary at [2024-04-20 Sat 08:38]
+| Headline                | Time   |
+|-------------------------+--------|
+| *Total time*            | *1:08* |
+|-------------------------+--------|
+| 2.16 Jarzynski equality | 1:08   |
+#+END
+* 2.16 Jarzynski equality
+:LOGBOOK:
+CLOCK: [2024-04-20 Sat 07:30]--[2024-04-20 Sat 08:38] =>  1:08
+:END:
+*In equilibrium at a temperature* \(T\), *the probability that a macroscopic system is in a microstate* \(\mu\) *is* \(p(\mu)=\exp [-\beta \mathcal{H}(\mu)] / Z\), *where* \(\mathcal{H}(\mu)\) *is the energy of the microstate,* \(\beta=1 /\left(k_{B} T\right)\), *and the normalization factor is related to the free energy by* \(-\beta F=\ln Z\). *We now change the macroscopic state of the system by performing external work* \(W\), *such that the new state is also in equilibrium at temperature* \(T\). *For example, imagine that the volume of a gas in changed by moving a piston as* \(L(t)=L_{1}+\left(L_{2}-L_{1}\right) t / \tau\). *Depending on the protocol (e.g., the speed* \(u=\left(L_{2}-L_{1}\right) / \tau\)), *the process may be close to or far from reversible. Nonetheless, the Jarzynski equality relates the probability distribution for the work* \(W\) *to the equilibrium change in free energy!*
+
+Next: [[id:d0e163af-e5e9-4a00-bbde-6856b144032b][Approach to equilibrium]]
+
+** 2.16.1
+*Assume that the process by which work is performed is fully deterministic, in the sense that for a given protocol, any initial microstate* \(\mu\) *will evolve to a specific final microstate* \(\mu^{\prime}\). *The amount of work performed* \(W(\mu)\) *will vary with the initial microstate, and there is thus a probability distribution* \(p_{f}(W)\) *which can be related to the equilibrium* \(p(\mu)\). *The energy of the final microstate, however, is precisely* \(\mathcal{H}^{\prime}\left(\mu^{\prime}\right)=\mathcal{H}(\mu)+W(\mu)\). *Time reversal symmetry implies that if we now instantaneously reverse all the momenta, and proceed according to the reversed protocol, the time-reversed microstate* \(\overline{\mu^{\prime}}\) *will deterministically evolve back to microstate* \(\mu\), *and the work* \(-W(\mu)\) *is recovered. However, rather than doing so, we first allow the system to equilibrate into its new macrostate at temperature* \(T\), *before reversing the protocol to recover the work. The recovered work* \(-W\) *will now be a function of the selected microstate, and distributed according to a different probability* \(p_{b}(-W)\), *related to* \(p^{\prime}\left(\mu^{\prime}\right)=\exp \left[-\beta \mathcal{H}^{\prime}\left(\mu^{\prime}\right)\right] / Z^{\prime}\). *It is in general not possible to find* \(p_{f}(W)\) *or* \(p_{b}(-W)\). *However, by noting that the probabilities of a pair of time-reversed microstates are exactly equal, show that their ratio is given by*
+
+\begin{align*}
+\frac{p_{f}(W)}{p_{b}(-W)}=\exp \left[\beta\left(W+F-F^{\prime}\right)\right]
+\end{align*}
+
+*While you were guided to prove the above result with specific assumptions, it is in fact more generally valid, and known as the work-fluctuation theorem.*
+
+\begin{align*}
+p_f(W)\,dW= \sum_{W (\mu)= W} p(\mu)\,d\mu \qquad p_b(-W)\,dW = \sum_{W^{\prime} (\mu^{\prime})=-W} p^{\prime} (\mu^{\prime})\,d\mu^{\prime}
+\end{align*}
+
+Equilibrium is restored at the same temperature. Therefore, \(d \mu=d \mu^{\prime}\). Given the one-to-one mapping between \(\mu\) and \(\mu^{\prime}\), we have
+
+\[
+p_b(-W)\,dW = \sum_{W^{\prime} (\mu^{\prime})=-W} p^{\prime} (\mu^{\prime})\,d\mu^{\prime} = \sum_{W(\mu)=W} p^{\prime} (\mu^{\prime}(\mu))\, d \mu
+\]
+
+\[
+p_f(W) \sum_{W(\mu)=W} p^{\prime} (\mu^{\prime}(\mu))\,d\mu = p_b(-W) \sum_{W(\mu)=W} p(\mu)\,d\mu \tag{2.16.1.1}
+\]
+
+Regardless of the intermediate steps, detailed balance must be satisfied. Thus
+
+\[\frac{p(\mu)\,d\mu}{p^{\prime}(\mu^{\prime}(\mu))\,d\mu} &= (Z^{\prime}/Z) \exp (-\beta [H (\mu)- H^{\prime}(\mu^{\prime})]) =\exp \left[\beta\left(W+F-F^{\prime}\right)\right] \tag{2.16.1.2}
+\]
+
+From (2.16.1.1) and (2.16.1.2), we get
+
+\[
+\frac{p_f(W)}{p_b(-W)}=\exp \left(\beta\left[W+F-F^{\prime}\right]\right). \tag{2.16.1.3}
+\]
+
+** 2.16.2
+*Prove the Jarzynski equality*
+
+\[
+F^{\prime}-F \equiv \Delta F = -k_{B} T \ln \langle \exp (- \beta W) \rangle \equiv- k_{B} T \ln \bigg[\int d W p_{f}(W) \exp (-\beta W) \bigg]
+\]
+
+*This result can in principle be used to compute equilibrium free energy differences from an ensemble of non-equilibrium measurements of the work. For example, in Liphardt, et. al., Science 296, 1832 (2002), the work needed to stretch a single RNA molecule was calculated and related to the free energy change. However, the number of trials must be large enough to ensure that the averaged exponential, which is dominated by rare events, is accurately obtained.*
+
+Using (2.16.1.3), \(\quad p_f(W) \exp (-\beta W)= p_b(-W) \exp (-\beta \Delta F)\). Thus
+
+\begin{align*}
+\int &d W p_b(-W) \exp (-\beta \Delta F)=\int d W p_f(W) \exp (-\beta W) \\
+&\Rightarrow \quad \exp (-\beta \Delta F)= \langle\exp (-\beta W)\rangle \\
+&\Rightarrow \Delta F \equiv F^{\prime}-F=- \beta^{-1} \ln \langle \exp (-\beta W) \rangle \equiv - K_B T \ln \bigg[\int d W p_f(W) \exp(-\beta W)\bigg].
+\end{align*}
+
+This is the [[id:c38f4ce5-97be-450c-b588-c8c082338f27][Jarzynski equality]].
+** 2.16.3
+*Use the Jarzynski equality to prove the familiar thermodynamic inequality*
+
+\[\langle W\rangle \geq \Delta F\]
+
+The Jarzynski equality states that
+
+\[
+F^{\prime}-F \equiv \Delta F = -k_{B} T \ln \langle \exp (- \beta W) \rangle
+\]
+
+Using Jensen's inequality, we have \( \langle \exp (- \beta W) \rangle \geq \exp (- \beta \langle W \rangle) \), so that
+
+\begin{align*}
+\Delta F & =-K_B T\langle\exp (-\beta W)\rangle \leqslant-K_B T \ln [\exp (-\beta\langle W\rangle)] =\langle W \rangle.
+\end{align*}
+
+** 2.16.4
+*Consider a cycle in which a work* \(W-\omega\) *is performed in the first stage, and work* \(-W\) *is returned in the reversed process. According to the second law of thermodynamics, the net gain* \(\omega\) *must be positive. However, within statistical physics, it is always possible that this condition is violated. Use the above results to conclude that the probability of violating the second law decays with the degree of violation according to*
+
+\begin{align*}
+P_{\text {violating second law }}(\omega>0) \leq \mathrm{e}^{-\omega} \text {. }
+\end{align*}
+
+*Two relevant articles: (i) On the Jarzynski relation, G.E. Crooks and C. Jarzynski, Phys. Rev. E 75, 021116 (2007); (ii) Regarding records, J. Krug, J. Stat. Mech. (2007) P07001.*
+
+Let \(p(\omega)\) be the PDF that gives the probability density of violation of the second law by a degree \(\omega>0\), \( p(\omega)=\int p_f(W-\omega) p_b(-W)\,dW \). Using (2.16.1.3),
+
+\[
+\frac{p_f(W-\omega) p_b(-w)}{p_b(-W+\omega) p_f(w)} = \frac{\exp \big(\beta (W-\omega+F-F^{\prime})\big)}{\exp \big(\beta (W+F-F^{\prime}) \big)}.
+\]
+
+It follows that \( p_f(W-\omega) p_b(-W) & =p_b(-W+\omega) p_f(W) \exp (-\beta \omega) \). We then arrive at the PDF
+
+\[
+p (\omega) =\int dW\,p_b(-W+\omega) p_f(W) \exp (-\beta \omega) = p(-\omega) \exp (-\beta \omega). \tag{2.16.4.1}
+\]
+
+The CDF, say \( P(\omega) \), is 
+
+\[
+P(\omega) \equiv \int_\omega^{\infty} \omega^{\prime} p (\omega^{\prime}) & =\int_\omega^{\infty} \omega^{\prime} p (-\omega^{\prime}) \exp (-\beta \omega^{\prime}) <\exp (-\beta \omega) \int_\omega^{\infty} \omega^{\prime} p (-\omega^{\prime} ) < \exp (-\beta \omega).
+\]
+
+We have used (2.16.4.1) followed by replacing \(\omega^{\prime}\) by \(\omega\). The inequality follows because \(\exp \left(-\beta \omega^{\prime}\right)<\exp (-\beta \omega)\).
