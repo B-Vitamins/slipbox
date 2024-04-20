@@ -71,7 +71,6 @@ the later of which has solution \( q(t) = (p/m) \, t \). This is the characteris
 #+RESULTS:
 [[file:~/.local/images/spop-3.1.1.png]]
 
-
 ** 3.1.2
 *Derive the expressions for the averages* \( \langle q^2 \rangle \) *and* \( \langle p^2 \rangle \) *at* \( t > 0 \).
 
