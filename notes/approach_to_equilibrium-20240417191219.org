@@ -18,6 +18,8 @@ CLOCK: [2024-04-20 Sat 08:44]--[2024-04-20 Sat 11:40] =>  2:56
 :END:
 *For a dynamical system described by parameters* \(\mathbf{x}=\left\{x_{i}\right\}\), *we can define time dependent correlation functions* \(C_{i j}(t)=\langle x_{i}(t) x_{j}(0)\rangle\).
 
+Next: [[id:54029e29-f615-4482-919f-022e50022ae2][One-dimensional gas]]
+
 ** 2.17.1
 *Show that time translational invariance* \((C(t)=C(t+\tau))\), *combined with time reversal symmetry* \((C(t)=C(-t))\) - *both characteristics of equilibrium* - *implies* \(C_{i j}(t)=C_{j i}(t)\).
 
