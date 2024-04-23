@@ -1,0 +1,37 @@
+:PROPERTIES:
+:ID:       a2da6b4b-5ecc-4ad5-9268-33aeab1643f6
+:END:
+#+TITLE: Liouville's equation
+#+FILETAGS: :literature: :SPOP:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+Liouville's equation is a consequence of [[id:2832b1e9-136e-44eb-b4a8-4523d3beeb55][Liouville's theorem]] concerning the [[id:21d62749-69ab-4e25-b366-eb6ff17a2f09][phase space density]]. The incompressibility condition \(\rho (\mathbf{p}^{\prime},\,\mathbf{q}^{\prime},\,t+\delta t)=\rho(\mathbf{p},\,\mathbf{q},\,t)\) can be written in differential form as
+
+\begin{align*}
+\mathrm{D}_t \rho (\Gamma,\,t) = \partial_t \rho (\Gamma,\,t) + \sum_{\alpha=1}^{3 N} 
+\bigg(
+\partial_{p_\alpha} \rho (\Gamma,\,t) \cdot \mathrm{D}_t p_\alpha (t) + \partial_{q_\alpha} \rho (\Gamma,\,t) \cdot \mathrm{D}_t q_\alpha (t) 
+\bigg) = 0. \tag{1}
+\end{align*}
+
+Note the distinction between \(\partial_t \rho (\Gamma,\,t)\) and \(\mathrm{D}_t \rho (\Gamma,\,t)\): the former partial derivative refers to the changes in \(\rho\) at a particular location in phase space, while the latter total derivative follows the evolution of a volume of fluid as it moves in phase space. Using the [[id:6b9b1aff-8bc3-4b9f-b616-b8a3940d520c][canonical equations]] we have
+
+\begin{align*}
+\sum_{\alpha=1}^{3 N} 
+&\bigg(
+\partial_{p_\alpha} \rho (\Gamma,\,t) \cdot \mathrm{D}_t p_\alpha (t) + \partial_{q_\alpha} \rho (\Gamma,\,t) \cdot \mathrm{D}_t q_\alpha (t) 
+\bigg) \\
+&\qquad =
+- \sum_{\alpha=1}^{3 N} 
+\bigg(
+\partial_{q_\alpha} \rho (\Gamma,\,t) \cdot \partial_{p_\alpha} H (\mathbf{p},\,\mathbf{q}) - \partial_{p_\alpha} \rho (\Gamma,\,t) \cdot \partial_{q_\alpha} H (\mathbf{p},\,\mathbf{q})
+\bigg) = - \{\rho,\,H\}
+\end{align*}
+
+where we have identified the [[id:d8d2e4a1-0da2-4031-9a83-c9b93e16676c][Poisson bracket]]. Substituting in (1), we are left with *Liouville's equation*
+
+\begin{equation*}
+\partial_t \rho (\Gamma,\,t) = - \{\rho,\,H\}.
+\end{equation*}
+
+
