@@ -1,0 +1,69 @@
+:PROPERTIES:
+:ID:       2832b1e9-136e-44eb-b4a8-4523d3beeb55
+:END:
+#+TITLE: Liouville's theorem
+#+FILETAGS: :literature:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+#+NAME: Liouville's theorem
+#+ATTR_LATEX: :environment theorem
+#+begin_theorem latex
+A Hamiltonian evolution is such that \( \partial_{q_{\alpha}} \partial_{p_{\alpha}} H (\mathbf{p},\,\mathbf{q}) = \partial_{p_{\alpha}} \partial_{q_{\alpha}} H (\mathbf{p},\,\mathbf{q}) \). Let \( \rho (\mathbf{p},\,\mathbf{q},\,t) \) be the phase space density around the point \((\mathbf{p},\,\mathbf{q})\). Let \(\mathrm{d} \mathcal{N}\) be the number of pure states in an infinitesimal volume \(\mathrm{d} \Gamma=\prod_{i=1}^N \mathrm{~d}^3 \vec{p}_i \mathrm{~d}^3 \vec{q}_i\) around the point \((\mathbf{p},\,\mathbf{q})\). Suppose that after a time interval \(\delta t\) these states have moved to the vicinity of another point, say \((\mathbf{p}^{\prime},\,\mathbf{q}^{\prime})\). The phase space density around the point \((\mathbf{p}^{\prime},\,\mathbf{q}^{\prime})\) is \( \rho (\mathbf{p}^{\prime},\,\mathbf{q}^{\prime},\,t+\delta t) \). The following relation holds
+
+\begin{equation*}
+\rho (\mathbf{p}^{\prime},\,\mathbf{q}^{\prime},\,t+\delta t) = \rho (\mathbf{p},\,\mathbf{q},\,t).
+\end{equation*}
+
+Thus, the phase space density \( \rho (\Gamma,\,t) \) behaves like an \textit{incompressible fluid}.
+\hfill \blacksquare
+#+end_theorem
+
+#+ATTR_LATEX: :environment proof
+#+begin_proof latex
+According to the canonical equations, the \(\mathrm{d} \mathcal{N}\) pure states in an infinitesimal volume \(\mathrm{d} \Gamma=\) \(\prod_{i=1}^N \mathrm{~d}^3 \vec{p}_i \mathrm{~d}^3 \vec{q}_i\) around the point \((\mathbf{p},\,\mathbf{q})\) have moved to the vicinity of another point \(\left(\mathbf{p}^{\prime},\,\mathbf{q}^{\prime}\right)\) after an interval \(\delta t\) where
+
+\begin{align*}
+q_\alpha^{\prime} (t+\delta t) = q_\alpha (t) + \mathrm{D}_{t} q_\alpha(t)\,\delta t + \mathcal{O} (\delta t^2),
+\quad
+p_\alpha^{\prime} (t+\delta t) = p_\alpha (t) + \mathrm{D}_t p_{\alpha} (t)\,\delta t + \mathcal{O}(\delta t^2).
+\end{align*}
+
+In the above expression, the \(q_\alpha(t)\) and \(p_\alpha(t)\) refer to any of the \(6 N\) coordinates and momenta, and \(\mathrm{D}_t q_\alpha (t)\) and \(\mathrm{D}_t p_\alpha (t)\) are the corresponding velocities at time \( t \). The original volume element \(\mathrm{d} \Gamma\) is in the shape of a hypercube of sides \(\mathrm{d} p_\alpha (t)\) and \(\mathrm{d} q_\alpha (t)\). In the time interval \(\delta t\) it gets distorted, and the projected sides of the new volume element are given by
+
+\begin{align*}
+\mathrm{d} q_\alpha^{\prime} (t+\delta t) = \mathrm{d} q_\alpha (t) + \partial_{q_{\alpha}} (\mathrm{D}_t q_\alpha(t))\,\delta t + \mathcal{O} (\delta t^2),
+\quad
+\mathrm{d} p_\alpha^{\prime} (t+\delta t) = \mathrm{d} p_\alpha (t) + \partial_{p_{\alpha}}(\mathrm{D}_t p_{\alpha} (t))\,\delta t + \mathcal{O}(\delta t^2).
+\end{align*}
+
+To order of \(\delta t^2\), the new volume element is \(\mathrm{d} \Gamma^{\prime}=\prod_{i=1}^N \mathrm{~d}^3 \vec{p}_i{ }^{\prime} \mathrm{d}^3 \vec{q}_i{ }^{\prime}\). It follows that for each pair of conjugate coordinates
+
+\begin{align*}
+\mathrm{d} q_\alpha^{\prime} \cdot \mathrm{d} p_\alpha^{\prime}=\mathrm{d} q_\alpha \cdot \mathrm{d} p_\alpha
+\big[1 + \big\{\partial_{q_{\alpha}} \mathrm{D}_t q_\alpha(t) + \partial_{p_{\alpha}} \mathrm{D}_t p_\alpha(t) \big\} \delta t + \mathcal{O}(\delta t^2)\big].
+\end{align*}
+
+But since the time evolution of coordinates and momenta are governed by the canonical equations
+
+\begin{equation*}
+\mathrm{D}_t q_\alpha  = \partial_{p_\alpha}\,H,
+\qquad
+\mathrm{D}_t p_\alpha = - \partial_{q_\alpha}\,H,
+\end{equation*}
+
+it follows that
+
+\begin{align*}
+\mathrm{d} q_\alpha^{\prime} \cdot \mathrm{d} p_\alpha^{\prime}=\mathrm{d} q_\alpha \cdot \mathrm{d} p_\alpha
+\big[1 + \big\{\partial_{q_{\alpha}} \partial_{p_{\alpha}} H (\mathbf{p},\,\mathbf{q}) - \partial_{p_{\alpha}} \partial_{q_{\alpha}} H (\mathbf{p},\,\mathbf{q}) \big\}\,\delta t + \mathcal{O}(\delta t^2)\big].
+\end{align*}
+
+Given the equality of mixed derivative, i.e., \( \partial_{q_{\alpha}} \partial_{p_{\alpha}} H (\mathbf{p},\,\mathbf{q}) = \partial_{p_{\alpha}} \partial_{q_{\alpha}} H (\mathbf{p},\,\mathbf{q}) \), we have for all \( \alpha \), to order \( \mathcal{O} (\delta t^2) \),  \( \mathrm{d} q_\alpha^{\prime} \cdot \mathrm{d} p_\alpha^{\prime}=\mathrm{d} q_\alpha \cdot \mathrm{d} p_\alpha \). It follows that the volume element is unaffected, i.e.,
+
+\begin{equation*}
+\mathrm{d} \Gamma^{\prime} = \mathrm{d} \Gamma,
+\end{equation*}
+
+All the pure states \(\mathrm{d} \mathcal{N}\) originally in the vicinity of \((\mathbf{p},\,\mathbf{q})\) are transported to the neighborhood of \(\left(\mathbf{p}^{\prime},\,\mathbf{q}^{\prime}\right)\), but occupy exactly the same volume. The ratio \(\mathrm{d} \mathcal{N} / \mathrm{d} \Gamma\) is time-independent, and \(\rho(\Gamma,\,t)\) behaves like the density of an incompressible fluid.
+\hfill \blacksquare
+#+end_proof
