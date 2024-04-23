@@ -1,0 +1,11 @@
+:PROPERTIES:
+:ID:       bccee305-db73-49bb-a1e5-6379e80dd980
+:END:
+#+TITLE: Pure states and mixed states
+#+FILETAGS: :literature: :SPOP:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+When the exact [[id:2b3acff9-a43f-4fc5-92d8-a1296fb3f0f7][microstate]] \(\mu\) is specified, the system is said to be in a *pure state*. When our knowledge of the system is probabilistic, in the sense of its being taken from an ensemble with density \(\rho(\Gamma)\), it is said to belong to a *mixed state*. 
+
+It is difficult to describe equilibrium (using a appropriate set of [[id:df6bf294-bc8a-441f-b16a-02fe248d59a9][state functions]] forming the system's [[id:d351a06e-42c5-4a72-98c9-bbfe8f40afe7][macrostate]]) in the context of a /pure state/, since \(\mu(t)\), governed by the [[id:6b9b1aff-8bc3-4b9f-b616-b8a3940d520c][canonical equations]], is time-dependent. Equilibrium is more conveniently described for /mixed states/ by examining the time evolution of the [[id:21d62749-69ab-4e25-b366-eb6ff17a2f09][phase space density]], governed by the [[id:a2da6b4b-5ecc-4ad5-9268-33aeab1643f6][Liouville's equation]].
+
