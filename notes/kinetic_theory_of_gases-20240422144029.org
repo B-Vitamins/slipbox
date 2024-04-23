@@ -1,0 +1,37 @@
+:PROPERTIES:
+:ID:       9ba4f944-810d-44e7-a2b4-f8f1963a91f0
+:END:
+#+TITLE: Kinetic theory of gases
+#+FILETAGS: :literature: :SPOP:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+#+BEGIN: clocktable :maxlevel 2 :scope nil :emphasize nil
+#+CAPTION:
+#+END
+
+*Kinetic theory studies the macroscopic properties of large numbers of particles, starting from their (classical) equations of motion.*
+
+In particular, it answers the following questions:
+
+1) How can we define "equilibrium" for a system of moving particles?
+2) Do all systems naturally evolve towards an equilibrium state?
+3) What is the time evolution of a system that is not quite in equilibrium?
+
+Kinetic Theory of Gases seeks to explain the macroscopic properties of gases through the microscopic motions of their constituent particles. By applying principles of classical mechanics, this theory describes these properties in terms of the particles' positions \(\vec{q}_i(t)\) and momenta \(\vec{p}_i(t)\), which collectively define the microstate of the gas within the \(6N\)-dimensional phase space \(\Gamma\). 
+
+At any given time \(t\), the dynamics of these microstates are governed by the canonical equations of motion:
+
+\[
+\mathrm{D}_t\,\vec{q}_i  = \partial_{\vec{p}_i}\,H,
+\qquad
+\mathrm{D}_t\,\vec{p}_i = - \partial_{\vec{q}_i}\,H
+\]
+
+where \(H(\vec{p},\,\vec{q})\) is the Hamiltonian representing the total energy of the system.
+
+The phase space density \(\rho(\mathbf{p}, \mathbf{q}, t)\) is a critical concept in kinetic theory, linking microstates to macroscopic observations. This density measures the probability of different configurations and is defined by the relationship:
+
+\[
+\rho(\mathbf{p}, \mathbf{q}, t) \mathrm{d} \Gamma = \lim _{\mathcal{N} \rightarrow \infty} \frac{\mathrm{d} \mathcal{N}(\mathbf{p}, \mathbf{q}, t)}{\mathcal{N}}
+\]
+
+Equilibrium in kinetic theory is better described in terms of a statistical ensemble rather than individual microstates, due to the ensemble's ability to account for the natural variability of states. The approach to equilibrium and the system's time evolution under non-equilibrium conditions are governed by the Liouville equation, which will be detailed in subsequent discussions.
