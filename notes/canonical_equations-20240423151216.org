@@ -1,0 +1,10 @@
+:PROPERTIES:
+:ID:       6b9b1aff-8bc3-4b9f-b616-b8a3940d520c
+:END:
+#+TITLE: Canonical equations
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+#+BEGIN: clocktable :maxlevel 2 :scope nil :emphasize nil
+#+CAPTION:
+#+END
+
