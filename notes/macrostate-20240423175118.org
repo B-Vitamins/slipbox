@@ -1,0 +1,8 @@
+:PROPERTIES:
+:ID:       d351a06e-42c5-4a72-98c9-bbfe8f40afe7
+:END:
+#+TITLE: Macrostate
+#+FILETAGS: :literature: :SPOP:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+At any time \(t\), the *macrostate* \( M \) of a system of \(N\) particles is described by specifying a small number of state functions, for example the energy \(E\), the temperature \(T\), the pressure \(P\), and the particle number \(N\).
