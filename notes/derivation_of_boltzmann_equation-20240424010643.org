@@ -1,0 +1,77 @@
+:PROPERTIES:
+:ID:       a9bb9e6b-be73-4a72-86db-5ae596e1257f
+:END:
+#+TITLE: Derivation of Boltzmann equation
+#+FILETAGS: :literature: :SPOP:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+[[id:0f74dbc6-6e75-44b9-8c93-eebb92805033][The BBGKY hierarchy]] for the Hamitonian
+
+\begin{align*}
+H (\mathbf{p},\,\mathbf{q})=\sum_{i=1}^N\big[(2 m)^{-1} \vec{p}_i \cdot \vec{p}_i + U (\vec{q}_i)\big] + 2^{-1} \sum_{(i,\,j)=1}^N \mathcal{V} (\vec{q}_i-\vec{q}_j),
+\end{align*}
+
+is given by
+
+\begin{align*}
+\partial_t f_s = - \{\rho_s,\, \mathcal{H}_s\} + \sum_{n=1}^s \int \mathrm{d} V_{s+1} \, \partial_{\vec{q}_n} \mathcal{V} (\vec{q}_n-\vec{q}_{s+1}) \cdot \partial_{\vec{p}_n} \, f_{s+1}. \tag{1}
+\end{align*}
+
+The first two equations in the hierarchy are
+
+\[
+\big[\partial_t-\partial_{\vec{q}_1} U \cdot \partial_{\vec{p}_1}+(\vec{p}_1/m) \cdot \partial_{\vec{q}_1}\big]\,f_1 = \int \mathrm{d} V_2 \, \partial_{\vec{q}_1} \mathcal{V}(\vec{q}_1-\vec{q}_2) \cdot \partial_{\vec{p}_1} f_2, \tag{2}
+\]
+
+\begin{align*}
+\bigg[\partial_t + \sum_{i=1}^{2} \bigg(-\partial_{\vec{q}_i} U \cdot \partial_{\vec{p}_i} &+ \frac{\vec{p}_i}{m} \cdot \partial_{\vec{q}_i}\bigg) - \partial_{\vec{q}_1} \mathcal{V}(\vec{q}_1-\vec{q}_2) \cdot (\partial_{\vec{p}_1}-\partial_{\vec{p}_2})\bigg]\,f_2 \\
+&= \int \mathrm{d} V_3 \bigg[\partial_{\vec{q}_1} \mathcal{V}(\vec{q}_1-\vec{q}_3) \cdot \partial_{\vec{p}_1}+\partial_{\vec{q}_2} \mathcal{V}(\vec{q}_2-\vec{q}_3) \cdot \partial_{\vec{p}_2}\bigg]\, f_3. \tag{3}
+\end{align*}
+
+Note the assumption of a /symmetric potential/, i.e., \(\mathcal{V}(\vec{q}_1-\vec{q}_2) = \mathcal{V}(\vec{q}_2-\vec{q}_1)\).
+
+There are three time scales at play, the [[id:2dfdecd5-e088-4eb2-a608-f00b34f3cf76][extrinsic time scale]] \( \tau_{U} \), the  [[id:2dfdecd5-e088-4eb2-a608-f00b34f3cf76][collision duration]] \( \tau_{c} \), and the  [[id:2dfdecd5-e088-4eb2-a608-f00b34f3cf76][mean free time]] \( \tau_{\times} \). [[id:1d6a703e-1e34-4c07-8d66-c80b6b4bb1ef][The Boltzmann equation]] is obtained for short-range interactions in the dilute regime by exploiting \(\tau_c / \tau_{\times} \approx n d^3 \ll 1\), where \( n \equiv N / V \) is the particle density and \( d^{3} \) is the interparticle potential.
+
+Setting the right-hand side of (3) to zero (see [[id:2dfdecd5-e088-4eb2-a608-f00b34f3cf76][time scales in the Boltzmann equation]]) implies that the two-body density evolves as in an isolated two-particle system. The mechanical processes that govern this evolution result in streaming terms for \(f_2\) that are proportional to both \(\tau_U^{-1}\) and \(\tau_c^{-1}\). The two sets of terms describes the evolution of the center of mass of the two particles and the dependence on relative coordinates. As such, they can be more or less treated independently.
+
+The density \(f_2\) is proportional to the marginal \(\rho_2\) of the [[id:21d62749-69ab-4e25-b366-eb6ff17a2f09][phase space density]]: it gives the probability for finding one particle at \((\vec{p}_1,\,\vec{q}_1)\), and another at \((\vec{p}_2,\,\vec{q}_2)\), at the same time \(t\). It is reasonable to expect that at distances much larger than the range of the potential \(\mathcal{V}\), the density \( f_2 \) (or \( \rho_2 \)) factorizes
+
+\[
+f_2(\vec{p}_1,\,\vec{q}_1,\,\vec{p}_2,\,\vec{q}_2,\,t) \longrightarrow f_1(\vec{p}_1,\,\vec{q}_1,\,t) f_1(\vec{p}_2,\,\vec{q}_2,\,t), \qquad |\vec{q}_2 - \vec{q}_1| \gg d \tag{4}
+\]
+
+The above statement should be true even for situations out of equilibrium. For example, imagine that the gas particles in a chamber are suddenly allowed to invade an empty volume after the removal of a barrier. The density \(f_1\) will undergo a complicated evolution, and its relaxation time will be at least comparable to \(\tau_U\). The two-particle density \(f_2\) will also reach its final value at a comparable time interval. However, it is expected to relax to a form similar to (4) over a much shorter time of the order of \(\tau_c\).
+
+For the collision term on the right-hand side of Eq. (2), we actually need the precise dependence of \(f_2\) on the relative coordinates and momenta at separations comparable to \(d\). At time intervals longer than \(\tau_c\) (but possibly shorter than \(\tau_U\)), the "steady state" behavior of \(f_2\) at small relative distances is obtained by equating the largest streaming terms in Eq. (3), that is,
+
+\[
+\left[(\vec{p}_1/m) \cdot \partial_{\vec{q}_1} + (\vec{p}_1/m) \cdot \partial_{\vec{q}_2}-\partial_{\vec{q}_1} \mathcal{V}(\vec{q}_1-\vec{q}_2) \cdot (\partial_{\vec{p}_1}-\partial_{\vec{p}_2})\right] f_2=0
+\]
+
+We expect \(f_2(\vec{q}_1,\,\vec{q}_2)\) to have slow variations over the center of mass coordinate \(\vec{Q} = (\vec{q}_1 + \vec{q}_2) / 2\), and large variations over the relative coordinate \(\vec{q} = \vec{q}_2 - \vec{q}_1\). Therefore, \((\partial_{\vec{q}} - \partial \vec{Q})\, f_2  \gg 1 \), and \(\partial_{\vec{q}_2} f_2 \approx - \partial_{\vec{q}_1} f_2 \approx \partial_{\vec{q}} f_2 \), leading to
+
+\[
+\partial_{\vec{q}_1} \mathcal{V}(\vec{q}_1-\vec{q}_2) \cdot (\partial_{\vec{p}_1}-\partial_{\vec{p}_2}) f_2 = -\left(\frac{\vec{p}_1-\vec{p}_2}{m}\right) \cdot \partial_{\vec{q}} \, f_2. \tag{5}
+\]
+
+The above equation provides a precise mathematical expression for how \(f_2\) is constrained along the trajectories that describe the collision of the two particles. The collision term on the right-hand side of (2) can now be written as
+
+\begin{equation*}
+\mathrm{D}_t f_1 \rvert_{\text{coll.}} \equiv \int \mathrm{d}^3\vec{p}_2\,\mathrm{d}^3 \vec{q}_2\, \big[\partial_{\vec{q}_1} \mathcal{V}(\vec{q}_1-\vec{q}_2) \cdot (\partial_{\vec{p}_1}-\partial_{\vec{p}_2})\big]\,f_2 \approx \int \mathrm{d}^3 \vec{p}_2\,\mathrm{d}^3 \vec{q}\,\bigg(\frac{\vec{p}_2-\vec{p}_1}{m}\bigg) \cdot \partial_{\vec{q}} f_2(\vec{p}_1,\,\vec{q}_1,\,\vec{p}_2,\,\vec{q};\,t). \tag{6}
+\end{equation*}
+
+The first identity is obtained from (2) by noting that the added term proportional to \(\partial_{\vec{p}_2} f_2\) is a complete derivative and integrates to zero, while the second equality follows from Eq. (5), after the change of variables to \(\vec{q} = \vec{q}_2 - \vec{q}_1\). (Since it relies on establishing the "steady state" in the relative coordinates, this approximation is valid as long as we examine events in time with a resolution longer than \(\tau_c\).) Evaluating the integral on the right hand side of (6) (see [[id:262c680c-027d-40b7-9087-8f245fd0b294][collision integral in the Boltzmann equation]]), we get
+
+\begin{align*}
+\mathrm{D}_t f_1 \rvert_{\text{coll.}} = \int \mathrm{d}^3\vec{p}_2\,\mathrm{d}^2 \Omega\,\lvert \mathrm{D}_{\Omega} \sigma \rvert\,\lvert \vec{v}_1 - \vec{v}_2 \rvert \big[ f_2(\vec{p}_1^{\thinspace \prime},\,\vec{q}_1,\,\vec{p}_2^{\thinspace \prime},\,\vec{b},\,-;\,t) - f_2(\vec{p}_1,\,\vec{q}_1,\,\vec{p}_2,\,\vec{b},\,-;\,t) \big]. \tag{7}
+\end{align*}
+
+The *assumption of molecular chaos* is
+
+\[
+f_2 (\vec{p}_1,\,\vec{q}_1,\,\vec{p}_2,\,\vec{b},\,-;\,t) = f_1 (\vec{p}_1,\,\vec{q}_1,\,t) \cdot f_1(\vec{p}_2,\,\vec{q}_1,\,t) \tag{8}.
+\]
+
+Substituting (8) in (7), we obtain [[id:1d6a703e-1e34-4c07-8d66-c80b6b4bb1ef][the Boltzmann equation]] (see [[id:95e9205b-209e-492f-ae04-baaac24bd2fb][heuristic explanation of the Boltzmann equation]]). 
+
+Note that even if one starts with an uncorrelated initial probability distribution for particles, there is no guarantee that correlations are not generated as a result of collisions.
