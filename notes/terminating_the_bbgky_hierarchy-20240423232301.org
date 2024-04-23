@@ -26,4 +26,3 @@ H (\mathbf{p},\,\mathbf{q}) = \sum_{i=1}^N \bigg[(2m)^{-1} \vec{p}_i \cdot \vec{
 \end{align*}
 
 terminating the BBGKY hierarchy at \( \rho_{1} \) yields the [[id:1d6a703e-1e34-4c07-8d66-c80b6b4bb1ef][the Boltzmann equation]] in the limit of /low particle density/, i.e., \( n \lambda^3 \ll 1 \) and [[id:7e249727-e935-4729-87a9-d575fc34052e][the Vlasov equation]] in the limit of /high particle density/, i.e., \( n \lambda^3 \gg 1 \). \( n \equiv N / V \) is the *particle density* (dimension of inverse volume \( V^{-1} \)) and \(\lambda\) is the *interparticle interaction range* (dimension of \( V^{1/3} \)).
-
