@@ -11,11 +11,11 @@ The Boltzmann equation is obtained from [[id:0f74dbc6-6e75-44b9-8c93-eebb9280503
 H (\mathbf{p},\,\mathbf{q})=\sum_{i=1}^N\big[(2 m)^{-1} \vec{p}_i \cdot \vec{p}_i + U (\vec{q}_i)\big] + 2^{-1} \sum_{(i,\,j)=1}^N \mathcal{V} (\vec{q}_i-\vec{q}_j),
 \end{align*}
 
-with short-range interactions in the dilute regime, i.e., \( n \lambda^3 \ll 1 \) where \( n \equiv N / V \) is the particle density and \(\lambda\) is the interparticle interaction range. Considerations of the time scales involved in the BBGKY hierarchy, the kinematics of collisions, and the *assumption of molecular chaos* yields the *Boltzmann equation*
+with short-range interactions in the dilute regime, i.e., \( n \lambda^3 \ll 1 \) where \( n \equiv N / V \) is the particle density and \(\lambda\) is the interparticle interaction range. Considerations of the time scales involved in the BBGKY hierarchy, the kinematics of collisions, and the assumption of molecular chaos yields the *Boltzmann equation*
 
 \begin{align*}
 \big[\partial_t - \partial_{\vec{q}_1} U \cdot \partial_{\vec{p}_1} &+ (\vec{p}_1/m) \cdot \partial_{\vec{q}_1}\big]\, f_1 \\
 &= -\int \mathrm{d}^3 \vec{p}_2\,\mathrm{d}^2 \Omega \, \lvert \mathrm{D}_\Omega \sigma \rvert \lvert \vec{v}_1 - \vec{v}_2 \rvert\,\big[f_1(\vec{p}_1,\,\vec{q}_1,\,t)\,f_1(\vec{p}_2,\,\vec{q}_1,\,t) - f_1(\vec{p}_1^{\thinspace \prime},\,\vec{q}_1,\,t)\,f_1(\vec{p}_2^{\thinspace \prime},\,\vec{q}_1,\,t)\big].
 \end{align*}
 
-See [[id:a9bb9e6b-be73-4a72-86db-5ae596e1257f][Derivation of Boltzmann equation]] and [[id:95e9205b-209e-492f-ae04-baaac24bd2fb][Heuristic explanation of the Boltzmann equation]].
+See [[id:a9bb9e6b-be73-4a72-86db-5ae596e1257f][derivation of Boltzmann equation]] and [[id:95e9205b-209e-492f-ae04-baaac24bd2fb][heuristic explanation of the Boltzmann equation]].
