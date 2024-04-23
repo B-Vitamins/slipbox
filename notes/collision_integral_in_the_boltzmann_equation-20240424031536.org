@@ -1,0 +1,68 @@
+:PROPERTIES:
+:ID:       262c680c-027d-40b7-9087-8f245fd0b294
+:END:
+#+TITLE: Collision integral in the Boltzmann equation
+#+FILETAGS: :literature:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+We are interested in evaluating the right hand side of the equation
+
+
+\begin{equation*}
+\mathrm{D}_t f_1 \rvert_{\text{coll.}} = \int \mathrm{d}^3\vec{p}_2\,\mathrm{d}^3 \vec{q}_2\, \big[\partial_{\vec{q}_1} \mathcal{V}(\vec{q}_1-\vec{q}_2) \cdot (\partial_{\vec{p}_1}-\partial_{\vec{p}_2})\big]\,f_2 \approx \int \mathrm{d}^3 \vec{p}_2\,\mathrm{d}^3 \vec{q}\,\bigg(\frac{\vec{p}_2-\vec{p}_1}{m}\bigg) \cdot \partial_{\vec{q}} f_2(\vec{p}_1,\,\vec{q}_1,\,\vec{p}_2,\,\vec{q};\,t). \tag{1}
+\end{equation*}
+
+The integrand in (1) is a derivative of \(f_2\) with respect to \(\vec{q}\) along the direction of relative motion \(\vec{p} = \vec{p}_2 - \vec{p}_1\) of the colliding particles. To perform this integration, we introduce a convenient coordinate system for \(\vec{q}\), guided by the formalism used to describe the scattering of particles. Naturally, we choose one axis to be parallel to \(\vec{p}_2 - \vec{p}_1\), with the corresponding coordinate \(a\) that is negative before a collision, and positive afterwards. The other two coordinates of \(\vec{q}\) are represented by an *impact vector* \(\vec{b}\) that is \(\vec{0}\) for a head-on collision \([\vec{p}_1 - \vec{p}_2] \|\ [\vec{q}_1 - \vec{q}_2]\). We can now integrate over \(a\) to get
+
+\begin{equation*}
+\mathrm{D}_t f_1 \rvert_{\text{coll.}} = \int \mathrm{d}^3 \vec{p}_2\,\mathrm{d}^2 \vec{b}\,\lvert \vec{v}_1 - \vec{v}_2 \rvert \big[ f_2(\vec{p}_1,\,\vec{q}_1,\,\vec{p}_2,\,\vec{b},\,+;\,t) - f_2(\vec{p}_1,\,\vec{q}_1,\,\vec{p}_2,\,\vec{b},\,-;\,t) \big], \tag{2}
+\end{equation*}
+
+where \(|\vec{v}_1 - \vec{v}_2| = \frac{|\vec{p}_1 - \vec{p}_2|}{m}\) is the relative speed of the two particles, with \((\vec{b},\,-)\) and \((\vec{b},\,+)\) referring to relative coordinates before and after the collision. Note that \(\mathrm{d}^2 \vec{b}\,\lvert \vec{v}_1 - \vec{v}_2 \rvert \) is just the flux of particles impinging on the element of area \(\mathrm{d}^2 \vec{b}\).
+
+In principle, the integration over \(a\) is from \(-\infty\) to \(\infty\), but as the variations of \(f_2\) are only significant over the interaction range \(d\), we can evaluate the above quantities at separations of a few \(d\) from the collision point. This is a good compromise, allowing us to evaluate \(f_2\) away from the collisions, but at small enough separations so that we can ignore the difference between \(\vec{q}_1\) and \(\vec{q}_2\). This amounts to a coarse graining in space that eliminates variations on scales finer than \(d\). With these provisos, it is tempting to close the equation for \(f_1\), by using the assumption of uncorrelated particles
+
+\[
+f_2(\vec{p}_1,\,\vec{q}_1,\,\vec{p}_2,\,\vec{q}_2,\,t) \longrightarrow f_1(\vec{p}_1,\,\vec{q}_1,\,t) f_1(\vec{p}_2,\,\vec{q}_2,\,t), \qquad |\vec{q}_2 - \vec{q}_1| \gg d. \tag{3}
+\]
+
+Clearly some care is necessary as a naive substitution gives zero! The key observation is that the densities \(f_2\) for situations corresponding to before and after the collision have to be treated differently. For example, soon after opening of the slot separating empty and full gas containers, the momenta of the gas particles are likely to point away from the slot. Collisions will tend to randomize momenta, yielding a more isotropic distribution. However, the densities \(f_2\) before and after the collision are related by streaming, implying that
+
+\[
+f_2(\vec{p}_1,\,\vec{q}_1,\,\vec{p}_2,\,\vec{b},\,+;\,t) = f_2(\vec{p}_1^{\thinspace \prime},\,\vec{q}_1,\,\vec{p}_2^{\thinspace \prime},\,\vec{b},\,-;\,t) \tag{4}
+\]
+
+where \(\vec{p}_1^{\thinspace \prime}\) and \(\vec{p}_2^{\thinspace \prime}\) are momenta whose collision at an impact vector \(\vec{b}\) results in production of outgoing particles with momenta \(\vec{p}_1\) and \(\vec{p}_2\). They can be obtained using time reversal symmetry, by integrating the equations of motion for incoming colliding particles of momenta \(-\vec{p}_1\) and \(-\vec{p}_2\). In terms of these momenta, we can write
+
+\begin{equation*}
+\mathrm{D}_t f_1 \rvert_{\text{coll.}} = \int \mathrm{d}^3 \vec{p}_2\,\mathrm{d}^2 \vec{b}\,\lvert \vec{v}_1 - \vec{v}_2 \rvert \big[ f_2(\vec{p}_1^{\thinspace \prime},\,\vec{q}_1,\,\vec{p}_2^{\thinspace \prime},\,\vec{b},\,-;\,t) - f_2(\vec{p}_1,\,\vec{q}_1,\,\vec{p}_2,\,\vec{b},\,-;\,t) \big]. \tag{5}
+\end{equation*}
+
+It is sometimes more convenient to describe the scattering of two particles in terms of the relative momenta \(\vec{p} = \vec{p}_1 - \vec{p}_2\) and \(\vec{p}^{\thinspace \prime} = \vec{p}_1^{\thinspace \prime} - \vec{p}_2^{\thinspace \prime}\), before and after the collision. For a given \(\vec{b}\), the initial momentum \(\vec{p}\) is deterministically transformed to the final momentum \(\vec{p}^{\thinspace \prime}\). To find the functional form \(\vec{p}^{\thinspace \prime}(|\vec{p}|,\,\vec{b})\), one must integrate the equations of motion. However, it is possible to make some general statements based on conservation laws: in elastic collisions, the magnitude of \(\vec{p}\) is preserved, and it merely rotates to a final direction indicated by the angles \((\theta,\,\phi) \equiv \hat{\Omega}(\vec{b})\) (a unit vector) in spherical coordinates. Since there is a one-to-one correspondence between the impact vector \(\vec{b}\) and the *solid angle* \(\Omega\), we make a [[id:9b149a74-f823-4dc5-8aa3-cba9d7879fa0][change of coordinates]] between the two, resulting in
+
+\begin{align*}
+\mathrm{D}_t f_1 \rvert_{\text{coll.}} = \int \mathrm{d}^3\vec{p}_2\,\mathrm{d}^2 \Omega\,\lvert \mathrm{D}_{\Omega} \sigma \rvert\,\lvert \vec{v}_1 - \vec{v}_2 \rvert \big[ f_2(\vec{p}_1^{\thinspace \prime},\,\vec{q}_1,\,\vec{p}_2^{\thinspace \prime},\,\vec{b},\,-;\,t) - f_2(\vec{p}_1,\,\vec{q}_1,\,\vec{p}_2,\,\vec{b},\,-;\,t) \big]. \tag{6}
+\end{align*}
+
+The [[id:dad8b579-a898-43e8-a65c-78b8848b00fa][Jacobian]]  \(|\mathrm{D}_{\Omega} \sigma|\) of this transformation has dimensions of area, and is known as the *differential cross-section*. It is equal to the area presented to an incoming beam that scatters into the solid angle \(\Omega\). The outgoing momenta \(\vec{p}_1^{\thinspace \prime}\) and \(\vec{p}_2^{\thinspace \prime}\) in (6) are now obtained from the two conditions \(\vec{p}_1^{\thinspace \prime} + \vec{p}_2^{\thinspace \prime} = \vec{p}_1 + \vec{p}_2\) ([[id:e70c7b74-1486-414a-a074-ad58c8578e1e][conservation of momentum]]), and \(\vec{p}_1^{\thinspace \prime} - \vec{p}_2^{\thinspace \prime} = \lvert \vec{p}_1 - \vec{p}_2 \rvert \, \hat{\Omega}(\vec{b})\) ([[id:0bd101d5-a5f4-4a0f-b916-87ae12a31430][conservation of energy]]), as
+
+\[
+\left\{\begin{array}{l}
+\vec{p}_1^{\thinspace \prime} = 2^{-1} \, \big(\vec{p}_1 + \vec{p}_2 + |\vec{p}_1 - \vec{p}_2| \, \hat{\Omega}(\vec{b})\big), \\
+\vec{p}_2^{\thinspace \prime} = 2^{-1} \, \big(\vec{p}_1 + \vec{p}_2 - |\vec{p}_1 - \vec{p}_2| \, \hat{\Omega}(\vec{b})\big).
+\end{array}\right. \tag{7}
+\]
+
+For the scattering of two hard spheres of diameter \(D\), it is easy to show that the scattering angle is related to the impact parameter \(b\) by \(\cos (\theta / 2) = b / D\) for all \(\phi\). The differential cross-section is then obtained from
+
+\[
+\mathrm{d}^2 \sigma = b\,\mathrm{d}b\,\mathrm{d}\phi = D \cos (\theta/2) D \sin (\theta/2) \, (\mathrm{d} \theta/2)\,\mathrm{d}\phi = (D^2/4)\,\sin \theta\,\mathrm{d} \theta\,\mathrm{d} \phi = (D^2/4)\, \mathrm{d}^2 \Omega.
+\]
+
+Note that the solid angle in three dimensions is given by \(\mathrm{d}^2 \Omega = \sin \theta \,\mathrm{d} \theta\,\mathrm{d} \phi\). Integrating over all angles leads to the total cross-section of \(\sigma = \pi D^2\), which is evidently correct. The differential cross-section for hard spheres is independent of both \(\theta\) and \(\lvert \vec{P} \rvert \equiv \lvert \vec{p}_1 + \vec{p}_2 \rvert = \lvert \vec{p}_1^{\thinspace \prime} + \vec{p}_2^{\thinspace \prime} \rvert \). *This is not the case for soft potentials.* For example, the Coulomb potential \(\mathcal{V} = e^2 / |\vec{Q}|\) leads to
+
+\[
+\lvert \mathrm{D}_{\Omega} \sigma \rvert = \bigg(\frac{m e^2}{2|\vec{P}|^2 \sin^2(\theta / 2)}\bigg)^2.
+\]
+
+The dependence on \(|\vec{P}|\) can be justified by obtaining a distance of closest approach from \(|\vec{P}|^2 / m + e^2 / b \approx 0\).
