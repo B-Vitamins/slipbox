@@ -1,0 +1,45 @@
+:PROPERTIES:
+:ID:       7f228879-6005-4d77-b1d9-e97b3ec2c7e8
+:END:
+#+TITLE: Poisson bracket for the BBGKY hierarchy
+#+FILETAGS: :literature: :SPOP:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+Assuming a Hamiltonian \( H(\mathbf{p},\,\mathbf{q}) \) admits the decomposition
+
+\[
+H (\mathbf{p},\,\mathbf{q}) = H_s (\vec{p}_1,\ldots, \vec{q}_{s}) + H_{N-s} (\vec{p}_{s+1},\ldots, \vec{q}_{N}) + H^{\prime} (\mathbf{q})
+\]
+
+[[id:0f74dbc6-6e75-44b9-8c93-eebb92805033][the BBGKY hierarchy]], obtained from the [[id:261ca926-8250-4eaa-9974-ad0839ed3680][s-particle density]], is
+
+\begin{align*}
+\partial_t \, \rho_s = \int \prod_{i=s+1}^N \mathrm{~d} V_i \, \partial_t \rho = -\int \prod_{i=s+1}^N \mathrm{~d} V_i \, \{\rho,\,H_s + H_{N-s} + H^{\prime}\}. \tag{1}
+\end{align*}
+
+We will evaluate each of the three [[id:d8d2e4a1-0da2-4031-9a83-c9b93e16676c][Poisson brackets]] on the right hand side of (1). First,
+
+\begin{align*}
+- \int \prod_{i=s+1}^N \mathrm{~d} V_i\left\{\rho,\,H_s\right\}= - \bigg \{\bigg(\int \prod_{i=s+1}^N \mathrm{~d} V_i \rho\bigg),\,H_s \bigg \}= - \{\rho_s,\,H_s \}. \tag{2}
+\end{align*}
+
+Second, 
+
+\begin{align*}
+-\int \prod_{i=s+1}^N \mathrm{~d} V_i \{\rho, H_{N-s} \} &= \int \prod_{i=s+1}^N \mathrm{~d} V_i \sum_{j=1}^N\bigg[\partial_{\vec{p}_j} \rho \cdot \partial_{\vec{q}_j} H_{N-s} - \partial_{\vec{q}_j} \rho  \cdot \partial_{\vec{p}_j} H_{N-s} \bigg] \\
+&=\int \prod_{i=s+1}^N \mathrm{~d} V_i \sum_{j=s+1}^N\bigg[- \partial_{\vec{p}_j} \rho \cdot \mathrm{D}_{t} \vec{p}_j (t) - \partial_{\vec{q}_j} \rho  \cdot \mathrm{D}_{t} \vec{q}_j (t) \bigg] = 0, \tag{3}
+\end{align*}
+
+where we have first used the [[id:6b9b1aff-8bc3-4b9f-b616-b8a3940d520c][Canonical equations]] \(\mathrm{D}_t\vec{q}_i  = \partial_{\vec{p}_i}\,H\) and \(\mathrm{D}_t\vec{p}_i = - \partial_{\vec{q}_i}\,H \tag{1} \), followed by [[id:cbfb1cb3-fc48-4961-a26e-49fa19007409][integration by parts]]: along with the fact the \( \rho (\Gamma,\,t) \) vanishes at the boundaries of the phase space \( \Gamma \), the term multiplying \( \partial_{\vec{p}_j} \rho \) and \( \partial_{\vec{q}_j} \rho \), the total derivatives of \( \mathrm{D}_t \vec{p}_j \) and \(\mathrm{D}_t \vec{q}_j \), have no  \( \vec{p}_j \) and \( \vec{q}_j \) dependence respectively. Third,
+
+\begin{align*}
+- \int \prod_{i=s+1}^N \mathrm{~d} V_i \, \{\rho,\, H^{\prime} \} &= \int \prod_{i=s+1}^N \mathrm{~d} V_i \, \sum_{j=1}^N\bigg[\partial_{\vec{p}_j} \rho \cdot \partial_{\vec{q}_j} H^{\prime} (\mathbf{q}) - \partial_{\vec{q}_j} \rho  \cdot \partial_{\vec{p}_j} H^{\prime} (\mathbf{q}) \bigg] \\
+&= \int \prod_{i=s+1}^N \mathrm{~d} V_i \, \sum_{j=1}^N \partial_{\vec{p}_j} \rho  \cdot \partial_{\vec{q}_j} H^{\prime} (\mathbf{q}) \\
+&= \sum_{j=1}^N \int \mathrm{~d} V_{s+1} \,\partial_{\vec{q}_j} H^{\prime} (\mathbf{q}) \cdot \partial_{\vec{p}_j} \bigg( \int \prod_{i=s+2}^N \mathrm{~d} V_{i} \, \rho \bigg) \\
+&= \int \mathrm{~d} V_{s+1} \, \bigg(\sum_{n=1}^{s+1} \partial_{\vec{q}_n} H^{\prime} (\mathbf{q}) \cdot \partial_{\vec{p}_n} \rho_{s+1} + \sum_{j=s+2}^N \partial_{\vec{q}_j} H^{\prime} (\mathbf{q}) \cdot \partial_{\vec{p}_j} \rho_{s+1} \bigg)  \\
+&= \sum_{n=1}^{s} \int \mathrm{~d} V_{s+1} \, \partial_{\vec{q}_n} H^{\prime} (\mathbf{q}) \cdot \partial_{\vec{p}_n} \rho_{s+1},  \tag{4}
+\end{align*}
+
+where we have first used the fact that \( H^{\prime} (\mathbf{q}) \) has no \( \mathbf{p} \) dependence. Then we have changed the order of \( \int \) and \( \sum \) and identified the marginal distribution \( \int \prod_{i=s+2}^N \mathrm{~d} V_{i} \, \rho = \rho_{s+1} \). Thereafter we have used the fact that \( \partial_{\vec{p}_j}\,\rho_{s+1} \) vanishes for \( j \geq s+2 \). Finally we have used integration by parts: \( \int \mathrm{d} V_{s+1} \partial_{\vec{q}_{s+1}} H^{\prime} (\mathbf{q}) \cdot \partial_{\vec{p}_{s+1}} \rho_{s+1} \) vanishes because \( \rho_{s+1} \) vanishes at the boundaries of the phase space \( \Gamma_{s+1} = \prod_{i=1}^{s+1} \{ \vec{q}_i,\,\vec{p}_i \} \) and \( \partial_{\vec{p}_{s+1}} \partial_{\vec{q}_{s+1}} H^{\prime} (\mathbf{q}) = 0\) since \( \partial_{\vec{q}_{s+1}} H^{\prime} (\mathbf{q}) \) is not a function of \( \vec{p}_{s+1} \).
+
+Substituting (2), (3), and (4) in (1) yields [[id:0f74dbc6-6e75-44b9-8c93-eebb92805033][the BBGKY hierarchy]].
