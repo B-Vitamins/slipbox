@@ -1,0 +1,31 @@
+:PROPERTIES:
+:ID:       2b3acff9-a43f-4fc5-92d8-a1296fb3f0f7
+:END:
+#+TITLE: Microstate
+#+FILETAGS: :literature: :SPOP:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+At any time \(t\), the *microstate* of a system of \(N\) particles is described by specifying the positions \(\vec{q}_i(t)\), and momenta \(\vec{p}_i(t)\), of all particles. The microstate thus corresponds to a point \(\mu(t)\), in the \(6 N\)-dimensional phase space \(\Gamma=\prod_{i=1}^N\left\{\vec{q}_i,\,\vec{p}_i\right\}\). The time evolution of this point is governed by the [[id:6b9b1aff-8bc3-4b9f-b616-b8a3940d520c][canonical equations]]
+
+\[
+\mathrm{D}_t\vec{q}_i  = \partial_{\vec{p}_i}\,H,
+\qquad
+\mathrm{D}_t\vec{p}_i = - \partial_{\vec{q}_i}\,H \tag{1}
+\]
+
+where the [[id:28fb5913-91f6-4c6d-adec-6355e4b2fa80][Hamiltonian]] \(H (\mathbf{p},\,\mathbf{q})\) describes the total energy in terms of the [[id:ba8c624f-7b21-41b3-b070-a5f191c1a4ab][degrees of freedom]] \(\mathbf{q} \equiv \{\vec{q}_1,\,\vec{q}_2,\,\cdots,\,\vec{q}_N\}\), called coordinates of the particles and \(\mathbf{p} \equiv \{\vec{p}_1,\,\vec{p}_2,\,\cdots,\,\vec{p}_N\}\), their associated momenta.
+
+#+NAME: Invariance of H(p, q) under T(p, q) -> (-p, q) implies q(t) = q(-t).
+#+ATTR_LATEX: :environment theorem
+#+begin_theorem latex
+Invariance of \(H(\mathbf{p},\,\mathbf{q})\) under \( T(\mathbf{p},\,\mathbf{q}) \to (-\mathbf{p},\,\mathbf{q})\), i.e., \(H(\mathbf{p},\,\mathbf{q}) = H(-\mathbf{p},\,\mathbf{q})\) implies \textbf{time reversal symmetry}, i.e., \(\mathbf{q} (t) = \mathbf{q}(-t)\).
+\hfill \blacksquare
+#+end_theorem
+
+#+ATTR_LATEX: :environment proof
+#+begin_proof latex
+From the canonical equations (q), we have \( \vec{q}_i (t) = \int_0^{t} \mathrm{d}t^{\prime}\,\partial_{\vec{p}_i} H (\mathbf{p}(t^{\prime}),\,\mathbf{q}(t^{\prime})) \). Under the transformation \(  \)\(T(\mathbf{p},\,\mathbf{q}) \rightarrow(-\mathbf{p},\,\mathbf{q})\) and \( t^{\prime} \to -t^{\prime} \), we have \( \vec{q}_i (-t) = \int_0^{-t} \mathrm{d}(-t^{\prime})\,\partial_{-\vec{p}_i} H (-\mathbf{p}(-t^{\prime}),\,\mathbf{q}(-t^{\prime}))\). If the Hamiltonian is invariant under the transformation \(T(\mathbf{p},\,\mathbf{q}) \rightarrow(-\mathbf{p},\,\mathbf{q})\), then \( \partial_{- \vec{p}_i} H (-\mathbf{p}(t^{\prime}),\,\mathbf{q}(t^{\prime})) = - \partial_{\vec{p}_i} H (\mathbf{p}(t^{\prime}),\,\mathbf{q}(t^{\prime})) \) and therefore \( \vec{q}_i (-t) = -\int_0^{-t} \mathrm{d}(-t^{\prime}) \,\partial_{\vec{p}_i} H (\mathbf{p}(-t^{\prime}),\,\mathbf{q}(-t^{\prime})) \). But \(- \int_0^{-t} \mathrm{d}(-t^{\prime})\,\partial_{\vec{p}_i} H (\mathbf{p}(-t^{\prime}),\,\mathbf{q}(-t^{\prime})) = \int_0^{t} \mathrm{d}t^{\prime}\,\partial_{\vec{p}_i} H (\mathbf{p}(t^{\prime}),\,\mathbf{q}(t^{\prime})) \equiv \vec{q}_i (t)\). Thus \(\mathbf{q}(t)=\mathbf{q}(-t)\).
+\hfill \blacksquare
+#+end_proof
+
+The microscopic equations of motion have [[id:63b40e84-f67e-4620-a2fd-ca7405f31000][time reversal symmetry]], that is, if all the momenta are suddenly reversed, \(\mathbf{p} \rightarrow-\mathbf{p}\), at \(t=0\), the particles retrace their previous trajectory, \(\mathbf{q}(t)=\mathbf{q}(-t)\). As illustrated above, this follows from the invariance of \(H\) under the transformation \(T(\mathbf{p},\,\mathbf{q}) \rightarrow(-\mathbf{p},\,\mathbf{q})\).
