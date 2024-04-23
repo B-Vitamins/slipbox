@@ -1,0 +1,65 @@
+:PROPERTIES:
+:ID:       0f74dbc6-6e75-44b9-8c93-eebb92805033
+:END:
+#+TITLE: The Bogoliubov–Born–Green–Kirkwood–Yvon hierarchy
+#+FILETAGS: :literature: :SPOP:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+The evolution of the marginals of the [[id:21d62749-69ab-4e25-b366-eb6ff17a2f09][phase space density]] is governed by the *BBGKY hierarchy* of equations attributed to Bogoliubov, Born, Green, Kirkwood, and Yvon. An *s-particle density* refers to the /expectation value/ of finding /any/ \( s \) of the \(N\) particles at locations \((\vec{q}_i)_{i=1\ldots s}\), with respective momenta \((\vec{p}_i)_{i=1\ldots s}\), at time \(t\).
+
+\begin{align*}
+f_s(\vec{p}, \vec{q}, t) & = \bigg \langle \sum_{i=1}^N \prod_{j=1}^{s} \delta^3 (\vec{p}_s-\vec{p}_i) \, \delta^3 (\vec{q}_{s} -\vec{q}_i) \bigg \rangle \\
+& = \frac{N!}{(N-s)!} \int \prod_{i=s+1}^N \mathrm{~d} V_i\,\rho (\mathbf{p},\,\mathbf{q},\,t)
+= \frac{N!}{(N-s)!} \, \rho_{s} (\vec{p}_{1},\,\ldots,\,\vec{q}_{s},\,t) \tag{1}
+\end{align*}
+
+where \(\mathrm{d} V_i=\mathrm{d}^3 \vec{p}_i \mathrm{~d}^3 \vec{q}_i\) is the contribution of particle \(i\) to phase space volume and \(\rho_s\) is marginal of the phase space density for the coordinates and momenta of \(s\) particles. Clearly \(\rho_N \equiv \rho\). While \(\rho_s\) is properly normalized to unity when integrated over all its variables, the \(s\)-particle density has a normalization of \(N ! /(N-s)!\). We will use the two interchangeably. The time evolution of the marginal \(\rho_s\)  From (1), we obtain
+
+\begin{align*}
+\partial_t \, \rho_s = \int \prod_{i=s+1}^N \mathrm{~d} V_i \, \partial_t \rho = -\int \prod_{i=s+1}^N \mathrm{~d} V_i \, \{\rho,\,H\}. \tag{2}
+\end{align*}
+
+In the last step, we have used the fact that the evolution of the full phase space density is governed by [[id:a2da6b4b-5ecc-4ad5-9268-33aeab1643f6][Liouville's equation]] \( \partial_t \, \rho = - \{\rho,\, H\} \). We assume that the Hamiltonian \( H(\mathbf{p},\,\mathbf{q}) \) admits the decomposition
+
+\[
+H (\mathbf{p},\,\mathbf{q}) = H_s (\vec{p}_1,\ldots, \vec{q}_{s}) + H_{N-s} (\vec{p}_{s+1},\ldots, \vec{q}_{N}) + H^{\prime} (\mathbf{q})
+\]
+
+where \(H_s (\vec{p}_1,\ldots, \vec{q}_{s})\) and \(H_{N-s} (\vec{p}_{s+1},\ldots, \vec{q}_{N})\) include only the interactions among each group of \( s \) and \( N-s \) particles respectively, while the interactions between particles belonging to different groups are contained in \( H^{\prime} (\mathbf{q}) \). Subtituting in (2) we get
+
+\begin{align*}
+\partial_t \, \rho_s = \int \prod_{i=s+1}^N \mathrm{~d} V_i \, \partial_t \rho = -\int \prod_{i=s+1}^N \mathrm{~d} V_i \, \{\rho,\,H_s + H_{N-s} + H^{\prime}\}. \tag{3}
+\end{align*}
+
+We have
+
+\begin{align*}
+- \int \prod_{i=s+1}^N \mathrm{~d} V_i\left\{\rho,\,H_s\right\}= - \bigg \{\bigg(\int \prod_{i=s+1}^N \mathrm{~d} V_i \rho\bigg),\,H_s \bigg \}= - \{\rho_s,\,H_s \}, \tag{4}
+\end{align*}
+
+and 
+
+\begin{align*}
+-\int \prod_{i=s+1}^N \mathrm{~d} V_i \{\rho, H_{N-s} \} &= \int \prod_{i=s+1}^N \mathrm{~d} V_i \sum_{j=1}^N\bigg[\partial_{\vec{p}_j} \rho \cdot \partial_{\vec{q}_j} H_{N-s} - \partial_{\vec{q}_j} \rho  \cdot \partial_{\vec{p}_j} H_{N-s} \bigg] \\
+&=\int \prod_{i=s+1}^N \mathrm{~d} V_i \sum_{j=s+1}^N\bigg[- \partial_{\vec{p}_j} \rho \cdot \mathrm{D}_{t} \vec{p}_j (t) - \partial_{\vec{q}_j} \rho  \cdot \mathrm{D}_{t} \vec{q}_j (t) \bigg] = 0. \tag{5}
+\end{align*}
+
+where we have first used the [[id:6b9b1aff-8bc3-4b9f-b616-b8a3940d520c][Canonical equations]] \(\mathrm{D}_t\vec{q}_i  = \partial_{\vec{p}_i}\,H\) and \(\mathrm{D}_t\vec{p}_i = - \partial_{\vec{q}_i}\,H \tag{1} \), followed by [[id:cbfb1cb3-fc48-4961-a26e-49fa19007409][integration by parts]]: along with the fact the \( \rho (\Gamma,\,t) \) vanishes at the boundaries of the phase space \( \Gamma \), the term multiplying \( \partial_{\vec{p}_j} \rho \) and \( \partial_{\vec{q}_j} \rho \), the total derivatives of \( \mathrm{D}_t \vec{p}_j \) and \(\mathrm{D}_t \vec{q}_j \), have no  \( \vec{p}_j \) and \( \vec{q}_j \) dependence respectively. Finally
+
+\begin{align*}
+- \int \prod_{i=s+1}^N \mathrm{~d} V_i \, \{\rho,\, H^{\prime} \} &= \int \prod_{i=s+1}^N \mathrm{~d} V_i \, \sum_{j=1}^N\bigg[\partial_{\vec{p}_j} \rho \cdot \partial_{\vec{q}_j} H^{\prime} (\mathbf{q}) - \partial_{\vec{q}_j} \rho  \cdot \partial_{\vec{p}_j} H^{\prime} (\mathbf{q}) \bigg] \\
+&= \int \prod_{i=s+1}^N \mathrm{~d} V_i \, \sum_{j=1}^N \partial_{\vec{p}_j} \rho  \cdot \partial_{\vec{q}_j} H^{\prime} (\mathbf{q}) \\
+&= \sum_{j=1}^N \int \mathrm{~d} V_{s+1} \,\partial_{\vec{q}_j} H^{\prime} (\mathbf{q}) \cdot \partial_{\vec{p}_j} \bigg( \int \prod_{i=s+2}^N \mathrm{~d} V_{i} \, \rho \bigg) \\
+&= \int \mathrm{~d} V_{s+1} \, \bigg(\sum_{n=1}^{s+1} \partial_{\vec{q}_n} H^{\prime} (\mathbf{q}) \cdot \partial_{\vec{p}_n} \rho_{s+1} + \sum_{j=s+2}^N \partial_{\vec{q}_j} H^{\prime} (\mathbf{q}) \cdot \partial_{\vec{p}_j} \rho_{s+1} \bigg)  \\
+&= \sum_{n=1}^{s} \int \mathrm{~d} V_{s+1} \, \partial_{\vec{q}_n} H^{\prime} (\mathbf{q}) \cdot \partial_{\vec{p}_n} \rho_{s+1}  \tag{6} 
+\end{align*}
+
+where we have first used the fact that \( H^{\prime} (\mathbf{q}) \) has no \( \mathbf{p} \) dependence. Then we have changed the order of \( \int \) and \( \sum \) and identified the marginal distribution \( \int \prod_{i=s+2}^N \mathrm{~d} V_{i} \, \rho = \rho_{s+1} \). Thereafter we have used the fact that \( \partial_{\vec{p}_j}\,\rho_{s+1} \) vanishes for \( j \geq s+2 \). Finally we have used integration by parts: \( \int \mathrm{d} V_{s+1} \partial_{\vec{q}_{s+1}} H^{\prime} (\mathbf{q}) \cdot \partial_{\vec{p}_{s+1}} \rho_{s+1} \) vanishes because \( \rho_{s+1} \) vanishes at the boundaries of the phase space \( \Gamma_{s+1} = \prod_{i=1}^{s+1} \{ \vec{q}_i,\,\vec{p}_i \} \) and \( \partial_{\vec{p}_{s+1}} \partial_{\vec{q}_{s+1}} H^{\prime} (\mathbf{q}) = 0\) since \( \partial_{\vec{q}_{s+1}} H^{\prime} (\mathbf{q}) \) is not a function of \( \vec{p}_{s+1} \).
+
+Substituting (4), (5), and (6) in (3) yields the BBGKY hierarchy
+
+\begin{align*}
+\partial_t \rho_s = - \{ \rho_s,\,H_s\} + \overbrace{\sum_{n=1}^{s} \int \mathrm{~d} V_{s+1} \, \partial_{\vec{q}_n} H^{\prime} (\mathbf{q}) \cdot \partial_{\vec{p}_n} \rho_{s+1}}^{\text{collision integral}}, \qquad s = 1, \ldots, N.
+\end{align*}
+
+See [[id:080d0f10-921c-4805-acc6-434fb4bf0099][terminating the BBGKY hierarchy.]]
