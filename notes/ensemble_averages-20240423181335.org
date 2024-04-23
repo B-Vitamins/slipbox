@@ -1,0 +1,20 @@
+:PROPERTIES:
+:ID:       baf3dd7c-da79-43e2-aa00-b3d16caf3340
+:END:
+#+TITLE: Ensemble averages
+#+FILETAGS: :literature: :SPOP:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+Noting the many-to-one mapping from [[id:2b3acff9-a43f-4fc5-92d8-a1296fb3f0f7][microstates]] to [[id:d351a06e-42c5-4a72-98c9-bbfe8f40afe7][macrostates]], we introduced a statistical ensemble of microstates. This led to the definition of the [[id:21d62749-69ab-4e25-b366-eb6ff17a2f09][phase space density]]. We can now compute the macroscopic values for various functions \(\mathcal{O}(\mathbf{p},\,\mathbf{q})\) using the phase space density
+
+\[
+\langle\mathcal{O}\rangle=\int \mathrm{d} \Gamma\,\rho(\mathbf{p},\,\mathbf{q},\,t)\,\mathcal{O}(\mathbf{p},\,\mathbf{q}).
+\]
+
+Substituting the definition of the phase space density
+
+\[
+\langle\mathcal{O}\rangle= \int \mathrm{d} \Gamma\,\bigg(\lim_{\mathcal{N} \rightarrow \infty} \frac{\mathrm{d} \mathcal{N}(\mathbf{p},\,\mathbf{q},\,t)}{\mathcal{N}}\bigg)\,\mathcal{O}(\mathbf{p},\,\mathbf{q}) = \lim_{\mathcal{N} \to \infty} \mathcal{N}^{-1} \int \mathrm{d} \Gamma\,\mathrm{d} \mathcal{N}(\mathbf{p},\,\mathbf{q},\,t)\,\mathcal{O}(\mathbf{p},\,\mathbf{q}).
+\]
+
+it is clear that \( \langle\mathcal{O}\rangle \) is an /ensemble averages/ - \( \mathcal{O} (\mathbf{p},\,\mathbf{q}) \) is averaged over all the representative points \( \mu(t) \) in phase space that map to a given macrostate \( M \).
