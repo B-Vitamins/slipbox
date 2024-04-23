@@ -1,0 +1,29 @@
+:PROPERTIES:
+:ID:       080d0f10-921c-4805-acc6-434fb4bf0099
+:END:
+#+TITLE: Terminating the BBGKY hierarchy
+#+FILETAGS: :literature: :SPOP:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+[[id:0f74dbc6-6e75-44b9-8c93-eebb92805033][The Bogoliubov–Born–Green–Kirkwood–Yvon hierarchy]] is a set of coupled partial differential equations that govern the evolution of the marginals \( (\rho_s)_{s=1,\,\ldots,\,N} \) of the [[id:21d62749-69ab-4e25-b366-eb6ff17a2f09][Phase space density]].
+
+\begin{align*}
+\partial_t \rho_s = - \{ \rho_s,\,H_s\} + \overbrace{\sum_{n=1}^{s} \int \mathrm{~d} V_{s+1} \, \partial_{\vec{q}_n} H^{\prime} (\mathbf{q}) \cdot \partial_{\vec{p}_n} \rho_{s+1}}^{\text{collision integral}}, \qquad s = 1, \ldots, N.
+\end{align*}
+
+Here \(\mathrm{d} V_i=\mathrm{d}^3 \vec{p}_i \mathrm{~d}^3 \vec{q}_i\), and \( H^{\prime} (\mathbf{q}) \) is defined by the assumption that the Hamiltonian \( H(\mathbf{p},\,\mathbf{q}) \) admits the decomposition \(H (\mathbf{p},\,\mathbf{q}) = H_s (\vec{p}_1,\ldots, \vec{q}_{s}) + H_{N-s} (\vec{p}_{s+1},\ldots, \vec{q}_{N}) + H^{\prime} (\mathbf{q})\) (see [[id:0f74dbc6-6e75-44b9-8c93-eebb92805033][the BBGKY hierarchy]]). 
+
+In the absence of interactions the marginals of the [[id:21d62749-69ab-4e25-b366-eb6ff17a2f09][phase space density]] also behave like an /incompressible fluid/ ([[id:2832b1e9-136e-44eb-b4a8-4523d3beeb55][Liouville's theorem]]), their evolution governed by the [[id:a2da6b4b-5ecc-4ad5-9268-33aeab1643f6][Liouville's equation]]. This is because when interactions between the group of \( s \) and \( N - s \) particles are absent \( H^{\prime} (\mathbf{q}) \) vanishes identically.
+
+When interactions are present, the Hamiltonian flow is modified by a *collision integral*: the sum of terms corresponding to a potential collision of any of the particles in the group of \(s\) particles, with any of the remaining \(N-s\) particles. 
+
+To describe the probability of finding the additional particle that collides with a member of the group with \( s \) particles, the result must depend on the marginal \(\rho_{s+1}\). This results in a hierarchy of equations in which \(\partial_t \rho_1\) depends on \(\rho_2\), \(\partial_t \rho_2\) on \(\rho_3\), etc., which are no simpler to solve than the Liouville equation of the joint phase space density \( \partial_{t} \rho_N \equiv \partial_{t} \rho = - \{\rho,\, H\} \).
+
+To proceed further, a specialization of the Hamiltonian \( H (\mathbf{p},\,\mathbf{q}) \) and/or a /physically motivated approximation/ for terminating the hierarchy is needed. For example, with the Hamiltonian
+
+\begin{align*}
+H (\mathbf{p},\,\mathbf{q}) = \sum_{i=1}^N \bigg[(2m)^{-1} \vec{p}_i \cdot \vec{p}_i + U (\vec{q}_i)\bigg] + 2^{-1} \sum_{(i,\,j)=1}^N \mathcal{V} (\vec{q}_i-\vec{q}_j),
+\end{align*}
+
+terminating the BBGKY hierarchy at \( \rho_{1} \) yields the [[id:1d6a703e-1e34-4c07-8d66-c80b6b4bb1ef][the Boltzmann equation]] in the limit of /low particle density/, i.e., \( n \lambda^3 \ll 1 \) and [[id:7e249727-e935-4729-87a9-d575fc34052e][the Vlasov equation]] in the limit of /high particle density/, i.e., \( n \lambda^3 \gg 1 \). \( n \equiv N / V \) is the *particle density* (dimension of inverse volume \( V^{-1} \)) and \(\lambda\) is the *interparticle interaction range* (dimension of \( V^{1/3} \)).
+
