@@ -1,0 +1,24 @@
+:PROPERTIES:
+:ID:       95e9205b-209e-492f-ae04-baaac24bd2fb
+:END:
+#+TITLE: Heuristic explanation of the Boltzmann equation
+#+FILETAGS: :literature: :SPOP:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+[[id:1d6a703e-1e34-4c07-8d66-c80b6b4bb1ef][The Boltzmann equation]] obtained from [[id:0f74dbc6-6e75-44b9-8c93-eebb92805033][the BBGKY hierarchy]] for the Hamiltonian
+
+\begin{align*}
+H (\mathbf{p},\,\mathbf{q})=\sum_{i=1}^N\big[(2 m)^{-1} \vec{p}_i \cdot \vec{p}_i + U (\vec{q}_i)\big] + 2^{-1} \sum_{(i,\,j)=1}^N \mathcal{V} (\vec{q}_i-\vec{q}_j),
+\end{align*}
+
+governs the evolution of the one-particle density with short-range interactions in the dilute regime 
+
+\begin{align*}
+\big[\partial_t - \partial_{\vec{q}_1} U \cdot \partial_{\vec{p}_1} &+ (\vec{p}_1/m) \cdot \partial_{\vec{q}_1}\big]\, f_1 \\
+&= -\int \mathrm{d}^3 \vec{p}_2\,\mathrm{d}^2 \Omega \, \lvert \mathrm{D}_\Omega \sigma \rvert \lvert \vec{v}_1 - \vec{v}_2 \rvert\,\big[f_1(\vec{p}_1,\,\vec{q}_1,\,t)\,f_1(\vec{p}_2,\,\vec{q}_1,\,t) - f_1(\vec{p}_1^{\thinspace \prime},\,\vec{q}_1,\,t)\,f_1(\vec{p}_2^{\thinspace \prime},\,\vec{q}_1,\,t)\big].
+\end{align*}
+
+
+See the [[id:a9bb9e6b-be73-4a72-86db-5ae596e1257f][derivation of Boltzmann equation]] for the definition of \( \sigma \), \( \Omega \). Given the complexity of the [[id:a9bb9e6b-be73-4a72-86db-5ae596e1257f][derivation of Boltzmann equation]] of the [[id:1d6a703e-1e34-4c07-8d66-c80b6b4bb1ef][the Boltzmann equation]], it is appropriate to provide a heuristic explanation. 
+
+The streaming terms on the left-hand side of the equation describe the motion of a single particle in the external potential \(U\). The collision terms on the right-hand side have a simple physical interpretation: the probability of finding a particle of momentum \(\vec{p}_1\) at \(\vec{q}_1\) is suddenly altered if it undergoes a collision with another particle of momentum \(\vec{p}_2\). The probability of such a collision is the product of kinematic factors described by the differential cross-section \(\left|\frac{\mathrm{d} \sigma}{\mathrm{d} \Omega}\right|\), the "flux" of incident particles proportional to \(\left|\vec{v}_2 - \vec{v}_1\right|\), and the joint probability of finding the two particles, approximated by \(f_1(\vec{p}_1) f_1(\vec{p}_2)\). The first term on the right-hand side of Eq. (3.41) subtracts this probability and integrates over all possible momenta and solid angles describing the collision. The second term represents an addition to the probability that results from the inverse process: a particle can suddenly appear with coordinates \((\vec{p}_1, \vec{q}_1)\) as a result of a collision between two particles initially with momenta \(\vec{p}_1^\prime\) and \(\vec{p}_2^\prime\). The cross-section, and the momenta \((\vec{p}_1^\prime, \vec{p}_2^\prime)\), may have a complicated dependence on \((\vec{p}_1, \vec{p}_2)\) and \(\Omega\), determined by the specific form of the potential \(\mathcal{V}\). Remarkably, various equilibrium properties of the gas are quite independent of this potential.
