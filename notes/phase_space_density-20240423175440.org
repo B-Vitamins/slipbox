@@ -1,0 +1,20 @@
+:PROPERTIES:
+:ID:       21d62749-69ab-4e25-b366-eb6ff17a2f09
+:END:
+#+TITLE: Phase space density
+#+FILETAGS: :literature: :SPOP:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+For a system of \( N \) particles, the space of [[id:d351a06e-42c5-4a72-98c9-bbfe8f40afe7][macrostates]] is considerably smaller than the [[id:b3944247-240d-4813-bec6-d98de03e6e99][phase space]] spanned by [[id:2b3acff9-a43f-4fc5-92d8-a1296fb3f0f7][microstates]]. Therefore, there must be a very large number of microstates \(\mu\) corresponding to the same macrostate \(M\). This many-to-one correspondence suggests the introduction of a /statistical ensemble/ of microstates. Doing so natural leads to the concept of a *phase space density*, a properly normalized [[id:1adc2271-381b-4ee4-8b6c-f0401c0a08ea][probability density function]] in phase space.
+
+#+NAME: Phase space density
+#+ATTR_LATEX: :environment definition
+#+begin_definition latex
+Consider \(\mathcal{N}\) copies of a particular macrostate \( M \), each described by a different representative point \(\mu(t)\) in the phase space \(\Gamma=\prod_{i=1}^N\left\{\vec{q}_i,\,\vec{p}_i\right\}\). Let \(\mathrm{d} \mathcal{N}(\mathbf{p},\,\mathbf{q},\,t)\) equal the number of representative points in an infinitesimal volume \(\mathrm{d} \Gamma=\prod_{i=1}^N \mathrm{~d}^3 \vec{p}_i\,\mathrm{~d}^3 \vec{q}_i\) around the point \((\mathbf{p},\,\mathbf{q})\). We define a phase space density \(\rho(\mathbf{p},\,\mathbf{q},\,t)\)
+
+\begin{equation*}
+\mathrm{d} \Gamma\,\rho(\mathbf{p},\,\mathbf{q},\,t) = \lim_{\mathcal{N} \rightarrow \infty} \frac{\mathrm{d} \mathcal{N}(\mathbf{p},\,\mathbf{q},\,t)}{\mathcal{N}}, \qquad \int \mathrm{d}\Gamma\,\rho=1.  
+\end{equation*}
+
+\hfill \blacksquare
+#+end_definition
