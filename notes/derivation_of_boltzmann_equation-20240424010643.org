@@ -11,7 +11,7 @@
 H (\mathbf{p},\,\mathbf{q})=\sum_{i=1}^N\big[(2 m)^{-1} \vec{p}_i \cdot \vec{p}_i + U (\vec{q}_i)\big] + 2^{-1} \sum_{(i,\,j)=1}^N \mathcal{V} (\vec{q}_i-\vec{q}_j),
 \end{align*}
 
-is given by
+is
 
 \begin{align*}
 \partial_t f_s = - \{\rho_s,\, \mathcal{H}_s\} + \sum_{n=1}^s \int \mathrm{d} V_{s+1} \, \partial_{\vec{q}_n} \mathcal{V} (\vec{q}_n-\vec{q}_{s+1}) \cdot \partial_{\vec{p}_n} \, f_{s+1}. \tag{1}
