@@ -5,63 +5,55 @@
 #+FILETAGS: :literature:
 #+SETUPFILE: ~/.config/emacs/setup/setupfile.org
 
-The first two equations in the [[id:0f74dbc6-6e75-44b9-8c93-eebb92805033][the BBGKY hierarchy]] for the Hamiltonian
+The BBGKY hierarchy]] for the Hamitonian
 
 \begin{align*}
 H (\mathbf{p},\,\mathbf{q})=\sum_{i=1}^N\big[(2 m)^{-1} \vec{p}_i \cdot \vec{p}_i + U (\vec{q}_i)\big] + 2^{-1} \sum_{(i,\,j)=1}^N \mathcal{V} (\vec{q}_i-\vec{q}_j),
 \end{align*}
 
-are
+is
+
+\begin{align*}
+\partial_t f_s = - \{\rho_s,\, \mathcal{H}_s\} + \sum_{n=1}^s \int \mathrm{d} V_{s+1} \, \partial_{\vec{q}_n} \mathcal{V} (\vec{q}_n-\vec{q}_{s+1}) \cdot \partial_{\vec{p}_n} \, f_{s+1}. \tag{1}
+\end{align*}
+
+The first two equations in the hierarchy are
 
 \[
-\big[\partial_t-\partial_{\vec{q}_1} U \cdot \partial_{\vec{p}_1}+(\vec{p}_1/m) \cdot \partial_{\vec{q}_1}\big]\,f_1 = \int \mathrm{d} V_2 \, \partial_{\vec{q}_1} \mathcal{V}(\vec{q}_1-\vec{q}_2) \cdot \partial_{\vec{p}_1} f_2, \tag{1}
+\big[\partial_t-\partial_{\vec{q}_1} U \cdot \partial_{\vec{p}_1}+(\vec{p}_1/m) \cdot \partial_{\vec{q}_1}\big]\,f_1 = \int \mathrm{d} V_2 \, \partial_{\vec{q}_1} \mathcal{V}(\vec{q}_1-\vec{q}_2) \cdot \partial_{\vec{p}_1} f_2, \tag{2}
 \]
-
-and
 
 \begin{align*}
 \bigg[\partial_t + \sum_{i=1}^{2} \bigg(-\partial_{\vec{q}_i} U \cdot \partial_{\vec{p}_i} &+ \frac{\vec{p}_i}{m} \cdot \partial_{\vec{q}_i}\bigg) - \partial_{\vec{q}_1} \mathcal{V}(\vec{q}_1-\vec{q}_2) \cdot (\partial_{\vec{p}_1}-\partial_{\vec{p}_2})\bigg]\,f_2 \\
-&= \int \mathrm{d} V_3 \bigg[\partial_{\vec{q}_1} \mathcal{V}(\vec{q}_1-\vec{q}_3) \cdot \partial_{\vec{p}_1}+\partial_{\vec{q}_2} \mathcal{V}(\vec{q}_2-\vec{q}_3) \cdot \partial_{\vec{p}_2}\bigg]\, f_3. \tag{2}
+&= \int \mathrm{d} V_3 \bigg[\partial_{\vec{q}_1} \mathcal{V}(\vec{q}_1-\vec{q}_3) \cdot \partial_{\vec{p}_1}+\partial_{\vec{q}_2} \mathcal{V}(\vec{q}_2-\vec{q}_3) \cdot \partial_{\vec{p}_2}\bigg]\, f_3. \tag{3}
 \end{align*}
 
 Note the assumption of a /symmetric potential/, i.e., \(\mathcal{V}(\vec{q}_1-\vec{q}_2) = \mathcal{V}(\vec{q}_2-\vec{q}_1)\).
 
-All terms within square brackets in the above equations have dimensions of inverse time, and we estimate their relative magnitudes by dimensional analysis, using typical velocities and length scales. The typical speed of a gas particle at room temperature is \(v \approx 10^2 \, \text{m s}^{-1}\). For terms involving the external potential \(U\), or the interatomic potential \(\mathcal{V}\), an appropriate length scale can be extracted from the range of variations of the potential.
+All terms within square brackets in the above equations have dimensions of inverse time. The typical speed of a gas particle at room temperature is \(v \approx 10^2 \, \text{m s}^{-1}\). For terms involving the external potential \(U\), or the interatomic potential \(\mathcal{V}\), an appropriate length scale can be extracted from the range of variations of the potential.
 
-* Extrinsic time scale
+* Extrinsic time scale (\( \tau_U \approx L / v \approx 10^{-5} s \))
 
-The terms proportional to
+The *extrinsic time scale* \(\tau_U^{-1} \sim \partial_{\vec{q}} U \cdot \partial_{\vec{p}}\) involve spatial variations of the external potential \(U(\vec{q})\), which take place over macroscopic distances \(L\). It can be made arbitrarily long by increasing system size. 
 
-\[
-\frac{1}{\tau_U} \sim \partial_{\vec{q}} U \cdot \partial_{\vec{p}}
-\]
+Using a typical speed of a gas particle at room temperature \(v \approx 10^2 \, \text{m s}^{-1}\) and a typical value for the linear extent of the volume \(L \approx 10^{-3} \, \text{m}\), we get \(\tau_U \approx L / v \approx 10^{-5} \, \text{s}\).
 
-involve spatial variations of the external potential \(U(\vec{q})\), which take place over macroscopic distances \(L\). We shall refer to the associated time \(\tau_U\) as an extrinsic time scale, as it can be made arbitrarily long by increasing system size. For a typical value of \(L \approx 10^{-3} \, \text{m}\), we get \(\tau_U \approx L / v \approx 10^{-5} \, \text{s}\).
+* Intrinsic time scales
 
-* Collision duration
+From the terms involving the interatomic potential \(\mathcal{V}\), we can extract two additional intrinsic time scales, which are inherent to the gas under study.
 
-From the terms involving the interatomic potential \(\mathcal{V}\), we can extract two additional time scales, which are intrinsic to the gas under study. In particular, the collision duration
+** Collision duration (\(\tau_{c} \approx 10^{-12} s \))
 
-\[
-\frac{1}{\tau_c} \sim \partial_{\vec{q}} \mathcal{V} \cdot \partial_{\vec{p}}
-\]
+The *collision duration* \(\tau_c^{-1} \sim \partial_{\vec{q}} \mathcal{V} \cdot \partial_{\vec{p}}\) is the typical time over which two particles are within the effective range \(d\) of their interaction.
 
-is the typical time over which two particles are within the effective range \(d\) of their interaction. For short-range interactions (including van der Waals and Lennard-Jones, despite their power law decaying tails), \(d \approx 10^{-10} \, \text{m}\) is of the order of a typical atomic size, resulting in \(\tau_c \approx 10^{-12} \, \text{s}\). The analysis is somewhat more complicated for long-range interactions, such as the Coulomb gas in a plasma. For a neutral plasma, the Debye screening length \(\lambda\) replaces \(d\) in the above equation, as discussed in the problems. 
+For short-range interactions, \(d \approx 10^{-10} \, \text{m}\) is of the order of a typical atomic size, resulting in \(\tau_c \approx d/v \approx 10^{-12} \, \text{s}\).
 
-* Mean free time 
+** Mean free time (\(\tau_{\times} \approx 10^{-8} \, \text{s}\))
 
-There are also collision terms on the right-hand side of Eqs. (3.28), which depend on \(f_{s+1}\), and lead to an inverse time scale
+ The *mean free time* is the typical distance a particle travels between collisions. It's inverse is
 
 \[
-\frac{1}{\tau_{\times}} \sim \int \mathrm{d} V \partial_{\vec{q}} \mathcal{V} \cdot \partial_{\vec{p}} \frac{f_{s+1}}{f_s} \sim \int \mathrm{d} V \partial_{\vec{q}} \mathcal{V} \cdot \partial_{\vec{p}} N \frac{\rho_{s+1}}{\rho_s}
+\tau_{\times}^{-1} \sim \int \mathrm{d} V \partial_{\vec{q}} \mathcal{V} \cdot \partial_{\vec{p}} \frac{f_{s+1}}{f_s} \sim N \int \mathrm{d} V \partial_{\vec{q}} \mathcal{V} \cdot \partial_{\vec{p}} \frac{\rho_{s+1}}{\rho_s}.
 \]
 
-The integrals are only non-zero over the volume of the interparticle potential \(d^3\). The term \(f_{s+1} / f_s\) is related to the probability of finding another particle per unit volume, which is roughly the particle density \(n = N / V \approx 10^{26} \, \text{m}^{-3}\). We thus obtain the mean free time
-
-\[
-\tau_{\times} \approx \frac{\tau_c}{n d^3} \approx \frac{1}{n v d^2}
-\]
-
-which is the typical distance a particle travels between collisions. For short-range interactions, \(\tau_{\times} \approx 10^{-8} \, \text{s}\) is much longer than \(\tau_c\), and the collision terms on the right-hand side of Eqs. (3.28) are smaller by a factor of \(n d^3 \approx \left(10^{26} \, \text{m}^{-3}\right)\left(10^{-10} \, \text{m}\right)^3 \approx 10^{-4}\).
-
-It is apparent that (1) is different from the rest of the hierarchy: it is the only one in which the collision terms are absent from the left-hand side. For all other equations, the right-hand side is smaller by a factor of \(n d^3\), while in (1) it may indeed dominate the left-hand side. Thus a possible approximation scheme is to truncate the equations after the first two, by setting the right-hand side of Eq. (2) to zero.
+\(\partial_{\vec{q}} \mathcal{V} \cdot \partial_{\vec{p}} \sim \tau_c^{-1}\) is the collision frequency. \(\rho_{s+1} / \rho_s\) is related to the probability of finding another particle per unit volume, which is roughly the /particle density/ \(n = N / V \approx 10^{26} \, \text{m}^{-3}\). The integrals are only non-zero over the volume of the interparticle potential \(d^3\). Thus \( \tau_{\times}^{-1} \approx d^3 \tau_{c}^{-1} n \), or \( \tau_{\times} \approx \tau_c (n\,d^3)^{-1} \approx (n\,v\,d^2)^{-1} \approx 10^{-8} \, \text{s} \).
