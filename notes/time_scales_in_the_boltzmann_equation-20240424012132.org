@@ -30,7 +30,7 @@ The first two equations in the hierarchy are
 
 Note the assumption of a /symmetric potential/, i.e., \(\mathcal{V}(\vec{q}_1-\vec{q}_2) = \mathcal{V}(\vec{q}_2-\vec{q}_1)\).
 
-All terms within square brackets in the above equations have dimensions of inverse time. The typical speed of a gas particle at room temperature is \(v \approx 10^2 \, \text{m s}^{-1}\). For terms involving the external potential \(U\), or the interatomic potential \(\mathcal{V}\), an appropriate length scale can be extracted from the range of variations of the potential.
+All terms within square brackets in the above equations have dimensions of inverse time. The typical speed of a gas particle at room temperature is \(v \approx 10^2 \, \text{m s}^{-1}\). For terms involving the external potential \(U\), or the interatomic potential \(\mathcal{V}\), an appropriate length scale \( L \) can be extracted from the range of variations of the potential.
 
 * Extrinsic time scale (\( \tau_U \approx L / v \approx 10^{-5} s \))
 
@@ -56,4 +56,4 @@ For short-range interactions, \(d \approx 10^{-10} \, \text{m}\) is of the order
 \tau_{\times}^{-1} \sim \int \mathrm{d} V \partial_{\vec{q}} \mathcal{V} \cdot \partial_{\vec{p}} \frac{f_{s+1}}{f_s} \sim N \int \mathrm{d} V \partial_{\vec{q}} \mathcal{V} \cdot \partial_{\vec{p}} \frac{\rho_{s+1}}{\rho_s}.
 \]
 
-\(\partial_{\vec{q}} \mathcal{V} \cdot \partial_{\vec{p}} \sim \tau_c^{-1}\) is the collision frequency. \(\rho_{s+1} / \rho_s\) is related to the probability of finding another particle per unit volume, which is roughly the /particle density/ \(n = N / V \approx 10^{26} \, \text{m}^{-3}\). The integrals are only non-zero over the volume of the interparticle potential \(d^3\). Thus \( \tau_{\times}^{-1} \approx d^3 \tau_{c}^{-1} n \), or \( \tau_{\times} \approx \tau_c (n\,d^3)^{-1} \approx (n\,v\,d^2)^{-1} \approx 10^{-8} \, \text{s} \).
+\(\partial_{\vec{q}} \mathcal{V} \cdot \partial_{\vec{p}} \sim \tau_c^{-1}\) is the collision frequency. \(\rho_{s+1} / \rho_s\) is related to the probability of finding another particle per unit volume, which is roughly the /particle density/ \(n = N / V \approx 10^{26} \, \text{m}^{-3}\). The integrals are only non-zero over the volume of the interparticle potential \(d^3\). Thus \( \tau_{\times}^{-1} \approx \tau_{c}^{-1} (n d^3) \approx 10^{-8} \, \text{s} \).

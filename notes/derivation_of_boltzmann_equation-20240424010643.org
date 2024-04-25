@@ -20,23 +20,21 @@ is
 The first two equations in the hierarchy are
 
 \[
-\big[\partial_t-\partial_{\vec{q}_1} U \cdot \partial_{\vec{p}_1}+(\vec{p}_1/m) \cdot \partial_{\vec{q}_1}\big]\,f_1 = \int \mathrm{d} V_2 \, \partial_{\vec{q}_1} \mathcal{V}(\vec{q}_1-\vec{q}_2) \cdot \partial_{\vec{p}_1} f_2, \tag{2}
+\big[\partial_t-\underbrace{\partial_{\vec{q}_1} U \cdot \partial_{\vec{p}_1}}_{\tau_U^{-1}} +(\vec{p}_1/m) \cdot \partial_{\vec{q}_1}\big]\,f_1 = \big[\int \mathrm{d} V_2 \, \underbrace{\partial_{\vec{q}_1} \mathcal{V}(\vec{q}_1-\vec{q}_2) \cdot \partial_{\vec{p}_1}}_{\tau^{-1}_c} \big] f_2, \tag{2}
 \]
 
 \begin{align*}
-\bigg[\partial_t + \sum_{i=1}^{2} \bigg(-\partial_{\vec{q}_i} U \cdot \partial_{\vec{p}_i} &+ \frac{\vec{p}_i}{m} \cdot \partial_{\vec{q}_i}\bigg) - \partial_{\vec{q}_1} \mathcal{V}(\vec{q}_1-\vec{q}_2) \cdot (\partial_{\vec{p}_1}-\partial_{\vec{p}_2})\bigg]\,f_2 \\
-&= \int \mathrm{d} V_3 \bigg[\partial_{\vec{q}_1} \mathcal{V}(\vec{q}_1-\vec{q}_3) \cdot \partial_{\vec{p}_1}+\partial_{\vec{q}_2} \mathcal{V}(\vec{q}_2-\vec{q}_3) \cdot \partial_{\vec{p}_2}\bigg]\, f_3. \tag{3}
+\bigg[\partial_t + \sum_{i=1}^{2} \bigg(-\overbrace{\partial_{\vec{q}_i} U \cdot \partial_{\vec{p}_i}}^{\tau_U^{-1}} &+ \frac{\vec{p}_i}{m} \cdot \partial_{\vec{q}_i}\bigg) - \overbrace{\partial_{\vec{q}_1} \mathcal{V}(\vec{q}_1-\vec{q}_2) \cdot (\partial_{\vec{p}_1}-\partial_{\vec{p}_2})}^{\tau_c^{-1}}\bigg]\,f_2 \\
+&= \overbrace{\bigg[\int \mathrm{d} V_3 \bigg(\underbrace{\partial_{\vec{q}_1} \mathcal{V}(\vec{q}_1-\vec{q}_3) \cdot \partial_{\vec{p}_1}}_{\tau_c^{-1}}+\underbrace{\partial_{\vec{q}_2} \mathcal{V}(\vec{q}_2-\vec{q}_3) \cdot \partial_{\vec{p}_2}}_{\tau_c^{-1}} \bigg) \bigg]\, f_3}^{\tau^{-1}_\times}. \tag{3}
 \end{align*}
 
 Note the assumption of a /symmetric potential/, i.e., \(\mathcal{V}(\vec{q}_1-\vec{q}_2) = \mathcal{V}(\vec{q}_2-\vec{q}_1)\).
 
-There are three time scales at play (see [[id:2dfdecd5-e088-4eb2-a608-f00b34f3cf76][time scales in the Boltzmann equation]]), the [[id:2dfdecd5-e088-4eb2-a608-f00b34f3cf76][extrinsic time scale]] \( \tau_{U} \), the  [[id:2dfdecd5-e088-4eb2-a608-f00b34f3cf76][collision duration]] \( \tau_{c} \), and the  [[id:2dfdecd5-e088-4eb2-a608-f00b34f3cf76][mean free time]] \( \tau_{\times} \). The typical values for a dilute gas are \( \tau_U \approx 10^{-5} s\), \( \tau_c \approx 10^{-12} s\), and \( \tau_\times \approx 10^{-8} s\).
+There are three time scales at play, the [[id:2dfdecd5-e088-4eb2-a608-f00b34f3cf76][extrinsic time scale]] \( \tau_{U} \), the  [[id:2dfdecd5-e088-4eb2-a608-f00b34f3cf76][collision duration]] \( \tau_{c} \), and the  [[id:2dfdecd5-e088-4eb2-a608-f00b34f3cf76][mean free time]] \( \tau_{\times} \). The typical values for a dilute gas are \( \tau_U^{-1} \approx 10^{5}\, s^{-1}\), \( \tau_c^{-1} \approx 10^{12} \, s^{-1}\), and \( \tau_\times^{-1} \approx 10^{8} \, s^{-1}\) (see [[id:2dfdecd5-e088-4eb2-a608-f00b34f3cf76][time scales in the Boltzmann equation]] for details).
 
-For short-range interactions, \(\tau_{\times} \) is much longer than \(\tau_c\), and the collision terms on the right-hand side of Eqs. (3.28) are smaller by a factor of \(n d^3 \approx \left(10^{26} \, \text{m}^{-3}\right)\left(10^{-10} \, \text{m}\right)^3 \approx 10^{-4}\).
+It is apparent that (2) is different from the rest of the hierarchy: it is the only one in which the collision terms are absent from the left-hand side. For all other equations, the right-hand side is smaller by a factor of \(n d^3\), while in (2) it may indeed dominate the left-hand side. Thus a possible approximation scheme is to truncate the equations after the first two, by setting the right-hand side of Eq. (3) to zero.
 
-It is apparent that (1) is different from the rest of the hierarchy: it is the only one in which the collision terms are absent from the left-hand side. For all other equations, the right-hand side is smaller by a factor of \(n d^3\), while in (1) it may indeed dominate the left-hand side. Thus a possible approximation scheme is to truncate the equations after the first two, by setting the right-hand side of Eq. (2) to zero.
-
- [[id:1d6a703e-1e34-4c07-8d66-c80b6b4bb1ef][The Boltzmann equation]] is obtained for short-range interactions in the dilute regime by exploiting \(\tau_c / \tau_{\times} \approx n d^3 \ll 1\), where \( n \equiv N / V \) is the particle density and \( d^{3} \) is the interparticle potential.
+[[id:1d6a703e-1e34-4c07-8d66-c80b6b4bb1ef][The Boltzmann equation]] is obtained for short-range interactions in the dilute regime by exploiting \(\tau_c / \tau_{\times} \approx n d^3 \ll 1\), where \( n \equiv N / V \) is the particle density and \( d^{3} \) is the interparticle potential.
 
 Setting the right-hand side of (3) to zero (see [[id:2dfdecd5-e088-4eb2-a608-f00b34f3cf76][time scales in the Boltzmann equation]]) implies that the two-body density evolves as in an isolated two-particle system. The mechanical processes that govern this evolution result in streaming terms for \(f_2\) that are proportional to both \(\tau_U^{-1}\) and \(\tau_c^{-1}\). The two sets of terms describes the evolution of the center of mass of the two particles and the dependence on relative coordinates. As such, they can be more or less treated independently.
 
@@ -81,3 +79,45 @@ f_2 (\vec{p}_1,\,\vec{q}_1,\,\vec{p}_2,\,\vec{b},\,-;\,t) = f_1 (\vec{p}_1,\,\ve
 Substituting (8) in (7), we obtain [[id:1d6a703e-1e34-4c07-8d66-c80b6b4bb1ef][the Boltzmann equation]] (see [[id:95e9205b-209e-492f-ae04-baaac24bd2fb][heuristic explanation of the Boltzmann equation]]). 
 
 Note that even if one starts with an uncorrelated initial probability distribution for particles, there is no guarantee that correlations are not generated as a result of collisions.
+
+For the Hamiltonian
+
+\[
+H (\mathbf{p},\,\mathbf{q}) = \sum_{i=1}^N \left[\frac{1}{2m} \vec{p}_i \cdot \vec{p}_i + U(\vec{q}_i)\right] + \frac{1}{2} \sum_{i,j=1}^N \mathcal{V} (\vec{q}_i - \vec{q}_j),
+\]
+
+the BBGKY hierarchy is formulated as
+
+\[
+\partial_t f_s = -\{\rho_s, \mathcal{H}_s\} + \sum_{n=1}^s \int \mathrm{d}V_{s+1} \, \partial_{\vec{q}_n} \mathcal{V} (\vec{q}_n - \vec{q}_{s+1}) \cdot \partial_{\vec{p}_n} f_{s+1}. \tag{1}
+\]
+
+Within this hierarchy, the first two equations are specified as follows:
+
+\[
+\left[\partial_t - \partial_{\vec{q}_1} U \cdot \partial_{\vec{p}_1} + \frac{\vec{p}_1}{m} \cdot \partial_{\vec{q}_1}\right] f_1 = \left[\int \mathrm{d} V_2 \, \partial_{\vec{q}_1} \mathcal{V}(\vec{q}_1 - \vec{q}_2) \cdot \partial_{\vec{p}_1} \right] f_2, \tag{2}
+\]
+
+\[
+\left[\partial_t + \sum_{i=1}^2 \left(-\partial_{\vec{q}_i} U \cdot \partial_{\vec{p}_i} + \frac{\vec{p}_i}{m} \cdot \partial_{\vec{q}_i}\right) - \partial_{\vec{q}_1} \mathcal{V}(\vec{q}_1 - \vec{q}_2) \cdot (\partial_{\vec{p}_1} - \partial_{\vec{p}_2})\right] f_2 = \left[\int \mathrm{d} V_3 \, (\partial_{\vec{q}_1} \mathcal{V}(\vec{q}_1 - \vec{q}_3) \cdot \partial_{\vec{p}_1} + \partial_{\vec{q}_2} \mathcal{V}(\vec{q}_2 - \vec{q}_3) \cdot \partial_{\vec{p}_2})\right] f_3. \tag{3}
+\]
+
+The dynamics assumes a symmetric potential, \(\mathcal{V}(\vec{q}_1 - \vec{q}_2) = \mathcal{V}(\vec{q}_2 - \vec{q}_1)\), and operates under three primary time scales: the extrinsic time scale \(\tau_U\), the collision duration \(\tau_c\), and the mean free time \(\tau_\times\). Typically for a dilute gas, these are \(\tau_U^{-1} \approx 10^5 s^{-1}\), \(\tau_c^{-1} \approx 10^{12} s^{-1}\), and \(\tau_\times^{-1} \approx 10^8 s^{-1}\).
+
+Equation (2) stands out in that the collision terms potentially dominate its behavior, unlike in other levels of the hierarchy where the right-hand side terms are less significant. This suggests that an effective approximation may involve truncating the hierarchy after the first two equations by setting the right-hand side of Eq. (3) to zero.
+
+The concept of molecular chaos implies that during collisions, the two-body density \(f_2\) behaves as though it were part of an isolated two-particle system. It evolves such that at distances significantly larger than the range of the potential \(\mathcal{V}\), the density \(f_2\) simplifies to the product \(f_1(\vec{p}_1, \vec{q}_1, t) f_1(\vec{p}_2, \vec{q}_2, t)\), even under nonequilibrium conditions such as a sudden expansion into a new volume following barrier removal.
+
+The integral in the collision term on the right-hand side of Eq. (2) requires understanding \(f_2\) at separations about the diameter \(d\). At timescales longer than \(\tau_c\), but shorter than \(\tau_U\), \(f_2\) at short relative distances stabilizes, resulting in the equation
+
+\[
+\left[(\vec{p}_1/m) \cdot \partial_{\vec{q}_1} + (\vec{p}_2/m) \cdot \partial_{\vec{q}_2} - \partial_{\vec{q}_1} \mathcal{V}(\vec{q}_1 - \vec{q}_2) \cdot (\partial_{\vec{p}_1} - \partial_{\vec{p}_2})\right] f_2 = 0
+\]
+
+This ensures that the changes in \(f_2\) occur primarily along the trajectories defining the relative motion of the colliding particles. Thus, \(f_2(\vec{q}_1, \vec{q}_2)\) shows little variation across the center of mass coordinate and more across the relative coordinate, leading to the expression for the collision integral
+
+\[
+\mathrm{D}_t f_1 \rvert_{\text{coll.}} = \int \mathrm{d}^3\vec{p}_2\,\mathrm{d}^3\vec{q}_2\, \big[\partial_{\vec{q}_1} \mathcal{V}(\vec{q}_1 - \vec{q}_2) \cdot (\partial_{\vec{p}_1} - \partial_{\vec{p}_2})\big]\,f_2 \approx \int \mathrm{d}^3 \vec{p}_2\,\mathrm{d}^3 \vec{q}\,\bigg(\frac{\vec{p}_2 - \vec{p}_1}{m}\bigg) \cdot \partial_{\vec{q}} f_2(\vec{p}_1, \vec{q}_1, \vec{p}_2, \vec{q}; t). \tag{6}
+\]
+
+The collision integral's final expression, derived from the above relationships, underscores the fundamental role of molecular dynamics in the kinetic theory.
