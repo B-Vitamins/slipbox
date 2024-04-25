@@ -1,0 +1,18 @@
+:PROPERTIES:
+:ID:       f62d1df2-edc2-49a3-a4aa-c56fb4a5189a
+:END:
+#+TITLE: Green's functions
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+For a linear [[id:08acb081-f7cf-41ce-8c6d-e1a3a1887b5f][differential operator]] \(\mathrm{L}\), acting on functions over a subset of \(\mathbb{R}^n\), the *Green's function* \(G\) satisfies:
+
+\[
+\mathrm{L}\,G = \delta
+\]
+
+where \(\delta\) is the [[id:129a3159-a355-485b-b23a-a308063b98fc][Dirac delta function]]. The Green's function can be interpreted as the right inverse of \(\mathrm{L}\). It is commonly used to solve *inhomogenous* [[id:976c7dce-bf19-4528-bab1-004bf930b30f][ordinary differential equations]] and [[id:bd6b6d28-7db8-4667-a723-e3a0ba084e28][partial differential equations]] of the form \(\mathrm{L}\,u = f\), by transforming the problem of finding \( u \) into one of finding \(G\). First, the inhomogeneity \( f \) is removed and \( \mathrm{L} \, G = \delta \) is solved for \( G \) to obtain the Green's function \( G \) for the linear differential operator \( \mathrm{L} \). Thereafter, the inhomogeneity is reintroduced: the solution of the [[id:9dc6f896-5400-454f-afd8-c7273450fcf9][initial value problem]] \(\mathrm{L}\,u = f\) is the convolution \(u = G \ast f\), i.e., \(u = \int G\,f\).
+
+
+
+
