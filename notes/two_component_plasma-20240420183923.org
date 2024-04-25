@@ -1,0 +1,154 @@
+:PROPERTIES:
+:ID:       84d548b9-50e8-497e-b0d1-3d54c035d023
+:END:
+#+TITLE: Two-component plasma
+#+FILETAGS: :problem: :SPOP: :statmech:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+#+BEGIN: clocktable :maxlevel 2 :scope nil :emphasize nil
+#+CAPTION:
+#+END
+* 3.4 Two-component plasma
+:LOGBOOK:
+CLOCK: [2024-04-25 Thu 11:26]--[2024-04-25 Thu 16:28] =>  5:02
+:END:
+
+Next: [[id:32f1cafc-944a-458b-b87f-29abf0653558][Two-dimensional electron gas in a magnetic field]]
+
+** 3.4.1
+
+*Show that the Vlasov equations for this two-component system are*
+
+\begin{equation*}
+\bigg[\partial_t + \frac{\vec{p}}{m_{+}} \cdot \partial_{\vec{q}} + e \partial_{\vec{q}} \Phi_{\mathrm{eff}} \cdot \partial_{\vec{p}}\bigg] f_{+}(\vec{p},\,\vec{q},\,t) = 0  
+\end{equation*}
+
+\begin{equation*}
+\bigg[\partial_t + \frac{\vec{p}}{m_{-}} \cdot \partial_{\vec{q}} - e \partial_{\vec{q}} \Phi_{\mathrm{eff}} \cdot \partial_{\vec{p}}\bigg] f_{-}(\vec{p},\,\vec{q},\,t) = 0  
+\end{equation*}
+
+*where the effective Coulomb potential is given by*
+
+\[
+\Phi_{\mathrm{eff}}(\vec{q},\,t) = \Phi_{\mathrm{ext}}(\vec{q}) + e \int \mathrm{d} \mathbf{x}^{\prime}\,C(\vec{q} - \vec{q}^{\prime})\,\big[f_{+}(\mathbf{x}^{\prime},\,t) - f_{-}(\mathbf{x}^{\prime},\,t)\big]
+\]
+
+*Here,* \( \Phi_{\text{ext}} \) *is the potential set up by the external charges, and the Coulomb potential* \( C(\vec{q}) \) *satisfies the differential equation* \( \nabla^2 C = 4 \pi \delta^3(\vec{q}) \).
+
+The Hamiltonian is
+
+\begin{equation*}
+H = \underbrace{\bigg[ \sum_{i=1}^{N} \frac{p_i^2}{2m_{+}} + e \, \Phi_{\text{eff}} (\vec{q}_i,\,t) \bigg]}_{\equiv H_{\text{ions}}} + \underbrace{\bigg[ \sum_{j=1}^{N} \frac{p_j^2}{2 m_{-}} - e\,\Phi_{\text{eff}} (\vec{q}_j,\,t) \bigg]}_{\equiv H_{\text{electrons}}}  \tag{1}  
+\end{equation*}
+
+By analogy with [[id:7e249727-e935-4729-87a9-d575fc34052e][the Vlasov equation]], we obtain
+
+\[
+\big[\partial_t + (\vec{p} / m_{+}) \cdot \partial_{\vec{q}} + e\,\partial_{\vec{q}} \,\Phi_{\text{eff}} (\vec{q},\,t) \cdot \partial_{\vec{p}} \big]\,f_{+}(\vec{p},\,\vec{q},\,t) = 0
+\]
+
+\[
+\big[\partial_t + (\vec{p} / m_{-}) \cdot \partial_{\vec{q}} - e\,\partial_{\vec{q}}\,\Phi_{\text{eff}} (\vec{q},\,t) \cdot \partial_{\vec{p}} \big]\,f_{-}(\vec{p},\,\vec{q},\,t) = 0
+\]
+
+** 3.4.2 
+*Assume that the one-particle densities have the stationary forms* \(f_{\pm} = g_{\pm}(\vec{p})\,n_{\pm}(\vec{q})\). *Show that the effective potential satisfies the equation*
+
+\[
+\nabla^2\,\Phi_{\mathrm{eff}} = 4 \pi \, \rho_{\mathrm{ext}} + 4 \pi e \, \big[n_{+}(\vec{q}) - n_{-}(\vec{q})\big]
+\]
+
+*where* \(\rho_{\text{ext}}\) *is the external charge density.*
+
+By definition
+
+\[
+\Phi_{\mathrm{eff}}(\vec{q},\,t) = \Phi_{\mathrm{ext}}(\vec{q}) + e \int \mathrm{d} \mathbf{x}^{\prime}\, C(\vec{q} - \vec{q}^{\prime})\,\big[f_{+}(\mathbf{x}^{\prime},\,t) - f_{-}(\mathbf{x}^{\prime},\,t)\big].
+\]
+
+Substituting  \(f_{\pm} = g_{\pm}(\vec{p})\,n_{\pm}(\vec{q})\) and integrating over \( g_{\pm} (\vec{p}) \) we get
+
+\begin{align*}
+\Phi_{\mathrm{eff}}(\vec{q},\,t) &= \Phi_{\mathrm{ext}}(\vec{q}) + e \int \mathrm{d}^3 \vec{q}^{\thinspace \prime} \, \mathrm{d}^3 \vec{p}^{\thinspace \prime} \,C(\vec{q} - \vec{q}^{\thinspace \prime})\,\big[g_{+}(\vec{p}^{\thinspace \prime})\,n_{+}(\vec{q}^{\thinspace \prime}) - g_{-}(\vec{p}^{\thinspace \prime})\,n_{-}(\vec{q}^{\thinspace \prime})\big] \\
+&= \Phi_{\mathrm{ext}}(\vec{q}) + e \int \mathrm{d}^3 \vec{q}^{\thinspace \prime} \, C(\vec{q} - \vec{q}^{\thinspace \prime})\,\bigg[n_{+}(\vec{q}^{\thinspace \prime}) \underbrace{\bigg(\int \mathrm{d}^3 \vec{p}^{\thinspace \prime} \, g_{+}(\vec{p}^{\thinspace \prime}) \bigg)}_{\equiv 1} - n_{-}(\vec{q}^{\thinspace \prime}) \underbrace{\bigg(\int \mathrm{d}^3 \vec{p}^{\thinspace \prime} \, g_{-}(\vec{p}^{\thinspace \prime}) \bigg)}_{\equiv 1} \bigg] \\
+&= \Phi_{\mathrm{ext}}(\vec{q}) + e \int \mathrm{d}^3 \vec{q}^{\thinspace \prime}\, C(\vec{q} - \vec{q}^{\thinspace \prime})\,\big[n_{+}(\vec{q}^{\thinspace \prime}) - n_{-}(\vec{q}^{\thinspace \prime}) \big].
+\end{align*}
+
+Under the action of the [[id:347b7b19-6382-4038-9941-dfcae1888856][Laplacian operator]] \( \nabla^2 \), the equation transform as (see [[id:66b521f2-0abe-45ee-9b0b-b56ce82900b2][divergence of electric field]] if manipulations are not obvious)
+
+\begin{align*}
+\nabla^2 \, \Phi_{\mathrm{eff}} &= \overbrace{\nabla^2 \, \Phi_{\mathrm{ext}}(\vec{q})}^{\equiv 4 \pi \rho_{\text{ext}}} + e \int \mathrm{d}^3 \vec{q}^{\thinspace \prime}\, \overbrace{\nabla^2 \,C(\vec{q} - \vec{q}^{\thinspace \prime})}^{\equiv 4 \pi \delta^3 (\vec{q} - \vec{q}^{\thinspace \prime})}\,\big[n_{+}(\vec{q}^{\thinspace \prime}) - n_{-}(\vec{q}^{\thinspace \prime}) \big] \\
+&= 4 \pi \rho_{\text{ext}} + 4 \pi e \int \mathrm{d}^3 \vec{q}^{\thinspace \prime}\,\delta^3 (\vec{q} - \vec{q}^{\thinspace \prime})\,\big[n_{+}(\vec{q}^{\thinspace \prime}) - n_{-}(\vec{q}^{\thinspace \prime}) \big] \\
+&= 4 \pi \big[ \rho_{\text{ext}} + e \,\big[n_{+}(\vec{q}) - n_{-}(\vec{q}) \big].
+\end{align*}
+
+** 3.4.3 
+*Further assuming that the densities relax to the equilibrium Boltzmann weights* \( n_{\pm}(\vec{q}) = n_0 \exp(\pm \beta\,e\,\Phi_{\text{eff}}(\vec{q})) \) *leads to the self-consistency condition*
+
+\[
+\nabla^2 \Phi_{\mathrm{eff}} = 4 \pi \, \big[\rho_{\mathrm{ext}} +  e \big( n_0 \big[\exp (\beta\,e\,\Phi_{\mathrm{eff}}) - \exp (-\beta\,e\,\Phi_{\mathrm{eff}}) \big] \big) \big]
+\]
+
+*known as the Poisson-Boltzmann equation. Due to its non-linear form, it is generally not possible to solve the Poisson-Boltzmann equation. By linearizing the exponentials, one obtains the simpler Debye equation*
+
+\[
+\nabla^2 \Phi_{\mathrm{eff}} = 4 \pi \rho_{\mathrm{ext}} + \lambda^{-2} \Phi_{\mathrm{eff}}
+\]
+
+*Give the expression for the Debye screening length* \( \lambda \).
+
+Using \( \exp (x) \approx 1 + x \) for sufficiently small \( x \), the *Poisson-Boltzmann equation* transforms as
+
+\[
+\nabla^2 \Phi_{\mathrm{eff}} = 4 \pi \, \big[\rho_{\mathrm{ext}} +  e \big( n_0 \big[ 2\beta e\,\Phi_{\text{eff}} \big] \big) \big].
+\]
+
+This is the *Debye equation*. Matching coefficients with the form
+
+\[
+\nabla^2 \Phi_{\mathrm{eff}} = 4 \pi \rho_{\mathrm{ext}} + \lambda^{-2} \Phi_{\mathrm{eff}}
+\]
+
+we read off the *Debye screening length* \(\lambda \equiv (8 \pi\,\beta\,n_0\,e^2)^{-1/2}\).
+** 3.4.4 
+*Show that the Debye equation has the general solution*
+
+\[
+\Phi_{\mathrm{eff}} (\vec{q}) = \int \mathrm{d}^3 \vec{q}^{\prime}\,G (\vec{q} - \vec{q}^{\thinspace \prime}) \, \rho_{\mathrm{ext}}(\vec{q}^{\thinspace \prime}) 
+\]
+
+*where* \(G(\vec{q}) =  \lvert \vec{q} \rvert^{-1} \, \exp(- \lvert \vec{q} \rvert / \lambda)\) *is the screened Coulomb potential.*
+
+A rewrite of the Debye equation \( \big(\nabla^2 - \lambda^{-2} \big)\,\Phi_{\mathrm{eff}} = 4 \pi \, \rho_{\mathrm{ext}}\) is called the *screened Poisson equation*. Removing the inhomogeneity yields the *Helmholtz equation* i.e., \((\nabla^2 - \lambda^{-2})\, \Phi_{\text{eff}} (\vec{q}) = 0 \). Here \( \nabla^2 \) is the [[id:347b7b19-6382-4038-9941-dfcae1888856][Laplacian operator]].
+
+The proposed general solution is reminiscent of the convolution \( G(\vec{q} - \vec{q}^{\thinspace \prime}) \ast \rho_{\text{ext}} (\vec{q}^{\thinspace \prime})\), which suggests the \( G(\vec{q}) =  \lvert \vec{q} \rvert^{-1} \, \exp(- \lvert \vec{q} \rvert / \lambda) \) is the [[id:f62d1df2-edc2-49a3-a4aa-c56fb4a5189a][Green's function]] for the /linear/ [[id:08acb081-f7cf-41ce-8c6d-e1a3a1887b5f][differential operator]] \(\mathrm{L} \equiv \big(\nabla^2 - \lambda^{-2} \big)\). The Green's function \( G(\vec{q}) \) for \( \mathrm{L} \) is a solution of the Helmholtz equation, i.e., \( \mathrm{L} G(\vec{q}) = \delta (\vec{q}) \), where \( \delta (\vec{q}) \) is the [[id:129a3159-a355-485b-b23a-a308063b98fc][Dirac delta function]]. If \( G(\vec{q}) \) is in fact \((\nabla^2 - \lambda^{-2})\)'s Green's function, then \((\nabla^2 - \lambda^{-2}) G(\vec{q}) = \delta (\vec{q}) \) must hold. This is easily verified by evaluating \( \nabla^2 G (\vec{q}) \stackrel{?}{=} \lambda^{-2} G(\vec{q}) \). 
+
+Because \( G(\vec{q}) \)'s dependendence on \( \vec{q} \) is via \( \lvert \vec{q} \rvert \) and  \( \lvert \vec{q} \rvert \) only, the problem has spherical symmetry. [[id:9b149a74-f823-4dc5-8aa3-cba9d7879fa0][Changing coordinates]] to spherical polar, we have \(G(\vec{q}) \to G(r) = r^{-1}\,\exp(- r/\lambda)\) and \( \nabla^{2} \equiv r^{-2} \, \partial_r (r^2 \, \partial_r) \). We will now evaluate evaluating \( \nabla^2 G (r) \stackrel{?}{=} \lambda^{-2} G(r) \).
+
+\begin{align*}
+\lambda^{-2} \,G(r) &\stackrel{?}{=} r^{-2} \, \partial_r [r^2 \, \partial_r \, G(r)] \\
+&\stackrel{?}{=} r^{-2} \, \partial_r \bigg(- r \lambda^{-1} \exp (- r / \lambda) - \exp (- r / \lambda) \bigg) \\
+&\stackrel{?}{=} r^{-2} \, \bigg(r \lambda^{-2} \exp (- r / \lambda) - \lambda^{-1} \exp (- r / \lambda) + \lambda^{-1} \exp (- r / \lambda) \bigg) \\
+&\stackrel{?}{=} \lambda^{-2} r^{-1} \exp (- r / \lambda ) = \lambda^{-2} G(r).
+\end{align*}
+
+\( G(\vec{q}) \) is indeed the Green's function for \((\nabla^2 - \lambda^{-2})\), so the general solution \(\Phi_{\text{eff}} (\vec{q})\) of \( \big(\nabla^2 - \lambda^{-2} \big)\,\Phi_{\mathrm{eff}} = 4 \pi \, \rho_{\mathrm{ext}}\) is obtained as
+
+\[
+\Phi_{\mathrm{eff}} (\vec{q}) = \int \mathrm{d}^3 \vec{q}^{\thinspace \prime}\,G (\vec{q} - \vec{q}^{\thinspace \prime}) \, \rho_{\mathrm{ext}}(\vec{q}^{\thinspace \prime}).
+\]
+
+** 3.4.5 
+*Give the condition for the self-consistency of the Vlasov approximation, and interpret it in terms of the interparticle spacing.*
+
+The Vlasov equation is applicable when \( 1 \ll n_0\, \lambda^3\), where \( n_0 = N / V\) is the particle density and \(\lambda\) is the Debye screening length. In (3.4.3), we found  \(\lambda \equiv (8 \pi\,\beta\,n_0\,e^2)^{-1/2}\). Substituting in \(1 \ll n_o \lambda^3 \) and simplifying
+
+\[
+1 \ll n_0 (8 \pi\,\beta\,n_0\,e^2)^{-3/2} \approx n_0^{-1/2} (k_B\,T)^{3/2} e^{-3} \approx n_0^{-1/3} (k_B\,T) e^{-2} \Longrightarrow (e^2 / k_B T) \ll n_0^{-1/3} \sim l \Longrightarrow (e^2/l) \ll k_B T.
+\]
+
+Here \( l \) is the interparticle spacing. The physical interpretation of the condition \( (e^2/l) \ll k_B T \) is that the typical kinetic energy must be much larger than the typical interaction energy.
+
+** 3.4.6 
+*Show that the characteristic relaxation time* \( (\tau \approx \lambda / v) \) *is temperature-independent. What property of the plasma is it related to?*
+
+\( E \approx m\,v^2 \) and \( E \approx k_B T \), hence \( c \sim (k_B\,T/m)^{1/2} \). Using \(\lambda \sim (k_B T)^{1/2} n_0^{-1/2} e^{-1}\), \(\tau \approx \lambda / v \sim e^{-1}\,m^{1/2}\,n_0^{-1/2} \sim \omega_p^{-1}\). Clearly, \( \tau \) is temperature-independent. Here \( \omega_p \) is the *plasma frequency*. This frequency is related to the oscillations in the number density \( n_0 \) of electrons in the plasma (called *plasma oscillations* or *Langmuir waves*).
