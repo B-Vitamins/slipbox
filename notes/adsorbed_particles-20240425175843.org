@@ -1,0 +1,40 @@
+:PROPERTIES:
+:ID:       d133f2ba-605b-4279-a173-4edb65e80cd0
+:END:
+#+TITLE: Adsorbed particles
+#+FILETAGS: :problem: :SPOP: :statmech:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+#+BEGIN: clocktable :maxlevel 2 :scope nil :emphasize nil
+#+CAPTION:
+#+END
+* 3.15 Adsorbed particles
+:LOGBOOK:
+CLOCK: [2024-04-25 Thu 18:54]--[2024-04-25 Thu 19:59] =>  1:05
+:END:
+
+*Consider a gas of classical particles of mass* \(m\) *in thermal equilibrium at a temperature* \(T\), *and with a density* \(n\). *A clean metal surface is introduced into the gas. Particles hitting this surface with normal velocity less than* \(v_{t}\) *are reflected back into the gas, while particles with normal velocity greater than* \(v_{t}\) *are absorbed by it.*
+
+Next: [[id:601854a4-237e-49a7-a0b7-e15e7bf08726][Electron emission]]
+
+** 3.15.1
+*Find the average number of particles hitting one side of the surface per unit area and per unit time.* 
+
+\[J \equiv \frac{N}{\mathrm{d}t A}= 4^{-1}\,n\, \langle v \rangle = 4^{-1}\,n\,\bigg(\frac{8 K_B T}{\pi m}\bigg)^{1/2}.\]
+
+See [[id:dacc4eb0-8672-4b99-9990-5dd61329e426][Maxwell-Boltzmann distribution of velocities]], the problem [[id:f5d85255-1e37-41cb-b961-7c1a6992fc97][Characteristic functions]], and the previous problem [[id:df72e834-3e97-490b-93b6-bcbc6d85e4c0][Effusion]] for an explicit calculation of \(\langle v \rangle\) as well as the steps that establish \( \frac{N}{\mathrm{d}t A} = n \langle v \rangle / 4 \).
+
+** 3.15.2
+*Find the average number of particles absorbed by one side of the surface per unit area and per unit time.*
+
+The average number of particles absorbed by one side of the surface per unit area and per unit time is given by \(\frac{N}{\mathrm{d}t\,A} = n \bar{v}/4\) where \(\bar{v} = \int_{v_t}^{\infty} v f(v) \mathrm{d}v\). Let us evaluate the integral for \( \bar{v} \).
+
+\begin{align*}
+\bar{v} &= \int_{v_t}^{\infty} \mathrm{d}v\, v\bigg(\frac{m}{2 \pi k_B T}\bigg)^{3 / 2} 4 \pi v^2 \exp \bigg(-\frac{m v^2}{2 k_B T}\bigg) \\
+&=4 \pi\bigg(\frac{m}{2 \pi K_B T}\bigg)^{3 / 2} \int_{v_t}^{\infty} \mathrm{d}v\, v^3 \exp \bigg(-\frac{m v^2}{2 k_B T}\bigg) \xrightarrow{(\beta m/2) \to b} \\
+& =4 \pi\bigg(\frac{b}{\pi}\bigg)^{3 / 2} \int_{v_t}^{\infty}  \mathrm{d}v\, v^3 \exp \big(-b v^2\big) \\
+& =4 \pi\bigg(\frac{b}{\pi}\bigg)^{3 / 2} \cdot \frac{\bigg(b v_t^2+1\bigg)}{2 b^2} \exp \big(-b v_t^2\big) \\
+&= \sqrt{\frac{4}{\pi b}} \cdot\bigg(b v_t^2+1\bigg) \exp \big(-b v_t^2\big) \xrightarrow{b \to (\beta m/2)} \\
+& =\sqrt{\frac{8 k_B T}{\pi m}} \cdot\bigg[\bigg(m v_t^2 / 2 k_B T\bigg)+1\bigg] \exp \bigg(-\frac{m v_t^2}{2 k_B T}\bigg).
+\end{align*}
+
+
