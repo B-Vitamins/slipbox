@@ -180,7 +180,7 @@ where \(\Phi(t)\) is the PDF of the standard normal distribution. We can now ret
 \tilde{p}(k) = m(- i a k) = - i \sqrt{\frac{2}{\pi}} a k+2\left(1-a^2 k^2\right) \exp \left(\frac{-a^2 k^2}{2}\right) \Phi(- i a k).
 \end{aligned}
 
-We resort to using the definition of [[id:0aa35d43-6356-4910-a842-4ed740377570][Moments]] to evaluate \(m_{1}\) and \(m_{2}\):
+We resort to using the definition of [[id:0aa35d43-6356-4910-a842-4ed740377570][moments]] to evaluate \(m_{1}\) and \(m_{2}\):
 
 \begin{aligned}
 m_1=\langle x\rangle & =\sqrt{\frac{2}{\pi}} \int_0^{\infty} \frac{x^3}{a^3} \exp \left(\frac{-x^2}{2 a^2}\right) d x=2 a \sqrt{\frac{2}{\pi}} \int_0^{\infty} \frac{x^2}{2 a^2} \exp \left(\frac{-x^2}{2 a^2}\right) \mathrm{~d} \bigg(\frac{x^{2}}{2a^2} \bigg) \\
