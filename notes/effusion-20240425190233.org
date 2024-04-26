@@ -24,17 +24,39 @@ Next: [[id:d133f2ba-605b-4279-a173-4edb65e80cd0][Adsorbed particles]]
 ** 3.14.1
 *What is the one-particle density,* \(\rho_{1}(\vec{v})\), *for particles with velocity* \(\vec{v}\) ?
 
-The one-particle density for a homogenous gas at temperature \( T \) and with number density \( n \) is (see [[id:c3729898-9aa3-4966-a16c-24216deb2c8d][Equilibrium properties]]) is
+The one-particle density for a homogenous gas at temperature \( T \) and with number density \( n \) is (see [[id:88fb08c6-3bc3-4d68-b620-8019b544946c][particles in a box (classical)]] and [[id:c3729898-9aa3-4966-a16c-24216deb2c8d][equilibrium properties]]) is
 
 \begin{align*}
-f_1(\vec{p},\,\vec{q}) = f_1(\vec{p}) = n \bigg(\frac{1}{2 \pi\, m k_B T}\bigg)^{3 / 2} \exp \bigg(-\frac{\big[\vec{p}-\vec{p}_0\big]^2}{2 m k_B T}\bigg).
+f_1(\vec{p},\,\vec{q}) = \big(2 \pi m k_B T\big)^{-3 / 2} \, n\, \exp \bigg(- \frac{\vec{p} \cdot \vec{p}}{2 m k_B T}\bigg).
 \end{align*}
 
-Using \( f_1 (\vec{v}) = f_1 (\vec{p}) \lvert D_{\vec{v}} \vec{p} \rvert \) and \( \vec{p} = m \vec{v} \), we have
+Because relation between \(\rho_1 (\vec{p},\,\vec{q}) \) and \( f_1(\vec{p}, \vec{q}) \) is described by (see [[id:261ca926-8250-4eaa-9974-ad0839ed3680][s-particle density]])
 
-\[f (\vec{v})= \bigg(\frac{m}{2 \pi \,k_B T}\bigg)^{3 / 2} \exp \bigg(- \frac{m \, v^2}{2 k_B T} \bigg).\]
+\begin{align*}
+f_1(\vec{p},\,\vec{q}, t) & =\bigg\langle\sum_{i=1}^N \delta^3(\vec{p}-\vec{p}_i) \delta^3(\vec{q}-\vec{q}_i)\bigg\rangle \\
+& =N \int \prod_{i=2}^N \mathrm{~d}^3 \vec{p}_i \mathrm{~d}^3 \vec{q}_i \rho\big(\vec{p}_1=\vec{p}, \vec{q}_1=\vec{q}, \vec{p}_2, \vec{q}_2, \cdots, \vec{p}_N, \vec{q}_N, t\big),
+\end{align*}
 
-Note that \( \lvert \mathrm{D}_{\vec{v}} \vec{p} \rvert = m^3 \) and \( \vec{p}_0 = \langle \vec{p} \rangle = 0 \) since the box is immobile.
+we have
+
+\begin{align*}
+\rho_1(\vec{p},\,\vec{q}) = \big(2 \pi m k_B T\big)^{-3 / 2} \, V^{-1} \, \exp \bigg(- \frac{\vec{p} \cdot \vec{p}}{2 m k_B T}\bigg).
+\end{align*}
+
+Marginalizing over \( \vec{q} \), we are left with
+
+\begin{align*}
+\rho_1 (\vec{p}) &\equiv \int \mathrm{d}^3 \vec{q}\, \rho_1 (\vec{p},\,\vec{q}) = \rho_1 (\vec{p},\,\vec{q}) \int \mathrm{d}^3 \vec{q}\, = \rho_{1} (\vec{p},\,\vec{q}) \, V \\
+&= \big(2 \pi m k_B T\big)^{-3 / 2} \exp \bigg(- \frac{\vec{p} \cdot \vec{p}}{2 m k_B T}\bigg).
+\end{align*}
+
+Using \( \rho_1 (\vec{v}) = \rho_1 (\vec{p}) \lvert D_{\vec{v}} \vec{p} \rvert \) and \( \vec{p} = m \vec{v} \), we have
+
+\begin{equation*}
+\rho (\vec{v})= \bigg(\frac{m}{2 \pi \,k_B T}\bigg)^{3 / 2} \exp \bigg(- \frac{m}{2} \frac{\, \vec{v} \cdot \vec{v}}{k_B T} \bigg).  
+\end{equation*}
+
+Note that \( \lvert \mathrm{D}_{\vec{v}} \vec{p} \rvert = m^3 \).
 
 ** 3.14.2
 *A small hole is opened in the wall of the box for a short time to allow some particles to escape into a previously empty container. During the time that the hole is open what is the flux (number of particles per unit time and per unit area) of particles into the container?* *(Ignore the possibility of any particles returning to the box.)*

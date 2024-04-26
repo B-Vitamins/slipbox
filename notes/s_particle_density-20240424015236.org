@@ -8,9 +8,10 @@
 An *s-particle density* refers to the /expectation value/ of finding /any/ \( s \) of the \(N\) particles at locations \((\vec{q}_i)_{i=1\ldots s}\), with respective momenta \((\vec{p}_i)_{i=1\ldots s}\), at time \(t\).
 
 \begin{align*}
-f_s(\vec{p}, \vec{q}, t) & = \bigg \langle \sum_{i=1}^N \prod_{j=1}^{s} \delta^3 (\vec{p}_s-\vec{p}_i) \, \delta^3 (\vec{q}_{s} -\vec{q}_i) \bigg \rangle \\
+f_s(\vec{p},\,\vec{q},\,t) & = \bigg \langle \sum_{i=1}^N \prod_{j=1}^{s} \delta^3 (\vec{p}_s-\vec{p}_i) \, \delta^3 (\vec{q}_{s} -\vec{q}_i) \bigg \rangle \\
 & = \frac{N!}{(N-s)!} \int \prod_{i=s+1}^N \mathrm{~d} V_i\,\rho (\mathbf{p},\,\mathbf{q},\,t)
 = \frac{N!}{(N-s)!} \, \rho_{s} (\vec{p}_{1},\,\ldots,\,\vec{q}_{s},\,t) \tag{1}
 \end{align*}
 
-where \(\mathrm{d} V_i=\mathrm{d}^3 \vec{p}_i \mathrm{~d}^3 \vec{q}_i\) is the contribution of particle \(i\) to phase space volume and \(\rho_s\) is marginal of the phase space density for the coordinates and momenta of \(s\) particles. Clearly \(\rho_N \equiv \rho\). While \(\rho_s\) is properly normalized to unity when integrated over all its variables, the \(s\)-particle density has a normalization of \(N ! /(N-s)!\). We will use the two interchangeably. 
+where \(\mathrm{d} V_i=\mathrm{d}^3 \vec{p}_i \mathrm{~d}^3 \vec{q}_i\) is the contribution of particle \(i\) to [[id:b3944247-240d-4813-bec6-d98de03e6e99][Phase space]] volume and \(\rho_s\) is marginal of the [[id:21d62749-69ab-4e25-b366-eb6ff17a2f09][phase space density]] for the coordinates and momenta of \(s\) particles. Clearly \(\rho_N \equiv \rho\). While \(\rho_s\) is properly normalized to unity when integrated over all its variables, the \(s\)-particle density has a normalization of \(N ! /(N-s)!\). We will use the two interchangeably.
+
