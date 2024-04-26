@@ -1,0 +1,178 @@
+:PROPERTIES:
+:ID:       df72e834-3e97-490b-93b6-bcbc6d85e4c0
+:END:
+#+TITLE: Effusion
+#+FILETAGS: :problem: :SPOP: :statmech:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+#+BEGIN: clocktable :maxlevel 2 :scope nil :emphasize nil
+#+CAPTION:
+#+END
+* 3.14 Effusion
+*A box contains a perfect gas at temperature* \(T\) *and density* \(n\).
+
+Next: [[id:d133f2ba-605b-4279-a173-4edb65e80cd0][Adsorbed particles]]
+
+** 3.14.1
+*What is the one-particle density,* \(\rho_{1}(\vec{v})\), *for particles with velocity* \(\vec{v}\) ?
+
+The one-particle density for a homogenous gas at temperature \( T \) and with number density \( n \) is (see [[id:c3729898-9aa3-4966-a16c-24216deb2c8d][Equilibrium properties]]) is
+
+\begin{align*}
+f_1(\vec{p},\,\vec{q}) = f_1(\vec{p}) = n \bigg(\frac{1}{2 \pi\, m k_B T}\bigg)^{3 / 2} \exp \bigg(-\frac{\big[\vec{p}-\vec{p}_0\big]^2}{2 m k_B T}\bigg).
+\end{align*}
+
+Using \( f_1 (\vec{v}) = f_1 (\vec{p}) \lvert D_{\vec{v}} \vec{p} \rvert \) and \( \vec{p} = m \vec{v} \), we have
+
+\[f (\vec{v})= \bigg(\frac{m}{2 \pi \,k_B T}\bigg)^{3 / 2} \exp \bigg(- \frac{m \, v^2}{2 k_B T} \bigg).\]
+
+Note that \( \lvert \mathrm{D}_{\vec{v}} \vec{p} \rvert = m^3 \) and \( \vec{p}_0 = \langle \vec{p} \rangle = 0 \) since the box is immobile.
+
+** 3.14.2
+*A small hole is opened in the wall of the box for a short time to allow some particles to escape into a previously empty container. During the time that the hole is open what is the flux (number of particles per unit time and per unit area) of particles into the container?* *(Ignore the possibility of any particles returning to the box.)*
+
+#+begin_src latex :file ~/.local/images/spop-3.14.2.png :results file graphics
+\begin{tikzpicture}[scale=1, every node/.style={scale=1}]
+
+% Define a command to create random dots
+\def\randomdots#1#2#3#4#5{
+  \foreach \x in {1,...,#5}{
+    \pgfmathrandominteger{\a}{#1}{#2}
+    \pgfmathrandominteger{\b}{#3}{#4}
+    \fill (\a*0.1 - rnd,-\b*0.1 + rnd) circle (0.5pt);
+  }
+}
+
+% Draw the hatched plate in the middle of the left cylinder
+\draw[pattern=north east lines] (0,-2.1) ellipse [x radius=1.75cm, y radius=0.5cm];
+\filldraw[fill=gray] (0,-1.9) ellipse [x radius=1.75cm, y radius=0.5cm];
+
+% Random dots in the upper part of the left cylinder
+\begin{scope}
+\clip (-1.75,0) rectangle (1.75,-2);
+\randomdots{-17}{17}{0}{20}{500}
+\end{scope}
+
+% Draw the left cylinder body
+\filldraw[fill=gray] (0,0) ellipse [x radius=1.75cm, y radius=0.5cm];
+\draw (-1.75,0) -- (-1.75,-4);
+\draw (1.75,0) -- (1.75,-4);
+\draw[pattern=north east lines] (0,-4) ellipse [x radius=1.75cm, y radius=0.5cm];
+
+% Draw the slit in the hatched plate of the left cylinder
+\filldraw[fill=white] (0,-1.9) ellipse [x radius=0.2cm, y radius=0.125cm];
+\draw[pattern=north east lines] (0,-1.9) ellipse [x radius=0.2cm, y radius=0.125cm];
+\filldraw[fill=white] (0,-1.95) ellipse [x radius=0.2cm, y radius=0.1cm];
+
+% Draw the hatched plate in the middle of the right cylinder
+\draw[pattern=north east lines] (7,-2.1) ellipse [x radius=1.75cm, y radius=0.5cm];
+\filldraw[fill=gray] (7,-1.9) ellipse [x radius=1.75cm, y radius=0.5cm];
+
+% Random dots in the whole right cylinder
+\begin{scope}
+\clip (5.25,0) rectangle (8.75,-2.25);
+\randomdots{53}{87}{0}{25}{250}
+\end{scope}
+
+% Draw the right cylinder shifted to the right to accommodate the longer arrow
+\filldraw[fill=gray] (7,0) ellipse [x radius=1.75cm, y radius=0.5cm];
+\draw (5.25,0) -- (5.25,-4);
+\draw (8.75,0) -- (8.75,-4);
+\draw[pattern=north east lines] (7,-4) ellipse [x radius=1.75cm, y radius=0.5cm];
+
+% Draw the slit in the hatched plate of the right cylinder
+\filldraw[fill=white] (7,-1.9) ellipse [x radius=0.2cm, y radius=0.125cm];
+\draw[pattern=north east lines] (7,-1.9) ellipse [x radius=0.2cm, y radius=0.125cm];
+\filldraw[fill=white] (7,-1.95) ellipse [x radius=0.2cm, y radius=0.1cm];
+
+% Random dots in the whole right cylinder
+\begin{scope}
+\clip (5.25,-2.5) rectangle (8.75,-4.25);
+\randomdots{53}{87}{30}{45}{250}
+\end{scope}
+
+% Draw the horizontal arrow between the two cylinders
+\draw[-Triangle] (2.5, -2) -- (4.5, -2);
+% Add "passage of" and "time" above and below the arrow
+\node[above] at (3.5, -1.8) {passage of};
+\node[below] at (3.5, -2.2) {time};
+
+\draw[-Triangle] (3,-3) -- (3,-4) node[below right] {$z$};
+\draw[-Triangle] (3,-3) -- (4,-3) node[right] {$x$};
+\draw[-Triangle] (3,-3) -- (3.5,-3.5) node[below right] {$y$};
+
+\end{tikzpicture}
+#+end_src
+
+#+RESULTS:
+[[file:~/.local/images/spop-3.14.2.png]]
+
+
+Starting from \(f(\vec{v})\) obtained in 3.14.1, a [[id:9b149a74-f823-4dc5-8aa3-cba9d7879fa0][change of coordinates]] to a spherical coordinate system, followed by an integration over all solid angles will yield the [[id:dacc4eb0-8672-4b99-9990-5dd61329e426][Maxwell-Boltzmann distribution of speeds]]
+
+\[f (v)= \bigg(\frac{m}{2 \pi \,k_B T}\bigg)^{3 / 2} \,(4 \pi \, v^2)\, \exp \bigg(- \frac{m \, v^2}{2 k_B T} \bigg).\]
+
+In the problem on [[id:f5d85255-1e37-41cb-b961-7c1a6992fc97][characteristic functions]], we obtained the first and second moments of the Maxwell probability density function
+
+\[ p(x) = \sqrt{\frac{2}{\pi a^3}} x^2 \exp \left( -\frac{x^2}{2a^2} \right), \qquad \geq 0, \]
+
+\[m_1 =  2 \sqrt{\frac{2}{\pi}} a, \qquad m_2 =  3 a^2.\]
+
+Comparing \( p(x) \) with \( f(v) \), we get \( a = (k_B T / m)^{1/2} \), so the first and second moments of \( f(v) \) are
+
+\[ \langle v \rangle = \bigg(\frac{8 k_B T}{\pi m}\bigg)^{1/2}, \qquad \langle v^2 \rangle = \frac{3 k_B T}{m}.\]
+
+The [[id:ad948e53-1a7b-4c30-81cc-708f6ab74d58][current density]] or flux is \[ J = \frac{N}{A \mathrm{d}t} = \frac{S_{d-1}}{S_d} \cdot \frac{1}{(d-1)} \cdot n \langle v \rangle \]. Since \( S_d = \frac{2 \pi^{d/2}}{(d/2 - 1)!} \), we get \(J = 4^{-1} n \langle v \rangle\). Substituting \(\langle v \rangle = \sqrt{\frac{8 k_B T}{\pi m}}\), we get \(J = n \sqrt{\frac{k_B T}{2 \pi m}}\).
+
+** 3.14.3
+*Show that the average kinetic energy of escaping particles is* \(2 k_{B} T\). *(Hint. Calculate contributions to kinetic energy of velocity components parallel and perpendicular to the wall separately.)*
+
+The root mean squared speed, by definition, is \( v_{\text{rms}} \equiv \langle v^2 \rangle^{1/2} \). To find the \( v_{\text{rms}} \) before the beginning of effusion, we can substitute \( \langle v^2 \rangle = 3 k_B T/m \) in its definition to obtain \(v_{\text{rms}} = \sqrt{3 k_B T/m}\) so that the average kinetic energy is
+
+\[\bigg \langle \frac{1}{2} m v^2 \bigg \rangle = \frac{3}{2} k_B T;\]
+
+\( k_B T \) for each degree of freedom. For an escaping particle \(\vec{v}_z\) is given by a normal distribution (3.14.1), but imposing \(v_z \geqslant 0\) changes the probability density function into a /folded normal distribution/ given by
+
+\begin{align*}
+p(v_z)=\bigg(\frac{m}{2 \pi K_B T}\bigg)^{1 / 2} \exp \bigg(-\frac{m v_z^2}{2 K_B T}\bigg) + \bigg(\frac{m}{2 \pi K_B T}\bigg)^{1 / 2} \exp \bigg(-\frac{m v_z^2}{2 K_B T}\bigg),
+\end{align*}
+
+which, as the above form suggests, is like having an additional quadratic degree of freedom that is a copy of \( v_z \). Hence, for escaping particles, \( \langle m v_z v_z / 2 \rangle = k_B T \), not \( k_B T / 2 \), so that the average kinetic energy of escaping particles is
+
+\begin{align*}
+\bigg \langle \frac{1}{2} m v^2 \bigg \rangle &= \bigg \langle \frac{1}{2} m (v_x^2+v_y^2+v_z^2) \bigg \rangle = \frac{1}{2} k_B T + \frac{1}{2} k_B T + k_B T = 2 k_B T.
+\end{align*}
+
+** 3.14.4
+*The hole is closed and the container (now thermally insulated) is allowed to reach equilibrium. What is the final temperature of the gas in the container?*
+
+We have
+
+\begin{align*}
+P &= n K_B T \Rightarrow \mathrm{d}P = k_B (T\,\mathrm{d}n + n\,\mathrm{d}T) \Rightarrow \frac{\mathrm{d}P}{k_B} - T \frac{\mathrm{d}n}{n} = \mathrm{d}T \Rightarrow \frac{\mathrm{d}P}{P} - \frac{\mathrm{d}n}{n} = \frac{\mathrm{d}T}{T}.
+\end{align*}
+
+Therefore
+
+\begin{align*}
+P_f= \frac{2}{3} \frac{E}{V} = \frac{2}{3} \cdot \frac{1}{V} \bigg[\frac{3}{2} N k_B T - \frac{2 k_B T N A \mathrm{d}t}{V} \bigg(\frac{k_B T}{2 \pi m}\bigg)^{1/2}\bigg],
+\end{align*}
+
+\begin{align*}
+n_f=n\bigg(1-\frac{A \mathrm{d}t}{V} \sqrt{\frac{k_B T}{2 \pi m}}\bigg),
+\end{align*}
+
+and
+
+\begin{align*}
+T_{f} = P_f / n_f k_B = T\bigg(1-\bigg[\bigg(\frac{1}{3} \frac{A \mathrm{d}t}{V} \sqrt{\frac{K_B T}{2 \pi m}}\bigg) \bigg / \bigg(1-\frac{A \mathrm{d}t}{V} \sqrt{\frac{K_B T}{2 \pi m}}\bigg)\bigg] \bigg).
+\end{align*}
+
+** 3.14.5
+*A vessel partially filled with mercury (atomic weight 201), and closed except for a hole of area* \(0.1 \mathrm{~mm}^{2}\) *above the liquid level, is kept at* \(0^{\circ} \mathrm{C}\) *in a continuously evacuated enclosure. After 30 days it is found that* \(24 \mathrm{mg}\) *of mercury has been lost. What is the vapor pressure of mercury at* \(0^{\circ} \mathrm{C}\) *?*
+
+\[
+\frac{N}{\mathrm{d}t} &= P A / \sqrt{2 \pi m K_B T} \Longrightarrow P=\frac{N}{A \mathrm{d}t} \sqrt{2 \pi m K_B T} = \frac{M}{A \mathrm{d}t} \sqrt{\frac{2 \pi K_B T}{m}}
+\]
+
+On substituting \(M=2.4 \times 10^{-5} \mathrm{~kg}\), \(A=10^{-7} \mathrm{~m}^2\), \(\mathrm{d}t = 2.592 \times 10^6 \mathrm{~s}\), \(m=3.33 \times 10^{-25} \mathrm{~kg}\), and \(T=273.15 \mathrm{~K}\), we get \(P=0.025 \mathrm{~Pa}\).
+
