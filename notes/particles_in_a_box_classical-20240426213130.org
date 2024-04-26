@@ -31,7 +31,7 @@ N=\mathcal{N} \,V \,\bigg[\int_{-\infty}^{\infty} \mathrm{d} p_i \exp \bigg(-\al
 Hence, the properly normalized 1-particle density that describes the state of equilibrium for particles in a box is
 
 \begin{align*}
-f_1(\vec{p})=n\bigg(\frac{\beta}{2 \pi m}\bigg)^{3 / 2} \exp \bigg(-\frac{\beta(\vec{p}-\vec{p}_0)^2}{2 m}\bigg),
+f_1(\vec{p}, \vec{q}) = n\bigg(\frac{\beta}{2 \pi m}\bigg)^{3 / 2} \exp \bigg(-\frac{\beta(\vec{p}-\vec{p}_0)^2}{2 m}\bigg),
 \end{align*}
 
 where \(\vec{p}_0=\langle\vec{p}\rangle=m \vec{\alpha} / \beta\) is the mean value for the momentum of the gas and \(n=N / V\) is the particle density. From the Gaussian form of the distribution it can be easily concluded that the variance of each component of the momentum is \(\langle p_i^2\rangle_c=m / \beta\), and \( \langle p^2\rangle_c=\langle p_x^2+p_y^2+p_z^2\rangle_c=3 m/\beta \). If the box is stationary, \(\vec{p}_0=\langle\vec{p}\rangle= 0\) and the 1-particle density reduces to
