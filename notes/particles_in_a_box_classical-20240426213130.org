@@ -1,0 +1,44 @@
+:PROPERTIES:
+:ID:       88fb08c6-3bc3-4d68-b620-8019b544946c
+:END:
+#+TITLE: Particles in a box (classical)
+#+FILETAGS: :literature:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+A [[id:28fb5913-91f6-4c6d-adec-6355e4b2fa80][Hamiltonian]] describing a weakly interacting gas is
+
+
+\begin{align*}
+H (\mathbf{p},\,\mathbf{q})=\sum_{i=1}^N\big[(2 m)^{-1} \vec{p}_i \cdot \vec{p}_i + U (\vec{q}_i)\big] + 2^{-1} \sum_{(i,\,j)=1}^N \mathcal{V} (\vec{q}_i-\vec{q}_j).
+\end{align*}
+
+Using  [[id:4bb6b4c9-8592-4b78-bf5a-57b0a99a8ece][the H-theorem]] we can obtain general solution for the [[id:261ca926-8250-4eaa-9974-ad0839ed3680][1-particle density]] (see [[id:c3729898-9aa3-4966-a16c-24216deb2c8d][equilibrium properties]]) describing local equilibrium
+
+\begin{align*}
+f_1(\vec{p}, \vec{q})=\mathcal{N}(\vec{q}) \exp \bigg[-\vec{\alpha}(\vec{q}) \cdot \vec{p}-\beta(\vec{q})\bigg(\frac{p^2}{2 m}+U(\vec{q})\bigg)\bigg] \tag{1}.
+\end{align*}
+
+Note that the evolution of the 1-particle density must be governed by the [[id:1d6a703e-1e34-4c07-8d66-c80b6b4bb1ef][the Boltzmann equation]] for H-theorem to be applicable. For particles in a box of volume \(V\), the potential \(U(\vec{q}_i)\) is zero inside the box for all \( i \), and infinite on the outside. The normalization factor \( \mathcal{N} \) in (1) can be obtained using (see [[id:261ca926-8250-4eaa-9974-ad0839ed3680][s-particle density]])
+
+\begin{align*}
+\int \mathrm{d}^3 \vec{p} \mathrm{~d}^3 \vec{q} f_1(\vec{p}, \vec{q})=N .
+\end{align*}
+
+\begin{align*}
+N=\mathcal{N} \,V \,\bigg[\int_{-\infty}^{\infty} \mathrm{d} p_i \exp \bigg(-\alpha_i p_i-\frac{\beta p_i^2}{2 m}\bigg)\bigg]^3=\mathcal{N} V\bigg(\frac{2 \pi m}{\beta}\bigg)^{3 / 2} \exp \bigg(\frac{m \alpha^2}{2 \beta}\bigg) .
+\end{align*}
+
+Hence, the properly normalized 1-particle density that describes the state of equilibrium for particles in a box is
+
+\begin{align*}
+f_1(\vec{p})=n\bigg(\frac{\beta}{2 \pi m}\bigg)^{3 / 2} \exp \bigg(-\frac{\beta(\vec{p}-\vec{p}_0)^2}{2 m}\bigg),
+\end{align*}
+
+where \(\vec{p}_0=\langle\vec{p}\rangle=m \vec{\alpha} / \beta\) is the mean value for the momentum of the gas and \(n=N / V\) is the particle density. From the Gaussian form of the distribution it can be easily concluded that the variance of each component of the momentum is \(\langle p_i^2\rangle_c=m / \beta\), and \( \langle p^2\rangle_c=\langle p_x^2+p_y^2+p_z^2\rangle_c=3 m/\beta \). If the box is stationary, \(\vec{p}_0=\langle\vec{p}\rangle= 0\) and the 1-particle density reduces to
+
+\begin{align*}
+f_1(\vec{p}, \vec{q}) = \big(2 \pi m k_B T\big)^{-3 / 2} \, n\, \exp \bigg(- \frac{\vec{p} \cdot \vec{p}}{2 m k_B T}\bigg),
+\end{align*}
+
+so that the variance \( \langle p^2\rangle_c=\langle p_x^2+p_y^2+p_z^2\rangle_c=3 m k_B T \) completely characterizes the 1-particle density describing local equilibrium.
+
