@@ -1,0 +1,64 @@
+:PROPERTIES:
+:ID:       c3729898-9aa3-4966-a16c-24216deb2c8d
+:END:
+#+TITLE: Equilibrium properties
+#+FILETAGS: :literature: :SPOP:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+What is the nature of the equilibrium state described by the [[id:261ca926-8250-4eaa-9974-ad0839ed3680][1-particle density]] \( f_1 \), for a homogeneous gas?
+
+* The equilibrium distribution
+
+After the gas has reached equilibrium, the function \(\mathrm{H}\) (see [[id:4bb6b4c9-8592-4b78-bf5a-57b0a99a8ece][the H-theorem]]) should no longer decrease with time. The H-theorem concerns [[id:261ca926-8250-4eaa-9974-ad0839ed3680][1-particle densities]] \( f_1 (\vec{p},\,\vec{q},\,t)\) governed by the [[id:1d6a703e-1e34-4c07-8d66-c80b6b4bb1ef][the Boltzmann equation]].
+
+\begin{align*}
+\mathrm{D}_t \mathrm{H} = &-\frac{1}{4} \int \mathrm{d}^3 \vec{q} \mathrm{~d}^3 \vec{p}_1 \mathrm{~d}^3 \vec{p}_2 \mathrm{~d}^2 \vec{b}\left|\vec{v}_1-\vec{v}_2\right| \\
+& \left[f_1\left(\vec{p}_1\right) f_1\left(\vec{p}_2\right)-f_1\left(\vec{p}_1{ }^{\prime}\right) f_1\left(\vec{p}_2{ }^{\prime}\right)\right] \times \left[\ln \left(f_1\left(\vec{p}_1\right) f_1\left(\vec{p}_2\right)\right)-\ln \left(f_1\left(\vec{p}_1{ }^{\prime}\right) f_1\left(\vec{p}_2{ }^{\prime}\right)\right)\right] \leq 0.
+\end{align*}
+
+Since the integrand is always positive, a necessary condition for \(\mathrm{D}_t \mathrm{H} =0\) is that
+
+\begin{align*}
+f_1(\vec{p}_1,\, \vec{q}_1) f_1(\vec{p}_2,\, \vec{q}_1)-f_1(\vec{p}_1{ }^{\prime},\, \vec{q}_1) f_1(\vec{p}_2{ }^{\prime},\, \vec{q}_1)=0,
+\end{align*}
+
+that is, at each point \(\vec{q}\) we must have
+
+\begin{align*}
+\ln f_1(\vec{p}_1,\, \vec{q})+\ln f_1(\vec{p}_2,\, \vec{q})=\ln f_1(\vec{p}_1{ }^{\prime},\, \vec{q})+\ln f_1(\vec{p}_2{ }^{\prime},\, \vec{q}) .
+\end{align*}
+
+The left-hand side of the above equation refers to the momenta before a two-body collision, and the right-hand side to those after the collision. The equality is thus satisfied by any additive quantity that is conserved during the collision. There are five such conserved quantities for an elastic collision: 
+
+1) the particle number, 
+2) the \( x \) components of the net momentum,
+3) the \( y \) components of the net momentum,
+4) the \( z \) components of the net momentum,
+5) the kinetic energy.
+
+A viable ansatz for \( \ln f_1 \) is
+
+\begin{align*}
+\ln f_1=a(\vec{q})-\vec{\alpha}(\vec{q}) \cdot \vec{p}-\beta(\vec{q})\bigg(\frac{\vec{p}^2}{2 m} + U(\vec{q}) \bigg),
+\end{align*}
+
+which yields a general solution for \(f_1\)
+
+\begin{align*}
+f_1(\vec{p}, \vec{q})=\mathcal{N}(\vec{q}) \exp \bigg[-\vec{\alpha}(\vec{q}) \cdot \vec{p}-\beta(\vec{q})\bigg(\frac{p^2}{2 m}+U(\vec{q})\bigg)\bigg].
+\end{align*}
+
+We shall refer to the above distribution as describing /local equilibrium/. 
+
+While this form is preserved during collisions, it will evolve in time away from collisions, due to the streaming terms, unless \(\{H_1, f_1\}\) vanishes. The latter condition is satisfied for any function \(f_1\) that depends only on \(H_1\), or any other quantity that is conserved by it. Clearly, the above density satisfies this requirement as long as \(\mathcal{N}\) and \(\beta\) are independent of \(\vec{q}\), and \(\vec{\alpha}=0\).
+
+The appropriate normalization for \(f_1\) (see [[id:261ca926-8250-4eaa-9974-ad0839ed3680][s-particle density]]) is
+
+\begin{align*}
+\int \mathrm{d}^3 \vec{p} \mathrm{~d}^3 \vec{q} f_1(\vec{p}, \vec{q})=N .
+\end{align*}
+
+* Equilibrium between two gases
+* The equation of state
+* Entropy
+
