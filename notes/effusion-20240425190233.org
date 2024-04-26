@@ -8,6 +8,10 @@
 #+CAPTION:
 #+END
 * 3.14 Effusion
+:LOGBOOK:
+CLOCK: [2024-04-26 Fri 14:00]--[2024-04-26 Fri 17:39] =>  3:39
+:END:
+
 *A box contains a perfect gas at temperature* \(T\) *and density* \(n\).
 
 Next: [[id:d133f2ba-605b-4279-a173-4edb65e80cd0][Adsorbed particles]]
