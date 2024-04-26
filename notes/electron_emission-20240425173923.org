@@ -28,7 +28,7 @@ Next: [[id:2eea2039-7175-4635-8256-224892e7134e][Classical harmonic oscillators]
 ** 3.16.2
 *In thermal equilibrium at temperature* \(T\), *what is the probability density function for the velocity of electrons?*
 
-As obtained in the problem [[id:df72e834-3e97-490b-93b6-bcbc6d85e4c0][Effusion]] (also see [[id:c3729898-9aa3-4966-a16c-24216deb2c8d][equilibrium properties]]),
+As obtained in the problem [[id:df72e834-3e97-490b-93b6-bcbc6d85e4c0][Effusion]] (3.14.1) (also see [[id:c3729898-9aa3-4966-a16c-24216deb2c8d][equilibrium properties]]),
 
 \[f (\vec{v}_e)= \bigg(\frac{m_e}{2 \pi \,k_B T}\bigg)^{3 / 2} \exp \bigg(- \frac{m_e \, v^2}{2 k_B T} \bigg).\]
 
@@ -48,7 +48,4 @@ Apart from a change in the lower limit from \(v_t\) to \((2 \phi / m_e)^{1/2}\),
 \end{align*}
 
 In our expression for \(J\), the leading term in \(T\) goes like \(J \propto T^{\thinspace 1 / 2} \exp \big(-\beta \, \phi \big) + \mathcal{O} (T^{\thinspace-1/2})\), which of course differs from [[id:c01f3f40-a5b9-432a-b480-dd9582385833][Richardson's law for thermionic emission]] in which the current density shows behaviour \(J \propto T^{\thinspace 2} \, \exp (- \beta \, \phi)\).  For that, we'll have to take into account [[id:3d61b366-690a-4b0a-9200-2604eb725676][Fermi statistics]] and modify \(n_e\) suitably (taken to be a constant here).
-
-
-
 

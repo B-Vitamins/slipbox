@@ -17,11 +17,13 @@ CLOCK: [2024-04-25 Thu 18:54]--[2024-04-25 Thu 19:59] =>  1:05
 Next: [[id:601854a4-237e-49a7-a0b7-e15e7bf08726][Electron emission]]
 
 ** 3.15.1
-*Find the average number of particles hitting one side of the surface per unit area and per unit time.* 
+*Find the average number of particles hitting one side of the surface per unit area and per unit time.*
+
+As obtained in [[id:323e99f4-7b93-4150-a804-ee4741a65acd][Generalized ideal gas]]
 
 \[J \equiv \frac{N}{\mathrm{d}t A}= 4^{-1}\,n\, \langle v \rangle = 4^{-1}\,n\,\bigg(\frac{8 K_B T}{\pi m}\bigg)^{1/2}.\]
 
-See [[id:dacc4eb0-8672-4b99-9990-5dd61329e426][Maxwell-Boltzmann distribution of velocities]], the problem [[id:f5d85255-1e37-41cb-b961-7c1a6992fc97][Characteristic functions]], and the previous problem [[id:df72e834-3e97-490b-93b6-bcbc6d85e4c0][Effusion]] for an explicit calculation of \(\langle v \rangle\) as well as the steps that establish \( \frac{N}{\mathrm{d}t A} = n \langle v \rangle / 4 \).
+See [[id:dacc4eb0-8672-4b99-9990-5dd61329e426][Maxwell-Boltzmann distribution of velocities]] and the problem [[id:f5d85255-1e37-41cb-b961-7c1a6992fc97][Characteristic functions]] for an explicit calculation of \(\langle v \rangle\).
 
 ** 3.15.2
 *Find the average number of particles absorbed by one side of the surface per unit area and per unit time.*

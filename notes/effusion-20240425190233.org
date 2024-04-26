@@ -5,7 +5,12 @@
 #+FILETAGS: :problem: :SPOP: :statmech:
 #+SETUPFILE: ~/.config/emacs/setup/setupfile.org
 #+BEGIN: clocktable :maxlevel 2 :scope nil :emphasize nil
-#+CAPTION:
+#+CAPTION: Clock summary at [2024-04-26 Fri 17:40]
+| Headline      | Time   |
+|---------------+--------|
+| *Total time*  | *3:39* |
+|---------------+--------|
+| 3.14 Effusion | 3:39   |
 #+END
 * 3.14 Effusion
 :LOGBOOK:
@@ -125,12 +130,18 @@ Comparing \( p(x) \) with \( f(v) \), we get \( a = (k_B T / m)^{1/2} \), so the
 
 \[ \langle v \rangle = \bigg(\frac{8 k_B T}{\pi m}\bigg)^{1/2}, \qquad \langle v^2 \rangle = \frac{3 k_B T}{m}.\]
 
-The [[id:ad948e53-1a7b-4c30-81cc-708f6ab74d58][current density]] or flux is \[ J = \frac{N}{A \mathrm{d}t} = \frac{S_{d-1}}{S_d} \cdot \frac{1}{(d-1)} \cdot n \langle v \rangle \]. Since \( S_d = \frac{2 \pi^{d/2}}{(d/2 - 1)!} \), we get \(J = 4^{-1} n \langle v \rangle\). Substituting \(\langle v \rangle = \sqrt{\frac{8 k_B T}{\pi m}}\), we get \(J = n \sqrt{\frac{k_B T}{2 \pi m}}\).
+As obtained in the previous problem [[id:323e99f4-7b93-4150-a804-ee4741a65acd][Generalized ideal gas]] the flux \( J \) is
+
+\[
+J \equiv \frac{N}{A \mathrm{~d} t}=\frac{S_{d-1}}{(d-1) S_{d}} \cdot n \bar{v}
+\]
+
+where \(\bar{v}=\int v f(v) \mathrm{d} v\) is the average speed and \( S_d = \frac{2 \pi^{d/2}}{(d/2 - 1)!} \). Substituting \( S_d = \frac{2 \pi^{d/2}}{(d/2 - 1)!} \) we get \(J = 4^{-1} n \bar{v}\). Substituting \(\bar{v} = \langle v \rangle = \sqrt{\frac{8 k_B T}{\pi m}}\), we get \(J = n \sqrt{\frac{k_B T}{2 \pi m}}\).
 
 ** 3.14.3
 *Show that the average kinetic energy of escaping particles is* \(2 k_{B} T\). *(Hint. Calculate contributions to kinetic energy of velocity components parallel and perpendicular to the wall separately.)*
 
-The root mean squared speed, by definition, is \( v_{\text{rms}} \equiv \langle v^2 \rangle^{1/2} \). To find the \( v_{\text{rms}} \) before the beginning of effusion, we can substitute \( \langle v^2 \rangle = 3 k_B T/m \) in its definition to obtain \(v_{\text{rms}} = \sqrt{3 k_B T/m}\) so that the average kinetic energy is
+The *root mean squared speed*, by definition, is \( v_{\text{rms}} \equiv \langle v^2 \rangle^{1/2} \). To find the \( v_{\text{rms}} \) before the beginning of effusion, we can substitute \( \langle v^2 \rangle = 3 k_B T/m \) in its definition to obtain \(v_{\text{rms}} = \sqrt{3 k_B T/m}\) so that the average kinetic energy is
 
 \[\bigg \langle \frac{1}{2} m v^2 \bigg \rangle = \frac{3}{2} k_B T;\]
 
@@ -179,4 +190,3 @@ T_{f} = P_f / n_f k_B = T\bigg(1-\bigg[\bigg(\frac{1}{3} \frac{A \mathrm{d}t}{V}
 \]
 
 On substituting \(M=2.4 \times 10^{-5} \mathrm{~kg}\), \(A=10^{-7} \mathrm{~m}^2\), \(\mathrm{d}t = 2.592 \times 10^6 \mathrm{~s}\), \(m=3.33 \times 10^{-25} \mathrm{~kg}\), and \(T=273.15 \mathrm{~K}\), we get \(P=0.025 \mathrm{~Pa}\).
-
