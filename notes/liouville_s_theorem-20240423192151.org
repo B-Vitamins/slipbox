@@ -7,6 +7,7 @@
 
 #+NAME: Liouville's theorem
 #+ATTR_LATEX: :environment theorem
+
 #+begin_theorem latex
 A Hamiltonian evolution is such that \( \partial_{q_{\alpha}} \partial_{p_{\alpha}} H (\mathbf{p},\,\mathbf{q}) = \partial_{p_{\alpha}} \partial_{q_{\alpha}} H (\mathbf{p},\,\mathbf{q}) \). Let \( \rho (\mathbf{p},\,\mathbf{q},\,t) \) be the phase space density around the point \((\mathbf{p},\,\mathbf{q})\). Let \(\mathrm{d} \mathcal{N}\) be the number of pure states in an infinitesimal volume \(\mathrm{d} \Gamma=\prod_{i=1}^N \mathrm{~d}^3 \vec{p}_i \mathrm{~d}^3 \vec{q}_i\) around the point \((\mathbf{p},\,\mathbf{q})\). Suppose that after a time interval \(\delta t\) these states have moved to the vicinity of another point, say \((\mathbf{p}^{\prime},\,\mathbf{q}^{\prime})\). The phase space density around the point \((\mathbf{p}^{\prime},\,\mathbf{q}^{\prime})\) is \( \rho (\mathbf{p}^{\prime},\,\mathbf{q}^{\prime},\,t+\delta t) \). The following relation holds
 

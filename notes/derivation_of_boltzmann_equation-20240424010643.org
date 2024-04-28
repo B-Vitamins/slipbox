@@ -98,9 +98,10 @@ Within this hierarchy, the first two equations are specified as follows:
 \left[\partial_t - \partial_{\vec{q}_1} U \cdot \partial_{\vec{p}_1} + \frac{\vec{p}_1}{m} \cdot \partial_{\vec{q}_1}\right] f_1 = \left[\int \mathrm{d} V_2 \, \partial_{\vec{q}_1} \mathcal{V}(\vec{q}_1 - \vec{q}_2) \cdot \partial_{\vec{p}_1} \right] f_2, \tag{2}
 \]
 
-\[
-\left[\partial_t + \sum_{i=1}^2 \left(-\partial_{\vec{q}_i} U \cdot \partial_{\vec{p}_i} + \frac{\vec{p}_i}{m} \cdot \partial_{\vec{q}_i}\right) - \partial_{\vec{q}_1} \mathcal{V}(\vec{q}_1 - \vec{q}_2) \cdot (\partial_{\vec{p}_1} - \partial_{\vec{p}_2})\right] f_2 = \left[\int \mathrm{d} V_3 \, (\partial_{\vec{q}_1} \mathcal{V}(\vec{q}_1 - \vec{q}_3) \cdot \partial_{\vec{p}_1} + \partial_{\vec{q}_2} \mathcal{V}(\vec{q}_2 - \vec{q}_3) \cdot \partial_{\vec{p}_2})\right] f_3. \tag{3}
-\]
+\begin{align*}
+\bigg[\partial_t + \sum_{i=1}^2 \bigg(-\partial_{\vec{q}_i} U \cdot \partial_{\vec{p}_i} + \frac{\vec{p}_i}{m} \cdot \partial_{\vec{q}_i}\bigg) &- \partial_{\vec{q}_1} \mathcal{V}(\vec{q}_1 - \vec{q}_2) \cdot (\partial_{\vec{p}_1} - \partial_{\vec{p}_2})\bigg] f_2 \\
+&= \bigg[\int \mathrm{d} V_3 \, (\partial_{\vec{q}_1} \mathcal{V}(\vec{q}_1 - \vec{q}_3) \cdot \partial_{\vec{p}_1} + \partial_{\vec{q}_2} \mathcal{V}(\vec{q}_2 - \vec{q}_3) \cdot \partial_{\vec{p}_2})\bigg] f_3. \tag{3}  
+\end{align*}
 
 The dynamics assumes a symmetric potential, \(\mathcal{V}(\vec{q}_1 - \vec{q}_2) = \mathcal{V}(\vec{q}_2 - \vec{q}_1)\), and operates under three primary time scales: the extrinsic time scale \(\tau_U\), the collision duration \(\tau_c\), and the mean free time \(\tau_\times\). Typically for a dilute gas, these are \(\tau_U^{-1} \approx 10^5 s^{-1}\), \(\tau_c^{-1} \approx 10^{12} s^{-1}\), and \(\tau_\times^{-1} \approx 10^8 s^{-1}\).
 
