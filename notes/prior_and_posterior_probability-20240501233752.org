@@ -1,0 +1,20 @@
+:PROPERTIES:
+:ID:       e166b400-40c8-410b-bb5b-0e0decca5f4c
+:END:
+#+TITLE: Prior and posterior probability
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+The names *prior* and *posterior* probability concern a certain interpretation of [[id:731eff69-04dd-45f2-b2a7-968e9c44dc3e][Bayes's theorem]] for events \(X\) and \(Y\)
+\[p(X \mid Y) = P(Y \mid X) P(X) / P(Y)\].
+* Prior Probability
+#+NAME: prior-probability
+#+BEGIN_DEFINITION
+The *prior probability*, (\(p(X)\) or \(p(Y)\) for that matter), is a [[id:5ecba439-1d57-435c-a132-ece404c0c45d][Marginal probability]]. It is the probability of an event in the absence of any additional information. It is considered the 'baseline' probability in Bayesian analysis, serving as the initial state of knowledge regarding an event's likelihood.
+#+END_DEFINITION
+* Posterior Probability
+#+NAME: posterior-probability
+#+BEGIN_DEFINITION
+The *posterior probability* is a [[id:a2ad9677-e9f8-4558-8984-2e2efe72af3c][Conditional probability]]: the probability of an event \(X\) given new evidence \(Y\), denoted as \(p(X \mid Y)\). It is calculated using Bayes' Theorem, which updates the prior probability \(p(X)\) based on the new evidence: \(p(X \mid Y) = p(Y \mid X) \cdot p(X)/p(Y)\).
+Here, \(p(Y \mid X)\) is the likelihood of the evidence given the event, and \(p(Y)\) is the probability of the evidence under all possible outcomes. The posterior probability thus reflects an updated belief about the event after considering the new information.
+#+END_DEFINITION
+The relationship between prior and posterior probabilities is central to [[id:0751c3a3-ed9f-4057-92f1-20f4cae35b92][Bayesian inference]]. It underscores the iterative nature of updating beliefs in light of new evidence. The posterior probability becomes a new prior as additional data becomes available, continuously refining our understanding and predictions about an event's likelihood.
