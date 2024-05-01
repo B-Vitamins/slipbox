@@ -1,0 +1,17 @@
+:PROPERTIES:
+:ID:       7214a7da-7048-4c8a-9ab1-a3590a199ccd
+:END:
+#+TITLE: Joint probability
+#+FILETAGS: :concept:probability:basics:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+#+NAME: joint-probability
+#+BEGIN_DEFINITION
+If \(X\) and \(Y\) are two random variables within the same probability space, the joint probability of \(X\) taking a value \(x\) and \(Y\) taking a value \(y\) is defined as:
+\[
+P(X = x, Y = y) = P(\{X = x\} \cap \{Y = y\})
+\]
+#+END_DEFINITION
+
+This formula states that the joint probability of \(X = x\) and \(Y = y\) is the probability that both events \(\{X = x\}\) and \(\{Y = y\}\) occur simultaneously. Joint probability is fundamental in studying the relationships between variables in probability and statistics. It serves as a building block for other concepts like conditional probability and independence.
+

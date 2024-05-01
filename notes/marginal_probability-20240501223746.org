@@ -1,0 +1,17 @@
+:PROPERTIES:
+:ID:       5ecba439-1d57-435c-a132-ece404c0c45d
+:END:
+#+TITLE: Marginal probability
+#+FILETAGS: :concept:probability:basics:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+#+NAME: marginal-probability
+#+BEGIN_DEFINITION
+Marginal probability refers to the probability of an event occurring irrespective of the outcome of another variable. If \(X\) is a random variable within a probability space and \(X\) can take values \(x\) from a set of possible outcomes, the marginal probability of \(X\) taking a specific value \(x\) is defined as:
+\[
+P(X = x) = \sum_{y} P(X = x, Y = y)
+\]
+where \(Y\) is another random variable that can affect the outcome space, and the sum is taken over all possible values of \(Y\).
+#+END_DEFINITION
+
+This formula shows that the marginal probability of \(X = x\) is obtained by summing the [[id:7214a7da-7048-4c8a-9ab1-a3590a199ccd][Joint probability]] of \(X = x\) and \(Y = y\) for all possible values of \(Y\). This is essential for understanding the overall likelihood of specific outcomes in a probabilistic model, independent of other variables. Marginal probability is crucial for calculating expected values and variances and for making predictions in the absence of complete information about all influencing factors.

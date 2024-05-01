@@ -1,0 +1,18 @@
+:PROPERTIES:
+:ID:       a2ad9677-e9f8-4558-8984-2e2efe72af3c
+:END:
+#+TITLE: Conditional probability
+#+FILETAGS: :concept:probability:basics:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+#+NAME: conditional-probability
+#+BEGIN_DEFINITION
+If \(A\) and \(B\) are two events within the same probability space, and \(P(B) > 0\), the conditional probability of \(A\) given \(B\) is defined as:
+\[
+P(A \mid B) = P(A \cap B)/P(B)
+\]
+#+END_DEFINITION
+
+This formula states that the probability of \(A\) occurring, given that \(B\) has occurred, is the ratio of the probability of both \(A\) and \(B\) occurring to the probability of \(B\) occurring. Thus the conditional probability is a measure of the probability of an event occurring given that another event has already occurred. This concept allows for the updating of probabilities in the light of new evidence.
+
+[[id:879281b4-8323-4b79-aad6-4b13b71ef663][The product rule of probability]] follows immediately from the definition of conditional probability and [[id:7214a7da-7048-4c8a-9ab1-a3590a199ccd][Joint probability]].
