@@ -1,0 +1,18 @@
+:PROPERTIES:
+:ID:       2e4b8dd4-f9ed-402f-bdf6-9b7a5079411a
+:END:
+#+TITLE: Independence (probability)
+#+FILETAGS: :concept:probability:basics:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+#+NAME: independence
+#+BEGIN_DEFINITION
+Events \(X\) and \(Y\) are said to be *independent* if their joint probability factorizes as the product of their marginal probabilities:
+\[
+p(X, Y) = p(X) \cdot p(Y).
+\]
+#+END_DEFINITION
+
+When this condition holds, the occurrence of \(X\) does not affect the occurrence of \(Y\) and vice versa. The concept of independence is crucial in simplifying the analysis of probability where the mutual exclusivity of outcomes does not influence their joint occurrence.
+
+An immediate consequence of the independence of two events \(X\) and \(Y\), on applying the [[id:e9446808-4593-483e-b66e-adb9cb3db93a][rules of probability]], is the equality of the [[id:5ecba439-1d57-435c-a132-ece404c0c45d][marginal probability]] and [[id:a2ad9677-e9f8-4558-8984-2e2efe72af3c][conditional probability]], i.e., conditional probability of \(Y\) given \(X\) is simply the probability, or marginal probability of \(Y\), independent of \(X\) and vice versa: \(p(Y \mid X) = p(Y)\), and \(p(X \mid Y) = p(X)\).
