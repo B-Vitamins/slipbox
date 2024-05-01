@@ -2,7 +2,7 @@
 :ID:       731eff69-04dd-45f2-b2a7-968e9c44dc3e
 :END:
 #+TITLE: Bayes's theorem
-#+FILETAGS: :concept:
+#+FILETAGS: :concept:probability:basics:bayes:
 #+SETUPFILE: ~/.config/emacs/setup/setupfile.org
 
 The Bayes's theorem establishes a relationship between [[id:a2ad9677-e9f8-4558-8984-2e2efe72af3c][Conditional probabilities]]:

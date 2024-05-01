@@ -59,6 +59,87 @@ The appropriate normalization for \(f_1\) (see [[id:261ca926-8250-4eaa-9974-ad08
 \end{align*}
 
 * Equilibrium between two gases
+
+Consider two different gases (a) and (b), moving in the same potential \(U\), and subject to a two-body interaction \(\mathcal{V}_{a b}\left(\vec{q}^{(a)}-\vec{q}^{(b)}\right)\). We can define one-particle densities, \(f_1^{(a)}\) and \(f_1^{(b)}\), for the two gases, respectively. In terms of a generalized collision integral
+
+\begin{align*}
+\begin{aligned}
+C_{\alpha, \beta}= & -\int \mathrm{d}^3 \vec{p}_2 \mathrm{~d}^2 \Omega\left|\frac{\mathrm{d} \sigma_{\alpha, \beta}}{\mathrm{d} \Omega}\right|\left|\vec{v}_1-\vec{v}_2\right|\left[f_1^{(\alpha)}\left(\vec{p}_1, \vec{q}_1\right) f_1^{(\beta)}\left(\vec{p}_2, \vec{q}_1\right)\right. \\
+& \left.-f_1^{(\alpha)}\left(\vec{p}_1{ }^{\prime}, \vec{q}_1\right) f_1^{(\beta)}\left(\vec{p}_2{ }^{\prime}, \vec{q}_1\right)\right],
+\end{aligned}
+\end{align*}
+
+the evolution of these densities is governed by a simple generalization of the Boltzmann equation to
+
+\begin{align*}
+\left\{\begin{array}{l}
+\frac{\partial f_1^{(a)}}{\partial t}=-\left\{f_1^{(a)}, \mathcal{H}_1^{(a)}\right\}+C_{a, a}+C_{a, b} \\
+\frac{\partial f_1^{(b)}}{\partial t}=-\left\{f_1^{(b)}, \mathcal{H}_1^{(b)}\right\}+C_{b, a}+C_{b, b}
+\end{array} .\right.
+\end{align*}
+
+Stationary distributions can be obtained if all six terms on the right-hand side of Eqs. (3.59) are zero. In the absence of interspecies collisions, that is, for \(C_{a, b}=C_{b, a}=0\), we can obtain independent stationary distributions \(f_1^{(a)} \propto\) \(\exp \left(-\beta_a \mathcal{H}_1^{(a)}\right)\) and \(f_1^{(b)} \propto \exp \left(-\beta_b \mathcal{H}_1^{(b)}\right)\). Requiring the vanishing of \(C_{a, b}\) leads to the additional constraint,
+
+\begin{align*}
+\begin{aligned}
+& f_1^{(a)}\left(\vec{p}_1\right) f_1^{(b)}\left(\vec{p}_2\right)-f_1^{(a)}\left(\vec{p}_1{ }^{\prime}\right) f_1^{(b)}\left(\vec{p}_2{ }^{\prime}\right)=0, \quad \Longrightarrow \\
+& \beta_a \mathcal{H}_1^{(a)}\left(\vec{p}_1\right)+\beta_b \mathcal{H}_1^{(b)}\left(\vec{p}_2\right)=\beta_a \mathcal{H}_1^{(a)}\left(\vec{p}_1{ }^{\prime}\right)+\beta_b \mathcal{H}_1^{(b)}\left(\vec{p}_2{ }^{\prime}\right) .
+\end{aligned}
+\end{align*}
+
+Since the total energy \(\mathcal{H}_1^{(a)}+\mathcal{H}_1^{(b)}\) is conserved in a collision, the above equation can be satisfied for \(\beta_a=\beta_b=\beta\). From Eq. (3.57) this condition implies the equality of the kinetic energies of the two species,
+\begin{align*}
+\left\langle\frac{p_a^2}{2 m_a}\right\rangle=\left\langle\frac{p_b^2}{2 m_b}\right\rangle=\frac{3}{2 \beta} .
+\end{align*}
+
+The parameter \(\beta\) thus plays the role of an empirical temperature describing the equilibrium of gases.
+
 * The equation of state
+
+to complete the identification of \(\beta\) with temperature \(T\), consider a gas of \(N\) particles confined to a box of volume \(V\). The gas pressure results from the force exerted by the particles colliding with the walls of the container. Consider a wall element of area \(A\) perpendicular to the \(x\) direction. The number of particles impacting this area, with momenta in the interval \([\vec{p}, \vec{p}+\mathrm{d} \vec{p}]\), over a time period \(\delta t\), is
+\begin{align*}
+\mathrm{d} \mathcal{N}(\vec{p})=\left(f_1(\vec{p}) \mathrm{d}^3 \vec{p}\right)\left(A v_x \delta t\right) .
+\end{align*}
+
+The final factor in the above expression is the volume of a cylinder of height \(v_x \delta t\) perpendicular to the area element \(A\). Only particles within this cylinder are close enough to impact the wall during \(\delta t\). As each collision imparts a momentum \(2 p_x\) to the wall, the net force exerted is
+\begin{align*}
+F=\frac{1}{\delta t} \int_{-\infty}^0 \mathrm{~d} p_x \int_{-\infty}^{\infty} \mathrm{d} p_y \int_{-\infty}^{\infty} \mathrm{d} p_z f_1(\vec{p})\left(A \frac{p_x}{m} \delta t\right)\left(2 p_x\right) .
+\end{align*}
+
+As only particles with velocities directed toward the wall will hit it, the first integral is over half of the range of \(p_x\). Since the integrand is even in \(p_x\), this restriction can be removed by dividing the full integral by 2 . The pressure \(P\) is then obtained from the force per unit area as
+\begin{align*}
+P=\frac{F}{A}=\int \mathrm{d}^3 \vec{p} f_1(\vec{p}) \frac{p_x^2}{m}=\frac{1}{m} \int \mathrm{d}^3 \vec{p} p_x^2 n\left(\frac{\beta}{2 \pi m}\right)^{3 / 2} \exp \left(-\frac{\beta p^2}{2 m}\right)=\frac{n}{\beta},
+\end{align*}
+
+where Eq. (3.56) is used for the equilibrium form of \(f_1\). Comparing with the standard equation of state, \(P V=N k_B T\), for an ideal gas, leads to the identification, \(\beta=1 / k_B T\).
+
 * Entropy
 
+as discussed earlier, the Boltzmann H-function is closely related to the information content of the one-particle PDF \(\rho_1\). We can also define a corresponding Boltzmann entropy,
+\begin{align*}
+S_B(t)=-k_B \mathrm{H}(t),
+\end{align*}
+where the constant \(k_B\) reflects the historical origins of entropy. The H-theorem implies that \(S_B\) can only increase with time in approaching equilibrium. It has the further advantage of being defined through Eq. (3.42) for situations that are clearly out of equilibrium. For a gas in equilibrium in a box of volume \(V\), from Eq. (3.56), we compute
+\begin{align*}
+\begin{aligned}
+\mathrm{H} & =V \int \mathrm{d}^3 \vec{p} f_1(\vec{p}) \ln f_1(\vec{p}) \\
+& =V \int \mathrm{d}^3 \vec{p} \frac{N}{V}\left(2 \pi m k_B T\right)^{-3 / 2} \exp \left(-\frac{p^2}{2 m k_B T}\right)\left[\ln \left(\frac{n}{\left(2 \pi m k_B T\right)^{3 / 2}}\right)-\frac{p^2}{2 m k_B T}\right] \\
+& =N\left[\ln \left(\frac{n}{\left(2 \pi m k_B T\right)^{3 / 2}}\right)-\frac{3}{2}\right] .
+\end{aligned}
+\end{align*}
+
+The entropy is now identified as
+\begin{align*}
+S_B=-k_B \mathrm{H}=N k_B\left[\frac{3}{2}+\frac{3}{2} \ln \left(2 \pi m k_B T\right)-\ln \left(\frac{N}{V}\right)\right] .
+\end{align*}
+
+The thermodynamic relation, \(T \mathrm{~d} S_B=\mathrm{d} E+P \mathrm{~d} V\), implies
+
+\begin{align*}
+\begin{array}{r}
+\left.\frac{\partial E}{\partial T}\right|_V=\left.T \frac{\partial S_B}{\partial T}\right|_V=\frac{3}{2} N k_B, \\
+P+\left.\frac{\partial E}{\partial V}\right|_T=\left.T \frac{\partial S_B}{\partial V}\right|_T=\frac{N k_B T}{V} .
+\end{array}
+\end{align*}
+
+The usual properties of a monatomic ideal gas, \(P V=N k_B T\), and \(E=3 N k_B T / 2\), can now be obtained from the above equations. Also note that for this classical gas, the zero temperature limit of the entropy in Eq. (3.67) is not independent of the density \(n\), in violation of the third law of thermodynamics.

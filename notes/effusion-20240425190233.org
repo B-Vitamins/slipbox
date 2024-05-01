@@ -2,7 +2,7 @@
 :ID:       df72e834-3e97-490b-93b6-bcbc6d85e4c0
 :END:
 #+TITLE: Effusion
-#+FILETAGS: :problem: :SPOP: :statmech:
+#+FILETAGS: :problem:SPOP:statmech:
 #+SETUPFILE: ~/.config/emacs/setup/setupfile.org
 #+BEGIN: clocktable :maxlevel 2 :scope nil :emphasize nil
 #+CAPTION: Clock summary at [2024-04-26 Fri 17:40]
