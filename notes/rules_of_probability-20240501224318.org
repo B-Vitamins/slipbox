@@ -1,0 +1,17 @@
+:PROPERTIES:
+:ID:       e9446808-4593-483e-b66e-adb9cb3db93a
+:END:
+#+TITLE: Rules of probability
+#+FILETAGS: :concept:probability:basics:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+The *Rule of probability* refer to the [[id:425c495d-aec2-4fff-8f48-f49f08210ebf][The sum rule of probability]] and the [[id:879281b4-8323-4b79-aad6-4b13b71ef663][The product rule of probability]], two fundamental rules of [[id:3663e5a1-bc2d-4902-b894-b6b159de3aff][Probability theory]].
+
+\begin{align*}
+& p(X)=\sum_Y p(X, Y) \text {sum rule} \\
+& p(X, Y)=p(Y \mid X) p(X) \text{product rule}.
+\end{align*}
+
+Here \(p(X, Y)\) is a [[id:7214a7da-7048-4c8a-9ab1-a3590a199ccd][Joint probability]] and is verbalized as "the probability of \(X\) and \(Y\)". Similarly, the quantity \(p(Y \mid X)\) is a [[id:a2ad9677-e9f8-4558-8984-2e2efe72af3c][Conditional probability]] and is verbalized as "the probability of \(Y\) given \(X\)", whereas the quantity \(p(X)\) is a [[id:5ecba439-1d57-435c-a132-ece404c0c45d][Marginal probability]] and is simply "the probability of \(X\)". 
+
+These two simple rules form the basis for all of the probabilistic machinery that we use throughout this book.
