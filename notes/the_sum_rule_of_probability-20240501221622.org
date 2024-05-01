@@ -1,0 +1,8 @@
+:PROPERTIES:
+:ID:       425c495d-aec2-4fff-8f48-f49f08210ebf
+:END:
+#+TITLE: The sum rule of probability
+#+FILETAGS: :concept:probability:basics:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+The sum rule of probability is an alias for the [[id:d2d14ffc-da11-456b-b0be-f5b5325bc3ee][The law of total probability]]. Together with the [[id:879281b4-8323-4b79-aad6-4b13b71ef663][The product rule of probability]], it forms the [[id:e9446808-4593-483e-b66e-adb9cb3db93a][Rules of probability]].

@@ -1,0 +1,14 @@
+:PROPERTIES:
+:ID:       879281b4-8323-4b79-aad6-4b13b71ef663
+:END:
+#+TITLE: The product rule of probability
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+For two events \(A\) and \(B\) within the same probability space, and \(P(B) > 0\), the product rule of probability states
+
+\[P(A, B) = P(A \mid B) P(B).\]
+
+It follows from the definition of the [[id:7214a7da-7048-4c8a-9ab1-a3590a199ccd][Joint probability]] \(P (A, B) \equiv P(A \cap B)\) and the [[id:a2ad9677-e9f8-4558-8984-2e2efe72af3c][Conditional probability]] \( P(A \mid B) = P(A \cap B)/P(B)\).
+
+Together with the 
