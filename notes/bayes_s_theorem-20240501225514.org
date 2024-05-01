@@ -1,0 +1,19 @@
+:PROPERTIES:
+:ID:       731eff69-04dd-45f2-b2a7-968e9c44dc3e
+:END:
+#+TITLE: Bayes's theorem
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+The Bayes's theorem establishes a relationship between [[id:a2ad9677-e9f8-4558-8984-2e2efe72af3c][Conditional probabilities]]:
+
+\[p(X \mid Y) = P(Y \mid X) P(X) / P(Y)\].
+
+The Bayes's theorem follows directly from the [[id:879281b4-8323-4b79-aad6-4b13b71ef663][the product rule of probability]] after realizing that \(P(X, Y) = P(X \cap Y) = P(Y \cap X) = P(Y, X)\).
+
+The [[id:425c495d-aec2-4fff-8f48-f49f08210ebf][The sum rule of probability]] can be used to obtain a rewrite of the Bayes' theorem
+
+
+\[p(X \mid Y) = \frac{P(Y \mid X) P(X)}{\sum_{X} P(Y \mid X) P(X)}.\]
+
+This form of the Bayes theorem lends itself to the interpretation of establishing the normalization of the [[id:a2ad9677-e9f8-4558-8984-2e2efe72af3c][Conditional probabilities]].
