@@ -1,0 +1,18 @@
+:PROPERTIES:
+:ID:       d2d14ffc-da11-456b-b0be-f5b5325bc3ee
+:END:
+#+TITLE: The law of total probability
+#+FILETAGS: :concept:probability:basics:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+See [[id:47926f1d-59d3-4730-b93a-ae0fb244f7fe][Mutually exclusive events]] and [[id:c3eb26dc-cbb5-4c39-b125-e176b0a38f96][Collectively exhaustive events]].
+
+#+NAME: The law of total probability
+#+begin_theorem latex
+If \(\left\{B=b: b=1,2,3, \ldots\right\}\) is a finite or countably infinite set of mutually exclusive and collectively exhaustive events, then for any event \(A\)
+\begin{align*}
+P(A)=\sum_B P\left(A \cap B\right) = \sum_B P\left(A, B\right) = \sum_B P\left(A \mid B\right) P\left(B\right).
+\end{align*}
+#+end_theorem
+
+In the final step we have used the definition of the [[id:a2ad9677-e9f8-4558-8984-2e2efe72af3c][Conditional probability]]. In the penultimate step we have used the definition of [[id:7214a7da-7048-4c8a-9ab1-a3590a199ccd][Joint probability]]. The law of total probability relates [[id:5ecba439-1d57-435c-a132-ece404c0c45d][Marginal probability]] with [[id:a2ad9677-e9f8-4558-8984-2e2efe72af3c][Conditional probability]]. It is also called the [[id:425c495d-aec2-4fff-8f48-f49f08210ebf][The sum rule of probability]].
