@@ -1,0 +1,527 @@
+:PROPERTIES:
+:ID:       3663e5a1-bc2d-4902-b894-b6b159de3aff
+:END:
+#+TITLE: Probability theory
+#+FILETAGS: :literature:PRML:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+* Probability Theory
+
+Probability theory provides a consistent framework for the quantification and manipulation of *uncertainty*. When combined with [[id:869cf352-d95e-471d-a21a-c618a35c51dd][Decision theory]], it allows us to make optimal predictions given all the information available to us, even though that information may be incomplete or ambiguous.
+
+In order to derive the rules of probability, consider the slightly more general example shown below, involving two random variables \(X\) and \(Y\). We shall suppose that \(X\) can take any of the values \(x_{i}\) where \(i=1, \ldots, M\), and \(Y\) can take the values \(y_{j}\) where \(j=1, \ldots, L\). Consider a total of \(N\) trials in which we sample both of the variables \(X\) and \(Y\), and let the number of such trials in which \(X=x_{i}\) and \(Y=y_{j}\) be \(n_{i j}\). Also, let the number of trials in which \(X\) takes the value \(x_{i}\) (irrespective of the value that \(Y\) takes) be denoted by \(c_{i}\), and similarly let the number of trials in which \(Y\) takes the value \(y_{j}\) be denoted by \(r_{j}\).
+
+[[file:~/.local/images/prml-1.10.jpg]]
+
+#+BEGIN_VERSE
+We can derive the sum and product rules of probability by considering two random variables, $X$, which takes the values $\left\{x_{i}\right\}$ where $i=1, \ldots, M$, and $Y$, which takes the values $\left\{y_{j}\right\}$ where $j=1, \ldots, L$. In this illustration we have $M=5$ and $L=3$. If we consider a total number $N$ of instances of these variables, then we denote the number of instances where $X=x_{i}$ and $Y=y_{j}$ by $n_{i j}$, which is the number of points in the corresponding cell of the array. The number of points in column $i$, corresponding to $X=x_{i}$, is denoted by $c_{i}$, and the number of points in row $j$, corresponding to $Y=y_{j}$, is denoted by $r_{j}$.
+#+END_VERSE
+
+The probability that \(X\) will take the value \(x_{i}\) and \(Y\) will take the value \(y_{j}\) is written \(p\left(X=x_{i}, Y=y_{j}\right)\) and is called the joint probability of \(X=x_{i}\) and \(Y=y_{j}\). It is given by the number of points falling in the cell \(i, j\) as a fraction of the total number of points, and hence
+
+\[p\left(X=x_{i}, Y=y_{j}\right)=\frac{n_{i j}}{N} .\]
+
+Here we are implicitly considering the limit \(N \rightarrow \infty\). Similarly, the probability that \(X\) takes the value \(x_{i}\) irrespective of the value of \(Y\) is written as \(p\left(X=x_{i}\right)\) and is given by the fraction of the total number of points that fall in column \(i\), so that
+
+\[p\left(X=x_{i}\right)=\frac{c_{i}}{N}\]
+
+Because the number of instances in column \(i\) in Figure 1.10 is just the sum of the number of instances in each cell of that column, we have \(c_{i}=\sum_{j} n_{i j}\) and therefore, from (1.5) and (1.6), we have
+
+\[p\left(X=x_{i}\right)=\sum_{j=1}^{L} p\left(X=x_{i}, Y=y_{j}\right)\]
+
+which is the sum rule of probability. Note that \(p\left(X=x_{i}\right)\) is sometimes called the marginal probability, because it is obtained by marginalizing, or summing out, the other variables (in this case \(Y\)).
+
+If we consider only those instances for which \(X=x_{i}\), then the fraction of such instances for which \(Y=y_{j}\) is written \(p\left(Y=y_{j} \mid X=x_{i}\right)\) and is called the conditional probability of \(Y=y_{j}\) given \(X=x_{i}\). It is obtained by finding the fraction of those points in column \(i\) that fall in cell \(i, j\) and hence is given by
+
+\[p\left(Y=y_{j} \mid X=x_{i}\right)=\frac{n_{i j}}{c_{i}} .\]
+
+From (1.5), (1.6), and (1.8), we can then derive the following relationship
+
+\[\begin{aligned}
+p\left(X=x_{i}, Y=y_{j}\right) & =\frac{n_{i j}}{N}=\frac{n_{i j}}{c_{i}} \cdot \frac{c_{i}}{N} \\
+& =p\left(Y=y_{j} \mid X=x_{i}\right) p\left(X=x_{i}\right)
+\end{aligned}\]
+
+which is the product rule of probability.
+
+So far we have been quite careful to make a distinction between a random variable, such as the box \(B\) in the fruit example, and the values that the random variable can take, for example \(r\) if the box were the red one. Thus the probability that \(B\) takes the value \(r\) is denoted \(p(B=r)\). Although this helps to avoid ambiguity, it leads to a rather cumbersome notation, and in many cases there will be no need for such pedantry. Instead, we may simply write \(p(B)\) to denote a distribution over the random variable \(B\), or \(p(r)\) to denote the distribution evaluated for the particular value \(r\), provided that the interpretation is clear from the context.
+
+With this more compact notation, we can write the two fundamental rules of probability theory in the following form.
+
+The Rules of Probability
+
+\[\begin{array}{cl}
+\text { sum rule } & p(X)=\sum_{Y} p(X, Y) \\
+\text { product rule } & p(X, Y)=p(Y \mid X) p(X) .
+\end{array}\]
+
+Here \(p(X, Y)\) is a joint probability and is verbalized as "the probability of \(X\) and \(Y\) ". Similarly, the quantity \(p(Y \mid X)\) is a conditional probability and is verbalized as "the probability of \(Y\) given \(X\) ", whereas the quantity \(p(X)\) is a marginal probability and is simply "the probability of \(X\) ". These two simple rules form the basis for all of the probabilistic machinery that we use throughout this book.
+
+From the product rule, together with the symmetry property \(p(X, Y)=p(Y, X)\), we immediately obtain the following relationship between conditional probabilities
+
+\[p(Y \mid X)=\frac{p(X \mid Y) p(Y)}{p(X)}\]
+
+which is called Bayes' theorem and which plays a central role in pattern recognition and machine learning. Using the sum rule, the denominator in Bayes' theorem can be expressed in terms of the quantities appearing in the numerator
+
+\[p(X)=\sum_{Y} p(X \mid Y) p(Y) .\]
+
+We can view the denominator in Bayes' theorem as being the normalization constant required to ensure that the sum of the conditional probability on the left-hand side of (1.12) over all values of \(Y\) equals one.
+
+In Figure 1.11, we show a simple example involving a joint distribution over two variables to illustrate the concept of marginal and conditional distributions. Here a finite sample of \(N=60\) data points has been drawn from the joint distribution and is shown in the top left. In the top right is a histogram of the fractions of data points having each of the two values of \(Y\). From the definition of probability, these fractions would equal the corresponding probabilities \(p(Y)\) in the limit \(N \rightarrow \infty\). We can view the histogram as a simple way to model a probability distribution given only a finite number of points drawn from that distribution. Modelling distributions from data lies at the heart of statistical pattern recognition and will be explored in great detail in this book. The remaining two plots in Figure 1.11 show the corresponding histogram estimates of \(p(X)\) and \(p(X \mid Y=1)\).
+
+Let us now return to our example involving boxes of fruit. For the moment, we shall once again be explicit about distinguishing between the random variables and their instantiations. We have seen that the probabilities of selecting either the red or the blue boxes are given by
+
+\[\begin{aligned}
+& p(B=r)=4 / 10 \\
+& p(B=b)=6 / 10
+\end{aligned}\]
+
+respectively. Note that these satisfy \(p(B=r)+p(B=b)=1\).
+
+Now suppose that we pick a box at random, and it turns out to be the blue box. Then the probability of selecting an apple is just the fraction of apples in the blue box which is \(3 / 4\), and so \(p(F=a \mid B=b)=3 / 4\). In fact, we can write out all four conditional probabilities for the type of fruit, given the selected box
+
+\[\begin{aligned}
+& p(F=a \mid B=r)=1 / 4 \\
+& p(F=o \mid B=r)=3 / 4 \\
+& p(F=a \mid B=b)=3 / 4 \\
+& p(F=o \mid B=b)=1 / 4 .
+\end{aligned}\]
+
+[[file:2023_08_27_4c5a80c0a42382702197g-034(1)]] [[file:2023_08_27_4c5a80c0a42382702197g-034]]
+
+Figure 1.11 An illustration of a distribution over two variables, \(X\), which takes 9 possible values, and \(Y\), which takes two possible values. The top left figure shows a sample of 60 points drawn from a joint probability distribution over these variables. The remaining figures show histogram estimates of the marginal distributions \(p(X)\) and \(p(Y)\), as well as the conditional distribution \(p(X \mid Y=1)\) corresponding to the bottom row in the top left figure.
+
+Again, note that these probabilities are normalized so that
+
+\[p(F=a \mid B=r)+p(F=o \mid B=r)=1\]
+
+and similarly
+
+\[p(F=a \mid B=b)+p(F=o \mid B=b)=1 .\]
+
+We can now use the sum and product rules of probability to evaluate the overall probability of choosing an apple
+
+\[\begin{aligned}
+p(F=a) & =p(F=a \mid B=r) p(B=r)+p(F=a \mid B=b) p(B=b) \\
+& =\frac{1}{4} \times \frac{4}{10}+\frac{3}{4} \times \frac{6}{10}=\frac{11}{20}
+\end{aligned}\]
+
+from which it follows, using the sum rule, that \(p(F=o)=1-11 / 20=9 / 20\). Suppose instead we are told that a piece of fruit has been selected and it is an orange, and we would like to know which box it came from. This requires that we evaluate the probability distribution over boxes conditioned on the identity of the fruit, whereas the probabilities in (1.16)-(1.19) give the probability distribution over the fruit conditioned on the identity of the box. We can solve the problem of reversing the conditional probability by using Bayes' theorem to give
+
+\[p(B=r \mid F=o)=\frac{p(F=o \mid B=r) p(B=r)}{p(F=o)}=\frac{3}{4} \times \frac{4}{10} \times \frac{20}{9}=\frac{2}{3} .\]
+
+From the sum rule, it then follows that \(p(B=b \mid F=o)=1-2 / 3=1 / 3\).
+
+We can provide an important interpretation of Bayes' theorem as follows. If we had been asked which box had been chosen before being told the identity of the selected item of fruit, then the most complete information we have available is provided by the probability \(p(B)\). We call this the prior probability because it is the probability available before we observe the identity of the fruit. Once we are told that the fruit is an orange, we can then use Bayes' theorem to compute the probability \(p(B \mid F)\), which we shall call the posterior probability because it is the probability obtained after we have observed \(F\). Note that in this example, the prior probability of selecting the red box was \(4 / 10\), so that we were more likely to select the blue box than the red one. However, once we have observed that the piece of selected fruit is an orange, we find that the posterior probability of the red box is now \(2 / 3\), so that it is now more likely that the box we selected was in fact the red one. This result accords with our intuition, as the proportion of oranges is much higher in the red box than it is in the blue box, and so the observation that the fruit was an orange provides significant evidence favouring the red box. In fact, the evidence is sufficiently strong that it outweighs the prior and makes it more likely that the red box was chosen rather than the blue one.
+
+Finally, we note that if the joint distribution of two variables factorizes into the product of the marginals, so that \(p(X, Y)=p(X) p(Y)\), then \(X\) and \(Y\) are said to be independent. From the product rule, we see that \(p(Y \mid X)=p(Y)\), and so the conditional distribution of \(Y\) given \(X\) is indeed independent of the value of \(X\). For instance, in our boxes of fruit example, if each box contained the same fraction of apples and oranges, then \(p(F \mid B)=P(F)\), so that the probability of selecting, say, an apple is independent of which box is chosen.
+
+*** Probability densities
+:PROPERTIES:
+:CUSTOM_ID: probability-densities
+:CLASS: unnumbered
+:END:
+As well as considering probabilities defined over discrete sets of events, we also wish to consider probabilities with respect to continuous variables. We shall limit ourselves to a relatively informal discussion. If the probability of a real-valued variable \(x\) falling in the interval \((x, x+\delta x)\) is given by \(p(x) \delta x\) for \(\delta x \rightarrow 0\), then \(p(x)\) is called the probability density over \(x\). This is illustrated in Figure 1.12. The probability that \(x\) will lie in an interval \((a, b)\) is then given by
+
+\[p(x \in(a, b))=\int_{a}^{b} p(x) \mathrm{d} x .\]
+
+Figure 1.12 The concept of probability for discrete variables can be extended to that of a probability density \(p(x)\) over a continuous variable \(x\) and is such that the probability of \(x\) lying in the interval \((x, x+\delta x)\) is given by \(p(x) \delta x\) for \(\delta x \rightarrow 0\). The probability density can be expressed as the derivative of a cumulative distribution function \(P(x)\).
+
+#+begin_center
+#+caption: image
+[[file:2023_08_27_4c5a80c0a42382702197g-036]]
+
+#+end_center
+
+Because probabilities are nonnegative, and because the value of \(x\) must lie somewhere on the real axis, the probability density \(p(x)\) must satisfy the two conditions
+
+\[\begin{aligned}
+p(x) & \geqslant 0 \\
+\int_{-\infty}^{\infty} p(x) \mathrm{d} x & =1 .
+\end{aligned}\]
+
+Under a nonlinear change of variable, a probability density transforms differently from a simple function, due to the Jacobian factor. For instance, if we consider a change of variables \(x=g(y)\), then a function \(f(x)\) becomes \(\widetilde{f}(y)=f(g(y))\). Now consider a probability density \(p_{x}(x)\) that corresponds to a density \(p_{y}(y)\) with respect to the new variable \(y\), where the suffices denote the fact that \(p_{x}(x)\) and \(p_{y}(y)\) are different densities. Observations falling in the range \((x, x+\delta x)\) will, for small values of \(\delta x\), be transformed into the range \((y, y+\delta y)\) where \(p_{x}(x) \delta x \simeq p_{y}(y) \delta y\), and hence
+
+\[\begin{aligned}
+p_{y}(y) & =p_{x}(x)\left|\frac{\mathrm{d} x}{\mathrm{~d} y}\right| \\
+& =p_{x}(g(y))\left|g^{\prime}(y)\right| .
+\end{aligned}\]
+
+One consequence of this property is that the concept of the maximum of a probability Exercise 1.4 density is dependent on the choice of variable.
+
+The probability that \(x\) lies in the interval \((-\infty, z)\) is given by the cumulative distribution function defined by
+
+\[P(z)=\int_{-\infty}^{z} p(x) \mathrm{d} x\]
+
+which satisfies \(P^{\prime}(x)=p(x)\), as shown in Figure 1.12.
+
+If we have several continuous variables \(x_{1}, \ldots, x_{D}\), denoted collectively by the vector \(\mathbf{x}\), then we can define a joint probability density \(p(\mathbf{x})=p\left(x_{1}, \ldots, x_{D}\right)\) such that the probability of \(\mathbf{x}\) falling in an infinitesimal volume \(\delta \mathbf{x}\) containing the point \(\mathbf{x}\) is given by \(p(\mathbf{x}) \delta \mathbf{x}\). This multivariate probability density must satisfy
+
+\[\begin{aligned}
+p(\mathbf{x}) & \geqslant 0 \\
+\int p(\mathbf{x}) \mathrm{d} \mathbf{x} & =1
+\end{aligned}\]
+
+in which the integral is taken over the whole of \(\mathbf{x}\) space. We can also consider joint probability distributions over a combination of discrete and continuous variables.
+
+Note that if \(\mathrm{x}\) is a discrete variable, then \(p(x)\) is sometimes called a probability mass function because it can be regarded as a set of 'probability masses' concentrated at the allowed values of \(x\).
+
+The sum and product rules of probability, as well as Bayes' theorem, apply equally to the case of probability densities, or to combinations of discrete and continuous variables. For instance, if \(x\) and \(y\) are two real variables, then the sum and product rules take the form
+
+\[\begin{aligned}
+p(x) & =\int p(x, y) \mathrm{d} y \\
+p(x, y) & =p(y \mid x) p(x) .
+\end{aligned}\]
+
+A formal justification of the sum and product rules for continuous variables (Feller, 1966) requires a branch of mathematics called measure theory and lies outside the scope of this book. Its validity can be seen informally, however, by dividing each real variable into intervals of width \(\Delta\) and considering the discrete probability distribution over these intervals. Taking the limit \(\Delta \rightarrow 0\) then turns sums into integrals and gives the desired result.
+
+*** Expectations and covariances
+:PROPERTIES:
+:CUSTOM_ID: expectations-and-covariances
+:CLASS: unnumbered
+:END:
+One of the most important operations involving probabilities is that of finding weighted averages of functions. The average value of some function \(f(x)\) under a probability distribution \(p(x)\) is called the expectation of \(f(x)\) and will be denoted by \(\mathbb{E}[f]\). For a discrete distribution, it is given by
+
+\[\mathbb{E}[f]=\sum_{x} p(x) f(x)\]
+
+so that the average is weighted by the relative probabilities of the different values of \(x\). In the case of continuous variables, expectations are expressed in terms of an integration with respect to the corresponding probability density
+
+\[\mathbb{E}[f]=\int p(x) f(x) \mathrm{d} x .\]
+
+In either case, if we are given a finite number \(N\) of points drawn from the probability distribution or probability density, then the expectation can be approximated as a finite sum over these points
+
+\[\mathbb{E}[f] \simeq \frac{1}{N} \sum_{n=1}^{N} f\left(x_{n}\right) .\]
+
+We shall make extensive use of this result when we discuss sampling methods in Chapter 11. The approximation in (1.35) becomes exact in the limit \(N \rightarrow \infty\).
+
+Sometimes we will be considering expectations of functions of several variables, in which case we can use a subscript to indicate which variable is being averaged over, so that for instance
+
+\[\mathbb{E}_{x}[f(x, y)]\]
+
+denotes the average of the function \(f(x, y)\) with respect to the distribution of \(x\). Note that \(\mathbb{E}_{x}[f(x, y)]\) will be a function of \(y\).
+
+We can also consider a conditional expectation with respect to a conditional distribution, so that
+
+\[\mathbb{E}_{x}[f \mid y]=\sum_{x} p(x \mid y) f(x)\]
+
+with an analogous definition for continuous variables.
+
+The variance of \(f(x)\) is defined by
+
+\[\operatorname{var}[f]=\mathbb{E}\left[(f(x)-\mathbb{E}[f(x)])^{2}\right]\]
+
+and provides a measure of how much variability there is in \(f(x)\) around its mean value \(\mathbb{E}[f(x)]\). Expanding out the square, we see that the variance can also be written in terms of the expectations of \(f(x)\) and \(f(x)^{2}\)
+
+\[\operatorname{var}[f]=\mathbb{E}\left[f(x)^{2}\right]-\mathbb{E}[f(x)]^{2} .\]
+
+In particular, we can consider the variance of the variable \(x\) itself, which is given by
+
+\[\operatorname{var}[x]=\mathbb{E}\left[x^{2}\right]-\mathbb{E}[x]^{2} .\]
+
+For two random variables \(x\) and \(y\), the covariance is defined by
+
+\[\begin{aligned}
+\operatorname{cov}[x, y] & =\mathbb{E}_{x, y}[\{x-\mathbb{E}[x]\}\{y-\mathbb{E}[y]\}] \\
+& =\mathbb{E}_{x, y}[x y]-\mathbb{E}[x] \mathbb{E}[y]
+\end{aligned}\]
+
+which expresses the extent to which \(x\) and \(y\) vary together. If \(x\) and \(y\) are indepen-
+
+Exercise 1.6 dent, then their covariance vanishes.
+
+In the case of two vectors of random variables \(\mathbf{x}\) and \(\mathbf{y}\), the covariance is a matrix
+
+\[\begin{aligned}
+\operatorname{cov}[\mathbf{x}, \mathbf{y}] & =\mathbb{E}_{\mathbf{x}, \mathbf{y}}\left[\{\mathbf{x}-\mathbb{E}[\mathbf{x}]\}\left\{\mathbf{y}^{\mathrm{T}}-\mathbb{E}\left[\mathbf{y}^{\mathrm{T}}\right]\right\}\right] \\
+& =\mathbb{E}_{\mathbf{x}, \mathbf{y}}\left[\mathbf{x} \mathbf{y}^{\mathrm{T}}\right]-\mathbb{E}[\mathbf{x}] \mathbb{E}\left[\mathbf{y}^{\mathrm{T}}\right]
+\end{aligned}\]
+
+If we consider the covariance of the components of a vector \(\mathbf{x}\) with each other, then we use a slightly simpler notation \(\operatorname{cov}[\mathbf{x}] \equiv \operatorname{cov}[\mathbf{x}, \mathbf{x}]\).
+
+*** Bayesian probabilities
+:PROPERTIES:
+:CUSTOM_ID: bayesian-probabilities
+:CLASS: unnumbered
+:END:
+So far in this chapter, we have viewed probabilities in terms of the frequencies of random, repeatable events. We shall refer to this as the classical or frequentist interpretation of probability. Now we turn to the more general Bayesian view, in which probabilities provide a quantification of uncertainty.
+
+Consider an uncertain event, for example whether the moon was once in its own orbit around the sun, or whether the Arctic ice cap will have disappeared by the end of the century. These are not events that can be repeated numerous times in order to define a notion of probability as we did earlier in the context of boxes of fruit. Nevertheless, we will generally have some idea, for example, of how quickly we think the polar ice is melting. If we now obtain fresh evidence, for instance from a new Earth observation satellite gathering novel forms of diagnostic information, we may revise our opinion on the rate of ice loss. Our assessment of such matters will affect the actions we take, for instance the extent to which we endeavour to reduce the emission of greenhouse gasses. In such circumstances, we would like to be able to quantify our expression of uncertainty and make precise revisions of uncertainty in the light of new evidence, as well as subsequently to be able to take optimal actions or decisions as a consequence. This can all be achieved through the elegant, and very general, Bayesian interpretation of probability.
+
+The use of probability to represent uncertainty, however, is not an ad-hoc choice, but is inevitable if we are to respect common sense while making rational coherent inferences. For instance, Cox (1946) showed that if numerical values are used to represent degrees of belief, then a simple set of axioms encoding common sense properties of such beliefs leads uniquely to a set of rules for manipulating degrees of belief that are equivalent to the sum and product rules of probability. This provided the first rigorous proof that probability theory could be regarded as an extension of Boolean logic to situations involving uncertainty (Jaynes, 2003). Numerous other authors have proposed different sets of properties or axioms that such measures of uncertainty should satisfy (Ramsey, 1931; Good, 1950; Savage, 1961; deFinetti, 1970; Lindley, 1982). In each case, the resulting numerical quantities behave precisely according to the rules of probability. It is therefore natural to refer to these quantities as (Bayesian) probabilities.
+
+In the field of pattern recognition, too, it is helpful to have a more general no-
+
+#+begin_center
+#+caption: image
+[[file:2023_08_27_4c5a80c0a42382702197g-039]]
+
+#+end_center
+
+Thomas Bayes 1701-1761
+
+Thomas Bayes was born in Tunbridge Wells and was a clergyman as well as an amateur scientist and a mathematician. He studied logic and theology at Edinburgh University and was elected Fellow of the Royal Society in 1742 . During the \(18^{\text {th }}\) century, issues regarding probability arose in connection with gambling and with the new concept of insurance. One particularly important problem concerned so-called inverse probability. A solution was proposed by Thomas Bayes in his paper 'Essay towards solving a problem in the doctrine of chances', which was published in 1764 , some three years after his death, in the Philosophical Transactions of the Royal Society. In fact, Bayes only formulated his theory for the case of a uniform prior, and it was Pierre-Simon Laplace who independently rediscovered the theory in general form and who demonstrated its broad applicability. tion of probability. Consider the example of polynomial curve fitting discussed in Section 1.1. It seems reasonable to apply the frequentist notion of probability to the random values of the observed variables \(t_{n}\). However, we would like to address and quantify the uncertainty that surrounds the appropriate choice for the model parameters \(\mathbf{w}\). We shall see that, from a Bayesian perspective, we can use the machinery of probability theory to describe the uncertainty in model parameters such as \(\mathbf{w}\), or indeed in the choice of model itself.
+
+Bayes' theorem now acquires a new significance. Recall that in the boxes of fruit example, the observation of the identity of the fruit provided relevant information that altered the probability that the chosen box was the red one. In that example, Bayes' theorem was used to convert a prior probability into a posterior probability by incorporating the evidence provided by the observed data. As we shall see in detail later, we can adopt a similar approach when making inferences about quantities such as the parameters \(\mathbf{w}\) in the polynomial curve fitting example. We capture our assumptions about \(\mathbf{w}\), before observing the data, in the form of a prior probability distribution \(p(\mathbf{w})\). The effect of the observed data \(\mathcal{D}=\left\{t_{1}, \ldots, t_{N}\right\}\) is expressed through the conditional probability \(p(\mathcal{D} \mid \mathbf{w})\), and we shall see later, in Section 1.2.5, how this can be represented explicitly. Bayes' theorem, which takes the form
+
+\[p(\mathbf{w} \mid \mathcal{D})=\frac{p(\mathcal{D} \mid \mathbf{w}) p(\mathbf{w})}{p(\mathcal{D})}\]
+
+then allows us to evaluate the uncertainty in \(\mathrm{w}\) after we have observed \(\mathcal{D}\) in the form of the posterior probability \(p(\mathbf{w} \mid \mathcal{D})\).
+
+The quantity \(p(\mathcal{D} \mid \mathbf{w})\) on the right-hand side of Bayes' theorem is evaluated for the observed data set \(\mathcal{D}\) and can be viewed as a function of the parameter vector \(\mathbf{w}\), in which case it is called the likelihood function. It expresses how probable the observed data set is for different settings of the parameter vector \(w\). Note that the likelihood is not a probability distribution over \(\mathbf{w}\), and its integral with respect to \(\mathbf{w}\) does not (necessarily) equal one.
+
+Given this definition of likelihood, we can state Bayes' theorem in words
+
+\[\text { posterior } \propto \text { likelihood } \times \text { prior }\]
+
+where all of these quantities are viewed as functions of \(\mathbf{w}\). The denominator in (1.43) is the normalization constant, which ensures that the posterior distribution on the left-hand side is a valid probability density and integrates to one. Indeed, integrating both sides of (1.43) with respect to \(\mathbf{w}\), we can express the denominator in Bayes' theorem in terms of the prior distribution and the likelihood function
+
+\[p(\mathcal{D})=\int p(\mathcal{D} \mid \mathbf{w}) p(\mathbf{w}) \mathrm{d} \mathbf{w} .\]
+
+In both the Bayesian and frequentist paradigms, the likelihood function \(p(\mathcal{D} \mid \mathbf{w})\) plays a central role. However, the manner in which it is used is fundamentally different in the two approaches. In a frequentist setting, \(\mathbf{w}\) is considered to be a fixed parameter, whose value is determined by some form of 'estimator', and error bars on this estimate are obtained by considering the distribution of possible data sets \(\mathcal{D}\). By contrast, from the Bayesian viewpoint there is only a single data set \(\mathcal{D}\) (namely the one that is actually observed), and the uncertainty in the parameters is expressed through a probability distribution over \(\mathbf{w}\).
+
+A widely used frequentist estimator is maximum likelihood, in which \(\mathbf{w}\) is set to the value that maximizes the likelihood function \(p(\mathcal{D} \mid \mathbf{w})\). This corresponds to choosing the value of \(\mathbf{w}\) for which the probability of the observed data set is maximized. In the machine learning literature, the negative log of the likelihood function is called an error function. Because the negative logarithm is a monotonically decreasing function, maximizing the likelihood is equivalent to minimizing the error.
+
+One approach to determining frequentist error bars is the bootstrap (Efron, 1979; Hastie et al., 2001), in which multiple data sets are created as follows. Suppose our original data set consists of \(N\) data points \(\mathbf{X}=\left\{\mathbf{x}_{1}, \ldots, \mathbf{x}_{N}\right\}\). We can create a new data set \(\mathbf{X}_{\mathrm{B}}\) by drawing \(N\) points at random from \(\mathbf{X}\), with replacement, so that some points in \(\mathbf{X}\) may be replicated in \(\mathbf{X}_{\mathrm{B}}\), whereas other points in \(\mathbf{X}\) may be absent from \(\mathbf{X}_{\mathrm{B}}\). This process can be repeated \(L\) times to generate \(L\) data sets each of size \(N\) and each obtained by sampling from the original data set \(\mathbf{X}\). The statistical accuracy of parameter estimates can then be evaluated by looking at the variability of predictions between the different bootstrap data sets.
+
+One advantage of the Bayesian viewpoint is that the inclusion of prior knowledge arises naturally. Suppose, for instance, that a fair-looking coin is tossed three times and lands heads each time. A classical maximum likelihood estimate of the
+
+Section \(2.1 \quad\) probability of landing heads would give 1, implying that all future tosses will land heads! By contrast, a Bayesian approach with any reasonable prior will lead to a much less extreme conclusion.
+
+There has been much controversy and debate associated with the relative merits of the frequentist and Bayesian paradigms, which have not been helped by the fact that there is no unique frequentist, or even Bayesian, viewpoint. For instance, one common criticism of the Bayesian approach is that the prior distribution is often selected on the basis of mathematical convenience rather than as a reflection of any prior beliefs. Even the subjective nature of the conclusions through their dependence on the choice of prior is seen by some as a source of difficulty. Reducing Section 2.4.3 the dependence on the prior is one motivation for so-called noninformative priors. However, these lead to difficulties when comparing different models, and indeed Bayesian methods based on poor choices of prior can give poor results with high confidence. Frequentist evaluation methods offer some protection from such prob-
+
+Section 1.3 lems, and techniques such as cross-validation remain useful in areas such as model comparison.
+
+This book places a strong emphasis on the Bayesian viewpoint, reflecting the huge growth in the practical importance of Bayesian methods in the past few years, while also discussing useful frequentist concepts as required.
+
+Although the Bayesian framework has its origins in the \(18^{\text {th }}\) century, the practical application of Bayesian methods was for a long time severely limited by the difficulties in carrying through the full Bayesian procedure, particularly the need to marginalize (sum or integrate) over the whole of parameter space, which, as we shall see, is required in order to make predictions or to compare different models. The development of sampling methods, such as Markov chain Monte Carlo (discussed in Chapter 11) along with dramatic improvements in the speed and memory capacity of computers, opened the door to the practical use of Bayesian techniques in an impressive range of problem domains. Monte Carlo methods are very flexible and can be applied to a wide range of models. However, they are computationally intensive and have mainly been used for small-scale problems.
+
+More recently, highly efficient deterministic approximation schemes such as variational Bayes and expectation propagation (discussed in Chapter 10) have been developed. These offer a complementary alternative to sampling methods and have allowed Bayesian techniques to be used in large-scale applications (Blei et al., 2003).
+
+*** The Gaussian distribution
+:PROPERTIES:
+:CUSTOM_ID: the-gaussian-distribution
+:CLASS: unnumbered
+:END:
+We shall devote the whole of Chapter 2 to a study of various probability distributions and their key properties. It is convenient, however, to introduce here one of the most important probability distributions for continuous variables, called the normal or Gaussian distribution. We shall make extensive use of this distribution in the remainder of this chapter and indeed throughout much of the book.
+
+For the case of a single real-valued variable \(x\), the Gaussian distribution is defined by
+
+\[\mathcal{N}\left(x \mid \mu, \sigma^{2}\right)=\frac{1}{\left(2 \pi \sigma^{2}\right)^{1 / 2}} \exp \left\{-\frac{1}{2 \sigma^{2}}(x-\mu)^{2}\right\}\]
+
+which is governed by two parameters: \(\mu\), called the mean, and \(\sigma^{2}\), called the variance. The square root of the variance, given by \(\sigma\), is called the standard deviation, and the reciprocal of the variance, written as \(\beta=1 / \sigma^{2}\), is called the precision. We shall see the motivation for these terms shortly. Figure 1.13 shows a plot of the Gaussian distribution.
+
+From the form of (1.46) we see that the Gaussian distribution satisfies
+
+\[\mathcal{N}\left(x \mid \mu, \sigma^{2}\right)>0 .\]
+
+Exercise 1.7
+
+Also it is straightforward to show that the Gaussian is normalized, so that
+
+#+begin_center
+#+caption: image
+[[file:2023_08_27_4c5a80c0a42382702197g-042]]
+
+#+end_center
+
+Pierre-Simon Laplace 1749-1827
+
+It is said that Laplace was seriously lacking in modesty and at one point declared himself to be the best mathematician in France at the time, a claim that was arguably true. As well as being prolific in mathematics, he also made numerous contributions to astronomy, including the nebular hypothesis by which the earth is thought to have formed from the condensation and cooling of a large rotating disk of gas and dust. In 1812 he published the first edition of Théorie Analytique des Probabilités, in which Laplace states that "probability theory is nothing but common sense reduced to calculation". This work included a discussion of the inverse probability calculation (later termed Bayes' theorem by Poincaré), which he used to solve problems in life expectancy, jurisprudence, planetary masses, triangulation, and error estimation. Figure 1.13 Plot of the univariate Gaussian showing the mean \(\mu\) and the standard deviation \(\sigma\).
+
+#+begin_center
+#+caption: image
+[[file:2023_08_27_4c5a80c0a42382702197g-043]]
+
+#+end_center
+
+\[\int_{-\infty}^{\infty} \mathcal{N}\left(x \mid \mu, \sigma^{2}\right) \mathrm{d} x=1\]
+
+Thus (1.46) satisfies the two requirements for a valid probability density.
+
+We can readily find expectations of functions of \(x\) under the Gaussian distribuExercise 1.8 tion. In particular, the average value of \(x\) is given by
+
+\[\mathbb{E}[x]=\int_{-\infty}^{\infty} \mathcal{N}\left(x \mid \mu, \sigma^{2}\right) x \mathrm{~d} x=\mu .\]
+
+Because the parameter \(\mu\) represents the average value of \(x\) under the distribution, it is referred to as the mean. Similarly, for the second order moment
+
+\[\mathbb{E}\left[x^{2}\right]=\int_{-\infty}^{\infty} \mathcal{N}\left(x \mid \mu, \sigma^{2}\right) x^{2} \mathrm{~d} x=\mu^{2}+\sigma^{2} .\]
+
+From (1.49) and (1.50), it follows that the variance of \(x\) is given by
+
+\[\operatorname{var}[x]=\mathbb{E}\left[x^{2}\right]-\mathbb{E}[x]^{2}=\sigma^{2}\]
+
+Exercise 1.9
+
+and hence \(\sigma^{2}\) is referred to as the variance parameter. The maximum of a distribution is known as its mode. For a Gaussian, the mode coincides with the mean.
+
+We are also interested in the Gaussian distribution defined over a \(D\)-dimensional vector \(\mathbf{x}\) of continuous variables, which is given by
+
+\[\mathcal{N}(\mathbf{x} \mid \boldsymbol{\mu}, \boldsymbol{\Sigma})=\frac{1}{(2 \pi)^{D / 2}} \frac{1}{|\boldsymbol{\Sigma}|^{1 / 2}} \exp \left\{-\frac{1}{2}(\mathbf{x}-\boldsymbol{\mu})^{\mathrm{T}} \boldsymbol{\Sigma}^{-1}(\mathbf{x}-\boldsymbol{\mu})\right\}\]
+
+where the \(D\)-dimensional vector \(\boldsymbol{\mu}\) is called the mean, the \(D \times D\) matrix \(\boldsymbol{\Sigma}\) is called the covariance, and \(|\boldsymbol{\Sigma}|\) denotes the determinant of \(\boldsymbol{\Sigma}\). We shall make use of the multivariate Gaussian distribution briefly in this chapter, although its properties will be studied in detail in Section 2.3. Figure 1.14 Illustration of the likelihood function for a Gaussian distribution, shown by the red curve. Here the black points denote a data set of values \(\left\{x_{n}\right\}\), and the likelihood function given by (1.53) corresponds to the product of the blue values. Maximizing the likelihood involves adjusting the mean and variance of the Gaussian so as to maximize this product.
+
+#+begin_center
+#+caption: image
+[[file:2023_08_27_4c5a80c0a42382702197g-044]]
+
+#+end_center
+
+Now suppose that we have a data set of observations \(\mathbf{x}=\left(x_{1}, \ldots, x_{N}\right)^{\mathrm{T}}\), representing \(N\) observations of the scalar variable \(x\). Note that we are using the typeface \(\mathbf{x}\) to distinguish this from a single observation of the vector-valued variable \(\left(x_{1}, \ldots, x_{D}\right)^{\mathrm{T}}\), which we denote by \(\mathbf{x}\). We shall suppose that the observations are drawn independently from a Gaussian distribution whose mean \(\mu\) and variance \(\sigma^{2}\) are unknown, and we would like to determine these parameters from the data set. Data points that are drawn independently from the same distribution are said to be independent and identically distributed, which is often abbreviated to i.i.d. We have seen that the joint probability of two independent events is given by the product of the marginal probabilities for each event separately. Because our data set \(\mathbf{x}\) is i.i.d., we can therefore write the probability of the data set, given \(\mu\) and \(\sigma^{2}\), in the form
+
+\[p\left(\mathbf{x} \mid \mu, \sigma^{2}\right)=\prod_{n=1}^{N} \mathcal{N}\left(x_{n} \mid \mu, \sigma^{2}\right) .\]
+
+When viewed as a function of \(\mu\) and \(\sigma^{2}\), this is the likelihood function for the Gaussian and is interpreted diagrammatically in Figure 1.14.
+
+One common criterion for determining the parameters in a probability distribution using an observed data set is to find the parameter values that maximize the likelihood function. This might seem like a strange criterion because, from our foregoing discussion of probability theory, it would seem more natural to maximize the probability of the parameters given the data, not the probability of the data given the Section 1.2.5 parameters. In fact, these two criteria are related, as we shall discuss in the context of curve fitting.
+
+For the moment, however, we shall determine values for the unknown parameters \(\mu\) and \(\sigma^{2}\) in the Gaussian by maximizing the likelihood function (1.53). In practice, it is more convenient to maximize the log of the likelihood function. Because the logarithm is a monotonically increasing function of its argument, maximization of the \(\log\) of a function is equivalent to maximization of the function itself. Taking the log not only simplifies the subsequent mathematical analysis, but it also helps numerically because the product of a large number of small probabilities can easily underflow the numerical precision of the computer, and this is resolved by computing instead the sum of the log probabilities. From (1.46) and (1.53), the log likelihood function can be written in the form
+
+\[\ln p\left(\mathbf{x} \mid \mu, \sigma^{2}\right)=-\frac{1}{2 \sigma^{2}} \sum_{n=1}^{N}\left(x_{n}-\mu\right)^{2}-\frac{N}{2} \ln \sigma^{2}-\frac{N}{2} \ln (2 \pi) .\]
+
+Exercise 1.11
+
+Section 1.1
+
+Exercise 1.12 Maximizing (1.54) with respect to \(\mu\), we obtain the maximum likelihood solution given by
+
+\[\mu_{\mathrm{ML}}=\frac{1}{N} \sum_{n=1}^{N} x_{n}\]
+
+which is the sample mean, i.e., the mean of the observed values \(\left\{x_{n}\right\}\). Similarly, maximizing (1.54) with respect to \(\sigma^{2}\), we obtain the maximum likelihood solution for the variance in the form
+
+\[\sigma_{\mathrm{ML}}^{2}=\frac{1}{N} \sum_{n=1}^{N}\left(x_{n}-\mu_{\mathrm{ML}}\right)^{2}\]
+
+which is the sample variance measured with respect to the sample mean \(\mu_{\mathrm{ML}}\). Note that we are performing a joint maximization of (1.54) with respect to \(\mu\) and \(\sigma^{2}\), but in the case of the Gaussian distribution the solution for \(\mu\) decouples from that for \(\sigma^{2}\) so that we can first evaluate (1.55) and then subsequently use this result to evaluate (1.56).
+
+Later in this chapter, and also in subsequent chapters, we shall highlight the significant limitations of the maximum likelihood approach. Here we give an indication of the problem in the context of our solutions for the maximum likelihood parameter settings for the univariate Gaussian distribution. In particular, we shall show that the maximum likelihood approach systematically underestimates the variance of the distribution. This is an example of a phenomenon called bias and is related to the problem of over-fitting encountered in the context of polynomial curve fitting. We first note that the maximum likelihood solutions \(\mu_{\mathrm{ML}}\) and \(\sigma_{\mathrm{ML}}^{2}\) are functions of the data set values \(x_{1}, \ldots, x_{N}\). Consider the expectations of these quantities with respect to the data set values, which themselves come from a Gaussian distribution with parameters \(\mu\) and \(\sigma^{2}\). It is straightforward to show that
+
+\[\begin{aligned}
+\mathbb{E}\left[\mu_{\mathrm{ML}}\right] & =\mu \\
+\mathbb{E}\left[\sigma_{\mathrm{ML}}^{2}\right] & =\left(\frac{N-1}{N}\right) \sigma^{2}
+\end{aligned}\]
+
+so that on average the maximum likelihood estimate will obtain the correct mean but will underestimate the true variance by a factor \((N-1) / N\). The intuition behind this result is given by Figure 1.15.
+
+From (1.58) it follows that the following estimate for the variance parameter is unbiased
+
+\[\tilde{\sigma}^{2}=\frac{N}{N-1} \sigma_{\mathrm{ML}}^{2}=\frac{1}{N-1} \sum_{n=1}^{N}\left(x_{n}-\mu_{\mathrm{ML}}\right)^{2} .\]
+
+Figure 1.15 Illustration of how bias arises in using maximum likelihood to determine the variance of a Gaussian. The green curve shows the true Gaussian distribution from which data is generated, and the three red curves show the Gaussian distributions obtained by fitting to three data sets, each consisting of two data points shown in blue, using the maximum likelihood results (1.55) and (1.56). Averaged across the three data sets, the mean is correct, but the variance is systematically under-estimated because it is measured relative to the sample mean and not relative to the true mean.
+
+#+begin_center
+#+caption: image
+[[file:2023_08_27_4c5a80c0a42382702197g-046(2)]]
+
+#+end_center
+
+(a)
+
+#+begin_center
+#+caption: image
+[[file:2023_08_27_4c5a80c0a42382702197g-046(1)]]
+
+#+end_center
+
+(b)
+
+#+begin_center
+#+caption: image
+[[file:2023_08_27_4c5a80c0a42382702197g-046]]
+
+#+end_center
+
+(c)
+
+In Section 10.1.3, we shall see how this result arises automatically when we adopt a Bayesian approach.
+
+Note that the bias of the maximum likelihood solution becomes less significant as the number \(N\) of data points increases, and in the limit \(N \rightarrow \infty\) the maximum likelihood solution for the variance equals the true variance of the distribution that generated the data. In practice, for anything other than small \(N\), this bias will not prove to be a serious problem. However, throughout this book we shall be interested in more complex models with many parameters, for which the bias problems associated with maximum likelihood will be much more severe. In fact, as we shall see, the issue of bias in maximum likelihood lies at the root of the over-fitting problem that we encountered earlier in the context of polynomial curve fitting.
+
+*** Curve fitting re-visited
+:PROPERTIES:
+:CUSTOM_ID: curve-fitting-re-visited
+:CLASS: unnumbered
+:END:
+We have seen how the problem of polynomial curve fitting can be expressed in terms of error minimization. Here we return to the curve fitting example and view it from a probabilistic perspective, thereby gaining some insights into error functions and regularization, as well as taking us towards a full Bayesian treatment.
+
+The goal in the curve fitting problem is to be able to make predictions for the target variable \(t\) given some new value of the input variable \(x\) on the basis of a set of training data comprising \(N\) input values \(\mathbf{x}=\left(x_{1}, \ldots, x_{N}\right)^{\mathrm{T}}\) and their corresponding target values \(\mathbf{t}=\left(t_{1}, \ldots, t_{N}\right)^{\mathrm{T}}\). We can express our uncertainty over the value of the target variable using a probability distribution. For this purpose, we shall assume that, given the value of \(x\), the corresponding value of \(t\) has a Gaussian distribution with a mean equal to the value \(y(x, \mathbf{w})\) of the polynomial curve given by (1.1). Thus we have
+
+\[p(t \mid x, \mathbf{w}, \beta)=\mathcal{N}\left(t \mid y(x, \mathbf{w}), \beta^{-1}\right)\]
+
+where, for consistency with the notation in later chapters, we have defined a precision parameter \(\beta\) corresponding to the inverse variance of the distribution. This is illustrated schematically in Figure 1.16. Figure 1.16 Schematic illustration of a Gaussian conditional distribution for \(t\) given \(x\) given by (1.60), in which the mean is given by the polynomial function \(y(x, \mathbf{w})\), and the precision is given by the parameter \(\beta\), which is related to the variance by \(\beta^{-1}=\sigma^{2}\).
+
+#+begin_center
+#+caption: image
+[[file:2023_08_27_4c5a80c0a42382702197g-047]]
+
+#+end_center
+
+We now use the training data \(\{\mathbf{x}, \mathbf{t}\}\) to determine the values of the unknown parameters \(\mathbf{w}\) and \(\beta\) by maximum likelihood. If the data are assumed to be drawn independently from the distribution (1.60), then the likelihood function is given by
+
+\[p(\mathbf{t} \mid \mathbf{x}, \mathbf{w}, \beta)=\prod_{n=1}^{N} \mathcal{N}\left(t_{n} \mid y\left(x_{n}, \mathbf{w}\right), \beta^{-1}\right) .\]
+
+As we did in the case of the simple Gaussian distribution earlier, it is convenient to maximize the logarithm of the likelihood function. Substituting for the form of the Gaussian distribution, given by (1.46), we obtain the log likelihood function in the form
+
+\[\ln p(\mathbf{t} \mid \mathbf{x}, \mathbf{w}, \beta)=-\frac{\beta}{2} \sum_{n=1}^{N}\left\{y\left(x_{n}, \mathbf{w}\right)-t_{n}\right\}^{2}+\frac{N}{2} \ln \beta-\frac{N}{2} \ln (2 \pi) .\]
+
+Consider first the determination of the maximum likelihood solution for the polynomial coefficients, which will be denoted by \(\mathbf{w}_{\mathrm{ML}}\). These are determined by maximizing (1.62) with respect to w. For this purpose, we can omit the last two terms on the right-hand side of (1.62) because they do not depend on w. Also, we note that scaling the log likelihood by a positive constant coefficient does not alter the location of the maximum with respect to \(\mathbf{w}\), and so we can replace the coefficient \(\beta / 2\) with \(1 / 2\). Finally, instead of maximizing the log likelihood, we can equivalently minimize the negative log likelihood. We therefore see that maximizing likelihood is equivalent, so far as determining \(\mathbf{w}\) is concerned, to minimizing the sum-of-squares error function defined by (1.2). Thus the sum-of-squares error function has arisen as a consequence of maximizing likelihood under the assumption of a Gaussian noise distribution.
+
+We can also use maximum likelihood to determine the precision parameter \(\beta\) of the Gaussian conditional distribution. Maximizing (1.62) with respect to \(\beta\) gives
+
+\[\frac{1}{\beta_{\mathrm{ML}}}=\frac{1}{N} \sum_{n=1}^{N}\left\{y\left(x_{n}, \mathbf{w}_{\mathrm{ML}}\right)-t_{n}\right\}^{2} .\]
+
+Section 1.2.4
+
+Again we can first determine the parameter vector \(\mathbf{w}_{\mathrm{ML}}\) governing the mean and subsequently use this to find the precision \(\beta_{\mathrm{ML}}\) as was the case for the simple Gaussian distribution.
+
+Having determined the parameters \(\mathbf{w}\) and \(\beta\), we can now make predictions for new values of \(x\). Because we now have a probabilistic model, these are expressed in terms of the predictive distribution that gives the probability distribution over \(t\), rather than simply a point estimate, and is obtained by substituting the maximum likelihood parameters into (1.60) to give
+
+\[p\left(t \mid x, \mathbf{w}_{\mathrm{ML}}, \beta_{\mathrm{ML}}\right)=\mathcal{N}\left(t \mid y\left(x, \mathbf{w}_{\mathrm{ML}}\right), \beta_{\mathrm{ML}}^{-1}\right) .\]
+
+Now let us take a step towards a more Bayesian approach and introduce a prior distribution over the polynomial coefficients w. For simplicity, let us consider a Gaussian distribution of the form
+
+\[p(\mathbf{w} \mid \alpha)=\mathcal{N}\left(\mathbf{w} \mid \mathbf{0}, \alpha^{-1} \mathbf{I}\right)=\left(\frac{\alpha}{2 \pi}\right)^{(M+1) / 2} \exp \left\{-\frac{\alpha}{2} \mathbf{w}^{\mathrm{T}} \mathbf{w}\right\}\]
+
+where \(\alpha\) is the precision of the distribution, and \(M+1\) is the total number of elements in the vector \(\mathbf{w}\) for an \(M^{\text {th }}\) order polynomial. Variables such as \(\alpha\), which control the distribution of model parameters, are called hyperparameters. Using Bayes' theorem, the posterior distribution for \(\mathbf{w}\) is proportional to the product of the prior distribution and the likelihood function
+
+\[p(\mathbf{w} \mid \mathbf{x}, \mathbf{t}, \alpha, \beta) \propto p(\mathbf{t} \mid \mathbf{x}, \mathbf{w}, \beta) p(\mathbf{w} \mid \alpha) .\]
+
+We can now determine \(\mathbf{w}\) by finding the most probable value of \(\mathbf{w}\) given the data, in other words by maximizing the posterior distribution. This technique is called maximum posterior, or simply MAP. Taking the negative logarithm of (1.66) and combining with (1.62) and (1.65), we find that the maximum of the posterior is given by the minimum of
+
+\[\frac{\beta}{2} \sum_{n=1}^{N}\left\{y\left(x_{n}, \mathbf{w}\right)-t_{n}\right\}^{2}+\frac{\alpha}{2} \mathbf{w}^{\mathrm{T}} \mathbf{w} .\]
+
+Thus we see that maximizing the posterior distribution is equivalent to minimizing the regularized sum-of-squares error function encountered earlier in the form (1.4), with a regularization parameter given by \(\lambda=\alpha / \beta\).
+
+*** Bayesian curve fitting
+:PROPERTIES:
+:CUSTOM_ID: bayesian-curve-fitting
+:CLASS: unnumbered
+:END:
+Although we have included a prior distribution \(p(\mathbf{w} \mid \alpha)\), we are so far still making a point estimate of \(\mathbf{w}\) and so this does not yet amount to a Bayesian treatment. In a fully Bayesian approach, we should consistently apply the sum and product rules of probability, which requires, as we shall see shortly, that we integrate over all values of w. Such marginalizations lie at the heart of Bayesian methods for pattern recognition. In the curve fitting problem, we are given the training data \(\mathbf{x}\) and \(\mathbf{t}\), along with a new test point \(x\), and our goal is to predict the value of \(t\). We therefore wish to evaluate the predictive distribution \(p(t \mid x, \mathbf{x}, \mathbf{t})\). Here we shall assume that the parameters \(\alpha\) and \(\beta\) are fixed and known in advance (in later chapters we shall discuss how such parameters can be inferred from data in a Bayesian setting).
+
+A Bayesian treatment simply corresponds to a consistent application of the sum and product rules of probability, which allow the predictive distribution to be written in the form
+
+\[p(t \mid x, \mathbf{x}, \mathbf{t})=\int p(t \mid x, \mathbf{w}) p(\mathbf{w} \mid \mathbf{x}, \mathbf{t}) \mathrm{d} \mathbf{w} .\]
+
+Here \(p(t \mid x, \mathbf{w})\) is given by (1.60), and we have omitted the dependence on \(\alpha\) and \(\beta\) to simplify the notation. Here \(p(\mathbf{w} \mid \mathbf{x}, \mathbf{t})\) is the posterior distribution over parameters, and can be found by normalizing the right-hand side of (1.66). We shall see in Section 3.3 that, for problems such as the curve-fitting example, this posterior distribution is a Gaussian and can be evaluated analytically. Similarly, the integration in (1.68) can also be performed analytically with the result that the predictive distribution is given by a Gaussian of the form
+
+\[p(t \mid x, \mathbf{x}, \mathbf{t})=\mathcal{N}\left(t \mid m(x), s^{2}(x)\right)\]
+
+where the mean and variance are given by
+
+\[\begin{aligned}
+& m(x)=\beta \boldsymbol{\phi}(x)^{\mathrm{T}} \mathbf{S} \sum_{n=1}^{N} \boldsymbol{\phi}\left(x_{n}\right) t_{n} \\
+& s^{2}(x)=\beta^{-1}+\boldsymbol{\phi}(x)^{\mathrm{T}} \mathbf{S} \boldsymbol{\phi}(x) .
+\end{aligned}\]
+
+Here the matrix \(\mathbf{S}\) is given by
+
+\[\mathbf{S}^{-1}=\alpha \mathbf{I}+\beta \sum_{n=1}^{N} \phi\left(x_{n}\right) \phi(x)^{\mathrm{T}}\]
+
+where \(\mathbf{I}\) is the unit matrix, and we have defined the vector \(\phi(x)\) with elements \(\phi_{i}(x)=x^{i}\) for \(i=0, \ldots, M\).
+
+We see that the variance, as well as the mean, of the predictive distribution in (1.69) is dependent on \(x\). The first term in (1.71) represents the uncertainty in the predicted value of \(t\) due to the noise on the target variables and was expressed already in the maximum likelihood predictive distribution (1.64) through \(\beta_{\mathrm{ML}}^{-1}\). However, the second term arises from the uncertainty in the parameters \(\mathbf{w}\) and is a consequence of the Bayesian treatment. The predictive distribution for the synthetic sinusoidal regression problem is illustrated in Figure 1.17. Figure 1.17 The predictive distribution resulting from a Bayesian treatment of polynomial curve fitting using an \(M=9\) polynomial, with the fixed parameters \(\alpha=5 \times 10^{-3}\) and \(\beta=\) 11.1 (corresponding to the known noise variance), in which the red curve denotes the mean of the predictive distribution and the red region corresponds to \pm 1 standard deviation around the mean.
+
+#+begin_center
+#+caption: image
+[[file:2023_08_27_4c5a80c0a42382702197g-050]]
+
+#+end_center
+
