@@ -1,0 +1,10 @@
+:PROPERTIES:
+:ID:       95331e74-42c1-48a1-b0e0-1ad3fc57d38f
+:END:
+#+TITLE: Population (statistics)
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+A *statistical population* can be a group of existing objects (e.g. the set of all stars within the Milky Way galaxy) or a hypothetical and potentially infinite group of objects conceived as a generalization from experience (e.g. the set of all possible hands in a game of poker).
+
+In [[id:01b2eedd-71b0-428f-bc4b-146b7068af36][statistical inference]], a *statistical sample* - a subset - of the population is chosen to represent the statistical population. The [[id:9d6c1abe-4feb-445e-a73f-a02ebca59a0c][sampling]] method must must be such that the statistical sample is unbiased and accurately models the statistical population (every unit of the population has an equal chance of selection). The ratio of the size of this statistical sample to the size of the population is called a *sampling fraction*. It is then possible to estimate the *population parameters* using the appropriate *sample statistics*.
