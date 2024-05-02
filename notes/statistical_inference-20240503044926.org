@@ -1,0 +1,19 @@
+:PROPERTIES:
+:ID:       01b2eedd-71b0-428f-bc4b-146b7068af36
+:END:
+#+TITLE: Statistical inference
+#+FILETAGS: :literature:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+*Statistical inference* makes propositions about a [[id:95331e74-42c1-48a1-b0e0-1ad3fc57d38f][population]], using data drawn from the population with some form of [[id:9d6c1abe-4feb-445e-a73f-a02ebca59a0c][sampling]]. It consists of 
+
+1) selecting a [[id:adca8d70-d50a-4967-9693-4b10cd541ebd][statistical model]] of the process that generates the data,
+2) deducing a [[id:12d22452-de44-4ba0-9a9b-0a5aeb73832d][Statistical proposition]] from the model.
+
+Examples of [[id:12d22452-de44-4ba0-9a9b-0a5aeb73832d][Statistical propositions]]:
+
+1) [[id:9fccdf3c-554a-45d9-b0b5-cb65c6db031b][Point estimate]]: a particular value that best approximates some parameter of interest,
+2) [[id:11461378-8ab4-44f6-a57b-5d782cc2e5c2][Interval estimate]]: an interval that best approximates some parameter of interest,
+3) [[id:ccd9c665-97bf-4274-b2b1-5a0ebc5409e2][Density estimate]]: a probability density function defined over an interval that best approximates the distribution of some (probabilistic/uncertain) parameter of interest,
+4) [[id:c6f65459-ca9e-4f9b-9713-ac83cc6bbf31][Hypothesis acceptance/rejection]]: accepting or rejection a statistical hypothesis about some parameter of interest,
+5) [[id:28d575a5-08f9-4f78-bb0b-b7fedcbb24d3][Classification]]: clustering or classification of some set of parameters of interest into groups.
