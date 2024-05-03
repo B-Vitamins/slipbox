@@ -41,7 +41,6 @@ Equivalently, we can infer the joint-distribution \(p\left(\mathbf{x},\,\mathcal
 
 Figure 1.27 Example of the class-conditional densities for two classes having a single input variable \(x\) (left plot) together with the corresponding posterior probabilities (right plot). Note that the left-hand mode of the class-conditional density \(p\left(\mathbf{x} \mid \mathcal{C}_{1}\right)\), shown in blue on the left plot, has no effect on the posterior probabilities. The vertical green line in the right plot shows the decision boundary in \(x\) that gives the minimum misclassification rate.
 
-
 * Discriminative models approach
 1) Solve the inference problem for the [[id:e166b400-40c8-410b-bb5b-0e0decca5f4c][posterior]]-class probabilities \(p\left(\mathcal{C}_{k} \mid \mathbf{x}\right)\) directly,
 2) Derive a [[id:869cf352-d95e-471d-a21a-c618a35c51dd][decision rule]] for the [[id:e166b400-40c8-410b-bb5b-0e0decca5f4c][posterior]]-class probabilities \(p\left(\mathcal{C}_{k} \mid \mathbf{x}\right)\)  to determine class membership for each new input \(\mathbf{x}\).
@@ -52,7 +51,6 @@ Figure 1.27 Example of the class-conditional densities for two classes having a 
 #+CAPTION: Example of the class-conditional densities for two classes having a single input variable \(x\) (left plot) together with the corresponding posterior probabilities (right plot). Note that the left-hand mode of the class-conditional density \(p\left(\mathbf{x} \mid \mathcal{C}_{1}\right)\), shown in blue on the left plot, has no effect on the posterior probabilities. The vertical green line in the right plot shows the decision boundary in \(x\) that gives the minimum misclassification rate.
 #+ATTR_HTML: :width 600px
 [[~/.local/images/prml-1.27.jpg]]
-
 
 * Discriminant functions approach
 1) Find a function \(f(\mathbf{x})\), called a [[id:43aa39fd-b16a-429b-b59a-408240ae3523][discriminant function]], that maps each input \(\mathbf{x}\) directly onto a class label.
