@@ -1,0 +1,22 @@
+:PROPERTIES:
+:ID:       4588e307-d9cd-4a69-9648-a6c8db14ed1a
+:END:
+#+TITLE: Probabilistic graphical models
+#+FILETAGS: :literature:prml:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+*Probabilistic graphical models* are diagrammatic representations of [[id:f39a8683-abf8-4620-957d-b20795422d2d][probability distributions]]. 
+
+1. They provide a simple way to visualize the structure of a probabilistic model and can be used to design and motivate new models.
+2. Insights into the properties of the model, including [[id:c6de868e-1284-4ce9-a2e7-31f71c25a270][conditional independence]] properties, can be obtained by inspection of the [[id:e1fc9380-a936-4cf0-bc64-78119a1081da][graph]]. 
+3. Complex computations, required to perform [[id:01b2eedd-71b0-428f-bc4b-146b7068af36][inference]] and learning in sophisticated models, can be expressed in terms of graphical manipulations, in which underlying mathematical expressions are carried along implicitly.
+
+The graph captures the way in which the joint distribution over all of the random variables can be decomposed into a product of factors each depending only on a subset of the variables.
+
+Probabilistic graphical models fall under two broad categories:
+
+1) [[id:5665a889-6a84-4065-be33-f5186d348ea6][Bayesian networks]] ([[id:d131f5be-9c6c-4867-9f70-eca12e3facb2][directed graphical models]]): the links of the graphs are directional. Directed graphs are useful for expressing *causal relationships* between [[id:fa0e3aa2-347e-48b9-9cb7-e9f0be897281][random variables]].
+
+2) [[id:a6b72a88-bab0-4c02-a8b2-1fd285a29de5][Markov random fields]] ([[id:5559c3da-2d3b-43e6-8b53-996c265ad38d][undirected graphical models]]): the links of the graphs are /not/ directional. Undirected graphs are useful for expressing *soft constraints* between random variables.
+
+For [[id:01b2eedd-71b0-428f-bc4b-146b7068af36][statistical inference]] in both Bayesian networks and Markov random fields, a [[id:4c966ea3-8ede-417a-962d-c13a9c7725c7][factor graph]] representation is often useful.
