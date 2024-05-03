@@ -13,4 +13,10 @@ The joint probability distribution \(p(\mathbf{x}, \mathbf{t})\) provides a comp
 
 One decision-making strategy is the [[id:a468994a-d366-48dc-9396-fdd9418dc60b][minimum misclassification rate decision rule]]. This is equivalent to selecting the class with the highest [[id:e166b400-40c8-410b-bb5b-0e0decca5f4c][posterior probability]] \( p(\mathbf{t} \mid \mathbf{x}) \). For an example, see [[id:19101ea0-b59c-47e7-8002-3bb75be3e6f7][decision problem of diagnosing cancer]].
 
-Another decision-making strategy [[id:192b5010-9a9b-4c31-bbbd-546e969d9196][Minimum expected loss decision rule]]
+Another decision-making strategy is the [[id:192b5010-9a9b-4c31-bbbd-546e969d9196][minimum expected loss decision rule]] where one selects a class label \( j \) of all the available, say \( K \), such that
+
+\begin{align*}
+\sum_{k} L_{k j} p\left(\mathcal{C}_{k} \mid \mathbf{x}\right)
+\end{align*}
+
+is minimized.
