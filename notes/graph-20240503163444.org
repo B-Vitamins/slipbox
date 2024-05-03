@@ -1,0 +1,9 @@
+:PROPERTIES:
+:ID:       e1fc9380-a936-4cf0-bc64-78119a1081da
+:END:
+#+TITLE: Graph
+#+FILETAGS: :literature:prml:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+A graph comprises of [[id:a0fe774b-6d44-4807-ab68-023a7e867ed4][nodes]] (also called *vertices*) connected by [[id:ca49181e-4b87-4ec7-aab7-50aacceda405][edges]] (also known as *links* or *arcs*). 
+

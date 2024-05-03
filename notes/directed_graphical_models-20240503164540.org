@@ -1,0 +1,7 @@
+:PROPERTIES:
+:ID:       d131f5be-9c6c-4867-9f70-eca12e3facb2
+:END:
+#+TITLE: Directed graphical models
+#+FILETAGS: :literature:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+Synonym for [[id:5665a889-6a84-4065-be33-f5186d348ea6][Bayesian networks]].
