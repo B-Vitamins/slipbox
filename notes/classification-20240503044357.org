@@ -1,0 +1,8 @@
+:PROPERTIES:
+:ID:       28d575a5-08f9-4f78-bb0b-b7fedcbb24d3
+:END:
+#+TITLE: Classification
+#+FILETAGS: :literature:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+*Classification* is the task of predicting the value of one or more class labels \(t\) given the value of a \(D\)-dimensional vector \(\mathrm{x}\) of input variables. Given a training data set comprising \(N\) observations \(\{\mathbf{x}_{n}\}\), where \(n=1, \ldots, N\), together with corresponding class labels \(\{t_{n}\}\), the goal is to predict the value of \(t\) for a new value of \(\mathbf{x}\). 
