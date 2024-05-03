@@ -1,0 +1,7 @@
+:PROPERTIES:
+:ID:       a0fe774b-6d44-4807-ab68-023a7e867ed4
+:END:
+#+TITLE: Node (probabilistic graphical models)
+#+FILETAGS: :literature:prml:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+In a [[id:4588e307-d9cd-4a69-9648-a6c8db14ed1a][probabilistic graphical models]], each *node* represents a [[id:fa0e3aa2-347e-48b9-9cb7-e9f0be897281][random variable]] (or group of random variables).
