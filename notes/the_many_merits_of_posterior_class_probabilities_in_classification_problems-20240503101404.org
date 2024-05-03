@@ -1,0 +1,39 @@
+:PROPERTIES:
+:ID:       588541e6-4692-4208-b6e9-7847bf42dc5a
+:END:
+#+TITLE: The many merits of posterior-class probabilities in classification problems
+#+FILETAGS: :literature:prml:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+Of the [[id:2cc0a8c0-b7ce-4329-b79f-8342f3e62373][several ways]] of solving the [[id:28d575a5-08f9-4f78-bb0b-b7fedcbb24d3][classification problem]] to make decisions, most involve solving the [[id:01b2eedd-71b0-428f-bc4b-146b7068af36][inference problem]] of the [[id:e166b400-40c8-410b-bb5b-0e0decca5f4c][posterior probabilities]] \(p(C_{k} \mid \mathbf{x})\) which are then used to derive a [[id:869cf352-d95e-471d-a21a-c618a35c51dd][decision rule]]. Listed below are several benefits of inferring \( p(C_{k} \mid \mathbf{x}) \).
+* Minimizing risk
+Consider a problem in which the [[id:ad33ba75-50b2-40c4-9e0e-69f60fcf4d08][loss function]] is *time-dependent*. The time-evolution of the [[id:192b5010-9a9b-4c31-bbbd-546e969d9196][minimum expected loss decision rule]] is trivially computed using
+\begin{align*}
+C_j (t) = \operatorname{arg min}_{k} \bigg(\sum_{k} L_{k j} (t) p\left(\mathcal{C}_{k} \mid \mathbf{x}\right)\bigg)
+\end{align*}
+if the [[id:e166b400-40c8-410b-bb5b-0e0decca5f4c][posterior probabilities]] \(p(C_{k} \mid \mathbf{x})\) are available. If however the posterior probabilities \(p(C_{k} \mid \mathbf{x})\) are unavailable, as may be the case when inferring a [[id:43aa39fd-b16a-429b-b59a-408240ae3523][discriminant function]], then the classification problem must be solved afresh after the passage of the characteristic time-scale associated with the loss function.
+* Reject option
+If the posterior probabilities \(p(C_{k} \mid \mathbf{x})\) are unavailable, the [[id:0006d227-1b6d-4e5f-bc4e-9e1214ebc05f][rejection rate decision rule]] where rejections are modeled as loss (see problem [[id:00ae2525-b7c6-4f9c-bec2-5e9cb6ff4ceb][Rejection as loss]]) unconditionally lies out reach.
+* Compensating for class priors
+Consider a problem with at least one class \( C_m \) for which \( p(C_m) \ll K^{-1} \), \( K \) being the total number of class labels. Further suppose that the [[id:ad33ba75-50b2-40c4-9e0e-69f60fcf4d08][loss function]] has the property \( L_{mk} \gg L_{kl} \) for all \(k\) and \(l\). It is possible that a classifier with the trivial decision rule \( C_j = k\) where \(k \neq m\) will achieve a large [[id:4cf61d82-2eb1-4a69-9ae3-624d5ffd9171][classification accuracy]] is such situations. If the classifier is a [[id:43aa39fd-b16a-429b-b59a-408240ae3523][discriminant function]], then there is no way to guard against this behavior. On the other hand, if we choose to infer the posterior probabilities \(p(\mathcal{C}_{k} \mid \mathbf{x})\), we have the liberty of using a modified data set for which \( p_m (C_m) \sim K^{-1}\). We would of course need to correct for the bias, but it is trivial to do so. Using [[id:731eff69-04dd-45f2-b2a7-968e9c44dc3e][Bayes's theorem]]
+
+\[
+p_m(\mathcal{C}_{k} \mid \mathbf{x}) \propto p_m(\mathcal{C}_{k}) \Rightarrow p(\mathcal{C}_k \mid \mathbf{x}) = \bigg(\frac{p (\mathcal{C}_k)}{p_m (\mathcal{C}_k)} \bigg) p_m(\mathcal{C}_{k} \mid \mathbf{x}).
+\]
+
+up to a normalization.
+* Combining models
+For complex applications, we may wish to build a classifier where \(L\) input vectors (\(L \geq 2\)) populating distinct input spaces to a fixed set of class labels \(\{C_k\}_{k=1 \ldots K}\). Without loss of generality suppose \( L = 2 \) and let \( \mathbf{x}_1 \) and \( \mathbf{x}_2 \) denote inputs vectors from the two input spaces. As long as we have \(p(C_k \mid \mathbf{x}_1)\) and \( p(C_k \mid \mathbf{x}_2)\), \(p\left(\mathcal{C}_{k} \mid \mathbf{x}_{1}, \mathbf{x}_{2}\right)\) is accessible. First we /assume/ [[id:c6de868e-1284-4ce9-a2e7-31f71c25a270][conditional independence]] of \(p(\mathbf{x}_1 \mid C_k)\) and \(p(\mathbf{x}_2 \mid C_k)\) and write
+
+\begin{align*}
+p\left(\mathbf{x}_{1}, \mathbf{x}_{2} \mid \mathcal{C}_{k}\right)=p\left(\mathbf{x}_{1} \mid \mathcal{C}_{k}\right) p\left(\mathbf{x}_{2} \mid \mathcal{C}_{k}\right)
+\end{align*}
+
+Invoking Bayes theorem and the [[id:e9446808-4593-483e-b66e-adb9cb3db93a][rules of probability]] yields the posterior probability \(p\left(\mathcal{C}_{k} \mid \mathbf{x}_{1}, \mathbf{x}_{2}\right)\)
+
+\begin{align*}
+p\left(\mathcal{C}_{k} \mid \mathbf{x}_{1}, \mathbf{x}_{2}\right) & \propto p\left(\mathbf{x}_{1}, \mathbf{x}_{2} \mid \mathcal{C}_{k}\right) p\left(\mathcal{C}_{k}\right) \\
+& \propto p\left(\mathbf{x}_{1} \mid \mathcal{C}_{k}\right) p\left(\mathbf{x}_{2} \mid \mathcal{C}_{k}\right) p\left(\mathcal{C}_{k}\right) \\
+& \propto \frac{p\left(\mathcal{C}_{k} \mid \mathbf{x}_{1}\right) p\left(\mathcal{C}_{k} \mid \mathbf{x}_{2}\right)}{p\left(\mathcal{C}_{k}\right)}
+\end{align*}
+
+The class prior probabilities \(p\left(\mathcal{C}_{k}\right)\) are mere fractions so \(p\left(\mathcal{C}_{k} \mid \mathbf{x}_{1}, \mathbf{x}_{2}\right)\) is fixed up to a normalization. The assumption \(p\left(\mathbf{x}_{1}, \mathbf{x}_{2} \mid \mathcal{C}_{k}\right)=p\left(\mathbf{x}_{1} \mid \mathcal{C}_{k}\right) p\left(\mathbf{x}_{2} \mid \mathcal{C}_{k}\right)\) is the defining feature of a [[id:b0a97fcf-c2ae-4674-8935-956b7a356388][naive Bayes model]]. Note that [[id:c6de868e-1284-4ce9-a2e7-31f71c25a270][conditional independence]] does not imply [[id:2e4b8dd4-f9ed-402f-bdf6-9b7a5079411a][independence (probability)]], i.e., the joint marginal distribution \(p\left(\mathbf{x}_{1},\,\mathbf{x}_{2}\right)\) does not factorize as \(p(\mathbf{x}_1) p(\mathbf{x}_2)\).
