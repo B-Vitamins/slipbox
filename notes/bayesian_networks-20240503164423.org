@@ -1,0 +1,18 @@
+:PROPERTIES:
+:ID:       5665a889-6a84-4065-be33-f5186d348ea6
+:END:
+#+TITLE: Bayesian networks
+#+FILETAGS: :literature:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+The [[id:8c833811-3657-4af4-8be5-191d8788b779][joint probability distribution]] defined by a [[id:e1fc9380-a936-4cf0-bc64-78119a1081da][graph]] is given by the product, over all of the [[id:a0fe774b-6d44-4807-ab68-023a7e867ed4][nodes]] of the graph, of a [[id:391465bc-1399-40f0-b049-738c1a64d6fb][conditional probability distribution]] for each [[id:a0fe774b-6d44-4807-ab68-023a7e867ed4][node]] conditioned on the [[id:fa0e3aa2-347e-48b9-9cb7-e9f0be897281][variables]] corresponding to the parents of that node in the graph. Thus, for a graph with \(K\) nodes, the joint distribution is given by
+
+\begin{align*}
+p(\mathbf{x})=\prod_{k=1}^{K} p\left(x_{k} \mid \mathrm{pa}_{k}\right) \tag{1}
+\end{align*}
+
+where \(\mathrm{pa}_{k}\) denotes the set of parents of \(x_{k}\), and \(\mathbf{x}=\left\{x_{1}, \ldots, x_{K}\right\}\). This equation expresses the *factorization* properties of the joint distribution for a directed graphical model. 
+
+The representation on the right hand side of (1) is always properly normalized provided the individual conditional distributions are normalized (see problem [[id:c8691cca-9591-4bd1-bdd1-4793e92f4365][Normalization of Bayesian networks]]). 
+
+The directed graphs that we are considering are [[id:0d31b941-e97b-41d4-804d-2ff7e24f9f9e][directed acyclic graphs]].
