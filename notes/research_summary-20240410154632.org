@@ -13,7 +13,7 @@ The deep Boltzmann machine (DBM) is a statistical model for parametric inference
 p (\boldsymbol{\sigma}) = \mathcal{Z}^{-1} \exp \big[- H_{\boldsymbol{J}} (\boldsymbol{\sigma}) \big] \quad \mathcal{Z} \equiv \sum_{\boldsymbol{\sigma}} \exp \big[- H_{\boldsymbol{J}} (\boldsymbol{\sigma}) \big].  \tag{1}
 \end{align*}
 
-It is called the Gibbs-Boltzmann distribution.  \(\mathcal{Z}\), called the partition function, ensures \(\sum_{\boldsymbol{\sigma}} p (\boldsymbol{\sigma}) \equiv 1\). \(H_{\boldsymbol{J}} (\boldsymbol{\sigma})\), the Hamiltonian or energy function, is a real-valued function of the state \(\boldsymbol{\sigma}\) parametrized by a set of real numbers \(\boldsymbol{J} \equiv (\boldsymbol{J_{l}})_{l=0 \ldots L-1}\) where \(\boldsymbol{J}_{l} \equiv (J_{ijl})_{i=0 \ldots N_{l}}^{j=1 \ldots N_{l+1}}\).  \(J_{ijl}\) is called the interaction energy coefficient (or simply the coupling) between spin \(i\) in layer \(l\) with spin \(j\) in layer \(l+1\). Note that we will use unit and (Ising) spin interchangeably to describe the variable \(\sigma_{il}\). For the DBM, a functional form for \(H_{\boldsymbol{J}} (\boldsymbol{\sigma})\) is
+It is called the Gibbs-Boltzmann distribution.  \(\mathcal{Z}\), called the partition function, ensures \(\sum_{\boldsymbol{\sigma}} p (\boldsymbol{\sigma}) \equiv 1\). \(H_{\boldsymbol{J}} (\boldsymbol{\sigma})\), the Hamiltonian or energy function, is a real-valued function of the state \(\boldsymbol{\sigma}\) parameterized by a set of real numbers \(\boldsymbol{J} \equiv (\boldsymbol{J_{l}})_{l=0 \ldots L-1}\) where \(\boldsymbol{J}_{l} \equiv (J_{ijl})_{i=0 \ldots N_{l}}^{j=1 \ldots N_{l+1}}\).  \(J_{ijl}\) is called the interaction energy coefficient (or simply the coupling) between spin \(i\) in layer \(l\) with spin \(j\) in layer \(l+1\). Note that we will use unit and (Ising) spin interchangeably to describe the variable \(\sigma_{il}\). For the DBM, a functional form for \(H_{\boldsymbol{J}} (\boldsymbol{\sigma})\) is
 
 \begin{equation*}
 H_{\boldsymbol{J}} (\boldsymbol{\sigma}) = - \sum_{l=0}^{L-1} \sum_{i=1}^{N_l}
@@ -271,7 +271,7 @@ As a closing remark, we mention that in the above analysis, we have assumed that
 
 #+print_bibliography:
 * Appendix                                                         :noexport:
-** Expection over the Gaussian prior
+** Expectation over the Gaussian prior
 We start our analysis by invoking an area formula:
 
 \[
@@ -284,7 +284,7 @@ The factor of \(1/2\) compensates for the trivial degeneracy under \(\sigma_{il}
 2 \thinspace \mathcal{N}_{s} &= (2 \pi i)^{-N} \int_0^{\infty} \prod_{l=0}^L \prod_{i=1}^{N_l} \mathrm{d} \lambda_{il} \sum_{\boldsymbol{\sigma}}  \int_{-i\infty}^{i\infty} \prod_{l=0}^L \prod_{i=1}^{N_l} \mathrm{d} k_{il} \exp \bigg\{ \sum_{il} k_{il} \lambda_{il} - \sum_{l=0}^{L-1} \sum_{i=1}^{N_{l}} \sum_{j=1}^{N_{l+1}} J_{ijl} [k_{il} + k_{j(l+1)}] \sigma_{i l} \sigma_{j (l+1)} \bigg\} \tag{6}
 \end{align*}
 
-Finding the expectation over the Guassian prior \(\langle \mathcal{N}_{s} \rangle_{J}\) amounts to evaluating the integral \(\langle \mathcal{N}_{s} \rangle \equiv \int_{-\infty}^{\infty} \prod_{l=0}^{L-1} \prod_{i=1}^{N_{l}}  \prod_{j=1}^{N_{l+1}} \mathrm{d} J_{ijl} \thinspace p (J_{ijl}) \mathcal{N}_{s}\). To that end, we isolate all \(J_{ijl}\) dependent terms and define
+Finding the expectation over the Gaussian prior \(\langle \mathcal{N}_{s} \rangle_{J}\) amounts to evaluating the integral \(\langle \mathcal{N}_{s} \rangle \equiv \int_{-\infty}^{\infty} \prod_{l=0}^{L-1} \prod_{i=1}^{N_{l}}  \prod_{j=1}^{N_{l+1}} \mathrm{d} J_{ijl} \thinspace p (J_{ijl}) \mathcal{N}_{s}\). To that end, we isolate all \(J_{ijl}\) dependent terms and define
 
 \begin{align*}
 \mathcal{J} \equiv \prod_{ijl} \int_{-\infty}^{\infty} \bigg(\frac{\widehat{N}_{l}}{2 \pi J^2} \bigg)^{1/2}
@@ -303,7 +303,7 @@ with \(a = \widehat{N}_{l} / J^{2}\) and \(b = - \big[ k_{il} + k_{j(l+1)} \big]
 \mathcal{J} = \exp \bigg(\frac{J^{2}}{2} \sum_{l=0}^{L-1} \sum_{i=1}^{N_{l}} \sum_{j=1}^{N_{l+1}} \frac{1}{\widehat{N}_{l}} \big[k_{il} + k_{j(l+1)} \big]^{2} \bigg ).
 \end{align*}
 
-The spin degrees of freedom have been eliminated so that the sum over configurations \(\sum_{\boldsymbol{\sigma}}\) yields a overall factor of \(2^{N}\). Let us rescale variables \(k_{il} \to k_{il} / J\) and \(\lambda_{il} \to J \thinspace \lambda_{il} \). Writing the binomial expansion of \(\big[k_{il} + k_{j(l+1)} \big]^{2}\), we sum over the free indices \(j\) and \(i\) on the quadratic terms \(k_{il}^{2}\) and \(k_{j(l+1)}^{2}\) respectively to obtain the prefactors \((N_{l+1} / N_{l})^{1/2}\) and \((N_{l} /N_{l+1})^{1/2}\) (recall \(\widehat{N}_{l} \equiv \sqrt{N_{l} N_{l+1}}\) from (4)). Next we identify \((N_{l+1} / N_{l})^{1/2} \equiv \gamma_{l}\) and \((N_{l} /N_{l+1})^{1/2} \equiv \gamma_{l}^{-1} \equiv \nu_{l+1}\) (4). At this point, substituting \(\mathcal{J}\) into (6), we are left with
+The spin degrees of freedom have been eliminated so that the sum over configurations \(\sum_{\boldsymbol{\sigma}}\) yields a overall factor of \(2^{N}\). Let us re-scale variables \(k_{il} \to k_{il} / J\) and \(\lambda_{il} \to J \thinspace \lambda_{il} \). Writing the binomial expansion of \(\big[k_{il} + k_{j(l+1)} \big]^{2}\), we sum over the free indices \(j\) and \(i\) on the quadratic terms \(k_{il}^{2}\) and \(k_{j(l+1)}^{2}\) respectively to obtain the pre-factors \((N_{l+1} / N_{l})^{1/2}\) and \((N_{l} /N_{l+1})^{1/2}\) (recall \(\widehat{N}_{l} \equiv \sqrt{N_{l} N_{l+1}}\) from (4)). Next we identify \((N_{l+1} / N_{l})^{1/2} \equiv \gamma_{l}\) and \((N_{l} /N_{l+1})^{1/2} \equiv \gamma_{l}^{-1} \equiv \nu_{l+1}\) (4). At this point, substituting \(\mathcal{J}\) into (6), we are left with
 
 \begin{align*}
 2 \thinspace \langle \mathcal{N}_{s} \rangle_{J} = (i \pi)^{-N} &\int_0^{\infty} \prod_{ i l} \mathrm{d} \lambda_{il} \int_{-i\infty}^{i\infty} \prod_{i l} \mathrm{d} k_{il} \exp \bigg(\sum_{il} k_{il} \lambda_{il} \bigg) \\
@@ -323,7 +323,7 @@ We have used an integral transform
 \exp \bigg(\frac{b c}{a} \bigg) = (a / \pi) \bigg( \int_{-\infty}^{\infty} \mathrm{d} x \exp \big[  - a x^{2} + (b + c) x \big] \bigg) \bigg( \int_{-\infty}^{\infty} \mathrm{d} y \exp \big[ - a y^{2} - i (b - c) y \big] \bigg), \qquad a > 0 \tag{9}
 \end{align*}
 
-#+begin_src python :exports none
+#+begin_src python :results output
 from sympy import symbols, exp, integrate, oo, I, pi, simplify
 # Re-initialize symbols (for clarity in this standalone script)
 a, b, c, x, y = symbols('a b c x y')
@@ -335,8 +335,11 @@ product_scaled = (a / pi) * integral_x * integral_y
 # Simplify the expression
 result = simplify(product_scaled)
 # Print the result in LaTeX
-result
+print(result)
 #+end_src
+
+#+RESULTS:
+: exp(b*c/a)
 
 with \(a = \widehat{N}_{l}\), \(b = \sum_{i=1}^{N_{l}} k_{il}\) and \(c = \sum_{j=1}^{N_{l+1}} k_{j(l+1)}\). Substitution in (8) yields
 
@@ -364,7 +367,7 @@ with appropriately chosen \(a\) and \(b\) to evaluate the \(k_{il}\) integrals. 
 &\quad \times  \exp \bigg\{ - \sum_{l=1}^{L - 1} \sum_{i=1}^{N_{l}} \frac{\big[(x_{l} + x_{l-1}) - i (y_{l} - y_{l-1})\big]^{2}}{2 (\gamma_{l} + \nu_{l})} - \sum_{i=1}^{N_{0}} \frac{\big(x_{0} - i y_{0}\big)^{2}}{2 \gamma_{0}} - \sum_{i=1}^{N_{L}} \frac{\big(x_{L-1} + i y_{L-1}\big)^{2}}{2 \nu_{L}} \bigg\} \tag{11}
 \end{align*}
 
-** Half integral over site spin energy
+** Half integral over single site energy
 Next we will evaluate the half integrals over the site spin energies \((\lambda_{il})_{l=0 \ldots L}^{i=1 \ldots N_{l}}\) using the result
 
 \begin{align*}
@@ -377,19 +380,19 @@ For \(l=0\), \(a = \gamma_{0}^{-1}\) and \(b = \frac{- x_{0} + i y_{0}}{\gamma_{
 \exp \bigg\{ \sum_{l=1}^{L - 1} \sum_{i=1}^{N_{l}} \frac{\big[(x_{l} + x_{l-1}) - i (y_{l} - y_{l-1})\big]^{2}}{2 (\gamma_{l} + \nu_{l})} + \sum_{i=1}^{N_{0}} \frac{\big(x_{0} - i y_{0}\big)^{2}}{2 \gamma_{0}} + \sum_{i=1}^{N_{L}} \frac{\big(x_{L-1} + i y_{L-1}\big)^{2}}{2 \nu_{L}} \bigg\}.
 \end{align*}
 
-This same form appears in (11) but with the argument of the exponential negated, so these factors will combine to unity. Furthermore, the resulting combination of prefactors
+This same form appears in (11) but with the argument of the exponential negated, so these factors will combine to unity. Furthermore, the resulting combination of pre-factors
 
 \begin{align*}
 \pi^{N/2} \bigg(\frac{\gamma_{0}}{2} \bigg)^{N_{0}/2} \prod_{l=1}^{L-1} \bigg(\frac{\gamma_{l} + \nu_{l}}{2} \bigg)^{N_{l}/2} \bigg(\frac{\nu_{L}}{2} \bigg)^{N_{L}/2},
 \end{align*}
 
-are reciprocals of the one occuring in (11) (the \(\pi^{N/2}\) is the reciprocal of \(\pi^{-N} \pi^{N/2}\)). These  prefactors also combine to unity. We are left with
+are reciprocals of the one occurring in (11) (the \(\pi^{N/2}\) is the reciprocal of \(\pi^{-N} \pi^{N/2}\)). These  pre-factors also combine to unity. We are left with
 
 \begin{align*}
 \bigg [1 + \operatorname{erf} \bigg(\frac{- x_{0} + i y_{0}}{\sqrt{2 \gamma_{0}}} \bigg) \bigg ]^{N_{0}} \prod_{l=1}^{L-1} \bigg [1 + \operatorname{erf} \bigg(\frac{- (x_{l} + x_{l-1}) + i (y_{l} - y_{l-1})}{\sqrt{2 (\gamma_{l} + \nu_{l})}} \bigg) \bigg ]^{N_{l}} \bigg [1 + \operatorname{erf} \bigg(\frac{- x_{L-1} - i y_{L-1}}{\sqrt{2\nu_{L}}} \bigg) \bigg ]^{N_{L}}
 \end{align*}
 
-which we will exponentiate using the identity \(x = \exp (\ln x )\) to get
+which under exponentiation using the identity \(x = \exp (\ln x )\) yields
 
 \begin{align*}
 &\exp \bigg \{ N_{0} \ln \bigg [1 + \operatorname{erf} \bigg(\frac{- x_{0} + i y_{0}}{\sqrt{2 \gamma_{0}}} \bigg) \bigg ]  \bigg\} \exp \bigg \{ N_{0} \thinspace \alpha_{L} \ln \bigg [1 + \operatorname{erf} \bigg(\frac{- x_{L-1} - i y_{L-1}}{\sqrt{2 \nu_{L}}} \bigg) \bigg ]  \bigg\} \\
@@ -411,7 +414,7 @@ The integral can now be evaluated using the method of steepest descent in the li
 \lim_{N_{0} \to \infty} N_{0}^{-1} \ln \left \langle \mathcal{N}_{s} \right \rangle_{J} = & \lim_{N_{0} \to \infty} \bigg[ \mathcal{C}_{J} (\boldsymbol{N}) - \frac{1}{2N_{0}} \ln \bigg(\frac{N_{0} \lvert \mathcal{C}_{J}^{\prime \prime} (\boldsymbol{N}) \rvert}{2 \pi} \bigg) + \mathcal{O} \bigg(\frac{1}{N_{0}^{2}} \bigg) \bigg],
 \end{align*}
 
-where we have identified the right hand side as the leading order behaviour, in the limit \(N_{0} \to \infty\), of the complexity function or the ISC:
+where we have identified the right hand side as the leading order behavior, in the limit \(N_{0} \to \infty\), of the complexity function or the ISC:
 
 \begin{align*}
 \mathcal{C}_{J} (\boldsymbol{N}) &\equiv \underset{\{x_{l}, y_{l}\}}{\operatorname{saddle}} \thinspace \bigg \{- \frac{1}{2} \sum_{l=0}^{L-1} \sqrt{\alpha_{l} \alpha_{l+1}} \thinspace \big(x_{l}^{2} + y_{l}^{2} \big) + \frac{1}{2} \sum_{l=1}^{L-1} \alpha_{l} \ln \bigg [1 + \operatorname{erf} \bigg(\frac{- (x_{l} + x_{l-1}) + i (y_{l} - y_{l-1})}{\sqrt{2 (\gamma_{l} + \nu_{l})}} \bigg) \bigg ] \\
