@@ -1,0 +1,18 @@
+:PROPERTIES:
+:ID:       8c079d14-b0b4-4620-9d44-9a2d7b673056
+:END:
+#+TITLE: Fully connected graphs
+#+FILETAGS: :literature:prml:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+Consider the [[id:8c833811-3657-4af4-8be5-191d8788b779][joint probability distribution]] over \(K\) variables given by \(p\left(x_{1}, \ldots, x_{K}\right)\). By repeated application of [[id:879281b4-8323-4b79-aad6-4b13b71ef663][the product rule of probability]], this joint distribution can be written as a product of conditional distributions, one for each of the variables
+
+\begin{align*}
+p\left(x_{1}, \ldots, x_{K}\right)=p\left(x_{K} \mid x_{1}, \ldots, x_{K-1}\right) \ldots p\left(x_{2} \mid x_{1}\right) p\left(x_{1}\right).
+\end{align*}
+
+For a given choice of \(K\), we can represent this as a [[id:5665a889-6a84-4065-be33-f5186d348ea6][Bayesian network]] with
+
+1) \(K\) [[id:a0fe774b-6d44-4807-ab68-023a7e867ed4][nodes]], one for each conditional distribution on the right hand side of the above equation,
+2) the \(k\)th [[id:a0fe774b-6d44-4807-ab68-023a7e867ed4][node]] having \(k - 1\) incoming [[id:ca49181e-4b87-4ec7-aab7-50aacceda405][edges]] from all lower numbered nodes. 
+
+Such a graph is called [[id:180c25d4-3547-4c7c-83dd-80f7a8c1ef37][fully-connected graph]] because there is a link between every pair of nodes.
