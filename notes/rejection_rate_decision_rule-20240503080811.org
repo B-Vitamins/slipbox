@@ -1,0 +1,13 @@
+:PROPERTIES:
+:ID:       0006d227-1b6d-4e5f-bc4e-9e1214ebc05f
+:END:
+#+TITLE: Rejection rate decision rule
+#+FILETAGS: :literature:prml:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+From the decision problems solved by the [[id:a468994a-d366-48dc-9396-fdd9418dc60b][minimum misclassification rate decision rule]] and [[id:192b5010-9a9b-4c31-bbbd-546e969d9196][minimum expected loss decision rule]], it is clear that classification errors arise from the regions of input space where the joint distributions \(p\left(\mathbf{x}, \mathcal{C}_{k}\right)\) have comparable values - resulting in high uncertainty in class membership. We can choose to *exclude* these regions from our decision rule altogether, the result being a overall lower error rate for the regions of the input space for which a decision *is* made. To parameterize this, we can introduce a threshold \(\theta\), and reject the inputs \(\mathbf{x}\) for which \( \operatorname{arg max}_{k} p(\mathcal{C}_k \mid \mathbf{x}) \leq \theta \) (see [[file:~/.local/images/prml-1.26.jpg][Fig. 1.26]] below). Of course, the edge cases \( \theta < K^{-1} \) and \( \theta = 1 \) correspond to a (non) rejection rate decision rule and a useless decision rule respectively.
+
+[[file:~/.local/images/prml-1.26.jpg]]
+Illustration of the rejection rate decision rule for the case of two classes, and a single continuous input variable \(x\).
+
+It may seem that the rejection rate decision rule appeals to the [[id:1f541a99-1924-4370-8d29-2f1e8eca5e00][informal fallacy]] of [[id:4dcc99cd-02e4-4afd-a4a8-782f9550c2f8][moving the goalposts]]. However, it is not that we *reject* a swathe of the input space /absolutely/, rather that we use a classifier of higher quality for that specific region. The idea is to adjust classifier quality to the variations of *confusion* in the input space. There are practical situations where this strategy has great utility: consider for example the [[id:19101ea0-b59c-47e7-8002-3bb75be3e6f7][decision problem of diagnosing cancer]]. An automatic system can classify the X-ray images for which \( \operatorname{arg max}_{k} p(\mathcal{C}_k \mid \mathbf{x}) > \theta \) and leave the ones for with \( \operatorname{arg max}_{k} p(\mathcal{C}_k \mid \mathbf{x}) \leq \theta \) for for a human expert. 
