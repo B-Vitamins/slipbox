@@ -19,4 +19,8 @@ where we have used [[id:879281b4-8323-4b79-aad6-4b13b71ef663][the product rule o
 \sum_{k} L_{k j} p\left(\mathcal{C}_{k} \mid \mathbf{x}\right)
 \end{align*}
 
-is a minimum.
+is a minimum, i.e.,
+
+\begin{align*}
+C_j = \operatorname{arg min}_{k} \bigg(\sum_{k} L_{k j} p\left(\mathcal{C}_{k} \mid \mathbf{x}\right)\bigg)
+\end{align*}
