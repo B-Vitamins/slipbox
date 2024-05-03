@@ -1,0 +1,8 @@
+:PROPERTIES:
+:ID:       a9eca4bd-9e7f-4cfa-8037-75c65972706b
+:END:
+#+TITLE: Decision regions
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+Marker node. See [[id:a468994a-d366-48dc-9396-fdd9418dc60b][Minimum misclassification rate decision rule]] for a definition.

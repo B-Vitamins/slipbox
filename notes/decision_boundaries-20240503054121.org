@@ -1,0 +1,8 @@
+:PROPERTIES:
+:ID:       61799020-5bb6-41c0-943b-7476700d1d15
+:END:
+#+TITLE: decision boundaries
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+Marker node. See [[id:a468994a-d366-48dc-9396-fdd9418dc60b][Minimum misclassification rate decision rule]] for a definition.
