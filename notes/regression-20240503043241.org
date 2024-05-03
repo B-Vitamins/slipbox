@@ -1,0 +1,16 @@
+:PROPERTIES:
+:ID:       31f8fc5c-fdc7-4c1c-8288-3d4f1c8c0110
+:END:
+#+TITLE: Regression
+#+FILETAGS: :literature:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+*Regression* is the task of predicting the value of one or more continuous target variables target variables \(t\) given the value of a \(D\)-dimensional vector \(\mathrm{x}\) of input variables. Given a training data set comprising \(N\) observations \(\{\mathbf{x}_{n}\}\), where \(n=1, \ldots, N\), together with corresponding target values \(\{t_{n}\}\), the goal is to predict the value of \(t\) for a new value of \(\mathbf{x}\). 
+
+One way of performing a regression task is by constructing an appropriate function \(y(\mathbf{x})\) whose values for new inputs \(\mathbf{x}\) constitute the predictions for the corresponding values of \(t\).
+
+From a probabilistic perspective, we aim to model the predictive distribution \(p(t \mid \mathbf{x})\) because this expresses our uncertainty about the value of \(t\) for each value of \(\mathbf{x}\). From this conditional distribution we can make predictions of \(t\), for any new value of \(\mathbf{x}\), in such a way as to minimize the expected value of a suitably chosen [[id:ad33ba75-50b2-40c4-9e0e-69f60fcf4d08][Loss function]].
+
+As discussed in Section 1.5.5, a common choice of loss function for real-valued variables is the squared loss, for which the optimal solution is given by the conditional expectation of \(t\).
+
+Although linear models have significant limitations as practical techniques for pattern recognition, particularly for problems involving input spaces of high dimensionality, they have nice analytical properties and form the foundation for more sophisticated models to be discussed in later chapters.
