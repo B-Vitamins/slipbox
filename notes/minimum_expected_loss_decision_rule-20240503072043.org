@@ -1,0 +1,22 @@
+:PROPERTIES:
+:ID:       192b5010-9a9b-4c31-bbbd-546e969d9196
+:END:
+#+TITLE: Minimum expected loss decision rule
+#+FILETAGS: :literature:prml:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+See [[id:869cf352-d95e-471d-a21a-c618a35c51dd][decision theory]] for a description of the *decision problem*. While the [[id:a468994a-d366-48dc-9396-fdd9418dc60b][minimum misclassification rate decision rule]] has the goal of making as few incorrect classifications as possible, many decision problems have *mistake-dependent* misclassification goals, where makings fewer mistakes of a certain kind at the expense of a larger number mistakes of some other kind is desirable (this is certainly the case for the [[id:19101ea0-b59c-47e7-8002-3bb75be3e6f7][decision problem of diagnosing cancer]], where having fewer instances of missed diagnosis at the expense of a larger number of false diagnosis is acceptable). In such cases, the *minimum expected loss decision rule* is the solution to the decision problem. 
+
+Suppose that, for a new value of \(\mathbf{x}\), the true class is \(\mathcal{C}_{k}\) and that we assign \(\mathbf{x}\) to class \(\mathcal{C}_{j}\). In so doing, we incur some level of loss \(L_{k j}\) (\( L_{kk} = 0 \)), which we can view as the element \((k,\,j)\) of a [[id:ad33ba75-50b2-40c4-9e0e-69f60fcf4d08][Loss matrix.]] The probability of making a mistake is
+
+\begin{align*}
+p(\text{mistake}) & =\sum_{k} \sum_{j} L_{kj} p\left(\mathbf{x} \in \mathcal{R}_{j},\,\mathcal{C}_{k}\right) \equiv \sum_{k} \sum_{j} \int_{\mathcal{R}_{j}} L_{kj} p\left(\mathbf{x},\,\mathcal{C}_{k}\right) \mathrm{d} \mathbf{x} =\sum_{k} \sum_{j} \int_{\mathcal{R}_{j}} L_{kj} p\left(\mathcal{C}_{k} \mid \mathbf{x}\right) p(\mathbf{x}) \mathrm{d} \mathbf{x} = \mathbb{E}[L],
+\end{align*}
+
+where we have used [[id:879281b4-8323-4b79-aad6-4b13b71ef663][the product rule of probability]]. The factor of \(p(\mathbf{x})\) is common to all terms, so each \(\mathbf{x}\) should be assigned to the class \(j\) for which
+
+\begin{align*}
+\sum_{k} L_{k j} p\left(\mathcal{C}_{k} \mid \mathbf{x}\right)
+\end{align*}
+
+is a minimum.
