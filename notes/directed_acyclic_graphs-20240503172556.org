@@ -1,0 +1,8 @@
+:PROPERTIES:
+:ID:       0d31b941-e97b-41d4-804d-2ff7e24f9f9e
+:END:
+#+TITLE: Directed acyclic graphs
+#+FILETAGS: :literature:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+ [[id:5665a889-6a84-4065-be33-f5186d348ea6][Bayesian network]] are *directed acyclic graphs (DAGs)*: direction preserving [[id:ca49181e-4b87-4ec7-aab7-50aacceda405][edge]] traversal can never result in revisiting a previous visited [[id:a0fe774b-6d44-4807-ab68-023a7e867ed4][node]]. This is equivalent to the statement that there exists an ordering of the nodes such that there are no links that go from any node to any lower numbered node. (see problem on [[id:71eef9c2-95db-4695-b9f6-6ee020037c13][Ordering in DAGs]]).
