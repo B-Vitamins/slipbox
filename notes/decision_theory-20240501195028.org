@@ -1,0 +1,20 @@
+:PROPERTIES:
+:ID:       869cf352-d95e-471d-a21a-c618a35c51dd
+:END:
+#+TITLE: Decision theory
+#+FILETAGS: :literature:prml:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+Suppose we have an input vector \(\mathbf{x}\) together with a corresponding vector \(\mathbf{t}\) of target variables, and our goal is to predict \(\mathbf{t}\) given a new value for \(\mathbf{x}\). For [[id:31f8fc5c-fdc7-4c1c-8288-3d4f1c8c0110][regression problems]], \(\mathbf{t}\) will comprise *continuous variables*, whereas for [[id:28d575a5-08f9-4f78-bb0b-b7fedcbb24d3][Classification problems]] \(\mathbf{t}\) will represent *class labels*. 
+
+The joint probability distribution \(p(\mathbf{x}, \mathbf{t})\) provides a complete summary of the uncertainty associated with these variables. Determination of \(p(\mathbf{x}, \mathbf{t})\) from a set of training data is the problem of [[id:ccd9c665-97bf-4274-b2b1-5a0ebc5409e2][density estimation]] an example of [[id:01b2eedd-71b0-428f-bc4b-146b7068af36][Statistical inference]]. In a practical application, however, we must often make a [[id:9fccdf3c-554a-45d9-b0b5-cb65c6db031b][point estimation]] for the value of \(\mathbf{t}\).
+
+*Decision theory* is concerned with situations where the understanding of the likely values \(\mathbf{t}\) informs specific action. As an example, consider the decision problem of diagnosing cancer using X-ray images. The pixels of the X-ray image form input vector \(\mathbf{x}\) and output variable \(t\) indicates cancer presence \(\mathcal{C}_{1}\) or absence \(\mathcal{C}_{2}\) of cancer. The goal is to use the joint distribution \(p(\mathbf{x}, \mathcal{C}_{k})\) or equivalently \(p(\mathbf{x}, t)\), to inform treatment decisions. By applying Bayes' theorem, we obtain the [[id:e166b400-40c8-410b-bb5b-0e0decca5f4c][posterior probabilities]]:
+
+\[
+p(\mathcal{C}_{k} \mid \mathbf{x})=\frac{p(\mathbf{x} \mid \mathcal{C}_{k}) p(\mathcal{C}_{k})}{p(\mathbf{x})}.
+\]
+
+This allows us to update the prior probability \(p(\mathcal{C}_{k})\) with the new evidence from the X-ray, resulting in the posterior probability \(p(\mathcal{C}_{k} \mid \mathbf{x})\). 
+
+A typical decision-making strategy tries to minimize incorrect class assignments. This is equivalent to selecting the class with the highest [[id:e166b400-40c8-410b-bb5b-0e0decca5f4c][posterior probability]] (see [[id:b2185130-2552-4b1b-8271-359294dcda7f][Minimization of misclassification rate]]).
