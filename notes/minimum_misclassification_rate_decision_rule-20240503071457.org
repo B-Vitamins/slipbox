@@ -1,0 +1,18 @@
+:PROPERTIES:
+:ID:       a468994a-d366-48dc-9396-fdd9418dc60b
+:END:
+#+TITLE: Minimum misclassification rate decision rule
+#+FILETAGS: :literature:prml:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+See [[id:869cf352-d95e-471d-a21a-c618a35c51dd][decision theory]] for a description of the *decision problem*. If the decision problem has a goal of making as few incorrect classifications as possible, the *minimum misclassification rate decision rule* is the solution.
+
+Without loss of generality, fix the number of classes to \(K\). To make as few incorrect classifications as possible, we must naturally make as many correct classifications as possible. The probability of being correct is
+
+\begin{align*}
+p(\text{correct}) & =\sum_{k=1}^{K} p\left(\mathbf{x} \in \mathcal{R}_{k},\,\mathcal{C}_{k}\right) \equiv \sum_{k=1}^{K} \int_{\mathcal{R}_{k}} p\left(\mathbf{x},\,\mathcal{C}_{k}\right) \mathrm{d} \mathbf{x} =\sum_{k=1}^{K} \int_{\mathcal{R}_{k}} p\left(\mathcal{C}_{k} \mid \mathbf{x}\right) p(\mathbf{x}) \mathrm{d} \mathbf{x},
+\end{align*}
+
+where we have used [[id:879281b4-8323-4b79-aad6-4b13b71ef663][the product rule of probability]]. The factor of \(p(\mathbf{x})\) is common to all terms, so each \(\mathbf{x}\) should be assigned to the class having the largest posterior probability \(p\left(\mathcal{C}_{k} \mid \mathbf{x}\right)\).
+
+See [[id:19101ea0-b59c-47e7-8002-3bb75be3e6f7][decision problem of diagnosing cancer]] for an example where \(K = 2\).
