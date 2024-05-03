@@ -1,0 +1,28 @@
+:PROPERTIES:
+:ID:       19101ea0-b59c-47e7-8002-3bb75be3e6f7
+:END:
+#+TITLE: Decision problem of diagnosing cancer
+#+FILETAGS: :literature:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+A description of the decision problem of diagnosing cancer using X-ray images is: the pixels of the X-ray image form input vector \(\mathbf{x}\) and output variable \(t\) indicates cancer presence \(\mathcal{C}_{1}\) or absence \(\mathcal{C}_{2}\) of cancer. Formulate a decision strategy that makes as few mistakes in diagnosing cancer as possible.
+
+Consider the joint distribution of X-ray image pixels and the /indicator/ class label  \(p(\mathbf{x}, \mathcal{C}_{k})\). On applying [[id:731eff69-04dd-45f2-b2a7-968e9c44dc3e][Bayes's theorem]], we obtain the [[id:e166b400-40c8-410b-bb5b-0e0decca5f4c][posterior probabilities]]:
+
+\[
+p(\mathcal{C}_{k} \mid \mathbf{x})=\frac{p(\mathbf{x} \mid \mathcal{C}_{k}) p(\mathcal{C}_{k})}{p(\mathbf{x})}.
+\]
+
+This allows us to update the prior probability \(p(\mathcal{C}_{k})\) with the new evidence from the X-ray, resulting in the posterior probability \(p(\mathcal{C}_{k} \mid \mathbf{x})\). A mistake occurs when an input vector belonging to class \(\mathcal{C}_{1}\) is assigned to class \(\mathcal{C}_{2}\) or vice versa. The probability of this occurrence is
+
+\begin{align*}
+p(\text{mistake}) & =p\left(\mathbf{x} \in \mathcal{R}_{1}, \mathcal{C}_{2}\right)+p\left(\mathbf{x} \in \mathcal{R}_{2}, \mathcal{C}_{1}\right) \\
+& =\int_{\mathcal{R}_{1}} p\left(\mathbf{x}, \mathcal{C}_{2}\right) \mathrm{d} \mathbf{x}+\int_{\mathcal{R}_{2}} p\left(\mathbf{x}, \mathcal{C}_{1}\right) \mathrm{d} \mathbf{x} .
+& =\int_{\mathcal{R}_{1}} p\left(\mathcal{C}_{2} \mid \mathbf{x}\right) p\left(\mathbf{x}\right) \mathrm{d} \mathbf{x} + \int_{\mathcal{R}_{2}} p\left(\mathcal{C}_{1} \mid \mathbf{x}\right) p\left(\mathbf{x}\right) \mathrm{d} \mathbf{x} .
+\end{align*}
+
+The [[id:a468994a-d366-48dc-9396-fdd9418dc60b][minimum misclassification rate decision rule]] states that the probability of making a mistake is minimized when each value of \(\mathbf{x}\) is assigned to the class for which the posterior probability \(p\left(\mathcal{C}_{k} \mid \mathbf{x}\right)\) is largest.
+
+[[file:~/.local/images/prml-1.24.png]]
+
+Schematic illustration of the joint probabilities \(p\left(x, \mathcal{C}_{k}\right)\) for each of two classes plotted against \(x\), together with the decision boundary \(x=\widehat{x}\). Values of \(x \geqslant \widehat{x}\) are classified as class \(\mathcal{C}_{2}\) and hence belong to decision region \(\mathcal{R}_{2}\), whereas points \(x<\widehat{x}\) are classified as \(\mathcal{C}_{1}\) and belong to \(\mathcal{R}_{1}\). Errors arise from the blue, green, and red regions, so that for \(x<\widehat{x}\) the errors are due to points from class \(\mathcal{C}_{2}\) being misclassified as \(\mathcal{C}_{1}\) (represented by the sum of the red and green regions), and conversely for points in the region \(x \geqslant \widehat{x}\) the errors are due to points from class \(\mathcal{C}_{1}\) being misclassified as \(\mathcal{C}_{2}\) (represented by the blue region). As we vary the location \(\widehat{x}\) of the decision boundary, the combined areas of the blue and green regions remains constant, whereas the size of the red region varies. The optimal choice for \(\widehat{x}\) is where the curves for \(p\left(x, \mathcal{C}_{1}\right)\) and \(p\left(x, \mathcal{C}_{2}\right)\) cross, corresponding to \(\widehat{x}=x_{0}\), because in this case the red region disappears. This is equivalent to the minimum misclassification rate decision rule, which assigns each value of \(x\) to the class having the higher posterior probability \(p\left(\mathcal{C}_{k} \mid x\right)\).
