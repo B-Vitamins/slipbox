@@ -11,12 +11,14 @@ The joint probability distribution \(p(\mathbf{x}, \mathbf{t})\) provides a comp
 
 *Decision theory* is concerned with situations where the understanding of the likely values \(\mathbf{t}\) informs specific action. These actions aim at achieving a certain goal. The solution of this *decision problem* is a *decision rule* that assigns each value of \(\mathbf{x}\) to one of the available classes and in doing so achieves the stated goal. Such a rule will divide the input space into regions \(\mathcal{R}_{k}\) called [[id:a9eca4bd-9e7f-4cfa-8037-75c65972706b][decision regions]], one for each class, such that all points in \(\mathcal{R}_{k}\) are assigned to class \(\mathcal{C}_{k}\). The boundaries between decision regions are called [[id:61799020-5bb6-41c0-943b-7476700d1d15][decision boundaries/surfaces]].
 
-One decision-making strategy is the [[id:a468994a-d366-48dc-9396-fdd9418dc60b][minimum misclassification rate decision rule]]. This is equivalent to selecting the class with the highest [[id:e166b400-40c8-410b-bb5b-0e0decca5f4c][posterior probability]] \( p(\mathbf{t} \mid \mathbf{x}) \). For an example, see [[id:19101ea0-b59c-47e7-8002-3bb75be3e6f7][decision problem of diagnosing cancer]].
+1) One decision-making strategy is the [[id:a468994a-d366-48dc-9396-fdd9418dc60b][minimum misclassification rate decision rule]]. This is equivalent to selecting the class with the highest [[id:e166b400-40c8-410b-bb5b-0e0decca5f4c][posterior probability]] \( p(\mathbf{t} \mid \mathbf{x}) \). For an example, see [[id:19101ea0-b59c-47e7-8002-3bb75be3e6f7][decision problem of diagnosing cancer]].
 
-Another decision-making strategy is the [[id:192b5010-9a9b-4c31-bbbd-546e969d9196][minimum expected loss decision rule]] where one selects a class label \( j \) of all the available, say \( K \), such that
+2) Another decision-making strategy is the [[id:192b5010-9a9b-4c31-bbbd-546e969d9196][minimum expected loss decision rule]] where one selects a class label \( j \) of all the available, say \( K \), such that
 
 \begin{align*}
 \sum_{k} L_{k j} p\left(\mathcal{C}_{k} \mid \mathbf{x}\right)
 \end{align*}
 
 is minimized.
+
+3) A third decision-making-strategy which can extend both the [[id:a468994a-d366-48dc-9396-fdd9418dc60b][minimum misclassification rate decision rule]] and the [[id:192b5010-9a9b-4c31-bbbd-546e969d9196][minimum expected loss decision rule]] (or any other decision rule for that matter) is the [[id:0006d227-1b6d-4e5f-bc4e-9e1214ebc05f][rejection rate decision rule]].
