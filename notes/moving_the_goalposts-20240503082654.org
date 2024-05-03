@@ -1,0 +1,8 @@
+:PROPERTIES:
+:ID:       4dcc99cd-02e4-4afd-a4a8-782f9550c2f8
+:END:
+#+TITLE: Moving the goalposts
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+*Moving the goalposts* is an [[id:1f541a99-1924-4370-8d29-2f1e8eca5e00][Informal fallacy]] in which evidence presented in response to a specific claim is dismissed and some other (often greater) evidence is demanded. That is, after an attempt has been made to score a goal, the goalposts are moved to exclude the attempt. The problem with changing the rules of the game is that the meaning of the result is changed, too
