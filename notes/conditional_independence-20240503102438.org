@@ -1,0 +1,16 @@
+:PROPERTIES:
+:ID:       c6de868e-1284-4ce9-a2e7-31f71c25a270
+:END:
+#+TITLE: Conditional independence
+#+FILETAGS: :literature:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+#+NAME: independence
+#+BEGIN_DEFINITION
+Events \(X\) and \(Y\) are said to be *independent conditioned on* event \(Z\) if their joint class-conditional probability factorizes as the product of their marginal class-conditional probabilities:
+\[
+p(X,\, Y \mid Z) = p(X \mid Z) \cdot p(Y \mid Z).
+\]
+#+END_DEFINITION
+
+When this condition holds, the occurrence of \(Z\) does not affect the occurrence of \( X \) nor \(Y\).
