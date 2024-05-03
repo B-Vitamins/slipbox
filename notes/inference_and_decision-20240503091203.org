@@ -1,0 +1,63 @@
+:PROPERTIES:
+:ID:       2cc0a8c0-b7ce-4329-b79f-8342f3e62373
+:END:
+#+TITLE: Inference and decision
+#+FILETAGS: :literature:prml:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+There are at least three distinct approaches to solving [[id:869cf352-d95e-471d-a21a-c618a35c51dd][decision problems]] that use:
+
+1) [[id:87f2e493-b2bc-41f5-b1b2-055b5821e67a][Generative models]],
+2) [[id:02147bcc-5437-49de-b53e-19e463c6651c][Discriminative models]],
+3) [[id:43aa39fd-b16a-429b-b59a-408240ae3523][Discriminant functions]].
+
+The first two break the [[id:28d575a5-08f9-4f78-bb0b-b7fedcbb24d3][classification problem]] into two separate stages: 
+
+1) [[id:01b2eedd-71b0-428f-bc4b-146b7068af36][Inference stage]]: use a suitable [[id:ccd9c665-97bf-4274-b2b1-5a0ebc5409e2][density estimation]] technique on the training data to learn a [[id:adca8d70-d50a-4967-9693-4b10cd541ebd][model]] for \(p\left(\mathcal{C}_{k} \mid \mathbf{x}\right)\),
+2) [[id:869cf352-d95e-471d-a21a-c618a35c51dd][Decision stage]]: use the [[id:e166b400-40c8-410b-bb5b-0e0decca5f4c][posterior probabilities]] from (1) to make optimal class assignments.
+
+The last one solve both problems together and simply learn a function that maps inputs \(\mathrm{x}\) directly into decisions.
+
+* Generative models approach
+1) Solve the [[id:01b2eedd-71b0-428f-bc4b-146b7068af36][inference]] problem of determining the class-conditional densities \(p\left(\mathbf{x} \mid \mathcal{C}_{k}\right)\) for each class \(\mathcal{C}_{k}\) individually,
+2) Solve the [[id:01b2eedd-71b0-428f-bc4b-146b7068af36][inference]] problem of determining the [[id:e166b400-40c8-410b-bb5b-0e0decca5f4c][prior]]-class probabilities \(p\left(\mathcal{C}_{k}\right)\),
+3) Solve for the [[id:e166b400-40c8-410b-bb5b-0e0decca5f4c][posterior]]-class probabilities \(p\left(\mathcal{C}_{k} \mid \mathbf{x}\right)\) using Bayes' theorem
+
+\begin{align*}
+p\left(\mathcal{C}_{k} \mid \mathbf{x}\right)=\frac{p\left(\mathbf{x} \mid \mathcal{C}_{k}\right) p\left(\mathcal{C}_{k}\right)}{p(\mathbf{x})} = \frac{p\left(\mathbf{x} \mid \mathcal{C}_{k}\right) p\left(\mathcal{C}_{k}\right)}{\sum_{C_k} p\left(\mathbf{x} \mid \mathcal{C}_{k}\right) p\left(\mathcal{C}_{k}\right)}
+\end{align*}
+
+to find the posterior class probabilities \(p\left(\mathcal{C}_{k} \mid \mathbf{x}\right)\),
+
+#+BEGIN_COMMENT
+Equivalently, we can infer the joint-distribution \(p\left(\mathbf{x},\,\mathcal{C}_{k}\right)\) directly and then normalize with \(p(\mathbf{x})\) to obtain the posterior probabilities.
+#+END_COMMENT
+
+4) Derive a [[id:869cf352-d95e-471d-a21a-c618a35c51dd][decision rule]] for the [[id:e166b400-40c8-410b-bb5b-0e0decca5f4c][posterior]]-class probabilities \(p\left(\mathcal{C}_{k} \mid \mathbf{x}\right)\)  to determine class membership for each new input \(\mathbf{x}\).
+
+** Properties
++ Computationally demanding, especially when \(\mathrm{x}\) lives in a high dimensional space, because it involves a [[id:ccd9c665-97bf-4274-b2b1-5a0ebc5409e2][density estimation]] of the joint distribution over both \(\mathrm{x}\) and \(\mathcal{C}_{k}\). While the class priors \(p\left(\mathcal{C}_{k}\right)\) can often be estimated simply from the fractions of the training set data points in each of the classes, a large training set may be necessary to infer the class-conditional densities \(p\left(\mathbf{x} \mid \mathcal{C}_{k}\right)\) to reasonable accuracy.
++ Allows solving for the marginal density of data \(p(\mathbf{x})\), enabling tasks like [[id:81c344c2-44a9-4a7c-b66a-50667388bb01][outlier detection]]: detecting new data points that have low probability under the model and for which the predictions may be of low accuracy.
+
+Figure 1.27 Example of the class-conditional densities for two classes having a single input variable \(x\) (left plot) together with the corresponding posterior probabilities (right plot). Note that the left-hand mode of the class-conditional density \(p\left(\mathbf{x} \mid \mathcal{C}_{1}\right)\), shown in blue on the left plot, has no effect on the posterior probabilities. The vertical green line in the right plot shows the decision boundary in \(x\) that gives the minimum misclassification rate.
+
+
+* Discriminative models approach
+1) Solve the inference problem for the [[id:e166b400-40c8-410b-bb5b-0e0decca5f4c][posterior]]-class probabilities \(p\left(\mathcal{C}_{k} \mid \mathbf{x}\right)\) directly,
+2) Derive a [[id:869cf352-d95e-471d-a21a-c618a35c51dd][decision rule]] for the [[id:e166b400-40c8-410b-bb5b-0e0decca5f4c][posterior]]-class probabilities \(p\left(\mathcal{C}_{k} \mid \mathbf{x}\right)\)  to determine class membership for each new input \(\mathbf{x}\).
+
+** Properties
++ Strictly applicable for classification problems. In fact, for a clearly [[id:42aea108-3230-421d-8689-dba318f0e4b8][scoped]] classification problem, inferring a generative model may be unnecessary and wasteful in terms of computational resources and unjustifiably demanding in terms of training data. The class conditional densities may contain a lot of structure that has little effect on the posterior probabilities (see [[file:~/.local/images/prml-1.27.jpg][Figure 1.27]])
+
+#+CAPTION: Example of the class-conditional densities for two classes having a single input variable \(x\) (left plot) together with the corresponding posterior probabilities (right plot). Note that the left-hand mode of the class-conditional density \(p\left(\mathbf{x} \mid \mathcal{C}_{1}\right)\), shown in blue on the left plot, has no effect on the posterior probabilities. The vertical green line in the right plot shows the decision boundary in \(x\) that gives the minimum misclassification rate.
+#+ATTR_HTML: :width 600px
+[[~/.local/images/prml-1.27.jpg]]
+
+
+* Discriminant functions approach
+1) Find a function \(f(\mathbf{x})\), called a [[id:43aa39fd-b16a-429b-b59a-408240ae3523][discriminant function]], that maps each input \(\mathbf{x}\) directly onto a class label.
+
+** Properties
++ Strictly applicable for classification problems. It bypasses computing even the posterior-class probabilities by directly inferring a function that maps inputs to class labels. In this case probabilities play no role. 
+
+In the example of (see [[file:~/.local/images/prml-1.27.jpg][Figure 1.27]]), this would correspond to finding the value of \(x\) shown by the vertical green line, because this is the decision boundary giving the [[id:a468994a-d366-48dc-9396-fdd9418dc60b][Minimum misclassification rate decision rule]].
