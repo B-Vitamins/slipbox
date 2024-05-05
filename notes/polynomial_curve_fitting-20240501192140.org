@@ -1,0 +1,135 @@
+:PROPERTIES:
+:ID:       be34bbdc-c85f-49cf-a457-48fe82abce89
+:END:
+#+TITLE: Polynomial curve fitting
+#+FILETAGS: :literature:prml:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+Given a training set with \(N\) observations of \(x\) (\(\mathbf{x}\)) and corresponding values of \(t\) (\(\mathbf{t}\)), where \(\mathbf{x} \equiv (x_{1}, \ldots, x_{N})^{\mathrm{T}}\) and \(\mathbf{t} \equiv (t_{1}, \ldots, t_{N})^{\mathrm{T}}\), we aim to learn the underlying regularity present in the data despite random noise, i.e., use training set to predict \(\widehat{t}\) for new (not as of yet encountered) \(\widehat{x}\).
+
+#+CAPTION[Figure 1.2]: Plot of a training data set of \(N=\) 10 points, shown as blue circles, each comprising an observation of the input variable \(x\) along with the corresponding target variable \(t\). The green curve shows the function \(\sin (2 \pi x)\) used to generate the data. Our goal is to predict the value of \(t\) for some new value of \(x\), without knowledge of the green curve.
+#+ATTR_HTML: :width 300px
+[[file:~/.local/images/prml-1.2.jpg]]
+
+Here, we use curve fitting with a polynomial function
+
+\[
+y(x, \mathbf{w})=w_{0}+w_{1} x+w_{2} x^{2}+\ldots+w_{M} x^{M}=\sum_{j=0}^{M} w_{j} x^{j} \tag{1.1}
+\]
+
+of order \(M\). The coefficients \(w_{0}, \ldots, w_{M}\) make up the vector \(\mathbf{w}\). Although \(y(x, \mathbf{w})\) is nonlinear in \(x\), it's linear in \(\mathbf{w}\), making it a [[id:a3b84f9d-c03a-4579-9c82-47bba805c09b][linear basis function model]]. We determine coefficients by minimizing the [[id:ad33ba75-50b2-40c4-9e0e-69f60fcf4d08][error function]] \(E(\mathbf{w})\)
+
+\[
+E(\mathbf{w})=\frac{1}{2} \sum_{n=1}^{N}\left\{y\left(x_{n}, \mathbf{w}\right)-t_{n}\right\}^{2} \tag{1.2}
+\]
+
+a non-negative quantity that is zero when the function \(y(x, \mathbf{w})\) were to pass exactly through each training data point.
+
+#+CAPTION[Figure 1.3]: The error function (2) corresponds to (one half of) the sum of the squares of the displacements (shown by the vertical green bars) of each data point from the function \(y(x, \mathbf{w})\).
+#+ATTR_HTML: :width 300px
+[[file:~/.local/images/prml-1.3.jpg]]
+
+Figure 1.3 illustrates the geometrical interpretation of the sum-of-squares error function. Solving the curve fitting problem involves minimizing this function (minimizing the total length of all green line segments), which is quadratic in the coefficients \(\mathbf{w}\). The solution \(\mathbf{w}^{\star}\) can be found in closed form, yielding the polynomial \(y\left(x, \mathbf{w}^{\star}\right)\).
+
+* Overfitting
+
+#+CAPTION[Figure 1.4]: Plots of polynomials having various orders \(M\), shown as red curves, fitted to the dataset shown in Figure 1.2.
+#+ATTR_HTML: :width 600px
+[[file:~/.local/images/prml-1.4.jpg]]
+
+The choice of polynomial order \(M\) is crucial and involves model comparison. Examples in Figure 1.4 demonstrate that lower-order polynomials provide poor fits to the data, while a third-order polynomial seems optimal for fitting \(\sin (2 \pi x)\). A higher-order polynomial (e.g., \(M=9\)) can precisely fit the data but may exhibit [[id:7fc77346-bf00-4be1-af5b-8db41970143e][overfitting]] by oscillating widely and providing a poor representation of the function \(\sin (2 \pi x)\).
+
+* Generalization
+As we have noted earlier, the goal is to achieve good generalization by making accurate predictions for new data. We can obtain some quantitative insight into the dependence of the generalization performance on \(M\) by considering a separate test set comprising 100 data points generated using exactly the same procedure used to generate the training set points but with new choices for the random noise values included in the target values. For each choice of \(M\), we can then evaluate the residual value of \(E\left(\mathbf{w}^{\star}\right)\) given by (1.2) for the training data, and we can also evaluate \(E\left(\mathbf{w}^{\star}\right)\) for the test data set. It is sometimes more convenient to use the root-mean-square (RMS) error defined by 
+
+\[
+E_{\mathrm{RMS}}=\sqrt{2 E\left(\mathbf{w}^{\star}\right) / N} \tag{1.3}
+\]
+
+in which the division by \(N\) allows us to compare different sizes of data sets on an equal footing, and the square root ensures that \(E_{\mathrm{RMS}}\) is measured on the same scale (and in the same units) as the target variable \(t\). 
+
+Achieving good generalization involves accurate predictions for new data. We can quantitatively assess generalization performance for different \(M\) values using a test set of 100 points generated with the same procedure as the training set but with new random noise values. By evaluating the residual value of \(E(\mathbf{w}^{\star})\) for both training and test data, we can compare models. The root-mean-square (RMS) error, \(E_{\mathrm{RMS}} = \sqrt{2E(\mathbf{w}^{\star})/N}\), normalizes errors by dataset size for comparison and ensures measurement consistency with the target variable \(t\).
+
+** Dependence on degree of polynomial
+
+#+CAPTION[Figure 1.5]: Figure 1.5 Graphs of the root-mean-square error, defined by (1.3), evaluated on the training set and on an independent test set for various values of \(M\).
+#+ATTR_HTML: :width 300px
+[[file:~/.local/images/prml-1.5.jpg]]
+
+For generalization, use a separate test set with 100 points to evaluate root-mean-square (RMS) error on predictions. Test set RMS error reflects accuracy for new \(x\) values. Figure 1.5 displays training and test set RMS errors for various \(M\). Small \(M\) causes high test errors due to limited flexibility, while \(3 \leq M \le 8\) results in low errors and captures sine function oscillations as seen in Figure 1.4.
+
+As we increase the degree of the polynomial model (\(M\)), we can observe that the training error decreases towards zero due to increasing flexibility. However, the test error may increase as the model begins to fit the noise in the data, leading to erratic behavior between data points. This phenomenon arises because higher degree polynomials can perfectly fit the training data but may struggle to generalize well to unseen data. The coefficients of higher degree models tend to grow larger, indicating overfitting to noise rather than capturing the underlying patterns of the data.
+
+The \(M=9\) polynomial fits the training set perfectly but performs poorly on the test set with high error, showing oscillations. Increasing \(M\) tends to improve prediction, but in this case, it results in excessive coefficients due to overfitting noise instead of capturing the true pattern.
+
+#+CAPTION[Table 1.1]: Table of the coefficients \(\mathrm{w}^{\star}\) for polynomials of various order. Observe how the typical magnitude of the coefficients increases dramatically as the order of the polynomial increases.
+\begin{array}{r|rrrr} 
+& M=0 & M=1 & M=6 & M=9 \\
+\hline w_{0}^{\star} & 0.19 & 0.82 & 0.31 & 0.35 \\
+w_{1}^{\star} & & -1.27 & 7.99 & 232.37 \\
+w_{2}^{\star} & & & -25.43 & -5321.83 \\
+w_{3}^{\star} & & & 17.37 & 48568.31 \\
+w_{4}^{\star} & & & & -231639.30 \\
+w_{5}^{\star} & & & & 640042.26 \\
+w_{6}^{\star} & & & & -1061800.52 \\
+w_{7}^{\star} & & & & 1042400.18 \\
+w_{8}^{\star} & & & & -557682.99 \\
+w_{9}^{\star} & & & & 125201.43
+\end{array}
+
+
+
+Higher polynomial order (\(M\)) can over-fit by excessively tailoring to training data, consequently boosting coefficients.  While \(M=9\) perfectly fits training data, it fails to generalize, underscoring the complexity-overfitting balance.
+** Dependence on size of dataset
+
+#+CAPTION[Figure 1.6]: Plots of the solutions obtained by minimizing the sum-of-squares error function using the \(M=9\) polynomial for \(N=15\) data points (left plot) and \(N=100\) data points (right plot). We see that increasing the size of the data set reduces the overfitting problem.
+#+ATTR_HTML: :width 600px
+[[file:~/.local/images/prml-1.6.jpg]]
+
+We see that increasing the size of the data set reduces the overfitting problem. As the data set size increases, overfitting decreases for models of the same complexity. More data allows for fitting more complex models. It's suggested that data points should be at least 5-10 times the number of model parameters. However, the number of parameters doesn't solely indicate model complexity.
+
+#+BEGIN_COMMENT
+It's more sensible to adjust model complexity based on the problem rather than data size limitations. Least squares finds model parameters through [[id:37228232-07a8-4f26-957c-5d8ae0431b28][maximum likelihood]]. overfitting is a common issue with maximum likelihood. A [[id:352a4bd7-442d-4e94-bb47-c36c12dd99f0][Bayesian approach]] can prevent overfitting by allowing models with many parameters relative to data points. *In Bayesian models, parameter number adjusts automatically with data set size.*
+#+END_COMMENT
+
+* Regularization
+
+#+CAPTION[Figure 1.7]: Figure 1.7 Plots of \(M=9\) polynomials fitted to the data set shown in Figure 1.2 using the regularized error function (1.4) for two values of the regularization parameter \(\lambda\) corresponding to \(\ln \lambda=-18\) and \(\ln \lambda=0\). The case of no regularizer, i.e., \(\lambda=0\), corresponding to \(\ln \lambda=-\infty\), is shown at the bottom right of Figure 1.4.
+#+ATTR_HTML: :width 600px
+[[file:~/.local/images/prml-1.7.jpg]]
+
+[[id:621dd698-e6fb-485b-95b7-2116cdc47223][Regularization]] is a technique used to prevent overfitting in models with limited data. It involves adding a penalty term to the error function to keep coefficients from growing too large. A common penalty term is the sum of squares of all coefficients, adjusting the error function accordingly. The regularization term is controlled by a coefficient, balancing its impact with the original error term. The simplest such penalty term takes the form of a sum of squares of all of the coefficients, leading to a modified error function of the form
+
+\[
+\widetilde{E}(\mathbf{w})=\frac{1}{2} \sum_{n=1}^{N}\left\{y\left(x_{n}, \mathbf{w}\right)-t_{n}\right\}^{2}+\frac{\lambda}{2}\|\mathbf{w}\|^{2} \tag{1.4}
+\]
+
+where \(\|\mathbf{w}\|^{2} \equiv \mathbf{w}^{\mathrm{T}} \mathbf{w}=w_{0}^{2}+w_{1}^{2}+\ldots+w_{M}^{2}\), and the coefficient \(\lambda\) governs the relative importance of the regularization term compared with the sum-of-squares error term. Removing the \(w_{0}\) coefficient from regularization is common to prevent bias on target variable origin. Minimizing the modified error function can be done precisely. This technique is referred to as shrinkage methods in statistics, and ridge regression when using a quadratic regularizer. Weight decay is the term used in neural networks for this approach.
+
+With a regularized error function (1.4) and \(\ln \lambda = -18\), fitting a polynomial of order \(M=9\) to the data set reduces overfitting, providing a closer fit to \(\sin (2\pi x)\). However, if \(\ln \lambda = 0\), a poor fit results. The coefficients in Table 1.2 demonstrate that regularization decreases as \(\lambda\) increases, with \(\ln \lambda = -\infty\) representing no regularization.
+
+#+CAPTION[Table 1.2]: Table of the coefficients \(\mathrm{w}^{\star}\) for \(M=\) 9 polynomials with various values for the regularization parameter \(\lambda\). Note that \(\ln \lambda=-\infty\) corresponds to a model with no regularization, i.e., to the graph at the bottom right in Figure 1.4. We see that, as the value of \(\lambda\) increases, the typical magnitude of the coefficients gets smaller.
+\begin{center}
+\begin{tabular}{r|rrr}
+ & \(\ln \lambda=-\infty\) & \(\ln \lambda=-18\) & \(\ln \lambda=0\) \\
+\hline
+\(w_{0}^{\star}\) & 0.35 & 0.35 & 0.13 \\
+\(w_{1}^{\star}\) & 232.37 & 4.74 & -0.05 \\
+\(w_{2}^{\star}\) & -5321.83 & -0.77 & -0.06 \\
+\(w_{3}^{\star}\) & 48568.31 & -31.97 & -0.05 \\
+\(w_{4}^{\star}\) & -231639.30 & -3.89 & -0.03 \\
+\(w_{5}^{\star}\) & 640042.26 & 55.28 & -0.02 \\
+\(w_{6}^{\star}\) & -1061800.52 & 41.32 & -0.01 \\
+\(w_{7}^{\star}\) & 1042400.18 & -45.95 & -0.00 \\
+\(w_{8}^{\star}\) & -557682.99 & -91.53 & 0.00 \\
+\(w_{9}^{\star}\) & 125201.43 & 72.68 & 0.01 \\
+\end{tabular}
+\end{center}
+
+the magnitude of the coefficients.
+
+#+CAPTION[Figure 1.8]: Graph of the root-mean-square error (1.3) versus \(\ln \lambda\) for the \(M=9\) polynomial.
+#+ATTR_HTML: :width 300px
+[[file:~/.local/images/prml-1.8.jpg]]
+
+The impact of the regularization term on generalization error is visualized by plotting the RMS errors for training and test sets against \(\ln \lambda\) in Figure 1.8. \(\lambda\) influences the model complexity, controlling overfitting. The determination of suitable model complexity is critical for practical applications. Partitioning data into training and validation sets for coefficient optimization and complexity tuning is common but can be data-intensive. More advanced methods to address this issue exist. Probability theory provides a systematic approach to solving pattern recognition problems, offering deeper insights and enabling extension to complex scenarios.
