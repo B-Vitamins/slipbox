@@ -1,0 +1,19 @@
+:PROPERTIES:
+:ID:       02da7078-4708-48a5-a6de-40301d4800cc
+:END:
+#+TITLE: Canonical labeling of a Bayesian network
+#+FILETAGS: :literature:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+#+NAME: Canonical labeling of a DAG
+#+begin_theorem latex
+Let \( \{x_k\} \) denote the nodes of directed acyclic graph. There exists at least one labeling of the nodes \(x_1,\, x_2,\,\ldots,\,x_k,\,\ldots,\,x_{K-1},\,x_K\), such that if there exists an edge \( x_i \to x_j \), then we must have \( j > i \) for all possible \( (i,\, j) \).
+#+end_theorem
+
+In other words, for a [[id:0d31b941-e97b-41d4-804d-2ff7e24f9f9e][directed acyclic graph]], there exists an ordering of nodes such that there are no links that go from any node to any lower numbered node.
+
+#+begin_definition latex
+Let \( \{x_k\} \) denote the nodes of directed acyclic graph. Let \(x_1,\, x_2,\,\ldots,\,x_k,\,\ldots,\,x_{K-1},\,x_K\) be a labelling of the DAG that satisfies the theorem above. We call this labelling the DAG's canonical labelling.
+#+end_definition
+
+ [[id:5665a889-6a84-4065-be33-f5186d348ea6][Bayesian networks]], also called [[id:d131f5be-9c6c-4867-9f70-eca12e3facb2][directed graphical models]], a type of [[id:4588e307-d9cd-4a69-9648-a6c8db14ed1a][probabilistic graphical model]], are DAGs. Therefore they satisfy the theorem above and thus have a *canonical labelling*.
