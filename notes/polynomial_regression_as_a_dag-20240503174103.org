@@ -1,0 +1,54 @@
+:PROPERTIES:
+:ID:       6905c200-b885-4c57-aaae-1fc86ca1c025
+:END:
+#+TITLE: Polynomial regression (as a DAG)
+#+FILETAGS: :literature:prml:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+Consider the [[id:352a4bd7-442d-4e94-bb47-c36c12dd99f0][Bayesian curve fitting]] problem. The model used in this problem has:
+
++ input data :: \(\mathbf{x}=\left(x_{1}, \ldots, x_{N}\right)^{\mathrm{T}}\),
++ random variables :: the vector of polynomial coefficients \(\mathbf{w}\) and the observed data \(\mathbf{t}=\left(t_{1}, \ldots, t_{N}\right)^{\mathrm{T}}\),
++ scalar parameters :: the noise variance \(\sigma^{2}\), and the hyper-parameter \(\alpha\).
+
+Note that the random variable \( \mathbf{w} \) is a /model parameter/ as well. A straightforward application of the [[id:e9446808-4593-483e-b66e-adb9cb3db93a][rules of probability]] yields the joint distribution of the random variables \( \mathbf{t} \) and \( \mathbf{w} \), conditioned on the input data \( \mathbf{x} \), and the scalar parameters \( \alpha \), and \( \sigma^2 \)
+
+\begin{align*}
+p (\mathbf{t}, \mathbf{w} \mid \alpha, \sigma^{2}) &= p(\mathbf{t} \mid \mathbf{w}, \mathbf{x}, \sigma^{2}) p(\mathbf{w} \mid \alpha) \\
+&= \bigg[\prod_{n=1}^{N} p(t_{n} \mid \mathbf{w}, x_{n}, \sigma^{2}) \bigg] p ( \mathbf{w} \mid \alpha). \tag{1}
+\end{align*}
+
+A graphical representation of density function is
+
+#+ATTR_HTML: :width 300px
+[[~/.local/images/prml-8-5.png]]
+#+CAPTION: The convention is that large open circles represent /random variables/ and small solid circles represent /scalar parameters/. The blue box, called a *plate*, encloses multiple random variables and/or model parameters. When a large open circle has a fill, the random variable(s) is signifies has been set to a specific value.
+
+In general, model parameters, be they random variables \(\mathbf{w}\) or scalar parameters \( \sigma^2 \) and \( \alpha \) are of auxiliary interest; merely a means to our single-mindedly sought after end:
+
+#+BEGIN_CENTER
+Given new input value \(\hat{x}\), furnish the distribution of its target variable \(\hat{t}\) conditioned on \((\mathbf{x},\, \mathbf{t})\).
+#+END_CENTER
+
+In other words, we wish to solve the problem of [[id:01b2eedd-71b0-428f-bc4b-146b7068af36][statistical inference]] (in this case a [[id:ccd9c665-97bf-4274-b2b1-5a0ebc5409e2][density estimation]] problem) of the posterior \( p(\hat{t} \mid \hat{x},\,\mathbf{x},\,\mathbf{t},\,\alpha,\,\sigma^{2})\) In analogy with (1), we write the joint class-conditional density of all the /random variables/ in the model conditioned on the input data and the scalar parameters
+
+\begin{align*}
+p (\hat{t},\,\mathbf{t}, \mathbf{w} \mid \hat{x}, \, \mathbf{x}, \alpha, \sigma^{2}) &= p(\mathbf{t}, \, \hat{t} \mid \mathbf{w}, \hat{x},\, \mathbf{x}, \sigma^{2})\,p(\mathbf{w} \mid \alpha) \\
+&= p(\hat{t} \mid \hat{x}, \mathbf{w}, \sigma^2)\,p(\mathbf{t} \mid \mathbf{w}, \mathbf{x}, \sigma^{2})\,p(\mathbf{w} \mid \alpha) \\
+&= p(\mathbf{w} \mid \alpha)\, \bigg[\prod_{n=1}^{N} p(t_{n} \mid x_{n}, \mathbf{w}, \sigma^{2})\bigg]\, p (\hat{t} \mid \hat{x}, \mathbf{w}, \sigma^{2}). \tag{4}
+\end{align*}
+
+#+ATTR_HTML: :width 300px
+[[~/.local/images/prml-8-7.png]]
+
+Convince yourself that the graph above represents the density on the left hand side of (4) when \( \mathbf{t} \) is fixed. In the right hand side of (4), we have first used the [[id:879281b4-8323-4b79-aad6-4b13b71ef663][product rule of probability]], followed by the [[id:c6de868e-1284-4ce9-a2e7-31f71c25a270][conditional independence]] \((\mathbf{x},\,\mathbf{t})\) and \((\hat{x},\,\hat{t})\) when conditioned on \( (\mathbf{w},\,\sigma^2) \). The final step uses the same factorization of \( p(\mathbf{t} \mid \mathbf{w},\, \mathbf{x}, \, \sigma^2) \) as (1). The posterior \( p(\hat{t} \mid \hat{x},\,\mathbf{x},\,\mathbf{t},\,\alpha,\,\sigma^{2})\) is easily obtained from (4) by, first, an application of [[id:425c495d-aec2-4fff-8f48-f49f08210ebf][the sum rule of probability]] to marginalize over \( \mathbf{w} \) followed by an application of [[id:731eff69-04dd-45f2-b2a7-968e9c44dc3e][Bayes's theorem]]
+
+\begin{align*}
+p(\hat{t} \mid \hat{x},\,\mathbf{x},\,\mathbf{t},\,\alpha,\,\sigma^{2}) \propto \int \mathrm{d} \mathbf{w}\, p(\hat{t},\,\mathbf{t},\,\mathbf{w} \mid \hat{x},\,\mathbf{x},\,\alpha,\,\sigma^{2}) 
+\end{align*}
+
+where the normalization is the marginal class-conditional density
+
+\begin{align*}
+p(\mathbf{t} \mid \hat{x},\,\mathbf{x},\,\alpha,\,\sigma^{2}) \propto \int \mathrm{d} \hat{t} \int \mathrm{d} \mathbf{w}\, p(\hat{t},\,\mathbf{t},\,\mathbf{w} \mid \hat{x},\,\mathbf{x},\,\alpha,\,\sigma^{2}).
+\end{align*}
