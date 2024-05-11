@@ -31,5 +31,5 @@ Ancestral sampling can be used to sample from /marginal distributions/ following
 #+END_COMMENT
 
 #+BEGIN_COMMENT
-For practical applications of probabilistic models, it will typically be the higher numbered variables corresponding to terminal nodes of the graph that represent the observations, with lower-numbered nodes corresponding to latent variables. The primary role of the latent variables is to allow a complicated distribution over the observed variables to be represented in terms of a model constructed from simpler (typically exponential family) conditional distributions. We can interpret such models as expressing the processes by which the observed data arose.
+For practical applications of probabilistic models, it will typically be the higher numbered variables corresponding to terminal nodes of the graph that represent the observations, with lower-numbered nodes corresponding to latent variables. The primary role of the latent variables is to allow a complicated distribution over the observed variables to be represented in terms of a model constructed from simpler (typically [[id:20adc0cc-c2d3-48d7-b7eb-f32a6d50d421][exponential family of probability distributions]]) conditional distributions. We can interpret such models as expressing the processes by which the observed data arose.
 #+END_COMMENT
