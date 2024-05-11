@@ -1,0 +1,66 @@
+:PROPERTIES:
+:ID:       d81406a5-be60-40d0-b1bf-ac307c1a7c3a
+:END:
+#+TITLE: Linear-Gaussian models
+#+FILETAGS: :literature:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+A [[id:cf4dedf6-1073-4cae-ae41-998e1cde5b4a][multi-variate Gaussian distribution]] can be expressed as a [[id:5665a889-6a84-4065-be33-f5186d348ea6][Bayesian network]] corresponding to a *linear-Gaussian model* over the component variables. Consider an arbitrary [[id:0d31b941-e97b-41d4-804d-2ff7e24f9f9e][directed acyclic graphs]] over \(D\) variables in which node \(i\) represents a single continuous random variable \(x_{i}\) having a [[id:99d348be-0ce8-4de4-a9f9-ae9636f32887][Gaussian distribution]]
+
+\[
+p\left(x_{i} \mid \mathrm{pa}_{i}\right)=\mathcal{N}\bigg(x_{i} \, \bigg \vert \sum_{j \in \mathrm{pa}_{i}} w_{i j} x_{j}+b_{i},\, v_{i}\bigg) \tag{1}
+\]
+
+where \(w_{i j}\) and \(b_{i}\) are parameters governing the mean, and \(v_{i}\) is the variance of the [[id:391465bc-1399-40f0-b049-738c1a64d6fb][conditional probability distribution]] for \(x_{i}\). It follows that the logarithm of the [[id:8c833811-3657-4af4-8be5-191d8788b779][joint probability distribution]]
+
+\begin{align*}
+\ln p(\mathbf{x}) & =\sum_{i=1}^{D} \ln p\left(x_{i} \mid \mathrm{pa}_{i}\right) = -\sum_{i=1}^{D} \frac{1}{2 v_{i}}\bigg(x_{i}-\sum_{j \in \mathrm{pa}_{i}} w_{i j} x_{j}-b_{i}\bigg)^{2}+\mathrm{const}
+\end{align*}
+
+is a quadratic function of the components of \(\mathbf{x}\); where \(\mathbf{x}=\left(x_{1}, \ldots, x_{D}\right)^{\mathrm{T}}\). The joint distribution \(p(\mathbf{x})\) thus must be a multivariate Gaussian. From (1) it follows
+
+\[
+x_{i}=\sum_{j \in \mathrm{pa}_{i}} w_{i j} x_{j}+b_{i}+\sqrt{v_{i}} \epsilon_{i}, \qquad \mathbb{E}\left[x_{i}\right]=\sum_{j \in \mathrm{pa}_{i}} w_{i j} \mathbb{E}\left[x_{j}\right]+b_{i} \tag{2}
+\]
+
+where \(\epsilon_{i} \sim \mathcal{N} (0, 1)\), i.e., \(\mathbb{E}\left[\epsilon_{i}\right]=0\) and \(\mathbb{E}\left[\epsilon_{i} \epsilon_{j}\right]=I_{i j}\), where \(I_{i j}\) is the \((i,\,j)\) element of the identity matrix. Working with a [[id:02da7078-4708-48a5-a6de-40301d4800cc][canonical labeling of a Bayesian network]], the [[id:3acc466a-c92e-4e20-a556-61ce114b7df7][ancestral sampling]] algorithm, yields the cumulants \(\mathbb{E}\left[x_{i}\right]\) of a node in terms of the cumulants of its parents, so that after a full unroll, the recursion furnishes \(\mathbb{E}[\mathbf{x}]=\left(\mathbb{E}\left[x_{1}\right], \ldots, \mathbb{E}\left[x_{D}\right]\right)^{\mathrm{T}}\).
+
+The same procedure can be used to obtained the elements of the covariance matrix for \(p(\mathbf{x})\). With \( i \) fixed
+
+\begin{align*}
+\operatorname{cov}\big[x_{i}, x_{j}\big] & =\mathbb{E}\bigg[\bigg(x_{i}-\mathbb{E}\big[x_{i}\big]\bigg)\bigg(x_{j}-\mathbb{E}\big[x_{j}\big]\bigg)\bigg] \\
+& =\mathbb{E}\bigg[\bigg(x_{i}-\mathbb{E}\big[x_{i}\big]\bigg)\bigg\{\sum_{k \in \mathrm{pa}_{j}} w_{jk}\bigg(x_{k}-\mathbb{E}\big[x_{k}\big]\bigg)+\sqrt{v_{j}} \epsilon_{j}\bigg\}\bigg] \\
+& =\sum_{k \in \mathrm{pa}_{j}} w_{j k} \operatorname{cov}\big[x_{i}, x_{k}\big]+I_{i j} v_{j}. \tag{3}
+\end{align*}
+
+* Diagonal covariance matrix
+Suppose that there are no links in the graph. In this case, \(w_{i j}\) all vanish. and so there are just \(D\) parameters \(b_{i}\) and \(D\) parameters \(v_{i}\). From (2) and (3) it is clear that \(\mathbb{E} [\mathbf{x}] = (b_{1}, \ldots, b_{D})^{\mathrm{T}}\) and \( \operatorname{cov}\big[x_{i}, x_{j}\big] = I_{i j} v_{j} \). The covariance matrix is diagonal of the form \(\operatorname{diag}\left(v_{1}, \ldots, v_{D}\right)\). The joint distribution has a total of \(2 D\) parameters and factorizes as product of \(D\) independent uni-variate Gaussian distributions.
+* Full rank covariance matrix
+Now consider a fully connected graph in which each node has all lower numbered nodes as parents. The matrix \(w_{i j}\) then has \(i-1\) entries on the \(i^{\text {th }}\) row and hence is a lower triangular matrix (with no entries on the leading diagonal). Then the total number of parameters \(w_{i j}\) is \(D(D-1) / 2\). The total number of independent parameters \(\{w_{i j}\}\) and \(\left\{v_{i}\right\}\) in the covariance matrix is thus \(D(D+1) / 2\) corresponding to a general symmetric covariance matrix.
+* Partial rank covariance matrix
+Consider for example the graph shown below
+
+#+ATTR_HTML: :width 400px
+[[file:~/.local/images/prml-8-14.png]]
+
+which has a link missing between variables \(x_{1}\) and \(x_{3}\). The cumulants of the joint distribution are
+
+\begin{align*}
+\boldsymbol{\mu} & =\left(b_{1}, b_{2}+w_{21} b_{1}, b_{3}+w_{32} b_{2}+w_{32} w_{21} b_{1}\right)^{\mathrm{T}} \\
+\end{align*}
+
+\begin{align*}
+\boldsymbol{\Sigma} & =\left(\begin{array}{ccc}
+v_{1} & w_{21} v_{1} & w_{32} w_{21} v_{1} \\
+w_{21} v_{1} & v_{2}+w_{21}^{2} v_{1} & w_{32}\left(v_{2}+w_{21}^{2} v_{1}\right) \\
+w_{32} w_{21} v_{1} & w_{32}\left(v_{2}+w_{21}^{2} v_{1}\right) & v_{3}+w_{32}^{2}\left(v_{2}+w_{21}^{2} v_{1}\right)
+\end{array}\right) .
+\end{align*}
+
+It is trivial to extend the linear-Gaussian graphical model to the case in which the nodes of the graph represent multivariate Gaussian variables
+
+\[
+p\big(\mathbf{x}_{i} \mid \mathrm{pa}_{i}\big)=\mathcal{N}\bigg(\mathbf{x}_{i} \bigg \vert \sum_{j \in \mathrm{pa}_{i}} \mathbf{W}_{i j} \mathbf{x}_{j}+\mathbf{b}_{i}, \boldsymbol{\Sigma}_{i}\bigg)
+\]
+
+where \(\mathbf{W}_{i j}\) is now a matrix (non-square if \(\mathbf{x}_{i}\) and \(\mathbf{x}_{j}\) have different dimensions). It is straightforward to verify that the joint distribution over all variables is Gaussian.
