@@ -1,0 +1,35 @@
+:PROPERTIES:
+:ID:       3acc466a-c92e-4e20-a556-61ce114b7df7
+:END:
+#+TITLE: Ancestral sampling
+#+FILETAGS: :literature:prml:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+Consider a joint distribution \(p\left(x_{1}, \ldots, x_{K}\right)\) over \(K\) variables that factorizes according to 
+
+\begin{align*}
+p(\mathbf{x})=\prod_{k=1}^{K} p\left(x_{k} \mid \mathrm{pa}_{k}\right) \tag{1}
+\end{align*}
+
+corresponding to a [[id:0d31b941-e97b-41d4-804d-2ff7e24f9f9e][directed acyclic graph]] (see [[id:5665a889-6a84-4065-be33-f5186d348ea6][Bayesian networks]]). Here \(\mathrm{pa}_{k}\) denotes the set of parents of \(x_{k}\), and \(\mathbf{x}=\left\{x_{1}, \ldots, x_{K}\right\}\). We will assume that \(\mathbf{x}=\left\{x_{1}, \ldots, x_{K}\right\}\) is a [[id:02da7078-4708-48a5-a6de-40301d4800cc][canonical labeling]] of nodes of the [[id:4588e307-d9cd-4a69-9648-a6c8db14ed1a][probabilistic graphical model]] corresponding to (1). The task at hand is to draw a sample \(\hat{x}_{1},\,\ldots,\,\hat{x}_{K}\) from the joint distribution \( p(\mathbf{x}) \).
+
+#+NAME: Ancestral sampling
+#+BEGIN_ALGORITHM
+1. Start with the lowest-numbered node, \( x_{1} \). Draw a sample from the marginal distribution \( p(x_{1}) \) and denote it as \( \hat{x}_{1} \).
+2. Going in order from nodes with labels \( k = 2 \) to \( k = K \),
+   a) Determine the set of parent variables \( \mathrm{pa}_{k} \) for node \(k\). By construction, these parents values would already have been sampled and thus will always be available.
+   b) Draw a sample from the conditional distribution \( p(x_{k} \mid \mathrm{pa}_{k}) \) and denote it as \( \hat{x}_{k} \).
+3. After sampling from the final node \( x_{K} \), aggregate the collected samples \( \widehat{x}_{1}, \widehat{x}_{2}, \ldots, \widehat{x}_{K} \) into a vector \( (\widehat{x}_{1}, \widehat{x}_{2}, \ldots, \widehat{x}_{K}) \). This vector is a sample from the joint distribution \( p(\mathbf{x}) \).
+#+END_ALGORITHM
+
+#+BEGIN_COMMENT
+The specifics of how samples are drawn from the marginal and the conditional distributions will depend on their functional form. Assuming it is possible to draw samples from all the marginal and conditional distributions involved in the factorization of a joint distribution such as (1), *ancestral sampling* can be used to drive [[id:87f2e493-b2bc-41f5-b1b2-055b5821e67a][generative models]].
+#+END_COMMENT
+
+#+BEGIN_COMMENT
+Ancestral sampling can be used to sample from /marginal distributions/ following the exact same procedure: sample from the joint distribution and then discard the values for the marginalized variables. Of course, the iteration over the canonical labels need only proceed till the largest label appearing in the marginal distribution.
+#+END_COMMENT
+
+#+BEGIN_COMMENT
+For practical applications of probabilistic models, it will typically be the higher numbered variables corresponding to terminal nodes of the graph that represent the observations, with lower-numbered nodes corresponding to latent variables. The primary role of the latent variables is to allow a complicated distribution over the observed variables to be represented in terms of a model constructed from simpler (typically exponential family) conditional distributions. We can interpret such models as expressing the processes by which the observed data arose.
+#+END_COMMENT
