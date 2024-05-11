@@ -1,0 +1,29 @@
+:PROPERTIES:
+:ID:       87f2e493-b2bc-41f5-b1b2-055b5821e67a
+:END:
+#+TITLE: Generative models
+#+FILETAGS: :literature:prml:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+Approaches that explicitly or implicitly model the /distribution/ of outputs /as well as inputs/ are known as *generative models*, so named because they can used to /generate synthetic data points in the input space/. Indeed, this is the defining characteristic of generative models. By contrast, the [[id:6905c200-b885-4c57-aaae-1fc86ca1c025][polynomial regression (as a DAG)]] is not /generative/ because there is no probability distribution associated with the input variable \(x\) and so it is not possible to generate synthetic data points from this model.
+
+* Generative Bayesian network
+Consider an object recognition task as a simple example of a generative model. In this model each observed data point corresponds to an image \( I \) of an object \( O \) with *latent variables* position \( P \) and orientation \( R \) of the object. The goal is to [[id:01b2eedd-71b0-428f-bc4b-146b7068af36][infer]] the [[id:e166b400-40c8-410b-bb5b-0e0decca5f4c][posterior probability distribution]] over object \( p(O \mid I) \). That we introduce a suitable prior over the images \( I \) is qualification enough for our model to earn the label /generative/. We may then assert that our model is a [[id:4588e307-d9cd-4a69-9648-a6c8db14ed1a][probabilistic graphical model]], specifically a [[id:5665a889-6a84-4065-be33-f5186d348ea6][Bayesian network]], of the form
+
+#+ATTR_HTML: :width 300px
+[[file:~/.local/images/prml-8-8.png]]
+
+To solve the problem we invoke [[id:731eff69-04dd-45f2-b2a7-968e9c44dc3e][Bayes's theorem]] and marginalize over all possible positions \( P \) and orientations \( R \)
+
+\begin{align*}
+p(O \mid I) = \frac{p(I \mid O)\, p(O)}{p(I)} \propto \sum_P \sum_R p(I,\,O,\,P,\,R) = \sum_P \sum_R p(I \mid O) \, p(I \mid P) \, p(I \mid R) \, p(O) \, p(P) \, p(R).
+\end{align*}
+
+#+BEGIN_COMMENT
+In this contrived example, the graphical model captures [[id:d40e2552-a492-4056-b184-10c487d5c607][causality]]: the /causal process/ by which the observed data was generated. It may well happen to be the case for many practical applications as well. However, the hidden/latent variables in a probabilistic model need not necessarily lend themselves to physical interpretation. They may simply be a mathematical convenience: allowing a more complex joint distribution to be constructed from simpler components.
+#+END_COMMENT
+
+Our choice of using a Bayesian network for the object recognition task enables the possibility of using [[id:3acc466a-c92e-4e20-a556-61ce114b7df7][ancestral sampling]]. Whether the marginal and conditional distributions involving latent variables lend themselves to interpretation or not does not change the fact that the technique of ancestral sampling applied to a generative model mimics the creation of the observed data. It follows that if the model were a perfect representation of reality, a set of samples /generated/ using ancestral sampling from the model will have statistical properties that are indistinguishable from that of the observed data.
+
+
+
