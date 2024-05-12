@@ -18,3 +18,5 @@ If all paths are blocked, then \(A\) is said to be d-separated from \(B\) by \(C
 #+end_definition
 
 For the purposes of d-separation, /scalar parameters/ such as \(\alpha\) and \(\sigma^{2}\) that appeared in [[id:6905c200-b885-4c57-aaae-1fc86ca1c025][Polynomial regression (as a DAG)]], indicated by small filled circles, behave in the same was as observed nodes. However, there are no marginal distributions associated with such nodes. Consequently parameter nodes never themselves have parents and so all paths through these nodes will always be tail-to-tail and hence blocked. *Consequently they play no role in d-separation*.
+
+For examples showing the application of D-separation, see [[id:fbf51bbb-48c4-4b60-9714-841bb3c046c4][examples of D-separation]] and the [[id:b0a97fcf-c2ae-4674-8935-956b7a356388][Naive Bayes model]].
