@@ -1,0 +1,20 @@
+:PROPERTIES:
+:ID:       b0a97fcf-c2ae-4674-8935-956b7a356388
+:END:
+#+TITLE: Naive Bayes model
+#+FILETAGS: :literature:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+The *naive Bayes model* employs [[id:c6de868e-1284-4ce9-a2e7-31f71c25a270][conditional independence]] assumptions to streamline [[id:28d575a5-08f9-4f78-bb0b-b7fedcbb24d3][classification]] tasks. This model assumes a \(D\)-dimensional observed variable vector \(\mathbf{x} = (x_1, \ldots, x_D)^\mathrm{T}\), categorized into one of \(K\) classes using a \(K\)-dimensional binary vector \(\mathbf{z}\). A multinomial prior \(p(\mathbf{z} \mid \boldsymbol{\mu})\) over the class labels is introduced, where \(\mu_k\) represents the prior probability of class \(\mathcal{C}_k\), along with a [[id:391465bc-1399-40f0-b049-738c1a64d6fb][conditional probability distribution]] \(p(\mathbf{x} \mid \mathbf{z})\). Crucially, this model assumes that, conditioned on the class \(\mathbf{z}\), the elements of \(\mathbf{x}\) are independent, leading to simplifications in the model's graphical representation as depicted in the figure below
+
+#+ATTR_HTML: :width 400px
+[[file:~/.local/images/prml-8-24.png]]
+
+Conditioned on \(\mathbf{z}\), paths between different \(x_i\) and \(x_j\,(j \neq i)\) are blocked, affirming their conditional independence. In other words, conditioned on \(\mathbf{z}\) the components of the observed vector \(\mathbf{x} = (x_1, \ldots, x_D)^\mathrm{T}\) are assumed to be independent. However, if \(\mathbf{z}\) is marginalized out, these paths are unblocked, indicating that the [[id:98cfed25-404f-4443-9096-e604ca5faccd][marginal probability distribution]] \(p(\mathbf{x})\) does not factorize with respect to the components of \(\mathbf{x}\).
+
+Using labeled training data \(\{\mathbf{x}_1, \ldots, \mathbf{x}_N\}\) with class labels, the model is fit to the data via [[id:adca5f2b-1056-4cb6-b5d4-02be3ccc6e54][Maximum likelihood estimation]], treating data as [[id:2e4b8dd4-f9ed-402f-bdf6-9b7a5079411a][independently]] drawn from the model. If we assume [[id:99d348be-0ce8-4de4-a9f9-ae9636f32887][Gaussian densities]] /within each class/, the naive Bayes assumption dictates that *each class's [[id:ae278539-8b4f-4793-9c4c-09b4c6be922a][covariance matrix]] is diagonal, thus the constant density contours within each class are axis-aligned ellipsoids. The combined marginal density is then a superposition of these diagonal Gaussian distributions, weighted by the class priors.
+
+#+BEGIN_COMMENT
+Despite its stringent assumptions, the naive Bayes model is valuable, especially in high-dimensional input spaces or when handling mixed variable types (such as binary and continuous). The conditional independence assumption simplifies computations and model structure, which can still yield effective classification results, even if the underlying class-conditional densities are not perfectly represented.
+#+END_COMMENT
+
