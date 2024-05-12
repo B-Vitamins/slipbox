@@ -30,4 +30,8 @@ We will use the notation
 
 \[X \perp\!\!\!\perp Y \mid Z\]
 
-to denote conditional independence of \( X \) and \( Y \) given \( Z \). Graphical models help identify conditional independence properties without requiring exhaustive use of the [[id:e9446808-4593-483e-b66e-adb9cb3db93a][rules of probability]]. This is achieved by the framework of [[id:971e6cb8-1177-4d9a-90d7-43d22c22fb61][D-separation]].
+to denote conditional independence of \( X \) and \( Y \) given \( Z \). 
+
+[[id:d131f5be-9c6c-4867-9f70-eca12e3facb2][Directed graphical models]] help identify conditional independence properties without requiring exhaustive use of the [[id:e9446808-4593-483e-b66e-adb9cb3db93a][rules of probability]]. This is achieved by the framework of [[id:971e6cb8-1177-4d9a-90d7-43d22c22fb61][D-separation]].
+
+The diagnosis of conditional independence in [[id:5559c3da-2d3b-43e6-8b53-996c265ad38d][undirected graphical models]] is simpler

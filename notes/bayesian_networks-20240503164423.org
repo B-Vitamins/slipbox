@@ -5,7 +5,12 @@
 #+FILETAGS: :literature:
 #+SETUPFILE: ~/.config/emacs/setup/setupfile.org
 
-The [[id:8c833811-3657-4af4-8be5-191d8788b779][joint probability distribution]] defined by a [[id:e1fc9380-a936-4cf0-bc64-78119a1081da][graph]] is given by the product, over all of the [[id:a0fe774b-6d44-4807-ab68-023a7e867ed4][nodes]] of the graph, of a [[id:391465bc-1399-40f0-b049-738c1a64d6fb][conditional probability distribution]] for each [[id:a0fe774b-6d44-4807-ab68-023a7e867ed4][node]] conditioned on the [[id:fa0e3aa2-347e-48b9-9cb7-e9f0be897281][variables]] corresponding to the parents of that node in the graph. Thus, for a graph with \(K\) nodes, the joint distribution is given by
+Bayesian networks, or [[id:d131f5be-9c6c-4867-9f70-eca12e3facb2][directed graphical models]] are a type of [[id:4588e307-d9cd-4a69-9648-a6c8db14ed1a][probabilistic graphical models]] in which a [[id:f39a8683-abf8-4620-957d-b20795422d2d][probability distribution]] is represented by a [[id:e1fc9380-a936-4cf0-bc64-78119a1081da][graph]]. The [[id:8c833811-3657-4af4-8be5-191d8788b779][joint probability distribution]] defined by a [[id:e1fc9380-a936-4cf0-bc64-78119a1081da][graph]] is given by the product, over all of the [[id:a0fe774b-6d44-4807-ab68-023a7e867ed4][nodes]] of the graph, of a [[id:391465bc-1399-40f0-b049-738c1a64d6fb][conditional probability distribution]] for each [[id:a0fe774b-6d44-4807-ab68-023a7e867ed4][node]] conditioned on the [[id:fa0e3aa2-347e-48b9-9cb7-e9f0be897281][variables]] corresponding to the parents of that node in the graph. 
+
+* Conditional independence properties
+See [[id:c6de868e-1284-4ce9-a2e7-31f71c25a270][conditional independence]] and [[id:971e6cb8-1177-4d9a-90d7-43d22c22fb61][D-separation]].
+* Factorization properties 
+For a graph with \(K\) nodes, the joint distribution is given by
 
 \begin{align*}
 p(\mathbf{x})=\prod_{k=1}^{K} p\left(x_{k} \mid \mathrm{pa}_{k}\right) \tag{1}
@@ -13,4 +18,4 @@ p(\mathbf{x})=\prod_{k=1}^{K} p\left(x_{k} \mid \mathrm{pa}_{k}\right) \tag{1}
 
 where \(\mathrm{pa}_{k}\) denotes the set of parents of \(x_{k}\), and \(\mathbf{x}=\left\{x_{1}, \ldots, x_{K}\right\}\). This equation expresses the *directed factorization property* of the joint distribution for a directed graphical model. The representation on the right hand side of (1) is always properly normalized provided the individual conditional distributions are normalized (see problem [[id:c8691cca-9591-4bd1-bdd1-4793e92f4365][Normalization of Bayesian networks]]). 
 
-Note that while the left hand side of (1) is symmetric with respect to \( \{ x_k \} \), the right hand side is not. *It follows that more than one structurally distinct Bayesian network may represent the same joint distribution.* /Our choice of factorization imparts on the graph its structure/. Nevertheless, in general, if a directed graph is a valid representation of a joint distribution, it may not have any /directed cycles/, i.e., edge hopping will never land us where we started. Graphs with this properly are called [[id:0d31b941-e97b-41d4-804d-2ff7e24f9f9e][directed acyclic graphs]] (DAGs). All Bayesian networks are DAGs. 
+Note that while the left hand side of (1) is symmetric with respect to \( \{ x_k \} \), the right hand side is not. *It follows that more than one structurally distinct Bayesian network may represent the same joint distribution.* /Our choice of factorization imparts on the graph its structure/. Nevertheless, in general, if a directed graph is a valid representation of a joint distribution, it may not have any /directed cycles/, i.e., edge hopping will never land us where we started. Graphs with this properly are called [[id:0d31b941-e97b-41d4-804d-2ff7e24f9f9e][directed acyclic graphs]] (DAGs). All Bayesian networks are DAGs.
