@@ -2,10 +2,10 @@
 :ID:       c6de868e-1284-4ce9-a2e7-31f71c25a270
 :END:
 #+TITLE: Conditional independence
-#+FILETAGS: :literature:
+#+FILETAGS: :literature:prml:
 #+SETUPFILE: ~/.config/emacs/setup/setupfile.org
 
-#+NAME: independence
+#+NAME: conditional independence
 #+BEGIN_DEFINITION
 Events \(X\) and \(Y\) are said to be *independent conditioned on* event \(Z\) if their joint class-conditional probability factorizes as the product of their marginal class-conditional probabilities:
 \[
@@ -13,4 +13,17 @@ p(X,\, Y \mid Z) = p(X \mid Z) \cdot p(Y \mid Z).
 \]
 #+END_DEFINITION
 
-When this condition holds, the occurrence of \(Z\) does not affect the occurrence of \( X \) nor \(Y\).
+#+NAME: conditional independence
+#+begin_corollary latex
+If events \( X \) and \( Y \) are independent conditioned on event \( Z \) then
+\[p(X \mid Y,\,Z) = p(X \mid Z) \qquad \text{and} \qquad p(Y \mid X,\,Z) = p(Y \mid Z)\]
+#+end_corollary
+
+The corollary follows from the definition of conditional independence after applying the [[id:e9446808-4593-483e-b66e-adb9cb3db93a][rules of probability]] to the joint class-conditional probability \( p(X,\,Y \mid Z) \)
+
+\begin{align*}
+p(X,\,Y \mid Z) &= p(X \mid Y,\, Z)\, p(Y \mid Z) = p(Y \mid X,\, Z)\, p(X \mid Z)  \equiv p(X \mid Z) p(Y \mid Z) \\
+&\Longrightarrow p(X \mid Y,\,Z) = p(X \mid Z) \quad \text{and} \quad p(Y \mid X,\,Z) = p(Y \mid Z).
+\end{align*}
+
+Graphical models help identify conditional independence properties without requiring exhaustive use of the [[id:e9446808-4593-483e-b66e-adb9cb3db93a][rules of probability]]. This is achieved by the framework of [[id:971e6cb8-1177-4d9a-90d7-43d22c22fb61][D-separation]].
