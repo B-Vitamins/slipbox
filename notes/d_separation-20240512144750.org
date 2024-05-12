@@ -1,0 +1,20 @@
+:PROPERTIES:
+:ID:       971e6cb8-1177-4d9a-90d7-43d22c22fb61
+:END:
+#+TITLE: D-separation
+#+FILETAGS: :literature:prml:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+Consider a general [[id:d131f5be-9c6c-4867-9f70-eca12e3facb2][directed graph]] in which \(A\), \(B\), and \(C\) are arbitrary non-intersecting sets of [[id:a0fe774b-6d44-4807-ab68-023a7e867ed4][nodes]] (whose union may be smaller than the complete set of nodes in the graph). Given such a graph, we want to know whether the nodes in \( A \) and \( B \) satisfy [[id:c6de868e-1284-4ce9-a2e7-31f71c25a270][conditional independence]] given the nodes in \( C \).
+
+#+NAME: D-separation
+#+begin_definition latex
+Consider a general directed graph in which \(A\), \(B\), and \(C\) are arbitrary non-intersecting sets of nodes. Consider all possible paths from any node in \(A\) to any node in \(B\). Any such path is said to be blocked if it includes a node such that either:
+
+(a) the arrows on the path meet either head-to-tail or tail-to-tail at the node, and the node is in the set \(C\), or
+(b) the arrows meet head-to-head at the node, and neither the node, nor any of its descendants, is in the set \(C\).
+
+If all paths are blocked, then \(A\) is said to be d-separated from \(B\) by \(C\), and the joint distribution over all of the variables in the graph will satisfy \(A \perp\!\!\!\perp B \mid C\).
+#+end_definition
+
+For the purposes of d-separation, /scalar parameters/ such as \(\alpha\) and \(\sigma^{2}\) that appeared in [[id:6905c200-b885-4c57-aaae-1fc86ca1c025][Polynomial regression (as a DAG)]], indicated by small filled circles, behave in the same was as observed nodes. However, there are no marginal distributions associated with such nodes. Consequently parameter nodes never themselves have parents and so all paths through these nodes will always be tail-to-tail and hence blocked. *Consequently they play no role in d-separation*.
