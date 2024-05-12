@@ -1,0 +1,15 @@
+:PROPERTIES:
+:ID:       66774f9d-b5bf-429c-9062-1abc9be7399d
+:END:
+#+TITLE: Maximal clique
+#+FILETAGS: :literature:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+A *maximal clique* for an [[id:5559c3da-2d3b-43e6-8b53-996c265ad38d][undirected graphical models]] is a [[id:5b83c54c-ad39-4f70-a41b-4e4334513d7f][clique]] such that it is not possible to include any other nodes from the graph in the set without it ceasing to be a clique.
+
+In the four-node undirected graph below a maximal clique is outlined in blue
+
+#+ATTR_HTML: :width 300px
+[[file:~/.local/images/prml-8-29.png]]
+
+This graph has five cliques of two nodes given by \(\left\{x_{1}, x_{2}\right\},\left\{x_{2}, x_{3}\right\},\left\{x_{3}, x_{4}\right\},\left\{x_{4}, x_{2}\right\}\), and \(\left\{x_{1}, x_{3}\right\}\), as well as two maximal cliques given by \(\left\{x_{1}, x_{2}, x_{3}\right\}\) and \(\left\{x_{2}, x_{3}, x_{4}\right\}\). The set \(\left\{x_{1}, x_{2}, x_{3}, x_{4}\right\}\) is not a clique because of the missing link from \(x_{1}\) to \(x_{4}\).
