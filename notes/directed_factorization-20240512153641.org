@@ -1,0 +1,23 @@
+:PROPERTIES:
+:ID:       4718c6af-e37e-4de6-93a6-81458b595990
+:END:
+#+TITLE: Directed factorization
+#+FILETAGS: :literature:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+We have seen that a particular [[id:5665a889-6a84-4065-be33-f5186d348ea6][directed graph]] represents a specific decomposition of a [[id:8c833811-3657-4af4-8be5-191d8788b779][joint probability distribution]] into a product of [[id:391465bc-1399-40f0-b049-738c1a64d6fb][conditional probability distribution]]. The graph also expresses a set of [[id:c6de868e-1284-4ce9-a2e7-31f71c25a270][conditional independence]] statements obtained through the [[id:971e6cb8-1177-4d9a-90d7-43d22c22fb61][D-separation]] criterion, and the d-separation theorem is really an expression of the equivalence of these two properties.
+
+#+ATTR_HTML: :width 600px
+[[file:~/.local/images/prml-8-25.png]]
+
+We can view a [[id:5665a889-6a84-4065-be33-f5186d348ea6][Bayesian network]], a type of [[id:4588e307-d9cd-4a69-9648-a6c8db14ed1a][probabilistic graphical models]] as a filter in which a probability distribution \(p(\mathbf{x})\) is allowed through the filter if, and only if, it satisfies the [[id:5665a889-6a84-4065-be33-f5186d348ea6][directed factorization property]]. The set of all possible probability distributions \(p(\mathbf{x})\) that pass through the filter is denoted \(\mathcal{D} \mathcal{F}\) the *directed factorization*. We can alternatively use the graph to filter distributions according to whether they respect all of the [[id:c6de868e-1284-4ce9-a2e7-31f71c25a270][conditional independence]] properties implied by the [[id:971e6cb8-1177-4d9a-90d7-43d22c22fb61][D-separation]] properties of the graph. The d-separation theorem says that it is the same set of distributions \(\mathcal{D} \mathcal{F}\) that will be allowed through this second kind of filter.
+
+Graph structures profoundly influence the representation of joint probability distributions in probabilistic models. At one extreme, a fully connected graph imposes no conditional independence, capable of representing any joint distribution over its variables—here, the set \(\mathcal{D F}\) includes all possible distributions \(p(\mathbf{x})\). At the opposite extreme, a fully disconnected graph indicates complete independence among variables, meaning the joint distribution factorizes into the product of individual marginals.
+
+#+BEGIN_COMMENT
+It should be emphasized that the conditional independence properties obtained from d-separation apply to any probabilistic model described by that particular directed graph. This will be true, for instance, whether the variables are discrete or continuous or a combination of these. Again, we see that a particular graph is describing a whole family of probability distributions.
+#+END_COMMENT
+
+#+BEGIN_COMMENT
+Note that for any given graph, the set of distributions passing through the filter will include any distributions that have additional independence properties beyond those described by the graph. For instance, a fully factorized distribution will always be passed through the filter implied by any graph over the corresponding set of variables.
+#+END_COMMENT
