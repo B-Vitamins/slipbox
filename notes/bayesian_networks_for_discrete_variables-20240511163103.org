@@ -1,0 +1,73 @@
+:PROPERTIES:
+:ID:       beb14d66-276c-4069-b508-660a5afb2303
+:END:
+#+TITLE: Bayesian networks for discrete variables
+#+FILETAGS: :literature:prml:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+The [[id:f39a8683-abf8-4620-957d-b20795422d2d][probability distribution]] \(p(\mathbf{x} \mid \boldsymbol{\mu})\) for a single discrete variable \(\mathbf{x}\) having \(K\) possible states (using the 1-of-\(K\) representation) is given by
+
+\[
+p(\mathbf{x} \mid \boldsymbol{\mu})=\prod_{k=1}^{K} \mu_{k}^{x_{k}}
+\]
+
+and is governed by the parameters \(\boldsymbol{\mu}=\left(\mu_{1}, \ldots, \mu_{K}\right)^{\mathrm{T}}\). The constraint \(\sum_{k} \mu_{k}=1\) eliminates a degree of freedom so \(K-1\) values for \(\mu_{k}\) define the distribution.
+
+Now suppose that we have two discrete variables, \(\mathbf{x}_{1}\) and \(\mathbf{x}_{2}\), each of which has \(K\) states. Let \(\mu_{k l}\) denote the probability of observing both \(x_{1 k}=1\) and \(x_{2 l}=1\), where \(x_{1 k}\) and \( x_{2l} \) denotes the \(k^{\text {th }}\) and \( l^{\text{th}} \) component of \(\mathbf{x}_{1}\) and \( \mathbf{x}_2 \). The [[id:8c833811-3657-4af4-8be5-191d8788b779][joint probability distribution]] is
+
+\[
+p(\mathbf{x}_{1},\, \mathbf{x}_{2} \mid \boldsymbol{\mu})=\prod_{k=1}^{K} \prod_{l=1}^{K} \mu_{k l}^{x_{1 k} \, x_{2 l}} .
+\]
+
+The constraint \(\sum_{k} \sum_{l} \mu_{k l}=1\) eliminates a degree of freedom so that this distribution is governed by \(K^{2}-1\) parameters. 
+
+In general, the total number of parameters that must be specified for an arbitrary joint distribution over \(M\) variables is \(K^{M}-1\) and therefore grows exponentially with the number \(M\) of variables.
+
+Using [[id:879281b4-8323-4b79-aad6-4b13b71ef663][the product rule of probability]], we can factor the joint distribution \(p(\mathbf{x}_{1},\,\mathbf{x}_{2})\) in the form \(p(\mathbf{x}_{2} \mid \mathbf{x}_{1}) p(\mathbf{x}_{1})\), which corresponds to a two-node graph with a link going from the \(\mathbf{x}_{1}\) node to the \(\mathbf{x}_{2}\) node
+
+#+ATTR_HTML: :width 200px
+[[file:~/.local/images/prml-8-9a.png]]
+
+This [[id:8c079d14-b0b4-4620-9d44-9a2d7b673056][fully connected graph]] describes a general distribution over two \(K\)-state discrete variables having a total of \(K^{2}-1\) parameters. Dropping the link between the nodes is equivalent to asserting no conditional dependencies between \( \mathbf{x}_1 \) and \( \mathbf{x}_2 \) so naturally the number of parameters is reduced to \(2(K-1)\).
+
+#+ATTR_HTML: :width 200px
+[[file:~/.local/images/prml-8-9b.png]]
+
+For \(M\) discrete variables \(\mathbf{x}_{1},\,\ldots,\,\mathbf{x}_{M}\), model the joint distribution using a [[id:5665a889-6a84-4065-be33-f5186d348ea6][Bayesian network]]. Each node corresponds to a variable. [[id:391465bc-1399-40f0-b049-738c1a64d6fb][Conditional probability distribution]] are parameterized subject to normalization. A /fully connected graph/ yields \(K^{M}-1\) parameters, while a /fully disconnected graph/ lead to \(M(K-1)\) parameters.
+
+* Controlling growth of the number of parameters
+Intermediately connected graphs strike a balance between expressiveness and parameter efficiency. The chain show below exemplifies this: \(K-1\) parameters for the marginal distribution \(p\left(\mathbf{x}_{1}\right)\) and \(K(K-1)\) parameters for each \(p\left(\mathbf{x}_{i} \mid \mathbf{x}_{i-1}\right)\), \(i=2, \ldots, M\). The total parameter count is \(K-1 + (M-1)K(K-1)\), linear in \(M\) and quadratic in \(K\), avoiding exponential growth.
+
+** Parameter sharing
+*Parameter sharing* reduces the number of independent parameters by tying similar distributions to the same parameter set. In the chain below
+
+#+ATTR_HTML: :width 300px
+[[file:~/.local/images/prml-8-10.png]]
+
+all conditional distributions \(p(\mathbf{x}_i \mid \mathbf{x}_{i-1})\), where \(i = 2, \ldots, M\), share \(K(K-1)\) parameters. Along with the \(K-1\) parameters for \(p(\mathbf{x}_1)\), this setup requires only \(K^{2}-1\) parameters to define the joint distribution.
+
+Incorporating [[id:0d10ff68-d529-441d-aafc-681432efcfa2][Dirichlet priors]] for parameters turns a graph of discrete variables into a [[id:5665a889-6a84-4065-be33-f5186d348ea6][Bayesian model]]. Each node gains a parent representing the Dirichlet distribution over its parameters. The figure below demonstrates this for the chain model above. It is an extension of the model to include Dirichlet priors over the parameters governing the discrete distributions.
+
+#+ATTR_HTML: :width 300px
+[[file:~/.local/images/prml-8-11.png]]
+
+The figure below shows parameter sharing in conditional distributions \(p(\mathbf{x}_{i} \mid \mathbf{x}_{i-1})\) for \(i = 2, \ldots, M\). It is same as the figure above but with a single set of parameters \(\mu\) shared amongst all of the conditional distributions \(p\left(\mathbf{x}_{i} \mid \mathbf{x}_{i-1}\right)\).
+
+#+ATTR_HTML: :width 300px
+[[file:~/.local/images/prml-8-12.png]]
+
+** Parametric conditional distributions
+Using parameterized models for conditional distributions instead of full tables of conditional probabilities controls exponential growth in parameter numbers. In the figure below, binary parent variables \(x_{i}\) each have a single parameter \(\mu_{i}\) (probability \(p(x_{i} = 1)\)), giving \(M\) parameters in total. However, the conditional distribution \(p(y \mid x_1, \ldots, x_{M})\) requires \(2^{M}\) parameters, which increases exponentially with \(M\). The graph comprising \(M\) parents \(x_{1}, \ldots, x_{M}\) and a single child \(y\).
+
+To limit this growth, a logistic sigmoid function is applied to a linear combination of parent variables:
+
+\[
+p(y = 1 \mid x_{1}, \ldots, x_{M}) = \sigma(\mathbf{w}^{\mathrm{T}} \mathbf{x})
+\]
+
+where \(\sigma(a) = (1 + \exp(-a))^{-1}\) is the [[id:d1230eba-905b-4765-84ef-daa0b21fd3d9][sigmoid function]], \(\mathbf{x}\) is an \((M+1)\)-dimensional vector of parent states (with an additional clamped variable \(x_{0}\)), and \(\mathbf{w}\) is a vector of \(M+1\) parameters. This formulation grows linearly with \(M\), unlike the general case.
+
+#+ATTR_HTML: :width 300px
+[[file:~/.local/images/prml-8-13.png]]
+
+
