@@ -1,0 +1,9 @@
+:PROPERTIES:
+:ID:       f075c4f0-69aa-4f72-8879-42180ea7a063
+:END:
+#+TITLE: Markov network
+#+FILETAGS: :literature:prml:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+Synonym for a [[id:a6b72a88-bab0-4c02-a8b2-1fd285a29de5][Markov random field]].
+
