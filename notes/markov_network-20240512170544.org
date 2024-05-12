@@ -8,29 +8,7 @@
 *Markov networks*, also known as a [[id:a6b72a88-bab0-4c02-a8b2-1fd285a29de5][Markov random fields]] or [[id:5559c3da-2d3b-43e6-8b53-996c265ad38d][undirected graphical models]] are a type of [[id:4588e307-d9cd-4a69-9648-a6c8db14ed1a][probabilistic graphical models]] in which a [[id:f39a8683-abf8-4620-957d-b20795422d2d][probability distribution]] is represented by a [[id:e1fc9380-a936-4cf0-bc64-78119a1081da][graph]]. A Markov network has a set of [[id:a0fe774b-6d44-4807-ab68-023a7e867ed4][nodes]] and a set of [[id:ca49181e-4b87-4ec7-aab7-50aacceda405][edges]] each of which connects a pair of nodes. Unlike [[id:5665a889-6a84-4065-be33-f5186d348ea6][Bayesian networks]], the edges are /undirected/, that is they do not carry arrows.
 
 * Conditional independence properties
-
-In the case of directed graphs, we saw that it was possible to test whether a particular conditional independence property holds by applying a graphical test called \(\mathrm{d}\)-separation. This involved testing whether or not the paths connecting two sets of nodes were 'blocked'. The definition of blocked, however, was somewhat subtle due to the presence of paths having head-to-head nodes. We might ask whether it is possible to define an alternative graphical semantics for probability distributions such that conditional independence is determined by simple graph separation. This is indeed the case and corresponds to undirected graphical models. By removing the directional attributes from the links of the graph, the asymmetry between parent and child nodes is removed, and so the subtleties associated with head-to-head nodes no longer arise.
-
-Suppose that in an undirected graph we identify three sets of nodes, denoted \(A\), \(B\), and \(C\), and that we consider the conditional independence property
-
-\[
-A \perp\!\!\!\perp B \mid C .
-\]
-
-To test whether this property is satisfied by a probability distribution defined by a graph we consider all possible paths that connect nodes in set \(A\) to nodes in set \(B\). If all such paths pass through one or more nodes in set \(C\), then all such paths are 'blocked' and so the conditional independence property holds. However, if there is at least one such path that is not blocked, then the property does not necessarily hold, or more precisely there will exist at least some distributions corresponding to the graph that do not satisfy this conditional independence relation. This is illustrated with an example in the figure below:
-
-#+ATTR_HTML: :width 300px
-[[file:~/.local/images/prml-8-27.png]]
-
-In the undirected graph above every path from any node in set \(A\) to any node in set \(B\) passes through at least one node in set \(C\). Consequently the conditional independence property \(A \perp\!\!\!\perp B \mid C\) holds for any probability distribution described by this graph. Note that this is exactly the same as the d-separation criterion except that there is no 'explaining away' phenomenon. /Testing for conditional independence in undirected graphs is therefore simpler than in directed graphs./
-
-An alternative way to view the conditional independence test is to imagine removing all nodes in set \(C\) from the graph together with any links that connect to those nodes. We then ask if there exists a path that connects any node in \(A\) to any node in \(B\). If there are no such paths, then the conditional independence property must hold.
-
-The [[id:679ef603-2b30-4dab-9c68-bd4921963738][Markov blanket]] for an undirected graph takes a particularly simple form, because a node will be conditionally independent of all other nodes conditioned only on the neighboring nodes, as illustrated below
-
-#+ATTR_HTML: :width 100px
-[[file:~/.local/images/prml-8-28.png]]
-
+See [[id:c6de868e-1284-4ce9-a2e7-31f71c25a270][conditional independence]] and [[id:971e6cb8-1177-4d9a-90d7-43d22c22fb61][D-separation]]. 
 * Factorization properties
 We now seek a factorization rule for undirected graphs that will correspond to the above conditional independence test. Again, this will involve expressing the joint distribution \(p(\mathbf{x})\) as a product of functions defined over sets of variables that are local to the graph. We therefore need to decide what is the appropriate notion of locality in this case. 
 
@@ -66,7 +44,7 @@ So far, we have discussed the notion of conditional independence based on simple
 
 To do this we again return to the concept of a graphical model as a filter, corresponding to Figure 8.25. Consider the set of all possible distributions defined over a fixed set of variables corresponding to the nodes of a particular undirected graph. We can define \(\mathcal{U} \mathcal{I}\) to be the set of such distributions that are consistent with the set of conditional independence statements that can be read from the graph using graph separation. Similarly, we can define \(\mathcal{U F}\) to be the set of such distributions that can be expressed as a factorization of the form (8.39) with respect to the maximal cliques of the graph. The [[id:743df8cc-80d1-4dea-9fa6-37ff9eb45506][Hammersley-Clifford theorem]] states that the sets \(\mathcal{U} \mathcal{I}\) and \(\mathcal{U F}\) are identical.
 
-Because we are restricted to potential functions which are strictly positive it is convenient to express them as exponentials, so that
+Because we are restricted to potential functions which are strictly positive it is convenient to express them as exponential, so that
 
 \[
 \psi_{C}\left(\mathbf{x}_{C}\right)=\exp \left\{-E\left(\mathbf{x}_{C}\right)\right\}
@@ -75,4 +53,3 @@ Because we are restricted to potential functions which are strictly positive it 
 where \(E\left(\mathbf{x}_{C}\right)\) is called an energy function, and the exponential representation is called the Boltzmann distribution. The joint distribution is defined as the product of potentials, and so the total energy is obtained by adding the energies of each of the maximal cliques.
 
 In contrast to the factors in the joint distribution for a directed graph, the potentials in an undirected graph do not have a specific probabilistic interpretation. Although this gives greater flexibility in choosing the potential functions, because there is no normalization constraint, it does raise the question of how to motivate a choice of potential function for a particular application. This can be done by viewing the potential function as expressing which configurations of the local variables are preferred to others. Global configurations that have a relatively high probability are those that find a good balance in satisfying the (possibly conflicting) influences of the clique potentials. We turn now to a specific example to illustrate the use of undirected graphs.
-

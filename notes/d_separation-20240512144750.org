@@ -5,9 +5,10 @@
 #+FILETAGS: :literature:prml:
 #+SETUPFILE: ~/.config/emacs/setup/setupfile.org
 
+* D-separation in Bayesian networks
 Consider a general [[id:d131f5be-9c6c-4867-9f70-eca12e3facb2][directed graph]] in which \(A\), \(B\), and \(C\) are arbitrary non-intersecting sets of [[id:a0fe774b-6d44-4807-ab68-023a7e867ed4][nodes]] (whose union may be smaller than the complete set of nodes in the graph). Given such a graph, we want to know whether the nodes in \( A \) and \( B \) satisfy [[id:c6de868e-1284-4ce9-a2e7-31f71c25a270][conditional independence]] given the nodes in \( C \).
 
-#+NAME: D-separation
+#+NAME: D-separation for Bayesian networks
 #+begin_definition latex
 Consider a general directed graph in which \(A\), \(B\), and \(C\) are arbitrary non-intersecting sets of nodes. Consider all possible paths from any node in \(A\) to any node in \(B\). Any such path is said to be blocked if it includes a node such that either:
 
@@ -19,4 +20,33 @@ If all paths are blocked, then \(A\) is said to be d-separated from \(B\) by \(C
 
 For the purposes of d-separation, /scalar parameters/ such as \(\alpha\) and \(\sigma^{2}\) that appeared in [[id:6905c200-b885-4c57-aaae-1fc86ca1c025][Polynomial regression (as a DAG)]], indicated by small filled circles, behave in the same was as observed nodes. However, there are no marginal distributions associated with such nodes. Consequently parameter nodes never themselves have parents and so all paths through these nodes will always be tail-to-tail and hence blocked. *Consequently they play no role in d-separation*.
 
-For examples showing the application of D-separation, see [[id:fbf51bbb-48c4-4b60-9714-841bb3c046c4][examples of D-separation]] and the [[id:b0a97fcf-c2ae-4674-8935-956b7a356388][Naive Bayes model]].
+For examples showing the application of D-separation to Bayesian networks, see [[id:fbf51bbb-48c4-4b60-9714-841bb3c046c4][examples of D-separation]] and the [[id:b0a97fcf-c2ae-4674-8935-956b7a356388][Naive Bayes model]].
+
+* D-separation in Markov networks
+
+Consider a general [[id:5559c3da-2d3b-43e6-8b53-996c265ad38d][undirected graph]] in which \(A\), \(B\), and \(C\) are arbitrary non-intersecting sets of [[id:a0fe774b-6d44-4807-ab68-023a7e867ed4][nodes]] (whose union may be smaller than the complete set of nodes in the graph). Given such a graph, we want to know whether the nodes in \( A \) and \( B \) satisfy [[id:c6de868e-1284-4ce9-a2e7-31f71c25a270][conditional independence]] given the nodes in \( C \).
+
+#+NAME: D-separation for Markov networks
+#+begin_definition latex
+Consider a general undirected graph in which \(A\), \(B\), and \(C\) are arbitrary non-intersecting sets of nodes. Consider all possible paths from any node in \(A\) to any node in \(B\). Any such path is said to be blocked if:
+
+(a) it includes a node that is the set \( C \).
+
+If all paths are blocked, then \(A\) is said to be d-separated from \(B\) by \(C\), and the joint distribution over all of the variables in the graph will satisfy \(A \perp\!\!\!\perp B \mid C\).
+#+end_definition
+
+As an example consider the graph below
+
+
+#+ATTR_HTML: :width 300px
+[[file:~/.local/images/prml-8-27.png]]
+
+We want to test whether
+
+\[
+A \perp\!\!\!\perp B \mid C,
+\]
+
+so we consider all possible paths that connect nodes in set \(A\) to nodes in set \(B\). Clearly, every path from any node in set \(A\) to any node in set \(B\) passes through at least one node in set \(C\). Consequently the conditional independence property \(A \perp\!\!\!\perp B \mid C\) holds for any probability distribution described by this graph.
+
+An alternative way to view the conditional independence test is to imagine removing all nodes in set \(C\) from the graph together with any links that connect to those nodes. We then ask if there exists a path that connects any node in \(A\) to any node in \(B\). If there are no such paths, then the conditional independence property must hold.
