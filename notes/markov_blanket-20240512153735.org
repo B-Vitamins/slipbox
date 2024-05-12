@@ -1,0 +1,19 @@
+:PROPERTIES:
+:ID:       679ef603-2b30-4dab-9c68-bd4921963738
+:END:
+#+TITLE: Markov blanket
+#+FILETAGS: :literature:prml:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+Consider a [[id:8c833811-3657-4af4-8be5-191d8788b779][joint probability distribution]] \(p\left(\mathbf{x}_{1}, \ldots, \mathbf{x}_{D}\right)\) represented by a directed graph having \(D\) nodes, and consider the [[id:391465bc-1399-40f0-b049-738c1a64d6fb][conditional probability distribution]] of a particular node with variables \(\mathbf{x}_{i}\) conditioned on all of the remaining variables \(\mathbf{x}_{j \neq i}\). Using the [[id:5665a889-6a84-4065-be33-f5186d348ea6][factorization property]], we can express this conditional distribution in the form
+
+\begin{align*}
+p(\mathbf{x}_{i} \mid \mathbf{x}_{\{j \neq i\}}) & =\frac{p(\mathbf{x}_{1}, \ldots, \mathbf{x}_{D})}{\int p(\mathbf{x}_{1}, \ldots, \mathbf{x}_{D}) \mathrm{d} \mathbf{x}_{i}} =\frac{\prod_{k} p(\mathbf{x}_{k} \mid \mathrm{pa}_{k})}{\int \prod_{k} p(\mathbf{x}_{k} \mid \mathrm{pa}_{k}) \mathrm{d} \mathbf{x}_{i}}.
+\end{align*}
+
+In discrete variable models, integrals are replaced by summations. Factors \(p(\mathbf{x}_k \mid \mathrm{pa}_k)\) unrelated to \(\mathbf{x}_i\) can be moved outside the summation and cancel out in calculations. The relevant factors include \(p(\mathbf{x}_i \mid \mathrm{pa}_i)\) and the conditionals for nodes \(\mathbf{x}_k\) where \(\mathbf{x}_i\) is a parent. Moreover, the concept of "explaining away" necessitates including co-parents in the analysis. Co-parents are other parents of a child node that, together with \(\mathbf{x}_i\), can influence the child's outcome. Observing the child alone does not block indirect paths from \(\mathbf{x}_i\) to its co-parents, hence their inclusion is crucial. These dependencies—parents, children, and co-parents—form the *Markov blanket* of \(\mathbf{x}_i\), the minimal node set that isolates \(\mathbf{x}_i\) from the rest of the network and encapsulates its immediate probabilistic influences.
+
+#+ATTR_HTML: :width 400px
+[[file:~/.local/images/prml-8-26.png]]
+
+The Markov blanket of a node \(\mathbf{x}_{i}\) comprises the set of parents, children and co-parents of the node. It has the property that the conditional distribution of \(\mathbf{x}_{i}\), conditioned on all the remaining variables in the graph, is dependent only on the variables in the Markov blanket.
