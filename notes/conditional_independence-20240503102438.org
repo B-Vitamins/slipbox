@@ -26,4 +26,8 @@ p(X,\,Y \mid Z) &= p(X \mid Y,\, Z)\, p(Y \mid Z) = p(Y \mid X,\, Z)\, p(X \mid 
 &\Longrightarrow p(X \mid Y,\,Z) = p(X \mid Z) \quad \text{and} \quad p(Y \mid X,\,Z) = p(Y \mid Z).
 \end{align*}
 
-Graphical models help identify conditional independence properties without requiring exhaustive use of the [[id:e9446808-4593-483e-b66e-adb9cb3db93a][rules of probability]]. This is achieved by the framework of [[id:971e6cb8-1177-4d9a-90d7-43d22c22fb61][D-separation]].
+We will use the notation
+
+\[X \perp\!\!\!\perp Y \mid Z\]
+
+to denote conditional independence of \( X \) and \( Y \) given \( Z \). Graphical models help identify conditional independence properties without requiring exhaustive use of the [[id:e9446808-4593-483e-b66e-adb9cb3db93a][rules of probability]]. This is achieved by the framework of [[id:971e6cb8-1177-4d9a-90d7-43d22c22fb61][D-separation]].
