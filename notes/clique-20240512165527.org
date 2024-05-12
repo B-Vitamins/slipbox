@@ -1,0 +1,9 @@
+:PROPERTIES:
+:ID:       5b83c54c-ad39-4f70-a41b-4e4334513d7f
+:END:
+#+TITLE: Clique
+#+FILETAGS: :literature:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+A *clique* for an [[id:5559c3da-2d3b-43e6-8b53-996c265ad38d][undirected graphical models]] is a subset of the [[id:a0fe774b-6d44-4807-ab68-023a7e867ed4][node]] in a [[id:e1fc9380-a936-4cf0-bc64-78119a1081da][graph]] such that there exists a [[id:ca49181e-4b87-4ec7-aab7-50aacceda405][edge]] between /all pairs of nodes/ in the subset.
+
