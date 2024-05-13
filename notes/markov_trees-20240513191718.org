@@ -1,0 +1,19 @@
+:PROPERTIES:
+:ID:       fa873af5-17aa-4975-a7b1-3a1f215b190a
+:END:
+#+TITLE: Markov trees
+#+FILETAGS: :literature:prml:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+#+NAME: Markov Trees
+#+begin_definition latex
+In the case of a Markov network, a tree is defined as a graph in which there is one, and only one, path between any pair of nodes.
+#+end_definition
+
+A [[id:f075c4f0-69aa-4f72-8879-42180ea7a063][Markov network]] that is a tree does not have loops.
+
+An examples of an Markov tree is shown below:
+
+#+ATTR_HTML: :width 150px
+[[file:~/.local/images/prml-8-39a.png]]
+
