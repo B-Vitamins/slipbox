@@ -1,0 +1,31 @@
+:PROPERTIES:
+:ID:       d3b52b33-e693-4a55-932f-1aa81aa7de0e
+:END:
+#+TITLE: Polytree
+#+FILETAGS: :literature:prml:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+#+NAME: Polytree
+#+begin_definition latex
+If there are nodes in a Bayesian network that have more than one parent, but there is still only one path (ignoring the direction of the arrows) between any two nodes, then the graph is a called a polytree.
+#+end_definition
+
+An example of a *polytree* is given below:
+
+#+ATTR_HTML: :width 150px
+[[file:~/.local/images/prml-8-39c.png]]
+
++ A polytree is *not* a [[id:0ccd417a-2b03-42b6-a38a-44b4b56857fa][Bayesian tree]] because it has more than one root (or more appropriately more than one orphan node, i.e., a node without a parent).
++ [[id:e0388f3d-043f-463b-b000-07df748708e3][Moralizing]] a polytree is *not* a [[id:4bff0ba7-ed1a-44bc-b421-8e98861f1b96][no-op]], so by introducing edges it sacrifices [[id:c6de868e-1284-4ce9-a2e7-31f71c25a270][conditional independence]] properties (see [[id:ccc86790-986e-42e1-9b6e-64bfb94690fa][Bayesian network to Markov network]]).
++ Moralizing a polytree introduces loops, so it does not yield a [[id:fa873af5-17aa-4975-a7b1-3a1f215b190a][Markov tree]].
++ Conversion to a [[id:4c966ea3-8ede-417a-962d-c13a9c7725c7][factor graph]] turns a polytree into a tree (see [[id:50f64cb6-bd08-4b35-b0fe-b15fd4e2504a][Bayesian network to factor graph]]), as shown below
+
+#+ATTR_HTML: :width 100px
+[[file:~/.local/images/prml-8-43a.png]]
+
+#+ATTR_HTML: :width 100px
+[[file:~/.local/images/prml-8-43b.png]]
+
+#+ATTR_HTML: :width 100px
+[[file:~/.local/images/prml-8-43c.png]]
+
