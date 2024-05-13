@@ -1,0 +1,27 @@
+:PROPERTIES:
+:ID:       50f64cb6-bd08-4b35-b0fe-b15fd4e2504a
+:END:
+#+TITLE: Bayesian network to factor graph
+#+FILETAGS: :literature:prml:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+To convert a [[id:8c833811-3657-4af4-8be5-191d8788b779][joint probability distribution]] expressed by a [[id:5665a889-6a84-4065-be33-f5186d348ea6][Bayesian network]] into a [[id:4c966ea3-8ede-417a-962d-c13a9c7725c7][factor graph]], create /variable nodes/ corresponding to the original graph's nodes, /factor nodes/ corresponding to the [[id:391465bc-1399-40f0-b049-738c1a64d6fb][conditional probability distribution]], and appropriate links that respect the network's factorization and conditional independence properties (see [[id:5665a889-6a84-4065-be33-f5186d348ea6][Bayesian networks]]).
+
+There can be multiple factor graphs all of which correspond to the same directed graph. This is simply because the application of [[id:e9446808-4593-483e-b66e-adb9cb3db93a][rules of probability]] to a joint distribution is not unambiguous.
+
+* Example
+
+#+ATTR_HTML: :width 150px
+[[file:~/.local/images/prml-8-42a.png]]
+
+A directed graph with the factorization \(p\left(x_{1}\right) p\left(x_{2}\right) p\left(x_{3} \mid x_{1}, x_{2}\right)\).
+
+#+ATTR_HTML: :width 150px
+[[file:~/.local/images/prml-8-42b.png]]
+
+A factor graph representing the same distribution as the directed graph, whose factor satisfies \(f\left(x_{1}, x_{2}, x_{3}\right)=p\left(x_{1}\right) p\left(x_{2}\right) p\left(x_{3} \mid x_{1}, x_{2}\right)\).
+
+#+ATTR_HTML: :width 150px
+[[file:~/.local/images/prml-8-42c.png]]
+
+A different factor graph representing the same distribution with factors \(f_{a}\left(x_{1}\right)=p\left(x_{1}\right), f_{b}\left(x_{2}\right)=p\left(x_{2}\right)\) and \(f_{c}\left(x_{1}, x_{2}, x_{3}\right)=p\left(x_{3} \mid x_{1}, x_{2}\right)\).
