@@ -1,0 +1,18 @@
+:PROPERTIES:
+:ID:       e99d6be8-a617-48b5-accf-e1c9b32febd4
+:END:
+#+TITLE: Choice of potential functions (probabilistic graphical models)
+#+FILETAGS: :literature:prml:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+The flexibility of [[id:90eb8a52-db71-475e-940b-2f133b926715][potential functions]] in [[id:f075c4f0-69aa-4f72-8879-42180ea7a063][Markov networks]] comes with challenges:
+
+1) furnishing a convincing motivation for their chosen form is the onus of the modeler, 
+2) their interpretation is specific to the model.
+
+This is in contrast to the [[id:391465bc-1399-40f0-b049-738c1a64d6fb][conditional distributions]] of [[id:5665a889-6a84-4065-be33-f5186d348ea6][Bayesian networks]] where the interpretation is implicit in its definition.
+
+A typical recipe is to view the potential function as /expressing which configurations of the local variables are preferred to others/. *Global configurations that have a relatively high probability are those that find a good balance in satisfying the (possibly conflicting) influences of the clique potentials.*
+
+This is reminiscent of the concept of [[id:4bb9407b-744f-4078-a918-eb0cc22757ed][frustration]] in [[id:ec13c420-5d0b-431f-8d6c-df42837ffc4d][Spin glasses]], where [[id:d13fd888-4f86-4b03-b5e3-487476e716d3][ground state]] configurations are ones that find a good balance in satisfying the (possibly conflicting) influences of frustrated plaquettes.
+
