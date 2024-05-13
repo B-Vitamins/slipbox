@@ -1,0 +1,9 @@
+:PROPERTIES:
+:ID:       4bff0ba7-ed1a-44bc-b421-8e98861f1b96
+:END:
+#+TITLE: NOP (code)
+#+FILETAGS: :literature:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+A *NOP*, *no-op*, or *NOOP* (short for no operation) is a machine language instruction and its assembly language mnemonic, programming language statement, or computer protocol command that does nothing.
+
