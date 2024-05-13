@@ -1,0 +1,32 @@
+:PROPERTIES:
+:ID:       743df8cc-80d1-4dea-9fa6-37ff9eb45506
+:END:
+#+TITLE: Hammersley-Clifford theorem
+#+FILETAGS: :literature:prml:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+The *Hammersley-Clifford theorem*, or the *fundamental theorem of random fields*, gives a formal connection (for a certain class of factorization) between [[id:c6de868e-1284-4ce9-a2e7-31f71c25a270][conditional independence properties]] and [[id:f075c4f0-69aa-4f72-8879-42180ea7a063][factorization properties]] of [[id:5559c3da-2d3b-43e6-8b53-996c265ad38d][undirected graphical models]]. We will state a form of the theorem that relies on the notion of viewing a graphical model as a filter (see [[id:4718c6af-e37e-4de6-93a6-81458b595990][directed factorization]]).
+
+#+NAME: Hammersley-Clifford theorem
+#+begin_theorem latex
+1) Let \(\mathcal{U} \mathcal{I}\) be the set of distributions that are consistent with the set of conditional independence statements that can be read from a particular undirected graph.
+2) Let \(\mathcal{U F}\) be the set of distributions that can be expressed as a factorization of the form
+
+\[
+p(\mathbf{x})= Z^{-1} \prod_{C} \psi_{C}\left(\mathbf{x}_{C}\right), \qquad Z=\sum_{\mathbf{x}} \prod_{C} \psi_{C}\left(\mathbf{x}_{C}\right).
+\]
+
+with respect to the maximal cliques of the graph.
+3) Suppose that \(\psi_{C}\left(\mathbf{x}_{C}\right) \geqslant 0\) for all \( C \), or equivalently
+
+   \[
+   \psi_{C}\left(\mathbf{x}_{C}\right)=\exp \left\{-E\left(\mathbf{x}_{C}\right)\right\}
+   \]
+
+   where \(E\left(\mathbf{x}_{C}\right)\) is an appropriately defined function.
+
+The Hammersley-Clifford theorem states that the sets \(\mathcal{U} \mathcal{I}\) and \(\mathcal{U F}\) are identical.
+#+end_theorem
+
+Note that the set of conditional independence statements for a particular [[id:f075c4f0-69aa-4f72-8879-42180ea7a063][Markov network]] can be obtained by systematic application of the [[id:971e6cb8-1177-4d9a-90d7-43d22c22fb61][D-separation]] criterion. \(E(\mathbf{x}_{C})\) is sometimes called an energy function or [[id:28fb5913-91f6-4c6d-adec-6355e4b2fa80][Hamiltonian]]. In the form \( \psi_{C}\left(\mathbf{x}_{C}\right)=\exp \left\{-E\left(\mathbf{x}_{C}\right)\right\} \), \(\psi_{C}\left(\mathbf{x}_{C}\right)\) is called a [[id:ce66b418-1a34-4229-8fcd-df0b400c5678][Boltzmann factor]]. The joint distribution \( p(\mathbf{x}) \) is defined as the product of [[id:90eb8a52-db71-475e-940b-2f133b926715][potential functions]], and so the total energy is obtained by adding the energies of each of the [[id:66774f9d-b5bf-429c-9062-1abc9be7399d][maximal cliques]]. The joint distribution is called the [[id:875ec815-c6c1-4881-8454-b5bee3eb5e99][Gibbs-Boltzmann distribution]].
+
