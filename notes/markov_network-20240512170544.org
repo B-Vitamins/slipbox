@@ -28,6 +28,4 @@ One consequence of this generality of the potential functions is that their prod
 
 2) *The flexibility of potential functions in Markov networks comes with a challenge*: see [[id:e99d6be8-a617-48b5-accf-e1c9b32febd4][choice of potential functions (probabilistic graphical models)]].
 
-
-
 In contrast to the factors in the joint distribution for a directed graph, the potentials in an undirected graph do not have a specific probabilistic interpretation. 
