@@ -1,0 +1,27 @@
+:PROPERTIES:
+:ID:       42732612-82da-4dab-9bf9-2ad4c591996d
+:END:
+#+TITLE: Markov network to factor graph
+#+FILETAGS: :literature:prml:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+To convert a [[id:8c833811-3657-4af4-8be5-191d8788b779][joint probability distribution]] expressed by an [[id:f075c4f0-69aa-4f72-8879-42180ea7a063][Markov network]] into a [[id:4c966ea3-8ede-417a-962d-c13a9c7725c7][Factor graph]], create variable nodes corresponding to the original graph's nodes and factor nodes for the maximal cliques \(\mathbf{x}_{s}\). The factors \(f_{s}(\mathbf{x}_{s})\) equal the [[id:5b83c54c-ad39-4f70-a41b-4e4334513d7f][clique]] [[id:90eb8a52-db71-475e-940b-2f133b926715][potentials]].
+
+Multiple factor graphs can correspond to the same undirected graph. This is simply because there may be more than one ways of portioning subsets of nodes of a Markov network into [[id:66774f9d-b5bf-429c-9062-1abc9be7399d][maximal cliques]].
+
+* Example
+
+An undirected graph with a single clique potential \(\psi\left(x_{1}, x_{2}, x_{3}\right)\) is shown below.
+
+#+ATTR_HTML: :width 150px
+[[file:~/.local/images/prml-8-41a.png]]
+
+Shown below is a factor graph with factor \(f\left(x_{1}, x_{2}, x_{3}\right)=\psi\left(x_{1}, x_{2}, x_{3}\right)\) that represents the same distribution as the undirected graph above.
+
+#+ATTR_HTML: :width 150px
+[[file:~/.local/images/prml-8-41b.png]]
+
+Shown below is yet another factor graph representing the same distribution, whose factors satisfy \(f_{a}\left(x_{1}, x_{2}, x_{3}\right) f_{b}\left(x_{1}, x_{2}\right)=\psi\left(x_{1}, x_{2}, x_{3}\right)\).
+
+#+ATTR_HTML: :width 150px
+[[file:~/.local/images/prml-8-41c.png]]
