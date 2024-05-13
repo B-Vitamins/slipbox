@@ -1,0 +1,20 @@
+:PROPERTIES:
+:ID:       0ccd417a-2b03-42b6-a38a-44b4b56857fa
+:END:
+#+TITLE: Bayesian trees
+#+FILETAGS: :literature:prml:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+#+NAME: Bayesian Trees
+#+begin_definition latex
+In the case of Bayesian network, a tree is defined as a graph in which there is a single node, called the root, which has no parents, and all other nodes have one parent.
+#+end_definition
+
+In a [[id:5665a889-6a84-4065-be33-f5186d348ea6][Bayesian network]] that is a tree, [[id:e0388f3d-043f-463b-b000-07df748708e3][moralization]] is a [[id:4bff0ba7-ed1a-44bc-b421-8e98861f1b96][no-op]].
+
+An example of a Bayesian tree is shown below:
+
+#+ATTR_HTML: :width 150px
+[[file:~/.local/images/prml-8-39b.png]]
+
+
