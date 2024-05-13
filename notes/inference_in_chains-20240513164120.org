@@ -1,0 +1,55 @@
+:PROPERTIES:
+:ID:       1a409e9b-f29c-4f3c-9aa7-214b1738773f
+:END:
+#+TITLE: Inference in chains
+#+FILETAGS: :literature:prml:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+Consider a *chain of nodes* [[id:f075c4f0-69aa-4f72-8879-42180ea7a063][Markov network]] of the form shown below
+
+#+ATTR_HTML: :width 700px
+[[file:~/.local/images/prml-8-32b.png]]
+
+#+BEGIN_COMMENT
+If we had a [[id:5665a889-6a84-4065-be33-f5186d348ea6][Bayesian network]], we can always convert it into a Markov network (see [[id:ccc86790-986e-42e1-9b6e-64bfb94690fa][Bayesian network to Markov network]]) by [[id:e0388f3d-043f-463b-b000-07df748708e3][moralizing]] the Bayesian network. In this case, however, even if we had *chain of nodes* Bayesian network, it would not any nodes with more than one parent, rendering the moralization procedure a [[id:4bff0ba7-ed1a-44bc-b421-8e98861f1b96][NOP (code)]]. Therefore, the conversion to a Markov network simple requires discarding the directional attributes of the edges. Furthermore, since no new edges are added, all of the [[id:c6de868e-1284-4ce9-a2e7-31f71c25a270][conditional independence]] properties of the Bayesian chain are preserved in the Markov chain. 
+#+END_COMMENT
+
+The joint distribution for this graph takes the form
+
+\[
+p(\mathbf{x})=\frac{1}{Z} \psi_{1,2}\left(x_{1}, x_{2}\right) \psi_{2,3}\left(x_{2}, x_{3}\right) \cdots \psi_{N-1, N}\left(x_{N-1}, x_{N}\right) .
+\]
+
+* Problem: Marginal distribution of a specific node given no nodes are observed
+We consider the specific case of the \(N\) nodes representing discrete [[id:fa0e3aa2-347e-48b9-9cb7-e9f0be897281][random variable]] each having \(K\) possible states. In this case, each potential function \(\psi_{n-1,\,n}(x_{n-1},\,x_{n})\) comprises an \(K \times K\) table, and so the joint distribution has \((N-1) K^{2}\) parameters.
+
+#+BEGIN_PROBLEM
+Consider the inference problem of finding the marginal distribution \(p\left(x_{n}\right)\) for a specific node \(x_{n}\) that is part way along the chain. For the moment, there are no observed nodes. By definition
+
+\[
+p\left(x_{n}\right)=\sum_{x_{1}} \cdots \sum_{x_{n-1}} \sum_{x_{n+1}} \cdots \sum_{x_{N}} p(\mathbf{x}) .
+\]
+#+END_PROBLEM
+
+** Naive attempt
+Naively, we might evaluate the joint distribution and then perform the summations explicitly. Given \(N\) variables each with \(K\) states, there are \(K^N\) possible values for \(\mathbf{x}\), leading to exponential storage and computation.
+** Refined attempt
+However, by exploiting the conditional independence properties of the graphical model, we can achieve a more efficient algorithm. By factorizing the joint distribution, we can rearrange the summations and multiplications to evaluate the marginal efficiently.
+
+For example, consider the summation over \(x_N\). The potential \(\psi_{N-1, N}(x_{N-1}, x_N)\) is the only term dependent on \(x_N\), allowing us to perform the summation:
+
+\[ \sum_{x_N} \psi_{N-1, N}(x_{N-1}, x_N) \]
+
+first, giving a function of \(x_{N-1}\). This function is then used in the summation over \(x_{N-1}\), involving only this new function and the potential \(\psi_{N-2, N-1}(x_{N-2}, x_{N-1})\). Similarly, the summation over \(x_1\) involves only \(\psi_{1,2}(x_1, x_2)\) and can be performed separately, giving a function of \(x_2\), and so on. Each summation effectively removes a variable, akin to removing a node from the graph.
+
+If we group the potentials and summations together in this way, we can express the desired marginal in the form
+
+\begin{align*}
+p(x_{n}) &= \frac{1}{Z} \underbrace{\left[\sum_{x_{n-1}} \psi_{n-1, n}\left(x_{n-1}, x_{n}\right) \cdots\left[\sum_{x_{2}} \psi_{2,3}\left(x_{2}, x_{3}\right)\left[\sum_{x_{1}} \psi_{1,2}\left(x_{1}, x_{2}\right)\right]\right] \cdots\right]}_{\mu_{\beta}\left(x_{n}\right)} \\
+&\qquad \qquad \times \underbrace{\left[\sum_{x_{n+1}} \psi_{n, n+1}\left(x_{n}, x_{n+1}\right) \cdots\left[\sum_{x_{N}} \psi_{N-1, N}\left(x_{N-1}, x_{N}\right)\right] \cdots\right]}_{\mu_{\alpha}\left(x_{n}\right)}.  \tag{1}
+\end{align*}
+
+where we have used the identity \( a b+a c=a(b+c) \). Note that the left-hand side involves three arithmetic operations whereas the right-hand side reduces this to two operations.
+
+** Computational complexity
+We need to perform \(N-1\) summations, each over \(K\) states and involving a function of two variables. For example, summing over \(x_1\) involves the function \(\psi_{1,2}(x_1, x_2)\), a \(K \times K\) table. Summing this table over \(x_1\) for each \(x_2\) has \(O(K^2)\) cost. The resulting \(K\) vector is multiplied by the \(K \times K\) matrix \(\psi_{2,3}(x_2, x_3)\), again \(O(K^2)\). Since there are \(N-1\) such operations, the total cost of evaluating \(p(x_n)\) is \(O(N K^2)\), /linear in the chain length/, compared to the exponential cost of a naive approach. We thus exploit the graph's conditional independence properties for efficient calculation. If the graph were fully connected, lacking conditional independence, we'd need to work with the full joint distribution.
