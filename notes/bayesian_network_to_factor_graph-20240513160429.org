@@ -9,7 +9,7 @@ To convert a [[id:8c833811-3657-4af4-8be5-191d8788b779][joint probability distri
 
 There can be multiple factor graphs all of which correspond to the same directed graph. This is simply because the application of [[id:e9446808-4593-483e-b66e-adb9cb3db93a][rules of probability]] to a joint distribution is not unambiguous.
 
-* Example
+* Example 1
 
 #+ATTR_HTML: :width 150px
 [[file:~/.local/images/prml-8-42a.png]]
@@ -25,3 +25,14 @@ A factor graph representing the same distribution as the directed graph, whose f
 [[file:~/.local/images/prml-8-42c.png]]
 
 A different factor graph representing the same distribution with factors \(f_{a}\left(x_{1}\right)=p\left(x_{1}\right), f_{b}\left(x_{2}\right)=p\left(x_{2}\right)\) and \(f_{c}\left(x_{1}, x_{2}, x_{3}\right)=p\left(x_{3} \mid x_{1}, x_{2}\right)\).
+
+* Example 2
+Local cycles in a Bayesian network due to links connecting parents of a node can be removed on conversion to a factor graph by defining the appropriate factor function:
+
+#+ATTR_HTML: :width 150px
+[[file:~/.local/images/prml-8-44a.png]]
+
+#+ATTR_HTML: :width 200px
+[[file:~/.local/images/prml-8-44b.png]]
+
+
