@@ -1,0 +1,7 @@
+:PROPERTIES:
+:ID:       5559c3da-2d3b-43e6-8b53-996c265ad38d
+:END:
+#+TITLE: Undirected graphical models
+#+FILETAGS: :literature:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
