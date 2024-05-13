@@ -1,0 +1,25 @@
+:PROPERTIES:
+:ID:       e0d8b322-76e9-4928-b66c-9f3da2e4ee05
+:END:
+#+TITLE: Inference in probabilistic graphical models
+#+FILETAGS: :literature:prml:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+We turn now to the problem of [[id:01b2eedd-71b0-428f-bc4b-146b7068af36][inference]] in [[id:4588e307-d9cd-4a69-9648-a6c8db14ed1a][Probabilistic graphical models]]: /given that some of the/ [[id:a0fe774b-6d44-4807-ab68-023a7e867ed4][node]] /in a/ [[id:e1fc9380-a936-4cf0-bc64-78119a1081da][graph]] /are clamped to observed values, and we wish to compute the/ [[id:e166b400-40c8-410b-bb5b-0e0decca5f4c][posterior distribution]] /of one or more subsets of other nodes./
+
+We present the simplest possible example of a inference problem for a graphical model:
+
+Consider the graphical interpretation of [[id:731eff69-04dd-45f2-b2a7-968e9c44dc3e][Bayes's theorem]]. The [[id:8c833811-3657-4af4-8be5-191d8788b779][joint probability distribution]] \(p(x,\,y)\) over two variables \(x\) and \(y\) admits the decomposition (see  [[id:e9446808-4593-483e-b66e-adb9cb3db93a][rules of probability]]) \(p(x, y)=p(x) p(y \mid x)\). This is represented by the [[id:5665a889-6a84-4065-be33-f5186d348ea6][Bayesian network]] (a) in the figure below. Suppose now a value of \(y\) is observed (indicated by the shaded node in (b)). Our goal is to obtain the posterior \( p(x \mid y) \). \( p(y) \) is calculable:
+
+\[p(y) = \sum_{x^{\prime}} p(y \mid x^{\prime}) \, p(x^{\prime})\]
+
+With the [[id:98cfed25-404f-4443-9096-e604ca5faccd][marginal probability distribution]] \( p(x) \) as a prior, Bayes's theorem yields
+
+\[p(x \mid y) = \frac{p(y \mid x) p(x)}{p(y)}\]
+
+The inference problem is solved. The joint distribution \(p(x, y)\) is now represented by the graph (c) in the figure below (the direction of the arrow is reversed).
+
+#+ATTR_HTML: :width 300px
+[[file:~/.local/images/prml-8-37.png]]
+
+The inference problem for a graphical model can be solved using the techniques of [[id:72d227c3-76fd-433a-bff1-0954500dd35f][exact inference]] or [[id:47f8a374-2672-4d3c-85ac-87fc5716da12][approximate inference]].
