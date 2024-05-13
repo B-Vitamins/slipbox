@@ -1,0 +1,23 @@
+:PROPERTIES:
+:ID:       b39465f1-fc0b-4207-8934-956b87d9139d
+:END:
+#+TITLE: Confronting the partition function
+#+FILETAGS: :literature:pmrl:dl:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+If we have a [[id:f075c4f0-69aa-4f72-8879-42180ea7a063][Markov network]] with \(M\) discrete nodes each having \(K\) states, then the evaluation of the [[id:ca1d61e0-c60f-42c3-8de7-8dd8557aa6f3][partition function]] (normalization term) involves summing over \(K^{M}\) states - exponential in the size of the model. 
+
++ The partition function is needed in the evaluation of the [[id:8c833811-3657-4af4-8be5-191d8788b779][joint probability distribution]] \( p(\mathbf{x}) \) where \( \mathbf{x} = (x_1,\,\ldots,\,x_M) \) because it will be a function of any parameters that govern the potential functions \(\psi_{C}\left(\mathbf{x}_{C}\right)\).
+
++ The partition function is /not/ needed in the evaluation of local [[id:391465bc-1399-40f0-b049-738c1a64d6fb][conditional probability distributions]] (say \( p(x_i \mid x_j), \quad i \neq j, \quad i,\,j \in (1,\,\ldots,M) \)), because a conditional distribution is proportional to the ratio of two [[id:98cfed25-404f-4443-9096-e604ca5faccd][marginal probability distributions]], i.e., 
+
+  \[
+   \frac{p(x_i \mid x_j)}{p(x_j \mid x_i)} = \frac{p(x_i)}{p(x_j)}}, \quad i \neq j, \quad i,\,j \in (1,\,\ldots,M)
+  \]
+
+  so that the partition function cancels between numerator and denominator. 
+
++ The partition function is /not/ needed in the evaluation of local [[id:98cfed25-404f-4443-9096-e604ca5faccd][marginal probability distribution]]. We can work with the unnormalized joint distribution and then normalize the marginals explicitly at the end. 
+
+Provided the conditionals and/or marginals only involves a small number of variables, the evaluation of their normalization coefficient will be feasible.
+
