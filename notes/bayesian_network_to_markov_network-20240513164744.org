@@ -1,0 +1,87 @@
+:PROPERTIES:
+:ID:       ccc86790-986e-42e1-9b6e-64bfb94690fa
+:END:
+#+TITLE: Bayesian network to Markov network
+#+FILETAGS: :literature:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+To convert a [[id:5665a889-6a84-4065-be33-f5186d348ea6][Bayesian network]] into a [[id:f075c4f0-69aa-4f72-8879-42180ea7a063][Markov network]]:
+
+1) First obtain the [[id:e0388f3d-043f-463b-b000-07df748708e3][Moral graph]].
+2) Initialize all of the  [[id:5b83c54c-ad39-4f70-a41b-4e4334513d7f][clique]] [[id:90eb8a52-db71-475e-940b-2f133b926715][potential functions]] of the moral graph to unity.
+3) Select each conditional distribution factor in the original Bayesian network and multiply it into one of the clique potentials. 
+
+#+BEGIN_COMMENT
+The *moralization* step guarantees that there exists at least one [[id:66774f9d-b5bf-429c-9062-1abc9be7399d][maximal clique]] that contains all of the variables in the factor. Therefore, step (3) will always be possible.
+#+END_COMMENT
+
+#+BEGIN_COMMENT
+When a Bayesian network is converted into a Markov network, the [[id:ca1d61e0-c60f-42c3-8de7-8dd8557aa6f3][Partition function]] \( Z \) is unity. This is because the conditional distribution factors are properly normalized.
+#+END_COMMENT
+
+In the conversion from a Bayesian network to a Markov network, the resulting Markov network is /not/ an equivalent representation of the joint distribution modeled by the Bayesian network. As illustrated in [[id:example-2][Example 2]], the conversion sacrifices the [[id:c6de868e-1284-4ce9-a2e7-31f71c25a270][Conditional independence]] properties of the Bayesian network.
+
+The process of *moralization* ensures maximal preservation of the Bayesian network's conditional independence properties while still allowing a conversion to a Markov network. This is simply because it adds the fewest edges necessary to guarantee the existence of a clique potential to which a conditional distribution factor can be multiplied with.
+
+#+BEGIN_COMMENT
+Note that the trivial "conversion" of an arbitrary Bayesian network to a fully-connected Markov network sacrifices /all/ conditional independence properties of the original Bayesian network.
+#+END_COMMENT
+
+* Examples
+** Example 1
+There are cases in which the conversion is trivial. Consider the [[id:8c833811-3657-4af4-8be5-191d8788b779][joint probability distribution]] that admits the decomposition
+
+\[
+p(\mathbf{x})=p\left(x_{1}\right) p\left(x_{2} \mid x_{1}\right) p\left(x_{3} \mid x_{2}\right) \cdots p\left(x_{N} \mid x_{N-1}\right) .
+\]
+
+A Bayesian network that corresponds to this joint distribution is shown below
+
+#+ATTR_HTML: :width 500px
+[[file:~/.local/images/prml-8-32a.png]]
+
+In a Markov network derived from the Bayesian network above, the maximal cliques are simply the pairs of neighboring nodes:
+
+\[
+p(\mathbf{x})=\frac{1}{Z} \psi_{1,2}\left(x_{1}, x_{2}\right) \psi_{2,3}\left(x_{2}, x_{3}\right) \cdots \psi_{N-1, N}\left(x_{N-1}, x_{N}\right) .
+\]
+
+A trivial identification
+
+\begin{align*}
+\psi_{1,2}\left(x_{1}, x_{2}\right) & =p\left(x_{1}\right) p\left(x_{2} \mid x_{1}\right) \\
+\psi_{2,3}\left(x_{2}, x_{3}\right) & =p\left(x_{3} \mid x_{2}\right) \\
+& \vdots \\
+\psi_{N-1, N}\left(x_{N-1}, x_{N}\right) & =p\left(x_{N} \mid x_{N-1}\right),
+\end{align*}
+
+yields the Markov network (shown below):
+
+#+ATTR_HTML: :width 500px
+[[file:~/.local/images/prml-8-32b.png]]
+
+** Example 2
+:PROPERTIES:
+:ID: example-2
+:END:
+Now consider a joint distribution that admits the decomposition
+
+\[
+p(\mathbf{x})=p\left(x_{1}\right) p\left(x_{2}\right) p\left(x_{3}\right) p\left(x_{4} \mid x_{1}, x_{2}, x_{3}\right) .
+\]
+
+A Bayesian network that corresponds to this joint distribution is shown below
+
+#+ATTR_HTML: :width 200px
+[[file:~/.local/images/prml-8-33a.png]]
+
+The factor \(p\left(x_{4} \mid x_{1}, x_{2}, x_{3}\right)\) involves the four variables \(x_{1}, x_{2}, x_{3}\), and \(x_{4}\), and so these must all belong to a single clique if this conditional distribution is to be absorbed into a clique potential. Constructing the [[id:e0388f3d-043f-463b-b000-07df748708e3][moral graph]] (marrying the parents) by adding (undirected) edges between all pairs of parents of \( x_4 \) brings into existence such a clique potential. This process is called *moralization* and the resulting moral graph is shown below
+
+#+ATTR_HTML: :width 200px
+[[file:~/.local/images/prml-8-33b.png]]
+
+#+BEGIN_COMMENT
+Note that the moral graph in this example is fully connected and so exhibits no conditional independence properties, in contrast to the original Bayesian network.
+#+END_COMMENT
+
+
