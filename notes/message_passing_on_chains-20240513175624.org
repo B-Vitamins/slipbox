@@ -1,0 +1,84 @@
+:PROPERTIES:
+:ID:       33471aa0-943a-459b-8751-1baced2ad26c
+:END:
+#+TITLE: Message passing on chains
+#+FILETAGS: :literature:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+This node gives a interpretation for expression of the [[id:98cfed25-404f-4443-9096-e604ca5faccd][marginal probability distribution]] of node \( x_n \) on a linear chain [[id:f075c4f0-69aa-4f72-8879-42180ea7a063][Markov network]] as derived for the specific inference problem introduced in [[id:1a409e9b-f29c-4f3c-9aa7-214b1738773f][inference in chains]]. It also introduces several related inference problems and solves them using this interpretation.
+
+The expression for the marginal of a node \( x_n \) along the chain, given that no other nodes are observed is (see [[id:1a409e9b-f29c-4f3c-9aa7-214b1738773f][inference in chains]])
+
+\begin{align*}
+p(x_{n}) &= \frac{1}{Z} \mu_{\alpha} (x_n) \, \mu_{\beta} (x_n) \\
+&\qquad = \frac{1}{Z} \underbrace{\left[\sum_{x_{n-1}} \psi_{n-1, n}\left(x_{n-1}, x_{n}\right) \cdots\left[\sum_{x_{2}} \psi_{2,3}\left(x_{2}, x_{3}\right)\left[\sum_{x_{1}} \psi_{1,2}\left(x_{1}, x_{2}\right)\right]\right] \cdots\right]}_{\mu_{\beta}\left(x_{n}\right)} \\
+&\qquad \qquad \times \underbrace{\left[\sum_{x_{n+1}} \psi_{n, n+1}\left(x_{n}, x_{n+1}\right) \cdots\left[\sum_{x_{N}} \psi_{N-1, N}\left(x_{N-1}, x_{N}\right)\right] \cdots\right]}_{\mu_{\alpha}\left(x_{n}\right)}.  \tag{1}
+\end{align*}
+
+* Message passing in a linear chain Markov network
+The interpretation is that of /passing of local messages/ around on the graph. From the equation above we see that the expression for the marginal \(p\left(x_{n}\right)\) decomposes into the product of two factors times the normalization constant
+
+\[
+p\left(x_{n}\right)=\frac{1}{Z} \mu_{\alpha}\left(x_{n}\right) \mu_{\beta}\left(x_{n}\right). \tag{2}
+\]
+
+We shall interpret \(\mu_{\alpha}\left(x_{n}\right)\) as a *message passed forwards along the chain* from node \(x_{n-1}\) to node \(x_{n}\). Similarly, \(\mu_{\beta}\left(x_{n}\right)\) can be viewed as a *message passed backwards along the chain* to node \(x_{n}\) from node \(x_{n+1}\). Each message comprises a set of \(K\) values, one for each choice of \(x_{n}\). Therefore, the product of two messages should be interpreted as the point-wise multiplication of the elements of the two messages to give another set of \(K\) values.
+
+The messages \(\mu_{\alpha}\left(x_{n}\right)\) and  \(\mu_{\beta}\left(x_{n}\right)\) can be evaluated by unfolding a recursion:
+
+\begin{align*}
+\mu_{\alpha}\left(x_{n}\right) & =\sum_{x_{n-1}} \psi_{n-1, n}\left(x_{n-1}, x_{n}\right)\left[\sum_{x_{n-2}} \cdots\right] \\
+& =\sum_{x_{n-1}} \psi_{n-1, n}\left(x_{n-1}, x_{n}\right) \mu_{\alpha}\left(x_{n-1}\right). \tag{3a}
+\end{align*}
+
+\begin{align*}
+\mu_{\beta}\left(x_{n}\right) & =\sum_{x_{n+1}} \psi_{n+1, n}\left(x_{n+1}, x_{n}\right)\left[\sum_{x_{n+2}} \cdots\right] \\
+& =\sum_{x_{n+1}} \psi_{n+1, n}\left(x_{n+1}, x_{n}\right) \mu_{\beta}\left(x_{n+1}\right). \tag{3b}
+\end{align*}
+
+The recursion (3a) and (3b) are tipped from \(\mu_{\alpha}\left(x_{2}\right)=\sum_{x_{1}} \psi_{1,2}\left(x_{1}, x_{2}\right)\) and \(\mu_{\beta}\left(x_{N-1}\right)=\sum_{x_{N}} \psi_{N-1,\,N}\left(x_{N-1}, x_{N}\right)\) respectively and unrolled till \( x_n \) is reached. This recursive message passing is illustrated in the figure below
+
+#+ATTR_HTML: :width 600px
+[[file:~/.local/images/prml-8-38.png]]
+
+The marginal distribution \(p\left(x_{n}\right)\) for a node \(x_{n}\) along the chain is obtained by multiplying the two messages \(\mu_{\alpha}\left(x_{n}\right)\) and \(\mu_{\beta}\left(x_{n}\right)\), and then normalizing (1). These messages can themselves be evaluated recursively by passing messages from both ends of the chain towards node \(x_{n}\).
+
+The normalization constant \(Z\) is easily evaluated by summing the right-hand side of (1) over all states of \(x_{n}\), an \(O(K)\) computation. Graphs of the form shown above are called [[id:1fca5323-ea8f-4726-ad6c-72a5373adfd9][Markov chains]] and the corresponding message passing equations represent an example of the [[id:d8c98990-74b8-424a-8597-8f0f474f0b37][Chapman-Kolmogorov equations]] for [[id:d73549c4-16e7-4090-92e8-ff031a457882][Markov processess]].
+
+* Problem 1: Marginal distribution of every node in the chain
+#+BEGIN_PROBLEM
+Consider the inference problem of finding the marginal distribution \(p\left(x_{n}\right)\) for every node \( n \in \{1,\,\ldots,\,N\} \) in the chain. For the moment, there are no observed nodes.
+#+END_PROBLEM
+
+Simply applying the above procedure separately for each node will have computational cost that is \(O\left(N^{2} M^{2}\right)\). 
+
+Instead launch a message \(\mu_{\beta}\left(x_{N-1}\right)\) starting from node \(x_{N}\) and propagate corresponding messages till node \(x_{1}\). Similarly launch a message \(\mu_{\alpha}\left(x_{2}\right)\) starting from node \(x_{1}\) and propagate the corresponding messages till node \(x_{N}\). Store all intermediate messages, computed during the propagation. This data can be used by any node to evaluate its marginal simply by applying (1). The computational cost is \(O(N K^2)\), same as the cost of solving the inference problem of finding the marginal distribution of \( p(x_n) \) (see [[id:1a409e9b-f29c-4f3c-9aa7-214b1738773f][inference in chains]]) for a given \( x_n \)! 
+
+#+BEGIN_COMMENT
+A message has passed once in each direction across each link in the graph. Note also that the normalization constant \(Z\) need be evaluated only once, using any convenient node.
+#+END_COMMENT
+
+* Problem 2: Marginal distribution of a node given some other node in the chain is observed
+#+BEGIN_PROBLEM
+Consider the inference problem of finding the marginal distribution \(p\left(x_{n}\right)\) for a specific node \(x_{n}\) that is part way along the chain. Suppose that the node \( x_m \) is observed.
+#+END_PROBLEM
+
+If \( x_m \) is observed, then simply clamp the variable to its observed value. It is clear from (1) that there is no summation involved for this variable. Stated differently, the effect of clamping a variable \(x_{m}\) to an observed value \(\widehat{x}_{m}\) can be expressed by multiplying the [[id:8c833811-3657-4af4-8be5-191d8788b779][joint probability distribution]] by (one or more copies of) an additional function \(I\left(x_{m}, \widehat{x}_{m}\right)\), which takes the value 1 when \(x_{m}=\widehat{x}_{m}\) and the value 0 otherwise. One such function can then be absorbed into each of the [[id:90eb8a52-db71-475e-940b-2f133b926715][potential functions]] that contain \(x_{m}\). Summations over \(x_{m}\) then contain only one term in which \(x_{m}=\widehat{x}_{m}\).
+* Problem 3: Local joint distributions of neighboring nodes on the chain
+#+BEGIN_PROBLEM
+Consider the inference problem of finding the joint distribution \(p\left(x_{n-1},\,x_{n}\right)\) for two neighboring nodes on the chain.
+#+END_PROBLEM
+
+The required joint distribution can be written in the form
+
+\[
+p\left(x_{n-1},\,x_{n}\right)=\frac{1}{Z} \mu_{\alpha}\left(x_{n-1}\right) \psi_{n-1, n}\left(x_{n-1}, x_{n}\right) \mu_{\beta}\left(x_{n}\right). \tag{4}
+\]
+
+It follows that once the message passing required to obtain the marginals has concluded, the joint distributions over all of the sets of variables in each of the potentials are immediately accessible.
+
+#+BEGIN_COMMENT
+This is a useful result because in practice we may wish to use parametric forms for the [[id:5b83c54c-ad39-4f70-a41b-4e4334513d7f][clique]] potentials, or equivalently for the conditional distributions if we started from a [[id:5665a889-6a84-4065-be33-f5186d348ea6][Bayesian network]]. In order to learn the parameters of these potentials in situations where not all of the variables are observed, we can employ the [[id:a820259b-8ea5-4c46-870b-c52a33ba35a1][EM algorithm]], and it turns out that the local joint distributions of the cliques, conditioned on any observed data, is precisely what is needed in the E step.
+#+END_COMMENT
+
+
