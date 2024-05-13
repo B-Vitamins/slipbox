@@ -1,0 +1,8 @@
+:PROPERTIES:
+:ID:       9a047e0b-7405-4f15-9117-620fc8d4642c
+:END:
+#+TITLE: Marginal likelihood
+#+FILETAGS: :literature:prml:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+A synonym for [[id:7a527c55-77eb-4287-b09e-5af08d301b39][model evidence]]. It is so called because the model evidence can be viewed as a likelihood function over the space of models, in which the parameters have been marginalized out.
