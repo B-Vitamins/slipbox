@@ -1,0 +1,48 @@
+:PROPERTIES:
+:ID:       4c966ea3-8ede-417a-962d-c13a9c7725c7
+:END:
+#+TITLE: Factor graph
+#+FILETAGS: :literature:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+Suppose that a [[id:8c833811-3657-4af4-8be5-191d8788b779][joint probability distribution]] over a set of variables \( \mathbf{x} \) admits the decomposition
+
+\[
+p(\mathbf{x})=\prod_{s} f_{s}(\mathbf{x}_{s}) \tag{1}
+\]
+
+where \(\mathbf{x}_{s}\) denotes a subset of the variables. Each *factor* \(f_{s}\) is a function of a corresponding set of variables \(\mathbf{x}_{s}\).
+
+The factorization of joint distributions represented by [[id:5665a889-6a84-4065-be33-f5186d348ea6][Bayesian networks]] is defined by
+
+\begin{align*}
+p(\mathbf{x})=\prod_{k=1}^{K} p\left(x_{k} \mid \mathrm{pa}_{k}\right)
+\end{align*}
+
+for a graph with \(K\) nodes. Here \(\mathrm{pa}_{k}\) denotes the set of parents of \(x_{k}\), and \(\mathbf{x}=\left\{x_{1}, \ldots, x_{K}\right\}\). This represents a special case of (1) in which \(f_{s}(\mathbf{x}_{s}) = p (x_s \mid \mathrm{pa}_s)\), i.e., the factors are local [[id:391465bc-1399-40f0-b049-738c1a64d6fb][conditional probability distributions]]. 
+
+The factorization of joint distributions represented by [[id:f075c4f0-69aa-4f72-8879-42180ea7a063][Markov networks]] is similarly defined by
+
+\[
+p(\mathbf{x})= Z^{-1} \prod_{C} \psi_{C}\left(\mathbf{x}_{C}\right), \qquad Z=\sum_{\mathbf{x}} \prod_{C} \psi_{C}\left(\mathbf{x}_{C}\right).
+\]
+where \(C\) is a [[id:66774f9d-b5bf-429c-9062-1abc9be7399d][maximal clique]] of the graph and the set of variables in that clique are denoted by \(\mathbf{x}_{C}\). Then the joint distribution is written as a product of [[id:90eb8a52-db71-475e-940b-2f133b926715][potential functions]] \(\psi_{C}\left(\mathbf{x}_{C}\right)\) over the cliques of the graph. This too represents a special case of (1) in which \(f_{s}(\mathbf{x}_{s}) = Z^{-1} \psi_s (x_s)\).
+
+A *factor graph* is an extension of either a Bayesian network or a Markov network in which the factors \(f_s\) appear explicitly. These factors are depicted using /solid squares/, one for each factor \(f_{s}\left(\mathbf{x}_{s}\right)\) in the joint distribution. Furthermore, the dependence of \( f_s (\mathbf{x}_s) \) on \( \mathbf{x}_s \) is made explicit using /undirected links/ connecting each factor node to all of the variables nodes on which that factor depends.
+
+As an example, consider a distribution that admits the factorization
+
+\[
+p(\mathbf{x})=f_{a}\left(x_{1}, x_{2}\right) f_{b}\left(x_{1}, x_{2}\right) f_{c}\left(x_{2}, x_{3}\right) f_{d}\left(x_{3}\right) .
+\]
+
+This can be expressed by the factor graph shown below
+
+#+ATTR_HTML: :width 300px
+[[file:~/.local/images/prml-8-40.png]]
+
++ In the example above, there are two factors \(f_{a}(x_{1}, x_{2})\) and \(f_{b}(x_{1}, x_{2})\) defined over the same set of variables. 
++ In an undirected graph, the product of such factors merges into a single clique potential.
++ Similarly, \(f_{c}(x_{2}, x_{3})\) and \(f_{d}(x_{3})\) combine into a single potential over \(x_{2}\) and \(x_{3}\).
++ However, factor graphs maintain these factors explicitly, providing detailed information about the factorization.
++ All links /connect nodes of opposite types/, allowing the graph to be drawn as two rows (variables at the top, factors at the bottom) with inter-row links.
