@@ -1,0 +1,14 @@
+:PROPERTIES:
+:ID:       aa6f3a0f-91e2-4808-9fc3-6ab530d0d849
+:END:
+#+TITLE: Inference on trees
+#+FILETAGS: :literature:prml:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+[[id:72d227c3-76fd-433a-bff1-0954500dd35f][Exact inference]] (see [[id:e0d8b322-76e9-4928-b66c-9f3da2e4ee05][inference in probabilistic graphical models]]) on a [[id:1a409e9b-f29c-4f3c-9aa7-214b1738773f][chain of nodes]] can be performed efficiently in linear time using a [[id:33471aa0-943a-459b-8751-1baced2ad26c][message passing algorithm]]. 
+
+More generally, inference can be efficiently done using *local message passing* on a broader class of graphs called *trees* (see [[id:fa873af5-17aa-4975-a7b1-3a1f215b190a][Markov trees]] and [[id:0ccd417a-2b03-42b6-a38a-44b4b56857fa][Bayesian trees]] for definitions).
+
+The conversion of a [[id:0ccd417a-2b03-42b6-a38a-44b4b56857fa][Bayesian tree]] into a [[id:f075c4f0-69aa-4f72-8879-42180ea7a063][Markov network]] yields a [[id:fa873af5-17aa-4975-a7b1-3a1f215b190a][Markov tree]] because [[id:e0388f3d-043f-463b-b000-07df748708e3][moralization]] is a [[id:4bff0ba7-ed1a-44bc-b421-8e98861f1b96][no-op]]. For the same reason, the conversion does not lose any [[id:c6de868e-1284-4ce9-a2e7-31f71c25a270][conditional independence]] properties of the Bayesian tree (see [[id:ccc86790-986e-42e1-9b6e-64bfb94690fa][Bayesian network to Markov network]]).
+
+This contrasts with [[id:d3b52b33-e693-4a55-932f-1aa81aa7de0e][Polytrees]], which are neither Bayesian trees nor does their moralization yield Markov trees. However, conversion of polytrees to [[id:4c966ea3-8ede-417a-962d-c13a9c7725c7][factor graphs]] (see [[id:50f64cb6-bd08-4b35-b0fe-b15fd4e2504a][Bayesian network to factor graph]]) yields a tree.
