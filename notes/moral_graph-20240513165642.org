@@ -1,0 +1,11 @@
+:PROPERTIES:
+:ID:       e0388f3d-043f-463b-b000-07df748708e3
+:END:
+#+TITLE: Moral graph
+#+FILETAGS: :literature:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+To obtain a *moral graph* from a [[id:5665a889-6a84-4065-be33-f5186d348ea6][Bayesian network]]:
+
+1) Add additional undirected edges between all pairs of parents for each node in the graph
+2) drop the arrows on the original edges to give the moral graph.
