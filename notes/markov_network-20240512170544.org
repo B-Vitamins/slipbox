@@ -5,7 +5,7 @@
 #+FILETAGS: :literature:prml:
 #+SETUPFILE: ~/.config/emacs/setup/setupfile.org
 
-*Markov networks*, also known as a [[id:a6b72a88-bab0-4c02-a8b2-1fd285a29de5][Markov random fields]] or [[id:5559c3da-2d3b-43e6-8b53-996c265ad38d][undirected graphical models]] are a type of [[id:4588e307-d9cd-4a69-9648-a6c8db14ed1a][probabilistic graphical models]] in which a [[id:f39a8683-abf8-4620-957d-b20795422d2d][probability distribution]] is represented by a [[id:e1fc9380-a936-4cf0-bc64-78119a1081da][graph]]. A Markov network has a set of [[id:a0fe774b-6d44-4807-ab68-023a7e867ed4][nodes]] and a set of [[id:ca49181e-4b87-4ec7-aab7-50aacceda405][edges]] each of which connects a pair of nodes. Unlike [[id:5665a889-6a84-4065-be33-f5186d348ea6][Bayesian networks]], the edges are /undirected/, that is they do not carry arrows.
+*Markov networks*, or [[id:a6b72a88-bab0-4c02-a8b2-1fd285a29de5][Markov random fields]] or [[id:5559c3da-2d3b-43e6-8b53-996c265ad38d][undirected graphical models]] are a type of [[id:4588e307-d9cd-4a69-9648-a6c8db14ed1a][probabilistic graphical models]] in which a [[id:f39a8683-abf8-4620-957d-b20795422d2d][probability distribution]] is represented by a [[id:e1fc9380-a936-4cf0-bc64-78119a1081da][graph]]. A Markov network has a set of [[id:a0fe774b-6d44-4807-ab68-023a7e867ed4][nodes]] and a set of [[id:ca49181e-4b87-4ec7-aab7-50aacceda405][edges]] each of which connects a pair of nodes. Unlike [[id:5665a889-6a84-4065-be33-f5186d348ea6][Bayesian networks]], the edges are /undirected/, that is they do not carry arrows.
 
 * Conditional independence properties
 See [[id:c6de868e-1284-4ce9-a2e7-31f71c25a270][conditional independence]] and [[id:971e6cb8-1177-4d9a-90d7-43d22c22fb61][D-separation]]. 
