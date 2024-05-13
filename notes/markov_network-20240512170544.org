@@ -10,46 +10,24 @@
 * Conditional independence properties
 See [[id:c6de868e-1284-4ce9-a2e7-31f71c25a270][conditional independence]] and [[id:971e6cb8-1177-4d9a-90d7-43d22c22fb61][D-separation]]. 
 * Factorization properties
-We now seek a factorization rule for undirected graphs that will correspond to the above conditional independence test. Again, this will involve expressing the joint distribution \(p(\mathbf{x})\) as a product of functions defined over sets of variables that are local to the graph. We therefore need to decide what is the appropriate notion of locality in this case. 
-
-If we consider two nodes \(x_{i}\) and \(x_{j}\) that are not connected by a link, then these variables must be conditionally independent given all other nodes in the graph. This follows from the fact that there is no direct path between the two nodes, and all other paths pass through nodes that are observed, and hence those paths are blocked. This conditional independence property can be expressed as
+Let us denote a [[id:5b83c54c-ad39-4f70-a41b-4e4334513d7f][clique]] by \(C\) and the set of variables in that clique by \(\mathbf{x}_{C}\). Then the joint distribution is written as a product of [[id:90eb8a52-db71-475e-940b-2f133b926715][potential functions]] \(\psi_{C}\left(\mathbf{x}_{C}\right)\) over the cliques of the graph
 
 \[
-p(x_{i}, x_{j} \mid \mathbf{x}_{\backslash\{i, j\}})=p(x_{i} \mid \mathbf{x}_{\backslash\{i, j\}}) p(x_{j} \mid \mathbf{x}_{\backslash\{i, j\}})
+p(\mathbf{x})= Z^{-1} \prod_{C} \psi_{C}\left(\mathbf{x}_{C}\right), \qquad Z=\sum_{\mathbf{x}} \prod_{C} \psi_{C}\left(\mathbf{x}_{C}\right).
 \]
 
-where \(\mathbf{x} \backslash\{i, j\}\) denotes the set \(\mathbf{x}\) of all variables with \(x_{i}\) and \(x_{j}\) removed. The factorization of the joint distribution must therefore be such that \(x_{i}\) and \(x_{j}\) do not appear in the same factor in order for the conditional independence property to hold for all possible distributions belonging to the graph.
+Here the quantity \(Z\), sometimes called the [[id:ca1d61e0-c60f-42c3-8de7-8dd8557aa6f3][partition function]], is a normalization constant ensures \( \sum_{\mathbf{x}} p(\mathbf{x}) = 1 \). We must also ensure \(p(\mathbf{x}) \geqslant 0\): this is easily done by demanding \(\psi_{C}\left(\mathbf{x}_{C}\right) \geqslant 0\). When \( \mathbf{x} \) is continuous, the \( \sum \) is replaced with an \( \int \).
 
-Let us denote a [[id:5b83c54c-ad39-4f70-a41b-4e4334513d7f][clique]] by \(C\) and the set of variables in that clique by \(\mathbf{x}_{C}\). Then the joint distribution is written as a product of potential functions \(\psi_{C}\left(\mathbf{x}_{C}\right)\) over the [[id:66774f9d-b5bf-429c-9062-1abc9be7399d][maximal cliques]] of the graph
+#+BEGIN_COMMENT
+While the potential functions may lend themselves to interpretation as [[id:98cfed25-404f-4443-9096-e604ca5faccd][marginal]] or [[id:391465bc-1399-40f0-b049-738c1a64d6fb][conditional]] distributions (for instance when the undirected graph is constructed by starting with a directed graph), it need not be so in general. The only inviolable constraint on the potential functions is that they must respect the conditional independence properties of the Markov network which they do by construction (see [[id:90eb8a52-db71-475e-940b-2f133b926715][potential functions]]).
 
-\[
-p(\mathbf{x})=\frac{1}{Z} \prod_{C} \psi_{C}\left(\mathbf{x}_{C}\right) .
-\]
+One consequence of this generality of the potential functions is that their product will in general not be correctly normalized: hence the partition function. Recall that for Bayesian networks, the joint distribution was automatically normalized as a consequence of the normalization of each of the conditional distributions in the factorization (see [[id:c8691cca-9591-4bd1-bdd1-4793e92f4365][normalization of Bayesian networks]]).
+#+END_COMMENT
 
-Here the quantity \(Z\), sometimes called the partition function, is a normalization constant and is given by
+1) *The presence of this normalization constant is one of the major limitations of undirected graphs*: see [[id:b39465f1-fc0b-4207-8934-956b87d9139d][confronting the partition function]].
 
-\[
-Z=\sum_{\mathbf{x}} \prod_{C} \psi_{C}\left(\mathbf{x}_{C}\right)
-\]
+2) *The flexibility of potential functions in Markov networks comes with a challenge*: see [[id:e99d6be8-a617-48b5-accf-e1c9b32febd4][choice of potential functions (probabilistic graphical models)]].
 
-which ensures that the distribution \(p(\mathbf{x})\) given by (8.39) is correctly normalized. By considering only potential functions which satisfy \(\psi_{C}\left(\mathbf{x}_{C}\right) \geqslant 0\) we ensure that \(p(\mathbf{x}) \geqslant 0\). In (8.40) we have assumed that \(\mathbf{x}\) comprises discrete variables, but the framework is equally applicable to continuous variables, or a combination of the two, in which the summation is replaced by the appropriate combination of summation and integration.
 
-Note that we do not restrict the choice of potential functions to those that have a specific probabilistic interpretation as marginal or conditional distributions. This is in contrast to directed graphs in which each factor represents the conditional distribution of the corresponding variable, conditioned on the state of its parents. However, in special cases, for instance where the undirected graph is constructed by starting with a directed graph, the potential functions may indeed have such an interpretation, as we shall see shortly.
 
-One consequence of the generality of the potential functions \(\psi_{C}\left(\mathbf{x}_{C}\right)\) is that their product will in general not be correctly normalized. We therefore have to introduce an explicit normalization factor given by (8.40). Recall that for directed graphs, the joint distribution was automatically normalized as a consequence of the normalization of each of the conditional distributions in the factorization.
-
-*The presence of this normalization constant is one of the major limitations of undirected graphs.* If we have a model with \(M\) discrete nodes each having \(K\) states, then the evaluation of the normalization term involves summing over \(K^{M}\) states and so (in the worst case) is exponential in the size of the model. The partition function is needed for parameter learning because it will be a function of any parameters that govern the potential functions \(\psi_{C}\left(\mathbf{x}_{C}\right)\). However, for evaluation of local conditional distributions, the partition function is not needed because a conditional is the ratio of two marginals, and the partition function cancels between numerator and denominator when evaluating this ratio. Similarly, for evaluating local marginal probabilities we can work with the unnormalized joint distribution and then normalize the marginals explicitly at the end. Provided the marginals only involves a small number of variables, the evaluation of their normalization coefficient will be feasible.
-
-So far, we have discussed the notion of conditional independence based on simple graph separation and we have proposed a factorization of the joint distribution that is intended to correspond to this conditional independence structure. However, we have not made any formal connection between conditional independence and factorization for undirected graphs. To do so we need to restrict attention to potential functions \(\psi_{C}\left(\mathbf{x}_{C}\right)\) that are strictly positive (i.e., never zero or negative for any choice of \(\mathbf{x}_{C}\) ). Given this restriction, we can make a precise relationship between factorization and conditional independence.
-
-To do this we again return to the concept of a graphical model as a filter, corresponding to Figure 8.25. Consider the set of all possible distributions defined over a fixed set of variables corresponding to the nodes of a particular undirected graph. We can define \(\mathcal{U} \mathcal{I}\) to be the set of such distributions that are consistent with the set of conditional independence statements that can be read from the graph using graph separation. Similarly, we can define \(\mathcal{U F}\) to be the set of such distributions that can be expressed as a factorization of the form (8.39) with respect to the maximal cliques of the graph. The [[id:743df8cc-80d1-4dea-9fa6-37ff9eb45506][Hammersley-Clifford theorem]] states that the sets \(\mathcal{U} \mathcal{I}\) and \(\mathcal{U F}\) are identical.
-
-Because we are restricted to potential functions which are strictly positive it is convenient to express them as exponential, so that
-
-\[
-\psi_{C}\left(\mathbf{x}_{C}\right)=\exp \left\{-E\left(\mathbf{x}_{C}\right)\right\}
-\]
-
-where \(E\left(\mathbf{x}_{C}\right)\) is called an energy function, and the exponential representation is called the Boltzmann distribution. The joint distribution is defined as the product of potentials, and so the total energy is obtained by adding the energies of each of the maximal cliques.
-
-In contrast to the factors in the joint distribution for a directed graph, the potentials in an undirected graph do not have a specific probabilistic interpretation. Although this gives greater flexibility in choosing the potential functions, because there is no normalization constraint, it does raise the question of how to motivate a choice of potential function for a particular application. This can be done by viewing the potential function as expressing which configurations of the local variables are preferred to others. Global configurations that have a relatively high probability are those that find a good balance in satisfying the (possibly conflicting) influences of the clique potentials. We turn now to a specific example to illustrate the use of undirected graphs.
+In contrast to the factors in the joint distribution for a directed graph, the potentials in an undirected graph do not have a specific probabilistic interpretation. 
