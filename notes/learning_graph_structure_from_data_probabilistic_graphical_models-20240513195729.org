@@ -1,0 +1,23 @@
+:PROPERTIES:
+:ID:       556e7792-02cf-4e0c-aab1-498977cab638
+:END:
+#+TITLE: Learning graph structure from data (probabilistic graphical models)
+#+FILETAGS: :literature:prml:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+In [[id:e0d8b322-76e9-4928-b66c-9f3da2e4ee05][inference in probabilistic graphical models]], the structure of the graph is known and fixed. Going beyond the [[id:01b2eedd-71b0-428f-bc4b-146b7068af36][inference]] problem involves learning the very structure of the [[id:4588e307-d9cd-4a69-9648-a6c8db14ed1a][Probabilistic graphical model]] from data. This undertaking has two prerequisites:
+
+1) a space of possible structures,
+2) a measure to score each structure.
+
+From a [[id:399bcfbb-fda0-4a7d-98a4-acb3f02765cf][Bayesian viewpoint]], the ideal would be to compute a [[id:e166b400-40c8-410b-bb5b-0e0decca5f4c][posterior distribution]] over graph structures and to make predictions by averaging with respect to this distribution.
+
+1) If we have a prior \(p(m)\) over graphs indexed by \(m\), then the posterior distribution is given by \(p(m \mid \mathcal{D}) \propto p(m) p(\mathcal{D} \mid m)\) where \(\mathcal{D}\) is the observed data set.
+2) The [[id:7a527c55-77eb-4287-b09e-5af08d301b39][model evidence]] \(p(\mathcal{D} \mid m)\) scores each model.
+
+Each of the steps above comes with formidable challenges:
+
+1) Because the number of different graph structures grows exponentially with the number of nodes, exploring the space of structures may not be feasible, and introduces the need for heuristics to find good candidates.
+2) The evaluation of the model evidence involves marginalization over the latent variables and presents a challenging computational problem for many models.
+
+
