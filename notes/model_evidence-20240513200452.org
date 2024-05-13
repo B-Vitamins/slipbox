@@ -1,0 +1,36 @@
+:PROPERTIES:
+:ID:       7a527c55-77eb-4287-b09e-5af08d301b39
+:END:
+#+TITLE: Model evidence
+#+FILETAGS: :literature:prml:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+#+NAME: Model evidence/Marginal likelihood
+#+begin_definition latex
+Consider a data set \(\mathcal{D}\) and a set of models \(\left\{\mathcal{M}_i\right\}\) having parameters \(\left\{\boldsymbol{\theta}_i\right\}\). The model evidence or the marginal likelihood is defined as the quantity \(p\left(\mathcal{D} \mid \mathcal{M}_i\right)\).
+#+end_definition
+
+#+NAME: Model evidence
+#+begin_lemma latex
+For a model \( \mathcal{M} \) governed by parameters \( \boldsymbol{\theta} \), the model evidence over a data set \( \mathcal{D} \) is given by
+\begin{equation*}
+p(\mathcal{D} \mid \mathcal{M}) =  \int \mathrm{d} \boldsymbol{\theta}\, p(\mathcal{D} \mid \mathcal{M},\, \boldsymbol{\theta})\, p(\boldsymbol{\theta} \mid \mathcal{M}).
+\end{equation*}
+#+end_lemma
+
+#+begin_proof latex
+The joint probability distribution over the data set, models, and parameters \(p(\mathcal{D},\,\mathcal{M},\, \boldsymbol{\theta})\) admits the factorization (using the sum and product rules of probability)
+\begin{equation*}
+p(\mathcal{D},\,\mathcal{M},\,\boldsymbol{\theta}) = p(\mathcal{D} \mid \mathcal{M},\,\boldsymbol{\theta})\, p(\boldsymbol{\theta} \mid \mathcal{M})\, p(\boldsymbol{M}).
+\end{equation*}
+Marginalizing over the model parameters \(\boldsymbol{\theta}\), we get
+\begin{equation*}
+p(\mathcal{D},\,\mathcal{M}) =  p(\mathcal{M}) \int \mathrm{d} \boldsymbol{\theta}\, p(\mathcal{D} \mid \mathcal{M},\,\boldsymbol{\theta})\, p(\boldsymbol{\theta} \mid \mathcal{M}).
+\end{equation*}
+Using the product rule of probability \(p(\mathcal{D},\,\mathcal{M}) = p(\mathcal{D} \mid \mathcal{M}) p(\mathcal{M})\). Substituting in the above equation yields
+\begin{equation*}
+p(\mathcal{D} \mid \mathcal{M}) =  \int \mathrm{d} \boldsymbol{\theta}\, p(\mathcal{D} \mid \mathcal{M},\, \boldsymbol{\theta})\, p(\boldsymbol{\theta} \mid \mathcal{M}).
+\end{equation*}
+#+end_proof
+
+The model evidence expresses the preference shown by the data for different models. Model evidence is used to define [[id:df9ebb0f-bedb-406d-8b2a-f2c2ac3bc0c0][Bayes factor]], [[id:77e43bb8-b939-492a-925e-c75af321291b][Bayesian Information Criterion]]. As a concept, it is used in [[id:c233fe81-d1e4-4326-b280-b2253a0e3aa3][Bayesian model comparison]] as a measure to *score* models.
