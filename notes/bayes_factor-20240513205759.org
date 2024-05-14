@@ -1,0 +1,14 @@
+:PROPERTIES:
+:ID:       df9ebb0f-bedb-406d-8b2a-f2c2ac3bc0c0
+:END:
+#+TITLE: Bayes factor
+#+FILETAGS: :literature:prml:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+#+NAME: Bayes factor
+#+begin_definition latex
+Consider a data set \(\mathcal{D}\) and a set of models \(\left\{\mathcal{M}_i\right\}\). The Bayes factor of two models \( \mathcal{M}_i \) and \( \mathcal{M}_j \) over the data set \mathcal{D} is defined as the ratio of their model evidence. The Bayes factor is therefore \(p\left(\mathcal{D} \mid \mathcal{M}_i\right)/p\left(\mathcal{D} \mid \mathcal{M}_j\right)\).
+#+end_definition
+
+See [[id:7a527c55-77eb-4287-b09e-5af08d301b39][model evidence]].
+
