@@ -1,0 +1,9 @@
+:PROPERTIES:
+:ID:       6560e4df-b6a3-45c5-9c7b-fb26a4ab6b75
+:END:
+#+TITLE: Variational Bayes
+#+FILETAGS: :literature:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+Synonym for [[id:8887bc33-8dbe-4eb7-8b48-2805a8192a58][Variational inference]].
+
