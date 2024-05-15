@@ -21,7 +21,7 @@ Nodes on deterministic approximate inference techniques:
 7) [[id:f9d1cc72-c5f6-4634-bf7a-eab7287bbc5c][Expectation propagation]]
 
 * Stochastic approximate inference
-These schemes involve numerical approximations to the posterior distribution, often via the use of [[id:045e74eb-0528-4ea6-94d9-41c3aa7d8440][Markov chain Monte Carlo]] to conjure a variety of sampling schemes.
+These schemes involve numerical approximations to the posterior distribution, often by conjuring a variety of sampling schemes.
 
 Nodes on stochastic approximate inference techniques:
 
