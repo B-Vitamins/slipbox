@@ -22,4 +22,4 @@ The inference problem is solved. The joint distribution \(p(x, y)\) is now repre
 #+ATTR_HTML: :width 300px
 [[file:~/.local/images/prml-8-37.png]]
 
-The inference problem for a graphical model can be solved using the techniques of [[id:72d227c3-76fd-433a-bff1-0954500dd35f][exact inference]] or [[id:47f8a374-2672-4d3c-85ac-87fc5716da12][approximate inference]].
+The inference problem for a graphical model can be solved using the techniques of [[id:72d227c3-76fd-433a-bff1-0954500dd35f][exact inference]] or [[id:276580cc-0875-4123-afb0-7af1583390d8][Approximate inference]].
