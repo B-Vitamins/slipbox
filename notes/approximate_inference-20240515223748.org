@@ -1,0 +1,40 @@
+:PROPERTIES:
+:ID:       276580cc-0875-4123-afb0-7af1583390d8
+:END:
+#+TITLE: Approximate inference
+#+FILETAGS: :literature:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+Evaluating the posterior distribution \(p(\mathbf{Z} \mid \mathbf{X})\) of latent variables \(\mathbf{Z}\) given observed data \(\mathbf{X}\) and computing expectations with respect to this distribution are key tasks in probabilistic models. This is crucial for algorithms like EM, where the expectation of the complete-data log likelihood is needed. Exact evaluation is often infeasible due to dimension of the latent space being prohibitively large or the complex form of the posterior distribution, making analytical solutions or numerical integration impractical. For discrete variables, summing over all possible hidden states can be exponentially large and computationally prohibitive. Therefore, one often needs to resort to approximations. Approximate inference methods can never generate exact results but in practice they generate results that are useful enough. Approximation schemes fall into two categories: deterministic and stochastic.
+
+* Deterministic approximate inference
+These schemes involve analytical approximations to the posterior distribution, making assumptions about it, for example, that it factorizes in a specific way or has a parametric form like a Gaussian. 
+
+Nodes on deterministic approximate inference techniques:
+
+1) [[id:8887bc33-8dbe-4eb7-8b48-2805a8192a58][Variational inference]]
+2) [[id:6314241e-c495-40f3-911d-8ee714e0f3f6][Variational mixture of Gaussians]]
+3) [[id:579475ee-d060-4134-a4c3-b85f0d154090][Variational linear regression]]
+4) [[id:5ddc68ef-cdc5-4ee6-a503-5c0a22e7d4db][Variational message passing]]
+5) [[id:218b5d87-e143-4868-945e-5961f9d6f042][Local variational methods]]
+6) [[id:3483f000-f38f-4f01-b565-ab742aac6369][Variational logistic regression]]
+7) [[id:f9d1cc72-c5f6-4634-bf7a-eab7287bbc5c][Expectation propagation]]
+
+* Stochastic approximate inference
+These schemes involve numerical approximations to the posterior distribution, often via the use of [[id:045e74eb-0528-4ea6-94d9-41c3aa7d8440][Markov chain Monte Carlo]] to conjure a variety of sampling schemes.
+
+Nodes on stochastic approximate inference techniques:
+
+1) [[id:045e74eb-0528-4ea6-94d9-41c3aa7d8440][Markov chain Monte Carlo]]
+2) [[id:445a4a27-e6ae-4489-a94e-317da55da276][Rejection sampling]]
+3) [[id:b249a035-6fe6-4386-9d85-27fa118a250f][Adaptive rejection sampling]]
+4) [[id:29eafee0-ad1c-401c-b2c3-392d695ce391][Importance sampling]]
+5) [[id:619002bf-c1e1-46aa-a152-e36e022956ca][Sampling-importance-resampling]]
+6) [[id:a16f32b2-f6c0-4022-be37-2a3c5677159c][Metropolis-Hastings algorithm]]
+7) [[id:092fa14b-4820-488f-aa87-0631d3acee2f][Gibbs sampling]]
+8) [[id:6df2d0d5-80ce-4bf1-b226-c80cf219216c][Slice sampling]]
+9) [[id:a8c96306-f0f4-4192-aca6-d5a1024dde14][Hybrid Monte Carlo algorithm]]
+10) [[id:e7e0f51f-cfa3-45f4-a794-e74b1b5ea5df][Annealed importance sampling]]
+11) [[id:88a49047-8c54-4902-9262-c831f0c904b7][Bridge sampling]]
+
+
