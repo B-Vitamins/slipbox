@@ -1,0 +1,138 @@
+:PROPERTIES:
+:ID:       78cf9e88-2546-4b99-bc4b-ef12fec87c35
+:END:
+#+TITLE: Mapping between LLM size and capabilities
+#+FILETAGS: :concept:nlp:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+For the correlation between model size and hardware demand of training and inference see [[id:e2f97901-f36c-4366-aa4a-a3064808e284][Training and inference in LLMs]]. See [[id:afb12540-2ecc-452f-a9b5-bf3bfdf4f76a][Fine-tuning LLMs]] for correlation between model size and hardware demand of training and inference conditioned on the availability (and quality) of [[id:a26a1e35-f302-4505-92a8-28be48f1ad56][Weights (neural networks)]]. For a casual discussion on usefulness for researchers and engineers, see [[id:c1120ec7-1e50-4082-a28f-11d3ace53bc9][Applications of Large Language Models for Researchers and Engineers]].
+
+* GPT-3 Small (125M Parameters)
+*** Capabilities:
+    - Text Completion: Basic sentence and paragraph completions.
+    - Simple Question Answering: Answer straightforward factual questions.
+    - Text Classification: Perform basic sentiment analysis or topic classification.
+    - Summarization: Summarize simple and short texts.
+    - Named Entity Recognition (NER): Identify entities like names, dates, and locations in text.
+    - Basic Translation: Translate simple sentences between major languages.
+*** Use Cases:
+    - Customer service chatbots for simple queries.
+    - Basic content generation for social media posts.
+    - Elementary data extraction tasks.
+
+* GPT-3 Medium (350M Parameters)
+*** Capabilities:
+    - Text Completion: More coherent and contextually aware completions.
+    - Intermediate Question Answering: Handle more complex factual questions.
+    - Text Classification: Improved sentiment analysis and topic classification.
+    - Summarization: Better summarization of longer and more complex texts.
+    - NER: Enhanced entity recognition with greater accuracy.
+    - Intermediate Translation: Improved translation capabilities across various languages.
+    - Simple Creative Writing: Generate simple creative content like short stories and poetry.
+*** Use Cases:
+    - More advanced customer service chatbots.
+    - Content creation for blogs and articles.
+    - Automated report generation with moderate complexity.
+    - Language tutoring and translation apps.
+
+* GPT-3 Large (760M Parameters)
+*** Capabilities:
+    - Text Completion: Highly coherent completions with better understanding of context.
+    - Complex Question Answering: Handle complex questions with multi-sentence answers.
+    - Text Classification: Accurate classification for a wider range of topics.
+    - Summarization: High-quality summarization of complex documents.
+    - NER: Near-human level entity recognition.
+    - Advanced Translation: High-quality translations, including idiomatic expressions.
+    - Creative Writing: Generate detailed and engaging creative content.
+    - Code Generation: Basic code suggestions and completions for simple programming tasks.
+*** Use Cases:
+    - Comprehensive customer support systems.
+    - Automated content generation for professional articles and reports.
+    - Legal and medical document analysis.
+    - Translation services for professional use.
+    - Assistive tools for coding and software development.
+
+* GPT-3 XL (1.3B Parameters)
+*** Capabilities:
+    - Text Completion: Very high coherence and contextual awareness.
+    - Advanced Question Answering: Detailed answers, including multi-step reasoning.
+    - Text Classification: Highly accurate and reliable for diverse topics.
+    - Summarization: Excellent summarization of complex texts.
+    - NER: Extremely accurate entity recognition.
+    - Expert Translation: Near-native level translations.
+    - Advanced Creative Writing: Generate sophisticated creative works.
+    - Advanced Code Generation: Handle complex programming tasks and offer detailed code suggestions.
+*** Use Cases:
+    - High-end customer support with complex query handling.
+    - Professional content creation, including long-form articles and books.
+    - Comprehensive document analysis for legal and financial sectors.
+    - Advanced translation services for nuanced texts.
+    - Enhanced coding assistants for various programming languages.
+
+* GPT-3 2.7B
+*** Capabilities:
+    - Text Completion: Extremely coherent and contextually rich completions.
+    - Expert Question Answering: Handle very complex questions with detailed, nuanced answers.
+    - Text Classification: Extremely accurate across a wide range of domains.
+    - Summarization: Near-perfect summarization of extensive and intricate texts.
+    - NER: Highly accurate entity recognition across diverse texts.
+    - High-Level Translation: Professional-quality translations.
+    - Advanced Creative Writing: Generate sophisticated creative works.
+    - Advanced Code Generation: Handle complex programming tasks and offer detailed code suggestions.
+*** Use Cases:
+    - Expert-level customer support and virtual assistants.
+    - Professional and academic content creation.
+    - Deep analysis of complex documents in specialized fields.
+    - High-quality translation services.
+    - Advanced programming support and code generation tools.
+
+* GPT-3 6.7B
+*** Capabilities:
+    - Text Completion: Superb coherence, even in long contexts.
+    - Sophisticated Question Answering: Detailed, multi-step reasoning for complex queries.
+    - Text Classification: Near-perfect accuracy in classification tasks.
+    - Summarization: Flawless summarization for highly complex texts.
+    - NER: Exceptionally accurate entity recognition.
+    - Top-Tier Translation: Translations indistinguishable from those by human experts.
+    - Professional Creative Writing: Produce highly polished creative content.
+    - Expert Code Generation: Advanced code generation and debugging, including understanding context and intent.
+*** Use Cases:
+    - High-level customer support for intricate queries.
+    - Creation of high-quality, professional content for various industries.
+    - In-depth analysis of highly technical documents.
+    - Expert translation services for critical documents.
+    - Comprehensive programming assistance and automation tools.
+
+* GPT-3 13B
+*** Capabilities:
+    - Text Completion: Nearly indistinguishable from human writing.
+    - Elite Question Answering: Handle the most complex queries with ease.
+    - Text Classification: Perfect classification across diverse and niche topics.
+    - Summarization: Impeccable summarization abilities.
+    - NER: Pinnacle of accuracy in entity recognition.
+    - Elite Translation: Flawless translations for any language pair.
+    - Elite Creative Writing: Produce highly sophisticated and engaging creative content.
+    - Elite Code Generation: Master-level code generation and debugging.
+*** Use Cases:
+    - Elite-level customer support for the most complex queries.
+    - Production of top-tier professional and academic content.
+    - Perfect document analysis in highly specialized fields.
+    - High-end translation services.
+    - Comprehensive programming and development support.
+
+* GPT-3 175B
+*** Capabilities:
+    - Text Completion: Perfect coherence and context understanding over very long texts.
+    - Ultimate Question Answering: Best-in-class performance for any query.
+    - Text Classification: Flawless classification with unmatched accuracy.
+    - Summarization: Ultimate summarization capabilities.
+    - NER: Best-in-class entity recognition.
+    - Ultimate Translation: Translations that match or exceed human experts.
+    - Ultimate Creative Writing: Generate the highest quality creative content.
+    - Ultimate Code Generation: Handle the most complex programming tasks with precision.
+*** Use Cases:
+    - World-class customer support and virtual assistants.
+    - Production of the highest quality professional, academic, and creative content.
+    - Comprehensive analysis of the most complex documents.
+    - Elite translation services for critical applications.
+    - Expert-level programming and development assistance, including complex automation.
