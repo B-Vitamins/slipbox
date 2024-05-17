@@ -2,7 +2,7 @@
 :ID:       4588e307-d9cd-4a69-9648-a6c8db14ed1a
 :END:
 #+TITLE: Probabilistic graphical models
-#+FILETAGS: :literature:prml:
+#+FILETAGS: :literature:prml:hub:
 #+SETUPFILE: ~/.config/emacs/setup/setupfile.org
 
 *Probabilistic graphical models* are diagrammatic representations of [[id:f39a8683-abf8-4620-957d-b20795422d2d][probability distributions]]. 

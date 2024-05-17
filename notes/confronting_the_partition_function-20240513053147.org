@@ -5,6 +5,12 @@
 #+FILETAGS: :literature:pmrl:dl:
 #+SETUPFILE: ~/.config/emacs/setup/setupfile.org
 
+#+BEGIN_COMMENT
+Also see:
+1) [[id:e7e0f51f-cfa3-45f4-a794-e74b1b5ea5df][Annealed importance sampling]]
+2) [[id:88a49047-8c54-4902-9262-c831f0c904b7][Bridge sampling]]
+#+END_COMMENT
+
 If we have a [[id:f075c4f0-69aa-4f72-8879-42180ea7a063][Markov network]] with \(M\) discrete nodes each having \(K\) states, then the evaluation of the [[id:ca1d61e0-c60f-42c3-8de7-8dd8557aa6f3][partition function]] (normalization term) involves summing over \(K^{M}\) states - exponential in the size of the model. 
 
 + The partition function is needed in the evaluation of the [[id:8c833811-3657-4af4-8be5-191d8788b779][joint probability distribution]] \( p(\mathbf{x}) \) where \( \mathbf{x} = (x_1,\,\ldots,\,x_M) \) because it will be a function of any parameters that govern the potential functions \(\psi_{C}\left(\mathbf{x}_{C}\right)\).
@@ -20,4 +26,52 @@ If we have a [[id:f075c4f0-69aa-4f72-8879-42180ea7a063][Markov network]] with \(
 + The partition function is /not/ needed in the evaluation of local [[id:98cfed25-404f-4443-9096-e604ca5faccd][marginal probability distribution]]. We can work with the unnormalized joint distribution and then normalize the marginals explicitly at the end. 
 
 Provided the conditionals and/or marginals only involves a small number of variables, the evaluation of their normalization coefficient will be feasible.
+
+\subsection*{Estimating the Partition Function}
+As we have seen, most of the sampling algorithms considered in this chapter require only the functional form of the probability distribution up to a multiplicative constant. Thus if we write
+
+\[
+p_{E}(\mathbf{z})=\frac{1}{Z_{E}} \exp (-E(\mathbf{z}))
+\]
+
+then the value of the normalization constant \(Z_{E}\), also known as the partition function, is not needed in order to draw samples from \(p(\mathbf{z})\). However, knowledge of the value of \(Z_{E}\) can be useful for Bayesian model comparison since it represents the model evidence (i.e., the probability of the observed data given the model), and so it is of interest to consider how its value might be obtained. We assume that direct evaluation by summing, or integrating, the function \(\exp (-E(\mathbf{z}))\) over the state space of \(\mathbf{z}\) is intractable.
+
+For model comparison, it is actually the ratio of the partition functions for two models that is required. Multiplication of this ratio by the ratio of prior probabilities gives the ratio of posterior probabilities, which can then be used for model selection or model averaging.
+
+One way to estimate a ratio of partition functions is to use importance sampling from a distribution with energy function \(G(\mathbf{z})\)
+
+\begin{align*}
+\frac{Z_{E}}{Z_{G}} & =\frac{\sum_{\mathbf{z}} \exp (-E(\mathbf{z}))}{\sum_{\mathbf{z}} \exp (-G(\mathbf{z}))} \\
+& =\frac{\sum_{\mathbf{z}} \exp (-E(\mathbf{z})+G(\mathbf{z})) \exp (-G(\mathbf{z}))}{\sum_{\mathbf{z}} \exp (-G(\mathbf{z}))} \\
+& =\mathbb{E}_{G(\mathbf{z})}[\exp (-E+G)] \\
+& \simeq \sum_{l} \exp \left(-E\left(\mathbf{z}^{(l)}\right)+G\left(\mathbf{z}^{(l)}\right)\right)
+\end{align*}
+
+where \(\left\{\mathbf{z}^{(l)}\right\}\) are samples drawn from the distribution defined by \(p_{G}(\mathbf{z})\). If the distribution \(p_{G}\) is one for which the partition function can be evaluated analytically, for example a Gaussian, then the absolute value of \(Z_{E}\) can be obtained.
+
+This approach will only yield accurate results if the importance sampling distribution \(p_{G}\) is closely matched to the distribution \(p_{E}\), so that the ratio \(p_{E} / p_{G}\) does not have wide variations. In practice, suitable analytically specified importance sampling distributions cannot readily be found for the kinds of complex models considered in this book.
+
+An alternative approach is therefore to use the samples obtained from a Markov chain to define the importance-sampling distribution. If the transition probability for the Markov chain is given by \(T\left(\mathbf{z}, \mathbf{z}^{\prime}\right)\), and the sample set is given by \(\mathbf{z}^{(1)}, \ldots, \mathbf{z}^{(L)}\), then the sampling distribution can be written as
+
+\[
+\frac{1}{Z_{G}} \exp (-G(\mathbf{z}))=\sum_{l=1}^{L} T\left(\mathbf{z}^{(l)}, \mathbf{z}\right)
+\]
+
+which can be used directly in (11.72).
+
+Methods for estimating the ratio of two partition functions require for their success that the two corresponding distributions be reasonably closely matched. This is especially problematic if we wish to find the absolute value of the partition function for a complex distribution because it is only for relatively simple distributions that the partition function can be evaluated directly, and so attempting to estimate the ratio of partition functions directly is unlikely to be successful. This problem can be tackled using a technique known as chaining (Neal, 1993; Barber and Bishop, 1997), which involves introducing a succession of intermediate distributions \(p_{2}, \ldots, p_{M-1}\) that interpolate between a simple distribution \(p_{1}(\mathbf{z})\) for which we can evaluate the normalization coefficient \(Z_{1}\) and the desired complex distribution \(p_{M}(\mathbf{z})\). We then have
+
+\[
+\frac{Z_{M}}{Z_{1}}=\frac{Z_{2}}{Z_{1}} \frac{Z_{3}}{Z_{2}} \cdots \frac{Z_{M}}{Z_{M-1}}
+\]
+
+in which the intermediate ratios can be determined using Monte Carlo methods as discussed above. One way to construct such a sequence of intermediate systems is to use an energy function containing a continuous parameter \(0 \leqslant \alpha \leqslant 1\) that interpolates between the two distributions
+
+\[
+E_{\alpha}(\mathbf{z})=(1-\alpha) E_{1}(\mathbf{z})+\alpha E_{M}(\mathbf{z}) .
+\]
+
+If the intermediate ratios in (11.74) are to be found using Monte Carlo, it may be more efficient to use a single Markov chain run than to restart the Markov chain for each ratio. In this case, the Markov chain is run initially for the system \(p_{1}\) and then after some suitable number of steps moves on to the next distribution in the sequence. Note, however, that the system must remain close to the equilibrium distribution at each stage.
+
+
 
