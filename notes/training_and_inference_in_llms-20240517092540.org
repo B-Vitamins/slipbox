@@ -1,0 +1,68 @@
+:PROPERTIES:
+:ID:       e2f97901-f36c-4366-aa4a-a3064808e284
+:END:
+#+TITLE: Training and inference in LLMs
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+* Introduction
+Training large language models like GPT-3 can vary significantly in computational requirements depending on the model size. The efficiency of training and inference on a multi-core CPU decreases as the model size increases. This document outlines the feasibility of training different GPT-3 model sizes on CPUs, the point where it becomes prohibitive, and the quantitative relationships governing these processes.
+
+* GPT-3 Small (125M Parameters)
+*** Training Efficiency:
+    - **CPU Feasibility:** Can be trained on multi-core CPUs with well-optimized code.
+    - **Estimated Training Time:** Weeks to months depending on dataset size and CPU capabilities.
+    - **Memory Requirements:** Several GBs of RAM.
+
+*** Inference Efficiency:
+    - **CPU Feasibility:** Efficient for inference on modern multi-core CPUs.
+    - **Latency:** Low latency, suitable for real-time applications.
+    - **Throughput:** High throughput, capable of handling multiple requests per second.
+
+* GPT-3 Medium (350M Parameters)
+*** Training Efficiency:
+    - **CPU Feasibility:** Can still be trained on high-end multi-core CPUs but starts becoming slower.
+    - **Estimated Training Time:** Several months on high-end CPUs.
+    - **Memory Requirements:** 10-20 GB of RAM.
+
+*** Inference Efficiency:
+    - **CPU Feasibility:** Efficient for inference with slight latency increases.
+    - **Latency:** Moderate latency, suitable for most applications.
+    - **Throughput:** Moderate throughput, handling a few requests per second.
+
+* GPT-3 Large (760M Parameters) and Above
+*** Training Efficiency:
+    - **CPU Feasibility:** Training on this hardware is impractical due to high computational and time requirements. GPUs would be necessary.
+    - **Estimated Training Time:** Months to years on CPUs, more feasible on GPUs.
+    - **Memory Requirements:** 30-50 GB of RAM.
+
+*** Inference Efficiency:
+    - **CPU Feasibility:** Possible but not ideal; better suited for GPU inference.
+    - **Latency:** Higher latency, might not be suitable for real-time applications.
+    - **Throughput:** Reduced throughput on CPUs.
+
+* GPT-3 XL (1.3B Parameters)
+*** Training Efficiency:
+    - **CPU Feasibility:** Highly impractical; GPUs or specialized hardware required.
+    - **Estimated Training Time:** Requires several months on multiple GPUs.
+    - **Memory Requirements:** 60-80 GB of RAM.
+
+*** Inference Efficiency:
+    - **CPU Feasibility:** Impractical for CPU inference; GPUs recommended.
+    - **Latency:** High latency on CPUs, much better on GPUs.
+    - **Throughput:** Low throughput on CPUs.
+
+* GPT-3 2.7B Parameters
+*** Training Efficiency:
+    - **CPU Feasibility:** Prohibitively slow on CPUs; multi-GPU systems required.
+    - **Estimated Training Time:** Multiple months on large GPU clusters.
+    - **Memory Requirements:** Over 100 GB of RAM.
+
+*** Inference Efficiency:
+    - **CPU Feasibility:** Not feasible; GPUs or TPUs necessary.
+    - **Latency:** Very high latency on CPUs.
+    - **Throughput:** Very low throughput on CPUs.
+
+* GPT-3 6.7B Parameters and Above
+*** Training Efficiency:
+    - **CPU Feasibility:** Not feasible; requires```org
