@@ -1,0 +1,214 @@
+:PROPERTIES:
+:ID:       f8af26c4-6539-415c-9247-d2cc17649648
+:END:
+#+TITLE: keym8.el - Yes, that keyboard from your phone, now in Emacs, without the telemetry that too!
+#+AUTHOR: Ayan and GPT-4 Omni
+#+DATE: 2024-05-17
+#+FILETAGS: :concept:projects:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+* Introduction
+=keym8= is an Emacs package designed to enhance your typing efficiency by providing intelligent keyword completion. It learns from your keystrokes in real-time, offering suggestions to reduce the number of keystrokes required, thereby helping to prevent repetitive strain injury (RSI). The project utilizes Rust for performance-critical tasks and JAX for training advanced neural network models.
+
+* Phase 1: Data Collection in Emacs
+First, we need to capture your keystrokes during Emacs sessions and store them in a log file for model training.
+
+#+BEGIN_SRC emacs-lisp
+(defvar keystroke-log-file "~/.emacs.d/keystrokes.log")
+
+(defun log-keystroke (key)
+  (append-to-file key nil keystroke-log-file))
+
+(add-hook 'post-self-insert-hook
+          (lambda ()
+            (log-keystroke (this-command-keys))))
+#+END_SRC
+
+* Phase 2: Building and Training the Model
+We will use Rust for data preprocessing and model prediction, and JAX for training the RNN/LSTM model.
+
+** Preprocessing with Rust
+Rust is excellent for performance-critical applications. We will use it to preprocess the collected keystroke data.
+
+#+BEGIN_SRC rust :tangle preprocess.rs
+use std::fs::File;
+use std::io::{BufRead, BufReader, Write};
+use std::collections::HashMap;
+
+fn main() -> std::io::Result<()> {
+    let file = File::open("/home/user/.emacs.d/keystrokes.log")?;
+    let reader = BufReader::new(file);
+    
+    let mut sequences: Vec<Vec<u8>> = Vec::new();
+    for line in reader.lines() {
+        let line = line?;
+        let bytes = line.bytes().collect::<Vec<u8>>();
+        sequences.push(bytes);
+    }
+
+    let mut vocab = HashMap::new();
+    let mut index = 1;
+    for seq in &sequences {
+        for &byte in seq {
+            vocab.entry(byte).or_insert_with(|| {
+                let idx = index;
+                index += 1;
+                idx
+            });
+        }
+    }
+
+    let mut tokenized_sequences: Vec<Vec<usize>> = Vec::new();
+    for seq in sequences {
+        let tokenized_seq = seq.into_iter().map(|byte| *vocab.get(&byte).unwrap()).collect();
+        tokenized_sequences.push(tokenized_seq);
+    }
+
+    let mut out_file = File::create("processed_sequences.txt")?;
+    for seq in tokenized_sequences {
+        writeln!(out_file, "{:?}", seq)?;
+    }
+
+    Ok(())
+}
+#+END_SRC
+
+** Training with JAX
+We will use JAX for training an LSTM model.
+
+#+BEGIN_SRC python :tangle train.py
+import jax
+import jax.numpy as jnp
+import haiku as hk
+import optax
+import numpy as np
+import pickle
+
+# Load and preprocess the data
+data = []
+with open("processed_sequences.txt") as f:
+    for line in f:
+        data.append(eval(line.strip()))
+
+data = np.array(data)
+X, y = data[:, :-1], data[:, -1]
+
+# Define the LSTM model
+def lstm_model(x):
+    lstm = hk.LSTM(128)
+    return hk.transform(lambda x: hk.BatchApply(lstm)(x))
+
+model = lstm_model(X)
+params = model.init(jax.random.PRNGKey(42), X)
+
+# Define the loss and optimizer
+def loss_fn(params, x, y):
+    logits = model.apply(params, x)
+    return optax.softmax_cross_entropy(logits, y)
+
+optimizer = optax.adam(1e-3)
+opt_state = optimizer.init(params)
+
+# Training step
+@jax.jit
+def train_step(params, opt_state, x, y):
+    loss, grads = jax.value_and_grad(loss_fn)(params, x, y)
+    updates, opt_state = optimizer.update(grads, opt_state)
+    params = optax.apply_updates(params, updates)
+    return params, opt_state, loss
+
+# Training loop
+for epoch in range(10):
+    params, opt_state, loss = train_step(params, opt_state, X, y)
+    print(f"Epoch {epoch}, Loss: {loss}")
+
+# Save the model
+with open("lstm_model.pkl", "wb") as f:
+    pickle.dump(params, f)
+#+END_SRC
+
+* Phase 3: Real-time Prediction
+Integrate the trained model with Emacs for real-time predictions.
+
+** Rust Server for Real-time Prediction
+Rust can be used to build a lightweight server to handle prediction requests.
+
+#+BEGIN_SRC rust :tangle server.rs
+use actix_web::{web, App, HttpServer, Responder};
+use std::sync::Mutex;
+use std::fs::File;
+use std::io::Read;
+use serde::Deserialize;
+use serde_json::json;
+use std::collections::HashMap;
+
+struct AppState {
+    model: Mutex<HashMap<usize, usize>>, // Placeholder for the model parameters
+}
+
+#[derive(Deserialize)]
+struct PredictRequest {
+    context: String,
+}
+
+async fn predict(data: web::Data<AppState>, req: web::Json<PredictRequest>) -> impl Responder {
+    let model = data.model.lock().unwrap();
+    let context = req.context.bytes().collect::<Vec<u8>>();
+    let prediction = model.get(&context[context.len() - 1]).unwrap_or(&0);
+    web::Json(json!({ "prediction": prediction }))
+}
+
+#[actix_web::main]
+async fn main() -> std::io::Result<()> {
+    let mut model = HashMap::new();
+    // Load the model from file
+    let mut file = File::open("model.json")?;
+    let mut contents = String::new();
+    file.read_to_string(&mut contents)?;
+    model = serde_json::from_str(&contents).unwrap();
+
+    let data = web::Data::new(AppState {
+        model: Mutex::new(model),
+    });
+
+    HttpServer::new(move || {
+        App::new()
+            .app_data(data.clone())
+            .route("/predict", web::post().to(predict))
+    })
+    .bind("127.0.0.1:8080")?
+    .run()
+    .await
+}
+#+END_SRC
+
+** Emacs Integration
+Update the Emacs integration to call the Rust server for predictions.
+
+#+BEGIN_SRC emacs-lisp
+(require 'json)
+(require 'request)
+
+(defun predict-next-word (context)
+  (request
+   "http://localhost:8080/predict"
+   :type "POST"
+   :data (json-encode `(("context" . ,context)))
+   :parser 'json-read
+   :headers '(("Content-Type" . "application/json"))
+   :success (cl-function
+             (lambda (&key data &allow-other-keys)
+               (message "Next word prediction: %s" (assoc-default 'prediction data))))))
+
+(defun predict-next-word-hook ()
+  (let ((context (buffer-substring-no-properties
+                  (max (point-min) (- (point) 20))
+                  (point))))
+    (predict-next-word context)))
+
+(add-hook 'post-self-insert-hook 'predict-next-word-hook)
+#+END_SRC
+
+* Conclusion
+By implementing =keym8=, a smart keyword completion system for Emacs using Rust and JAX, you can significantly enhance your productivity and reduce repetitive strain injury. This system learns from your keystrokes in real-time, providing intelligent suggestions and allowing you to accept them with a simple keystroke. Starting with a simpler HMM-based approach and transitioning to RNNs or LSTMs with JAX for better performance can provide incremental improvements and a practical solution for intelligent text completion.
+
+Feel free to tweak the code and adjust parameters to suit your specific needs. Enjoy the enhanced typing experience with =keym8=!
