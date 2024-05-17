@@ -1,0 +1,84 @@
+:PROPERTIES:
+:ID:       a884e8d6-9c1c-48d1-9b5b-2d608a270678
+:END:
+#+TITLE: OpenAlex in Guile
+#+FILETAGS: :fleeting:plan:openalex:guile:todo:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+** Objective
+To create a robust system that integrates the OpenAlex API with Guile Scheme, utilizing Rust for efficient data fetching and transformation, and Scheme for flexible data manipulation. This system will enable seamless conversion between JSON data from OpenAlex and Scheme s-expression records, providing a user-friendly interface for further processing within the Guix ecosystem.
+** Steps Overview
+1. Develop a Rust client to fetch data from the OpenAlex API.
+2. Integrate the Rust client with a template system (minijinja) for JSON to s-expression conversion.
+3. Define Guile record-types that mirror the Rust structs for JSON data.
+4. Implement FFI to call the Rust client from Guile Scheme.
+5. Create utility functions in Scheme to manage the conversion and data handling.
+6. Optionally, develop a =guix import= backend for OpenAlex.
+
+** Detailed Steps
+*** TODO Step 1: Develop Rust Client
+- Objective :: Build a robust Rust client to fetch data from the OpenAlex API.
+- [ ] Set up a new Rust project.
+    - Detail :: Initialize a new Rust project using =cargo new openalex-client=.
+- [ ] Add dependencies: =reqwest= for HTTP requests, =serde= and =serde_json= for JSON handling, =minijinja= for templating.
+    - Detail**: Update =Cargo.toml= to include the required dependencies.
+- [ ] Define Rust structs for the JSON data from OpenAlex.
+    - Detail :: Analyze the JSON schema from OpenAlex and create corresponding Rust structs with =serde= attributes.
+- [ ] Implement functions to fetch data from the OpenAlex API and deserialize it into Rust structs.
+    - Detail :: Use =reqwest= to perform HTTP GET requests and =serde_json= to deserialize the response into Rust structs.
+
+*** TODO Step 2: Integrate with Template System
+- Objective :: Use =minijinja= to convert JSON data into s-expressions.
+- [ ] Define Jinja templates that represent the structure of the s-expressions.
+    - Detail :: Create templates that convert Rust struct fields into s-expression format.
+- [ ] Implement functions to render these templates with the fetched JSON data.
+    - Detail :: Use =minijinja= to populate the templates with data from Rust structs.
+- [ ] Ensure that the templates handle various data types and structures robustly.
+    - Detail :: Test templates with different JSON structures to ensure robustness.
+
+*** TODO Step 3: Define Guile Record-Types
+- Objective :: Create Guile record-types that correspond to the Rust structs.
+- [ ] Analyze the Rust structs and create analogous Guile record-type definitions.
+    - Detail :: Ensure that each field in the Rust structs is represented in the Guile records.
+- [ ] Ensure that each field in the Rust structs has a corresponding field in the Guile records.
+    - Detail :: Map Rust types to appropriate Guile types.
+- [ ] Define appropriate constructors and accessors for these records.
+    - Detail :: Write constructors and accessors for each Guile record-type.
+
+*** TODO Step 4: Implement FFI
+- Objective :: Enable Guile to call the Rust client and utilize the converted data.
+- [ ] Use Guile's FFI to define functions that call the Rust utility.
+    - Detail :: Write Scheme code to call Rust functions using Guile's FFI.
+- [ ] Ensure that the Rust utility can accept JSON input and return s-expressions as strings.
+    - Detail :: Modify Rust utility to read JSON from stdin and print s-expressions.
+- [ ] Implement error handling and edge case management to ensure robustness.
+    - Detail :: Add comprehensive error handling in both Rust and Scheme code.
+
+*** TODO Step 5: Create Scheme Utility Functions
+- Objective :: Provide user-friendly functions in Scheme to manage the conversion and data handling.
+- [ ] Write functions to fetch data from the OpenAlex API using the Rust client.
+    - Detail :: Implement a function in Scheme that calls the Rust utility for data fetching.
+- [ ] Implement functions to convert JSON to s-expressions and vice versa.
+    - Detail :: Ensure the conversion functions handle nested and complex data structures.
+- [ ] Ensure that these functions integrate smoothly with Guile's data handling capabilities.
+    - Detail :: Test the utility functions to verify integration with Guile's data structures.
+
+*** TODO Step 6: Develop =guix import= Backend (Optional)
+- Objective :: Create a =guix import= backend for OpenAlex to simplify data importation.
+- Tasks ::
+  - [ ] Define the =guix import= backend and its integration points.
+    - Detail :: Determine how the backend will integrate with the existing =guix import= framework.
+  - [ ] Implement the backend to fetch data from OpenAlex and convert it to Guix-compatible records.
+    - Detail :: Write the backend code to use the Rust utility and Scheme functions for data conversion.
+  - [ ] Ensure that the backend provides clear and useful feedback to the user.
+    - Detail :: Add logging and error messages to help users understand the backend's actions.
+
+** Summary
+By following this plan, we will develop a robust system to integrate OpenAlex API data with Guile Scheme, leveraging Rust for efficient data fetching and conversion. This integration will facilitate seamless manipulation of complex data within the Guix ecosystem, enhancing productivity and enabling advanced data processing capabilities.
+
+** Next Steps
+- Begin with Step 1: Develop Rust Client.
+- Regularly review progress and refine steps as needed.
+- Document any challenges and solutions encountered during the implementation.
+
+*End of Plan*
+
