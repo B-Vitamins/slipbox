@@ -1,0 +1,31 @@
+:PROPERTIES:
+:ID:       90eb8a52-db71-475e-940b-2f133b926715
+:END:
+#+TITLE: Potential functions (probabilistic graphical models)
+#+FILETAGS: :literature:prml:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+In the context of [[id:f075c4f0-69aa-4f72-8879-42180ea7a063][Markov networks]], *potential functions* are arbitrary functions defined over the [[id:5b83c54c-ad39-4f70-a41b-4e4334513d7f][clique]] (or [[id:66774f9d-b5bf-429c-9062-1abc9be7399d][maximal cliques]]) of an [[id:5559c3da-2d3b-43e6-8b53-996c265ad38d][undirected graphical models]]. Their existence is motivated below:
+
+#+NAME: Lemma 1
+#+begin_lemma latex
+In an arbitrary undirected graph, if we consider two nodes \(x_{i}\) and \(x_{j}\) that are not connected by a edge, then these variables must be conditionally independent given all other nodes in the graph, i.e.,
+
+\[
+p(x_{i},\,x_{j} \mid \mathbf{x}_{\backslash\{i,\,j\}})=p(x_{i} \mid \mathbf{x}_{\backslash\{i,\,j\}}) p(x_{j} \mid \mathbf{x}_{\backslash\{i,\,j\}})
+\]
+
+where \(\mathbf{x} \backslash\{i,\,j\}\) denotes the set \(\mathbf{x}\) of all variables with \(x_{i}\) and \(x_{j}\) removed.
+#+end_lemma
+
+This follows from the fact that there is no direct path between the two nodes, and all other paths pass through nodes that are observed, and hence those paths are /blocked/ (see [[id:971e6cb8-1177-4d9a-90d7-43d22c22fb61][D-separation]]). A consequence of this [[id:c6de868e-1284-4ce9-a2e7-31f71c25a270][conditional independence]] property is captured in the next lemma:
+
+#+NAME: Lemma 2
+#+begin_lemma latex
+In an arbitrary undirected graph, if we consider two nodes \(x_{i}\) and \(x_{j}\) that are not connected by a edge, the factorization of the joint distribution must be such that \(x_{i}\) and \(x_{j}\) do not appear in the same factor.
+#+end_lemma
+
+If Lemma 2 were untrue, then the conditional independence property of \( x_i \) and \( x_j \) given all other nodes in the graph would be violated, which would lead to a contradiction.
+
+Lemma 2 motivates the concept of a [[id:5b83c54c-ad39-4f70-a41b-4e4334513d7f][clique]] and [[id:66774f9d-b5bf-429c-9062-1abc9be7399d][maximal clique]], which in turn motivate the potential function. Let \(C\) denote a [[id:5b83c54c-ad39-4f70-a41b-4e4334513d7f][clique]] in the Markov network and \( \mathbf{x}_{C} \) denote the set of variables in the clique \( C \). If we define a suitable potential function \(\psi_{C}\left(\mathbf{x}_{C}\right)\), and form the product, \( \prod_{C} \psi_{C}(\mathbf{x}_{C})\), then it is a valid candidate for an unnormalized factorization of the [[id:8c833811-3657-4af4-8be5-191d8788b779][joint probability distribution]] admitted by the graph for it does not violate any of its conditional independence properties.
+
