@@ -1,0 +1,63 @@
+:PROPERTIES:
+:ID:       f9a146dc-4468-4f88-a3d0-c2435c81a594
+:END:
+#+TITLE: Regularization (linear models for regression)
+#+FILETAGS: :literature:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+In [[id:621dd698-e6fb-485b-95b7-2116cdc47223][Regularization]], the idea of adding a regularization term to an error function in order to control over-fitting was introduced, so that the total error function to be minimized takes the form
+
+\begin{align*}
+E_{D}(\mathbf{w})+\lambda E_{W}(\mathbf{w}) \tag{1}
+\end{align*}
+
+where \(\lambda\) is the regularization coefficient that controls the relative importance of the data-dependent error \(E_{D}(\mathbf{w})\) and the regularization term \(E_{W}(\mathbf{w})\). One of the simplest forms of regularizer is given by the sum-of-squares of the weight vector elements
+
+\begin{align*}
+E_{W}(\mathbf{w})=\frac{1}{2} \mathbf{w}^{\mathrm{T}} \mathbf{w} \tag{2}
+\end{align*}
+
+If we also consider the sum-of-squares error function given by
+
+\begin{align*}
+E(\mathbf{w})=\frac{1}{2} \sum_{n=1}^{N}\left\{t_{n}-\mathbf{w}^{\mathrm{T}} \boldsymbol{\phi}\left(\mathbf{x}_{n}\right)\right\}^{2} \tag{3}
+\end{align*}
+
+then the total error function becomes
+
+\begin{align*}
+\frac{1}{2} \sum_{n=1}^{N}\left\{t_{n}-\mathbf{w}^{\mathrm{T}} \boldsymbol{\phi}\left(\mathbf{x}_{n}\right)\right\}^{2}+\frac{\lambda}{2} \mathbf{w}^{\mathrm{T}} \mathbf{w} \tag{4}
+\end{align*}
+
+This particular choice of regularizer is known in the machine learning literature as *weight decay* because in sequential learning algorithms, it encourages weight values to decay towards zero, unless supported by the data. In statistics, it provides an example of a *parameter shrinkage method* because it shrinks parameter values towards zero. It has the advantage that the error function remains a quadratic function of \(\mathbf{w}\), and so its exact minimizer can be found in closed form. Specifically, setting the gradient of (4) with respect to \(\mathbf{w}\) to zero, and solving for \(\mathrm{w}\) as before, we obtain
+
+\begin{align*}
+\mathbf{w}=\left(\lambda \mathbf{I}+\boldsymbol{\Phi}^{\mathrm{T}} \boldsymbol{\Phi}\right)^{-1} \boldsymbol{\Phi}^{\mathrm{T}} \mathbf{t} \tag{5}
+\end{align*}
+
+This represents a simple extension of the least-squares solution [[id:2967ed4f-6501-4d36-8446-50e536e66a2c][Maximum likelihood (linear basis function models)]]. A more general regularizer is sometimes used, for which the regularized error takes the form
+
+\begin{align*}
+\frac{1}{2} \sum_{n=1}^{N}\left\{t_{n}-\mathbf{w}^{\mathrm{T}} \boldsymbol{\phi}\left(\mathbf{x}_{n}\right)\right\}^{2}+\frac{\lambda}{2} \sum_{j=1}^{M}\left|w_{j}\right|^{q} \tag{6}
+\end{align*}
+
+where \(q=2\) corresponds to the quadratic regularizer (3.27). The figure below shows contours of the regularization function for different values of \(q\)
+
+#+ATTR_HTML: :width 600px
+[[file:~/.local/images/prml-3-3.png]]
+
+The case of \(q=1\) is know as the *lasso* in the statistics literature. It has the property that if \(\lambda\) is sufficiently large, some of the coefficients \(w_{j}\) are driven to zero, leading to a sparse model in which the corresponding basis functions play no role. To see this, we first note that minimizing (6) is equivalent to minimizing the unregularized sum-of-squares error (see [[id:2967ed4f-6501-4d36-8446-50e536e66a2c][Maximum likelihood (linear basis function models)]]) subject to the constraint
+
+\begin{align*}
+\sum_{j=1}^{M}\left|w_{j}\right|^{q} \leqslant \eta \tag{7}
+\end{align*}
+
+for an appropriate value of the parameter \(\eta\), where the two approaches can be related using Lagrange multipliers. The origin of the sparsity can be seen from the figure below which shows, which shows that the minimum of the error function, subject to the constraint (7). As \(\lambda\) is increased, so an increasing number of parameters are driven to zero.
+
+#+ATTR_HTML: :width 200px
+[[file:~/.local/images/prml-3-4a.png]]
+
+#+ATTR_HTML: :width 200px
+[[file:~/.local/images/prml-3-4a.png]]
+
+Regularization allows complex models to be trained on data sets of limited size without severe over-fitting, essentially by limiting the effective model complexity. However, the problem of determining the optimal model complexity is then shifted from one of finding the appropriate number of basis functions to one of determining a suitable value of the regularization coefficient \(\lambda\).
