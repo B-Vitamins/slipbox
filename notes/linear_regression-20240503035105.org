@@ -1,0 +1,8 @@
+:PROPERTIES:
+:ID:       7310e31a-f1dd-40e9-96ef-c8ded39b3dad
+:END:
+#+TITLE: Linear regression
+#+FILETAGS: :literature:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+One limitation of polynomial basis functions is that they are global functions of the input variable, so that changes in one region of input space affect all other regions. This can be resolved by dividing the input space up into regions and fit a different polynomial in each region, leading to spline functions (Hastie et al., 2001).

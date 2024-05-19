@@ -1,0 +1,7 @@
+:PROPERTIES:
+:ID:       ad33ba75-50b2-40c4-9e0e-69f60fcf4d08
+:END:
+#+TITLE: Loss function
+#+FILETAGS: :literature:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+

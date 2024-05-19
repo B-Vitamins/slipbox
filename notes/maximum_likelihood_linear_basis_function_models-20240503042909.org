@@ -1,0 +1,110 @@
+:PROPERTIES:
+:ID:       2967ed4f-6501-4d36-8446-50e536e66a2c
+:END:
+#+TITLE: Maximum likelihood (linear basis function models)
+#+FILETAGS: :literature:prml:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+See [[id:a3b84f9d-c03a-4579-9c82-47bba805c09b][Linear basis function models]] and [[id:35e57234-01f9-418c-a9fa-f94040015281][Linear models for regression]] for the problem setup. Assume the target variable \( t \) follows:
+
+\[
+t = y(\mathbf{x}, \mathbf{w}) + \epsilon \tag{1}
+\]
+
+where \(\epsilon\) is zero mean Gaussian noise with precision \(\beta\):
+
+\[
+p(t \mid \mathbf{x}, \mathbf{w}, \beta) = \mathcal{N}(t \mid y(\mathbf{x}, \mathbf{w}), \beta^{-1}) \tag{2}
+\]
+
+For squared loss, the optimal prediction is the conditional mean (see [[id:c0201acc-994e-4ba6-88f9-b91a6d041692][loss functions for regression]]):
+
+\[
+\mathbb{E}[t \mid \mathbf{x}] = y(\mathbf{x}, \mathbf{w}) \tag{3}
+\]
+
+Given \( N \) input-target pairs \((\mathbf{x}_n, t_n)\), the likelihood function is:
+
+\[
+p(\mathbf{t} \mid \mathbf{X}, \mathbf{w}, \beta) = \prod_{n=1}^{N} \mathcal{N}(t_n \mid \mathbf{w}^\mathrm{T} \boldsymbol{\phi}(\mathbf{x}_n), \beta^{-1}) \tag{4}
+\]
+
+Simplifying notation, the log-likelihood becomes:
+
+\[
+\ln p(\mathbf{t} \mid \mathbf{w}, \beta) = \frac{N}{2} \ln \beta - \frac{N}{2} \ln (2 \pi) - \beta E_D(\mathbf{w}) \tag{5}
+\]
+
+where the sum-of-squares error is:
+
+\[
+E_D(\mathbf{w}) = \frac{1}{2} \sum_{n=1}^{N} \{t_n - \mathbf{w}^\mathrm{T} \boldsymbol{\phi}(\mathbf{x}_n)\}^2 \tag{6}
+\]
+
+Maximizing with respect to \(\mathbf{w}\):
+
+\[
+\nabla \ln p(\mathbf{t} \mid \mathbf{w}, \beta) = \sum_{n=1}^{N} \{t_n - \mathbf{w}^\mathrm{T} \boldsymbol{\phi}(\mathbf{x}_n)\} \boldsymbol{\phi}(\mathbf{x}_n)^\mathrm{T} \tag{7}
+\]
+
+Setting this to zero gives:
+
+\[
+0 = \sum_{n=1}^{N} t_n \boldsymbol{\phi}(\mathbf{x}_n)^\mathrm{T} - \mathbf{w}^\mathrm{T} \left( \sum_{n=1}^{N} \boldsymbol{\phi}(\mathbf{x}_n) \boldsymbol{\phi}(\mathbf{x}_n)^\mathrm{T} \right) \tag{8}
+\]
+
+Solving for \(\mathbf{w}\):
+
+\[
+\mathbf{w}_{\mathrm{ML}} = (\boldsymbol{\Phi}^\mathrm{T} \boldsymbol{\Phi})^{-1} \boldsymbol{\Phi}^\mathrm{T} \mathbf{t} \tag{9}
+\]
+
+where \(\boldsymbol{\Phi}\) is the design matrix:
+
+\[
+\boldsymbol{\Phi} = \begin{pmatrix}
+\phi_0(\mathbf{x}_1) & \phi_1(\mathbf{x}_1) & \cdots & \phi_{M-1}(\mathbf{x}_1) \\
+\phi_0(\mathbf{x}_2) & \phi_1(\mathbf{x}_2) & \cdots & \phi_{M-1}(\mathbf{x}_2) \\
+\vdots & \vdots & \ddots & \vdots \\
+\phi_0(\mathbf{x}_N) & \phi_1(\mathbf{x}_N) & \cdots & \phi_{M-1}(\mathbf{x}_N)
+\end{pmatrix} \tag{10}
+\]
+
+The *Moore-Penrose pseudo-inverse* is:
+
+\[
+\boldsymbol{\Phi}^\dagger = (\boldsymbol{\Phi}^\mathrm{T} \boldsymbol{\Phi})^{-1} \boldsymbol{\Phi}^\mathrm{T} \tag{11}
+\]
+
+Including the bias parameter \( w_0 \), the error function becomes:
+
+\[
+E_D(\mathbf{w}) = \frac{1}{2} \sum_{n=1}^{N} \{t_n - w_0 - \sum_{j=1}^{M-1} w_j \phi_j(\mathbf{x}_n)\}^2 \tag{12}
+\]
+
+Solving for \( w_0 \):
+
+\[
+w_0 = \bar{t} - \sum_{j=1}^{M-1} w_j \overline{\phi_j} \tag{13}
+\]
+
+with:
+
+\[
+\bar{t} = \frac{1}{N} \sum_{n=1} t_n, \quad \overline{\phi_j} = \frac{1}{N} \sum_{n=1} \phi_j(\mathbf{x}_n) \tag{14}
+\]
+
+Maximizing with respect to \(\beta\):
+
+\[
+\frac{1}{\beta_{\mathrm{ML}}} = \frac{1}{N} \sum_{n=1} \{t_n - \mathbf{w}_{\mathrm{ML}}^\mathrm{T} \boldsymbol{\phi}(\mathbf{x}_n)\}^2 \tag{15}
+\]
+
+yielding the inverse noise precision as the residual variance.
+
+1) See [[id:f9a146dc-4468-4f88-a3d0-c2435c81a594][Regularization (linear models for regression)]] for a maximum likelihood solution with regularization for linear basis function models. 
+2) See [[id:217e38dc-5582-4716-adc9-b8eb73cd0995][geometry of least squares]] for a geometric interpretation of least-squares.
+3) For a [[id:2a73f861-7650-4a41-84f0-81b975111c4f][sequential algorithm]] (*online*) that can act as a replacement for the maximum likelihood solution, see the [[id:8581366d-5371-4713-993f-69a202ffe6fe][Least-mean-squares (LMS) algorithm]].
+4) See [[id:9edc5f00-5227-4762-ac98-43f1893df310][Multiple outputs (linear basis function models)]] for regression problems with \( K > 1 \) target variables for any given input variable.
+
+
