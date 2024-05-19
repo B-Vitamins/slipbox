@@ -1,0 +1,7 @@
+:PROPERTIES:
+:ID:       82831310-4909-4f8b-8db0-ff0d8bef8b0b
+:END:
+#+TITLE: Likelihood function
+#+FILETAGS: :literature:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+

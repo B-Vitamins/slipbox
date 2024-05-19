@@ -1,0 +1,21 @@
+:PROPERTIES:
+:ID:       8581366d-5371-4713-993f-69a202ffe6fe
+:END:
+#+TITLE: Least-mean-squares (LMS) algorithm
+#+FILETAGS: :literature:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+Batch techniques for learning [[id:a3b84f9d-c03a-4579-9c82-47bba805c09b][Linear basis function models]], such as [[id:2967ed4f-6501-4d36-8446-50e536e66a2c][maximum likelihood (linear basis function models)]], which involve processing the entire training set in one go, can be computationally costly for large data sets. If the data set is sufficiently large, it may be worthwhile to use [[id:2a73f861-7650-4a41-84f0-81b975111c4f][sequential algorithm]]. We can obtain a sequential learning algorithm by applying the technique of [[id:9e1d9048-8030-48d1-bc9d-9316e92e47e9][Stochastic gradient descent]]. If the error function comprises a sum over data points \(E=\sum_{n} E_{n}\), then after presentation of pattern \(n\), the stochastic gradient descent algorithm updates the parameter vector \( \mathbf{w} \) using
+
+\begin{align*}
+\mathbf{w}^{(\tau+1)}=\mathbf{w}^{(\tau)}-\eta \nabla E_{n} \tag{3.22}
+\end{align*}
+
+where \(\tau\) denotes the iteration number, and \(\eta\) is a [[id:004c9500-9c9f-46cd-a385-b9097888679c][learning rate parameter]] learning rate parameter. The value of \(\mathbf{w}\) is initialized to some starting vector \(\mathbf{w}^{(0)}\). For the case of the sum-of-squares error function (see [[id:2967ed4f-6501-4d36-8446-50e536e66a2c][Maximum likelihood (linear basis function models)]]), this gives
+
+\begin{align*}
+\mathbf{w}^{(\tau+1)}=\mathbf{w}^{(\tau)}+\eta\left(t_{n}-\mathbf{w}^{(\tau) \mathrm{T}} \boldsymbol{\phi}_{n}\right) \boldsymbol{\phi}_{n} \tag{3.23}
+\end{align*}
+
+where \(\phi_{n}=\phi\left(\mathbf{x}_{n}\right)\). This is known as *least-mean-squares (LMS) algorithm*. The value of \(\eta\) needs to be chosen with care to ensure that the algorithm converges (see [[id:004c9500-9c9f-46cd-a385-b9097888679c][learning rate parameter]]).
+
