@@ -1,0 +1,68 @@
+:PROPERTIES:
+:ID:       c0201acc-994e-4ba6-88f9-b91a6d041692
+:END:
+#+TITLE: Loss functions for regression
+#+FILETAGS: :literature:prml:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+In regression problems, the decision stage involves selecting an estimate \( y(\mathbf{x}) \) of \( t \) for each \( \mathbf{x} \). The expected loss is given by:
+
+\[
+\mathbb{E}[L] = \iint L(t, y(\mathbf{x})) p(\mathbf{x}, t) \, \mathrm{d} \mathbf{x} \, \mathrm{d} t.
+\]
+
+Using the squared loss \( L(t, y(\mathbf{x})) = (y(\mathbf{x}) - t)^2 \), the expected loss becomes:
+
+\[
+\mathbb{E}[L] = \iint (y(\mathbf{x}) - t)^2 p(\mathbf{x}, t) \, \mathrm{d} \mathbf{x} \, \mathrm{d} t.
+\]
+
+To minimize \(\mathbb{E}[L]\), the calculus of variations gives:
+
+\[
+\frac{\delta \mathbb{E}[L]}{\delta y(\mathbf{x})} = 2 \int (y(\mathbf{x}) - t) p(\mathbf{x}, t) \, \mathrm{d} t = 0.
+\]
+
+Solving for \( y(\mathbf{x}) \):
+
+\[
+y(\mathbf{x}) = \frac{\int t p(\mathbf{x}, t) \, \mathrm{d} t}{p(\mathbf{x})} = \int t p(t \mid \mathbf{x}) \, \mathrm{d} t = \mathbb{E}_t[t \mid \mathbf{x}],
+\]
+
+the conditional average of \( t \) given \( \mathbf{x} \), known as the /regression function/. This is illustrated in the figure below
+
+#+ATTR_HTML: :width 400px
+[[file:~/.local/images/prml-1-28.png]]
+
+Expanding \( (y(\mathbf{x}) - t)^2 \):
+
+\[
+(y(\mathbf{x}) - t)^2 = (y(\mathbf{x}) - \mathbb{E}[t \mid \mathbf{x}] + \mathbb{E}[t \mid \mathbf{x}] - t)^2,
+\]
+
+yields:
+
+\[
+(y(\mathbf{x}) - \mathbb{E}[t \mid \mathbf{x}])^2 + 2(y(\mathbf{x}) - \mathbb{E}[t \mid \mathbf{x}])(\mathbb{E}[t \mid \mathbf{x}] - t) + (\mathbb{E}[t \mid \mathbf{x}] - t)^2.
+\]
+
+Integrating over \( t \):
+
+\[
+\mathbb{E}[L] = \int (y(\mathbf{x}) - \mathbb{E}[t \mid \mathbf{x}])^2 p(\mathbf{x}) \, \mathrm{d} \mathbf{x} + \int (\mathbb{E}[t \mid \mathbf{x}] - t)^2 p(\mathbf{x}) \, \mathrm{d} \mathbf{x}.
+\]
+
+Minimizing the first term, \( y(\mathbf{x}) = \mathbb{E}[t \mid \mathbf{x}] \). The second term represents the intrinsic variability of \( t \) (noise) and is independent of \( y(\mathbf{x}) \).
+
+Approaches to regression problems:
+1. Determine \( p(\mathbf{x}, t) \), normalize to \( p(t \mid \mathbf{x}) \), and marginalize to find \( \mathbb{E}[t \mid \mathbf{x}] \).
+2. Directly infer \( p(t \mid \mathbf{x}) \) and marginalize to find \( \mathbb{E}[t \mid \mathbf{x}] \).
+3. Directly find \( y(\mathbf{x}) \) from the training data.
+
+Alternate loss functions, like Minkowski loss:
+
+\[
+\mathbb{E}[L_q] = \iint |y(\mathbf{x}) - t|^q p(\mathbf{x}, t) \, \mathrm{d} \mathbf{x} \, \mathrm{d} t,
+\]
+
+yield the conditional mean for \( q = 2 \), median for \( q = 1 \), and mode for \( q \to 0 \).

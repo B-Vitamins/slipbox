@@ -1,0 +1,7 @@
+:PROPERTIES:
+:ID:       004c9500-9c9f-46cd-a385-b9097888679c
+:END:
+#+TITLE: Learning rate parameter
+#+FILETAGS: :literature:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
