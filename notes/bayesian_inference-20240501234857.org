@@ -1,0 +1,7 @@
+:PROPERTIES:
+:ID:       0751c3a3-ed9f-4057-92f1-20f4cae35b92
+:END:
+#+TITLE: Bayesian inference
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
