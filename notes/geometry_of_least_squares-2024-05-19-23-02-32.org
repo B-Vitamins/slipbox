@@ -1,0 +1,16 @@
+:PROPERTIES:
+:ID:       217e38dc-5582-4716-adc9-b8eb73cd0995
+:END:
+#+TITLE: Geometry of least squares
+#+FILETAGS: :literature:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+Consider an \(N\)-dimensional space whose axes are given by the \(t_{n}\), so that \(\mathbf{t}=\left(t_{1}, \ldots, t_{N}\right)^{\mathrm{T}}\) is a vector in this space. Each basis function \(\phi_{j}\left(\mathbf{x}_{n}\right)\), evaluated at the \(N\) data points, can also be represented as a vector in the same space, denoted by \(\varphi_{j}\), as illustrated in the figure below
+
+#+ATTR_HTML: :width 400px
+[[file:~/.local/images/prml-3-2.png]]
+
+
+Note that \(\varphi_{j}\) corresponds to the \(j^{\text {th }}\) column of \(\boldsymbol{\Phi}\), whereas \(\phi\left(\mathbf{x}_{n}\right)\) corresponds to the \(n^{\text {th }}\) row of \(\boldsymbol{\Phi}\). If the number \(M\) of basis functions is smaller than the number \(N\) of data points, then the \(M\) vectors \(\phi_{j}\left(\mathbf{x}_{n}\right)\) will span a linear subspace \(\mathcal{S}\) of dimension \(M\). We define \(\mathbf{y}\) to be an \(N\)-dimensional vector whose \(n^{\text {th }}\) element is given by \(y\left(\mathbf{x}_{n}, \mathbf{w}\right)\), where \(n=1, \ldots, N\). Because \(\mathbf{y}\) is an arbitrary linear combination of the vectors \(\varphi_{j}\), it can live anywhere in the \(M\)-dimensional subspace. The sum-of-squares error (see [[id:2967ed4f-6501-4d36-8446-50e536e66a2c][Maximum likelihood (linear basis function models)]]) is then equal (up to a factor of \(1 / 2\)) to the squared Euclidean distance between \(\mathbf{y}\) and t. Thus the least-squares solution for \(\mathbf{w}\) corresponds to that choice of \(\mathbf{y}\) that lies in subspace \(\mathcal{S}\) and that is closest to \(\mathbf{t}\). Intuitively, from the figure above, we anticipate that this solution corresponds to the orthogonal projection of \(\mathbf{t}\) onto the subspace \(\mathcal{S}\). This is indeed the case, as can easily be verified by noting that the solution for \(\mathbf{y}\) is given by \(\boldsymbol{\Phi} \mathbf{w}_{\mathrm{ML}}\), and then confirming that this takes the form of an orthogonal projection.
+
+In practice, a direct solution of the normal equations can lead to numerical difficulties when \(\boldsymbol{\Phi}^{\mathrm{T}} \boldsymbol{\Phi}\) is close to singular. In particular, when two or more of the basis vectors \(\varphi_{j}\) are co-linear, or nearly so, the resulting parameter values can have large magnitudes. Such near degeneracy will not be uncommon when dealing with real data sets. The resulting numerical difficulties can be addressed using the technique of [[id:67442f3c-4ea5-49fe-8295-4180f11a8356][Singular Value Decomposition]]. Note that the addition of a [[id:f9a146dc-4468-4f88-a3d0-c2435c81a594][regularization (linear models for regression)]] ensures that the matrix is non-singular, even in the presence of degeneracy.
