@@ -1,0 +1,7 @@
+:PROPERTIES:
+:ID:       4cac7937-f424-4993-b834-d6b89bd0a728
+:END:
+#+TITLE: Weight decay
+#+FILETAGS: :literature:prml:marker:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+Marker node for [[id:f9a146dc-4468-4f88-a3d0-c2435c81a594][Regularization (linear models for regression)]].
