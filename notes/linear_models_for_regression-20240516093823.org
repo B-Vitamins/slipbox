@@ -1,0 +1,17 @@
+:PROPERTIES:
+:ID:       35e57234-01f9-418c-a9fa-f94040015281
+:END:
+#+TITLE: Linear models for regression
+#+FILETAGS: :literature:prml:hub:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+The aim of *regression* is to predict the value of continuous target variables \( t \) given a \( D \)-dimensional input vector \( \mathbf{x} \). See [[id:be34bbdc-c85f-49cf-a457-48fe82abce89][Polynomial curve fitting]]. Polynomial models are a subset of linear regression models, which are linear in the adjustable parameters.
+
+Given a training set with \( N \) observations \(\{\mathbf{x}_n\}\) and corresponding targets \(\{t_n\}\), the goal is to predict \( t \) for a new \( \mathbf{x} \). This can be done by constructing \( y(\mathbf{x}) \), which predicts \( t \) for new inputs \( \mathbf{x} \). In terms of probabilities, this involves modeling the predictive distribution \( p(t \mid \mathbf{x}) \), capturing the uncertainty in \( t \) for each \( \mathbf{x} \).
+
+[[id:a3b84f9d-c03a-4579-9c82-47bba805c09b][Linear basis function models]]
+[[id:8a2b642d-250b-4f2a-9037-6c02c6efa0f8][The bias-variance decomposition]]
+[[id:352a4bd7-442d-4e94-bb47-c36c12dd99f0][Bayesian linear regression]]
+[[id:c233fe81-d1e4-4326-b280-b2253a0e3aa3][Bayesian model comparison]]
+[[id:5b4fbe25-e055-491b-b2dc-e89d02f42fc7][The evidence approximation (Model evidence)]]
+[[id:fd3f90f9-bb0c-4614-ae21-28a7067323f0][Limitations of fixed basis functions]]
