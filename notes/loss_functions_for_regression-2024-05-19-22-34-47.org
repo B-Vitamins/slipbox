@@ -1,68 +1,57 @@
 :PROPERTIES:
 :ID:       c0201acc-994e-4ba6-88f9-b91a6d041692
 :END:
-#+TITLE: Loss functions for regression
+#+TITLE: Loss functions for regression (decision theory)
 #+FILETAGS: :literature:prml:
 #+SETUPFILE: ~/.config/emacs/setup/setupfile.org
 
-In regression problems, the decision stage involves selecting an estimate \( y(\mathbf{x}) \) of \( t \) for each \( \mathbf{x} \). The expected loss is given by:
-
-\[
-\mathbb{E}[L] = \iint L(t, y(\mathbf{x})) p(\mathbf{x}, t) \, \mathrm{d} \mathbf{x} \, \mathrm{d} t.
-\]
-
-Using the squared loss \( L(t, y(\mathbf{x})) = (y(\mathbf{x}) - t)^2 \), the expected loss becomes:
-
-\[
-\mathbb{E}[L] = \iint (y(\mathbf{x}) - t)^2 p(\mathbf{x}, t) \, \mathrm{d} \mathbf{x} \, \mathrm{d} t.
-\]
-
-To minimize \(\mathbb{E}[L]\), the calculus of variations gives:
-
-\[
-\frac{\delta \mathbb{E}[L]}{\delta y(\mathbf{x})} = 2 \int (y(\mathbf{x}) - t) p(\mathbf{x}, t) \, \mathrm{d} t = 0.
-\]
-
-Solving for \( y(\mathbf{x}) \):
-
-\[
-y(\mathbf{x}) = \frac{\int t p(\mathbf{x}, t) \, \mathrm{d} t}{p(\mathbf{x})} = \int t p(t \mid \mathbf{x}) \, \mathrm{d} t = \mathbb{E}_t[t \mid \mathbf{x}],
-\]
-
-the conditional average of \( t \) given \( \mathbf{x} \), known as the /regression function/. This is illustrated in the figure below
+In the context of [[id:869cf352-d95e-471d-a21a-c618a35c51dd][decision theory]] of [[id:31f8fc5c-fdc7-4c1c-8288-3d4f1c8c0110][regression]] problems, the decision stage involves selecting an estimate \( y(\mathbf{x}) \) of \( t \) for each \( \mathbf{x} \). \( y(\mathbf{x}) \) is called the /regression function/. This node gives shows that under the assumption of a [[id:ad33ba75-50b2-40c4-9e0e-69f60fcf4d08][squared loss function]] *squared loss* \( L(t, y(\mathbf{x})) = (y(\mathbf{x}) - t)^2 \), the regression function \( y(\mathbf{x}) \) is equal to \(\mathbb{E}_t[t \mid \mathbf{x}] = \int t p(t \mid \mathbf{x}) \, \mathrm{d} t\).
 
 #+ATTR_HTML: :width 400px
 [[file:~/.local/images/prml-1-28.png]]
 
-Expanding \( (y(\mathbf{x}) - t)^2 \):
+* Approach 1
+Start with the expected loss which by definition is
 
 \[
-(y(\mathbf{x}) - t)^2 = (y(\mathbf{x}) - \mathbb{E}[t \mid \mathbf{x}] + \mathbb{E}[t \mid \mathbf{x}] - t)^2,
+\mathbb{E}[L] = \iint (y(\mathbf{x}) - t)^2 p(\mathbf{x},\,t) \, \mathrm{d} \mathbf{x} \, \mathrm{d} t.
 \]
 
-yields:
+Next demand that the [[id:7fbb65b1-0a92-4381-b263-23b0e75a5229][functional derivative]] of \(\mathbb{E}[L]\) with respect to \( y(\mathbf{x}) \) vanish
 
 \[
-(y(\mathbf{x}) - \mathbb{E}[t \mid \mathbf{x}])^2 + 2(y(\mathbf{x}) - \mathbb{E}[t \mid \mathbf{x}])(\mathbb{E}[t \mid \mathbf{x}] - t) + (\mathbb{E}[t \mid \mathbf{x}] - t)^2.
+\frac{\delta \mathbb{E}[L]}{\delta y(\mathbf{x})} = 2 \int (y(\mathbf{x}) - t) p(\mathbf{x},\,t) \, \mathrm{d} t = 0.
 \]
 
-Integrating over \( t \):
+Solve for \( y(\mathbf{x}) \)
 
 \[
-\mathbb{E}[L] = \int (y(\mathbf{x}) - \mathbb{E}[t \mid \mathbf{x}])^2 p(\mathbf{x}) \, \mathrm{d} \mathbf{x} + \int (\mathbb{E}[t \mid \mathbf{x}] - t)^2 p(\mathbf{x}) \, \mathrm{d} \mathbf{x}.
+y(\mathbf{x}) = \frac{\int t p(\mathbf{x},\,t) \, \mathrm{d} t}{p(\mathbf{x})} = \int t p(t \mid \mathbf{x}) \, \mathrm{d} t = \mathbb{E}_t[t \mid \mathbf{x}].
 \]
 
-Minimizing the first term, \( y(\mathbf{x}) = \mathbb{E}[t \mid \mathbf{x}] \). The second term represents the intrinsic variability of \( t \) (noise) and is independent of \( y(\mathbf{x}) \).
-
-Approaches to regression problems:
-1. Determine \( p(\mathbf{x}, t) \), normalize to \( p(t \mid \mathbf{x}) \), and marginalize to find \( \mathbb{E}[t \mid \mathbf{x}] \).
-2. Directly infer \( p(t \mid \mathbf{x}) \) and marginalize to find \( \mathbb{E}[t \mid \mathbf{x}] \).
-3. Directly find \( y(\mathbf{x}) \) from the training data.
-
-Alternate loss functions, like Minkowski loss:
+* Approach 2
+Start with a rewrite for \( (y(\mathbf{x}) - t)^2 \)
 
 \[
-\mathbb{E}[L_q] = \iint |y(\mathbf{x}) - t|^q p(\mathbf{x}, t) \, \mathrm{d} \mathbf{x} \, \mathrm{d} t,
+(y(\mathbf{x}) - t)^2 = (y(\mathbf{x}) - \mathbb{E}[t \mid \mathbf{x}] + \mathbb{E}[t \mid \mathbf{x}] - t)^2.
 \]
 
-yield the conditional mean for \( q = 2 \), median for \( q = 1 \), and mode for \( q \to 0 \).
+Next use the [[id:b77dfcde-648d-4f70-bb61-2ae8a8f674ad][binomial expansion]] to write
+
+\[
+(y(\mathbf{x}) - t)^2 = (y(\mathbf{x}) - \mathbb{E}[t \mid \mathbf{x}])^2  + (\mathbb{E}[t \mid \mathbf{x}] - t)^2.
+\]
+
+Next obtain the expected loss
+
+\[
+\mathbb{E}[L] = \iint (y(\mathbf{x}) - \mathbb{E}[t \mid \mathbf{x}])^2 p(\mathbf{x},\,t) \, \mathrm{d} \mathbf{x} \mathrm{d} t\, + \iint 2(y(\mathbf{x}) - \mathbb{E}[t \mid \mathbf{x}])(\mathbb{E}[t \mid \mathbf{x}] - t)\, \mathrm{d} \mathbf{x}\,\mathrm{d}t + \iint (\mathbb{E}[t \mid \mathbf{x}] - t)^2 p(\mathbf{x},\,t) \,\mathrm{d} \mathbf{x}\, \mathrm{d} t.
+\]
+
+Evaluation of the integral over \( t \) yields (the cross term vanishes)
+
+\[
+\mathbb{E}[L] = \int (y(\mathbf{x}) - \mathbb{E}[t \mid \mathbf{x}])^2 p(\mathbf{x}) \, \mathrm{d} \mathbf{x} + \int (\mathbb{E}[t \mid \mathbf{x}] - t)^2 p(\mathbf{x}) \,\mathrm{d} \mathbf{x}.
+\]
+
+Clearly, \( y(\mathbf{x}) = \mathbb{E}[t \mid \mathbf{x}] \) minimize the first term (the integrand vanishes identically). The second term represents the intrinsic variability of \( t \) (noise) and is independent of \( y(\mathbf{x}) \).
