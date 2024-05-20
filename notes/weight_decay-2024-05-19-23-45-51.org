@@ -4,4 +4,4 @@
 #+TITLE: Weight decay
 #+FILETAGS: :literature:prml:marker:
 #+SETUPFILE: ~/.config/emacs/setup/setupfile.org
-Marker node for [[id:f9a146dc-4468-4f88-a3d0-c2435c81a594][Regularization (linear models for regression)]].
+Marker node for [[id:c1f28016-d867-4b60-a6c0-f3a7907d13b6][Regularization (linear basis function models)]]
