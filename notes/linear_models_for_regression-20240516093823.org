@@ -10,6 +10,11 @@ The aim of *regression* is to predict the value of continuous target variables \
 Given a training set with \( N \) observations \(\{\mathbf{x}_n\}\) and corresponding targets \(\{t_n\}\), the goal is to predict \( t \) for a new \( \mathbf{x} \). This can be done by constructing \( y(\mathbf{x}) \), which predicts \( t \) for new inputs \( \mathbf{x} \). In terms of probabilities, this involves modeling the predictive distribution \( p(t \mid \mathbf{x}) \), capturing the uncertainty in \( t \) for each \( \mathbf{x} \).
 
 [[id:a3b84f9d-c03a-4579-9c82-47bba805c09b][Linear basis function models]]
+    [[id:2967ed4f-6501-4d36-8446-50e536e66a2c][Maximum likelihood (linear basis function models)]] 
+    [[id:217e38dc-5582-4716-adc9-b8eb73cd0995][Geometry of least squares]] 
+    [[id:2a73f861-7650-4a41-84f0-81b975111c4f][Sequential algorithm]] 
+    [[id:f9a146dc-4468-4f88-a3d0-c2435c81a594][Regularization (linear models for regression)]] 
+    [[id:9edc5f00-5227-4762-ac98-43f1893df310][Multiple outputs (linear basis function models)]]
 [[id:8a2b642d-250b-4f2a-9037-6c02c6efa0f8][The bias-variance decomposition]]
 [[id:352a4bd7-442d-4e94-bb47-c36c12dd99f0][Bayesian linear regression]]
 [[id:c233fe81-d1e4-4326-b280-b2253a0e3aa3][Bayesian model comparison]]
