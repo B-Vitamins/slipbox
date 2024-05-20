@@ -5,3 +5,24 @@
 #+FILETAGS: :literature:
 #+SETUPFILE: ~/.config/emacs/setup/setupfile.org
 
+In the context of [[id:869cf352-d95e-471d-a21a-c618a35c51dd][decision theory]] of [[id:31f8fc5c-fdc7-4c1c-8288-3d4f1c8c0110][regression]] problems, one typically works with a *loss function* and the goal is to minimize it. The loss function \( L (y(\mathbf{x}),\,t) \) is a function of the [[id:c0201acc-994e-4ba6-88f9-b91a6d041692][regression function]] \( y(\mathbf{x}) \) and the [[id:31f8fc5c-fdc7-4c1c-8288-3d4f1c8c0110][target variable]] \( t \) (see [[id:31f8fc5c-fdc7-4c1c-8288-3d4f1c8c0110][Regression]]). Therefore, strictly speaking, the loss function is a [[id:dd3f48e5-64f8-4fe9-bd38-4ad0f9058f45][Functional]]. 
+
+A commonly used loss function is the *squared loss* \( L(y(\mathbf{x}),\,t) = (t - y(\mathbf{x}))^2 \), and its expectation
+
+\[
+\mathbb{E}[L] = \iint (y(\mathbf{x}) - t)^2 p(\mathbf{x},\,t) \, \mathrm{d} \mathbf{x} \, \mathrm{d} t.
+\]
+
+is minimized by \(\mathbb{E}_t[t \mid \mathbf{x}] = \int t p(t \mid \mathbf{x}) \, \mathrm{d} t\) (see [[id:c0201acc-994e-4ba6-88f9-b91a6d041692][Loss functions for regression (decision theory)]]). 
+
+A generalization of the squared loss is the *Minkowski loss* \(L_q = |y(\mathbf{x}) - t|^q\) and its expectation
+
+\[
+\mathbb{E}[L_q] = \iint \lvert y(\mathbf{x}) - t \rvert^q p(\mathbf{x},\,t) \, \mathrm{d} \mathbf{x} \, \mathrm{d} t.
+\]
+
+is minimized by the conditional mean for \( q = 2 \) (the squared loss case), median for \( q = 1 \), and mode for \( q \to 0 \).
+
+
+
+
