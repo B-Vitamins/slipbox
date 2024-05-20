@@ -12,9 +12,8 @@ The steady state solutions for the full [[id:21d62749-69ab-4e25-b366-eb6ff17a2f0
 Let \( \mathrm{H}(t) \equiv \int \mathrm{d}^3 \vec{p} \, \mathrm{d}^3 \vec{q} \, f_1(\vec{p},\, \vec{q},\,t) \ln f_1(\vec{p},\,\vec{q},\,t) \). If \(f_1(\vec{p},\,\vec{q},\,t)\) satisfies the Boltzmann equation, then \(\mathrm{D}_t \mathrm{H} \leq 0\).
 #+end_theorem
 
-The function \(\mathrm{H}(t)\) is related to the [[id:dd01339d-fd5c-42dc-8a95-246f3f37fcb2][information content]] of the one-particle PDF. Up to an overall constant, the information content of \(\rho_1=f_1 / N\) is given by \(I [\,\rho_1\,] = \langle \ln \rho_1 \rangle\), which is clearly similar to \(\mathrm{H}(t)\). Also see [[id:bc954e6a-362d-4efb-8060-9fe0f3cc3d42][Irreversibility]].
-
-* Proof
+#+NAME: The H-theorem
+#+begin_proof
 The time derivative of \(\mathrm{H}\) is
 
 \begin{align*}
@@ -89,3 +88,6 @@ Averaging Eqs. (2) and (5) results in
 \end{align*}
 
 If \(f_1(\vec{p}_1) f_1(\vec{p}_2)>\) \(f_1(\vec{p}_1{ }^{\prime}) f_1(\vec{p}_2{ }^{\prime})\), both terms in square brackets are positive, while both are negative if \(f_1(\vec{p}_1) f_1(\vec{p}_2)<f_1(\vec{p}_1^{\prime}) f_1(\vec{p}_2{ }^{\prime})\). In either case, their product is positive. The positivity of the integrand above establishes the validity of the H-theorem, \( \mathrm{D}_t \mathrm{H} \leq 0 \).
+#+end_proof
+
+The function \(\mathrm{H}(t)\) is related to the [[id:dd01339d-fd5c-42dc-8a95-246f3f37fcb2][information content]] of the one-particle PDF. Up to an overall constant, the information content of \(\rho_1=f_1 / N\) is given by \(I [\,\rho_1\,] = \langle \ln \rho_1 \rangle\), which is clearly similar to \(\mathrm{H}(t)\). Also see [[id:bc954e6a-362d-4efb-8060-9fe0f3cc3d42][Irreversibility]].
