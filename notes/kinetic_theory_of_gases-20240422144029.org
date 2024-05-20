@@ -2,11 +2,8 @@
 :ID:       9ba4f944-810d-44e7-a2b4-f8f1963a91f0
 :END:
 #+TITLE: Kinetic theory of gases
-#+FILETAGS: :literature: :SPOP:
+#+FILETAGS: :literature:spop:
 #+SETUPFILE: ~/.config/emacs/setup/setupfile.org
-#+BEGIN: clocktable :maxlevel 2 :scope nil :emphasize nil
-#+CAPTION:
-#+END
 
 *Kinetic theory studies the macroscopic properties of large numbers of particles, starting from their (classical) equations of motion.*
 
