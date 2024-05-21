@@ -1,0 +1,7 @@
+:PROPERTIES:
+:ID:       0b8587fb-7194-4dd9-972e-08efbf7381c9
+:END:
+#+TITLE: Cross-validation
+#+FILETAGS: :literature:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+Marker node for [[id:fc08c0b0-19ee-4ee2-9e1e-b1066a5e6f1e][Model selection]]
