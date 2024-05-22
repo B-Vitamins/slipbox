@@ -36,7 +36,7 @@ p\left(\mathbf{w} \mid \mathcal{D}, \mathcal{M}_{i}\right) = \frac{p\left(\mathc
 To approximate the integral for a model with a single parameter \(w\), consider a sharply peaked posterior distribution around \(w_{\text{MAP}}\) with width \(\Delta w_{\text{posterior}}\). Assuming a flat prior with width \(\Delta w_{\text{prior}}\), the prior is \(p(w) = 1 / \Delta w_{\text{prior}}\). The model evidence is approximated as:
 
 \[
-p(\mathcal{D}) \approx p\left(\mathcal{D} \mid w_{\text{MAP}}\right) \frac{\Delta w_{\text{posterior}}}{\Delta w_{\text{prior}}}
+p(\mathcal{D} \mid \mathcal{M}) \approx p\left(\mathcal{D} \mid w_{\text{MAP}},\, \mathcal{M} \right) \frac{\Delta w_{\text{posterior}}}{\Delta w_{\text{prior}}}
 \]
 
 #+ATTR_HTML: :width 400px
@@ -46,13 +46,13 @@ p(\mathcal{D}) \approx p\left(\mathcal{D} \mid w_{\text{MAP}}\right) \frac{\Delt
 Taking the logarithm:
 
 \[
-\ln p(\mathcal{D}) \approx \ln p\left(\mathcal{D} \mid w_{\text{MAP}}\right) + \ln \left(\frac{\Delta w_{\text{posterior}}}{\Delta w_{\text{prior}}}\right)
+\ln p(\mathcal{D} \mid \mathcal{M}) \approx \ln p\left(\mathcal{D} \mid w_{\text{MAP}},\, \mathcal{M}\right) + \ln \left(\frac{\Delta w_{\text{posterior}}}{\Delta w_{\text{prior}}}\right)
 \]
 
 For a model with \(M\) parameters, assuming equal ratios for all parameters:
 
 \[
-\ln p(\mathcal{D}) \approx \ln p\left(\mathcal{D} \mid \mathbf{w}_{\text{MAP}}\right) + M \ln \left(\frac{\Delta w_{\text{posterior}}}{\Delta w_{\text{prior}}}\right)
+\ln p(\mathcal{D} \mid \mathcal{M}) \approx \ln p\left(\mathcal{D} \mid \mathbf{w}_{\text{MAP}},\, \mathcal{M}\right) + M \ln \left(\frac{\Delta w_{\text{posterior}}}{\Delta w_{\text{prior}}}\right)
 \]
 
 Here, the complexity penalty increases linearly with \(M\). Optimal model complexity balances the fit to the data and the complexity penalty. A refined Gaussian approximation to the posterior will be developed later.
