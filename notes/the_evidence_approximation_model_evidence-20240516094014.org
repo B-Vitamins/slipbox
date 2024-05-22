@@ -1,0 +1,35 @@
+:PROPERTIES:
+:ID:       5b4fbe25-e055-491b-b2dc-e89d02f42fc7
+:END:
+#+TITLE: The evidence approximation (Model evidence)
+#+FILETAGS: :literature:prml:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+In a fully Bayesian approach to [[id:a3b84f9d-c03a-4579-9c82-47bba805c09b][Linear basis function models]], we introduce priors for the hyper-parameters \(\alpha\) and \(\beta\) (see [[id:e1ea0714-f512-4c48-8557-1e73a05e90c8][Bayesian linear regression]]) and make predictions by marginalizing over these hyper-parameters and the parameters \(\mathbf{w}\). Complete marginalization is analytically intractable, but we can approximate by maximizing the marginal likelihood of \(\alpha\) and \(\beta\), known as *empirical Bayes* or *type 2 maximum likelihood*.
+
+The predictive distribution, given hyper-priors over \(\alpha\) and \(\beta\), is:
+
+\[
+p(t \mid \mathbf{t}) = \iiint p(t \mid \mathbf{w}, \beta) p(\mathbf{w} \mid \mathbf{t}, \alpha, \beta) p(\alpha, \beta \mid \mathbf{t}) \, \mathrm{d} \mathbf{w} \, \mathrm{d} \alpha \, \mathrm{d} \beta
+\]
+
+If the posterior \(p(\alpha, \beta \mid \mathbf{t})\) is sharply peaked at \(\widehat{\alpha}\) and \(\widehat{\beta}\), the predictive distribution simplifies to:
+
+\[
+p(t \mid \mathbf{t}) \simeq \int p(t \mid \mathbf{w}, \widehat{\beta}) p(\mathbf{w} \mid \mathbf{t}, \widehat{\alpha}, \widehat{\beta}) \, \mathrm{d} \mathbf{w}
+\]
+
+The posterior for \(\alpha\) and \(\beta\) is:
+
+\[
+p(\alpha, \beta \mid \mathbf{t}) \propto p(\mathbf{t} \mid \alpha, \beta) p(\alpha, \beta)
+\]
+
+With a flat prior, the evidence framework finds \(\widehat{\alpha}\) and \(\widehat{\beta}\) by maximizing \(p(\mathbf{t} \mid \alpha, \beta)\). This avoids cross-validation by using training data to determine hyper-parameters.
+
+Using conjugate priors (Gamma distributions) allows analytical marginalization over \(\alpha\) and \(\beta\), resulting in a Student's t-distribution over \(\mathbf{w}\). However, approximating the remaining integral, e.g., via the Laplace approximation, is less effective due to skewed modes in \(\mathbf{w}\).
+
+Maximizing the log evidence involves two approaches: 
+
+1) [[id:1a7ef001-bc80-488b-8814-b69b85d1d4c0][Analytical evaluation and maximization of the evidence function]] to obtain re-estimation equations for \(\alpha\) and \(\beta\),
+2) Use the [[id:a820259b-8ea5-4c46-870b-c52a33ba35a1][Expectation Maximization algorithm]].
