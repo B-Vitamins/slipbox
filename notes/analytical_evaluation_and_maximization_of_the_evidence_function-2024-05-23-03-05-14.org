@@ -1,0 +1,201 @@
+:PROPERTIES:
+:ID:       1a7ef001-bc80-488b-8814-b69b85d1d4c0
+:END:
+#+TITLE: Analytical evaluation and maximization of the evidence function
+#+FILETAGS: :literature:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+* Evaluation
+
+The marginal likelihood function \(p(\mathbf{t} \mid \alpha, \beta)\) is obtained by integrating over the weight parameters \(\mathbf{w}\), so that
+
+\begin{align*}
+p(\mathbf{t} \mid \alpha, \beta)=\int p(\mathbf{t} \mid \mathbf{w}, \beta) p(\mathbf{w} \mid \alpha) \mathrm{d} \mathbf{w} \tag{1}
+\end{align*}
+
+Using
+
+\begin{align*}
+\ln p(\mathbf{t} \mid \mathbf{w}, \beta) & =\sum_{n=1}^N \ln \mathcal{N}\left(t_n \mid \mathbf{w}^{\mathrm{T}} \boldsymbol{\phi}\left(\mathbf{x}_n\right), \beta^{-1}\right) \\ & =\frac{N}{2} \ln \beta-\frac{N}{2} \ln (2 \pi)-\beta E_D(\mathbf{w}),
+\end{align*}
+
+\begin{align*}
+E_D(\mathbf{w})=\frac{1}{2} \sum_{n=1}^N\left\{t_n-\mathbf{w}^{\mathrm{T}} \boldsymbol{\phi}\left(\mathbf{x}_n\right)\right\}^2,
+\end{align*}
+
+and
+
+\begin{align*}
+p(\mathbf{w} \mid \alpha)=\mathcal{N}\left(\mathbf{w} \mid \mathbf{0}, \alpha^{-1} \mathbf{I}\right),
+\end{align*}
+
+we can write the evidence function in the form
+
+\begin{align*}
+p(\mathbf{t} \mid \alpha, \beta)=\left(\frac{\beta}{2 \pi}\right)^{N / 2}\left(\frac{\alpha}{2 \pi}\right)^{M / 2} \int \exp \{-E(\mathbf{w})\} \mathrm{d} \mathbf{w} \tag{2}
+\end{align*}
+
+where \(M\) is the dimension of \(\mathbf{w}\), and we have defined
+
+\begin{align*}
+E(\mathbf{w}) & =\beta E_{D}(\mathbf{w})+\alpha E_{W}(\mathbf{w}) \\
+& =\frac{\beta}{2}\|\mathbf{t}-\mathbf{\Phi} \mathbf{w}\|^{2}+\frac{\alpha}{2} \mathbf{w}^{\mathrm{T}} \mathbf{w}
+\tag{3}
+\end{align*}
+
+We recognize (3) as being equal, up to a constant of proportionality, to the [[id:c1f28016-d867-4b60-a6c0-f3a7907d13b6][regularized sum-of-squares error function]]. Completing the square over \(\mathbf{w}\) gives
+
+\begin{align*}
+E(\mathbf{w})=E\left(\mathbf{m}_{N}\right)+\frac{1}{2}\left(\mathbf{w}-\mathbf{m}_{N}\right)^{\mathrm{T}} \mathbf{A}\left(\mathbf{w}-\mathbf{m}_{N}\right) \tag{4}
+\end{align*}
+
+where we have introduced
+
+\begin{align*}
+\mathbf{A}\equiv\alpha \mathbf{I}+\beta \boldsymbol{\Phi}^{\mathrm{T}} \boldsymbol{\Phi} \tag{5}
+\end{align*}
+
+together with
+
+\begin{align*}
+E\left(\mathbf{m}_{N}\right)\equiv\frac{\beta}{2}\left\|\mathbf{t}-\boldsymbol{\Phi} \mathbf{m}_{N}\right\|^{2}+\frac{\alpha}{2} \mathbf{m}_{N}^{\mathrm{T}} \mathbf{m}_{N} \tag{6}
+\end{align*}
+
+Note that A corresponds to the matrix of second derivatives of the error function
+
+\begin{align*}
+\mathbf{A}=\nabla^2 E(\mathbf{w}) \tag{7}
+\end{align*}
+
+and is known as the [[id:4982698a-3bff-4598-86ef-ffb1921fbc5f][Hessian matrix]]. Here we have also defined \(\mathbf{m}_{N}\) given by
+
+\begin{align*}
+\mathbf{m}_{N}\equiv\beta \mathbf{A}^{-1} \boldsymbol{\Phi}^{\mathrm{T}} \mathbf{t} \tag{8}
+\end{align*}
+
+Using
+
+\begin{align*}
+\mathbf{S}_N^{-1}=\alpha \mathbf{I}+\beta \boldsymbol{\Phi}^{\mathrm{T}} \boldsymbol{\Phi} .
+\end{align*}
+
+
+(see [[id:e1ea0714-f512-4c48-8557-1e73a05e90c8][Bayesian linear regression]]), we see that \(\mathbf{A}=\mathbf{S}_{N}^{-1}\), and hence (8) is equivalent to the definition
+
+\begin{align*}
+\mathbf{m}_N=\beta \mathbf{S}_N \boldsymbol{\Phi}^{\mathrm{T}} \mathbf{t} \\
+\end{align*}
+
+(see [[id:e1ea0714-f512-4c48-8557-1e73a05e90c8][Bayesian linear regression]]) and therefore represents the mean of the posterior distribution.
+
+The integral over \(\mathbf{w}\) can now be evaluated simply by appealing to the standard result for the normalization coefficient of a multivariate Gaussian, giving
+
+\begin{align*}
+\int & \exp \{-E(\mathbf{w})\} \mathrm{d} \mathbf{w} \\
+& =\exp \left\{-E\left(\mathbf{m}_{N}\right)\right\} \int \exp \left\{-\frac{1}{2}\left(\mathbf{w}-\mathbf{m}_{N}\right)^{\mathrm{T}} \mathbf{A}\left(\mathbf{w}-\mathbf{m}_{N}\right)\right\} \mathrm{d} \mathbf{w} \\
+& =\exp \left\{-E\left(\mathbf{m}_{N}\right)\right\}(2 \pi)^{M / 2}|\mathbf{A}|^{-1 / 2}
+\tag{9}
+\end{align*}
+
+Using (2) we can then write the log of the marginal likelihood in the form
+
+\begin{align*}
+\ln p(\mathbf{t} \mid \alpha, \beta)=\frac{M}{2} \ln \alpha+\frac{N}{2} \ln \beta-E\left(\mathbf{m}_{N}\right)-\frac{1}{2} \ln |\mathbf{A}|-\frac{N}{2} \ln (2 \pi) \tag{10}
+\end{align*}
+
+which is the required expression for the evidence function.
+
+Returning to the [[id:be34bbdc-c85f-49cf-a457-48fe82abce89][Polynomial curve fitting]] problem, we can plot the model evidence against the order of the polynomial, as shown in the figure below
+
+#+ATTR_HTML: :width 400px
+[[file:~/.local/images/prml-3-14.png]]
+
+Here we have assumed a prior of the form 
+
+\begin{align*}
+p(\mathbf{w} \mid \alpha)=\mathcal{N}\left(\mathbf{w} \mid \mathbf{0}, \alpha^{-1} \mathbf{I}\right)=\left(\frac{\alpha}{2 \pi}\right)^{(M+1) / 2} \exp \left\{-\frac{\alpha}{2} \mathbf{w}^{\mathrm{T}} \mathbf{w}\right\}
+\end{align*}
+
+with the parameter \(\alpha\) fixed at \(\alpha=5 \times 10^{-3}\). Consider first
+
+#+ATTR_HTML: :width 400px
+[[file:~/.local/images/prml-1-4a.png]]
+
+We see that the \(M=0\) polynomial has very poor fit to the data and consequently gives a relatively low value for the evidence. Going to the \(M=1\) polynomial greatly improves the data fit, 
+
+#+ATTR_HTML: :width 400px
+[[file:~/.local/images/prml-1-4b.png]]
+
+and hence the evidence is significantly higher. However, in going to \(M=2\), the data fit is improved only very marginally, due to the fact that the underlying sinusoidal function from which the data is generated is an odd function and so has no even terms in a polynomial expansion. Indeed, the figure below shows that the residual data error is reduced only slightly in going from \(M=1\) to \(M=2\). Because this richer model suffers a greater complexity penalty, the evidence actually falls in going from \(M=1\) to \(M=2\). 
+
+#+ATTR_HTML: :width 400px
+[[file:~/.local/images/prml-1-5.png]]
+
+When we go to \(M=3\) we obtain a significant further improvement in data fit, as seen below
+
+#+ATTR_HTML: :width 400px
+[[file:~/.local/images/prml-1-4c.png]]
+
+and so the evidence is increased again, giving the highest overall evidence for any of the polynomials. Further increases in the value of \(M\) produce only small improvements in the fit to the data but suffer increasing complexity penalty, leading overall to a decrease in the evidence values. Looking again at the plot of \( E_{\text{RMS}} \quad \text{vs.} \quad M \), we see that the generalization error is roughly constant between \(M=3\) and \(M=8\), and it would be difficult to choose between these models on the basis of this plot alone. The evidence values, however, show a clear preference for \(M=3\), since this is the simplest model which gives a good explanation for the observed data.
+
+* Maximization
+
+Let us first consider the maximization of \(p(\mathbf{t} \mid \alpha, \beta)\) with respect to \(\alpha\). This can be done by first defining the following eigenvector equation
+
+\begin{align*}
+\left(\beta \boldsymbol{\Phi}^{\mathrm{T}} \boldsymbol{\Phi}\right) \mathbf{u}_{i}=\lambda_{i} \mathbf{u}_{i} \tag{11}
+\end{align*}
+
+From (5), it then follows that \(\mathbf{A}\) has eigenvalues \(\alpha+\lambda_{i}\). Now consider the derivative of the term involving \(\ln |\mathbf{A}|\) in (10) with respect to \(\alpha\). We have
+
+\begin{align*}
+\frac{d}{d \alpha} \ln |\mathbf{A}|=\frac{d}{d \alpha} \ln \prod_{i}\left(\lambda_{i}+\alpha\right)=\frac{d}{d \alpha} \sum_{i} \ln \left(\lambda_{i}+\alpha\right)=\sum_{i} \frac{1}{\lambda_{i}+\alpha} \tag{12}
+\end{align*}
+
+Thus the stationary points of (10) with respect to \(\alpha\) satisfy
+
+\begin{align*}
+0=\frac{M}{2 \alpha}-\frac{1}{2} \mathbf{m}_{N}^{\mathrm{T}} \mathbf{m}_{N}-\frac{1}{2} \sum_{i} \frac{1}{\lambda_{i}+\alpha} \tag{13}
+\end{align*}
+
+Multiplying through by \(2 \alpha\) and rearranging, we obtain
+
+\begin{align*}
+\alpha \mathbf{m}_{N}^{\mathrm{T}} \mathbf{m}_{N}=M-\alpha \sum_{i} \frac{1}{\lambda_{i}+\alpha}=\gamma \tag{14}
+\end{align*}
+
+Since there are \(M\) terms in the sum over \(i\), the quantity \(\gamma\) can be written
+
+\begin{align*}
+\gamma=\sum_{i} \frac{\lambda_{i}}{\alpha+\lambda_{i}} \tag{15}
+\end{align*}
+
+From (14) we see that the value of \(\alpha\) that maximizes the marginal likelihood satisfies
+
+\begin{align*}
+\alpha=\frac{\gamma}{\mathbf{m}_{N}^{\mathrm{T}} \mathbf{m}_{N}} \tag{16}
+\end{align*}
+
+Note that this is an implicit solution for \(\alpha\) not only because \(\gamma\) depends on \(\alpha\), but also because the mode \(\mathbf{m}_{N}\) of the posterior distribution itself depends on the choice of \(\alpha\). We therefore adopt an iterative procedure in which we make an initial choice for \(\alpha\) and use this to find \(\mathbf{m}_{N}\), which is given by (8), and also to evaluate \(\gamma\), which is given by (15). These values are then used to re-estimate \(\alpha\) using (16), and the process repeated until convergence. Note that because the matrix \(\boldsymbol{\Phi}^{\mathrm{T}} \boldsymbol{\Phi}\) is fixed, we can compute its eigenvalues once at the start and then simply multiply these by \(\beta\) to obtain the \(\lambda_{i}\).
+
+It should be emphasized that the value of \(\alpha\) has been determined purely by looking at the training data. In contrast to maximum likelihood methods, no independent data set is required in order to optimize the model complexity.
+
+We can similarly maximize the log marginal likelihood (10) with respect to \(\beta\). To do this, we note that the eigenvalues \(\lambda_{i}\) defined by (11) are proportional to \(\beta\), and hence \(d \lambda_{i} / d \beta=\lambda_{i} / \beta\) giving
+
+\begin{align*}
+\frac{d}{d \beta} \ln |\mathbf{A}|=\frac{d}{d \beta} \sum_{i} \ln \left(\lambda_{i}+\alpha\right)=\frac{1}{\beta} \sum_{i} \frac{\lambda_{i}}{\lambda_{i}+\alpha}=\frac{\gamma}{\beta} \tag{17}
+\end{align*}
+
+The stationary point of the marginal likelihood therefore satisfies
+
+\begin{align*}
+0=\frac{N}{2 \beta}-\frac{1}{2} \sum_{n=1}^{N}\left\{t_{n}-\mathbf{m}_{N}^{\mathrm{T}} \boldsymbol{\phi}\left(\mathbf{x}_{n}\right)\right\}^{2}-\frac{\gamma}{2 \beta} \tag{18}
+\end{align*}
+
+and rearranging we obtain
+
+\begin{align*}
+\frac{1}{\beta}=\frac{1}{N-\gamma} \sum_{n=1}^{N}\left\{t_{n}-\mathbf{m}_{N}^{\mathrm{T}} \boldsymbol{\phi}\left(\mathbf{x}_{n}\right)\right\}^{2} \tag{19}
+\end{align*}
+
+Again, this is an implicit solution for \(\beta\) and can be solved by choosing an initial value for \(\beta\) and then using this to calculate \(\mathbf{m}_{N}\) and \(\gamma\) and then re-estimate \(\beta\) using (19), repeating until convergence. If both \(\alpha\) and \(\beta\) are to be determined from the data, then their values can be re-estimated together after each update of \(\gamma\).
