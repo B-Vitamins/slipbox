@@ -1,0 +1,47 @@
+:PROPERTIES:
+:ID:       0b4012d4-38a1-4c8b-ac19-f27f98159189
+:END:
+#+TITLE: Effective number of parameters (the evidence approximation)
+#+FILETAGS: :literature:prml:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+In [[id:1a7ef001-bc80-488b-8814-b69b85d1d4c0][analytical evaluation and maximization of the evidence function]] (see [[id:5b4fbe25-e055-491b-b2dc-e89d02f42fc7][The evidence approximation (Model evidence)]]), we arrived at the result
+
+\begin{align*}
+\alpha=\frac{\gamma}{\mathbf{m}_{N}^{\mathrm{T}} \mathbf{m}_{N}}
+\end{align*}
+
+Consider the contours of the likelihood function and the prior as illustrated below
+
+#+ATTR_HTML: :width 400px
+[[file:~/.local/images/prml-3-15.png]]
+
+Here we have implicitly transformed to a rotated set of axes in parameter space aligned with the eigenvectors \(\mathbf{u}_{i}\) defined in [[id:1a7ef001-bc80-488b-8814-b69b85d1d4c0][Analytical evaluation and maximization of the evidence function]]. Contours of the likelihood function are then axis-aligned ellipses. The eigenvalues \(\lambda_{i}\) measure the curvature of the likelihood function, and so in the eigenvalue \(\lambda_{1}\) is small compared with \(\lambda_{2}\) (because a smaller curvature corresponds to a greater elongation of the contours of the likelihood function). Because \(\beta \boldsymbol{\Phi}^{\mathrm{T}} \boldsymbol{\Phi}\) is a positive definite matrix, it will have positive eigenvalues, and so the ratio \(\lambda_{i} /\left(\lambda_{i}+\alpha\right)\) will lie between 0 and 1 . Consequently, the quantity \(\gamma\) defined by 
+
+\begin{align*}
+\gamma=\sum_{i} \frac{\lambda_{i}}{\alpha+\lambda_{i}}
+\end{align*}
+
+will lie in the range \(0 \leqslant \gamma \leqslant M\). For directions in which \(\lambda_{i} \gg \alpha\), the corresponding parameter \(w_{i}\) will be close to its maximum likelihood value, and the ratio \(\lambda_{i} /\left(\lambda_{i}+\alpha\right)\) will be close to 1. Such parameters are called well-determined because their values are tightly constrained by the data. Conversely, for directions in which \(\lambda_{i} \ll \alpha\), the corresponding parameters \(w_{i}\) will be close to zero, as will the ratios \(\lambda_{i} /\left(\lambda_{i}+\alpha\right)\). These are directions in which the likelihood function is relatively insensitive to the parameter value and so the parameter has been set to a small value by the prior. The quantity \(\gamma\) therefore measures the effective total number of well determined parameters.
+
+#+ATTR_HTML: :width 400px
+[[file:~/.local/images/prml-3-16.png]]
+
+#+ATTR_HTML: :width 400px
+[[file:~/.local/images/prml-3-17.png]]
+
+
+
+We can obtain some insight into the equation for re-estimating \(\beta\) 
+
+\begin{align*}
+\frac{1}{\beta}=\frac{1}{N-\gamma} \sum_{n=1}^{N}\left\{t_{n}-\mathbf{m}_{N}^{\mathrm{T}} \boldsymbol{\phi}\left(\mathbf{x}_{n}\right)\right\}^{2} \tag{19}
+\end{align*}
+
+by comparing it with the corresponding maximum likelihood result given by
+
+\begin{align*}
+\beta_{\mathrm{ML}}^{-1} = N^{-1} \sum_{n=1} \{t_n - \mathbf{w}_{\mathrm{ML}}^\mathrm{T} \boldsymbol{\phi}(\mathbf{x}_n)\}^2 \tag{15}
+\end{align*}
+
+(see [[id:2967ed4f-6501-4d36-8446-50e536e66a2c][Maximum likelihood (linear basis function models)]]). Both of these formulae express the variance (the inverse precision) as an average of the squared differences between the targets and the model predictions. However, they differ in that the number of data points \(N\) in the denominator of the maximum likelihood result is replaced by \(N-\gamma\) in the Bayesian result. The mean of the target distribution is now given by the function \(\mathbf{w}^{\mathrm{T}} \boldsymbol{\phi}(\mathbf{x})\), which contains \(M\) parameters. However, not all of these parameters are tuned to the data. The effective number of parameters that are determined by the data is \(\gamma\), with the remaining \(M-\gamma\) parameters set to small values by the prior. This is reflected in the Bayesian result for the variance that has a factor \(N-\gamma\) in the denominator, thereby correcting for the bias of the maximum likelihood result.
