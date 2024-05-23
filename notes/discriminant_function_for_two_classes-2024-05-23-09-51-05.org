@@ -1,0 +1,50 @@
+:PROPERTIES:
+:ID:       175187dc-36b2-4092-a765-fbe6b8d3084a
+:END:
+#+TITLE: Discriminant function for two classes
+#+FILETAGS: :literature:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+(see [[id:43aa39fd-b16a-429b-b59a-408240ae3523][Discriminant functions]] and [[id:748061c5-f975-4773-90e4-3a5b35ceb8cd][Linear models for classification]])
+
+The simplest representation of a linear discriminant function is obtained by taking a linear function of the input vector so that
+
+\begin{align*}
+y(\mathbf{x})=\mathbf{w}^{\mathrm{T}} \mathbf{x}+w_{0} \tag{1}
+\end{align*}
+
+where \(\mathbf{w}\) is called a weight vector, and \(w_{0}\) is a bias (not to be confused with bias in the statistical sense). The negative of the bias is sometimes called a threshold. An input vector \(\mathbf{x}\) is assigned to class \(\mathcal{C}_{1}\) if \(y(\mathbf{x}) \geqslant 0\) and to class \(\mathcal{C}_{2}\) otherwise. The corresponding decision boundary is therefore defined by the relation \(y(\mathbf{x})=0\), which corresponds to a \((D-1)\)-dimensional hyperplane within the \(D\)-dimensional input space. 
+
+Consider two points \(\mathbf{x}_{\mathrm{A}}\) and \(\mathbf{x}_{\mathrm{B}}\) both of which lie on the decision surface. Because \(y\left(\mathbf{x}_{\mathrm{A}}\right)=y\left(\mathbf{x}_{\mathrm{B}}\right)=0\), we have \(\mathbf{w}^{\mathrm{T}}\left(\mathbf{x}_{\mathrm{A}}-\mathbf{x}_{\mathrm{B}}\right)=0\) and hence the vector \(\mathbf{w}\) is orthogonal to every vector lying within the decision surface, and so \(\mathrm{w}\) determines the orientation of the decision surface. Similarly, if \(\mathbf{x}\) is a point on the decision surface, then \(y(\mathbf{x})=0\), and so the normal distance from the origin to the decision surface is given by
+
+\begin{align*}
+\frac{\mathbf{w}^{\mathrm{T}} \mathbf{x}}{\|\mathbf{w}\|}=-\frac{w_{0}}{\|\mathbf{w}\|} \tag{2}
+\end{align*}
+
+We therefore see that the bias parameter \(w_{0}\) determines the location of the decision surface.
+
+Furthermore, we note that the value of \(y(\mathbf{x})\) gives a signed measure of the perpendicular distance \(r\) of the point \(\mathbf{x}\) from the decision surface. To see this, consider an arbitrary point \(\mathbf{x}\) and let \(\mathbf{x}_{\perp}\) be its orthogonal projection onto the decision surface, so that
+
+\begin{align*}
+\mathbf{x}=\mathbf{x}_{\perp}+r \frac{\mathbf{w}}{\|\mathbf{w}\|} \tag{3}
+\end{align*}
+
+Multiplying both sides of this result by \(\mathbf{w}^{\mathrm{T}}\) and adding \(w_{0}\), and making use of \(y(\mathbf{x})=\) \(\mathbf{w}^{\mathrm{T}} \mathbf{x}+w_{0}\) and \(y\left(\mathbf{x}_{\perp}\right)=\mathbf{w}^{\mathrm{T}} \mathbf{x}_{\perp}+w_{0}=0\), we have
+
+\begin{align*}
+r=\frac{y(\mathbf{x})}{\|\mathbf{w}\|} \tag{4}
+\end{align*}
+
+The figure below illustrates the geometry of a linear discriminant function in two dimensions. The decision surface, shown in red, is perpendicular to \(\mathbf{w}\), and its displacement from the origin is controlled by the bias parameter \(w_{0}\). Also, the signed orthogonal distance of a general point \(\mathrm{x}\) from the decision surface is given by \(y(\mathbf{x}) /\|\mathbf{w}\|\).
+
+#+ATTR_HTML: :width 400px
+[[file:~/.local/images/prml-4-1.png]]
+
+As with the [[id:a3b84f9d-c03a-4579-9c82-47bba805c09b][Linear basis function models]], it is sometimes convenient to use a more compact notation in which we introduce an additional dummy 'input' value \(x_{0}=1\) and then define \(\widetilde{\mathbf{w}}=\left(w_{0}, \mathbf{w}\right)\) and \(\widetilde{\mathbf{x}}=\left(x_{0}, \mathbf{x}\right)\) so that
+
+\begin{align*}
+y(\mathbf{x})=\widetilde{\mathbf{w}}^{\mathrm{T}} \widetilde{\mathbf{x}} \tag{5}
+\end{align*}
+
+In this case, the decision surfaces are \(D\)-dimensional hyperplanes passing through the origin of the \(D+1\)-dimensional expanded input space.
+
