@@ -1,0 +1,15 @@
+:PROPERTIES:
+:ID:       247a571d-68cc-4dc7-827a-77ba87516149
+:END:
+#+TITLE: Activation function (linear models for classification)
+#+FILETAGS: :literature:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+In [[id:35e57234-01f9-418c-a9fa-f94040015281][linear models for regression]], the model prediction \(y(\mathbf{x}, \mathbf{w})\) was given by a linear function of the parameters \(\mathbf{w}\). For classification problems, however, we wish to predict discrete class labels, or more generally posterior probabilities that lie in the range \((0,1)\). To achieve this, we consider a generalization of this model in which we transform the linear function of \(\mathbf{w}\) using a nonlinear function \(f(\cdot)\) so that
+
+\begin{align*}
+y(\mathbf{x})=f\bigg(\sum_{i=1}^{M} \mathbf{w}_{i}^{\mathrm{T}} \phi_i (\mathbf{x})\bigg) \tag{1}
+\end{align*}
+
+In the machine learning literature \(f(\cdot)\) is known as an *activation function*, whereas its inverse is called a *link function* in the statistics literature. The decision surfaces correspond to \(y(\mathbf{x})=\) constant, so that \(\sum_{i=1}^{M} \mathbf{w}_{i}^{\mathrm{T}} \phi_i (\mathbf{x}) = \text{constant}\) and hence the decision surfaces are linear functions of \(\mathbf{x}\), even if the function \(f(\cdot)\) is nonlinear. For this reason, the class of models described by (1) are called *generalized linear models*. In contrast to the models used for regression, they are no longer linear in the parameters due to the presence of the nonlinear function \(f(\cdot)\).
+
