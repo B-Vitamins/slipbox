@@ -1,0 +1,8 @@
+:PROPERTIES:
+:ID:       df6bf294-bc8a-441f-b16a-02fe248d59a9
+:END:
+#+TITLE: State functions
+#+FILETAGS: :literature:spop:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+See [[id:39fcc45a-9b91-42f9-9960-19eab99aae83][Thermodynamics]].
