@@ -1,0 +1,7 @@
+:PROPERTIES:
+:ID:       86c7268a-cf65-4f9b-bb99-03d810ee1bf8
+:END:
+#+TITLE: Thermal equilibrium
+#+FILETAGS: :literature:prml:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+A [[id:39fcc45a-9b91-42f9-9960-19eab99aae83][thermodynamic system]] is said to be in a state of *thermal equilibrium* when the [[id:df6bf294-bc8a-441f-b16a-02fe248d59a9][state functions]] that describe it are invariant over observation timescales. Equilibrium is observation-time-dependent (e.g., glass flows over millennia but is solid over decades).
