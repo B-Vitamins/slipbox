@@ -1,0 +1,36 @@
+:PROPERTIES:
+:ID:       39fcc45a-9b91-42f9-9960-19eab99aae83
+:END:
+#+TITLE: Thermodynamics
+#+FILETAGS: :literature:spop:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+*Thermodynamics is a phenomenological description of properties of macroscopic systems in thermal equilibrium.*
+
+"Imagine yourself as a post-Newtonian physicist intent on understanding the behavior of such a simple system as a container of gas. How would you proceed? The prototype of a successful physical theory is classical mechanics, which describes the intricate motions of particles starting from simple basic laws and employing the mathematical machinery of calculus. By analogy, you may proceed as follows:"
+
+1) _Idealize the system_
+   + Closed Systems :: Start with closed systems insulated by *adiabatic walls* to prevent heat exchange. 
+   + Open Systems :: Study systems with *diathermic walls* allowing heat exchange.
+
+2) _Describe the system in terms of thermodynamic coordinates and state functions_
+   + Analogous to coordinates and momenta for point particles, macroscopic systems are described by *thermodynamic coordinates* or [[id:df6bf294-bc8a-441f-b16a-02fe248d59a9][State functions]].
+   + Examples: Pressure and volume for fluids, surface tension and area for films, tension and length for wires, electric field and polarization for dielectrics.
+   + State functions are defined in *equilibrium*, where properties are time-invariant over observation intervals.
+   + Equilibrium is observation-time-dependent (e.g., glass flows over millennia but is solid over decades).
+
+3) _Describe the co-evolution of thermodynamic coordinates using *phenomenology*_
+   + Relationships between state functions are governed by thermodynamic laws, based on empirical observations.
+   + A logical and mathematical framework is built on these observations to derive useful concepts and testable relationships.
+
+There are 4 laws of thermodynamics:
+
+1) [[id:39f970fe-3d54-420c-9668-bf486f73cbca][The zeroth law]] :: The zeroth law of thermodynamics describes the transitive nature of thermal equilibrium. It states: If two systems, \(A\) and \(B\), are separately in equilibrium with a third system, \(C\), then they are also in equilibrium with one another.
+
+2) [[id:6ad015e0-bfeb-4d08-a35f-42810e673bb3][The first law]] :: The amount of work required to change the state of an otherwise adiabatically isolated system depends only on the initial and final states, and not on the means by which the work is performed, or on the intermediate stages through which the system passes.
+
+3) [[id:be3bfa3c-0208-4857-a67a-67dfda059d65][The second law]] :: There is a number of different formulations of the second law, such as the following two statements: 1) Kelvin's statement: No process is possible whose sole result is the complete conversion of heat into work. 2) Clausius's statement: No process is possible whose sole result is the transfer of heat from a colder to a hotter body.
+
+4) [[id:30acbe65-5298-42eb-a9d2-e9693bf56cf8][The third law]] :: The entropy of all systems at zero absolute temperature is a universal constant that can be taken to be zero. The above statement actually implies that \(\lim _{T \rightarrow 0} S(\mathbf{X}, T)=0\) which is a stronger requirement than the vanishing of the differences \(\Delta S(\mathbf{X}, T)\).
+
+
