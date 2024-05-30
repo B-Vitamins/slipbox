@@ -1,0 +1,105 @@
+:PROPERTIES:
+:ID:       39f970fe-3d54-420c-9668-bf486f73cbca
+:END:
+#+TITLE: The zeroth law
+#+FILETAGS: :literature:spop:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+*The zeroth law of* [[id:39fcc45a-9b91-42f9-9960-19eab99aae83][thermodynamics]] *describes the transitive nature of thermal equilibrium*. It states:
+
+#+NAME: The zeroth law of thermodynamics
+#+begin_law latex
+*If two systems,* \(A\) *and* \(B\), *are separately in equilibrium with a third system,* \(C\), *then they are also in equilibrium with one another.*
+#+end_law
+
+#+ATTR_HTML: :width 500px
+[[file:~/.local/images/kardar-spop-1.1.png]]
+
+
+#+NAME: The empirical temperature
+#+begin_corollary latex
+A consequence of the zeroth law is the existence of a state function, the empirical temperature \(\Theta\), such that systems in equilibrium are at the same temperature.
+#+end_corollary
+
+#+NAME: The empirical temperature
+#+begin_proof latex
+Let the equilibrium state of systems \(A\), \(B\), and \(C\) be described by the coordinates \(\{A_{1}, A_{2}, \cdots\}\), \(\{B_{1}, B_{2}, \cdots\}\), and \(\{C_{1}, C_{2}, \cdots\}\), respectively. If \(A\) and \(C\) are in equilibrium, there is a constraint between their coordinates, implying:
+
+\[
+f_{A C}\left(A_{1}, A_{2}, \cdots ; C_{1}, C_{2}, \cdots\right)=0
+\]
+
+Similarly, the equilibrium between \(B\) and \(C\) implies:
+
+\[
+f_{B C}\left(B_{1}, B_{2}, \cdots ; C_{1}, C_{2}, \cdots\right)=0
+\]
+
+Assuming mechanical equilibrium, the constraints can be expressed as:
+
+\begin{align*}
+C_{1} &= F_{A C}\left(A_{1}, A_{2}, \cdots ; C_{2}, \cdots\right), \\
+C_{1} &= F_{B C}\left(B_{1}, B_{2}, \cdots ; C_{2}, \cdots\right)
+\end{align*}
+
+Thus, if \(C\) is in equilibrium with both \(A\) and \(B\), we must have:
+
+\[
+F_{A C}\left(A_{1}, A_{2}, \cdots ; C_{2}, \cdots\right) = F_{B C}\left(B_{1}, B_{2}, \cdots ; C_{2}, \cdots\right)
+\]
+
+According to the zeroth law, \(A\) and \(B\) are also in equilibrium, implying:
+
+\[
+f_{A B}\left(A_{1}, A_{2}, \cdots ; B_{1}, B_{2}, \cdots\right)=0
+\]
+
+By selecting parameters \(\{A, B\}\) that satisfy this equation and substituting into the equilibrium condition for \(C\), we can simplify and eliminate \(C\)'s coordinates, resulting in:
+
+\[
+\Theta_{A}\left(A_{1}, A_{2}, \cdots\right) = \Theta_{B}\left(B_{1}, B_{2}, \cdots\right)
+\]
+
+Thus, equilibrium is characterized by a function \(\Theta\) of thermodynamic coordinates, defining the equation of state. Isotherms are described by \(\Theta_{A}\left(A_{1}, A_{2}, \cdots\right) = \Theta\).
+#+end_proof
+
+While many potential choices for \(\Theta\) exist, the key point is the existence of a state function that constrains the parameters of each system in [[id:86c7268a-cf65-4f9b-bb99-03d810ee1bf8][thermal equilibrium]].
+
+The function \(\Theta\) is analogous to the force in a mechanical system. For instance, in two connected springs, equilibrium occurs when the forces are equal. This transitive mechanical equilibrium can serve as an analogy for deducing the existence of a mechanical force.
+
+#+NAME: Equilibria of a gas (A) and a magnet (B), and a gas (A) and a wire (C).
+#+begin_example latex
+As an example, let us consider the following three systems: 
+
+A) a wire of length \(L\) with tension \(F\), 
+B) a paramagnet of magnetization \(M\) in a magnetic field \(B\), and 
+C) a gas of volume \(V\) at pressure \(P\).
+
+Observations indicate that when these systems are in equilibrium, the following constraints are satisfied between their coordinates:
+
+\begin{gathered}
+\left(P+\frac{a}{V^{2}}\right)(V-b)\left(L-L_{0}\right)-c\left[F-K\left(L-L_{0}\right)\right]=0, \\
+\left(P+\frac{a}{V^{2}}\right)(V-b) M-d B=0 .
+\end{gathered}
+
+The two conditions can be organized into three empirical temperature functions as
+
+\[
+\Theta \propto\left(P+\frac{a}{V^{2}}\right)(V-b)=c\left(\frac{F}{L-L_{0}}-K\right)=d \frac{B}{M} .
+\]
+
+Note that the zeroth law severely constrains the form of the constraint equation describing the equilibrium between two bodies. Any arbitrary function cannot necessarily be organized into an equality of two empirical temperature functions.
+
+The constraints used in the above example were in fact chosen to reproduce three well-known equations of state that will be encountered and discussed later in this book. In their more familiar forms they are written as
+
+\begin{align*}
+(P+a / V^{2})(V-b)=N k_{B} T & \qquad \text {(van der Waals gas)} \\
+M=(N \mu_{B}^{2} B) /(3 k_{B} T) & \qquad \text {(Curie paramagnet)} \\
+F=(K+D T)(L-L_{0}) & \qquad \text {(Hooke's law for rubber)}
+\end{align*}
+#+end_example
+
+#+ATTR_HTML: :width 500px
+[[file:~/.local/images/kardar-spop-1.2.png]]
+#+CAPTION: Equilibria of a gas (A) and a magnet (B), and a gas (A) and a wire (C).
+
+Note that we have employed the symbol for Kelvin temperature \(T\), in place of the more general empirical temperature \(\Theta\). This concrete temperature scale can be constructed [[id:b519ffc7-424d-4283-9798-029c89bfad08][using the properties of the ideal gas]].
