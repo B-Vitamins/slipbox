@@ -1,0 +1,62 @@
+:PROPERTIES:
+:ID:       a71b11c4-5806-4ce2-abcb-9705f1b6a5fb
+:END:
+#+TITLE: Consequences of Clausius's theorem
+#+FILETAGS: :literature:spop:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+[[id:ec531792-6163-49c5-b833-e35a5b408676][Clausius's theorem]] has far-reaching consequences:
+
+1. For a reversible cycle \(\oint \mathrm{đ} Q_{\mathrm{rev}} / T=0\), since by running the cycle in the opposite direction \(\mathrm{đ} Q_{\text {rev}} \rightarrow-\mathrm{đ} Q_{\mathrm{rev}}\), and by [[id:ec531792-6163-49c5-b833-e35a5b408676][Clausius's theorem]] \(\mathrm{đ} Q_{\mathrm{rev}} / T\) is both non-negative and non-positive, hence zero. This result implies that the integral of \(\mathrm{đ} Q_{\text {rev }} / T\) between any two points \(A\) and \(B\) is independent of path, since for two paths (1) and (2)
+
+\[
+\int_{A}^{B} \frac{\mathrm{đ} Q_{\mathrm{rev}}^{(1)}}{T_{1}}+\int_{B}^{A} \frac{\mathrm{đ} Q_{\mathrm{rev}}^{(2)}}{T_{2}}=0, \quad \Longrightarrow \int_{A}^{B} \frac{\mathrm{đ} Q_{\mathrm{rev}}^{(1)}}{T_{1}}=\int_{A}^{B} \frac{\mathrm{đ} Q_{\mathrm{rev}}^{(2)}}{T_{2}}. \tag{1}
+\]
+
+2. Using (1) we can construct yet another function of state, the [[id:b91504dd-9976-4ae9-bdfb-4f92903ee24c][entropy]] \(S\). Since the integral is independent of path, and only depends on the two end-points, we can set
+
+\[
+S(B)-S(A) \equiv \int_{A}^{B} \frac{\mathrm{đ} Q_{\mathrm{rev}}}{T}. \tag{2}
+\]
+
+Note that (2) only defines the entropy up to an overall constant.
+
+#+ATTR_HTML: :width 500px
+[[file:~/.local/images/kardar-spop-1.14.png]]
+#+CAPTION: (a) A reversible cycle. (b) Two reversible paths between A and B. (c) The cycle formed from a generic path between A and B, and a reversible one.
+
+For [[id:a32a9269-5194-4356-887b-500f12b3f79d][reversible processes]], we can now compute the heat from \(\mathrm{đ} Q_{\mathrm{rev}}=T \mathrm{~d} S\). This allows us to construct adiabatic curves for a general (multi-variable) system from the condition of constant \(S\).
+
+3. For a [[id:a32a9269-5194-4356-887b-500f12b3f79d][reversible]], (hence [[id:66684beb-eef9-4c9b-bd1e-c60b025420a3][quasi-static]]) transformation, \(\mathrm{đ} Q=T \mathrm{~d} S\) and \(\mathrm{đ} W=\sum_{i} J_{i} \mathrm{~d} x_{i}\). [[id:6ad015e0-bfeb-4d08-a35f-42810e673bb3][The first law]] implies
+
+\[
+\mathrm{d} E=\mathrm{đ} Q+\mathrm{đ} W=T \mathrm{~d} S+\sum_{i} J_{i} \mathrm{~d} x_{i}. \tag{3}
+\]
+
+We can see that in this equation \(S\) and \(T\) appear as conjugate variables, with \(S\) playing the role of a displacement, and \(T\) as the corresponding force. This identification allows us to make the correspondence between mechanical and thermal exchanges more precise, although we should keep in mind that unlike its mechanical analog, temperature is always positive. 
+
+While to obtain (3) we had to appeal to [[id:a32a9269-5194-4356-887b-500f12b3f79d][Reversible transformations]], it is important to emphasize that it is a relation between [[id:df6bf294-bc8a-441f-b16a-02fe248d59a9][state functions]]. (3) is the most [[id:17498b42-c75b-4044-84a5-4befa819cd0d][fundamental identity of thermodynamics]].
+
+4. The number of independent variables necessary to describe a [[id:39fcc45a-9b91-42f9-9960-19eab99aae83][thermodynamic]] system also follows from (3). If there are \(n\) methods of doing work on a system, represented by \(n\) conjugate pairs \(\left(J_{i}, x_{i}\right)\), then \(n+1\) independent coordinates are necessary to describe the system. (We shall ignore possible constraints between the mechanical coordinates.) For example, choosing \(\left(E,\left\{x_{i}\right\}\right)\) as coordinates, it follows from (3) that
+
+\[
+(\partial_E S)_{\mathbf{x}}= T^{-1} \quad \text { and } (\partial_{x_{i}} S)_{E,\,x_{j \neq i}} = -J_{i}/T.
+\]
+
+Note that \(\mathbf{x}\) and \(\mathbf{J}\) are shorthand notations for the parameter sets \(\left\{x_{i}\right\}\) and \(\left\{J_{i}\right\}\) (also see [[id:1a6439a1-669d-4633-8400-ce7da1cb69bd][The Gibbs phase rule]]).
+
+5. Consider an irreversible change from \(A\) to \(B\). Make a complete cycle by returning from \(B\) to \(A\) along a reversible path. Then
+
+\[
+\int_{A}^{B} \frac{\mathrm{đ} Q}{T}+\int_{B}^{A} \frac{\mathrm{đ} Q_{\mathrm{rev}}}{T} \leq 0, \quad \Longrightarrow \int_{A}^{B} \frac{\mathrm{đ} Q}{T} \leq S(B)-S(A) .
+\]
+
+In differential form, this implies that \(\mathrm{d} S \geq \mathrm{đ} Q / T\) for any transformation. In particular, consider adiabatically isolating a number of subsystems, each initially separately in equilibrium. As they come to a state of joint equilibrium, since the net \(\mathrm{đ}Q=0\), we must have \(\delta S \geq 0\).
+
+#+ATTR_HTML: :width 200px
+[[file:~/.local/images/kardar-spop-1.15.jpg]]
+#+CAPTION: The initially isolated subsystems are allowed to interact, resulting in an increase of entropy.
+
+Thus an adiabatic system attains a maximum value of entropy in equilibrium since spontaneous internal changes can only increase \(S\). The direction of increasing entropy thus points out the arrow of time, and the path to equilibrium. It is thus the appropriate [[id:95872803-e6e0-4a32-a82e-90b412dcf9b3][thermodynamic potential]] that describes the [[id:95872803-e6e0-4a32-a82e-90b412dcf9b3][approach to equilibrium]] of adiabatic transformations with with no mechanical work.
+
+The mechanical analog is a point mass placed on a surface, with gravity providing a downward force. As various constraints are removed, the particle will settle down at locations of decreasing height. The statement about the increase of entropy is thus no more mysterious than the observation that objects tend to fall down under gravity!
