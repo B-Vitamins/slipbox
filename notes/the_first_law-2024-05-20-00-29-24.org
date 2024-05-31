@@ -1,0 +1,21 @@
+:PROPERTIES:
+:ID:       6ad015e0-bfeb-4d08-a35f-42810e673bb3
+:END:
+#+TITLE: The first law
+#+FILETAGS: :literature:spop:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+The first law is formulated in terms of a [[id:df6bf294-bc8a-441f-b16a-02fe248d59a9][state function]] called [[id:7f36257b-4d45-453a-b704-ca458b4c941a][internal energy]] and a quantity called [[id:5211418e-55fa-4d7e-b2f5-88148f84cc76][heat]].
+
+#+BEGIN_COMMENT
+By convention the signs of work and heat indicate the energy added to the system, and not vice versa. 
+#+END_COMMENT
+
+#+NAME: The first law of thermodynamics
+#+begin_law latex
+The first law of thermodynamics states that to change the state of a system we need a fixed amount of energy, which can be in the form of mechanical work or heat
+\[
+\mathrm{d} E= \mathrm{đ} Q + \mathrm{đ} W.
+\]
+This can also be regarded as a way of defining and quantifying the exchanged heat.
+#+end_law
