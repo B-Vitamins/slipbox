@@ -1,0 +1,46 @@
+:PROPERTIES:
+:ID:       7d403625-3965-496f-8761-5af2b140f109
+:END:
+#+TITLE: Carnot's theorem
+#+FILETAGS: :literature:spop:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+*Carnot's theorem* is a statement about the /efficiency/ of a [[id:72418d0b-2e8e-4055-a405-dbb6ce1aa3af][Carnot engine]]. (See [[id:e23a0800-61ba-4942-addd-92734a2bf6da][ideal heat engine]] for the definition of the efficiency of heat engine).
+
+#+NAME: Carnot's theorem
+#+begin_theorem latex
+No engine operating between two reservoirs (at temperatures \(T_{H}\) and \(T_{C}\)) is more efficient than a Carnot engine operating between them.
+#+end_theorem
+
+The proof of Carnot's theorem relies on:
+
+1) [[id:a32a9269-5194-4356-887b-500f12b3f79d][Reversibility]] of the Carnot engine which allows operating it as an [[id:4f765504-68e8-4422-852d-0d805e64f046][ideal refrigerator]] by use of a non-Carnot engine.
+2) Clausius's statement of [[id:be3bfa3c-0208-4857-a67a-67dfda059d65][the second law]] of [[id:39fcc45a-9b91-42f9-9960-19eab99aae83][thermodynamics]].
+
+#+ATTR_HTML: :width 400px
+[[file:~/.local/images/kardar-spop-1.11.jpg]]
+#+CAPTION: A generic engine is used to run a Carnot engine in reverse.
+
+#+NAME: Carnot's theorem
+#+begin_proof latex
++ Since a Carnot engine is reversible, it can be run backward as a refrigerator. Use the non-Carnot engine to run the Carnot engine backward.
++ Let \(Q_{H}, Q_{C}\), and \(Q_{H}^{\prime}\), \(Q_{C}^{\prime}\) denote the heat exchanges of the non-Carnot and Carnot engines by respectively. 
++ The net effect of the two engines is to transfer heat equal to \(Q_{H}-Q_{H}^{\prime}=Q_{C}-Q_{C}^{\prime}\) from \(T_{H}\) to \(T_{C}\). 
++ Clausius's statement of the second law implies \(Q_{H} \geq Q_{H}^{\prime}\) (the quantity of transferred heat cannot be negative).
++ Since the same quantity of work \(W\) is involved in this process, it follows
+\[
+\frac{W}{Q_{H}^{\prime}} \geq \frac{W}{Q_{H}} \quad \Longrightarrow \quad \eta_{\text {Carnot}} \geq \eta_{\text {non-Carnot}}.
+\]
+#+end_proof
+
+#+NAME: Universal efficiency of Carnot engines
+#+begin_corollary latex
+All reversible (Carnot) engines have the same universal efficiency \(\eta\left(T_{H}, T_{C}\right)\).
+#+end_corollary
+
+#+NAME: Universal efficiency of Carnot engines
+#+begin_proof latex
+The corollary follows immediately since each can be used to run any other one backward.
+#+end_proof
+
+The universal efficiency of Carnot engines allows for the construction of [[id:e4ccaf55-7e5e-4494-ba75-8f1754fae2c6][the thermodynamic temperature scale]].
