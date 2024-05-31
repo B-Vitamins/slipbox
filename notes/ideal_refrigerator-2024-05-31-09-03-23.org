@@ -1,0 +1,17 @@
+:PROPERTIES:
+:ID:       4f765504-68e8-4422-852d-0d805e64f046
+:END:
+#+TITLE: Ideal refrigerator
+#+FILETAGS: :literature:spop:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+An *ideal refrigerator* is like an [[id:e23a0800-61ba-4942-addd-92734a2bf6da][ideal heat engine]] running backward, that is, using work \(W\) to extract [[id:5211418e-55fa-4d7e-b2f5-88148f84cc76][heat]] \(Q_{C}\) from a cold system, and dumping heat \(Q_{H}\) at a higher [[id:73293bf4-e866-4339-ad08-4258cebfb93f][temperature]].
+
+The *efficiency* of a refrigerator is defined as
+
+\[
+\omega=\frac{Q_{C}}{W}=\frac{Q_{C}}{Q_{H}-Q_{C}}
+\]
+
+#+ATTR_HTML: :width 500px
+[[file:~/.local/images/kardar-spop-1.6.jpg]]
