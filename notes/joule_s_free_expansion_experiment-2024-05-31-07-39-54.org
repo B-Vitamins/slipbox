@@ -1,0 +1,23 @@
+:PROPERTIES:
+:ID:       05bb8f90-36b7-4593-8c20-de0f1b87578e
+:END:
+#+TITLE: Joule's free expansion experiment
+#+FILETAGS: :literature:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+Measurements indicate that if an ideal gas expands adiabatically (but not necessarily [[id:66684beb-eef9-4c9b-bd1e-c60b025420a3][quasi-statically]]), from a volume \(V_{i}\) to \(V_{f}\), the initial and final temperatures are the same.
+
+#+ATTR_HTML: :width 500px
+[[file:~/.local/images/kardar-spop-1.5.jpg]]
+
+#+NAME: Internal energy of an ideal gas
+#+begin_corollary latex
+Internal energy of an ideal gas depends only on temperature.
+#+end_corollary
+
+#+NAME: Internal energy of an ideal gas
+#+begin_proof latex
+As the transformation is adiabatic \((\Delta Q=0)\) and there is no external work done on the system \((\Delta W=\) \(0)\), the internal energy of the gas is unchanged. Since the pressure and volume of the gas change in the process, but its temperature does not, we conclude that the internal energy depends only on temperature, that is, \(E(V, T)=E(T)\).
+#+end_proof
+
+This property of the ideal gas is in fact a consequence of the form of its equation of state, as proved in the problem [[id:226a1cb5-6511-491a-baf7-c59bcd6891d1][Equations of state]].
