@@ -1,0 +1,44 @@
+:PROPERTIES:
+:ID:       e4ccaf55-7e5e-4494-ba75-8f1754fae2c6
+:END:
+#+TITLE: The thermodynamic temperature scale
+#+FILETAGS: :literature:spop:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+It is at least theoretically possible to construct a [[id:72418d0b-2e8e-4055-a405-dbb6ce1aa3af][Carnot engine]] using an ideal gas (or any other two-parameter system, see the problem on [[id:7075c02e-6a53-4d5a-ae1a-aded6ace5b85][temperature scales]]) as working substance (see [[id:40be7ec6-0376-4f11-bf1c-3f39703184a8][Carnot engine using mono-atomic ideal gas]]).
+
+A corollary of the [[id:7d403625-3965-496f-8761-5af2b140f109][Carnot's theorem]] is that independent of the material used, and design and construction, all such cyclic and reversible engines have the same maximum theoretical efficiency.
+
+Since this maximum efficiency is only dependent on the two temperatures, it can be used to construct a temperature scale. Such a temperature scale has the attractive property of being independent of the properties of any material (e.g., the ideal gas).
+
+To construct such a scale we must first obtain a constraint on the form of the efficiency (see [[id:e23a0800-61ba-4942-addd-92734a2bf6da][ideal heat engine]]) \(\eta\left(T_{H}, T_{C}\right)\) of a Carnot engine. See [[id:c28da7dc-b9cb-4aa7-9692-27dcb8edff95][efficiency of a Carnot engine]] where we obtain the constraint
+
+\begin{align*}
+\eta\left(T_{H}, T_{C}\right) & =\frac{T_{H}-T_{C}}{T_{H}}.
+\end{align*}
+
+The equation above defines temperature up to a constant of proportionality, which is again set by choosing the triple point of water, ice, and steam to \(273.16 \mathrm{~K}\) (see [[id:b519ffc7-424d-4283-9798-029c89bfad08][The ideal gas temperature scale]]). In fact, by running a Carnot cycle for a perfect gas, it can be proved (see problem on [[id:7075c02e-6a53-4d5a-ae1a-aded6ace5b85][Temperature scales]]) that the ideal gas temperature scale and the thermodynamic temperature scales are equivalent. Clearly, the thermodynamic scale is not useful from a practical standpoint; its advantage is conceptual, in that it is independent of the properties of any substance.
+
+#+NAME: Positivity of thermodynamic temperatures
+#+begin_corollary latex
+All thermodynamic temperatures are positive.
+#+end_corollary
+
+The proof of the positivity of thermodynamic temperatures relies on:
+
+1) Kelvin's statement of [[id:be3bfa3c-0208-4857-a67a-67dfda059d65][the second law]] of [[id:39fcc45a-9b91-42f9-9960-19eab99aae83][thermodynamics]].
+
+#+NAME: Positivity of thermodynamic temperatures
+#+begin_proof latex
+According to 
+
+\begin{align*}
+\eta\left(T_{H}, T_{C}\right) & =\frac{T_{H}-T_{C}}{T_{H}}.
+\end{align*}
+
+the heat extracted from a temperature \(T\) is proportional to it. If a negative temperature existed, an engine operating between it and a positive temperature would extract heat from both reservoirs and convert the sum total to work, in violation of Kelvin's statement of the second law.
+#+end_proof
+
+
+
+
