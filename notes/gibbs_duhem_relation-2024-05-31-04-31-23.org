@@ -1,0 +1,65 @@
+:PROPERTIES:
+:ID:       4f5aa778-ffaf-4d6f-a6fb-a5918f2ef54c
+:END:
+#+TITLE: Gibbs-Duhem relation
+#+FILETAGS: :literature:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+If there are \(n\) ways of doing mechanical work, \(n+1\) independent [[id:df6bf294-bc8a-441f-b16a-02fe248d59a9][state functions]] suffice to characterize an equilibrium state. There must thus be various constraints and relations between the thermodynamic parameters. *Maxwell relations* are one such class of relationships (the other being the [[id:9a34714f-f07c-4f3f-9067-7a90d32fd20d][Maxwell relations]] and the [[id:1a6439a1-669d-4633-8400-ce7da1cb69bd][the Gibbs phase rule]])
+
+The [[id:17498b42-c75b-4044-84a5-4befa819cd0d][fundamental identity of thermodynamics]] is
+
+\[
+\mathrm{d} E=T \mathrm{~d} S+\mathbf{J} \cdot \mathrm{d} \mathbf{x}+\mu \cdot \mathrm{d} \mathbf{N} \tag{1}
+\]
+
+For fixed [[id:669a1a19-a991-49f7-ac43-f845cf483def][intensive]] [[id:df6bf294-bc8a-441f-b16a-02fe248d59a9][state functions]], the [[id:8bff36e1-8fd3-48aa-88ba-8b508a8cdd86][extensive]] quantities are simply proportional to size or to the number of particles
+
+\[
+E(\lambda S, \lambda \mathbf{x}, \lambda \mathbf{N})=\lambda E(S, \mathbf{x}, \mathbf{N})
+\]
+
+Evaluating the derivative of the above equation with respect to \(\lambda\) at \(\lambda=1\) results in
+
+\[
+(\partial_{S} E )_{\mathbf{x}, \mathbf{N}}\,S + \sum_{i} (\partial_{x_i} E)_{S, x_{j \neq i}, \mathbf{N}}\,x_{i} + \sum_{\alpha} (\partial_{N_{\alpha}} E)_{S, \mathbf{x}, N_{\beta \neq \alpha}}\, N_{\alpha} = E(S, \mathbf{x}, \mathbf{N}). \tag{2}
+\]
+
+The partial derivatives in the above equation can be identified from (1) as \(T, J_{i}\), and \(\mu_{\alpha}\), respectively. Substituting these values into (2) leads to
+
+\[
+E=T S+\mathbf{J} \cdot \mathbf{x}+\mu \cdot \mathbf{N}. \tag{3}
+\]
+
+Combining the variations of (3) with (1) leads to a constraint between the variations of intensive coordinates
+
+\[
+S \mathrm{~d} T+\mathbf{x} \cdot \mathrm{d} \mathbf{J}+\mathbf{N} \cdot \mathrm{d} \mu=0
+\]
+
+known as the *Gibbs-Duhem relation*.
+
+#+BEGIN_COMMENT
+While (3) is sometimes referred to as the "fundamental equation of thermodynamics," (1) is the more fundamental. The reason is that [[id:8bff36e1-8fd3-48aa-88ba-8b508a8cdd86][extensivity]] is an additional assumption, and in fact relies on short-range interactions between constituents of the system. It is violated for a large system controlled by gravity, such as a galaxy, while  (1) remains valid.
+#+END_COMMENT
+
+#+NAME: Gibbs-Duhem relation
+#+begin_example latex
+For a fixed amount of gas, variations of the chemical potential along an isotherm can be calculated as follows. Since \(\mathrm{d} T=0\), the Gibbs-Duhem relation gives \(-V \mathrm{~d} P+N \mathrm{~d} \mu=0\), and
+
+\[
+\mathrm{d} \mu=\frac{V}{N} \mathrm{~d} P=k_{B} T \frac{\mathrm{d} P}{P}
+\]
+
+where we have used the ideal gas equation of state \(P V=N k_{B} T\). Integrating the above equation gives
+
+\[
+\mu=\mu_{0}+k_{B} T \ln \frac{P}{P_{0}}=\mu_{0}-k_{B} T \ln \frac{V}{V_{0}}
+\]
+
+where \(\left(P_{0}, V_{0}, \mu_{0}\right)\) refer to the coordinates of a reference point.
+#+end_example
+
+
+
+

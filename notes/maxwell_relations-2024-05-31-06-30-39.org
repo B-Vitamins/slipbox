@@ -1,0 +1,74 @@
+:PROPERTIES:
+:ID:       9a34714f-f07c-4f3f-9067-7a90d32fd20d
+:END:
+#+TITLE: Maxwell relations
+#+FILETAGS: :literature:spop:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+If there are \(n\) ways of doing mechanical work, \(n+1\) independent [[id:df6bf294-bc8a-441f-b16a-02fe248d59a9][state functions]] suffice to characterize an equilibrium state. There must thus be various constraints and relations between the thermodynamic parameters. *Maxwell relations* are one such class of relationships (the other being the [[id:4f5aa778-ffaf-4d6f-a6fb-a5918f2ef54c][Gibbs-Duhem relation]] and the [[id:1a6439a1-669d-4633-8400-ce7da1cb69bd][the Gibbs phase rule]])
+
+Combining the mathematical rules of differentiation with thermodynamic relationships leads to several useful results. The most important of these are Maxwell's relations, which follow from the commutative property \(\left[\partial_{x} \partial_{y} f(x, y)=\partial_{y} \partial_{x} f(x, y)\right]\) of derivatives. For example, it follows from the [[id:17498b42-c75b-4044-84a5-4befa819cd0d][fundamental identity of thermodynamics]]
+
+\begin{align*}
+\mathrm{d} E=T \mathrm{~d} S+\mathbf{J} \cdot \mathrm{d} \mathbf{x}+\mu \cdot \mathrm{d} \mathbf{N}
+\end{align*}
+
+that
+
+\[
+(\partial_{S} E)_{\mathbf{x}, \mathbf{N}} = T, \qquad (\partial_{x_i} E)_{S, x_{j \neq i}, \mathbf{N}} = J_{i}.
+\]
+
+The joint second derivative of \(E\) is then given by
+
+\[
+\partial_{S} \partial_{x_i} E = (\partial_{x_i} T)_{S} = (\partial_{S} J_{i})_{x_{i}} = \partial_{x_i} \partial_{S} E .
+\]
+
+Since \(\partial_x y = (\partial_y x)^{-1}\), the above equation can be inverted to give
+
+\[
+\boxed{
+(\partial_{J_{i}} S)_{x_{i}} = (\partial_{T} x_{i})_{S}.
+}
+\]
+
+Similar identities can be obtained from the variations of other state functions. Supposing that we are interested in finding an identity involving \((\partial_{x} S)_{T}\). We would like to find a state function whose variations include \(S \, dT\) and \(J \, dx\). The correct choice is \(dF = d(E - TS) = -S \, dT + J \, dx\). Looking at the second derivative of \(F\) yields the Maxwell relation
+
+\[
+\boxed{
+-(\partial_{x} S)_{T} = (\partial_{T} J)_{x}.
+}
+\]
+
+To calculate \((\partial_{J} S)_{T}\), consider \(d(E - TS - Jx) = -S \, dT - x \, dJ\), which leads to the identity
+
+\[
+\boxed{
+(\partial_{J} S)_{T} = (\partial_{T} x)_{J}.
+}
+\]
+
+#+NAME: Maxwell relation
+#+begin_example latex
+To obtain \((\partial_{P} \mu)_{N, T}\) for an ideal gas, start with \(d(E - TS + PV) = -S \, dT + V \, dP + \mu \, dN\). Clearly
+
+\[
+(\partial_{P} \mu)_{N, T} = (\partial_{N} V)_{T, P} = \frac{V}{N} = \frac{k_{B} T}{P}.
+\]
+
+From \( \mathrm{d} E=T \mathrm{~d} S+\mathbf{J} \cdot \mathrm{d} \mathbf{x}+\mu \cdot \mathrm{d} \mathbf{N} \) it also follows that
+
+\[
+(\partial_{V} S)_{E, N} = \frac{P}{T} = -\frac{(\partial_{V} E)_{S, N}}{(\partial_{S} E)_{V, N}}.
+\]
+
+The above equation can be rearranged into
+
+\[
+(\partial_{V} S)_{E, N} \cdot (\partial_{S} E)_{V, N} \cdot (\partial_{E} V)_{S, N} = -1,
+\]
+
+which is an illustration of the chain rule of differentiation.
+#+end_example
+

@@ -1,0 +1,36 @@
+:PROPERTIES:
+:ID:       1a6439a1-669d-4633-8400-ce7da1cb69bd
+:END:
+#+TITLE: The Gibbs phase rule
+#+FILETAGS: :literature:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+If there are \(n\) ways of doing mechanical work, \(n+1\) independent [[id:df6bf294-bc8a-441f-b16a-02fe248d59a9][state functions]] suffice to characterize an equilibrium state. There must thus be various constraints and relations between the thermodynamic parameters. *Maxwell relations* are one such class of relationships (the other being the [[id:4f5aa778-ffaf-4d6f-a6fb-a5918f2ef54c][Gibbs-Duhem relation]] and the [[id:9a34714f-f07c-4f3f-9067-7a90d32fd20d][Maxwell relations]])
+
+#+NAME: The Gibbs phase rule
+#+begin_rule latex
+The Gibbs phase rule states that quite generally, if there are \(p\) phases in coexistence, the dimensionality (number of degrees of freedom) of the corresponding loci in the space of intensive variables is
+
+\[
+\boxed{
+f=n+c+1-p
+}.
+\]
+#+end_rule
+
+If there are \(n\) ways of performing work on a system that can also change its internal energy by transformations between \(c\) chemical constituents, the number of independent intensive parameters is \(n+c\). Of course, including thermal exchanges there are \(n+c+1\) displacement-like variables in the [[id:17498b42-c75b-4044-84a5-4befa819cd0d][fundamental identity of thermodynamics]]
+
+\begin{align*}
+\mathrm{d} E=T \mathrm{~d} S+\mathbf{J} \cdot \mathrm{d} \mathbf{x}+\mu \cdot \mathrm{d} \mathbf{N}.
+\end{align*}
+
+But the [[id:669a1a19-a991-49f7-ac43-f845cf483def][intensive]] variables are constrained by the [[id:4f5aa778-ffaf-4d6f-a6fb-a5918f2ef54c][Gibbs-Duhem relation]] 
+
+\[
+S \mathrm{~d} T+\mathbf{x} \cdot \mathrm{d} \mathbf{J}+\mathbf{N} \cdot \mathrm{d} \mu=0.
+\]
+
+It follows that at least one of the parameters characterizing the system must be extensive. The [[id:422693d5-ba2c-4bed-907d-8690199a53a4][phase diagram]] depicted in [[id:b519ffc7-424d-4283-9798-029c89bfad08][the ideal gas temperature scale]] corresponds to a one-component system (water) with only one means of doing work (hydrostatic), and is thus described by two independent intensive coordinates, for example, \((P, T)\) or \((\mu, T)\). In a situation such as depicted in Fig. 1.17, where two phases (liquid and gas) coexist, there is an additional constraint on the intensive parameters, as the chemical potentials must be equal in the two phases. This constraint reduces the number of independent parameters by 1 , and the corresponding manifold for coexisting phases in Fig. 1.3 is onedimensional. At the triple point, where three phases coexist, we have to impose another constraint so that all three chemical potentials are equal. 
+The triple point of pure water thus occurs at a single point \((f=1+1+1-3=0)\) in the space of intensive parameters. If there are additional constituents, for example, a concentration of salt in the solution, the number of intensive quantities increases and the triple point can drift along a corresponding manifold.
+
+
