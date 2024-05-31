@@ -33,4 +33,4 @@ The practical impetus for development of the science of thermodynamics in the ni
 
 4) [[id:30acbe65-5298-42eb-a9d2-e9693bf56cf8][The third law]] :: The entropy of all systems at zero absolute temperature is a universal constant that can be taken to be zero. The above statement actually implies that \(\lim _{T \rightarrow 0} S(\mathbf{X}, T)=0\) which is a stronger requirement than the vanishing of the differences \(\Delta S(\mathbf{X}, T)\).
 
-
+The hub nodes [[id:9ba4f944-810d-44e7-a2b4-f8f1963a91f0][kinetic theory of gases]], [[id:7c80611f-3eb6-49bd-81cb-108fec858c85][classical statistical mechanics]], and [[id:06461647-d54d-40c1-8d19-b86a4cc72dba][quantum statistical mechanics]], branch out into nodes in several of which we shall attempt to justify the laws of thermodynamics from a microscopic point of view.
