@@ -1,0 +1,48 @@
+:PROPERTIES:
+:ID:       30acbe65-5298-42eb-a9d2-e9693bf56cf8
+:END:
+#+TITLE: The third law
+#+FILETAGS: :literature:spop:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+Differences in [[id:b91504dd-9976-4ae9-bdfb-4f92903ee24c][entropy]] between two states can be computed using [[id:be3bfa3c-0208-4857-a67a-67dfda059d65][the second law]], from \(\Delta S=\int \mathrm{đ} Q_{\mathrm{rev}} / T\). Low-temperature experiments indicate that \(\Delta S(\mathbf{X}, T)\) vanishes as \(T\) goes to zero for any set of coordinates \(\mathbf{X}\). This observation is independent of the other laws of thermodynamics, leading to the formulation of a *third law* by Nernst, which states:
+
+#+NAME: The third law of thermodynamics
+#+begin_law latex
+The entropy of all systems at zero absolute temperature is a universal constant that can be taken to be zero.
+#+end_law
+
+#+NAME: The third law of thermodynamics
+#+begin_corollary latex
+The third law of thermodynamics, as stated above, implies that
+
+\[
+\lim _{T \rightarrow 0} S(\mathbf{X}, T)=0
+\]
+
+which is a stronger requirement than the vanishing of the differences \(\Delta S(\mathbf{X}, T)\). 
+#+end_corollary
+
+Suppose that
+
+1) Under *slow cooling* from a high temperature equilibrium phase \(A\), the phase makes a transition at a temperature \(T^{\ast}\) to phase \(B\), releasing latent [[id:5211418e-55fa-4d7e-b2f5-88148f84cc76][heat]] \(L\).
+2) Under *rapid cooling* from a high temperature equilibrium phase \( B \), the transition is avoided, and phase \(A\) persists in metastable equilibrium.
+
+#+ATTR_HTML: :width 300px
+[[file:~/.local/images/kardar-spop-1.22.jpg]]
+#+CAPTION: Heat capacity measurements on allotropes of the same material.
+
+The [[id:b91504dd-9976-4ae9-bdfb-4f92903ee24c][entropies]] in the two phases can be calculated by measuring the [[id:7da7f949-a4cb-4953-8e91-00f359d37c9c][heat capacities]] \(C_{A}(T)\) and \(C_{B}(T)\). Starting from \(T=0\), the entropy at a temperature slightly above \(T^{\ast}\) can be computed along the two possible paths as
+
+\[
+S\left(T^{*}+\epsilon\right)=S_{A}(0)+\int_{0}^{T^{*}} \mathrm{~d} T^{\prime} \frac{C_{A}\left(T^{\prime}\right)}{T^{\prime}}=S_{B}(0)+\int_{0}^{T^{*}} \mathrm{~d} T^{\prime} \frac{C_{B}\left(T^{\prime}\right)}{T^{\prime}}+\frac{L}{T^{*}}
+\]
+
+By such measurements we can indeed verify that \(S_{A}(0)=S_{B}(0) \equiv 0\).
+
+#+BEGIN_COMMENT
+This extended condition has been tested for metastable phases of a substance. Certain materials, such as sulfur or phosphine, can exist in a number of rather similar crystalline structures (*allotropes*). Of course, at a given temperature only one of these structures is truly stable.
+#+END_COMMENT
+
+See [[id:f8b9f9d0-f542-4f52-a1a9-45cc041a95af][Consequences of the third law]].
+
