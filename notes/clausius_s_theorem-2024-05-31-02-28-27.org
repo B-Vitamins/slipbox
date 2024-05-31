@@ -1,0 +1,51 @@
+:PROPERTIES:
+:ID:       ec531792-6163-49c5-b833-e35a5b408676
+:END:
+#+TITLE: Clausius's theorem
+#+FILETAGS: :literature:spop:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+*Clausius's theorem* is a statement about total [[id:5211418e-55fa-4d7e-b2f5-88148f84cc76][heat]] increments supplied to a system at [[id:73293bf4-e866-4339-ad08-4258cebfb93f][temperature]] \( T \) during a [[id:aaccea55-c4f1-4617-a44f-8157cb500546][cyclic transformation]]. The existence of a [[id:df6bf294-bc8a-441f-b16a-02fe248d59a9][state function]] named [[id:b91504dd-9976-4ae9-bdfb-4f92903ee24c][entropy]] is a consequence of Clausius's theorem.
+
+#+NAME: Clausius's theorem
+#+begin_theorem latex
+For any cyclic transformation (reversible or not), \(\oint \mathrm{đ} Q / T \leq 0\), where \(\mathrm{đ} Q\) is the heat increment supplied to the system at temperature \(T\).
+#+end_theorem
+
+The proof of Clausius's theorem relies on
+
+#+NAME: Clausius's theorem
+#+begin_proof latex
++ Subdivide the cycle into a series of infinitesimal transformations (not necessarily quasi-static) in which the system receives energy in the form of heat \(\mathrm{đ} Q\) and work \(\mathrm{đ} W\).
++ Direct all the heat exchanges of the system to one port of a Carnot engine, which has another reservoir at a fixed temperature \(T_{0}\). 
++ Since the sign of \(\mathrm{đ} Q\) is not specified, the Carnot engine must operate a series of infinitesimal cycles in either direction.
++ To deliver heat \(\mathrm{đ} Q\) to the system at some stage, the engine has to extract heat \(\mathrm{đ} Q_{R}\) from the fixed reservoir. If the heat is delivered to a part of the system that is locally at a temperature \(T\), then according to
+
+\begin{align*}
+1-\eta\left(T_{1}, T_{2}\right) = \frac{Q_{2}}{Q_{1}} \equiv \frac{T_{2}}{T_{1}},
+\end{align*}
+
+\[
+\mathrm{đ} Q_{R}=T_{0} \frac{\mathrm{đ} Q}{T}.
+\]
+
++ After the cycle is completed, the system and the Carnot engine return to their original states. The net effect of the combined process is extracting heat \(Q_{R}=\oint \mathrm{đ} Q_R\) from the reservoir and converting it to external work \(W\).
++ The work \(W=Q_{R}\) is the sum total of the work elements done by the Carnot engine, and the work performed by the system in the complete cycle.
++ By Kelvin's statement of the second law, \(Q_{R}=W \leq 0\), that is,
+
+\[
+T_{0} \oint \frac{\text { đQ }}{T} \leq 0, \quad \Longrightarrow \oint \frac{\text { đQ }}{T} \leq 0 \tag{1}
+\]
+
+since \(T_{0}>0\). 
+#+end_proof
+
+#+ATTR_HTML: :width 500px
+[[file:~/.local/images/kardar-spop-1.13.jpg]]
+#+CAPTION: The heat exchanges of the system are directed to a Carnot engine with a reservoir at T_0.
+
+#+BEGIN_COMMENT
+Note that \(T\) in (1) above refers to the temperature of the whole system only for quasi-static processes in which it can be uniquely defined throughout the cycle. Otherwise, it is just a local temperature (say at a boundary of the system) at which the Carnot engine deposits the element of heat.
+#+END_COMMENT
+
+There are several important [[id:a71b11c4-5806-4ce2-abcb-9705f1b6a5fb][Consequences of Clausius's theorem]].
