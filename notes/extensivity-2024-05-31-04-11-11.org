@@ -1,0 +1,13 @@
+:PROPERTIES:
+:ID:       8bff36e1-8fd3-48aa-88ba-8b508a8cdd86
+:END:
+#+TITLE: Extensivity
+#+FILETAGS: :literature:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+
+*Extensivity* refers to a property of [[id:df6bf294-bc8a-441f-b16a-02fe248d59a9][state functions]], say \( f(X_1, X_2, \ldots, X_n) \), for which the following constraint holds
+
+\[
+f(\lambda X_1, \lambda X_2, \ldots, \lambda X_n)= \lambda f(X_1, X_2, \ldots, X_n),
+\]
