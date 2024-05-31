@@ -1,0 +1,41 @@
+:PROPERTIES:
+:ID:       f8b9f9d0-f542-4f52-a1a9-45cc041a95af
+:END:
+#+TITLE: Consequences of the third law
+#+FILETAGS: :literature:spop:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+1) Since \(S(T=0, \mathbf{X})=0\) for all coordinates \(\mathbf{X}\),
+
+\[
+\lim_{T \rightarrow 0}(\partial_{\mathbf{X}} S)_{T} = 0
+\]
+
+2) [[id:7da7f949-a4cb-4953-8e91-00f359d37c9c][Heat capacities]] must vanish as \(T \rightarrow 0\) since
+
+\[
+S(T, \mathbf{X})-S(0, \mathbf{X})=\int_{0}^{T} \mathrm{~d} T^{\prime} \frac{C_{\mathbf{X}}\left(T^{\prime}\right)}{T^{\prime}}
+\]
+
+and the integral diverges as \(T \rightarrow 0\) unless
+
+\[
+\lim _{T \rightarrow 0} C_{\mathbf{X}}(T)=0
+\]
+
+3) [[id:9e70012e-f1f6-4610-b9d2-c80fb92a7e1d][Thermal responses]] such as the *thermal expansivities* also vanish as \(T \rightarrow 0\) since
+
+\[
+\alpha_{J}=\left.\frac{1}{x} \frac{\partial x}{\partial T}\right|_{J}=\left.\frac{1}{x} \frac{\partial S}{\partial J}\right|_{T}
+\]
+
+The second equality follows from the [[id:9a34714f-f07c-4f3f-9067-7a90d32fd20d][Maxwell relation]] \( (\partial_{J} S)_{T} = (\partial_{T} x)_{J} \). The vanishing of the latter is guaranteed by \(\lim_{T \rightarrow 0}(\partial_{\mathbf{X}} S)_{T} = 0\). 
+
+
+4) It is impossible to cool any system to absolute zero temperature in a finite number of steps.
+
+For example, we can cool a gas by an adiabatic reduction in pressure. Since the curves of \(S\) versus \(T\) for different pressures must join at \(T=0\), successive steps involve progressively smaller changes, in \(S\) and in \(T\), on approaching zero temperature. Alternatively, that zero temperatures is unattainable implies that \(S(T=0, P)\) is independent of \(P\). This is a weaker statement of the third law, which also implies the equality of zero temperature entropy for different substances.
+
+#+ATTR_HTML: :width 300px
+[[file:~/.local/images/kardar-spop-1.23.jpg]]
+#+CAPTION: An infinite number of steps is required to cool a gas to T=0 by a series of isothermal decompressions.
