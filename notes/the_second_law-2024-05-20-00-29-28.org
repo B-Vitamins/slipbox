@@ -1,0 +1,22 @@
+:PROPERTIES:
+:ID:       be3bfa3c-0208-4857-a67a-67dfda059d65
+:END:
+#+TITLE: The second law
+#+FILETAGS: :literature:spop:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+The observation that the natural direction for the flow of heat is from hotter to colder bodies is the essence of *the second law of thermodynamics*. We work with two equivalent formulations of the second law:
+
+#+NAME: The second law of thermodynamics (Kelvin's statement)
+#+begin_law latex
+No process is possible whose sole result is the complete conversion of heat into work. (K)
+#+end_law
+
+#+NAME: The second law of thermodynamics (Clausius's statement)
+#+begin_law latex
+No process is possible whose sole result is the transfer of heat from a colder to a hotter body. (C)
+#+end_law
+
+[[id:6ad015e0-bfeb-4d08-a35f-42810e673bb3][The first law]] rules out *perpetual motion machines of the first kind*. It does not however forbid the existence of an engine that produces work by converting water to ice. Such a *perpetual motion machines of the second kind* is ruled out by the second law of thermodynamics: an [[id:e23a0800-61ba-4942-addd-92734a2bf6da][ideal heat engine]] is ruled out by the /Kelvin's statement/, an [[id:4f765504-68e8-4422-852d-0d805e64f046][ideal refrigerator]] is ruled out by /Clausius's statement/.
+
+See [[id:ffa7c631-fe89-41b8-976b-4a0996f2249f][Equivalence of Kelvin's and Clausius's statement for the second law of thermodynamics]] for a proof of the equivalence of the two formulations.
