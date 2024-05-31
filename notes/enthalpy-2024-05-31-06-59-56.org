@@ -1,0 +1,45 @@
+:PROPERTIES:
+:ID:       0e7e22dc-2808-4381-8317-aab5ac8d4cdd
+:END:
+#+TITLE: Enthalpy
+#+FILETAGS: :literature:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
++ *Enthalpy* is useful for *adiabatic transformations* \((\mathrm{đ} Q=0)\) *involving mechanical work under the action of a a constant external force.*
+
++ The coordinate set \((S, \mathbf{J})\) (the quantities kept constant during an adiabatic transformation with constant external force) is the most suitable for describing the enthalpy.
+
++ For any set of displacements \(\mathbf{x}\), at constant (externally applied) generalized forces \(\mathbf{J}\), the work input to the system is \(\mathrm{W} \leq \mathbf{J} \cdot \delta \mathbf{x}\). (Equality is achieved for a quasi-static change with \(\mathbf{J}=\mathbf{J}_{i}\), but there is generally some loss of the external work to dissipation. Since \(\mathrm{đ} Q=0\), using [[id:6ad015e0-bfeb-4d08-a35f-42810e673bb3][the first law]], \(\delta E \leq \mathbf{J} \cdot \delta \mathbf{x}\), and
+
+\[
+\delta H \leq 0, \quad \text { where } \quad H=E-\mathbf{J} \cdot \mathbf{x} \tag{1}
+\]
+
+is the /Enthalpy/. The *minimum enthalpy principle* merely formulates the observation that stable mechanical equilibrium is obtained by minimizing the net potential energy of the system plus the external agent.
+
++ The variations of \(H\) in [[id:86c7268a-cf65-4f9b-bb99-03d810ee1bf8][thermal equilibrium]] are given by
+
+\[
+\mathrm{d} H=\mathrm{d} E-\mathrm{d}(\mathbf{J} \cdot \mathbf{x})=T \mathrm{~d} S+\mathbf{J} \cdot \mathrm{d} \mathbf{x}-\mathbf{x} \cdot \mathrm{d} \mathbf{J}-\mathbf{J} \cdot \mathrm{d} \mathbf{x}=T \mathrm{~d} S-\mathbf{x} \cdot \mathrm{d} \mathbf{J}. \tag{2}
+\]
+
+#+BEGIN_COMMENT
+The equality in (2), and the inequality in (1), are a possible source of confusion. Equation (1) refers to variations of \(H\) on approaching equilibrium as some parameter that is not a function of state is varied (e.g., the velocity of the particle joined to the spring in the above example). By contrast, Eq. (2) describes a relation between equilibrium coordinates. To differentiate the two cases, the former (non-equilibrium) variations is denoted using \(\delta\).
+#+END_COMMENT
+
++ The following [[id:9a34714f-f07c-4f3f-9067-7a90d32fd20d][Maxwell relation]] follows from (2)
+
+\[
+x_{i}= - (\partial_{J_{i}} H)_{S, J_{j \neq i}}
+\]
+
++ Variations of the enthalpy with temperature are related t [[id:7da7f949-a4cb-4953-8e91-00f359d37c9c][heat capacities]] at constant force
+
+\[
+C_{P}=\left.\frac{\mathrm{d} Q}{\mathrm{~d} T}\right|_{P}=\left.\frac{\mathrm{d} E+P \mathrm{~d} V}{\mathrm{~d} T}\right|_{P}=\left.\frac{\mathrm{d}(E+P V)}{\mathrm{d} T}\right|_{P}=\left.\frac{\mathrm{d} H}{\mathrm{~d} T}\right|_{P} .
+\]
+
+Note, however, that a change of variables is necessary to express \(H\) in terms of \(T\), rather than the more natural variable \(S\).
+
+* Example
+Consider a spring of natural extension \(L_{0}\) and spring constant \(K\), subject to the force \(J=m g\) exerted by a particle of mass \(m\). For an extension \(x=L-L_{0}\), the internal potential energy of the spring is \(U(x)=K x^{2} / 2\), while there is a change of \(-m g x\) in the potential energy of the particle. Mechanical equilibrium is obtained by minimizing \(K x^{2} / 2-m g x\) at an extension \(x_{\mathrm{eq}}=\) \(m g / K\). The spring at any other value of the displacement initially oscillates before coming to rest at \(x_{\mathrm{eq}}\) due to friction. For a more general potential energy \(U(x)\), the internally generated force \(J_{i}=-\mathrm{d} U / \mathrm{d} x\) has to be balanced with the external force \(J\) at the equilibrium point.
