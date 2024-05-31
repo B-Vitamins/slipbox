@@ -1,0 +1,17 @@
+:PROPERTIES:
+:ID:       669a1a19-a991-49f7-ac43-f845cf483def
+:END:
+#+TITLE: Intensivity
+#+FILETAGS: :literature:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+*Intensivity* refers to a property of [[id:df6bf294-bc8a-441f-b16a-02fe248d59a9][state functions]], say \( f(X_1, X_2, \ldots, X_n) \), for which the following constraint holds
+
+\[
+f(\lambda X_1, \lambda X_2, \ldots, \lambda X_n)= f(X_1, X_2, \ldots, X_n),
+\]
+
+i.e., these quantities are independent of the size of the system.
+
+Intensive state functions are *indicators of equilibrium*; for example, the pressure is uniform in a gas in equilibrium (in the absence of external potentials) and equal for two gases in contact that are in [[id:86c7268a-cf65-4f9b-bb99-03d810ee1bf8][thermal equilibrium]].
+
