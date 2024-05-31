@@ -1,0 +1,52 @@
+:PROPERTIES:
+:ID:       ffa7c631-fe89-41b8-976b-4a0996f2249f
+:END:
+#+TITLE: Equivalence of Kelvin's and Clausius's statement for the second law of thermodynamics
+#+FILETAGS: :literature:spop:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+Kelvin and Clausius's statements for the [[id:be3bfa3c-0208-4857-a67a-67dfda059d65][the second law]] of [[id:39fcc45a-9b91-42f9-9960-19eab99aae83][thermodynamics]] are given below:
+
+#+NAME: The second law of thermodynamics (Kelvin's statement)
+#+begin_law latex
+No process is possible whose sole result is the complete conversion of heat into work. (K)
+#+end_law
+
+#+NAME: The second law of thermodynamics (Clausius's statement)
+#+begin_law latex
+No process is possible whose sole result is the transfer of heat from a colder to a hotter body. (C)
+#+end_law
+
+#+NAME: (K) <=> (C)
+#+begin_lemma latex
+Kelvin's statement of the second law is equivalent to Clausius's statement of the second law
+#+end_lemma
+
+#+NAME: (K) <=> (C)
+#+begin_proof latex
+(1) \(\neg (C) \Longrightarrow \neg (K)\)
+
++ Assume a machine that violates Clausius's statement (C) by taking heat \(Q\) from a cooler region to a hotter one.
++ Now consider an engine operating between these two regions, taking heat \(Q_{H}\) from the hotter one and dumping \(Q_{C}\) at the colder sink.
++ The combined system takes \(Q_{H}-Q\) from the hot source, produces work equal to \(Q_{H}-Q_{C}\), and dumps \(Q_{C}-Q\)  at the cold sink.
++ If we adjust the engine output such that \(Q_{C}=Q\), the net result is a \(100 \%\) efficient engine, in violation of Kelvin's statement.
+
+(2) \(\neg (K) \Longrightarrow \neg (C)\)
+
++ Assume a machine that violates Kelvin's statement (K) by taking heat \(Q\) and converting it completely to work.
++ The work output of this machine can be used to run a refrigerator, with the net outcome of transferring heat from a colder to a hotter body, in violation of Clausius's statement.
+
+(3) \( (K) \Longleftrightarrow (C) \) (follows from (1) and (2)).
+#+end_proof
+
+#+ATTR_HTML: :width 500px
+[[file:~/.local/images/kardar-spop-1.7.jpg]]
+#+CAPTION: A machine violating Clausius's statement (C) can be connected to an engine, resulting in a combined device (K) that violates Kelvin's statement.
+
+
+
+#+ATTR_HTML: :width 500px
+[[file:~/.local/images/kardar-spop-1.8.jpg]]
+#+CAPTION: A machine violating Kelvin's statement (K) can be connected to a refrigerator, resulting in violation of Clausius's statement (C).
+
+
