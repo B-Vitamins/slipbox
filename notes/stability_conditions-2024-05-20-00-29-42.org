@@ -1,0 +1,99 @@
+:PROPERTIES:
+:ID:       f4f1d422-4428-4cf5-9b48-914891b38f39
+:END:
+#+TITLE: Stability conditions
+#+FILETAGS: :literature:spop:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+The *stability condition* for a thermodynamic system is given by
+
+\[
+\boxed{
+\delta T \, \delta S+\sum_{i} \delta J_{i} \, \delta x_{i}+\sum_{\alpha} \delta \mu_{\alpha} \, \delta N_{\alpha}>0
+}
+\]
+
+For the consequences of the condition above, see [[id:ebd6f791-bade-4d8a-9e58-cf828c73f6fd][Consequences of the stability condition]].
+
+* Derivation 1 (by analogy with a mechanical system)
+
+Consider a particle moving freely in an external potential \(U(x)\) dissipates energy and settles to equilibrium at a minimum value of \(U\). The vanishing of the force \(J_{i}=-\mathrm{D}_{x} U\) is not by itself sufficient to ensure stability, as we must check that it occurs at a minimum of the potential energy, such that \(\mathrm{D}_{x}^{2} U>0\). In the presence of an external force \(J\), we must minimize the [[id:0e7e22dc-2808-4381-8317-aab5ac8d4cdd][enthalpy]] \(H=U-J x\), which amounts to tilting the potential. At the new equilibrium point \(x_{\mathrm{eq}}(J)\), we must require \(\mathrm{D}_{x}^{2} H =\mathrm{D}_{x}^{2} U >0\). *Thus only the convex portions of the potential \(U(x)\) are physically accessible.*
+
+#+ATTR_HTML: :width 300px
+[[file:~/.local/images/kardar-spop-1.19.jpg]]
+#+CAPTION: Possible types of mechanical equilibrium for a particle in a potential. The convex portions (solid line) of the potential can be explored with a finite force J, while the concave (dashed line) portion around the unstable point is not accessible.
+
+With more than one mechanical coordinate, the requirement that any change \(\delta \mathbf{x}\) results in an increase in energy (or enthalpy) can be written as
+
+\[
+\sum_{i j} (\partial_{x_{i}} \partial_{x_{j}} U)\, \delta x_{i}\, \delta x_{j}>0 . \tag{1}
+\]
+
+The corresponding change in forces is given by
+
+\[
+\delta J_{i}=\delta\left(\frac{\partial U}{\partial x_{i}}\right)=\sum_{j} (\partial_{x_{i}} \partial_{x_{j}} U)\, \delta x_{j} \tag{2}
+\]
+
+Thus (1) is equivalent to
+
+\[
+\sum_{i} \delta J_{i} \, \delta x_{i}>0
+\]
+
+When dealing with a thermodynamic system, we should allow for thermal and chemical inputs to the internal energy of the system. Including the corresponding pairs of conjugate coordinates, the condition for mechanical stability should generalize to
+
+\[
+\delta T \, \delta S+\sum_{i} \delta J_{i} \, \delta x_{i}+\sum_{\alpha} \delta \mu_{\alpha} \, \delta N_{\alpha}>0
+\]
+
+* Derivation 2 (by appeal to the uniformity of an extended thermodynamic body)
+
+Consider a homogeneous system at [[id:86c7268a-cf65-4f9b-bb99-03d810ee1bf8][thermal equilibrium]], characterized by [[id:669a1a19-a991-49f7-ac43-f845cf483def][intensive]] [[id:df6bf294-bc8a-441f-b16a-02fe248d59a9][state functions]] \((T, \mathbf{J}, \mu)\), and [[id:8bff36e1-8fd3-48aa-88ba-8b508a8cdd86][extensive]] variables \((E, \mathbf{x}, \mathbf{N})\). Now imagine that the system is arbitrarily divided into two equal parts, and that one part spontaneously transfers some energy to the other part in the form of work or heat. The two subsystems, \(A\) and \(B\), initially have the same values for the intensive variables, while their extensive coordinates satisfy \(E_{A}+E_{B}=E\), \(\mathbf{x}_{A}+\mathbf{x}_{B}=\mathbf{x}\), and \(\mathbf{N}_{A}+\mathbf{N}_{B}=\mathbf{N}\). After the exchange of energy between the two subsystems, the coordinates of \(A\) change to
+
+\[
+\left(E_{A}+\delta E, \mathbf{x}_{A}+\delta \mathbf{x}, \mathbf{N}_{A}+\delta \mathbf{N}\right) \text { and }\left(T_{A}+\delta T_{A}, \mathbf{J}_{A}+\delta \mathbf{J}_{A}, \mu_{A}+\delta \mu_{A}\right), \tag{1}
+\]
+
+and those of \(B\) to
+
+\[
+\left(E_{B}-\delta E, \mathbf{x}_{B}-\delta \mathbf{x}, \mathbf{N}_{B}-\delta \mathbf{N}\right) \text { and }\left(T_{B}+\delta T_{B}, \mathbf{J}_{B}+\delta \mathbf{J}_{B}, \mu_{B}+\delta \mu_{B}\right) . \tag{2}
+\]
+
+#+ATTR_HTML: :width 300px
+[[file:~/.local/images/kardar-spop-1.20.jpg]]
+#+CAPTION: Spontaneous change between two halves of a homogeneous system.
+
+Note that the overall system is maintained at constant \(E, \mathbf{x}\), and \(\mathbf{N}\). Since the intensive variables are themselves functions of the extensive coordinates, to first order in the variations of \((E, \mathbf{x}, \mathbf{N})\), we have
+
+\[
+\delta T_{A}=-\delta T_{B} \equiv \delta T, \quad \delta \mathbf{J}_{A}=-\delta \mathbf{J}_{B} \equiv \delta \mathbf{J}, \quad \delta \mu_{A}=-\delta \mu_{B} \equiv \delta \mu. \tag{3}
+\]
+
+Using \(E=T S+\mathbf{J} \cdot \mathbf{x}+\mu \cdot \mathbf{N}\) (see [[id:4f5aa778-ffaf-4d6f-a6fb-a5918f2ef54c][Gibbs-Duhem relation]]) the [[id:b91504dd-9976-4ae9-bdfb-4f92903ee24c][entropy]] of the system can be written as
+
+\[
+S=S_{A}+S_{B}=\left(\frac{E_{A}}{T_{A}}-\frac{\mathbf{J}_{A}}{T_{A}} \cdot \mathbf{x}_{A}-\frac{\mu_{A}}{T_{A}} \cdot \mathbf{N}_{A}\right)+\left(\frac{E_{B}}{T_{B}}-\frac{\mathbf{J}_{B}}{T_{B}} \cdot \mathbf{x}_{B}-\frac{\mu_{B}}{T_{B}} \cdot \mathbf{N}_{B}\right) .
+\]
+
+Since, by assumption, we are expanding about the equilibrium point, the /first order/ changes vanish, and to second order
+
+\[
+\delta S=\delta S_{A}+\delta S_{B}=2\left[\delta\left(\frac{1}{T_{A}}\right) \delta E_{A}-\delta\left(\frac{\mathbf{J}_{A}}{T_{A}}\right) \cdot \delta \mathbf{x}_{A}-\delta\left(\frac{\mu_{A}}{T_{A}}\right) \cdot \delta \mathbf{N}_{A}\right] \tag{4}
+\]
+
+(We have used (3) to note that the second-order contribution of \(B\) is the same as \(A\).) Equation (4) can be rearranged to
+
+\begin{align*}
+\delta S & =-\frac{2}{T_{A}}\left[\delta T_{A}\left(\frac{\delta E_{A}-\mathbf{J}_{A} \cdot \delta \mathbf{x}_{A}-\mu_{A} \cdot \delta \mathbf{N}_{A}}{T_{A}}\right)+\delta \mathbf{J}_{A} \cdot \delta \mathbf{x}_{A}+\delta \mu_{A} \cdot \delta \mathbf{N}_{A}\right] \\
+& =-\frac{2}{T_{A}}\left[\delta T_{A} \delta S_{A}+\delta \mathbf{J}_{A} \cdot \delta \mathbf{x}_{A}+\delta \mu_{A} \cdot \delta \mathbf{N}_{A}\right]. \tag{5}
+\end{align*}
+
+The condition for stable equilibrium is that any change should lead to a decrease in entropy, and hence we must have
+
+\[
+\delta T \delta S+\delta \mathbf{J} \cdot \delta \mathbf{x}+\delta \mu \cdot \delta \mathbf{N} \geq 0
+\]
+
+We have now removed the subscript \(A\), as the equation above must apply to the whole system as well as to any part of it.
