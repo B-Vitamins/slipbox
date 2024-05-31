@@ -14,9 +14,9 @@
    + Open Systems :: Study systems with *diathermic walls* allowing heat exchange.
 
 2) _Describe the system in terms of thermodynamic coordinates and state functions_
-   + Analogous to coordinates and momenta for point particles, macroscopic systems are described by *thermodynamic coordinates* or [[id:df6bf294-bc8a-441f-b16a-02fe248d59a9][State functions]].
+   + Analogous to coordinates and momenta for point particles, macroscopic systems are described by *thermodynamic coordinates* or [[id:df6bf294-bc8a-441f-b16a-02fe248d59a9][state functions]].
    + Examples: Pressure and volume for fluids, surface tension and area for films, tension and length for wires, electric field and polarization for dielectrics.
-   + State functions are defined in *equilibrium*, where properties are time-invariant over observation intervals.
+   + State functions are defined in [[id:86c7268a-cf65-4f9b-bb99-03d810ee1bf8][thermal equilibrium]], where properties are time-invariant over observation intervals.
    + Equilibrium is observation-time-dependent (e.g., glass flows over millennia but is solid over decades).
 
 3) _Describe the co-evolution of thermodynamic coordinates using *phenomenology*_

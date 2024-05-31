@@ -14,7 +14,6 @@
 #+ATTR_HTML: :width 500px
 [[file:~/.local/images/kardar-spop-1.1.png]]
 
-
 #+NAME: The empirical temperature
 #+begin_corollary latex
 A consequence of the zeroth law is the existence of a state function, the empirical temperature \(\Theta\), such that systems in equilibrium are at the same temperature.

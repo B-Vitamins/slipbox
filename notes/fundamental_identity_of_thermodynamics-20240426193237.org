@@ -5,9 +5,9 @@
 #+FILETAGS: :concept:
 #+SETUPFILE: ~/.config/emacs/setup/setupfile.org
 
-The fundamental identity of thermodynamics that embodies the  [[id:39f970fe-3d54-420c-9668-bf486f73cbca][zeroth law]], [[id:6ad015e0-bfeb-4d08-a35f-42810e673bb3][the first law]], and [[id:be3bfa3c-0208-4857-a67a-67dfda059d65][the second law]] is
+The fundamental identity of thermodynamics embodies the  [[id:39f970fe-3d54-420c-9668-bf486f73cbca][zeroth law]], [[id:6ad015e0-bfeb-4d08-a35f-42810e673bb3][the first law]], and [[id:be3bfa3c-0208-4857-a67a-67dfda059d65][the second law]] and gives a relationship between the variations of the [[id:8bff36e1-8fd3-48aa-88ba-8b508a8cdd86][extensive]] [[id:df6bf294-bc8a-441f-b16a-02fe248d59a9][state functions]]
 
 \begin{align*}
-\mathrm{d} E=\mathrm{d} Q+\mathrm{d} W=T \mathrm{~d} S+\sum_{i} J_{i} \mathrm{~d} x_{i}.
+\mathrm{d} E=T \mathrm{~d} S+\mathbf{J} \cdot \mathrm{d} \mathbf{x}+\mu \cdot \mathrm{d} \mathbf{N}
 \end{align*}
 

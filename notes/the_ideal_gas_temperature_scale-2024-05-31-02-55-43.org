@@ -5,7 +5,11 @@
 #+FILETAGS: :literature:
 #+SETUPFILE: ~/.config/emacs/setup/setupfile.org
 
-While the zeroth law merely states the presence of isotherms, to set up a practical temperature scale at this stage, a reference system is necessary. The ideal gas occupies an important place in thermodynamics and provides the necessary reference. Empirical observations indicate that the product of pressure and volume is constant along the isotherms of any gas that is sufficiently dilute. The ideal gas refers to this dilute limit of real gases, and the ideal gas temperature is proportional to the product. The constant of proportionality is determined by reference to the temperature of the triple point of the ice-water-gas system, which was set to 273.16 (degrees) kelvin (K) by the 10th General Conference on Weights and Measures in 1954. Using a dilute gas (i.e., as \(P \rightarrow 0\) ) as thermometer, the temperature of a system can be obtained from
+While the zeroth law merely states the presence of isotherms, to set up a practical temperature scale at this stage, a reference system is necessary. 
+
+*Empirical observations indicate that the product of pressure and volume is constant along the isotherms of any gas that is sufficiently dilute.*
+
+The ideal gas refers to this dilute limit of real gases, and the ideal gas temperature is proportional to the product. The constant of proportionality is determined by reference to the temperature of the triple point of the ice-water-gas system, which was set to 273.16 (degrees) kelvin (K) by the 10th General Conference on Weights and Measures in 1954. Using a dilute gas (i.e., as \(P \rightarrow 0\) ) as thermometer, the temperature of a system can be obtained from
 
 \[
 T(\mathrm{~K}) \equiv 273.16 \times\left(\lim _{P \rightarrow 0}(P V)_{\text {system }} / \lim _{P \rightarrow 0}(P V)_{\text {ice-water-gas }}\right)
