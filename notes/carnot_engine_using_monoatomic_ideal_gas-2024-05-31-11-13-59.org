@@ -1,0 +1,34 @@
+:PROPERTIES:
+:ID:       40be7ec6-0376-4f11-bf1c-3f39703184a8
+:END:
+#+TITLE: Carnot engine using mono-atomic ideal gas
+#+FILETAGS: :literature:spop:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+Let us compute the adiabatic curves for a [[id:72418d0b-2e8e-4055-a405-dbb6ce1aa3af][Carnot engine]] using a mono-atomic ideal gas as working substance. A mono-atomic ideal gas has [[id:7f36257b-4d45-453a-b704-ca458b4c941a][internal energy]]
+
+\[
+E=\frac{3}{2} N k_{B} T=\frac{3}{2} P V
+\]
+
+Along a [[id:66684beb-eef9-4c9b-bd1e-c60b025420a3][quasi-static path]] (all [[id:a32a9269-5194-4356-887b-500f12b3f79d][reversible transformation]] are [[id:66684beb-eef9-4c9b-bd1e-c60b025420a3][quasi-static transformation]]), [[id:6ad015e0-bfeb-4d08-a35f-42810e673bb3][the first law]] implies
+
+\[
+\mathrm{đ} Q=\mathrm{d} E-\mathrm{d} W=\mathrm{d}\left(\frac{3}{2} P V\right)+P \mathrm{~d} V=\frac{5}{2} P \mathrm{~d} V+\frac{3}{2} V \mathrm{~d} P
+\]
+
+Since the curves are /adiabatics/ \(\mathrm{đ} Q =0\) so that
+
+\[
+\frac{\mathrm{d} P}{P}+\frac{5}{3} \frac{\mathrm{d} V}{V}=0, \Longrightarrow P V^{\gamma}=\text { constant }
+\]
+
+with \(\gamma=5 / 3\).
+
+#+ATTR_HTML: :width 500px
+[[file:~/.local/images/kardar-spop-1.10.jpg]]
+#+CAPTION: The Carnot cycle for an ideal gas, with isothermal and adiabatic paths indicated by solid and dashed lines, respectively.
+
+The adiabatic curves are clearly distinct from the isotherms, and we can select two such curves to intersect our isotherms, thereby completing a *Carnot cycle*.
+
+The assumption of \(E \propto T\) is not necessary (see the problem [[id:7075c02e-6a53-4d5a-ae1a-aded6ace5b85][Temperature scales]] where adiabatics are constructed for any \(E(T)\). A similar construction is possible for any two-parameter system with \(E(J, x)\).
