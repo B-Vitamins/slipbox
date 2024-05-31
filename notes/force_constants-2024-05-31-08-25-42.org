@@ -1,0 +1,19 @@
+:PROPERTIES:
+:ID:       03b3d5a1-9d89-4f7c-8a81-ac6aa2048347
+:END:
+#+TITLE: Force constants
+#+FILETAGS: :literature:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+*Force constants* measure the (infinitesimal) ratio of displacement to force and are generalizations of the spring constant. As examples, we have
+
+1) *isothermal compressibility of a gas* 
+
+\[\kappa_{T} = - V^{-1} (\partial_P V)_{T} \]
+
+2) *susceptibility of a magnet* 
+
+\[\chi_{T} = V^{-1} (\partial_B M)_{T}\]
+
+From the [[id:226a1cb5-6511-491a-baf7-c59bcd6891d1][Equation of state]] of an ideal gas \(P V \propto T\), we obtain its isothermal compressibility \(\kappa_{T}=1 / P\).
+

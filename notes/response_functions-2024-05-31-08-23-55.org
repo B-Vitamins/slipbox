@@ -1,0 +1,11 @@
+:PROPERTIES:
+:ID:       7186dc74-6f37-44cc-96fb-07a8d1f3057e
+:END:
+#+TITLE: Response functions
+#+FILETAGS: :literature:spop:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+*Response functions* are the usual method for characterizing the macroscopic behavior of a [[id:39fcc45a-9b91-42f9-9960-19eab99aae83][thermodynamic system]]. They are experimentally measured from the changes of [[id:df6bf294-bc8a-441f-b16a-02fe248d59a9][state functions]] with external probes.
+
+Some common response functions are [[id:7da7f949-a4cb-4953-8e91-00f359d37c9c][Heat capacities]], [[id:03b3d5a1-9d89-4f7c-8a81-ac6aa2048347][Force constants]], and [[id:9e70012e-f1f6-4610-b9d2-c80fb92a7e1d][Thermal responses]].
+

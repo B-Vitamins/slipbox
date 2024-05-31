@@ -1,0 +1,16 @@
+:PROPERTIES:
+:ID:       9e70012e-f1f6-4610-b9d2-c80fb92a7e1d
+:END:
+#+TITLE: Thermal responses
+#+FILETAGS: :literature:spop:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+*Thermal responses* probe the change in the thermodynamic coordinates with temperature.
+
+1) the *expansivity* of a gas is given by 
+
+\[
+\alpha_{P}= V^{-1} (\partial_T V / \partial T)_{P}.
+\]
+
+Using the [[id:226a1cb5-6511-491a-baf7-c59bcd6891d1][equations of state]] of an ideal gas, its expansivity is \(1 / T\).
