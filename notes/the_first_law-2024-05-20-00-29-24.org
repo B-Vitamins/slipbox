@@ -19,3 +19,5 @@ The first law of thermodynamics states that to change the state of a system we n
 \]
 This can also be regarded as a way of defining and quantifying the exchanged heat.
 #+end_law
+
+The first law rules out *perpetual motion machines of the first kind*, that is, engines that produce work without consuming any energy.

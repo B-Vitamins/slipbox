@@ -5,9 +5,15 @@
 #+FILETAGS: :literature:spop:
 #+SETUPFILE: ~/.config/emacs/setup/setupfile.org
 
-The time evolution of systems toward equilibrium is governed by [[id:be3bfa3c-0208-4857-a67a-67dfda059d65][the second law]] of thermodynamics: in an adiabatically isolated system entropy must increase in any spontaneous change and reaches a maximum in equilibrium (see [[id:b91504dd-9976-4ae9-bdfb-4f92903ee24c][entropy]]). 
+The time evolution of systems toward [[id:86c7268a-cf65-4f9b-bb99-03d810ee1bf8][thermal equilibrium]] is governed by [[id:be3bfa3c-0208-4857-a67a-67dfda059d65][the second law]] of thermodynamics: in an adiabatically isolated system entropy must increase in any spontaneous change and reaches a maximum in equilibrium (see [[id:b91504dd-9976-4ae9-bdfb-4f92903ee24c][entropy]]).
 
-For out-of-equilibrium systems that are not adiabatically isolated, and may also be subject to external mechanical work, it is usually possible to define other thermodynamic potentials that are extremized when the system is in equilibrium. Four commonly encountered thermodynamic potentials are:
+0) [[id:b91504dd-9976-4ae9-bdfb-4f92903ee24c][Entropy]] :: adiabatic transformations (\(\mathrm{đ} W=0\)) involving no mechanical work (\(\mathrm{đ} W=0\))
+
+   \[
+   \delta S \geq 0, \quad \text { where } \quad S \quad \text{is the entropy} \tag{0}
+   \]
+
+For out-of-equilibrium systems that are not adiabatically isolated, and may also be subject to external mechanical work, it is usually possible to define other thermodynamic potentials that are extremized when the system is in equilibrium. Five commonly encountered thermodynamic potentials are:
 
 1) [[id:0e7e22dc-2808-4381-8317-aab5ac8d4cdd][Enthalpy]] :: adiabatic transformations (\(\mathrm{đ} W=0\)) in the presence of constant external force \( J \)
 
@@ -41,33 +47,3 @@ Equations (1), (2), (3) and (4) are examples of [[id:25bfcf59-6b80-4b68-8fbf-86f
 | đW=0       | δS ≥ 0              | δF ≤ 0              |
 | constant J | δH ≤ 0              | δG ≤ 0              
 |
-
-Example. To illustrate the concepts of this section, consider \(N\) particles of supersaturated steam in a container of volume \(V\) at a temperature \(T\). How can we describe the approach of steam to an equilibrium mixture with \(N_{w}\) particles in the liquid and \(N_{s}\) particles in the gas phase? The fixed coordinates describing this system are \(V, T\), and \(N\). The appropriate thermodynamic function from Table 1.2 is the Helmholtz free energy \(F(V, T, N)\), whose variations satisfy
-
-\[
-\mathrm{d} F=\mathrm{d}(E-T S)=-S \mathrm{~d} T-P \mathrm{~d} V+\mu \mathrm{d} N .
-\]
-
-[[https://cdn.mathpix.com/cropped/2023_04_12_f50e4de5413a5addf4cag-031.jpg?height=401&width=353&top_left_y=548&top_left_x=510]]
-
-Before the system reaches equilibrium at a particular value of \(N_{w}\), it goes through a series of non-equilibrium states with smaller amounts of water. If the process is sufficiently slow, we can construct an out-of-equilibrium value for \(F\) as
-
-\[
-F\left(V, T, N \mid N_{w}\right)=F_{w}\left(T, N_{w}\right)+F_{s}\left(V, T, N-N_{w}\right)
-\]
-
-which depends on an additional variable \(N_{w}\). (It is assumed that the volume occupied by water is small and irrelevant.) According to Eq. (1.34), the equilibrium point is obtained by minimizing \(F\) with respect to this variable. Since
-
-\[
-\delta F=\left.\frac{\partial F_{w}}{\partial N_{w}}\right|_{T, V} \delta N_{w}-\left.\frac{\partial F_{s}}{\partial N_{s}}\right|_{T, V} \delta N_{w},
-\]
-
-and \(\partial F /\left.\partial N\right|_{T, V}=\mu\) from Eq. (1.42), the equilibrium condition can be obtained by equating the chemical potentials, that is, from \(\mu_{w}(V, T)=\mu_{s}(V, T)\).
-
-[[https://cdn.mathpix.com/cropped/2023_04_12_f50e4de5413a5addf4cag-031.jpg?height=269&width=401&top_left_y=1748&top_left_x=479]]
-
-Fig. 1.18 The net free energy has a minimum as a function of the amount of water. Fig. 1.17 Condensation of water from supersaturated steam.
-
-The identity of chemical potentials is the condition for chemical equilibrium. Naturally, to proceed further we need expressions for \(\mu_{w}\) and \(\mu_{s}\).
-
-

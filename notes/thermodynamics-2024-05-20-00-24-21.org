@@ -23,7 +23,7 @@
    + Relationships between state functions are governed by thermodynamic laws, based on empirical observations.
    + A logical and mathematical framework is built on these observations to derive useful concepts and testable relationships.
 
-There are 4 laws of thermodynamics:
+The practical impetus for development of the science of thermodynamics in the nineteenth century was not the undertaking of a post-Newtonian theorist, it was the enterprise of scientists and engineers concerned with the advent of heat engines (see [[id:e23a0800-61ba-4942-addd-92734a2bf6da][ideal heat engine]] and [[id:4f765504-68e8-4422-852d-0d805e64f046][ideal refrigerator]]). There are 4 laws of thermodynamics:
 
 1) [[id:39f970fe-3d54-420c-9668-bf486f73cbca][The zeroth law]] :: The zeroth law of thermodynamics describes the transitive nature of thermal equilibrium. It states: If two systems, \(A\) and \(B\), are separately in equilibrium with a third system, \(C\), then they are also in equilibrium with one another.
 
