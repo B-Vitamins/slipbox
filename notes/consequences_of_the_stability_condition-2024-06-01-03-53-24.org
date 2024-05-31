@@ -1,0 +1,67 @@
+:PROPERTIES:
+:ID:       ebd6f791-bade-4d8a-9e58-cf828c73f6fd
+:END:
+#+TITLE: Consequences of the stability condition
+#+FILETAGS: :literature:spop:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+The [[id:f4f1d422-4428-4cf5-9b48-914891b38f39][stability condition]] for a [[id:39fcc45a-9b91-42f9-9960-19eab99aae83][thermodynamic]] system is given by
+
+\[
+\boxed{
+\delta T \, \delta S+\sum_{i} \delta J_{i} \, \delta x_{i}+\sum_{\alpha} \delta \mu_{\alpha} \, \delta N_{\alpha}>0
+}
+\]
+
+* Stability Condition in Thermodynamic Systems
+
+The condition above holds under constant \(E, \mathbf{x}\), and \(\mathbf{N}\) constraints, and is symmetric across different sets of constraints. For variations in \(\delta T\) and \(\delta \mathbf{x}\) with \(\delta \mathbf{N} = 0\):
+
+\begin{aligned}
+\delta S &= (\partial_{T} S)_{\mathbf{x}} \delta T + (\partial_{x_{i}} S)_{T} \delta x_{i} \\
+\delta J_{i} &= (\partial_{T} J_{i})_{\mathbf{x}} \delta T + (\partial_{x_{j}} J_{i})_{T} \delta x_{j}
+\end{aligned}
+
+Substituting these into the stability condition:
+
+\[
+(\partial_{T} S)_{\mathbf{x}} (\delta T)^{2} + (\partial_{x_{j}} J_{i})_{T} \delta x_{i} \delta x_{j} \geq 0
+\]
+
+The cross terms \(\delta T \delta x_{i}\) cancel due to Maxwell relations, leading to a quadratic form which must be positive for all \(\delta T\) and \(\delta \mathbf{x}\). 
+
+For \(\delta T \neq 0\), we obtain \((\partial_{T} S)_{\mathbf{x}} \geq 0\), implying positive heat capacity:
+
+\[
+C_{\mathbf{x}} = \left(\frac{\mathrm{d} Q}{\mathrm{d} T}\right)_{\mathbf{x}} = T (\partial_{T} S)_{\mathbf{x}} \geq 0
+\]
+
+For \(\delta x_{i} \neq 0\), the corresponding response function \((\partial_{J_{i}} x_{i})_{T, x_{j \neq i}}\) must be positive. More generally, the matrix \((\partial_{x_{j}} J_{i})_{T}\) must be positive definite, implying all eigenvalues are positive.
+
+Including chemical work for a gas, the relevant matrix is:
+
+\begin{pmatrix}
+-(\partial_{V} P)_{T, N} & -(\partial_{N} P)_{T, V} \\
+(\partial_{V} \mu)_{T, N} & (\partial_{N} \mu)_{T, V}
+\end{pmatrix}
+
+Positive definiteness requires the determinant:
+
+\[
+(\partial_{N} P)_{T, V} (\partial_{V} \mu)_{T, N} - (\partial_{V} P)_{T, N} (\partial_{N} \mu)_{T, V} \geq 0
+\]
+
+* Stability Condition at Criticality
+
+At the critical point, \((\partial_{V} P)_{T_{c}, N}=0\). Expanding the critical isotherm:
+
+\[
+\delta P (T=T_{c}) = (\partial_{V} P)_{T_{c}, N} \delta V + \frac{1}{2} (\partial_{V}^{2} P)_{T_{c}, N} \delta V^{2} + \frac{1}{6} (\partial_{V}^{3} P)_{T_{c}, N} \delta V^{3} + \cdots
+\]
+
+The condition \(-\delta P \delta V \geq 0\) implies \((\partial_{V}^{2} P)_{T_{c}, N} = 0\), and the third derivative must be negative if the first derivative vanishes. This helps determine the critical point from isotherm approximations, such as with the van der Waals equation, though a Taylor expansion is usually not justified.
+
+#+ATTR_HTML: :width 400px
+[[file:~/.local/images/kardar-spop-1.21.jpg]]
+#+CAPTION: Stability condition at criticality, illustrated for van der Waals isotherms.
+

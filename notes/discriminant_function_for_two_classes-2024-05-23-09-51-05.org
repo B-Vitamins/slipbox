@@ -2,7 +2,7 @@
 :ID:       175187dc-36b2-4092-a765-fbe6b8d3084a
 :END:
 #+TITLE: Discriminant function for two classes
-#+FILETAGS: :literature:
+#+FILETAGS: :literature:prml:
 #+SETUPFILE: ~/.config/emacs/setup/setupfile.org
 
 (see [[id:43aa39fd-b16a-429b-b59a-408240ae3523][Discriminant functions]] and [[id:748061c5-f975-4773-90e4-3a5b35ceb8cd][Linear models for classification]])
