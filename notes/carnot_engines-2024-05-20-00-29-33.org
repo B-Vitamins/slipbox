@@ -1,0 +1,22 @@
+:PROPERTIES:
+:ID:       72418d0b-2e8e-4055-a405-dbb6ce1aa3af
+:END:
+#+TITLE: Carnot engines
+#+FILETAGS: :literature:spop:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+A *Carnot engine* is defined in terms of a [[id:a32a9269-5194-4356-887b-500f12b3f79d][reversible]], [[id:aaccea55-c4f1-4617-a44f-8157cb500546][cyclic]] transformation. /The distinguishing characteristic of the Carnot engine is that heat exchanges with the surroundings are carried out only at two temperatures./ Carnot engines are the subject of [[id:7d403625-3965-496f-8761-5af2b140f109][Carnot's theorem]].
+
+#+NAME: Carnot engine
+#+begin_definition latex
+A Carnot engine is any engine that is /reversible/, runs in a /cycle/, with all of its heat exchanges taking place at a source temperature \(T_{H}\), and a sink temperature \(T_{C}\)
+#+end_definition
+
+#+ATTR_HTML: :width 400px
+[[file:~/.local/images/kardar-spop-1.9.jpg]]
+#+CAPTION: A Carnot engine operates between temperatures T_H and T_C, with no other heat exchanges.
+
+#+BEGIN_COMMENT
+[[id:39f970fe-3d54-420c-9668-bf486f73cbca][The zeroth law]] allows us to select two isotherms at [[id:73293bf4-e866-4339-ad08-4258cebfb93f][temperatures]] \(T_{H}\) and \(T_{C}\) for these [[id:5211418e-55fa-4d7e-b2f5-88148f84cc76][heat]] exchanges. To complete the Carnot cycle we have to connect these isotherms by [[id:a32a9269-5194-4356-887b-500f12b3f79d][reversible]] adiabatic paths in the coordinate space. However, since heat is not a function of state, we don't know how to construct such paths in general. See [[id:40be7ec6-0376-4f11-bf1c-3f39703184a8][Carnot engine using monoatomic ideal gas]]
+#+END_COMMENT
+
