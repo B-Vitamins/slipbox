@@ -1,0 +1,67 @@
+:PROPERTIES:
+:ID:       d45917b3-5147-49a3-9696-8eaf731026dd
+:END:
+#+TITLE: Helmholtz free energy
+#+FILETAGS: :literature:spop:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
++ *Helmholtz free energy* is useful for *isothermal transformations in the absence of mechanical work* \((\mathrm{đ} W=0)\).
+
++ The coordinate set \((T, \mathbf{x})\) (the quantities kept constant during an isothermal transformation with no work) is most suitable for describing the free energy.
+
++ It is rather similar to [[id:0e7e22dc-2808-4381-8317-aab5ac8d4cdd][enthalpy]], with \(T\) taking the place of \(J\). From [[id:ec531792-6163-49c5-b833-e35a5b408676][Clausius's theorem]], the [[id:5211418e-55fa-4d7e-b2f5-88148f84cc76][heat]] intake of a system at a constant [[id:73293bf4-e866-4339-ad08-4258cebfb93f][temperature]] \(T\) satisfies \( \mathrm{đ} Q \leq T \delta S\). Hence \(\delta E=\) \(\mathrm{đ} Q+\mathrm{đ} W \leq T \delta S\), and
+
+\[
+\delta F \leq 0, \quad \text { where } F=E-T S \tag{1}
+\]
+
+is the /Helmholtz free energy/.
+
++ The variations of \(F\) in [[id:86c7268a-cf65-4f9b-bb99-03d810ee1bf8][thermal equilibrium]] are given by
+
+\[
+\mathrm{d} F=\mathrm{d} E-\mathrm{d}(T S)=T \mathrm{~d} S+\mathbf{J} \cdot \mathrm{d} \mathbf{x}-S \mathrm{~d} T-T \mathrm{~d} S=-S \mathrm{~d} T+\mathbf{J} \cdot \mathrm{d} \mathbf{x} \tag{2}
+\]
+
++ The following [[id:9a34714f-f07c-4f3f-9067-7a90d32fd20d][Maxwell relations]] follow from (2)
+
+\[
+J_{i}= (\partial_{x_i} F)_{T,\,x_{j \neq i}} \qquad S = - (\partial_{T} F)_{\mathbf{x}} \tag{3}
+\]
+
++ The [[id:7f36257b-4d45-453a-b704-ca458b4c941a][internal energy]] can also be calculated from \(F\) using
+
+\[
+E=F+T S=F-\left.T (\partial_T F)_{\mathbf{x}} = -T^{2} (\partial_{T} (F / T))_{\mathbf{x}}. \qquad \tag{4}
+\]
+
+* Example
+Consider \(N\) particles of supersaturated steam in a container of volume \(V\) at a temperature \(T\). How can we describe the approach of steam to an equilibrium mixture with \(N_{w}\) particles in the liquid and \(N_{s}\) particles in the gas phase? The fixed coordinates describing this system are \(V, T\), and \(N\). The appropriate [[id:95872803-e6e0-4a32-a82e-90b412dcf9b3][thermodynamic potential]] is the Helmholtz free energy \(F(V, T, N)\), whose variations satisfy
+
+\[
+\mathrm{d} F=\mathrm{d}(E-T S)=-S \mathrm{~d} T-P \mathrm{~d} V+\mu \mathrm{d} N .
+\]
+
+#+ATTR_HTML: :width 200px
+[[file:~/.local/images/kardar-spop-1.17.jpg]]
+#+CAPTION: Condensation of water from supersaturated steam.
+
+Before the system reaches equilibrium at a particular value of \(N_{w}\), it goes through a series of non-equilibrium states with smaller amounts of water. If the process is sufficiently slow, we can construct an out-of-equilibrium value for \(F\) as
+
+\[
+F\left(V, T, N \mid N_{w}\right)=F_{w}\left(T, N_{w}\right)+F_{s}\left(V, T, N-N_{w}\right)
+\]
+
+which depends on an additional variable \(N_{w}\). (It is assumed that the volume occupied by water is small and irrelevant.) According to (1), the point of [[id:86c7268a-cf65-4f9b-bb99-03d810ee1bf8][thermal equilibrium]] is obtained by minimizing \(F\) with respect to this variable. Since
+
+\[
+\delta F= (\partial_{N_{w}} F_{w})_{T, V}\,\delta N_{w} - (\partial_{N_{s}} F_{s})_{T, V}\,\delta N_{w},
+\]
+
+and \((\partial_N F)_{T, V}=\mu\) from (2), the equilibrium condition can be obtained by equating the chemical potentials, that is, from \(\mu_{w}(V, T)=\mu_{s}(V, T)\).
+
+#+ATTR_HTML: :width 300px
+[[file:~/.local/images/kardar-spop-1.18.jpg]]
+#+CAPTION: The net free energy has a minimum as a function of the amount of water.steam.
+
+The identity of chemical potentials is the condition for chemical equilibrium. Naturally, to proceed further we need expressions for \(\mu_{w}\) and \(\mu_{s}\) (see [[id:4f5aa778-ffaf-4d6f-a6fb-a5918f2ef54c][Gibbs-Duhem relation]]).
