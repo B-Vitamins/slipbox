@@ -1,0 +1,20 @@
+:PROPERTIES:
+:ID:       7f36257b-4d45-453a-b704-ca458b4c941a
+:END:
+#+TITLE: Internal energy
+#+FILETAGS: :literature:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+Observations indicate that a principle similar to the [[id:0bd101d5-a5f4-4a0f-b916-87ae12a31430][conservation of (mechanical) energy]] operates at the level of macroscopic bodies provided that the system is properly insulated, that is, when the only sources of energy are of mechanical origin.
+
+#+ATTR_HTML: :width 400px
+[[file:~/.local/images/kardar-spop-1.4.jpg]]
+#+CAPTION: The two adiabatic paths for changing macroscopic coordinates between the initial and final point result in the same change in internal energy.
+
+#+NAME: The internal energy
+#+begin_definition latex
+The amount of work required to change the state of an otherwise adiabatically isolated system depends only on the initial and final states, and not on the means by which the work is performed, or on the intermediate stages through which the system passes. A consequence of this observation is the existence of a state function, the internal energy \(E(\mathbf{X})\), which can be obtained from the amount of work \(\Delta W\) needed for an adiabatic transformation from an initial state \(\mathbf{X}_{\mathbf{i}}\) to a final state \(\mathbf{X}_{\mathbf{f}}\), using
+\[
+\Delta W=E\left(\mathbf{X}_{\mathbf{f}}\right)-E\left(\mathbf{X}_{\mathbf{i}}\right)
+\]
+#+end_definition

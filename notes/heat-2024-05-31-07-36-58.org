@@ -1,0 +1,19 @@
+:PROPERTIES:
+:ID:       5211418e-55fa-4d7e-b2f5-88148f84cc76
+:END:
+#+TITLE: Heat
+#+FILETAGS: :literature:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+Observations indicate that once the adiabatic constraint is removed, the amount of work is no longer equal to the change in the internal energy. 
+
+#+NAME: Heat
+#+begin_definition latex
+The difference \(\Delta Q=\Delta E-\Delta W\) is defined as the heat intake of the system from its surroundings. Clearly, in such transformations, \(\Delta Q\) and \(\Delta W\) are not separately functions of state in that they depend on external factors such as the means of applying work, and not only on the final states. To emphasize this, for a differential transformation we write
+
+\[
+\mathrm{đ} Q=\mathrm{d} E-\mathrm{đ} W
+\]
+
+where \(\mathrm{d} E=\sum_{i} \partial_{i} E \mathrm{~d} X_{i}\) can be obtained by differentiation, while \(\mathrm{đ} Q\) and \(\mathrm{đ} W\) generally cannot.
+#+end_definition
