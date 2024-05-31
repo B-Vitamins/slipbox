@@ -1,0 +1,10 @@
+:PROPERTIES:
+:ID:       f4efabf0-abdd-4ab1-9605-89957ce79e09
+:END:
+#+TITLE: Boltzmann's constant
+#+FILETAGS: :literature:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+The *Boltzmann constant* (\( k_B \) or \( k \)) is the proportionality factor that relates the average relative [[id:3a71893d-c124-43b9-b89e-d3b72ccdcd32][kinetic energy]] of particles in a gas with thermodynamic [[id:73293bf4-e866-4339-ad08-4258cebfb93f][temperature]] gas. The Boltzmann constant is defined to be exactly \(k_B = 1.380649 \times 10^{−23} \mathrm{JK}^{-1}\).
+
+It occurs in the definitions of the [[id:8c36dbfc-b303-4df0-9496-7bf29c6f0042][Kelvin scale]] and the [[id:ee45038e-91ec-4642-adcd-3bfdd94d27d4][Gas constant]], and in [[id:6fd25d5e-7835-473d-b1fc-3b11cd438dfa][Planck's law of black-body radiation]] and [[id:954915f7-31f8-4910-8cab-116fead69656][Boltzmann's entropy formula]], and is used in calculating thermal noise in resistors. The Boltzmann constant has dimensions of energy divided by temperature, the same as [[id:b91504dd-9976-4ae9-bdfb-4f92903ee24c][Entropy]]. It is named after the Austrian scientist [[id:7123647a-15f2-476b-b8f6-cebe1a30a20a][Ludwig Boltzmann (1844-1906)]].
