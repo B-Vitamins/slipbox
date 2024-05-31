@@ -1,0 +1,18 @@
+:PROPERTIES:
+:ID:       e23a0800-61ba-4942-addd-92734a2bf6da
+:END:
+#+TITLE: Ideal heat engine
+#+FILETAGS: :literature:spop:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+An *ideal heat engine* works by taking in a certain amount of [[id:5211418e-55fa-4d7e-b2f5-88148f84cc76][heat]] \(Q_{H}\), from a heat source (for example a coal fire), converting a portion of it to work \(W\), and dumping the remaining heat \(Q_{C}\) into a heat sink (e.g., atmosphere).
+
+The *efficiency* of the engine is calculated from
+
+\[
+\eta=\frac{W}{Q_{H}}=\frac{Q_{H}-Q_{C}}{Q_{H}} \leq 1 .
+\]
+
+
+#+ATTR_HTML: :width 500px
+[[file:~/.local/images/kardar-spop-1.6.jpg]]
