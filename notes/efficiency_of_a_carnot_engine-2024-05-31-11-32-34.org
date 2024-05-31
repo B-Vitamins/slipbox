@@ -1,0 +1,38 @@
+:PROPERTIES:
+:ID:       c28da7dc-b9cb-4aa7-9692-27dcb8edff95
+:END:
+#+TITLE: Efficiency of a Carnot engine
+#+FILETAGS: :literature:spop:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+1) Consider two [[id:72418d0b-2e8e-4055-a405-dbb6ce1aa3af][Carnot engines]] running in series, one between temperatures \(T_{1}\) and \(T_{2}\), and the other between \(T_{2}\) and \(T_{3}\left(T_{1}>T_{2}>T_{3}\right)\).
+
+#+ATTR_HTML: :width 400px
+[[file:~/.local/images/kardar-spop-1.12.jpg]]
+#+CAPTION: Two Carnot engines connected in series are equivalent to a third.
+
+2) Denote the [[id:5211418e-55fa-4d7e-b2f5-88148f84cc76][heat]] exchanges, and work outputs, of the two engines by \(Q_{1}, Q_{2}, W_{12}\), and \(Q_{2}\), \(Q_{3}, W_{23}\), respectively.
+
+3) The heat dumped by the first engine is taken in by the second, so that the combined effect is another Carnot engine (since each component is [[id:a32a9269-5194-4356-887b-500f12b3f79d][reversible]]) with heat exchanges \(Q_{1}, Q_{3}\), and work output \(W_{13}=W_{12}+W_{23}\).
+
+Using the universal efficiency of Carnot engines (see corollary in [[id:7d403625-3965-496f-8761-5af2b140f109][Carnot's theorem]]), the three heat exchanges are related by
+
+\[
+\left\{\begin{array}{l}
+Q_{2}=Q_{1}-W_{12}=Q_{1}\left[1-\eta\left(T_{1}, T_{2}\right)\right], \\
+Q_{3}=Q_{2}-W_{23}=Q_{2}\left[1-\eta\left(T_{2}, T_{3}\right)\right]=Q_{1}\left[1-\eta\left(T_{1}, T_{2}\right)\right]\left[1-\eta\left(T_{2}, T_{3}\right)\right], \\
+Q_{3}=Q_{1}-W_{13}=Q_{1}\left[1-\eta\left(T_{1}, T_{3}\right)\right] .
+\end{array}\right.
+\]
+
+Comparison of the final two expressions yields
+
+\[
+1-\eta(T_{1}, T_{2}) = \frac{1-\eta(T_{1}, T_{3})}{1-\eta(T_{2}, T_{3})}
+\]
+
+This property implies that \(1-\eta\left(T_{1}, T_{2}\right)\) can be written as a ratio of the form \(f\left(T_{2}\right) / f\left(T_{1}\right)\), which by convention is set to \(T_{2} / T_{1}\), that is,
+
+\begin{align*}
+1-\eta\left(T_{1}, T_{2}\right) = \frac{Q_{2}}{Q_{1}} \equiv \frac{T_{2}}{T_{1}} \Longrightarrow \eta\left(T_{H}, T_{C}\right) & =\frac{T_{H}-T_{C}}{T_{H}}.
+\end{align*}
