@@ -1,0 +1,13 @@
+:PROPERTIES:
+:ID:       17498b42-c75b-4044-84a5-4befa819cd0d
+:END:
+#+TITLE: Fundamental identity of thermodynamics
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+The fundamental identity of thermodynamics that embodies the  [[id:39f970fe-3d54-420c-9668-bf486f73cbca][zeroth law]], [[id:6ad015e0-bfeb-4d08-a35f-42810e673bb3][the first law]], and [[id:be3bfa3c-0208-4857-a67a-67dfda059d65][the second law]] is
+
+\begin{align*}
+\mathrm{d} E=\mathrm{d} Q+\mathrm{d} W=T \mathrm{~d} S+\sum_{i} J_{i} \mathrm{~d} x_{i}.
+\end{align*}
+
