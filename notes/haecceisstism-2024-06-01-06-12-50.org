@@ -1,0 +1,8 @@
+:PROPERTIES:
+:ID:       cc656c6d-b288-444c-9660-44e2416c19cc
+:END:
+#+TITLE: Haecceisstism
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+*Haecceisstism* is the doctrine that two worlds which differ from each other by means of nothing over and above a simple permutation of the positions of otherwise identical material particles are (nonetheless) different.
