@@ -1,0 +1,45 @@
+:PROPERTIES:
+:ID:       11cf1e85-06e4-410b-b109-3e25465bcde1
+:END:
+#+TITLE: Thermal conductivity
+#+FILETAGS: :problem: :SPOP: :statmech:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+#+BEGIN: clocktable :maxlevel 2 :scope nil :emphasize nil
+#+CAPTION:
+#+END
+* 3.7.1 Thermal conductivity
+
+Next: [[id:1ea0c669-3aec-4ac2-9fc2-8b32c927ecfc][Zeroth-order hydrodynamics]]
+
+** 3.7.1
+*What is the necessary relation between* \( n(y) \) *and* \( T(y) \) *to ensure that the gas velocity* \( \vec{u} \) *remains zero? (Use this relation between* \( n(y) \) *and* \( T(y) \) *in the remainder of this problem.)*
+
+** 3.7.2
+*Using Wick's theorem, or otherwise, show that*
+
+\[
+\left\langle p^{2}\right\rangle^{0} \equiv\left\langle p_{\alpha} p_{\alpha}\right\rangle^{0}=3\left(m k_{B} T\right), \quad \text { and } \quad\left\langle p^{4}\right\rangle^{0} \equiv\left\langle p_{\alpha} p_{\alpha} p_{\beta} p_{\beta}\right\rangle^{0}=15\left(m k_{B} T\right)^{2},
+\]
+
+*where* \( \langle\mathcal{O}\rangle^{0} \) *indicates local averages with the Gaussian weight* \( f_{1}^{0} \). *Use the result* \( \left\langle p^{6}\right\rangle^{0}=105\left(m k_{B} T\right)^{3} \) *in conjunction with symmetry arguments to conclude*
+
+\[
+\left\langle p_{y}^{2} p^{4}\right\rangle^{0}=35\left(m k_{B} T\right)^{3}
+\]
+
+** 3.7.3
+*The zeroth-order approximation does not lead to relaxation of temperature/density variations related as in part* (a). *Find a better (time-independent) approximation* \( f_{1}^{1}(\vec{p}, y) \), *by linearizing the Boltzmann equation in the single collision time approximation to*
+
+\[
+\mathcal{L}\left[f_{1}^{1}\right] \approx\left[\frac{\partial}{\partial t}+\frac{p_{y}}{m} \frac{\partial}{\partial y}\right] f_{1}^{0} \approx-\frac{f_{1}^{1}-f_{1}^{0}}{\tau_{K}}
+\]
+
+*where* \( \tau_{K} \) *is of the order of the mean time between collisions.*
+
+** 3.7.4
+*Use* \( f_{1}^{1} \), *along with the averages obtained in part* (b), *to calculate* \( h_{y} \), *the* \( y \) *component of the heat transfer vector, and hence find* \( K \), *the coefficient of thermal conductivity.*
+
+** 3.7.5
+*What is the temperature profile,* \( T(y) \), *of the gas in steady state?*
+
+

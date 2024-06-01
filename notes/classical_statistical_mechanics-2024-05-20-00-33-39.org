@@ -1,0 +1,42 @@
+:PROPERTIES:
+:ID:       7c80611f-3eb6-49bd-81cb-108fec858c85
+:END:
+#+TITLE: Classical statistical mechanics
+#+FILETAGS: :literature:spop:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+The laws of [[id:39fcc45a-9b91-42f9-9960-19eab99aae83][thermodynamics]] give a phenomenological description of properties of macroscopic bodies at [[id:86c7268a-cf65-4f9b-bb99-03d810ee1bf8][thermal equilibrium]]. The [[id:d351a06e-42c5-4a72-98c9-bbfe8f40afe7][macrostate]] \(M\) depends on a relatively small number of thermodynamic coordinates called [[id:df6bf294-bc8a-441f-b16a-02fe248d59a9][State functions]]. The [[id:2b3acff9-a43f-4fc5-92d8-a1296fb3f0f7][microstate]] \(\mu\) depends on an enormously large number of [[id:ba8c624f-7b21-41b3-b070-a5f191c1a4ab][degrees of freedom]] and the corresponding time evolution, governed by the [[id:6b9b1aff-8bc3-4b9f-b616-b8a3940d520c][Canonical equations]], is usually quite complicated. [[id:2832b1e9-136e-44eb-b4a8-4523d3beeb55][Liouville's theorem]] justifies the assumption that all accessible microstates are equally likely in an equilibrium ensemble.
+
+*Statistical mechanics is a probabilistic approach to equilibrium macroscopic properties of large numbers of degrees of freedom.*
+
++ Rather than following the evolution of an individual (pure) microstate, statistical mechanics /examines an ensemble of microstates corresponding to a given (mixed) macrostate/. It aims to provide the probabilities \(p_{M}(\mu)\) for the equilibrium ensemble. Such assignment of probabilities is [[id:8ea587f9-f1f7-437b-8c2c-6b02460c25b3][subjective]].
++ An important part of the enterprise of *classical equilibrium statistical mechanics* is to recover the laws of [[id:39fcc45a-9b91-42f9-9960-19eab99aae83][thermodynamics]] from the [[id:a3002bd8-e220-438b-9996-e191f963a26d][fundamental postulate of statistical mechanics]]:
+  
+  1) [[id:2f55f143-4240-44a1-aa3c-3e6fa8a23dee][The zeroth law from the fundamental postulate]]
+  2) [[id:a38a6c58-9613-4692-9e9e-13511db0335d][The first law from the fundamental postulate]]
+  3) [[id:fc3c321a-dd87-45a8-a1cf-2d6ee1122e3a][The second law from the fundamental postulate]]
+  4) [[id:dd81489d-66b1-49f8-bbbf-f6404eeb890d][The stability conditions from the fundamental postulate]]
++ Another equally important part of the enterprise of classical equilibrium statistical mechanics is to provide unbiased estimates of \(p_{M}(\mu)\) for a number of different equilibrium ensembles such as
+
+  1) [[id:170f5ef3-3995-4720-bbdb-c2ca704f0739][The microcanonical ensemble]]
+  2) [[id:d0ef6177-22a7-45e9-a756-ee12186d4eef][The canonical ensemble]]
+  3) [[id:689182a6-51d4-4cd4-b941-5d07e52f8fe9][The Gibbs canonical ensemble]]
+  4) [[id:912accf4-b06d-4f04-9ac9-3ca191c5bace][The grand canonical ensemble]]
+
+  for a variety of systems such as the
+
+  1) [[id:ce9ee432-4125-4406-9e58-fcd137f71abe][Two-level systems]]
+  2) [[id:fa8b449a-ff56-4218-a9e8-a1e88c607848][The ideal gas]]
+  3) [[id:d18d2472-266c-48f7-999c-cc27acb12bf2][Spins in an external magnetic field]]
+
+  and then use these probabilities \(p_{M}(\mu)\) to make testable predictions about the equilibrium macroscopic properties of these system comprising a large number of degrees of freedom that are consistent with the predictions of the phenomenological laws of [[id:39fcc45a-9b91-42f9-9960-19eab99aae83][thermodynamics]].
++ *A central conclusion of classical equilibrium statistical mechanics is that in the thermodynamic limit, with large numbers of degrees of freedom, all of the above equilibrium ensembles are in fact equivalent.*
++ Classical equilibrium statistical mechanics has limits of applicability:
+
+  1) It does not give an adequate description of /identical particles/ as is exemplified by [[id:dab5ec39-a8f1-43ce-baf2-e3ef0c7ee2a3][mixing entropy and the Gibbs paradox]]. Classical equilibrium statistical mechanics's solution is to make an additional assumption of *indistinguishability of identical particles*. This in fact is an additional postulate of classical equilibrium statistical mechanics which we will dub as the [[id:68d1a293-051b-4238-ba7a-1ff958ca5c59][Ad-hoc postulate of statistical mechanics]]. It allows a switch to a [[id:cc656c6d-b288-444c-9660-44e2416c19cc][non-Haecceisstic]] [[id:b3944247-240d-4813-bec6-d98de03e6e99][phase space]] via the introduction of [[id:3505cb1f-fa58-403a-8447-cbd8bbaea851][correct Boltzmann counting]].
+
+  2) The [[id:a3002bd8-e220-438b-9996-e191f963a26d][fundamental postulate of statistical mechanics]] relates [[id:b3944247-240d-4813-bec6-d98de03e6e99][phase space]] volumes to the number of [[id:2b3acff9-a43f-4fc5-92d8-a1296fb3f0f7][microstates]]. The volume of phase space involves products \( pq \), of coordinates and conjugate momenta, and hence can change by an arbitrary factor if we change the units in which \( p \) and \( q \) are measured. It follows that the number of [[id:2b3acff9-a43f-4fc5-92d8-a1296fb3f0f7][microstates]] depends on the units of measurement which is nonsense.
+
+  3) Classical equilibrium statistical mechanics leaves out the question of how various systems evolve to a state of [[id:86c7268a-cf65-4f9b-bb99-03d810ee1bf8][thermal equilibrium]].
+
+  (1) and (2) are resolved in [[id:06461647-d54d-40c1-8d19-b86a4cc72dba][quantum statistical mechanics]] whereas (3) is resolved by [[id:9ba4f944-810d-44e7-a2b4-f8f1963a91f0][kinetic theory of gases]] and [[id:3ed17db6-8300-457d-b8a5-a9adf3f9eff5][Non-equilibrium statistical mechanics]].
