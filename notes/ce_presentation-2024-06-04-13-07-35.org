@@ -1,0 +1,484 @@
+:PROPERTIES:
+:ID:       086e2b20-559b-4d4c-ba00-ba5d9b96a2ed
+:END:
+#+TITLE: Inherent structures of the deep Boltzmann machine
+#+FILETAGS: :fleeting:slides:presentation:exam:
+#+STARTUP: beamer indent hidestars
+#+LANGUAGE:  en
+#+OPTIONS:   H:2 num:t toc:f \n:nil @:t ::t |:t ^:t -:t f:t *:t <:t
+#+OPTIONS:   TeX:t LaTeX:t skip:nil d:nil todo:t pri:nil tags:not-in-toc
+#+EXPORT_SELECT_TAGS: export
+#+EXPORT_EXCLUDE_TAGS: noexport
+#+LaTeX_CLASS_OPTIONS: [8pt]
+#+LaTeX_CLASS: beamer
+#+LATEX_HEADER: \usepackage{listings}
+#+LATEX_HEADER: \usepackage{amsmath}
+#+LATEX_HEADER: \usepackage{multimedia}
+#+LATEX_HEADER: \usepackage{wrapfig}
+#+LATEX_HEADER: \newcommand\mitdbar{\text{\ulcshape\slshape đ}}
+#+OPTIONS: H:2
+* Introduction
+** Deep Boltzmann Machines (DBMs)
++ *Deep Boltzmann Machines* (DBMs) are statistical models for parametric inference.
++ Foundational to deep learning.
+  - Successfully applied in various pattern recognition tasks.
++ Theoretical understanding is limited:
+  1. How does a DBM's architecture relate to the probability distributions it can represent?
+  2. How to determine the optimal architecture for a given application?
+  3. Why does one architecture work better than another for a specific application?
++ Due to these gaps, adapting DBM architecture is often trial and error, guided by intuitions lacking universal theoretical grounding.
+** Why Depth? Why Width?
++ Consider these results:
+  1. A single hidden layer DBM with fewer than \([2(\log (v)+1) /(v+1)] 2^v-1\) hidden binary variables can approximate any distribution of \(v\) visible binary variables arbitrarily well [cite:@montufar2015hierarchical].
+  2. A DBM with a visible layer of \(n\) units and \(L\) hidden layers of \(n\) units (lean networks) is a universal approximator of probability distributions on the visible layer states if \(L\) is large enough. Necessary condition: \(L \geq \frac{2^n-(n+1)}{n(n+1)}\) [cite:@montufar2014deep].
+  3. A DBM with \(k+1\) hidden units can approximate any distribution over \(\{0,1\}^n\) where \(k\) is the number of input vectors with non-zero probability [cite:@leroux2008representational].
++ These results raise questions:
+  1. If a sufficiently wide and shallow single hidden layer DBM is a universal approximator, why add layers?
+  2. If a sufficiently deep and lean multiple hidden layer DBM is a universal approximator, why make layers wide?
+** Why Depth? Why Width?
++ These are *declarative results*:
+  - optimality concerns are secondary,
+  - the bounds can sometimes be very loose ([cite:@bansal2018using] empirically show this for the third),
+  - often require parameters that are *exponential* in the number of input variables.
++ In practice, modest architectures often perform better than these results suggest.
++ For practical applications, we need *imperative results*:
+  - Address how /realistic/ architectures relate to model capacity and representation.
+  - Provide rigorous prescriptions for *building optimal architectures*.
++ This gap is being addressed by the emerging field of *Neural Architecture Search (NAS)* [cite:@ren2021comprehensive].
+* Related Work
+** Connection with physics
++ The DBM is an /energy based model/ and closely linked with the /Ising model/ with random interactions.
++ The DBM is a special case of the general /Boltzmann machine/ which is completely equivalent to the /Sherrington-Kirkpatrick model/ [cite:@sherrington1975solvable], another widely studied model in statistical physics.
++ The state of a DBM with \(L\) hidden layers is a set of binary variables (akin to Ising spins):
+
+\[\boldsymbol{\sigma} \equiv (\sigma_{il} \in \{\pm 1\})_{l=0 \ldots L}^{i = 1 \ldots N_{l}}\]. 
+
++ The set of DBM configurations live in a state space:
+
+\[\mathcal{S} \equiv \{\pm 1\}^{N_{0}} \times \{\pm 1\}^{N_{1}} \times \cdots \times \{\pm 1\}^{N_{L}}, \qquad |\mathcal{S}| = \prod_{l=0}^{L} 2^{N_{l}}\]
+
++ The Gibbs-Boltzmann distribution \(p (\boldsymbol{\sigma})\) assigns probabilities to \(\boldsymbol{\sigma} \in \mathcal{S}\):
+
+\[
+p (\boldsymbol{\sigma}) = \mathcal{Z}^{-1} \exp \big[- H_{\boldsymbol{J}} (\boldsymbol{\sigma}) \big] \quad \mathcal{Z} \equiv \sum_{\boldsymbol{\sigma}} \exp \big[- H_{\boldsymbol{J}} (\boldsymbol{\sigma}) \big].  \tag{1}
+\]
+
++ \(H_{\boldsymbol{J}} (\boldsymbol{\sigma})\), is the /Hamiltonian/ or /energy function/.
++ \(H_{\boldsymbol{J}} (\boldsymbol{\sigma})\) parameterized by \(\boldsymbol{J} \equiv (\boldsymbol{J_{l}})_{l=0 \ldots L-1}\) where \(\boldsymbol{J}_{l} \equiv (J_{ijl})_{i=0 \ldots N_{l}}^{j=1 \ldots N_{l+1}}\) called /couplings/.
+** Inherent structures
++ When \(\boldsymbol{J}_{l} \equiv (J_{ijl})_{i=0 \ldots N_{l}}^{j=1 \ldots N_{l+1}}\) is random, the energy function tends has a large number of *local minima*
++ The local minima are modes of \( p (\boldsymbol{\sigma}) = \mathcal{Z}^{-1} \exp \big[- H_{\boldsymbol{J}} (\boldsymbol{\sigma}) \big]\)
++ /Stillinger and Weber/ introduced the concept of *inherent structures*: they are configurations \( \boldsymbol{\sigma}_{\text{IS}} \) that minimize the energy function \( H_{\boldsymbol{J}} (\boldsymbol{\sigma}) \) [cite:@Stillinger1983InherentSI]
++ The *basin of attraction* \( \mathcal{B}(\boldsymbol{\sigma}_{\text{IS}}) \) of an inherent structure is defined as
+
+\[\mathcal{B} (\boldsymbol{\sigma}_{\text{IS}}) = \{ \boldsymbol{\sigma}\,:\, G(\boldsymbol{\sigma}) = \boldsymbol{\sigma}_{\text{IS}}  \}\]
+
+where \( G \) denotes steepest descent minimization.
++ A configuration space can be partitioned into a set of basins of attraction, its inherent structure \( \boldsymbol{\sigma}_{\text{IS}} \) is the local attractor of dynamics within that basin.
+** Inherent structures capacity (ISC)
++ The /number/ of basins of attraction or inherent structures of a system relates to its *complexity*. /Bansal et. al./ [cite:@bansal2018using] applied the /inherent structure formalism/ to:
+  1) define a derived metric, the *Inherent structure capacity* (ISC),
+  2) used ISC to design DBMs when there is a budget on the number of parameters,
+  3) showed that the right design gives order of magnitude savings model parameters,
+  4) proved superior model capacity of DBMs (\( L=2 \)) over restricted Boltzmann machines (RBMs) (DBMs with \( L = 1 \)).
++ We repeat the key definitions and results from [cite:@bansal2018using] because:
+  1) our work is inspired by their results, uses several similar notions, and is its continuation,
+  2) we approach it from a conceptually different standpoint, so stating them provides a ground for comparison and consistency.
+** Definition of ISC
+#+NAME: One-flip Stable States
+#+ATTR_LATEX: :environment definition
+#+begin_definition latex
+For an Energy function \(E\) a configuration, \(\mathbf{s}^*\) is called a local minimum, also called One flip stable state, if \(\forall \mathbf{s} \in\left\{s: d_H\left(\mathbf{s}, \mathbf{s}^*\right)=\right.\) \(1\}, E(\mathbf{s})-E\left(\mathbf{s}^*\right)>0\) (equivalently \(P(\mathbf{s})<P\left(\mathbf{s}^*\right)\)).
+#+end_definition
+
+#+NAME: Inherent Structure Capacity
+#+ATTR_LATEX: :environment definition
+#+begin_definition latex
+For an \(L\)-layered DBM with \(m_1, \ldots, m_L\) hidden units and \(n\) visible units we define the Inherent Structure Capacity (ISC), denoted by \(C(n, m_1, \ldots, m_L)\), to be the logarithm (divided by \(n\)) of the expected number of modes of all possible distributions generated over the visible units by the DBM.
+
+\[
+C(n, m_1, \ldots, m_L) = \frac{1}{n} \log_2 \mathbb{E}_{\theta} 
+\left[ \lvert \{ v : H(v) \geq 1 \} \rvert \right] \tag{8}
+\]
+
+where \(\mathcal{H}(v) \triangleq \left\{ \{h_l\}_{l=1}^L | (v, \{h_l\}_{l=1}^L) \text{ is one-flip stable state} \right\}\).
+\hfill \blacksquare
+#+end_definition
+** ISC for RBM and DBM
++ ISC for an RBM with a wide hidden layer.
+  #+NAME: Large \( m \) limit
+  #+ATTR_LATEX: :environment corollary
+  #+begin_corollary latex
+For the set \(\textbf{RBM}_{n,m}\)
+
+\[
+\lim_{m \to \infty} C(n, m) = \log_2 1.5 = 0.585
+\]
+
+where \(C(n, m)\) is defined in (8).
+\hfill \blacksquare
+#+end_corollary
+
++ ISC for a DBM with two hidden layers where layer 1 is wide, and layer 2 is narrow.
+  #+NAME: (Layer 1 Wide, Layer 2 Narrow)
+  #+ATTR_LATEX: :environment corollary
+  #+begin_corollary latex
+  For an \(\boldsymbol{R} \boldsymbol{B} \boldsymbol{M}_{n, m_1, m_2}\left(n, m_1>0\right.\) and \(\left.m_2 \geq 0\right)\), if \(\alpha_1=\frac{m_1}{n}>\frac{1}{\beta}\) and \(\alpha_2=\frac{m_2}{n}<\beta\), where \(\beta = 0.05\), then
+
+  \begin{align*}
+  \mathcal{C}\left(n, m_1, m_2\right) \leq\left(1+\alpha_2\right) \log _2(1.5)
+  \end{align*}
+  \hfill \blacksquare
+  #+end_corollary
+** Network design under a budget
+#+NAME: Network design under a budget
+#+ATTR_LATEX: :environment corollary
+#+begin_corollary latex
+For an \(\boldsymbol{R} \boldsymbol{B} \boldsymbol{M}_{n, m_1, m_2}\left(n, m_1>0\right.\) and \(\left.m_2 \geq 0\right)\), if there is a budget of \(cn^2\) on the total number of parameters, i.e, \(\alpha_1\left(1+\alpha_2\right)=c\) then the maximum possible ISC, \(\max _{\alpha_1, \alpha_2} \mathcal{C}\left(n, \alpha_1, \alpha_2\right) \leq \tilde{U}\left(n, \alpha_1^*, \alpha_2^*\right)\) where
+
+\begin{align*}
+\tilde{U}\left(n, \alpha_1^*, \alpha_2^*\right)= \begin{cases}\min \left(1, \sqrt{c} \log _2(1.29)\right) & \text { if } c \geq 1 \\ c \log _2\left[1-\frac{1}{2} \operatorname{erf}\left(-\sqrt{\frac{1}{\pi c}}\right)\right] & \text { if } c<1\end{cases}
+\end{align*}
+
+When \( c \geq 1 \), \( \alpha_{1}^{\ast} = \sqrt{c} \) (i.e., \( \alpha_{2}^{\ast} \neq 0 \)). When \( c < 1 \), \( \alpha_{1}^{\ast} = c \) (i.e., \( \alpha_{2}^{\ast} = 0 \)).
+\hfill \blacksquare
+#+end_corollary
+** Limitations
++ The analysis done by /Bansal et. al./ [cite:@bansal2018using] has limitations which offers avenues for further investigation:
+  1) The analysis is restricted to DBMs with 1 (\( L = 1 \)) and 2 (\( L=2 \)) hidden layers,
+  2) For DBMs with \( L = 2 \), the analysis is restricted to a regime where the first hidden layer is wide while the second hidden layer is extremely narrow.
++ Our work aims to overcome these limitations.
+* Problem statement
+** Preliminaries
++ We will use a different approach using techniques detailed in [cite:@singh1995fixed], [cite:@gutfreund1988attractors], [cite:@tanaka1980analytic] to addressing these limitations.
++ Let us continue from previously introduced the energy function for the DBM:
+
+\[H_{\boldsymbol{J}} (\boldsymbol{\sigma}) = - \sum_{l=0}^{L-1} \sum_{i=1}^{N_l} \sum_{j=1}^{N_{l+1}} \sigma_{il} J_{ijl} \sigma_{j(l+1)}. \tag{2}\]
+
++ We will use \(\boldsymbol{N} \equiv (N_{l})_{l=0\ldots L}\) for the number of units in each layer and call it the DBM's *architecture*.
++ We assume a Gaussian distribution for the *couplings* \(\boldsymbol{J}\) [cite:@nishimori2001spsg] [cite:@hartnett2018replica]:
+
+\begin{equation*}
+p_{J}(J_{ijl}) \equiv \big(\widehat{N}_{l} / 2 \pi J^2 \big)^{1/2} \exp \big[- (\widehat{N}_{l} / 2 J^{2}) \thinspace J_{ijl}^{2} \thinspace \big] \qquad \widehat{N} \equiv \sqrt{N_{l} N_{l+1}}. \tag{3}
+\end{equation*}
+
++ \(J\) is a positive real number
++ \((\widehat{N}_{l})_{l=0 \ldots L-1}\) is the pairwise geometric means of the number of units in adjacent layers
+** Geometric parameters
+#+NAME: Total spin number
+#+ATTR_LATEX: :environment definition
+#+begin_definition latex
+The *total number of spins* \(N\) is simply the sum of the number of spins across all layers 
+\[N \equiv \sum_{l} N_l.\]
+#+end_definition
+
+#+NAME: Proportion
+#+ATTR_LATEX: :environment definition
+#+begin_definition latex
+The *proportion* \((\alpha_{l})_{l=0\ldots L}\) of the units in a given layer \( l \) relative to the visible layer \((l = 0)\) is defined as 
+\[\alpha_l \equiv N_l /N_{0}\].
+#+end_definition
+
+#+NAME: Inter-layer ratios
+#+ATTR_LATEX: :environment definition
+#+begin_definition latex
+The *inter-layer ratios* \((\gamma_{l})_{l=0 \ldots L-1}\) and \((\nu_{l})_{l=1 \ldots L}\) are defined as
+\begin{align*}
+&\gamma_{l}^{2} \equiv N_{l+1} / N_{l}, \quad \nu_{l}^{2} \equiv N_{l-1} / N_{l}
+\end{align*}
+#+end_definition
+
+The definitions above yield the following identities
+
+\begin{align*}
+\alpha_{0} \equiv 1, \qquad \gamma_{l}^{-1} \equiv \nu_{l+1}, \quad \nu_{l}^{-1} \equiv \gamma_{l-1}, \qquad \widehat{N}_{l} = N_{0} \sqrt{\alpha_l \alpha_{l+1}} \tag{4}
+\end{align*}
+
+** Illustration
+
+#+begin_src latex
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=.7\linewidth]{/home/b/.local/images/dbm.pdf}
+  \caption{An illustration of a DBM with \(L = 3\) and \(N = 10\). The two colors are representations for the values \(\sigma_{il} = \pm 1\). The geometric parameters of (4a) and (4b) are illustrated.}
+\end{figure}
+#+end_src
+
+** Single-site energies
+#+NAME: Single-site energies
+#+begin_definition latex
+The *single-site energy* of spin \( i \) in layer \( l \), \( \sigma_{il} \), is defined as
+
+\[
+\lambda_{i l} \equiv \sigma_{i l} \bigg( \sum_{j=1}^{N_{l+1}} J_{ijl} \sigma_{j (l+1)} (1 - \delta_{lL}) + \sum_{j=1}^{N_{l-1}} J_{ji(l-1)} \sigma_{j (l-1)} (1 - \delta_{l0}) \bigg) \tag{5}
+\]
+
+Every spin has an associated /single-site energy/ so we have \((\lambda_{il})_{l=0 \ldots L}^{i= 1 \ldots N_{l}}\).
+#+end_definition
+
++ \(J_{ijL} = \sigma_{i(-1)} = \sigma_{j(L+1)} \equiv 1\) along with \(\delta_{lL}\) and \(\delta_{l0}\) let us treat the /edge layers/ and /bulk layers/ uniformly.
++ \(H_{\boldsymbol{J}} (\boldsymbol{\sigma})\) in terms of \( \lambda_{il} \) is given by \(H_{\boldsymbol{J}} (\boldsymbol{\sigma}) = - (1/2) \sum_{il} \lambda_{il}\).
++ We work with an equivalent definition of inherent structures defined in terms of the single-site energies (due to /Tanaka and Edwards/) [cite:@tanaka1980analytic]:
+#+NAME: Inherent structures
+#+begin_definition latex
+We define the *inherent structures* of the DBM in terms of the /single site energies/ as the /configurations/ \((\boldsymbol{\sigma})_{\text {IS }}\) for which \(\lambda_{il} > 0\) for all values of \(i\) and \(l\). In other words, \((\boldsymbol{\sigma})_{\text {IS}}\) are /stable against the flips of a single spin/.
+#+end_definition
+** Problem statement
++ Let \(\mathcal{N}_{s}\) denote the /number/ of /inherent structures/ of a DBM with an architecture \(\boldsymbol{N}\) and weights drawn from a Gaussian prior \(p_{J}(J_{ijl})\).
++ We wish to compute a generic *complexity function* \(\mathcal{C}_{J} (\boldsymbol{N})\), defined as 
+
+  \[
+  \mathcal{C}_{J} (\boldsymbol{N}) \equiv N_{0}^{-1} \ln \langle \mathcal{N}_{s} \rangle_{J}.
+  \]
+
+  for an ensemble of such DBMs with an arbitrary architecture \( \boldsymbol{N} \).
++ \(\mathcal{C}_{J} (\boldsymbol{N})\) is a direct mapping from the /network architecture/ \(\boldsymbol{N}\) to the number of modes \(p (\boldsymbol{\sigma})\) - the /model capacity/
++ Following [cite:@bansal2018using] we call this function the *Inherent Structure Capacity (ISC)*
+* Results
+** ISC for DBMs with L hidden layers
+#+NAME: ISC for a DBM with L hidden layers
+#+begin_theorem latex
+Consider an ensemble of DBMs with a fixed architecture \( \boldsymbol{N} \) and couplings drawn from a Gaussian prior \(p_{J}(J_{ijl})\) as previously defined. The inherent structure capacity \( \mathcal{C}_J (\boldsymbol{N}) \) for this ensemble is given by
+
+\begin{align*}
+&\mathcal{C}_{J} (\boldsymbol{N}) = \underset{\{(x_{l}, y_{l})_{l}\}}{\operatorname{saddle}} \thinspace \frac{1}{2} \bigg \{- \sum_{l=0}^{L-1} \sqrt{\alpha_{l} \alpha_{l+1}} \thinspace \big(x_{l}^{2} + y_{l}^{2} \big) + \alpha_{L} \ln \bigg [1 + \operatorname{erf} \bigg(\frac{- x_{L-1} - i y_{L-1}}{\sqrt{2 \nu_{L}}} \bigg) \bigg ] \\
+&+ \sum_{l=1}^{L-1} \alpha_{l} \ln \bigg [1 + \operatorname{erf} \bigg(\frac{- (x_{l} + x_{l-1}) + i (y_{l} - y_{l-1})}{\sqrt{2 (\gamma_{l} + \nu_{l})}} \bigg) \bigg] + \ln \bigg [1 + \operatorname{erf} \bigg(\frac{- x_{0} + i y_{0}}{\sqrt{2 \gamma_{0}}} \bigg) \bigg] \bigg \}. \tag{6}
+\end{align*}
+#+end_theorem
++ This formula improves upon the ISC metric derived by [cite:@bansal2018using] in the following ways:
+1) It applies to DBMs with an arbitrary number of hidden layers \( L \) (as opposed to 2),
+2) For any given architecture, it can give numerical values for the complexity (as opposed to the probabilistic arguments used by [cite:@bansal2018using] which state results in terms of bounds)
++ We give a brief outline of the proof stating the main steps and then, as a consistency check, use our alternative formulation to reproduce all the key results from /Bansal el. al./ [cite:@bansal2018using].
+** Step 1: Area formula
++ The derivation begins with an *area formula*, a special case of *Kac-Rice formula* [cite:@berzin2022kac]:
+
+\begin{align*}
+\mathcal{N}_{s} &= \frac{1}{2} \overbrace{\int_0^{\infty} \prod_{l=0}^L \prod_{i=1}^{N_l} \mathrm{~d} \lambda_{il}}^{\text{integral over site energies}} \overbrace{\sum_{\boldsymbol{\sigma}} \prod_{l=0}^L \prod_{i=1}^{N_l}}^{\text{spin configurations}} \\
+&\qquad \times \underbrace{\delta \bigg(\lambda_{il} - \sigma_{i l} \bigg[ \sum_{j=1}^{N_{l+1}} J_{ijl} \sigma_{j (l+1)} (1 - \delta_{lL}) + \sum_{j=1}^{N_{l-1}} J_{ji(l-1)} \sigma_{j (l-1)} (1 - \delta_{l0}) \bigg] \bigg)}_{\text{spins with energy} \qquad \( \lambda_{il} \)}.
+\end{align*}
+
++ The factor of \(1/2\) compensates for the trivial degeneracy under \(\sigma_{il} \to - \sigma_{il}\). Next we use the integral representation of the \(\delta\) function, \(\delta(x)=\frac{1}{2 \pi} \int_{-\infty}^{\infty} \mathrm{d} k \exp (- i k x)\), with real valued variables \((k_{il})_{l=0 \ldots L}^{i=1 \ldots N_{l}}\) and calculate the expectation \( \langle \mathcal{N}_s \rangle_{J} \) of \( \mathcal{N}_s \) over the Gaussian prior \( p (J_{ijl}) \)
+
+\begin{align*}
+2 \thinspace \langle \mathcal{N}_{s} \rangle_{J} = (i \pi)^{-N} &\int_0^{\infty} \prod_{ i l} \mathrm{d} \lambda_{il} \int_{-i\infty}^{i\infty} \prod_{i l} \mathrm{d} k_{il} \exp \bigg(\sum_{il} k_{il} \lambda_{il} \bigg) \\
+&\times \exp \bigg\{\frac{1}{2} \sum_{l=0}^{L - 1} \sum_{i=1}^{N_{l}} \gamma_{l} k_{il}^{2} + \frac{1}{2} \sum_{l=0}^{L - 1} \sum_{j=1}^{N_{l+1}} \nu_{l+1} k_{j (l+1)}^{2} + \sum_{l=0}^{L-1} \frac{1}{\widehat{N}_{l}} \sum_{ij} k_{il} k_{j(l+1)} \bigg \}
+\end{align*}
+** Step 2: Hubbard-Stratonovich transformation
++ Next we use an integral transform similar to the *Hubbard-Stratonovich transformations*
+
+\begin{align*}
+\exp \bigg(\frac{b c}{a} \bigg) &= (a / \pi) \bigg( \int_{-\infty}^{\infty} \mathrm{d} x \exp \big[  - a x^{2} + (b + c) x \big] \bigg) \\
+&\qquad \quad \times \bigg( \int_{-\infty}^{\infty} \mathrm{d} y \exp \big[ - a y^{2} - i (b - c) y \big] \bigg), \qquad a > 0
+\end{align*}
+
+on the term \( \exp \big \{\frac{1}{\widehat{N}_{l}} \sum_{ij} k_{il} k_{j(l+1)} \big \} \) and substitute in the expression for \( \langle \mathcal{N}_{s} \rangle \) to obtain
+
+\begin{align*}
+&2 \thinspace \langle \mathcal{N}_{s} \rangle_{J} = (i \pi)^{- N} \int_{-\infty}^{\infty} \prod_{l=0}^{L-1} \big(\widehat{N}_{l} / \pi \big)  \big( \mathrm{d} y_{l} \mathrm{d} x_{l} \big) \exp \bigg\{ - \sum_{l=0}^{L-1} \widehat{N}_{l} \big( x_{l}^{2} + y_{l}^{2} \big) \bigg\} \int_0^{\infty} \prod_{ i l} \mathrm{d} \lambda_{il} \\
+&\times \int_{-\infty}^{\infty} \prod_{l=1}^{L-1} \prod_{i=1}^{N_{l}} \mathrm{d} k_{il} \exp \bigg\{\sum_{l=1}^{L - 1} \sum_{i=1}^{N_{l}} \bigg[- \frac{1}{2} \big( \gamma_{l} + \nu_{l} \big) k_{il}^{2} + i \big[(x_{l} + x_{l-1}) - i (y_{l} - y_{l-1}) + \lambda_{il} \big] k_{il} \bigg] \bigg\} \\
+&\quad \times \int_{-\infty}^{\infty} \prod_{i=1}^{N_{0}} \mathrm{d} k_{i0} \exp \bigg\{ \sum_{i=1}^{N_{0}} \bigg(- \frac{1}{2} \gamma_{0} k_{i0}^{2}  + i \big[x_{0} - i y_{0} + \lambda_{i0} \big]  k_{i0} \bigg) \bigg \} \\
+&\quad \quad \times \int_{-\infty}^{\infty} \prod_{i=1}^{N_{L}} \mathrm{d} k_{iL} \exp \bigg\{\sum_{i=1}^{N_{L}} \bigg( - \frac{1}{2} \nu_{L} k_{iL}^{2} + i \big[ x_{L-1} + i y_{L-1} + \lambda_{iL} \big] k_{iL} \bigg) \bigg \}. \tag{10}
+\end{align*}
+** Step 3: Gaussian integral
++ We have effected \(k_{il} \to i k_{il}\) for the variables \((k_{il})_{l=0 \ldots L}^{i=1 \ldots N_{l}}\) after which we use the Gaussian integral result with appropriately chosen \(a\) and \(b\) to evaluate the \(k_{il}\) integrals. After evaluation
+
+\begin{align*}
+2& \thinspace \langle \mathcal{N}_{s} \rangle_{J} = \pi^{-N} \pi^{N/2} \bigg(\frac{2}{\gamma_{0}}\bigg)^{N_{0}/2} \bigg(\frac{2}{\nu_{L}}\bigg)^{N_{L}/2} \prod_{l=1}^{L-1} \bigg(\frac{2}{\gamma_{l} + \nu_{l}} \bigg)^{N_{l}/2} \\
+&\int_{-\infty}^{\infty} \prod_{l=0}^{L-1} \big(\widehat{N}_{l} / \pi \big)  \big( \mathrm{d} y_{l} \mathrm{d} x_{l} \big)  \exp \bigg\{ - \sum_{l=0}^{L-1} \widehat{N}_{l} \big( x_{l}^{2} + y_{l}^{2} \big) \bigg\} \\
+&\times \int_0^{\infty} \prod_{i=1}^{N_0} \mathrm{d} \lambda_{i0} \exp \bigg \{ \sum_{i=1}^{N_{0}} \bigg( -\frac{\lambda_{i0}^{2}}{2 \gamma_{0}} + \frac{\lambda_{i0} \big(- x_{0} + i y_{0}\big)}{\gamma_{0}} \bigg) \bigg \} \\
+&\times \int_0^{\infty} \prod_{i=1}^{N_L} \mathrm{d} \lambda_{iL} \exp \bigg \{  \sum_{i=1}^{N_{L}} \bigg(- \frac{\lambda_{iL}^{2}}{2 \nu_{L}} + \frac{\lambda_{iL} \big(- x_{L-1} - i y_{L-1}\big)}{\nu_{L}} \bigg) \bigg\} \\
+&\times  \int_0^{\infty} \prod_{l=1}^{L-1} \prod_{i=1}^{N_l} \mathrm{d} \lambda_{il} \exp \bigg\{ \sum_{l=1}^{L - 1} \sum_{i=1}^{N_{l}} \bigg( - \frac{\lambda_{il}^{2}}{2 (\gamma_{l} + \nu_{l})} + \frac{\lambda_{il} \big[- (x_{l} + x_{l-1}) + i (y_{l} - y_{l-1})\big]}{(\gamma_{l} + \nu_{l})} \bigg) \bigg \} \\
+&\times  \exp \bigg\{ - \sum_{l=1}^{L - 1} \sum_{i=1}^{N_{l}} \frac{\big[(x_{l} + x_{l-1}) - i (y_{l} - y_{l-1})\big]^{2}}{2 (\gamma_{l} + \nu_{l})} - \sum_{i=1}^{N_{0}} \frac{\big(x_{0} - i y_{0}\big)^{2}}{2 \gamma_{0}} - \sum_{i=1}^{N_{L}} \frac{\big(x_{L-1} + i y_{L-1}\big)^{2}}{2 \nu_{L}} \bigg\}
+\end{align*}
+** Step 4: Half-integral over single site energies
++ Next we evaluate the half integrals over the single site energies \((\lambda_{il})_{l=0 \ldots L}^{i=1 \ldots N_{l}}\) using the result
+
+\begin{align*}
+\int_0^{\infty} \exp \bigg(-\frac{1}{2} a x^2+b x\bigg) d x=\bigg(\frac{\pi}{2 a}\bigg)^{\frac{1}{2}} \exp \bigg(\frac{b^2}{2 a}\bigg)\bigg[1+\operatorname{erf}\bigg(\frac{b}{\sqrt{2 a}}\bigg)\bigg] \qquad a > 0.
+\end{align*}
+
+to obtain
+
+\begin{align*}
+&2 \thinspace \langle \mathcal{N}_{s} \rangle_{J} = \bigg(\prod_{l=0}^{L-1} \frac{N_{0} \alpha_{l} \alpha_{l+1}}{\pi} \bigg) \int_{-\infty}^{\infty} \mathrm{d} y_{l} \int_{-\infty}^{\infty} \mathrm{d} x_{l} \exp \bigg\{- N_{0} \sum_{l=0}^{L-1} \sqrt{\alpha_{l} \alpha_{l+1}} \big( x_{l}^{2} + y_{l}^{2} \big)\bigg\} \\
+&\qquad \times \exp \bigg \{ N_{0} \ln \bigg [1 + \operatorname{erf} \bigg(\frac{- x_{0} + i y_{0}}{\sqrt{2 \gamma_{0}}} \bigg) \bigg ] +  N_{0} \thinspace \alpha_{L} \ln \bigg [1 + \operatorname{erf} \bigg(\frac{- x_{L-1} - i y_{L-1}}{\sqrt{2 \nu_{L}}} \bigg) \bigg ]  \bigg\} \\
+&\qquad \qquad \qquad \times \exp \bigg \{ N_{0} \sum_{l=1}^{L-1} \alpha_{l} \ln \bigg [1 + \operatorname{erf} \bigg(\frac{- (x_{l} + x_{l-1}) + i (y_{l} - y_{l-1})}{\sqrt{2 (\gamma_{l} + \nu_{l})}} \bigg) \bigg ]  \bigg\}
+\end{align*}
+** Step 5: Steepest descent approximation
++ The integral can now be evaluated using the method of *steepest descent* [cite:@kardar2007spop] in the limit \(N_{0} \to \infty\). 
+
+\begin{align*}
+\lim_{N_{0} \to \infty} N_{0}^{-1} \ln \left \langle \mathcal{N}_{s} \right \rangle_{J} = & \lim_{N_{0} \to \infty} \bigg[ \mathcal{C}_{J} (\boldsymbol{N}) - \frac{1}{2N_{0}} \ln \bigg(\frac{N_{0} \lvert \mathcal{C}_{J}^{\prime \prime} (\boldsymbol{N}) \rvert}{2 \pi} \bigg) + \mathcal{O} \bigg(\frac{1}{N_{0}^{2}} \bigg) \bigg],
+\end{align*}
+
+where we have identified the right hand side as the leading order behavior, in the limit \(N_{0} \to \infty\), of the complexity function or the ISC:
+
+\begin{align*}
+&\mathcal{C}_{J} (\boldsymbol{N}) = \underset{\{(x_{l}, y_{l})_{l}\}}{\operatorname{saddle}} \thinspace \frac{1}{2} \bigg \{- \sum_{l=0}^{L-1} \sqrt{\alpha_{l} \alpha_{l+1}} \thinspace \big(x_{l}^{2} + y_{l}^{2} \big) + \alpha_{L} \ln \bigg [1 + \operatorname{erf} \bigg(\frac{- x_{L-1} - i y_{L-1}}{\sqrt{2 \nu_{L}}} \bigg) \bigg ] \\
+&+ \sum_{l=1}^{L-1} \alpha_{l} \ln \bigg [1 + \operatorname{erf} \bigg(\frac{- (x_{l} + x_{l-1}) + i (y_{l} - y_{l-1})}{\sqrt{2 (\gamma_{l} + \nu_{l})}} \bigg) \bigg] + \ln \bigg [1 + \operatorname{erf} \bigg(\frac{- x_{0} + i y_{0}}{\sqrt{2 \gamma_{0}}} \bigg) \bigg] \bigg \}. \tag{6}
+\end{align*}
+
+** Step 6: Fixed point equations
+With
+
+\begin{align*}
+&\theta_{l} \equiv
+\begin{cases}
+1/\sqrt{2 \gamma_0}, & l = 0 \\
+1/ \sqrt{2 (\gamma_{l} + \nu_{l})}, & 0 < l < L - 1 \\
+1/\sqrt{2 \nu_{L}}, & l = L - 1\\
+\end{cases}
+&
+\omega_{l} &\equiv
+\begin{cases}
+- x_{0} + i y_{0}, & l = 0 \\
+- (x_{l} + x_{l-1}) + i (y_{l} - y_{l-1}), & 0 < l < L - 1\\
+- x_{L-1} - i y_{L-1}, & l = L - 1\\
+\end{cases}
+\end{align*}
+
+we need to iterate the following equations to obtain the saddle \(\big\{(x_{l}^{\text{max}} , y_{l}^{\text{max}})_{l=0 \ldots L-1} \big \}\).
+
+\begin{align*}
+x_{l} &= - \frac{\gamma_{l}^{-1} \theta_{l}}{\sqrt{2 \pi}} \exp \big[- (\theta_{l} \thinspace \omega_{l})^{2} \big] \bigg[1 + \operatorname{erf}\big( \theta_{l} \thinspace \omega_{l} \big) \bigg]^{-1} \\
+&\qquad - \frac{\gamma_{l} \theta_{l+1}}{\sqrt{2 \pi}} \exp \big[- (\theta_{l+1} \thinspace \omega_{l+1})^{2} \big] \bigg[1 + \operatorname{erf}\big( \theta_{l+1} \thinspace \omega_{l+1} \big) \bigg]^{-1} \tag{7a}
+\end{align*}
+
+\begin{align*}
+i y_{l} &= - \frac{\gamma_{l}^{-1} \theta_{l}}{\sqrt{2 \pi}} \exp \big[- (\theta_{l} \thinspace \omega_{l})^{2} \big] \bigg[1 + \operatorname{erf}\big( \theta_{l} \thinspace \omega_{l} \big) \bigg]^{-1} \\
+&\qquad + \frac{\gamma_{l} \theta_{l+1}}{\sqrt{2 \pi}} \exp \big[- (\theta_{l+1} \thinspace \omega_{l+1})^{2} \big] \bigg[1 + \operatorname{erf}\big( \theta_{l+1} \thinspace \omega_{l+1} \big) \bigg]^{-1}. \tag{7b}
+\end{align*}
+** ISC for an RBM (\( L=1 \) when \( \alpha_1 \gg 1 \))
++ The /first key result/ from [cite:@bansal2018using] concerns the ISC for RBMs. It said that the ISC saturates as the number of hidden units increases.
+
++ For the RBM (\(L=1\)), \( \mathcal{C}_{J} (\boldsymbol{N}) \) reduces to \(\mathcal{C}_{J} (\alpha_{1})\)
+
+\begin{align*}
+\mathcal{C}_{J} (\alpha_{1}) = \underset{\{x, y\}}{\operatorname{saddle}} \thinspace \frac{1}{2} \bigg \{- \sqrt{\alpha_{1}} \thinspace \big(x^{2} + y^{2} \big) + \ln \bigg [1 + \operatorname{erf} \bigg(\frac{- x + i y}{\sqrt{2 \gamma_{0}}} \bigg) \bigg] \bigg [1 + \operatorname{erf} \bigg(\frac{- x - i y}{\sqrt{2 \nu_{1}}} \bigg) \bigg ]^{\alpha_{1}} \bigg \}
+\end{align*}
+
++ In our use of Laplace's method in deriving (6), we assumed \(N_{0} \to \infty\), so the analogue of this result is the case where \(N_{1} \to \infty\) such that \(N_{1} / N_{0} \equiv \alpha_{1}\) is finite.
++ We numerically solve for the saddle \(\{x^{\text{max}}, y^{\text{max}}\}\) by iterating the fixed point equations and substitute into the formula for ISC  \(\mathcal{C}_{J} (\alpha_{1})\) to obtain the response of \(\mathcal{C}_{J} (\alpha_{1})\) to \(\alpha_{1}\).
+** ISC for an RBM (\( \alpha_1 \gg 1 \))
++ The ISC \(\mathcal{C}_{J} (\alpha_{1})\) saturates to a limiting value as a function of \(\alpha_{1}\). 
++ The saturation limit for \(\mathcal{C}_{J} (\alpha_{1}) \approx 0.506\) is lower than \(0.585\).
+
+#+begin_src latex
+  \begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.6\linewidth]{~/.local/images/rbm.png}
+    \caption{\textbf{ISC} \(\mathcal{C}_{J} (\alpha_{1})\) \textbf{vs. proportion} \(\alpha_{1}\) \textbf{for an RBM with a single hidden layer} \((L=1)\). The saturation of \(\mathcal{C}_{J}\) indicates the limiting ISC value as \(\alpha_{1}\) increases, highlighting the diminishing returns on model capacity.}
+    \label{fig:sub1}
+  \end{figure}
+#+end_src
+** ISC for a DBM (\( \alpha_1 \gg 1 \) and \( \alpha_{2} \ll 1 \))
++ The /second key result/ from [cite:@bansal2018using] concerns ISC for DBMs. It said that for small values of \(\alpha_{2}\), \(\mathcal{C}_{J} (\alpha_{1}, \alpha_{2})\) increases linearly with \(\alpha_{2}\). For DBMs with 2 hidden layers (\(L = 2\)), \( \mathcal{C}_J (\boldsymbol{N}) \) reduces to
+
+\begin{align*}
+&\mathcal{C}_{J} (\alpha_{1}, \alpha_{2}) = \\
+&\quad \underset{\{x_{0}, x_{1}, y_{0}, y_{1}\}}{\operatorname{saddle}} \frac{1}{2} \thinspace \bigg \{- \bigg[ \sqrt{\alpha_{1}} \thinspace \big(x_{0}^{2} + y_{0}^{2} \big) + \sqrt{\alpha_{1} \alpha_{2}} \thinspace \big(x_{1}^{2} + y_{1}^{2} \big) \bigg] + \ln \bigg [1 + \operatorname{erf} \bigg(\frac{- x_{0} + i y_{0}}{\sqrt{2 \gamma_{0}}} \bigg) \bigg] \\
+&\qquad \qquad + \ln \bigg [1 + \operatorname{erf} \bigg(\frac{- (x_{1} + x_{0}) + i (y_{1} - y_{0})}{\sqrt{2 (\gamma_{1} + \nu_{1})}} \bigg) \bigg]^{\alpha_{1}} \bigg [1 + \operatorname{erf} \bigg(\frac{- x_{1} - i y_{1}}{\sqrt{2 \nu_{2}}} \bigg) \bigg]^{\alpha_{2}} \bigg \} \tag{10}
+\end{align*}
+
++ The analogue of this result is that \(N_{0}\), \(N_{1}\), and \(N_{2}\) all approach \(\infty\) but uphold the proportions \(\alpha_{1} \equiv N_{1} / N_{0} > \beta^{-1} = 20 \gg 1\) and \(\alpha_{2} \equiv N_{2} / N_{0} < \beta = 0.05 \ll 1\).
+
++ Again, we numerically solve for the saddle \(\{x^{\text{max}}_{0}, x^{\text{max}}_{1},  y^{\text{max}}_{0}, y^{\text{max}}_{1}\}\) by iterating the fixed point equations and substitute into the formula for ISC to obtain the response of \(\mathcal{C}_{J} (\alpha_{1},\,\alpha_{2})\) to \(\alpha_{2}\).
+** ISC for a DBM (\( \alpha_1 \gg 1 \) and \( \alpha_{2} \ll 1 \))
++ For small values of \(\alpha_{2}\), \(\mathcal{C}_{J} (\alpha_{1}, \alpha_{2})\) increases linearly with \(\alpha_{2}\). In this regime, ISC is saturated for an RBM (\(\alpha_{2} = 0\)) and can only be increased by adding units to a second hidden layer (\(\alpha_{2} > 0\)).
+
+#+begin_src latex
+  \begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.6\linewidth]{~/.local/images/dbm.png}
+    \caption{\textbf{ISC} (\(\mathcal{C}_{J} (\alpha_{1}, \alpha_{2})\)) \textbf{vs. geometric parameter for the second hidden layer} (\(\alpha_{2}\)). The interplay between \(\alpha_{1}\) and \(\alpha_{2}\) shows how adding units to the second hidden layer can enhance ISC beyond the saturation point of a single-layer RBM. \(\mathcal{C}_{J} (\alpha_{1}, \alpha_{2})\) starts increasing from the saturation limit of \(\mathcal{C}_{J} (\alpha_{1}) \approx 0.506 \) for the RBM.}
+    \label{fig:sub2}
+  \end{figure}
+#+end_src
+
+** Network design under budget \( \alpha_1 (1 + \alpha_2) = c \)
++ The /third key result/ from [cite:@bansal2018using] was concerning network design under a budget.
++ If the number of parameters for a DBM with 2 hidden layers (\( L=2 \)) is \( p = c N_{0}^2 \) for \( c > 0 \), then
+
+\[ p = c N_0^{2} = N_{0} \times N_{1} + N_{1} \times N_{2} = N_{0}^{2} \alpha_{1} (1 + \alpha_{2}) \Longrightarrow \alpha_1 (1 + \alpha_2) = c. \]
+
++ In other words, the curve \(\alpha_{1} (1 + \alpha_{2}) = c\) separates realizable networks from non-realizable ones in the \(\alpha_{1} - \alpha_{2}\) plane.
+
++ The result stated that for \( c < 1 \) an RBM maximizes ISC and multi-layering is not recommended, whereas for \( c \geq 1 \), a DBM maximizes the ISC and multi-layering is recommended.
++ We recover both these conclusions using \(\mathcal{C}_{J} (\alpha_{1}, \alpha_{2})\).
+** Tight budget (\( c < 1 \))
++ When \( c < 1 \), ISC is maximal for \(\alpha_{1} = c\), \(\alpha_{2} = 0\). /Under a tight budget, there is no gain in model capacity through multi-layering./
+
+#+begin_src latex
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=.6\linewidth]{~/.local/images/budget_0.5.png}
+  \caption{\textbf{Tight budget} \((c < 1)\): Heatmap of \(\mathcal{C}_{J} (\alpha_{1}, \alpha_{2})\) for realizable networks when \(c = 0.5\). An RBM maximizes model capacity (\(\alpha_{2} = 0\)).}
+\end{figure}
+#+end_src
+** Flexible budget (\( c \geq 1 \))
++ When \( c \geq 1 \), there exists an optimum \(\alpha_{1}^{\text{max}} \neq 0\), \(\alpha_{2}^{\text{max}} \neq 0\) that maximizes ISC. /Under a flexible budget, there is a gain in model capacity through multi-layering./
+
+#+begin_src latex
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=.6\linewidth]{~/.local/images/budget_10.0.png}
+  \caption{\textbf{Flexible budget} \((c \geq 1)\): Heatmap of \(\mathcal{C}_{J} (\alpha_{1}, \alpha_{2})\) for realizable networks when \(c = 10.0\). Multi-layering (DBM with 2 hidden layers) maximizes model capacity for some optimal \(\alpha_{1} \neq 0\), \(\alpha_{2} \neq 0\).}
+\end{figure}
+#+end_src
+
+** ISC for a DBM (\( \alpha_{2} \gg 1 \))
++ As a final result, we put \( \mathcal{C}_{J} (\alpha_{1},\, \alpha_{2}) \) to test in a previously unexplored regime.
++ Earlier we saw a linear response of \( \mathcal{C}(\alpha_1,\, \alpha_2) \) to \( \alpha_{2} \) for a wide first hidden layer (\( \alpha_{1} \gg 1 \)) and a narrow second hidden layer (\( \alpha_{2} \ll 1 \)) as shown in the leftmost panel below.
++ We now allow an unbounded increase in \( \alpha_2 \).
+
+#+begin_src latex
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1.1\linewidth]{~/.local/images/varying-width-dbm.pdf}
+    \caption{\textbf{Change in DBM architecture} \(L = 2\) \textbf{as} \(\alpha_1\) \textbf{is fixed and} \(\alpha_2\) \textbf{is increased.}}
+    \label{fig:sub2}
+  \end{figure}
+#+end_src
+
+** ISC for a DBM (\( \alpha_{2} \gg 1 \))
++ The response of \( \mathcal{C} (\alpha_1,\, \alpha_2) \) to increasing \( \alpha_2 \) is shown below for various \( \alpha_1 \) values. Focus on the \( \alpha_1 > \alpha_2 > 1 \) regime.
++ Previously, we noted that multi-layering can be preferable to adding additional units to an existing layer. 
++ Here, an alternative budget scheme reveal a contrasting insight: we see that /premature multi-layering can be sub-optimal. With a fixed budget, saturating ISC in the existing layer before adding a new layer tends to yield a larger overall ISC./
+
+#+begin_src latex
+  \begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.6\linewidth]{~/.local/images/dbm2.png}
+    \caption{\textbf{ISC} \(\mathcal{C}_{J} (\alpha_{1}, \alpha_{2})\) \textbf{vs. second hidden layer proportion} (\(\alpha_{2}\)). For \( \alpha_2 \ll 1 \), ISC increases linearly. As \( \alpha_2 \) increases and the network becomes \emph{balanced}, ISC growth slows. For \( \alpha_2 \gg 1 \), ISC grows unconstrained. An alternative budget scheme is shown: a total budget of \( \alpha_1 + \alpha_2 = 10.0 \) is portioned among \(\alpha_1\) and \(\alpha_2\), with the associated ISC marked on each curve with a circular patch.}
+ \label{fig:sub2}
+  \end{figure}
+#+end_src
+
+* Future work
+** Limitations
++ We now discuss the \( \alpha_1 < \alpha_{2} \gg 1 \) regime, revealing several limitations of our formulation.
++ The \( \alpha_{2} \gg 1 \) regime indicates a breakdown of ISC \( \mathcal{C}_{J} (\alpha_{1}, \alpha_{2}) \), but not because \( \mathcal{C}_{J} (\alpha_{1}, \alpha_{2}) \leq 1 \) is violated.
++ We defined ISC as \( \mathcal{C}_{J} (\boldsymbol{N}) \equiv N_{0}^{-1} \ln \langle \mathcal{N}_{s} \rangle_{J} \) where \( \mathcal{N}_{s} \) represents the modes of the joint distribution \( p(\boldsymbol{\sigma}) \) with normalization by the number of spins in the visible layer. Thus, \( \mathcal{C}_{J} (\alpha_{1}, \alpha_{2}) \geq 1 \) is admissible by our definition.
++ The entity under scrutiny is our definition of ISC: only the modes over the visible units \( \sum_{\boldsymbol{\sigma}_{1}} \ldots \sum_{\boldsymbol{\sigma}_{L}} p (\boldsymbol{\sigma}) \) are relevant to a DBM's model capacity, but we computed the modes of the joint distribution \( p (\boldsymbol{\sigma}) \).
++ In doing so, we assumed that *the number of modes of the marginal distribution over the visible units* \( \sum_{\boldsymbol{\sigma}_{1}} \ldots \sum_{\boldsymbol{\sigma}_{L}} p (\boldsymbol{\sigma}) \) *is comparable to the number of modes of the joint distribution* \( p (\boldsymbol{\sigma}) \).
+** Limitations
++ As justification, if a set of visible spins \( (\sigma_{i0}^{\ast})_{i=1,\ldots, N_0} \) is a mode of the marginal \( \sum_{\boldsymbol{\sigma}_{1}} \ldots \sum_{\boldsymbol{\sigma}_{L}} p (\boldsymbol{\sigma}) \), there exists a set of hidden spins \( (\sigma_{il}^{\ast})_{i=1,\ldots, N_l}^{l=1,\ldots, L} \) such that \( (\sigma_{il}^{\ast})_{i=1,\ldots, N_l}^{l=0,\ldots, L} \) is an inherent structure. For \( L = 1 \), there are situations where this relationship is /provably/ one-to-one so that /our assumption is entirely reasonable/.
+
++ However, for \( L \geq 2 \), this relationship can become one-to-many. Thus, while the modes over the joint distribution \( p (\boldsymbol{\sigma}) \) serve as an upper bound for the modes over the visible units, the bound's usefulness depends on the severity of this one-to-many relationship. In the \( \alpha_2 \gg 1 \) regime, when \( \mathcal{C}_{J} (\alpha_{1}, \alpha_{2}) \) exceeds 1, /our assumption is clearly indefensible/.
+** Challenges
++ While it is tempting to redefine \( \mathcal{N}_{s} \) in \( \mathcal{C} (\boldsymbol{N}) \equiv N_{0}^{-1} \ln \langle \mathcal{N}_{s} \rangle_{J} \) as the modes of the marginal \( \sum_{\boldsymbol{\sigma}_{1}} \ldots \sum_{\boldsymbol{\sigma}_{L}} p (\boldsymbol{\sigma}) \) and proceed through the same steps we used to arrive at \( \mathcal{C} (\boldsymbol{N}) \), the concept of single-site energies, crucial for defining  and characterizing the inherent structures of the DBM, is not immediately useful for enumerating the modes of the marginal.
+
++ To see this, suppose \( \lambda_{il} > 0 \) for all \( i \) and \( l \). The following holds unconditionally: \( \sigma_{il} \to -\sigma_{il} \Rightarrow \Delta H_{J} (\boldsymbol{\sigma}) > 0 \) for all \( i \) and \( l \). This result is the starting point of virtually all complexity calculations in the literature. Contrast this with the case where \( \lambda_{il} > 0 \) for all \( i \) and \( l = 0 \), but the values for \( l \neq 0 \) are indeterminate, meaning we know for a fact that /all/ of the visible spins are in a low energy state but nothing about the rest. In this case, \( \sigma_{i0} \to -\sigma_{i0} \nRightarrow \Delta H_J (\boldsymbol{\sigma}) > 0 \) for some \( i \). Whether \( \Delta H_J (\boldsymbol{\sigma}) > 0 \) holds depends on whether \( \sum_{j} \Delta \lambda_{j1} \geq \Delta \lambda_{i0} \).
+** Further work
++ Therefore, 
+  1) a characterization of the nature of the previously discussed one-to-many relationship between the modes of the marginal distribution and those of the joint distribution, and
+  2) its dependence on the network architecture
+  seem like the natural way forward to work around the current hurdle, the hurdle being that we would like an ISC \(\mathcal{C}_{J} (\boldsymbol{N}) \equiv N_{0}^{-1} \ln \langle \mathcal{N}_{s} \rangle_{J}\) where \( \mathcal{N}_{s} \) is an adequate representation of the modes of the marginal distribution \(\sum_{\boldsymbol{\sigma}_{1}} \ldots \sum_{\boldsymbol{\sigma}_{L}} p (\boldsymbol{\sigma})\).
++ Such an ISC will of course be bound by the constraint \(\mathcal{C}_{J} (\boldsymbol{N}) \leq 1\), but more importantly, provide a more reliable mapping between the network architecture and the model capacity in the regimes where the current formulation breaks down.
+** Further work
++ An extensive amount of time has been devoted to studying, improving, and developing efficient code for algorithms that can sample the inherent structures of the DBM in a way that satisfies detailed balance and from these samples give Monte Carlo estimates of the ISC. For example, see
+  1) *https://crates.io/crates/fastset* which gives a set implementation =fastset::Set= that beats performance of state of the art set implementations like Google's =hashbrown::HashSet= (as a flip side it has a relatively large memory footprint which is a non-issue for our problem domain). It provides a =random= method for uniform random sampling from the set with /picosecond latency/. This is useful for rapid and repetitive steepest descent minimization to an inherent structure from different starting conditions.
+  2) *https://crates.io/crates/signvec* which extends the capabilities of the traditional =std::collection::Vec= containers with functionality to efficiently track and manipulate elements based on their sign with /picosecond latency/. It uses the previously mentioned =fastset::Set= internally. This is useful for fast manipulation of single-site energies.
+  We didn't present them due to time constraint. Continuing these efforts will also be of priority.
+* 
+#+print_bibliography:
