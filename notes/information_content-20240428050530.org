@@ -1,0 +1,7 @@
+:PROPERTIES:
+:ID:       dd01339d-fd5c-42dc-8a95-246f3f37fcb2
+:END:
+#+TITLE: Information content
+#+FILETAGS: :literature:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
