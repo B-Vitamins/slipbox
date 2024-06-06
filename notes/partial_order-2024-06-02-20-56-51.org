@@ -1,0 +1,16 @@
+:PROPERTIES:
+:ID:       c4fd37c6-3784-44d2-84ec-a75d01bc6b17
+:END:
+#+TITLE: Partial order
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+The definition of partial order depends on the notion of a [[id:55412a61-9999-4282-871f-744368c7d5ae][homogeneous relation]].
+
+#+NAME: Partial order
+#+begin_definition latex
+A partial order, is a homogeneous relation \(\leq\) on a set \(P\) that is reflexive, anti-symmetric, and transitive. That is, for all \(a, b, c \in P\), it must satisfy:
+1. Reflexivity: \(a \leq a\), i.e. every element is related to itself.
+2. Anti-symmetry: if \(a \leq b\) and \(b \leq a\) then \(a=b\), i.e. no two distinct elements precede each other.
+3. Transitivity: if \(a \leq b\) and \(b \leq c\) then \(a \leq c\).
+#+end_definition
