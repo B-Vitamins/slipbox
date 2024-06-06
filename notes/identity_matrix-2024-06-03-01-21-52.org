@@ -1,0 +1,7 @@
+:PROPERTIES:
+:ID:       0d47e29b-541c-437b-a4d6-3d7e7d6a9e16
+:END:
+#+TITLE: Identity matrix
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
