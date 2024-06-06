@@ -1,0 +1,21 @@
+:PROPERTIES:
+:ID:       2b1a7d6f-f71c-4c8d-871b-4ca53ebead57
+:END:
+#+TITLE: Hermitian matrix
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+The definition of a *Hermitian matrix* depends on the notion of a [[id:f86c8666-247e-450b-8185-efd62e16e303][square matrix]] and the [[id:9bc364dd-7701-4adc-a010-7325ae74108a][complex conjugate]] of a [[id:6662b384-b484-4734-b766-d06ff5021b29][complex number]].
+
+#+NAME: Hermitian matrix
+#+begin_definition latex
+A square matrix \( A = (a_{ij})_{i=1,\ldots,n}^{j=1,\ldots,n} \) is a Hermitian matrix if for every \( (i,j) \) we have \(a_{ij} = a_{ji}^{\ast} \) where \( a_{ji}^{\ast} \) is the complex conjugate of \( a_{ji} \).
+#+end_definition
+
+The following corollary depends on the additional notion of the [[id:870eba32-9e8e-460d-b565-c99e4c3c678e][adjoint]] of a matrix.
+
+#+NAME: Transpose leaves a symmetric matrix invariant
+#+begin_corollary latex
+If \( A \) is is a Hermitian matrix, then \( A^{\dagger} = A \).
+#+end_corollary
+
