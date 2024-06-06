@@ -1,0 +1,23 @@
+:PROPERTIES:
+:ID:       a54d2310-09c1-4001-a414-cf0b50b6fae2
+:END:
+#+TITLE: Positive-semidefinite matrix
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+The definition of an positive-semidefinite matrix of real elements depends on the notion of a [[id:1ec11bbb-bb9d-4e8e-8f6b-4288a464ffb6][symmetric matrix]].
+
+#+NAME: Positive-semidefinite-matrix (real)
+#+begin_definition latex
+An \(n \times n\) symmetric real matrix \(M\) is said to be positive-semidefinite or non-negative-definite if \(\mathbf{x}^{\mathrm{T}} M \mathbf{x} \geq 0\) for all \(\mathbf{x}\) in \(\mathbb{R}^n\).
+#+end_definition
+
+The definition of an positive-semidefinite matrix of complex elements depends on the notion of a [[id:2b1a7d6f-f71c-4c8d-871b-4ca53ebead57][Hermitian matrix]].
+
+#+NAME: Positive-semidefinite-matrix (complex)
+#+begin_definition latex
+An \(n \times n\) Hermitian complex matrix \(M\) is said to be positive semi-definite or non-negative-definite if \(x^* M x \geq 0\) for all \(x\) in \(\mathbb{C}^n\).
+#+end_definition
+
+
+
