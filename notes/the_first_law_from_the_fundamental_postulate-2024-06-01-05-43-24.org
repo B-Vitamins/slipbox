@@ -1,0 +1,30 @@
+:PROPERTIES:
+:ID:       a38a6c58-9613-4692-9e9e-13511db0335d
+:END:
+#+TITLE: The first law from the fundamental postulate
+#+FILETAGS: :literature:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+[[id:6ad015e0-bfeb-4d08-a35f-42810e673bb3][The first law]] of [[id:39fcc45a-9b91-42f9-9960-19eab99aae83][thermodynamics]] states that to change the state of a system we need a fixed amount of energy, which can be in the form of mechanical work or heat. We similarly take a adiabatically isolated [[id:170f5ef3-3995-4720-bbdb-c2ca704f0739][microcanonical system]], and do work on the system by changing the coordinates by \(\delta \mathbf{x}\) under a constant force \( \mathbf{J} \) via a [[id:a32a9269-5194-4356-887b-500f12b3f79d][reversible transformation]].
+
+Consider the variations of \(S(E, \mathbf{x})\). The amount of work done on the system is \(\mathrm{đ} W=\mathbf{J} \cdot \delta \mathbf{x}\), which changes the [[id:7f36257b-4d45-453a-b704-ca458b4c941a][internal energy]] to \(E+\mathbf{J} \cdot \delta \mathbf{x}\). The first-order change in [[id:b91504dd-9976-4ae9-bdfb-4f92903ee24c][entropy]] is
+
+\[
+\delta S=S(E+\mathbf{J} \cdot \delta \mathbf{x}, \mathbf{x}+\delta \mathbf{x})-S(E, \mathbf{x})=\left[(\partial_E S)_{\mathbf{x}} \, \mathbf{J} + (\partial_{\mathbf{x}} S)_{E}\right] \cdot \delta \mathbf{x} \tag{1}
+\]
+
+*This change will occur spontaneously, taking the system into a more probable state, unless the quantity in brackets is zero.* 
+
+Using the [[id:9a34714f-f07c-4f3f-9067-7a90d32fd20d][Maxwell relation]] \( T = (\partial_E S)_{\mathbf{x}}^{-1} \) (see also [[id:2f55f143-4240-44a1-aa3c-3e6fa8a23dee][the zeroth law from the fundamental postulate]]) this allows us to identify the derivatives
+
+\[
+(\partial_{x_{i}} S)_{E,\,x_{j \neq i}} = - J_{i}/T.
+\]
+
+Substituting the partial derivatives into the expression for the [[id:86c7268a-cf65-4f9b-bb99-03d810ee1bf8][equilibrium]] variations of \(S\) we have
+
+\[
+\mathrm{d} S(E, \mathbf{x})= (\partial_E S)_{\mathbf{x}} \, \mathbf{J} \cdot \mathrm{d} \mathbf{x} + (\partial_{\mathbf{x}} S)_{E} \cdot \mathrm{d} \mathbf{x} = T^{-1} (\mathrm{d} E - \mathbf{J} \cdot \mathrm{d} \mathbf{x}) \quad \Longrightarrow \quad \mathrm{d} E=T \mathrm{~d} S+\mathbf{J} \cdot \mathrm{d} \mathbf{x}.
+\]
+
+Finally, we identify the [[id:5211418e-55fa-4d7e-b2f5-88148f84cc76][heat]] input \(\mathrm{đ} \mathrm{Q}=T \mathrm{~d} S\).
