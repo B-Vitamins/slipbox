@@ -1,0 +1,23 @@
+:PROPERTIES:
+:ID:       ddfe594a-c9bf-4440-917c-b63780bfc76c
+:END:
+#+TITLE: Limit
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+The notion of limits is tied to the notion of a [[id:ebf7891f-996b-46c5-8c64-0c419b9c0473][function]].
+
+#+NAME: 
+#+begin_definition latex
+Let \(f: D \rightarrow \mathbb{R}\) be a function. Suppose \(a \in D\) and \(L \in \mathbb{R}\). We say the limit of \(f\) as \(x \in D\) approaches \( a \) is \(L\) and denote it as
+
+\begin{align*}
+\lim _{x \rightarrow a} f(x)= L \qquad \text{or} \qquad f(x) \rightarrow L \quad \text { as } \quad x \rightarrow a
+\end{align*}
+
+if for every \(\varepsilon>0\), there exists a \(\delta>0\) such that for all \(x \in D\):
+
+\begin{align*}
+0 < \left|x-a\right|<\delta \Longrightarrow \left|f(x)-L\right|<\varepsilon .
+\end{align*}
+#+end_definition
