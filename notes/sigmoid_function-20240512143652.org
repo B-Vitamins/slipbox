@@ -1,0 +1,35 @@
+:PROPERTIES:
+:ID:       d1230eba-905b-4765-84ef-daa0b21fd3d9
+:END:
+#+TITLE: Logistic sigmoid function
+#+FILETAGS: :literature:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+#+NAME: Logistic sigmoid function
+#+begin_definition latex
+The logistic sigmoid function \( \sigma(x) \) is by definition
+\begin{align*}
+\sigma(x) \equiv \frac{1}{1+\exp (-x)}
+\end{align*}
+#+end_definition
+
+A plot of the logistic sigmoid function \(\sigma(x)\) is shown in red, together with the scaled probit function \(\Phi(\lambda a)\), for \(\lambda^{2}=\pi / 8\), shown in dashed blue, where \(\Phi(a)\) is defined by (4.114). The scaling factor \(\pi / 8\) is chosen so that the derivatives of the two curves are equal for \(a=0\).
+
+#+ATTR_HTML: :width 500px
+[[file:~/.local/images/prml-4-9.png]]
+
+The term 'sigmoid' means S-shaped. This type of function is sometimes also called a 'squashing function' because it maps the whole real axis into a finite interval.
+
+* Properties
++ It satisfies the following symmetry property
+
+\begin{align*}
+\sigma(-x)=1-\sigma(x).
+\end{align*}
+
++ The derivative of the logistic sigmoid function can be expressed in terms of the sigmoid function itself
+
+\begin{align*}
+\mathrm{D}_x \sigma = \sigma (1-\sigma)
+\end{align*}
+
