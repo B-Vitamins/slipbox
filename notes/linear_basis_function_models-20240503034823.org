@@ -11,11 +11,14 @@ Linear basis function models are of the form
 y(\mathbf{x}, \mathbf{w})=\sum_{j=0}^{M-1} w_{j} \phi_{j}(\mathbf{x})=\mathbf{w}^{\mathrm{T}} \phi(\mathbf{x}) \tag{1}
 \end{align*}
 
-where \(\mathbf{w}=\left(w_{0}, \ldots, w_{M-1}\right)^{\mathrm{T}}\) and \(\boldsymbol{\phi}=\left(\phi_{0}, \ldots, \phi_{M-1}\right)^{\mathrm{T}}\). \(\phi_{j}(\mathbf{x})\) are known as *basis functions*. \( \phi_{0} \equiv 1  \) is a spectator basis functions, allowing \(w_{0}\) to act as a fixed offset. As an example, these basis functions may be the outcome of [[id:74da2a9d-22a1-47f5-bc51-b79e561d8dc7][Feature extraction]].
+where \(\mathbf{w}=\left(w_{0}, \ldots, w_{M-1}\right)^{\mathrm{T}}\) and \(\boldsymbol{\phi}=\left(\phi_{0}, \ldots, \phi_{M-1}\right)^{\mathrm{T}}\). \(\phi_{j}(\mathbf{x})\) are known as *basis functions*. \( \phi_{0} \equiv 1  \) is a spectator basis functions, allowing \(w_{0}\) to act as a fixed offset. As an example, these basis functions may be the outcome of [[id:74da2a9d-22a1-47f5-bc51-b79e561d8dc7][feature extraction]].
 
-The key property of this model is that it is a linear function of the parameters \(w_{0}, \ldots, w_{D}\) - it is immaterial that the basis functions can be arbitrary non-linear functions of the input variables. For a prescription on adjusting \(\mathbf{w}=\left(w_{0}, \ldots, w_{M-1}\right)^{\mathrm{T}}\) for linear basis function models, see [[id:2967ed4f-6501-4d36-8446-50e536e66a2c][maximum likelihood (linear basis function models)]].
+The key property of this model is that it is a linear function of the parameters \(w_{0}, \ldots, w_{D}\) - it is immaterial that the basis functions can be arbitrary non-linear functions of the input variables.
 
-For a geometric interpretation of least-squares, see [[id:217e38dc-5582-4716-adc9-b8eb73cd0995][geometry of least squares]]. For regression problems with \( K > 1 \) target variables for any given input variable see [[id:9edc5f00-5227-4762-ac98-43f1893df310][Multiple outputs (linear basis function models)]]. For a [[id:2a73f861-7650-4a41-84f0-81b975111c4f][sequential algorithm]] (*online*) that can act as a replacement for the maximum likelihood solution, see the [[id:8581366d-5371-4713-993f-69a202ffe6fe][Least-mean-squares (LMS) algorithm]].
+For a prescription on adjusting \(\mathbf{w}=\left(w_{0}, \ldots, w_{M-1}\right)^{\mathrm{T}}\) for linear basis function models, see [[id:2967ed4f-6501-4d36-8446-50e536e66a2c][maximum likelihood (linear basis function models)]].
+For a geometric interpretation of least-squares, see [[id:217e38dc-5582-4716-adc9-b8eb73cd0995][geometry of least squares]].
+For regression problems with \( K > 1 \) target variables for any given input variable see [[id:9edc5f00-5227-4762-ac98-43f1893df310][multiple outputs (linear basis function models)]].
+For a [[id:2a73f861-7650-4a41-84f0-81b975111c4f][sequential algorithm]] (*online*) that can act as a replacement for the maximum likelihood solution, see the [[id:8581366d-5371-4713-993f-69a202ffe6fe][Least-mean-squares (LMS) algorithm]].
 
 * The identity basis
 

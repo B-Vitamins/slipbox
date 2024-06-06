@@ -3,8 +3,7 @@
 :END:
 #+TITLE: Research summary
 #+SUBTITLE: Inherent structures of the deep Boltzmann machine
-#+CATEGORY: notes
-#+FILETAGS: :fleeting: :phd: :submission:
+#+FILETAGS: :fleeting:phd:submission:
 #+SETUPFILE: ~/.config/emacs/setup/setupfile.org
 
 The deep Boltzmann machine (DBM) is a statistical model for parametric inference [cite:@salakhutdinov2009deep]. The state of a DBM with \(L\) hidden layers is a set of binary variables \(\boldsymbol{\sigma} \equiv (\sigma_{il} \in \{\pm 1\})_{l=0 \ldots L}^{i = 1 \ldots N_{l}}\). \(\boldsymbol{N} \equiv (N_{l})_{l=0\ldots L}\) is the number of units in each of the \(L+1\) layers. The set of DBM configurations live in a state space \(\mathcal{S} \equiv \{\pm 1\}^{N_{0}} \times \{\pm 1\}^{N_{1}} \times \cdots \times \{\pm 1\}^{N_{L}}\) so that \(|\mathcal{S}| = \prod_{l=0}^{L} 2^{N_{l}}\). The joint probability density function \(p (\boldsymbol{\sigma})\) that assigns objective probabilities to \(\boldsymbol{\sigma} \in \mathcal{S}\) is
@@ -50,6 +49,10 @@ which yield trivial identities
 \widehat{N}_{l} = N_{0} \sqrt{\alpha_l \alpha_{l+1}} \tag{4b}
 \end{align*}
 
+#+name: DBM
+#+header: :results file drawer
+#+header: :file dbm.png
+#+header: :headers '("\\usepackage{tikz}")
 #+begin_src latex
 \begin{figure}[h]
   \centering
@@ -109,6 +112,11 @@ which yield trivial identities
   \caption{An illustration of a DBM with \(L = 3\) and \(N = 10\). The two colors are representations for the values \(\sigma_{il} = \pm 1\). The geometric parameters of (4a) and (4b) are illustrated.}
 \end{figure}
 #+end_src
+
+#+RESULTS: DBM
+:results:
+[[file:dbm.png]]
+:end:
 
 We define a set of real numbers called the /single site energies/ [cite:@tanaka1980analytic] \((\lambda_{il})_{l=0 \ldots L}^{i= 1 \ldots N_{l}}\), one for each of the DBM's units
 
@@ -268,6 +276,7 @@ The number of parameters, say \(p\), for a DBM with 2 hidden layers (\(L=2\)) is
 When \(c \geq 1\), there exists an optimum \(\alpha_{1}^{\text{max}} \neq 0, \alpha_{2}^{\text{max}} \neq 0\) that maximizes the ISC. While these results are qualitatively in line with the predictions of *Corollary 3*, we note once again, that the optimal value of \(\alpha_{1}^{\text{max}}\) we obtain is higher than what is predicted(\(\alpha_{1}^{\text{max}} = \sqrt{c}\)) as a consequence of *Corollary 3.*
 
 As a closing remark, we mention that in the above analysis, we have assumed that the number of modes of the joint distribution \(p (\boldsymbol{\sigma})\) is equal to the number of modes of the marginal distribution \(\sum_{\boldsymbol{\sigma}_{1}} \ldots \sum_{\boldsymbol{\sigma}_{L}} p (\boldsymbol{\sigma})\) over the visible units, clearly a non-trivial fact when  \(L \geq 2\) [cite:@bansal2018using]. It is only the modes of  \(\sum_{\boldsymbol{\sigma}_{1}} \ldots \sum_{\boldsymbol{\sigma}_{L}} p (\boldsymbol{\sigma})\) that are relevant in the context of a DBM's model capacity but in the analysis presented above, we have really computed the modes of the joint distribution \(p (\boldsymbol{\sigma})\). Further work will investigate whether this assumption is tenable and explore the possibility of extending the analysis so as to relax it entirely.
+
 
 #+print_bibliography:
 * Appendix                                                         :noexport:

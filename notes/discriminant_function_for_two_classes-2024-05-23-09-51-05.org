@@ -5,9 +5,7 @@
 #+FILETAGS: :literature:prml:
 #+SETUPFILE: ~/.config/emacs/setup/setupfile.org
 
-(see [[id:43aa39fd-b16a-429b-b59a-408240ae3523][Discriminant functions]] and [[id:748061c5-f975-4773-90e4-3a5b35ceb8cd][Linear models for classification]])
-
-The simplest representation of a linear discriminant function is obtained by taking a linear function of the input vector so that
+The simplest representation of a linear [[id:43aa39fd-b16a-429b-b59a-408240ae3523][discriminant functions]] is obtained by taking a linear function of the input vector so that
 
 \begin{align*}
 y(\mathbf{x})=\mathbf{w}^{\mathrm{T}} \mathbf{x}+w_{0} \tag{1}

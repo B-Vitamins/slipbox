@@ -5,45 +5,42 @@
 #+FILETAGS: :literature:spop:
 #+SETUPFILE: ~/.config/emacs/setup/setupfile.org
 
-The time evolution of systems toward [[id:86c7268a-cf65-4f9b-bb99-03d810ee1bf8][thermal equilibrium]] is governed by [[id:be3bfa3c-0208-4857-a67a-67dfda059d65][the second law]] of thermodynamics: in an adiabatically isolated system entropy must increase in any spontaneous change and reaches a maximum in equilibrium (see [[id:b91504dd-9976-4ae9-bdfb-4f92903ee24c][entropy]]).
+The time evolution of an adiabatically isolated system (\(\mathrm{đ} Q=0\)) with no mechanical work (\(\mathrm{đ} W=0\)) toward [[id:86c7268a-cf65-4f9b-bb99-03d810ee1bf8][thermal equilibrium]] is governed by [[id:be3bfa3c-0208-4857-a67a-67dfda059d65][the second law]] of thermodynamics: the entropy \( S \) must increase in any spontaneous change and reaches a maximum in equilibrium, i.e., the non-equilibrium variations of the entropy obey the inequality \( \delta S \geq 0 \) (see [[id:b91504dd-9976-4ae9-bdfb-4f92903ee24c][entropy]]). For out-of-equilibrium systems that are not adiabatically isolated, and may also be subject to external mechanical work, it is usually possible to define other thermodynamic potentials that are extremized when the system is in equilibrium. Four commonly encountered thermodynamic potentials are:
 
-0) [[id:b91504dd-9976-4ae9-bdfb-4f92903ee24c][Entropy]] :: adiabatic transformations (\(\mathrm{đ} W=0\)) involving no mechanical work (\(\mathrm{đ} W=0\))
-
-   \[
-   \delta S \geq 0, \quad \text { where } \quad S \quad \text{is the entropy} \tag{0}
-   \]
-
-For out-of-equilibrium systems that are not adiabatically isolated, and may also be subject to external mechanical work, it is usually possible to define other thermodynamic potentials that are extremized when the system is in equilibrium. Five commonly encountered thermodynamic potentials are:
-
-1) [[id:0e7e22dc-2808-4381-8317-aab5ac8d4cdd][Enthalpy]] :: adiabatic transformations (\(\mathrm{đ} W=0\)) in the presence of constant external force \( J \)
+1) [[id:0e7e22dc-2808-4381-8317-aab5ac8d4cdd][Enthalpy]] :: adiabatic transformations (\(\mathrm{đ} Q=0\)) involving mechanical work (\(\mathrm{đ} W\neq0\)) at constant external force \( J \) and in the absence of chemical work.
 
    \[
-   \delta H \leq 0, \quad \text { where } \quad H=E-\mathbf{J} \cdot \mathbf{x} \tag{1}
+   \delta H \leq 0, \quad \text { where } \quad H(S,\, \mathbf{J})=E(S,\, \mathbf{x})-\mathbf{J} \cdot \mathbf{x} \tag{1}
    \]
 
-2) [[id:d45917b3-5147-49a3-9696-8eaf731026dd][Helmholtz free energy]] :: isothermal transformations in the absence of mechanical work (\(\mathrm{đ} W=0\))
+2) [[id:d45917b3-5147-49a3-9696-8eaf731026dd][Helmholtz free energy]] :: isothermal transformations in the absence of mechanical work (\(\mathrm{đ} W=0\)) and chemical work.
    
    \[
-   \delta F \leq 0, \quad \text { where } F=E-T S \tag{2}
+   \delta F \leq 0, \quad \text { where } F(T,\,\mathbf{x}) = E(S,\, \mathbf{x})-T S \tag{2}
    \]
 
-3) [[id:16743aa2-9663-4ab6-9d9e-819143f84ace][Gibbs free energy]] :: isothermal transformations involving mechanical work (\(\mathrm{đ} W\neq0\)) at constant external force \( J \).
+3) [[id:16743aa2-9663-4ab6-9d9e-819143f84ace][Gibbs free energy]] :: isothermal transformations involving mechanical work (\(\mathrm{đ} W\neq0\)) at constant external force \( J \) and in the absence of chemical work.
 
   \[
-  \delta G \leq 0, \quad \text { where } \quad G=E-T S-\mathbf{J} \cdot \mathbf{x} \tag{3}
+  \delta G \leq 0, \quad \text { where } \quad G(T, \mathbf{J}) = H(S, \mathbf{J}) - T S = E(S,\, \mathbf{x})-\mathbf{J} \cdot \mathbf{x}-T S \tag{3}
   \]
 
-4) [[id:c8d07383-6b78-4142-b607-4049a7d1b24d][Grand potential]] :: isothermal transformations involving no mechanical work (\(\mathrm{đ} W=0\)) but at constant chemical potential \( \mu \) (chemical potentials measures the work necessary to add additional particles to the system)
+4) [[id:c8d07383-6b78-4142-b607-4049a7d1b24d][Grand potential]] :: isothermal transformations in the absence of mechanical work (\(\mathrm{đ} W=0\)) and involving chemical work at constant chemical potential \( \mu \).
 
    \[
-   \delta \mathcal{G} \leq 0, \quad \text { where } \mathcal{G}=E-T S-\mu \cdot \mathbf{N} \tag{4}
+   \delta \mathcal{G} \leq 0, \quad \text { where } \mathcal{G}(T,\,\mathbf{x}, \boldsymbol{\mu})=E(S,\, \mathbf{x},\, \mathbf{N})-T S-\boldsymbol{\mu} \cdot \mathbf{N} \tag{4}
    \]
 
-Equations (1), (2), (3) and (4) are examples of [[id:25bfcf59-6b80-4b68-8fbf-86f2b37930a0][Legendre transformations]], used to change variables to the most natural set of coordinates for describing a particular situation. The table below summarizes the inequalities satisfied by the above thermodynamic functions.
+#+BEGIN_COMMENT
+Chemical potentials measures the work necessary to add additional particles to the system.
+#+END_COMMENT
+
+Equations (1), (2), (3) and (4) are examples of [[id:25bfcf59-6b80-4b68-8fbf-86f2b37930a0][Legendre transformations]], used to change variables to the most natural set of coordinates for describing a particular situation.  The strategy behind the use of Legendre transforms in  [[id:39fcc45a-9b91-42f9-9960-19eab99aae83][thermodynamics]] is to shift from a function that depends on a variable to a new (conjugate) function that depends on a new variable, the conjugate of the original one. The new variable is the partial derivative of the original function with respect to the original variable (recall that from the [[id:17498b42-c75b-4044-84a5-4befa819cd0d][fundamental identity of thermodynamics]] \( \mathrm{d} E=T \mathrm{~d} S+\mathbf{J} \cdot \mathrm{d} \mathbf{x} + \boldsymbol{\mu} \cdot \mathrm{d} \mathbf{N} \) it follows that \( T = \partial_{S} E(S, \mathbf{x}, \mathbf{N}) \), \( \mathbf{J} = \nabla_{\mathbf{x}} E(S, \mathbf{x}, \mathbf{N})\), and \(  \)\(\boldsymbol{\mu} = \nabla_{\boldsymbol{N}} E(S,\,\mathbf{x},\,\mathbf{N})\)). The new function is the difference between the original function and the product of the old and new variables. Typically, this transformation is useful because it shifts the dependence of, e.g., the energy from an [[id:8bff36e1-8fd3-48aa-88ba-8b508a8cdd86][extensive]] variable to its conjugate [[id:669a1a19-a991-49f7-ac43-f845cf483def][intensive]] variable, which can often be controlled more easily in a physical experiment. 
+
+The table below summarizes the inequalities satisfied by the above thermodynamic functions.
 
 #+NAME: Inequalities satisfied by thermodynamic potentials
-|            | đQ=0                | constant T          |
-|------------+---------------------+---------------------|
-| đW=0       | δS ≥ 0              | δF ≤ 0              |
-| constant J | δH ≤ 0              | δG ≤ 0              
-|
+|            | đQ=0   | constant T |
+|------------+--------+------------|
+| đW=0       | δS ≥ 0 | δF ≤ 0     |
+| constant J | δH ≤ 0 | δG ≤ 0     |

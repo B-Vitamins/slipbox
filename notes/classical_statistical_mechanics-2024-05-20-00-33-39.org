@@ -25,9 +25,18 @@ The laws of [[id:39fcc45a-9b91-42f9-9960-19eab99aae83][thermodynamics]] give a p
 
   for a variety of systems such as the
 
-  1) [[id:ce9ee432-4125-4406-9e58-fcd137f71abe][Two-level systems]]
-  2) [[id:fa8b449a-ff56-4218-a9e8-a1e88c607848][The ideal gas]]
-  3) [[id:d18d2472-266c-48f7-999c-cc27acb12bf2][Spins in an external magnetic field]]
+  + [[id:ce9ee432-4125-4406-9e58-fcd137f71abe][Two-level systems]]
+    + [[id:19a7fdd8-961c-4f17-bd8a-dfbd7ac77a25][Two-level system (microcanonical ensemble)]]
+    + [[id:6d2d298c-5fb4-4c68-a155-73a7754dab8d][Two-level system (canonical ensemble)]]
+
+  + [[id:fa8b449a-ff56-4218-a9e8-a1e88c607848][The ideal gas]]
+    + [[id:22cf2174-93e0-4fc6-8bcd-431b2324ed08][The ideal gas (microcanonical ensemble)]]
+    + [[id:fb0e94d3-682d-4191-81c6-191cde3ef638][The ideal gas (canonical ensemble)]]
+    + [[id:844280be-ef79-4ac7-b273-5a22db1cb1de][The ideal gas (Gibbs canonical ensemble)]]
+    + [[id:ae846d38-a6b5-45f1-bd56-e5ba39de309b][The ideal gas (grand canonical ensemble)]]
+
+  + [[id:d18d2472-266c-48f7-999c-cc27acb12bf2][Spins in an external magnetic field]]
+    + [[id:6e4cebdc-e987-4bb6-836a-b634663e7364][Spins in an external magnetic field (Gibbs canonical ensemble)]]
 
   and then use these probabilities \(p_{M}(\mu)\) to make testable predictions about the equilibrium macroscopic properties of these system comprising a large number of degrees of freedom that are consistent with the predictions of the phenomenological laws of [[id:39fcc45a-9b91-42f9-9960-19eab99aae83][thermodynamics]].
 + *A central conclusion of classical equilibrium statistical mechanics is that in the thermodynamic limit, with large numbers of degrees of freedom, all of the above equilibrium ensembles are in fact equivalent.*

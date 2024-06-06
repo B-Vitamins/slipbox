@@ -5,36 +5,352 @@
 #+FILETAGS: :fleeting: :phd:
 #+SETUPFILE: ~/.config/emacs/setup/setupfile.org
 * PH 202: Statistical Mechanics
-  - Probability Theory
-  - Fundamental Postulate, Phase Space
-  - Micro-Canonical Ensemble, Connection with Thermodynamics
-  - Canonical Ensemble
-  - Classical Ideal Gas
-  - Harmonic Oscillators
-  - Ising Model and Paramagnetism
-  - Thermodynamic Potentials
-  - Legendre Transformations
-  - Monte Carlo Methods
+** Probability Theory
+** Fundamental Postulate, Phase Space
+** Micro-Canonical Ensemble, Connection with Thermodynamics
+** Canonical Ensemble
+** Classical Ideal Gas
+** Harmonic Oscillators
+** Ising Model and Paramagnetism
+** Thermodynamic Potentials
+** Legendre Transformations
+** Monte Carlo Methods
 
 * E0 270: Machine Learning
-  - Learning as Optimization, Linear Regression
-  - Probabilistic View: ML and MAP Estimates
-  - Logistic Regression: Gradient Descent, Stochastic Gradient Methods
-  - Perceptron, and Perceptron Convergence Theorem
-  - Feedforward Neural Networks, Backpropagation Algorithm
-  - Undirected Graphical Models, Markov Random Fields
-  - Introduction to MCMC and Gibbs Sampling
-  - Restricted Boltzmann Machine
-  - EM Algorithm
-  - Mixture Models
+** Learning as Optimization, Linear Regression
+** Probabilistic View: ML and MAP Estimates
+** Logistic Regression: Gradient Descent, Stochastic Gradient Methods
+** Perceptron, and Perceptron Convergence Theorem
+** Feedforward Neural Networks, Backpropagation Algorithm
+** Undirected Graphical Models, Markov Random Fields
+** Introduction to MCMC and Gibbs Sampling
+** Restricted Boltzmann Machine
+** EM Algorithm
+** Mixture Models
 
 * PH 354: Computational Physics
-  - Machine Representation, Precision, and Errors
-  - Roots of Equations
-  - Quadrature
-  - Random Numbers and Monte Carlo
-  - Fourier Methods
-  - Ordinary Differential Equations
-  - Numerical Linear Algebra
+** Machine Representation, Precision, and Errors
+*** Machine representation
+A computer represents numbers in a binary form. Hence, every computer has a limit how small/large a number can be.
 
+
+- Word length: number of bytes used to store a number. The number of bits processed by a computer's CPU in one go.
+- Most common architecture:
+
+Word length \(=4\) bytes \(=32\) bits.
+Word length \(=8\) bytes \(=64\) bits.
+( 1 byte \(=1 \mathrm{~B}=8\) bits: 00000000 )
+Integer representation
+- Integers are represented exactly on a computer.
+- Range usually depends only on the machine in C/Fortran!
+- Python is an exception - can represent arbritrarily large integers - show \(2^{10000}\)
+- For most other languages - dependent on the size of the integers:
+integer*4: 32 bits - highest number should be \(2^{32}-1\) But first bit is reserved for sign:
+\begin{align*}
+-2^{31}-2^{31}-1
+\end{align*}
+
+*** Floating point representation - single precision
+
+For eg. \(123.45 \mathrm{e} 6=0.12345 \mathrm{e} 9\)
+sign: + , exponent: +9 , mantissa: 12345
+\begin{tabular}{|c|c|}
+\hline & \\
+\hline पया| & पा|ा|ा|ा| \\
+\hline
+\end{tabular}
+- Range of exponent: \([-127,127]\left(2^{127} \sim 10^{+38}\right)\)
+- Single precision: \(6-7\) decimal places \(\left(1 / 2^{23} \sim 10^{-7}\right)\)
+- Range max: \(\pm 3.4 \times 10^{38}\).
+- Range min: \(\pm 1.4 \times 10^{-45}\).
+\(7 / 2\)
+
+*** Example
+
+Getting a problem with single precision is quite easy:
+Example: Bohr's radius:
+\begin{align*}
+a_0=\frac{4 \pi \epsilon_0 \hbar^2}{m_e e^2}
+\end{align*}
+where
+\begin{align*}
+\begin{gathered}
+\epsilon_0=8.85 \times 10^{-12} \mathrm{C}^2 / \mathrm{N} / \mathrm{m}^2 \\
+\hbar=6.63 \times 10^{-34} / 2 \pi \mathrm{J} \mathrm{s} \\
+m_e=9.11 \times 10^{-31} \mathrm{Kg} \\
+e=1.60 \times 10^{-19} \mathrm{C}
+\end{gathered}
+\end{align*}
+
+Numerator is: \(1.24 \times 10^{-78}\) and Denominator is: \(2.33 \times 10^{-68}\).
+\(8 / 2\)
+
+*** What can one do?
+
+- Restructure the equation.
+- Change units - work in atomic units where all these quantites are \(\mathcal{O}(1)\).
+- Increase precision!
+\(9 / 2\)
+
+*** Floating point representation - double precision
+
+\begin{align*}
+10 / 2
+\end{align*}
+
+Underflow
+\begin{tabular}{r|r|r|r|l} 
+Overflow & & & & \\
+\cline { 2 - 5 } & & 0 & & \\
+& Overflow \\
+\(-10^{308}\) & \(-10^{-324}\) & \(10^{-324}\) & \(10^{308}\)
+\end{tabular}
+- In python, negative overflow set to -inf and positive to +inf.
+■ In python, underflow is set to 0 .
+\(11 / 2\)
+
+*** Machine precision
+
+Machine precision is the smallest number \(\epsilon\) such that the difference between 1 and \(1+\epsilon\) is nonzero, ie., it is the smallest difference between two numbers that the computer recognizes.
+```
+def machineEpsilon(func=float):
+    machine_epsilon = func(1)
+    while func(1)+func(machine_epsilon) != func(1):
+        machine_epsilon_last = machine_epsilon
+        machine_epsilon = func(machine_epsilon)/func(2)
+    return machine_epsilon_last
+#print (machineEpsilon(float))
+import numpy as np
+print (machineEpsilon(np.float16))
+print (machineEpsilon(np.float32))
+print (machineEpsilon(np.float64))
+print (machineEpsilon(np.longdouble))
+```
+\(12 / 2\)
+
+\begin{align*}
+13 / 2
+\end{align*}
+
+*** Three types of Errors
+
+From Acton's "An Exhortation"
+- Grammatical Using what is NOT in the programming language - the compiler finds these.
+- Run time errors ( \(\mathrm{n}-1\) ) errors; Inversion of logical tests etc. - we have to find them
+- Mirabile visu (strange to view)
+
+They show up only for some input parameters. The code works for the test cases but blows up for some values of parameters!
+Reason: Loss of significant digits (round off errors), unstable algorithms etc.
+\(14 / 2\)
+
+*** Typical Errors
+
+- Round off errors: Any number is represented by a finite number of bits.
+The difference between the true value of the number and its value on the computer is called round off error.
+- Approximation errors/ Truncation errors: From using approximations such as replacing
+\begin{align*}
+\begin{gathered}
+\int_0^{\infty} f(x) d x \text { with } \int_0^L f(x) d x \text { with finite } \mathrm{L} \\
+\frac{d f}{d t} \text { with } \frac{f_{n+1}-f_n}{\Delta t}
+\end{gathered}
+\end{align*}
+\(15 / 2\)
+
+*** Round off Errors
+
+- Loss of significant digits
+\begin{align*}
+\begin{aligned}
+& x=1000000000000000.0 \\
+& y=1000000000000001.234567
+\end{aligned}
+\end{align*}
+
+Calculating \(y-x=1.234567\) but the computer calculates this as \(y-x=1.25\) - instead of 16 figures we only have 2 figures!
+- Loss of precision
+
+Erosion by repeated rounding errors (least significant digits being eroded first).
+The average accumulated mulipication error after \(\mathrm{N}\) multiplications is \(\sqrt{N} \epsilon_0\).
+- Some times the problem is not round-off errors but numerical stability of the algorithm. Even tiny round-off errors grow rapidly if algorithm is not numerically stable.
+\(16 / 2\)
+
+*** Loss of significant digits
+
+Loss of significant digits occurs in so many ways that it defies useful classification and lack systematic cures!
+```
+from math import sqrt
+x = 1.0
+y = 1.0 + (1e-14)*sqrt(2)
+print (1e14)*(y-x)
+print sqrt(2)
+1.42108547152
+1.41421356237
+```
+Calculation is accurate only to first decimal place - rest is garbage!
+\(17 / 2\)
+
+*** Numerical instability
+
+Calculate the series \(a_n=\phi^n n=0,1,2 \ldots\) where \(\phi\) is the golden ratio:
+\begin{align*}
+\phi=\frac{\sqrt{5}-1}{2}
+\end{align*}
+- Method 1: \(a_0=1\) and \(a_n=a_{n-1} \phi\)
+- Method 2: \(a_0=1 a_1=\phi\) and \(a_n=a_{n-2}-a_{n-1}\)
+\(18 / 2\)
+
+\begin{align*}
+19 / 2
+\end{align*}
+
+\begin{align*}
+\begin{aligned}
+&\text { Method } 1 \text { is stable }- \text { while method } 2 \text { is not! }\\
+&20 / 2
+\end{aligned}
+\end{align*}
+
+*** Round off errors
+
+- Method 1: Requires only multiplication.
+- If the initial \(\phi=\phi_c+\epsilon_m\), the error in \(\phi^n\) is \(\sqrt{n} \epsilon_m\).
+- Method 2 relies on \(\phi\) being the root of the qudratic: \(\phi^2+\phi-1=0\).
+- If you iterate the above equation, you can get the algorithm. If you simplify each term, you see Fibonacci numbers: \(f_n\).
+- Then, \(\phi^n=(-1)^{n-1} f_n \phi+(-1)^n f_{n-1}\).
+- Now: \(\phi^n=(-1)^{n-1} f_n\left(\phi_c+\epsilon_m\right)+(-1)^n f_{n-1}\)
+- Error in \(\phi^n\) is \(f_n \epsilon_m\).
+- When \(\phi_c^n \sim f_n \epsilon_m\), the algorithm fails!
+\(21 / 2\)
+
+*** Truncation errors
+
+- Dealing with infinity - sometimes change of variables can help (if it does not introduce any singularities). Other times "tails" can be evaluated analytically:
+\begin{align*}
+\int_0^{\infty} \frac{\sqrt{x}}{x^2+1}=\int_0^L \frac{\sqrt{x}}{x^2+1}+\int_L^{\infty} \frac{\sqrt{x}}{x^2+1}
+\end{align*}
+for \(L>1\) :
+\begin{align*}
+\int_L^{\infty} \frac{\sqrt{x}}{x^2+1} \approx \int_L^{\infty} \frac{1}{x^{\frac{3}{2}}}=\frac{2}{\sqrt{L}}
+\end{align*}
+- When a continuous problem is discretized - Use of Taylor series expansion etc
+Use of second order Taylor expansion vs first order can control this error better.
+\(22 / 2\)
+
+*** Truncation vs. Round-off error
+
+- Truncation error controlled by programmer; choose a more accurate method!
+- Round off error is fixed (16 decimal places in DP); less control
+- Typically truncation error » Round-off error; e.g., \(\Delta x=10^{-3}\) then Truncation error for second order expansion \(\sim 10^{-6}\).
+- In general, order of accuracy not the sole metric for a better algorithm - Stability, Robustness, Mathematical properties are more crucial.
+\(23 / 23\)
+
+** Roots of Equations
+*** Examples of nonlinear equations
+*** Introduction
+*** Behaviour of non-linear function
+*** Some preliminaries
+*** Behaviour of non-linear functions
+*** Some preliminaries
+*** Bounding the solution
+*** Iterative refinement of the solution
+*** Types of methods
+*** Bracketing (closed-domain) method
+**** Bisection method
+**** Bisection method: algorithm
+**** Bisection method: example
+**** Bisection method: analysis
+**** Bisection method: example
+**** Bisection method: code
+**** Bisection method: example
+**** False position method
+**** False position method: algorithm
+**** False position method: example
+**** False position method: code
+**** False position method: example
+*** Bracketing (open-domain) method
+**** Newton's method
+**** Newton's method: key idea
+**** Newton's method: algorithm
+**** Newton's method: example
+**** Newton's method: code
+**** Newton's method: example
+**** Possible problems
+**** Newton's method: general comments
+**** Method of secants
+**** Method of secants: algorithm
+**** Method of secants: code
+**** Method of secants: example
+**** Muller's method
+**** Muller's method: algorithm
+**** Fixed point iteration
+**** Fixed point iteration: example
+**** Fixed point iteration: code
+**** Fixed point iteration: example
+**** Fixed point iteration: general comments
+**** Fixed point iteration: example
+**** Bracketing methods: general remarks
+**** Complications
+**** More complications
+**** Multiple roots: brute force method
+**** Multiple roots: brute force method
+**** Step size in brute force methods
+**** General comments on roots of polynomials
+**** Bracketing methods: general remarks
+**** Non linear system of equations: two variables
+**** Extension of Newton's method to two variables
+**** Non linear systems of equations: example
+**** Non linear systems of equations: example
+**** Non linear systems of equations: example
+**** Newton's method for two variables: code
+**** Newton's method for two variables: example
+**** Pitfalls of root finding
+**** Some thoughts
+** Quadrature
+*** Exact integration
+*** Numerical integration
+*** Direct fit polynomials
+*** Riemann integral
+*** Simple integration methods: left endpoint Riemann sum
+*** Simple integration methods: right endpoint Riemann sum
+*** Simple integration methods: midpoint Riemann sum
+*** Comparison of left, right, and midpoint Riemann sum
+*** Better method: trapezoidal approximation
+*** Comparison of mid point and trapezoidal
+*** First order interpolation
+*** Integration with second order interpolation
+*** Lagrange interpolation
+*** Newton's divided differences interpolation
+*** Error in interpolation
+*** Recap of Newton's divided differences
+*** The trapezoidal rule (revisited)
+*** The Simpson's rule (revisited)
+*** The Simpson's 3/8 rule
+*** Other view on numerical quadrature
+*** Integration error
+*** Richardson extrapolation
+*** Romberg integration
+*** Gaussian quadrature
+*** Gaussian quadrature on [-1, 1]
+*** Finding quadrature nodes and weights
+*** Gaussian quadrature on [-1, 1]
+*** Gaussian quadrature on [a, b]
+*** Gaussian quadrature
+*** Adaptive integration
+*** Adaptive Simpson's quadrature
+*** Adaptive integration
+*** Special cases
+*** Special cases: improper integrals
+*** Change of variable
+*** Elimination of the singularity
+*** Ignoring the singularity
+*** Proceeding to the limit
+*** Truncation of the interval
+*** Numerical evaluation of the Cauchy Principal Value
+*** Special cases: indefinite integrals
+*** Multiple integrals
+*** Conclusions
+** Random Numbers and Monte Carlo
+** Fourier Methods
+** Ordinary Differential Equations
+** Numerical Linear Algebra
 

@@ -1,7 +1,7 @@
 :PROPERTIES:
 :ID:       2967ed4f-6501-4d36-8446-50e536e66a2c
 :END:
-#+TITLE: Maximum likelihood (linear basis function models)
+#+TITLE: Maximum likelihood (linear regression)
 #+FILETAGS: :literature:prml:
 #+SETUPFILE: ~/.config/emacs/setup/setupfile.org
 
@@ -38,6 +38,7 @@ Note that the Gaussian noise assumption implies that the conditional distributio
 #+END_COMMENT
 
 * \(N\) input-target pair
+** Likelihood function
 Given \( N \) input-target pairs \((\mathbf{x}_n, t_n)\), the [[id:82831310-4909-4f8b-8db0-ff0d8bef8b0b][Likelihood function]] is:
 
 \[
@@ -47,15 +48,15 @@ p(\mathbf{t} \mid \mathbf{X}, \mathbf{w}, \beta) = \prod_{n=1}^{N} \mathcal{N}(t
 The log-likelihood function is
 
 \[
-\ln p(\mathbf{t} \mid \mathbf{X},\, \mathbf{w},\, \beta) = \frac{N}{2} \ln \beta - \frac{N}{2} \ln (2 \pi) - \beta E_D(\mathbf{w}) \tag{5}
+\ln p(\mathbf{t} \mid \mathbf{X},\, \mathbf{w},\, \beta) = \frac{N}{2} \ln \beta - \frac{N}{2} \ln (2 \pi) - \frac{\beta}{2} \sum_{n=1}^{N} \{t_n - \mathbf{w}^\mathrm{T} \boldsymbol{\phi}(\mathbf{x}_n)\}^2. \tag{5}
 \]
-
-where we have identified the sum-of-squared-error
+** Error function (sum of squares) 
+We identify an error function called the *sum-of-squared-error*
 
 \[
-E_D(\mathbf{w}) = \frac{1}{2} \sum_{n=1}^{N} \{t_n - \mathbf{w}^\mathrm{T} \boldsymbol{\phi}(\mathbf{x}_n)\}^2. \tag{6}
+E_D(\mathbf{w}) = - \frac{1}{2} \sum_{n=1}^{N} \{t_n - \mathbf{w}^\mathrm{T} \boldsymbol{\phi}(\mathbf{x}_n)\}^2. \tag{6}
 \]
-
+** Closed form solution
 Demanding vanishing gradient of (5) with respect to \( \mathbf{w} \)
 
 \[
