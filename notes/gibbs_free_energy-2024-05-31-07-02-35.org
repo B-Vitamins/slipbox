@@ -1,0 +1,25 @@
+:PROPERTIES:
+:ID:       16743aa2-9663-4ab6-9d9e-819143f84ace
+:END:
+#+TITLE: Gibbs free energy
+#+FILETAGS: :literature:spop:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
++ *Gibbs free energy* is useful for *isothermal transformations involving mechanical work at constant external force.*
+
++ The coordinate set \((T, \mathbf{J})\) (the quantities kept constant during an isothermal transformations involving mechanical work at constant external force) is the most suitable for describing the Gibbs free energy.
+
++ The natural inequalities for work and [[id:5211418e-55fa-4d7e-b2f5-88148f84cc76][heat]] input into the system are given by \(\mathrm{đ} W \leq \mathbf{J} \cdot \delta \mathbf{x}\) and \(\mathrm{đ} Q \leq T \delta S\). Hence \(\delta E \leq T \delta S+\mathbf{J} \cdot \delta \mathbf{x}\), leading to
+
+\[
+\delta G \leq 0, \quad \text { where } \quad G=E-T S-\mathbf{J} \cdot \mathbf{x} \tag{1}
+\]
+
+is the /Gibbs free energy/.
+
++ The variations of \(G\) in [[id:86c7268a-cf65-4f9b-bb99-03d810ee1bf8][thermal equilibrium]] are given by
+
+\begin{align*}
+\mathrm{d} G=\mathrm{d} E-\mathrm{d}(T S)-\mathrm{d}(\mathbf{J} \cdot \mathbf{x}) & =T \mathrm{~d} S+\mathbf{J} \cdot \mathrm{d} \mathbf{x}-S \mathrm{~d} T-T \mathrm{~d} S-\mathbf{x} \cdot \mathrm{d} \mathbf{J}-\mathbf{J} \cdot \mathrm{d} \mathbf{x} \\
+& =-S \mathrm{~d} T-\mathbf{x} \cdot \mathrm{d} \mathbf{J}. \tag{2}
+\end{align*}
