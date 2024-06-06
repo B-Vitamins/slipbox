@@ -1,0 +1,17 @@
+:PROPERTIES:
+:ID:       dc1d007a-cb98-45cd-b6bd-b036cb0506e1
+:END:
+#+TITLE: Supremum
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+The definition of supremum depends on the notion of [[id:c4fd37c6-3784-44d2-84ec-a75d01bc6b17][partial order]] and [[id:e15f8f6e-7897-42a0-a7d3-cb70193f9a67][upper bound]].
+
+#+NAME: Lower bound
+#+begin_definition latex
+Let \(S\) be a subset of a partially ordered set \((P, \leq)\). An upper bound \(b\) of \(S\) is called a supremum (or least upper bound, or join) of \(S\) if for all upper bounds \(z\) of \(S\) in \(P, z \geq b\), i.e., \(b\) is less than any other upper bound.
+#+end_definition
+
++ Given a set \(S\) of real numbers, the supremum or least upper bound of \(S\) is the smallest real number that is greater than or equal to every number in \(S\).
++ The supremum may or may not be an element of the set \(S\). For example, consider the set \(S=\{x \in\) \(\mathbb{R} \mid x<3\}\). \(\sup S=3\), even though it is not an element of \(S\).
++ If the supremum is an element of the set, it is also called the maximum. For example, consider the set \(S=\) \(\{1,2,3\}\). \(\sup S=3\), which is also the maximum of \(S\).
