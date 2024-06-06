@@ -1,0 +1,18 @@
+:PROPERTIES:
+:ID:       25fea2d5-0073-4742-b97b-5d88c8c29fe9
+:END:
+#+TITLE: Interval
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+#+NAME: Interval
+#+begin_definition latex
+An interval is a subset of the real numbers that contains all real numbers lying between any two numbers of the subset. 
+#+end_definition
+
+The *endpoints* of an interval are its [[id:dc1d007a-cb98-45cd-b6bd-b036cb0506e1][supremum]] and its [[id:cc7c0636-daa4-465e-95c8-c615e2bded3d][infimum]], if they exist as real numbers.
+
++ If the infimum does not exist, one says often that the corresponding endpoint is \( - \infty \).
++ If the supremum does not exist, one says that the corresponding endpoint is \( + \infty \).
+
+Intervals are completely determined by their endpoints and whether each endpoint belong to the interval. This is a consequence of the [[id:0c4de6be-3c64-4ff2-9043-34beffeda1d9][Least upper bound property (for real numbers)]].
