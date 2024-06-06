@@ -1,0 +1,14 @@
+:PROPERTIES:
+:ID:       15071750-7903-4bef-bad9-6c4b3e8a0241
+:END:
+#+TITLE: The Gibbs canonical ensemble and Enthalpy
+#+FILETAGS: :literature:spop:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
++ The [[id:0e7e22dc-2808-4381-8317-aab5ac8d4cdd][enthalpy]] \(H \equiv E-\mathbf{x} \cdot \mathbf{J}\) is easily obtained in [[id:689182a6-51d4-4cd4-b941-5d07e52f8fe9][the Gibbs canonical ensemble]]
+
+  \[- \partial_{\beta} \ln \mathcal{Z} = \langle \mathcal{H} - \mathbf{x} \cdot \mathbf{J} \rangle = H\]
+
++ The [[id:7da7f949-a4cb-4953-8e91-00f359d37c9c][heat capacities at constant force]] (which include work done against the external forces) are obtained from the [[id:0e7e22dc-2808-4381-8317-aab5ac8d4cdd][enthalpy]] as \(C_{\mathbf{J}}=\partial_{T} H\).
+
+
