@@ -1,0 +1,21 @@
+:PROPERTIES:
+:ID:       dc7c5812-7a8f-42c6-bddc-a92fe7d64438
+:END:
+#+TITLE: Open set
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+The definition of an open set depends on the notion of a [[id:9c711ea1-c9de-4e90-96cf-e7710bd11aeb][vector space]] and [[id:bd078855-c4e2-4c48-b2ae-8a16b01a9547][inner product]].
+
+#+NAME: Open set
+#+begin_definition latex
+A subset \(U\) of vector space \(\mathbb{R}^n\) is open if, for every point \(x \in U\), there exists a positive real number \(\varepsilon (x)\) such that any point \(y \in \mathbb{R}^n\)
+\[
+\langle y \mid x\rangle < \varepsilon(x) \Longrightarrow y \in U.
+\]
+#+end_definition
+
+An open set is a generalization of the notion of an [[id:1a249a1e-6223-4431-91a5-f0e9f58baaa4][open interval]].
+
+An example of a subset of \(\mathbb{R}\) that is not open is the [[id:53970f58-7d16-431f-a043-dce420e86937][closed interval]] \([0,\,1]\), since neither \(0-\varepsilon\) nor \(1+\varepsilon\) belongs to \([0,\,1]\) for any \(\varepsilon>0\), no matter how small.
+
