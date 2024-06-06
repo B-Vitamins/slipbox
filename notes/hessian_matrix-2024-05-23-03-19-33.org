@@ -1,0 +1,7 @@
+:PROPERTIES:
+:ID:       4982698a-3bff-4598-86ef-ffb1921fbc5f
+:END:
+#+TITLE: Hessian matrix
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+

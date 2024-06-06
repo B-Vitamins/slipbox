@@ -1,0 +1,15 @@
+:PROPERTIES:
+:ID:       6df53438-8d45-4a80-b969-f30040318d8a
+:END:
+#+TITLE: Heterogeneous relation
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+The definition of heterogeneous relation depends on the notion of [[id:8435eda4-5769-4d55-8890-2bf59018ef00][binary relation]].
+
+#+NAME: Homogeneous relation
+#+begin_definition latex
+Let \(R\) be a binary relation over sets \(X\) and \(Y\). When \(X \neq Y\), the binary relation \( R \) is called a heterogeneous relation.
+#+end_definition
+
+See [[id:55412a61-9999-4282-871f-744368c7d5ae][Homogeneous relation]].
