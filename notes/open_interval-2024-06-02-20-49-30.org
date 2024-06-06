@@ -1,0 +1,30 @@
+:PROPERTIES:
+:ID:       1a249a1e-6223-4431-91a5-f0e9f58baaa4
+:END:
+#+TITLE: Open interval
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+The definition of an open interval depends on the notion of an [[id:25fea2d5-0073-4742-b97b-5d88c8c29fe9][interval]] and its endpoints.
+
+#+NAME: Open interval
+#+begin_definition latex
+An open interval does not include any endpoint, and is indicated with parentheses.
+#+end_definition
+
+An example of an open interval is \((0,1)=\{x \mid 0<x<1\}\) which consists of all real numbers greater than 0 and less than 1. Another example of an open interval is \((0,+\infty)\) which consists of real numbers greater than 0 , i.e., positive real numbers.
+
+Open intervals have one of the forms
+
+\begin{align*}
+(a, b) & =\{x \in \mathbb{R} \mid a<x<b\} \\
+(-\infty, b) & =\{x \in \mathbb{R} \mid x<b\}, \\
+(a,+\infty) & =\{x \in \mathbb{R} \mid a<x\}, \\
+(-\infty,+\infty) & =\mathbb{R}
+\end{align*}
+
+where \(a\) and \(b\) are real numbers such that \(a \leq b\).
+
+When \(a=b\) in the first case, the resulting interval is the empty set \((a, a)=\varnothing\). 
+
+The empty set and \(\mathbb{R}\) are the only intervals that are both open and [[id:53970f58-7d16-431f-a043-dce420e86937][closed]].
