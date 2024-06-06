@@ -1,0 +1,28 @@
+:PROPERTIES:
+:ID:       9c711ea1-c9de-4e90-96cf-e7710bd11aeb
+:END:
+#+TITLE: Vector space
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+#+NAME: Vector Space
+#+ATTR_LATEX: :environment definition
+#+begin_definition
+Let \(\mathbb{V} = \left \lbrace \vert 1 \rangle , \thinspace \vert 2 \rangle , \thinspace \dotso, \thinspace \vert V \rangle, \thinspace \vert W \rangle, \dotso \right \rbrace\) be a set of elements. Let \(\mathbb{F}\) be a /field/ over scalars, \(B_{1}\) and \(B_{2}\) be two binary operations defined on the elements of \(\mathbb{V}\) such that:
+
+\[B_{1}: \mathbb{V} \times \mathbb{V} \to \mathbb{V}\]
+\[B_{2}: \mathbb{F} \times \mathbb{V} \to \mathbb{V}\]
+
+\(\mathbb{V}\) called a /vector space/, and the elements called /vectors/ if: 
+
++ \(B_{2}\) is /associative/, /distributive in scalars/, /distributive in vectors/,
++ \(B_{1}\) is /associative/ and /commutative/
++ There is a /null vector/ \(\vert 0 \rangle\) in \(\mathbb{V}\) that satisfies
+
+  \[ \vert V \rangle + \vert 0 \rangle = \vert V \rangle,\]
++ For every vector \(\vert V \rangle\), there exists an /inverse under addition/ \(\vert - V \rangle\) such that
+
+  \[\vert V \rangle + \vert - V \rangle = \vert 0 \rangle\].
+#+end_definition
+
+
