@@ -1,0 +1,45 @@
+:PROPERTIES:
+:ID:       66684beb-eef9-4c9b-bd1e-c60b025420a3
+:END:
+#+TITLE: Quasi-static transformation
+#+FILETAGS: :literature:spop:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+A *quasi-static transformation* is one that is performed sufficiently slowly so that the system is always in [[id:86c7268a-cf65-4f9b-bb99-03d810ee1bf8][thermal equilibrium]]. Thus, at any stage of the process, the [[id:df6bf294-bc8a-441f-b16a-02fe248d59a9][state functions]] of the [[id:39fcc45a-9b91-42f9-9960-19eab99aae83][thermodynamic system]] exist and can in principle be computed. For such transformations, the work done on the system (equal in magnitude but opposite in sign to the work done by the system) can be related to changes in these coordinates.
+
+#+NAME: Quasi-static transformations
+#+begin_example latex
+As a mechanical example, consider the stretching of a spring or rubber band. To construct the potential energy of the system as a function of its length \(L\), we can pull the spring sufficiently slowly so that at each stage the external force is matched by the internal force \(F\) from the spring. For such a quasi-static process, the change in the potential energy of the spring is \(\int F \mathrm{~d} L\). If the spring is pulled abruptly, some of the external work is converted into kinetic energy and eventually lost as the spring comes to rest.
+#+end_example
+
+Generalizing from the above example, one can typically divide the state functions \(\{\mathbf{X}\}\) into a set of generalized displacements \(\{\mathbf{x}\}\), and their conjugate generalized forces \(\{\mathbf{J}\}\), such that for an infinitesimal quasi-static transformation
+
+\[
+\mathrm{đ} W=\sum_{i} J_{i} \mathrm{~d} x_{i}
+\]
+
+All [[id:a32a9269-5194-4356-887b-500f12b3f79d][reversible transformations]] are quasi-static. The converse is not true in general.
+
+#+NAME: Quasi-static transformation
+#+begin_theorem latex
+If a transformation is quasi-static, then it need not necessarily be reversible.
+#+end_theorem
+
+#+NAME: Quasi-static transformations
+#+begin_example latex
+Consider a non-adiabatic expansion of an ideal gas into a colder medium. The expansions occurs sufficiently slowly that the transformation is quasi-static. Suppose that the process was reversible. The sole result of the process is a transfer of heat from a hotter body (the gas) to a colder body (the surrounding). The reverse process would be one whose sole result is the transfer of heat from a colder body (the surroundings) to a hotter body (the gas). This is a violation of Clausius's statement of the second law. The process thus, despite being quasi-static, cannot have been reversible.
+#+end_example
+
+The table below provides some common examples of such conjugate coordinates. Note that pressure \(P\) is by convention calculated from the force exerted by the system on the walls, as opposed to the force on a spring, which is exerted in the opposite direction. This is the origin of the negative sign that accompanies hydrostatic work.
+
+#+NAME: Generalized forces and displacements
+| System            | Force              |    | Displacement    |   |
+|-------------------+--------------------+----+-----------------+---|
+| Wire              | tension            | F  | length          | L |
+| Film              | surface tension    | S  | area            | A |
+| Fluid             | pressure           | -P | volume          | V |
+| Magnet            | magnetic field     | H  | magnetization   | M |
+| Dielectric        | electric field     | E  | polarization    | P |
+| Chemical reaction | chemical potential | μ  | particle number | N |
+
+The displacements are usually [[id:8bff36e1-8fd3-48aa-88ba-8b508a8cdd86][extensive]] quantities, that is, proportional to system size, while the forces are [[id:669a1a19-a991-49f7-ac43-f845cf483def][intensive]] quantities, that is, independent of size.
