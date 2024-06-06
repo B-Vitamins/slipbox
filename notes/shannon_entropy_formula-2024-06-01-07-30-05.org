@@ -1,0 +1,70 @@
+:PROPERTIES:
+:ID:       7be68499-a66f-4186-b910-cf0dc24c2560
+:END:
+#+TITLE: Shannon's entropy formula
+#+FILETAGS: :literature:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+#+NAME: Shannon entropy
+#+begin_definition latex
+Consider a random variable with a discrete set of outcomes \(\mathcal{S}=\left\{x_{i}\right\}\), occurring with probabilities \(\{p(i)\}\), for \(i=1, \cdots, M\). The Shannon entropy of the probability distribution is given by
+\[
+S\left[\left\{p_{i}\right\}\right]=-\sum_{i=1}^{M} p(i) \ln_2 p(i)=-\langle\ln_2 p(i)\rangle
+\]
+#+end_definition
+
+Shannon's entropy formula differs from [[id:954915f7-31f8-4910-8cab-116fead69656][Boltzmann's entropy formula]] only in the lack of the proportionality constant, the [[id:f4efabf0-abdd-4ab1-9605-89957ce79e09][Boltzmann's constant]], introduced in the latter for physical reasons.
+
+* Motivation
+Consider a [[id:fa0e3aa2-347e-48b9-9cb7-e9f0be897281][random variable]] with a discrete set of outcomes \(\mathcal{S}=\left\{x_{i}\right\}\), occurring with probabilities \(\{p(i)\}\), for \(i=1, \cdots, M\). Let us construct a message from \(N\) [[id:463c36d5-7beb-429d-bf27-98e290353583][independent and identically distributed outcomes]] of the random variable.
+
+Since there are \(M\) possibilities for each character in this message, it has an apparent *information content* of \(N \ln _{2} M\) bits, that is, \(N \ln _{2} M\) [[id:ceab8acd-bf4e-46af-b4e9-0c74fe5986e9][binary bits]] of information have to be transmitted to convey the message precisely.
+
+However, the probabilities \(\{p(i)\}\) limit the types of messages that are likely. In particular, we expect the probability of finding any \(N_{i}\) that is different from \(N p_{i}\) by more than \(\mathcal{O}(\sqrt{N})\) becomes exponentially small in \(N\) as \(N \rightarrow \infty\). 
+
+The number of typical messages thus corresponds to the number of ways of rearranging the \(\left\{N_{i}\right\}\) occurrences of \(\left\{x_{i}\right\}\), and is given by the [[id:cf494388-2d6e-467f-8908-54dc44f573b4][multinomial coefficient]] 
+
+\[
+g=\frac{N !}{\prod_{i=1}^{M} N_{i} !} \ll M^N
+\]
+
+To specify one out of \(g\) possible sequences requires
+
+\[
+\ln _{2} g \approx-N \sum_{i=1}^{M} p_{i} \ln _{2} p_{i} \quad(\text { for } N \rightarrow \infty)
+\]
+
+The last result can be obtained by applying [[id:e48e2826-c1af-4c66-8d7c-27b09ecf9380][Stirling's approximation]] for \(\ln N!\) or by
+
+\[
+1=\bigg(\sum_{i} p_{i}\bigg)^{N}=\sum_{\left\{N_{i}\right\}} \frac{N !}{\prod_{i=1}^{M} N_{i} !} \prod_{i=1}^{M} p_{i}^{N_{i}} \approx g \prod_{i=1}^{M} p_{i}^{N p_{i}}
+\]
+
+The [[id:cf494388-2d6e-467f-8908-54dc44f573b4][multinomial coefficient]] 
+
+\[
+g=\frac{N !}{\prod_{i=1}^{M} N_{i} !}
+\]
+
+which is fundamental to [[id:97207f0a-6ede-4c4b-be52-718fd739c09f][Shannon's theorem]] and the definition of [[id:4b4a37a4-cf1f-4d6b-843f-fd5edffeca0c][information]] is encountered frequently in [[id:7c80611f-3eb6-49bd-81cb-108fec858c85][classical statistical mechanics]] in the context of mixing \(M\) distinct components; its natural logarithm is related to the entropy of mixing (see [[id:dab5ec39-a8f1-43ce-baf2-e3ef0c7ee2a3][mixing entropy and the Gibbs paradox]]). This motivates a general definition of entropy of a probability distribution which is presented above as the Shannon entropy formula.
+* Properties
+
+1) The Shannon entropy \( S \) takes a /minimum value/ of zero for the [[id:129a3159-a355-485b-b23a-a308063b98fc][Dirac delta distribution]] \(p(i)=\delta_{ij}\),
+2) The Shannon entropy \( S \) takes a /maximum value/ of \(\ln M\) for the [[id:6db3b636-69a6-48e0-be5c-6784b6d5f509][Uniform distribution]] \(p(i)=M^{-1}\),
+3) The Shannon entropy \( S \) is thus a measure of /dispersity (disorder) of the distribution/, and *does not depend* on the values of the random variables \(\left\{x_{i}\right\}\),
+4) A /one-to-one mapping/ to \(f_{i}=F\left(x_{i}\right)\) leaves the Shannon entropy unchanged,
+5) A /many-to-one mapping/ makes the distribution more ordered and decreases \(S\). For example, if the two values, \(x_{1}\) and \(x_{2}\), are mapped onto the same \(f\), the change in the Shannon entropy is
+
+   \[
+   \Delta S\left(x_{1}, x_{2} \rightarrow f\right)=\left[p_{1} \ln \frac{p_{1}}{p_{1}+p_{2}}+p_{2} \ln \frac{p_{2}}{p_{1}+p_{2}}\right]<0
+   \]
+* Generalization
+The Shannon entropy formula above is for a random variable with a discrete set of outcomes. We can define an entropy for a continuous random variable \(\left(\mathcal{S}_{x}=\{-\infty<x<\infty\}\right)\) as
+
+\[
+S=-\int \mathrm{d} x p(x) \ln p(x)=-\langle\ln p(x)\rangle
+\]
+
+There are, however, problems with this definition, as for example \(S\) is not invariant under a one-to-one mapping. (After a change of variable to \(f=F(x)\), the entropy is changed by \(\left\langle\left|F^{\prime}(x)\right|\right\rangle\).)
+
+Canonically conjugate pairs offer a suitable choice of coordinates in [[id:7c80611f-3eb6-49bd-81cb-108fec858c85][classical statistical mechanics]], since the [[id:dad8b579-a898-43e8-a65c-78b8848b00fa][Jacobian]] of a [[id:7e231308-1e56-4238-9b09-775c2198c34c][canonical transformation]] is unity. In such situations, the definition above can be used.
