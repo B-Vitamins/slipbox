@@ -1,0 +1,20 @@
+:PROPERTIES:
+:ID:       1ec11bbb-bb9d-4e8e-8f6b-4288a464ffb6
+:END:
+#+TITLE: Symmetric matrix
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+The definition of a symmetric matrix depends on the notion of a [[id:f86c8666-247e-450b-8185-efd62e16e303][square matrix]].
+
+#+NAME: Symmetric matrix
+#+begin_definition latex
+A square matrix \( A = (a_{ij})_{i=1,\ldots,n}^{j=1,\ldots,n} \) is a symmetric matrix if for every \( (i,j) \) we have \(a_{ij} = a_{ji}  \).
+#+end_definition
+
+The following corollary depends on the notion of the [[id:425bdbda-99c8-4f18-8284-8ea844eed0aa][transpose]] of a matrix.
+
+#+NAME: Transpose leaves a symmetric matrix invariant
+#+begin_corollary latex
+If \( A \) is is a symmetric matrix, then \( A^{\mathrm{T}} = A \).
+#+end_corollary
