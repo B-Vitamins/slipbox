@@ -1,0 +1,7 @@
+:PROPERTIES:
+:ID:       4ede1be3-51eb-4da2-b77d-105aca77dd0b
+:END:
+#+TITLE: Matrix multiplication
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
