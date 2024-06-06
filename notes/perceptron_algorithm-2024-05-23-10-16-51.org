@@ -1,0 +1,100 @@
+:PROPERTIES:
+:ID:       124bf23e-b47c-4acb-98f0-5b5fb9f8c85a
+:END:
+#+TITLE: Perceptron algorithm
+#+FILETAGS: :literature:prml:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+The perceptron is a linear [[id:43aa39fd-b16a-429b-b59a-408240ae3523][discriminant functions]] which occupies an important place in the history of pattern recognition algorithms. It corresponds to a two-class model in which the input vector \(\mathrm{x}\) is first transformed using a fixed nonlinear transformation to give a feature vector \(\phi(\mathrm{x})\), and this is then used to construct a generalized linear model of the form
+
+\begin{align*}
+y(\mathbf{x})=f\big(\mathbf{w}^{\mathrm{T}} \boldsymbol{\phi}(\mathbf{x})\big) \tag{1}
+\end{align*}
+
+where the nonlinear activation function \(f(\cdot)\) is given by a step function of the form
+
+\begin{align*}
+f(a)= 
+\begin{cases}
++1, & a \geqslant 0 \\
+ -1, & a<0
+\end{cases}
+\tag{2}
+\end{align*}
+
+The vector \(\phi(\mathbf{x})\) will typically include a bias component \(\phi_{0}(\mathbf{x})=1\).
+
+#+BEGIN_COMMENT
+As a linear classifier, the single-layer perceptron is the simplest feedforward neural network.
+#+END_COMMENT
+
+* Error function (perceptron criterion)
+#+BEGIN_COMMENT
+The algorithm used to determine the parameters \(\mathbf{w}\) of the perceptron can most easily be motivated by error function minimization. A natural choice of error function would be the total number of misclassified patterns. However, this does not lead to a simple learning algorithm because the error is a piecewise constant function of \(\mathbf{w}\), with discontinuities wherever a change in \(\mathbf{w}\) causes the decision boundary to move across one of the data points. Methods based on changing w using the gradient of the error function cannot then be applied, because the gradient is zero almost everywhere.
+#+END_COMMENT
+
+We consider an error function known as the *perceptron criterion* given by
+
+\begin{align*}
+E_{\mathrm{P}}(\mathbf{w})=-\sum_{n \in \mathcal{M}} \langle \mathbf{w},\, \boldsymbol{\phi}_{n} t_{n} \rangle. \tag{3}
+\end{align*}
+
+where \(\mathcal{M}\) denotes the set of all misclassified patterns. The perceptron criterion is motivated by the simple fact that we are seeking a weight vector \(\mathbf{w}\) such that patterns \(\mathbf{x}_{n}\) in class \(\mathcal{C}_{1}\) will have \(\langle \mathbf{w},\, \boldsymbol{\phi}_{n} \rangle>0\), whereas patterns \(\mathbf{x}_{n}\) in class \(\mathcal{C}_{2}\) have \(\langle \mathbf{w},\, \boldsymbol{\phi}_{n} \rangle<0\). Using the target values \(t=+1\) for class \(\mathcal{C}_{1}\) and \(t=-1\) for class \(\mathcal{C}_{2}\) we would like all patterns to satisfy \(\langle \mathbf{w},\, \boldsymbol{\phi}_{n} (\mathbf{x}_n) t_n \rangle>0\). The perceptron criterion associates zero error with any pattern that is correctly classified, whereas for a misclassified pattern \(\mathbf{x}_{n}\) it tries to minimize the quantity \(-\mathbf{w}^{\mathrm{T}} \boldsymbol{\phi}\left(\mathbf{x}_{n}\right) t_{n}\).
+* Perceptron learning algorithm
+We now apply the [[id:9e1d9048-8030-48d1-bc9d-9316e92e47e9][stochastic gradient descent]] algorithm to the error function in (3). The change in the weight vector \(\mathbf{w}\) is then given by
+
+\begin{align*}
+\mathbf{w}^{(\tau+1)}=\mathbf{w}^{(\tau)}-\eta \nabla E_{\mathrm{P}}(\mathbf{w})=\mathbf{w}^{(\tau)}+\eta \phi_{n} t_{n} \tag{4}
+\end{align*}
+
+where \(\eta\) is the learning rate parameter and \(\tau\) is an integer that indexes the steps of the algorithm. Because the perceptron function \(y(\mathbf{x}, \mathbf{w})\) is unchanged if we multiply \(\mathbf{w}\) by a constant, we can set the learning rate parameter \(\eta\) equal to 1 without loss of generality.
+
+\begin{align*}
+\mathbf{w}^{(\tau+1)}=\mathbf{w}^{(\tau)}- \nabla E_{\mathrm{P}}(\mathbf{w})=\mathbf{w}^{(\tau)}+ \phi_{n} t_{n} \tag{5}
+\end{align*}
+
+The perceptron learning algorithm has a simple interpretation, as follows. We cycle through the training patterns in turn, and for each pattern \(\mathbf{x}_{n}\) we evaluate the *perceptron function* \(y(\mathbf{x}, \mathbf{w}) = f\big(\mathbf{w}^{\mathrm{T}} \boldsymbol{\phi}(\mathbf{x})\big)\). If the pattern is correctly classified, then the weight vector remains unchanged, whereas if it is incorrectly classified, then for class \(\mathcal{C}_{1}\) we add the vector \(\phi\left(\mathbf{x}_{n}\right)\) onto the current estimate of weight vector \(\mathbf{w}\) while for class \(\mathcal{C}_{2}\) we subtract the vector \(\phi\left(\mathbf{x}_{n}\right)\) from \(\mathbf{w}\).
+
+The figures below give an illustration of the convergence of the perceptron learning algorithm, showing data points from two classes (red and blue) in a two-dimensional feature space \(\left(\phi_{1}, \phi_{2}\right)\). 
+
+#+ATTR_HTML: :width 300px
+[[file:~/.local/images/prml-4-7a.png]]
+
+Shown above are the initial parameter vector w shown as a black arrow together with the corresponding decision boundary (black line), in which the arrow points towards the decision region which classified as belonging to the red class. The data point circled in green is misclassified and so its feature vector is added to the current weight vector, giving the new decision boundary shown below.
+
+#+ATTR_HTML: :width 300px
+[[file:~/.local/images/prml-4-7b.png]]
+
+#+ATTR_HTML: :width 300px
+[[file:~/.local/images/prml-4-7c.png]]
+
+Shown above is the next misclassified point to be considered, indicated by the green circle, and its feature vector is again added to the weight vector giving the decision boundary shown below for which all data points are correctly classified.
+
+#+ATTR_HTML: :width 300px
+[[file:~/.local/images/prml-4-7d.png]]
+* Perceptron convergence
+
+#+NAME: Single perceptron update
+#+begin_lemma latex
+If we consider the effect of a single update in the perceptron learning algorithm, we see that the contribution to the error from a misclassified pattern will be reduced.
+#+end_lemma
+
+#+NAME: Single perceptron update
+#+begin_proof latex
+To see this, take the inner product of both sides of \( - \mathbf{w}^{(\tau+1)} = - \mathbf{w}^{(\tau)} - \phi_{n} t_{n} \) and \( \boldsymbol{\phi_n} t_n \):
+\begin{align*}
+- \langle \mathbf{w}^{(\tau+1)},\, \boldsymbol{\phi}_{n} t_{n} \rangle = - \langle \mathbf{w}^{(\tau)},\, \boldsymbol{\phi}_{n} t_{n} \rangle - \langle \boldsymbol{\phi}_{n} t_{n},\, \boldsymbol{\phi}_{n} t_{n} \rangle < - \langle \mathbf{w}^{(\tau)},\, \boldsymbol{\phi}_{n} t_{n} \rangle. \tag{6}
+\end{align*}
+In the final inequality, we have made use of \(\langle \boldsymbol{\phi}_{n} t_{n},\, \boldsymbol{\phi}_{n} t_{n} \rangle = \left\|\phi_{n} t_{n}\right\|^{2}>0\).
+#+end_proof
+
+The perceptron learning rule is *not* guaranteed to reduce the total error function at each stage. This is because the change in weight vector may have caused some previously correctly classified patterns to become misclassified. 
+
+Nevertheless, the [[id:edbb570a-e729-478e-b67c-5b50f3dbbc65][perceptron convergence theorem]] states that if there exists at least one exact solution (meaning the data is [[id:46d7eeb7-d01e-46a8-a4ea-6b27285b265f][linearly separable]]), then the perceptron learning algorithm is guaranteed to find an exact solution in a finite number of steps.
+* Limitations of perceptron
+1) For data sets that are *not* [[id:46d7eeb7-d01e-46a8-a4ea-6b27285b265f][linearly separable]], the perceptron learning algorithm will never converge.
+2) The perceptron does not generalize readily to \(K>2\) classes.
+3) Even when the data set is [[id:46d7eeb7-d01e-46a8-a4ea-6b27285b265f][linearly separable]], there may be multiple solutions. The solution found by the perceptron learning algorithm will depend on i) the initialization of the parameters, and ii) the order of presentation of the data points.
+4) The [[id:edbb570a-e729-478e-b67c-5b50f3dbbc65][perceptron convergence theorem]] notwithstanding, the number of steps required to achieve convergence is indeterminate. We cannot distinguish a problem that is *not* [[id:46d7eeb7-d01e-46a8-a4ea-6b27285b265f][linearly separabile]] from one that is [[id:46d7eeb7-d01e-46a8-a4ea-6b27285b265f][linearly separable]] but is simply slow to converge.
+5) Needless to say, the convergence of the perceptron learning algorithm is a bad diagnostic criterion for [[id:46d7eeb7-d01e-46a8-a4ea-6b27285b265f][linear separability]]: 
+6) Being a [[id:43aa39fd-b16a-429b-b59a-408240ae3523][discriminant function]], the perceptron does not provide probabilistic outputs (see [[id:588541e6-4692-4208-b6e9-7847bf42dc5a][the many merits of posterior-class probabilities in classification problems]]).
