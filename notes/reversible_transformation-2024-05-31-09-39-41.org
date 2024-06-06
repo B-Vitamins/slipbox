@@ -1,0 +1,22 @@
+:PROPERTIES:
+:ID:       a32a9269-5194-4356-887b-500f12b3f79d
+:END:
+#+TITLE: Reversible transformation
+#+FILETAGS: :literature:spop:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+A *reversible transformation* is one that can be run backward in time by simply reversing its inputs and outputs. /It is the [[id:39fcc45a-9b91-42f9-9960-19eab99aae83][thermodynamic]] equivalent of frictionless motion in mechanics/. All reversible transformations are [[id:66684beb-eef9-4c9b-bd1e-c60b025420a3][quasi-static transformation]]. The converse is not true in general.
+
+#+NAME: Reversible transformations
+#+begin_theorem latex
+If a transformation is reversible, then it is quasi-static too.
+#+end_theorem
+
+#+NAME: Reversible transformations
+#+begin_proof latex
+1) Time reversibility at all stages of the transformation implies thermal equilibrium at all stages of the transformation.
+2) A quasi-static transformation, by definition, is one in which the system is always in thermal equilibrium.
+3) From (1) and (2) it follows that if a transformation is reversible, then it is quasi-static.
+#+end_proof
+
+
