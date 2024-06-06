@@ -1,0 +1,39 @@
+:PROPERTIES:
+:ID:       fc3c321a-dd87-45a8-a1cf-2d6ee1122e3a
+:END:
+#+TITLE: The second law from the fundamental postulate
+#+FILETAGS: :literature:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+We use the same setup with which we recovered [[id:2f55f143-4240-44a1-aa3c-3e6fa8a23dee][the zeroth law from the fundamental postulate]]: we bring together two [[id:170f5ef3-3995-4720-bbdb-c2ca704f0739][microcanonical systems]], and allow them to exchange energy, but not work.
+
+We have see in [[id:2f55f143-4240-44a1-aa3c-3e6fa8a23dee][the zeroth law from the fundamental postulate]] that once sufficient time has elapsed so that the [[id:a3002bd8-e220-438b-9996-e191f963a26d][fundamental postulate of statistical mechanics]] is again valid, the system is overwhelmingly likely to be at a state with [[id:7f36257b-4d45-453a-b704-ca458b4c941a][internal energy]] \(\left(E_{1}^{\ast}, E_{2}^{\ast}\right)\). Clearly, the above statistical definition of equilibrium rests on the presence of many degrees of freedom \(N \gg 1\), which make it exponentially unlikely in \(N\) that the combined systems are found with component energies different from \(\left(E_{1}^{*}, E_{2}^{*}\right)\).
+
+By this construction, the equilibrium point has a larger number of accessible [[id:2b3acff9-a43f-4fc5-92d8-a1296fb3f0f7][microstates]] than any starting point, that is,
+
+\[
+\Omega_{1}\left(E_{1}^{*}, \mathbf{x}_{1}\right) \Omega_{2}\left(E_{2}^{*}, \mathbf{x}_{2}\right) \geq \Omega_{1}\left(E_{1}, \mathbf{x}_{1}\right) \Omega_{2}\left(E_{2}, \mathbf{x}_{2}\right)
+\]
+
+In the process of evolving to the more likely (and more densely populated) regions, there is an irreversible loss of [[id:4b4a37a4-cf1f-4d6b-843f-fd5edffeca0c][information]] accompanied by an increase in [[id:7be68499-a66f-4186-b910-cf0dc24c2560][entropy]]
+
+\[
+\delta S=S_{1}\left(E_{1}^{*}\right)+S_{2}\left(E_{2}^{*}\right)-S_{1}\left(E_{1}\right)-S_{2}\left(E_{2}\right) \geq 0
+\]
+
+as required by [[id:be3bfa3c-0208-4857-a67a-67dfda059d65][the second law]] of [[id:39fcc45a-9b91-42f9-9960-19eab99aae83][thermodynamics]].
+
+When the two [[id:170f5ef3-3995-4720-bbdb-c2ca704f0739][microcanonical systems]] are first brought into contact, the equality derived in [[id:2f55f143-4240-44a1-aa3c-3e6fa8a23dee][the zeroth law from the fundamental postulate]]
+
+\[
+(\partial_{E_1} S_{1})_{\mathbf{x}_{1}} = (\partial_{E_2} S_{2})_{\mathbf{x}_{\mathbf{2}}}
+\]
+
+*does not* hold. The change in entropy is such that
+
+\[
+\delta S=\left[(\partial_{E_1} S_{1})_{\mathbf{x}_{1}} - (\partial_{E_2} S_{2})_{\mathbf{x}_{\mathbf{2}}}\right] \, \delta E_{1} = [T_{1}^{-1} - T_{2}^{-1} ] \, \delta E_{1} \geq 0
+\]
+
+that is, [[id:5211418e-55fa-4d7e-b2f5-88148f84cc76][heat]] (energy) flows from the hotter to the colder body, as in [[id:be3bfa3c-0208-4857-a67a-67dfda059d65][Clausius's statement of the second law]].
+
