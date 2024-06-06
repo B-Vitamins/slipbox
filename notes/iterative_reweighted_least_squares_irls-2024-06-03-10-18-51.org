@@ -1,0 +1,111 @@
+:PROPERTIES:
+:ID:       e1adbf54-3566-4995-968b-e12f8b1af825
+:END:
+#+TITLE: Iterative reweighted least squares (IRLS) algorithm
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+In the case of the [[id:2967ed4f-6501-4d36-8446-50e536e66a2c][maximum likelihood (linear regression)]] under the assumption of a Gaussian noise model, we obtained a closed-form solution. This was a consequence of the quadratic dependence of the log-likelihood function on the parameter vector \( \mathbf{w} \). For [[id:8d6d1914-142b-43aa-b9fd-4ea7404a40ed][logistic regression]], there is no longer a closed-form solution, due to the nonlinearity of the [[id:d1230eba-905b-4765-84ef-daa0b21fd3d9][logistic sigmoid function]]. 
+
+However, the negative cross entropy error function is a [[id:0cfd956e-fc5d-4b27-8066-c5f8d00d2163][convex function]] and therefore has a unique minimum. Furthermore, the error function can be minimized by an efficient iterative technique based on the [[id:f38a1ab5-846e-43ec-8969-10c32bcf7905][Newton-Raphson method]], which uses a local quadratic approximation to the log likelihood function.
+
+* The Newton-Raphson update scheme
+
+The Newton-Raphson update, for minimizing a function \(E(\mathbf{w})\), takes the form
+
+\begin{align*}
+\mathbf{w}^{(\text{new})}=\mathbf{w}^{(\text{old})}-\mathbf{H}^{-1} \nabla E(\mathbf{w}) \tag{1}
+\end{align*}
+
+where \(\mathbf{H}\) is the Hessian matrix whose elements comprise the second derivatives of \(E(\mathbf{w})\) with respect to the components of \(\mathbf{w}\).
+** The Newton-Raphson update for sum-of-squares error function
+We will apply the Newton-Raphson method to the [[id:2967ed4f-6501-4d36-8446-50e536e66a2c][linear regression]] problem with the *sum-of-squares error function*
+
+\[
+E_D(\mathbf{w}) = - \frac{1}{2} \sum_{n=1}^{N} \{t_n - \mathbf{w}^\mathrm{T} \boldsymbol{\phi}(\mathbf{x}_n)\}^2. \tag{2}
+\]
+
+The gradient and Hessian of this error function are given by
+
+\[
+\nabla E(\mathbf{w}) & =\sum_{n=1}^{N}\left(\mathbf{w}^{\mathrm{T}} \boldsymbol{\phi}_{n}-t_{n}\right) \boldsymbol{\phi}_{n}=\boldsymbol{\Phi}^{\mathrm{T}} \boldsymbol{\Phi} \mathbf{w}-\boldsymbol{\Phi}^{\mathrm{T}} \mathbf{t}  \tag{3}
+\]
+
+\[
+\mathbf{H}=\nabla \nabla E(\mathbf{w}) & =\sum_{n=1}^{N} \boldsymbol{\phi}_{n} \boldsymbol{\phi}_{n}^{\mathrm{T}}=\boldsymbol{\Phi}^{\mathrm{T}} \boldsymbol{\Phi}  \tag{4}
+\]
+
+where \(\boldsymbol{\Phi}\) is the \(N \times M\) design matrix, whose \(n^{\text {th }}\) row is given by \(\boldsymbol{\phi}_{n}^{\mathrm{T}}\). The Newton Raphson update then takes the form
+
+\begin{align*}
+\mathbf{w}^{(\text {new })} & =\mathbf{w}^{(\text {old })}-(\boldsymbol{\Phi}^{\mathrm{T}} \boldsymbol{\Phi})^{-1}\left\{\boldsymbol{\Phi}^{\mathrm{T}} \boldsymbol{\Phi} \mathbf{w}^{(\text {old })}-\boldsymbol{\Phi}^{\mathrm{T}} \mathbf{t}\right\} \\
+& =(\boldsymbol{\Phi}^{\mathrm{T}} \boldsymbol{\Phi})^{-1} \boldsymbol{\Phi}^{\mathrm{T}} \mathbf{t}
+\end{align*}
+
+which we recognize as the standard least-squares solution.
+
+#+BEGIN_COMMENT
+The error function in this case is *quadratic* and hence the Newton-Raphson formula gives the exact solution in one step.
+#+END_COMMENT
+** The Newton-Raphson update for cross-entropy error function
+We will apply the Newton-Raphson method to the [[id:b9405cc2-6709-406a-a516-44231ed5bb5f][logistic regression]] problem with the *cross-entropy error function*
+
+\begin{align*}
+E(\mathbf{w})=-\ln p(\mathbf{t} \mid \mathbf{w})=-\sum_{n=1}^{N}\left\{t_{n} \ln y_{n}+\left(1-t_{n}\right) \ln \left(1-y_{n}\right)\right\} \tag{5}
+\end{align*}
+
+where \(y_{n}=\sigma\left(a_{n}\right)\) and \(a_{n}=\mathbf{w}^{\mathrm{T}} \boldsymbol{\phi}_{n}\).
+
+The gradient and Hessian of this error function are given by
+
+\[
+\nabla E(\mathbf{w}) & =\sum_{n=1}^{N}\left(y_{n}-t_{n}\right) \boldsymbol{\phi}_{n}=\boldsymbol{\Phi}^{\mathrm{T}}(\mathbf{y}-\mathbf{t})
+\]
+
+\[
+\mathbf{H} & =\nabla \nabla E(\mathbf{w})=\sum_{n=1}^{N} y_{n}\left(1-y_{n}\right) \boldsymbol{\phi}_{n} \boldsymbol{\phi}_{n}^{\mathrm{T}}=\boldsymbol{\Phi}^{\mathrm{T}} \mathbf{R} \boldsymbol{\Phi}
+\]
+\begin{align*}
+
+\end{align*}
+
+where we have made use of the derivative of the logistic sigmoid function \( \mathrm{D}_a \sigma = \sigma (1-\sigma) \). Also, we have introduced the \(N \times N\) diagonal matrix \(\mathbf{R}\) with elements
+
+\begin{align*}
+R_{n n}=y_{n}\left(1-y_{n}\right) \tag{6}
+\end{align*}
+
+We see that the Hessian is no longer constant but depends on \( \mathbf{w} \) through the weighting matrix \(\mathbf{R}\). Using the property \(0<y_{n}<1\) of the [[id:d1230eba-905b-4765-84ef-daa0b21fd3d9][logistic sigmoid function]], we see that \(\mathbf{u}^{\mathrm{T}} \mathbf{H} \mathbf{u}>0\) for an arbitrary vector \(\mathbf{u}\), and so the [[id:4982698a-3bff-4598-86ef-ffb1921fbc5f][Hessian matrix]] \(\mathbf{H}\) is [[id:40a0ea59-9c10-49d6-b507-5680bc631c21][positive-definite]]. It follows that the negative of the error function is a [[id:0cfd956e-fc5d-4b27-8066-c5f8d00d2163][convex function]] of \(\mathbf{w}\) and hence has a unique minimum.
+
+The Newton-Raphson update then takes the form
+
+\begin{align*}
+\mathbf{w}^{(\text{new})} & =\mathbf{w}^{(\text{old})}-(\boldsymbol{\Phi}^{\mathrm{T}} \mathbf{R} \boldsymbol{\Phi})^{-1} \boldsymbol{\Phi}^{\mathrm{T}}(\mathbf{y}-\mathbf{t}) \\
+& =(\boldsymbol{\Phi}^{\mathrm{T}} \mathbf{R} \boldsymbol{\Phi})^{-1}\left\{\boldsymbol{\Phi}^{\mathrm{T}} \mathbf{R} \boldsymbol{\Phi} \mathbf{w}^{(\text {old })}-\boldsymbol{\Phi}^{\mathrm{T}}(\mathbf{y}-\mathbf{t})\right\} \\
+& =(\boldsymbol{\Phi}^{\mathrm{T}} \mathbf{R} \boldsymbol{\Phi})^{-1} \boldsymbol{\Phi}^{\mathrm{T}} \mathbf{R} \mathbf{z}
+\tag{7}
+\end{align*}
+
+where \(\mathbf{z}\) is an \(N\)-dimensional vector with elements
+
+\begin{align*}
+\mathbf{z}=\boldsymbol{\Phi} \mathbf{w}^{(\mathrm{old})}-\mathbf{R}^{-1}(\mathbf{y}-\mathbf{t}) \tag{8}
+\end{align*}
+* Iterative reweighted least squares (IRLS) algorithm
+We see that the Newton-Raphson update formula for the [[id:8d6d1914-142b-43aa-b9fd-4ea7404a40ed][logistic regression]] takes the form of a set of normal equations for a weighted least-squares problem. Because the weighing matrix \(\mathbf{R}\) is not constant but depends on the parameter vector \(\mathbf{w}\), we must apply the normal equations iteratively, each time using the new weight vector \(\mathbf{w}\) to compute a revised weighing matrix \(\mathbf{R}\). For this reason, the algorithm is known as *iterative reweighted least squares*. The elements of the diagonal weighting matrix \(\mathbf{R}\) can be interpreted as variances because the mean and variance of \(t\) in the logistic regression model are given by
+
+\[\mathbb{E}[t] & =\sigma(\mathbf{x})=y  \qquad \operatorname{var}[t] & =\mathbb{E}[t^{2}]-\mathbb{E}[t]^{2}=\sigma(\mathbf{x})-\sigma(\mathbf{x})^{2}=y(1-y).  \tag{9}
+\]
+
+where we have used the property \(t^{2}=t\) for \(t \in\{0,1\}\). 
+
+** Alternative interpretation of IRLS
+We can interpret IRLS as the solution to a linearized problem in the space of the variable \(a=\mathbf{w}^{\mathrm{T}} \boldsymbol{\phi}\).
+
+The quantity \(z_{n}\), which corresponds to the \(n^{\text {th }}\) element of \(\mathbf{z}\), can then be given a simple interpretation as an effective target value in this space obtained by making a local linear approximation to the [[id:d1230eba-905b-4765-84ef-daa0b21fd3d9][logistic sigmoid function]] around the current operating point \(\mathbf{w}^{\text {(old) }}\)
+
+\begin{align*}
+a_{n}(\mathbf{w}) & \simeq a_{n} (\mathbf{w}^{(\text{old})})+\left.\frac{\mathrm{d} a_{n}}{\mathrm{~d} y_{n}}\right|_{\mathbf{w}^{(\text {old })}}\left(t_{n}-y_{n}\right) \\
+& =\boldsymbol{\phi}_{n}^{\mathrm{T}} \mathbf{w}^{(\text{old})}-\frac{\left(y_{n}-t_{n}\right)}{y_{n}\left(1-y_{n}\right)}=z_{n}.  \tag{10}
+\end{align*}
+
