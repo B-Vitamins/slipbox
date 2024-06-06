@@ -1,0 +1,47 @@
+:PROPERTIES:
+:ID:       34069047-c5fd-4a84-839b-ce6694dd860d
+:END:
+#+TITLE: The grand canonical ensemble and the grand potential
+#+FILETAGS: :literature:spop:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+We can reorganize the summation for the grand partition function of [[id:912accf4-b06d-4f04-9ac9-3ca191c5bace][the grand canonical ensemble]] by grouping together all [[id:2b3acff9-a43f-4fc5-92d8-a1296fb3f0f7][microstates]] with a /given number of particles/, that is,
+
+\[
+\mathcal{Q}(T, \mu, \mathbf{x})=\sum_{N=0}^{\infty} \exp(\beta \mu N) \sum_{\left(\mu_{\mathrm{S}} \mid N\right)} \exp(-\beta H_{N}\left(\mu_{\mathrm{S}}\right)). \tag{1}
+\]
+
+The restricted sums in the equation above are just the \(N\)-particle partition functions. As each term in \(\mathcal{Q}\) is the total weight of all microstates of \(N\) particles, the unconditional probability of finding \(N\) particles in the system is
+
+\[
+p_{T,\,\mu,\,\mathbf{x}} (N) = \frac{\exp(\beta \mu N)\,Z(T, N, \mathbf{x})}{Q(T, \mu, \mathbf{x})}.
+\]
+
+The /average number/ of particles in the system is
+
+\[
+\langle N\rangle=\frac{1}{\mathcal{Q}} (\partial_{(\beta \mu)} \mathcal{Q}) = \partial_{(\beta \mu)} \ln \mathcal{Q}
+\]
+
+while the /number fluctuations/ are related to the variance
+
+\[
+\langle N^{2}\rangle_{c} = \langle N^{2} \rangle - \langle N \rangle^{2} = \frac{1}{\mathcal{Q}} \partial_{(\beta \mu)^{2}}^{2} \ln \mathcal{Q} - \left(\partial_{(\beta \mu)} \ln \mathcal{Q}\right)^{2} = \partial_{(\beta \mu)}^{2} \ln \mathcal{Q} = \partial_{(\beta \mu)} \langle N\rangle
+\]
+
+The variance is thus proportional to \(N\), and the relative number fluctuations vanish in the thermodynamic limit, establishing the equivalence of this ensemble to the previous ones.
+
+Because of the sharpness of the distribution for \(N\), the sum in (1) can be approximated by its largest term at \(N=N^{*} \approx\langle N\rangle\), that is,
+
+\begin{align*}
+\mathcal{Q}(T, \mu, \mathbf{x}) & = \lim_{N \rightarrow \infty} \sum_{N=0}^{\infty} \exp(\beta \mu N) Z(T, N, \mathbf{x}) = \exp(\beta \mu N^{*}) Z\left(T, N^{*}, \mathbf{x}\right) = \exp(\beta \mu N^{*} - \beta F) \\
+& = \exp\left(-\beta\left(-\mu N^{*} + E - T S\right)\right) = \exp(-\beta \mathcal{G}),
+\end{align*}
+
+where \(\mathcal{G}(T, \mu, \mathbf{x})=E-T S-\mu N=-k_{B} T \ln Q (T, \mu, \mathbf{x})\) is the [[id:c8d07383-6b78-4142-b607-4049a7d1b24d][grand potential]]. 
+
+Thermodynamic information is obtained by using \(\mathrm{d} \mathcal{G}=\) \(-S \mathrm{~d} T-N \mathrm{~d} \mu+\mathbf{J} \cdot \mathrm{d} \mathbf{x}\), as
+
+\[
+-S = (\partial_{T} \mathcal{G})_{\mu, \mathbf{x}} \qquad N = -(\partial_{\mu} \mathcal{G})_{T, \mathbf{x}} \qquad J_{i} = (\partial_{x_{i}} \mathcal{G})_{T, \mu}.
+\]
