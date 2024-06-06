@@ -1,0 +1,60 @@
+:PROPERTIES:
+:ID:       2f55f143-4240-44a1-aa3c-3e6fa8a23dee
+:END:
+#+TITLE: The zeroth law from the fundamental postulate
+#+FILETAGS: :literature:spop:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+[[id:86c7268a-cf65-4f9b-bb99-03d810ee1bf8][Equilibrium]] properties are discussed in [[id:39fcc45a-9b91-42f9-9960-19eab99aae83][thermodynamics]] by placing two previously isolated systems in contact, and allowing them to exchange [[id:5211418e-55fa-4d7e-b2f5-88148f84cc76][heat]]. We can similarly bring together two [[id:170f5ef3-3995-4720-bbdb-c2ca704f0739][microcanonical systems]], and allow them to exchange energy, but not work.
+
+#+ATTR_HTML: :width 500px
+[[file:~/.local/images/kardar-spop-4.1.jpg]]
+#+CAPTION: The exchange of energy between two isolated systems.
+
+If the original systems have energies \(E_{1}\) and \(E_{2}\), respectively, the combined system has energy \(E=E_{1}+E_{2}\). Assuming that interactions between the two parts are small, each [[id:2b3acff9-a43f-4fc5-92d8-a1296fb3f0f7][microstate]] of the joint system corresponds to a pair of microstates of the two components, that is, \(\mu=\mu_{1} \otimes \mu_{2}\), and \(H\left(\mu_{1} \otimes \mu_{2}\right)=H_{1}\left(\mu_{1}\right)+H_{2}\left(\mu_{2}\right)\). As the joint system is in a [[id:170f5ef3-3995-4720-bbdb-c2ca704f0739][microcanonical ensemble]] of energy \(E=E_{1}+E_{2}\), in [[id:86c7268a-cf65-4f9b-bb99-03d810ee1bf8][thermal equilibrium]]
+
+\[
+p_{E}\left(\mu_{1} \otimes \mu_{2}\right)=\frac{1}{\Omega(E)} \cdot\left\{\begin{array}{ll}
+1 & \text { for } H_{1}\left(\mu_{1}\right)+H_{2}\left(\mu_{2}\right)=E \\
+0 & \text { otherwise }
+\end{array} .\right. \tag{1}
+\]
+
+Since only the overall energy is fixed, the total allowed [[id:b3944247-240d-4813-bec6-d98de03e6e99][phase space]] is computed from
+
+\[
+\Omega(E)=\int \mathrm{d} E_{1} \Omega_{1}\left(E_{1}\right) \Omega_{2}\left(E-E_{1}\right)=\int \mathrm{d} E_{1} \exp \left[\frac{S_{1}\left(E_{1}\right)+S_{2}\left(E-E_{1}\right)}{k_{B}}\right]. \tag{2}
+\]
+
+[[id:8bff36e1-8fd3-48aa-88ba-8b508a8cdd86][Extensivity]] of [[id:b91504dd-9976-4ae9-bdfb-4f92903ee24c][entropy]] suggests that \(S_{1}\) and \(S_{2}\) are proportional to the numbers of particles in each system, making the integrand above an exponentially large quantity. Hence the integral can be equated (by appeal to [[id:fe110473-ca15-4c42-ad93-f45a4ea7c4a2][the Laplace approximation]]) to the maximum value of the integrand, obtained for energies \(E_{1}^{\ast}\) and \(E_{2}^{\ast}=E-E_{1}^{\ast}\), that is,
+
+\[
+\Omega(E) \approx \exp \bigg(\frac{S_{1}(E_{1}^{\ast})+S_{2}(E_{2}^{\ast})}{k_{B}}\bigg). \tag{3}
+\]
+
+Using [[id:954915f7-31f8-4910-8cab-116fead69656][Boltzmann's entropy formula]], we have
+
+\[
+S(E)=k_{B} \ln \Omega(E) \approx S_{1}\left(E_{1}^{*}\right)+S_{2}\left(E_{2}^{*}\right). \tag{4}
+\]
+
+The position of the maximum is obtained by extremizing the exponent in (3) with respect to \(E_{1}\), resulting in the condition
+
+\[
+(\partial_{E_1} S_{1})_{\mathbf{x}_{1}} = (\partial_{E_2} S_{2})_{\mathbf{x}_{\mathbf{2}}}. \tag{5}
+\]
+
+*Although all joint microstates are equally likely, the above results indicate that there is an exponentially larger number of states in the vicinity of* \(\left(E_{1}^{\ast}, E_{2}^{\ast}\right)\).
+
+#+ATTR_HTML: :width 400px
+[[file:~/.local/images/kardar-spop-4.2.jpg]]
+#+CAPTION: The joint number of states of two systems in contact is overwhelmingly larger at the "equilibrium" energies E_1* and E_2*.
+
+Originally, the joint system starts in the vicinity of some point \(\left(E_{1}^{0}, E_{2}^{0}\right)\). After the exchange of energy takes place, the combined system explores a whole set of new microstates. The probabilistic arguments provide no information on the dynamics of evolution amongst these microstates, or on the amount of time needed to establish [[id:86c7268a-cf65-4f9b-bb99-03d810ee1bf8][thermal equilibrium]]. However, once sufficient time has elapsed so that the [[id:a3002bd8-e220-438b-9996-e191f963a26d][fundamental postulate of statistical mechanics]] is again valid, the system is overwhelmingly likely to be at a state with [[id:7f36257b-4d45-453a-b704-ca458b4c941a][internal energy]] \(\left(E_{1}^{\ast}, E_{2}^{\ast}\right)\). At this equilibrium point, condition (5) is satisfied, specifying a relation between two [[id:df6bf294-bc8a-441f-b16a-02fe248d59a9][state functions]]. These state functions are thus equivalent to empirical temperatures, and, indeed, consistent with [[id:39f970fe-3d54-420c-9668-bf486f73cbca][the zeroth law]] of [[id:39fcc45a-9b91-42f9-9960-19eab99aae83][thermodynamics]]
+
+\[
+\boxed{
+T = (\partial_E S)_{\mathbf{x}}^{-1}
+}
+\]
+
