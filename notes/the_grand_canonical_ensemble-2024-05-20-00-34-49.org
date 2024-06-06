@@ -1,0 +1,30 @@
+:PROPERTIES:
+:ID:       912accf4-b06d-4f04-9ac9-3ca191c5bace
+:END:
+#+TITLE: The grand canonical ensemble
+#+FILETAGS: :literature:spop:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+Our starting point in [[id:39fcc45a-9b91-42f9-9960-19eab99aae83][thermodynamics]] was a mechanically and adiabatically isolated system which specified a [[id:d351a06e-42c5-4a72-98c9-bbfe8f40afe7][macrostate]] \(M \equiv(E, \mathbf{x})\). The corresponding set of mixed [[id:2b3acff9-a43f-4fc5-92d8-a1296fb3f0f7][microstates]] formed the [[id:170f5ef3-3995-4720-bbdb-c2ca704f0739][the microcanonical ensemble]].
+
+We then allowed the input of [[id:5211418e-55fa-4d7e-b2f5-88148f84cc76][heat]] into the system but no external work. The system \(S\) was maintained at a constant [[id:73293bf4-e866-4339-ad08-4258cebfb93f][temperature]] through contact with a reservoir \(\mathrm{R}\). The reservoir is another macroscopic system that is sufficiently large so that its temperature is not changed due to interactions with \(\mathrm{S}\). In this setup, the [[id:73293bf4-e866-4339-ad08-4258cebfb93f][temperature]] \( T \) and the generalized coordinates \(\mathbf{x}\), were fixed, which specified a [[id:d351a06e-42c5-4a72-98c9-bbfe8f40afe7][macrostate]] \(M \equiv(T, \mathbf{x})\). The corresponding set of mixed [[id:2b3acff9-a43f-4fc5-92d8-a1296fb3f0f7][microstates]] formed the [[id:d0ef6177-22a7-45e9-a756-ee12186d4eef][the canonical ensemble]].
+
+We then allowed the input of both [[id:5211418e-55fa-4d7e-b2f5-88148f84cc76][heat]] and work into the system. The system \(S\) was maintained at a constant [[id:73293bf4-e866-4339-ad08-4258cebfb93f][temperature]] through contact with a reservoir \(\mathrm{R}\). The reservoir is another macroscopic system that is sufficiently large so that its temperature is not changed due to interactions with \(\mathrm{S}\). In addition, the system \( S \) is maintained at a fixed force \( \mathbf{J} \). In this setup, the [[id:73293bf4-e866-4339-ad08-4258cebfb93f][temperature]] \( T \) and the constant external force \( \mathbf{J} \) were fixed, which specified a [[id:d351a06e-42c5-4a72-98c9-bbfe8f40afe7][macrostate]] \(M \equiv(T, \mathbf{J})\). The thermodynamic coordinates \(\mathbf{x}\) appear as additional [[id:fa0e3aa2-347e-48b9-9cb7-e9f0be897281][random variables]]. The corresponding set of mixed [[id:2b3acff9-a43f-4fc5-92d8-a1296fb3f0f7][microstates]] formed [[id:689182a6-51d4-4cd4-b941-5d07e52f8fe9][the Gibbs canonical ensemble]].
+
+We now allow the input of [[id:5211418e-55fa-4d7e-b2f5-88148f84cc76][heat]] and /chemical work/ (by fixing the chemical potential \(\mu\), rather than at a fixed number of particles) into the system, but no mechanical work. The system \(\mathrm{S}\) can be maintained at a constant chemical potential through contact with a reservoir \(\mathrm{R}\), at temperature \(T\) and chemical potential \(\mu\). In this setup, the [[id:73293bf4-e866-4339-ad08-4258cebfb93f][temperature]] \( T \), the chemical potential \( \mu \), and the thermodynamic coordinates \( \mathbf{x} \) are fixed, which specifies a [[id:d351a06e-42c5-4a72-98c9-bbfe8f40afe7][macrostate]] \(M \equiv(T, \mu, \mathbf{x})\). The corresponding set of mixed [[id:2b3acff9-a43f-4fc5-92d8-a1296fb3f0f7][microstates]] form [[id:912accf4-b06d-4f04-9ac9-3ca191c5bace][the grand canonical ensemble]].
+
+#+ATTR_HTML: :width 400px
+[[file:~/.local/images/kardar-spop-4.11.jpg]]
+#+CAPTION: A system S, in contact with a reservoir R, of temperature T and chemical potential 𝜇.
+
+The corresponding microstates \(\mu_{\mathrm{S}}\) contain an indefinite number of particles \(N\left(\mu_{\mathrm{S}}\right)\). As in the case of [[id:d0ef6177-22a7-45e9-a756-ee12186d4eef][the canonical ensemble]], the /equilibrium probability distribution/ \(p_{(T, \mu, \mathbf{x})} \left(\mu_{\mathrm{S}}\right)\) for the [[id:2b3acff9-a43f-4fc5-92d8-a1296fb3f0f7][microstate]] of \(\mathrm{S}\) is obtained by summing over all states of the reservoir and is given by
+
+\[
+\boxed{
+p_{(T, \mu, \mathbf{x})}\left(\mu_{\mathrm{S}}\right)=\exp \left[\beta \mu N\left(\mu_{\mathrm{S}}\right)-\beta H\left(\mu_{\mathrm{S}}\right)\right] / \mathcal{Q}, \qquad \mathcal{Q}(T, \mu, \mathbf{x})=\sum_{\mu_{\mathrm{S}}} \exp( \beta \mu N (\mu_{\mathrm{S}}) - \beta \mathcal{H} (\mu_{\mathrm{S}}))
+}
+\]
+
+where \(\mathcal{Q}(T,\,\mu, \, \mathbf{x})\) is the *Grand partition function*.
+
+See [[id:34069047-c5fd-4a84-839b-ce6694dd860d][The grand canonical ensemble and the grand potential]].
