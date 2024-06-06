@@ -1,0 +1,28 @@
+:PROPERTIES:
+:ID:       46ca1cb3-1f40-4c5b-80dc-f646f224f9f0
+:END:
+#+TITLE: The Gibbs canonical ensemble and Gibbs free energy
+#+FILETAGS: :literature:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+In [[id:689182a6-51d4-4cd4-b941-5d07e52f8fe9][the Gibbs canonical ensemble]], the expectation value of the coordinates is obtained from
+
+\[
+\langle\mathbf{x}\rangle=k_{B} T \, (\partial_{\mathbf{J}} \ln \mathcal{Z})
+\]
+
+which together with the thermodynamic identity \(\mathbf{x} = -\partial_{\mathbf{J}} G\), suggests the identification
+
+\[
+G(N, T, \mathbf{J})=-k_{B} T \ln \mathcal{Z}
+\]
+
+where \(G=E-T S-\mathbf{x} \cdot \mathbf{J}\) is the [[id:16743aa2-9663-4ab6-9d9e-819143f84ace][Gibbs free energy]]. 
+
+The same conclusion can be reached by using [[id:2baf3b2b-fd88-4b85-8485-8b944dcf2f4c][rules for large numbers]] to evaluate the sum of exponential
+
+\[
+\mathcal{Z}(N, T, \mathbf{J})= \sum_{\mu_{\mathrm{S}},\,\mathbf{x}} \exp \left(-\beta H\left(\mu_{\mathrm{S}}\right)+\beta \mathbf{J} \cdot \mathbf{x}\right)
+\]
+
+by equating \( \mathcal{Z}(N, T, \mathbf{J}) \) to the term in the sum that maximizes the probability with respect to \(\mathbf{x}\).
