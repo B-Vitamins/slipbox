@@ -1,0 +1,11 @@
+:PROPERTIES:
+:ID:       c974fc24-8cb0-42c7-85ca-9ca76a77a1d6
+:END:
+#+TITLE: Cartesian product
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+#+NAME: Cartesian product
+#+begin_definition latex
+Given sets \(X\) and \(Y\), the Cartesian product \(X \times Y\) is defined as \(\{(x, y) \mid x \in X\) and \(y \in Y\}\).
+#+end_definition
