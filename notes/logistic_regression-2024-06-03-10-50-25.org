@@ -1,0 +1,22 @@
+:PROPERTIES:
+:ID:       8d6d1914-142b-43aa-b9fd-4ea7404a40ed
+:END:
+#+TITLE: Logistic regression
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+In [[id:e98cc41c-62c2-47da-859e-c4911657a621][probabilistic generative models for 2 classes]], we saw that under rather general assumptions, the posterior probability of class \(\mathcal{C}_{1}\) can be written as a [[id:d1230eba-905b-4765-84ef-daa0b21fd3d9][logistic sigmoid function]] acting on a linear function of the feature vector \(\phi\) so that
+
+\begin{align*}
+p\left(\mathcal{C}_{1} \mid \boldsymbol{\phi}\right)=y(\boldsymbol{\phi})=\sigma (\mathbf{w}^{\mathrm{T}} \boldsymbol{\phi}) \tag{1}
+\end{align*}
+
+with \(p\left(\mathcal{C}_{2} \mid \phi\right)=1-p\left(\mathcal{C}_{1} \mid \phi\right)\). Here \(\sigma(\cdot)\) is the [[id:d1230eba-905b-4765-84ef-daa0b21fd3d9][Logistic sigmoid function]].
+
+#+BEGIN_COMMENT
+In the terminology of statistics, this model is known as logistic regression, although it should be emphasized that this is a model for classification rather than regression.
+#+END_COMMENT
+
+For an \(M\)-dimensional feature space \(\phi\), this model has \(M\) adjustable parameters. By contrast, if we had fitted Gaussian class conditional densities using maximum likelihood, we would have used \(2 M\) parameters for the means and \(M(M+1) / 2\) parameters for the (shared) covariance matrix. Together with the class prior \(p\left(\mathcal{C}_{1}\right)\), this gives a total of \(M(M+5) / 2+1\) parameters, which is quadratic in \(M\), in contrast to the linear dependence on \(M\) of the number of parameters in logistic regression. *For large values of* \(M\), *there is a clear advantage in working with the logistic regression model directly.*
+
+We can use [[id:b9405cc2-6709-406a-a516-44231ed5bb5f][maximum likelihood for logistic regression]] to determine the parameters of the logistic regression model.
