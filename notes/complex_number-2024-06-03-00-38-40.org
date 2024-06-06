@@ -1,0 +1,20 @@
+:PROPERTIES:
+:ID:       6662b384-b484-4734-b766-d06ff5021b29
+:END:
+#+TITLE: Complex number
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+The definition of a complex number relies on the notion of the [[id:e32e2a2e-39bb-4cdc-b73e-7957feef0f5d][imaginary unit]].
+
+#+NAME: Complex number
+#+begin_definition latex
+A complex number is an expression of the form \(a+ ib\), where \(a\) and \(b\) are real numbers, and \(i\) is the imaginary unit.
+#+end_definition
+
+For a complex number \(a+ ib\), the real number \(a\) is called its real part, and the real number \(b\) (not the complex number \( ib \)) is its imaginary part. The real part of a complex number \(z\) is denoted using \(\Re(z)\) and the imaginary part is denoted using \( \Im (z) \). For example, \(\Re(2+3 i)=2\) and \(\Im(2+3 i)=3\). The set of all complex numbers is denoted by \(\mathbb{C}\).
+
+A real number \(a\) can be regarded as a complex number \(a+0 i\), whose imaginary part is 0. A purely imaginary number bi is a complex number \(0+b i\), whose real part is zero.
+
+A complex number \(z\) can be identified with the ordered pair of real numbers \((\Re(z), \Im(z))\), which may be interpreted as coordinates of a point in a Euclidean plane with standard coordinates, which is then called the complex plane or *Argand diagram*. The horizontal axis is generally used to display the real part, with increasing values to the right, and the imaginary part marks the vertical axis, with increasing values upwards.
+
