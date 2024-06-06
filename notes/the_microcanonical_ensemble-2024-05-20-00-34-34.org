@@ -1,0 +1,28 @@
+:PROPERTIES:
+:ID:       170f5ef3-3995-4720-bbdb-c2ca704f0739
+:END:
+#+TITLE: The microcanonical ensemble
+#+FILETAGS: :literature:spop:spop:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+Our starting point in [[id:39fcc45a-9b91-42f9-9960-19eab99aae83][thermodynamics]] is a mechanically and adiabatically isolated system.
+
+In the absence of [[id:5211418e-55fa-4d7e-b2f5-88148f84cc76][heat]] or work input to the system, the [[id:7f36257b-4d45-453a-b704-ca458b4c941a][internal energy]] \(E\), and the generalized coordinates \(\mathbf{x}\), are fixed, specifying a [[id:d351a06e-42c5-4a72-98c9-bbfe8f40afe7][macrostate]] \(M \equiv(E, \mathbf{x})\).
+
+The corresponding set of mixed [[id:2b3acff9-a43f-4fc5-92d8-a1296fb3f0f7][microstates]] forms the microcanonical ensemble (see [[id:bccee305-db73-49bb-a1e5-6379e80dd980][pure states and mixed states]] and [[id:21d62749-69ab-4e25-b366-eb6ff17a2f09][phase space density]]).
+
+The [[id:a3002bd8-e220-438b-9996-e191f963a26d][fundamental postulate of statistical mechanics]] provide unbiased estimates of the /equilibrium probability distribution/ \(p_{(E,\mathbf{x})}(\mu)\) for the *microcanonical ensemble*:
+
+\[
+\boxed{
+p_{(E, \mathbf{x})}(\mu)=\frac{1}{\Omega(E, \mathbf{x})} \cdot \begin{cases}1 & \text { for } H(\mu)=E \\ 0 & \text { otherwise }\end{cases}
+}
+\]
+
+The [[id:b91504dd-9976-4ae9-bdfb-4f92903ee24c][entropy]] of this uniform probability distribution is given by the [[id:954915f7-31f8-4910-8cab-116fead69656][Boltzmann's entropy formula]]
+
+\[
+S(E, \mathbf{x})=k_{B} \ln \Omega(E, \mathbf{x})
+\]
+
+
