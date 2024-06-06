@@ -1,0 +1,11 @@
+:PROPERTIES:
+:ID:       f86c8666-247e-450b-8185-efd62e16e303
+:END:
+#+TITLE: Square matrix
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+#+NAME: Square matrix
+#+begin_definition latex
+A matrix \( A = (a_{ij})_{i=1,\ldots,m}^{j=1,\ldots,n} \) is called a square matrix if \( n = m \).
+#+end_definition
