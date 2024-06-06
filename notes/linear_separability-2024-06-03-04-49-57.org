@@ -1,0 +1,17 @@
+:PROPERTIES:
+:ID:       46d7eeb7-d01e-46a8-a4ea-6b27285b265f
+:END:
+#+TITLE: Linear separability
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+The definition of linear separability depends on the notion of a [[id:9c711ea1-c9de-4e90-96cf-e7710bd11aeb][vector space]] and the [[id:bd078855-c4e2-4c48-b2ae-8a16b01a9547][inner product]].
+
+#+NAME: Linear separability
+#+begin_definition latex
+Let \(X = (\mathbf{x}_i)_{i=1,\ldots,k}\) and \(Y = (\mathbf{y}_j)_{j=1,\ldots,l}\) be two sets of points in a vector space \( \mathbb{R}^{n} \). Then \(X\) and \(Y\) are linearly separable if there exist at least one vector \( \mathbf{w} \in \mathbb{R}^n \), and an associated scalar \( c \) such that:
+1)\( \langle \mathbf{x}_i,\, \mathbf{w} \rangle > c \) for every \( \mathbf{x}_i \in X \),
+1)\( \langle \mathbf{y}_i,\, \mathbf{w} \rangle < c \) for every \( \mathbf{y}_i \in Y \).
+#+end_definition
+
+
