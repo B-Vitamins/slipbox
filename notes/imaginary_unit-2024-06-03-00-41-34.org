@@ -1,0 +1,11 @@
+:PROPERTIES:
+:ID:       e32e2a2e-39bb-4cdc-b73e-7957feef0f5d
+:END:
+#+TITLE: Imaginary unit
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+#+NAME: Imaginary unit
+#+begin_definition latex
+The imaginary unit or unit imaginary number (\( i \)) is a solution to the equation \( x^2 + 1 = 0 \).
+#+end_definition
