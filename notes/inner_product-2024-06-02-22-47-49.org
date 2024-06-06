@@ -1,0 +1,20 @@
+:PROPERTIES:
+:ID:       bd078855-c4e2-4c48-b2ae-8a16b01a9547
+:END:
+#+TITLE: Inner product
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+#+NAME: Inner Product
+#+ATTR_LATEX: :environment definition
+#+begin_definition latex
+The inner-product between two vectors \(|V\rangle\) and \(|W\rangle\), denoted is \(\langle V \mid W\rangle\) is a number complex in general) that has the properties:
+(1) \(\langle V \mid W\rangle=\langle W \mid V\rangle^*\) (Skew-symmetry)
+(2) \(\langle V \mid V\rangle \geqslant 0,\langle V \mid V\rangle= 0 \Longleftrightarrow \vert V\rangle= \vert 0\rangle\) (Positive semi-definiteness)
+(3) \(\langle V|(a|W\rangle+b|Z\rangle) \equiv\langle V \mid a W+b Z\rangle=a\langle V \mid W\rangle+b\langle V \mid Z\rangle\) (Linearity in ket)
+#+end_definition
+
+#+NAME: Anti-linearity of the inner product in bras
+#+begin_corollary latex
+Skew-symmetry implies anti-linearity of the inner product in bras \(\langle a W+b Z \mid V\rangle=a^*\langle W \mid V\rangle+b^*\langle Z \mid V\rangle\).
+#+end_corollary

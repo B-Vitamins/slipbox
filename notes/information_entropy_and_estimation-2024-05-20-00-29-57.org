@@ -1,0 +1,7 @@
+:PROPERTIES:
+:ID:       5d8dce00-41ff-4e8a-a35e-e7d352dcfc4b
+:END:
+#+TITLE: Information, entropy, and estimation
+#+FILETAGS: :literature:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
