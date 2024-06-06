@@ -1,0 +1,16 @@
+:PROPERTIES:
+:ID:       cbf1931a-4dea-4bbe-958b-88f74f2259d3
+:END:
+#+TITLE: Cauchy-Schwarz inequality
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+The *Cauchy-Schwarz inequality* depends on the notion of a [[id:9c711ea1-c9de-4e90-96cf-e7710bd11aeb][vector space]].
+
+#+NAME: Cauchy-Schwarz inequality
+#+begin_theorem latex
+Let \( \vert V \rangle \) and \( \vert W \rangle \) be elements of a vector space with norms \( |V| \) and \( |W| \) respectively. We then have
+\begin{align*}
+|\langle V \mid W\rangle| \leqslant|V||W|.
+\end{align*}
+#+end_theorem
