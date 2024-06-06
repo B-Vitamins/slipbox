@@ -1,0 +1,32 @@
+:PROPERTIES:
+:ID:       45b01b6e-984e-446f-a87f-14cdaabd0ed3
+:END:
+#+TITLE: Principle of maximum entropy
+#+FILETAGS: :literature:spop:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+[[id:7be68499-a66f-4186-b910-cf0dc24c2560][Shannon's entropy]] \(S\) can be used to quantify [[id:8ea587f9-f1f7-437b-8c2c-6b02460c25b3][subjective estimates of probabilities]]. In the absence of any [[id:4b4a37a4-cf1f-4d6b-843f-fd5edffeca0c][information]], the best unbiased estimate is that all \(M\) outcomes are equally likely. This is codified by the *principle of maximum entropy*.
+
+#+NAME: Principle of maximum entropy
+#+begin_theorem latex
+Consider a random variable with a discrete set of outcomes \(\mathcal{S}=\left\{x_{i}\right\}\) for \(i=1, \cdots, M\). In the absence of any information, the best unbiased estimate is that all \(M\) outcomes are equally likely. This is the distribution of maximum entropy.
+#+end_theorem
+
+If additional [[id:4b4a37a4-cf1f-4d6b-843f-fd5edffeca0c][information]] is available, the unbiased estimate is obtained by maximizing the [[id:7be68499-a66f-4186-b910-cf0dc24c2560][entropy]] subject to the constraints imposed by this information (using the [[id:f9322a47-fa0f-4d51-b78d-b64b10e64c2b][method of Lagrange multipliers]]).
+
+#+NAME: Principle of maximum entropy
+#+begin_example latex
+For example, if it is known that \(\langle F(x)\rangle=f\), we can maximize
+
+\[
+S\left(\alpha, \beta,\left\{p_{i}\right\}\right)=-\sum_{i} p(i) \ln p(i)-\alpha\left(\sum_{i} p(i)-1\right)-\beta\left(\sum_{i} p(i) F\left(x_{i}\right)-f\right),
+\]
+
+where the Lagrange multipliers \(\alpha\) and \(\beta\) are introduced to impose the constraints of normalization, and \(\langle F(x)\rangle=f\), respectively.
+
+The result of the optimization is a distribution \(p_{i} \propto \exp \left(-\beta F\left(x_{i}\right)\right)\), where the value of \(\beta\) is fixed by the constraint.
+
+This process can be generalized to an arbitrary number of conditions. It is easy to see that if the first \(n=2 k\) moments (and hence \(n\) cumulants) of a distribution are specified, the unbiased estimate is the exponential of an \(n\)th-order polynomial.
+#+end_example
+
+The principle of maximum entropy forms the basis of the [[id:a3002bd8-e220-438b-9996-e191f963a26d][fundamental postulate of statistical mechanics]] on which the entire edifice of [[id:7c80611f-3eb6-49bd-81cb-108fec858c85][classical statistical mechanics]] is based.
