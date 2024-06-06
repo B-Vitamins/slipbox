@@ -1,0 +1,43 @@
+:PROPERTIES:
+:ID:       4b4a37a4-cf1f-4d6b-843f-fd5edffeca0c
+:END:
+#+TITLE: Information
+#+FILETAGS: :literature:spop:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+In the context of [[id:f0c11d12-3160-4c28-9158-a05ca2aa39f3][information theory]] there is a precise meaning to the information content of a probability distribution.
+
+#+NAME: Information
+#+begin_definition latex
+Consider a random variable with a discrete set of outcomes \(\mathcal{S}=\left\{x_{i}\right\}\), occurring with probabilities \(\{p(i)\}\), for \(i=1, \cdots, M\). The information content of the probability distribution is given by
+\[
+I\left[\left\{p_{i}\right\}\right]=\ln_{2} M+\sum_{i=1}^{M} p(i) \ln_{2} p(i)
+\]
+#+end_definition
+
+* Motivation
+Consider a [[id:fa0e3aa2-347e-48b9-9cb7-e9f0be897281][random variable]] with a discrete set of outcomes \(\mathcal{S}=\left\{x_{i}\right\}\), occurring with probabilities \(\{p(i)\}\), for \(i=1, \cdots, M\). Let us construct a message from \(N\) [[id:463c36d5-7beb-429d-bf27-98e290353583][independent and identically distributed outcomes]] of the random variable.
+
+Since there are \(M\) possibilities for each character in this message, it has an apparent *information content* of \(N \ln _{2} M\) bits, that is, \(N \ln _{2} M\) [[id:ceab8acd-bf4e-46af-b4e9-0c74fe5986e9][binary bits]] of information have to be transmitted to convey the message precisely.
+
+However, the probabilities \(\{p(i)\}\) limit the types of messages that are likely. In particular, we expect the probability of finding any \(N_{i}\) that is different from \(N p_{i}\) by more than \(\mathcal{O}(\sqrt{N})\) becomes exponentially small in \(N\) as \(N \rightarrow \infty\). 
+
+The number of typical messages thus corresponds to the number of ways of rearranging the \(\left\{N_{i}\right\}\) occurrences of \(\left\{x_{i}\right\}\), and is given by the [[id:cf494388-2d6e-467f-8908-54dc44f573b4][multinomial coefficient]] 
+
+\[
+g=\frac{N !}{\prod_{i=1}^{M} N_{i} !} \ll M^N
+\]
+
+To specify one out of \(g\) possible sequences requires
+
+\[
+\ln _{2} g \approx-N \sum_{i=1}^{M} p_{i} \ln _{2} p_{i} \quad(\text { for } N \rightarrow \infty)
+\]
+
+The last result can be obtained by applying [[id:e48e2826-c1af-4c66-8d7c-27b09ecf9380][Stirling's approximation]] for \(\ln N!\) or by
+
+\[
+1=\bigg(\sum_{i} p_{i}\bigg)^{N}=\sum_{\left\{N_{i}\right\}} \frac{N !}{\prod_{i=1}^{M} N_{i} !} \prod_{i=1}^{M} p_{i}^{N_{i}} \approx g \prod_{i=1}^{M} p_{i}^{N p_{i}}
+\]
+
+where the sum has been replaced by its largest term, which is justified for \( N \to \infty \) (see [[id:2baf3b2b-fd88-4b85-8485-8b944dcf2f4c][rules for large numbers]]). [[id:97207f0a-6ede-4c4b-be52-718fd739c09f][Shannon's theorem]] proves that the minimum number of bits necessary to ensure that the percentage of errors in \(N\) trials vanishes in the \(N \rightarrow \infty\) limit is \(\ln _{2} g\). For any non-uniform distribution, this is less than the \(N \ln _{2} M\) bits needed in the absence of any information on relative probabilities. The *difference per trial* is thus attributed to the information content of the probability distribution, which motivates the definition presented above.
