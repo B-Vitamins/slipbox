@@ -1,0 +1,13 @@
+:PROPERTIES:
+:ID:       eca67f0e-248b-4769-b4d5-0ed9940f9816
+:END:
+#+TITLE: Ordered pairs
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+The definition of ordered pairs depends on the notion of [[id:c974fc24-8cb0-42c7-85ca-9ca76a77a1d6][Cartesian products]].
+
+#+NAME: Ordered pairs
+#+begin_definition latex
+Given sets \(X\) and \(Y\), the elements of the Cartesian product \(X \times Y\) of sets \( X \) and \( Y \) are called ordered pairs.
+#+end_definition
