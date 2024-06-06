@@ -1,0 +1,26 @@
+:PROPERTIES:
+:ID:       3c794088-7d49-4614-9f3b-d92acea7739a
+:END:
+#+TITLE: Half-open interval
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+The definition of an half-open interval depends on the notion of an [[id:25fea2d5-0073-4742-b97b-5d88c8c29fe9][interval]], its endpoints, a [[id:53970f58-7d16-431f-a043-dce420e86937][closed interval]] and an [[id:1a249a1e-6223-4431-91a5-f0e9f58baaa4][open interval]].
+
+#+NAME: Half-open interval
+#+begin_definition latex
+A half-open interval has two endpoints and includes only one of them. It is said left-open or right-open depending on whether the excluded endpoint is on the left or on the right. These intervals are denoted by mixing notations for open and closed intervals.
+#+end_definition
+
+An example of a half-open interval that is left-open is \((0,\,1]\) which consists of all real numbers greater than 0 and less than or equal to 1. Another example of a half-open interval that is right-open is \([0,\,1)\) which consists of all real numbers greater than or equal to 0 and less than 1.
+
+Half-open intervals have one of the forms
+
+\begin{align*}
+\begin{aligned}
+(a, b] & =\{x \in \mathbb{R} \mid a<x \leq b\} \\
+{[a, b) } & =\{x \in \mathbb{R} \mid a \leq x<b\} \\
+{[a,+\infty) } & =\{x \in \mathbb{R} \mid a \leq x\} \\
+(-\infty, b] & =\{x \in \mathbb{R} \mid x \leq b\}
+\end{aligned}
+\end{align*}

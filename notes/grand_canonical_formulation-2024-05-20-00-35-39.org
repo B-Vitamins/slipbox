@@ -1,0 +1,63 @@
+:PROPERTIES:
+:ID:       180a5a0d-107b-43f2-acd7-33c5626fde5c
+:END:
+#+TITLE: Grand canonical formulation
+#+FILETAGS: :literature:spop:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+Calculating the partition function by performing all the sums in Eq. (7.16) is a formidable task. Alternatively, we can compute \(Z_{N}\) in the energy basis as
+
+\[
+Z_{N}=\operatorname{tr}\left(\mathrm{e}^{-\beta \mathcal{H}}\right)=\sum_{\left\{\vec{k}_{\alpha}\right\}}^{\prime} \exp \left[-\beta \sum_{\alpha=1}^{N} \mathcal{E}\left(\vec{k}_{\alpha}\right)\right]=\sum_{\left\{n_{\vec{k}}\right\}}^{\prime} \exp \left[-\beta \sum_{\vec{k}} \mathcal{E}(\vec{k}) n(\vec{k})\right] .
+\]
+
+These sums are still difficult to perform due to the restrictions of symmetry on the allowed values of \(\vec{k}\) or \(\left\{n_{\vec{k}}\right\}:\) the occupation numbers \(\left\{n_{\vec{k}}\right\}\) are restricted to \(\sum_{\vec{k}} n_{\vec{k}}=N\), and \(n_{\vec{k}}=0,1,2, \cdots\) for bosons, while \(n_{\vec{k}}=0\) or 1 for fermions. As before, the first constraint can be removed by looking at the grand partition function,
+
+\begin{align*}
+Q_{\eta}(T, \mu) & =\sum_{N=0}^{\infty} \mathrm{e}^{\beta \mu N} \sum_{\left\{n_{\vec{k}}\right\}}^{\prime} \exp \left[-\beta \sum_{\vec{k}} \mathcal{E}(\vec{k}) n_{\vec{k}}\right] \\
+& =\sum_{\left\{n_{\vec{k}}\right\}}^{\eta} \prod_{\vec{k}} \exp \left[-\beta(\mathcal{E}(\vec{k})-\mu) n_{\vec{k}}\right] .
+\end{align*}
+
+The sums over \(\left\{n_{\vec{k}}\right\}\) can now be performed independently for each \(\vec{k}\), subject to the restrictions on occupation numbers imposed by particle symmetry.
+
+- For fermions, \(n_{\vec{k}}=0\) or 1 , and
+
+\[
+\mathcal{Q}_{-}=\prod_{\vec{k}}[1+\exp (\beta \mu-\beta \mathcal{E}(\vec{k}))]
+\]
+
+- For bosons, \(n_{\vec{k}}=0,1,2, \cdots\), and summing the geometric series gives
+
+\[
+\mathcal{Q}_{+}=\prod_{\vec{k}}[1-\exp (\beta \mu-\beta \mathcal{E}(\vec{k}))]^{-1}
+\]
+
+The results for both cases can be presented simultaneously as
+
+\[
+\ln Q_{\eta}=-\eta \sum_{\vec{k}} \ln [1-\eta \exp (\beta \mu-\beta \mathcal{E}(\vec{k}))]
+\]
+
+with \(\eta=-1\) for fermions, and \(\eta=+1\) for bosons.
+
+In the grand canonical formulation, different one-particle states are occupied independently, with a joint probability
+
+\[
+p_{\eta}(\{n(\vec{k})\})=\frac{1}{Q_{\eta}} \prod_{\vec{k}} \exp \left[-\beta(\mathcal{E}(\vec{k})-\mu) n_{\vec{k}}\right]
+\]
+
+The average occupation number of a state of energy \(\mathcal{E}(\vec{k})\) is given by
+
+\[
+\left\langle n_{\vec{k}}\right\rangle_{\eta}=-\frac{\partial \ln \mathcal{Q}_{\eta}}{\partial(\beta \mathcal{E}(\vec{k}))}=\frac{1}{z^{-1} \mathrm{e}^{\beta \mathcal{E}(\vec{k})}-\eta}
+\]
+
+where \(z=\exp (\beta \mu)\). The average values of the particle number and internal energy are then given by
+
+\[
+\left\{\begin{array}{l}
+N_{\eta}=\sum_{\vec{k}}\left\langle n_{\vec{k}}\right\rangle_{\eta}=\sum_{\vec{k}} \frac{1}{z^{-1} \mathrm{e}^{\beta \mathcal{E}(\vec{k})}-\eta} \\
+E_{\eta}=\sum_{\vec{k}} \mathcal{E}(\vec{k})\left\langle n_{\vec{k}}\right\rangle_{\eta}=\sum_{\vec{k}} \frac{\mathcal{E}(\vec{k})}{z^{-1} \mathrm{e}^{\beta \mathcal{E}(\vec{k})}-\eta}
+\end{array} .\right.
+\]
+
+
