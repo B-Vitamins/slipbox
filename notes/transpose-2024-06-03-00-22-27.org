@@ -1,0 +1,24 @@
+:PROPERTIES:
+:ID:       425bdbda-99c8-4f18-8284-8ea844eed0aa
+:END:
+#+TITLE: Transpose
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+#+NAME: Transpose (of a matrix)
+#+begin_definition latex
+The transpose of a matrix \( A = (a_{ij})_{i=1,\ldots,m}^{j=1,\ldots,n} \) is another matrix \(A^{\mathrm{T}} = (a_{ij}^{\mathrm{T}})_{i=1,\ldots,n}^{j=1,\ldots,m}\) such that for all \( (i,\,j) \) we have \(a_{ij}^{\mathrm{T}} = a_{ji}\).
+#+end_definition
+
+#+NAME: Dimensions of the transpose of a matrix
+#+begin_corollary latex
+If \(A\) is an \(m \times n\) matrix, then \(A^{\mathrm{T}}\) is an \(n \times m\) matrix.
+#+end_corollary
+
+#+NAME: Constructing the transpose (of a matrix)
+#+begin_steps latex
+The transpose of a matrix \(A\), denoted by \(A^{\mathrm{T}}\) may be constructed by any one of the following methods:
+1. Reflect \(A\) over its main diagonal (which runs from top-left to bottom-right) to obtain \(A^{\mathrm{T}}\)
+2. Write the rows of \(A\) as the columns of \(A^{\mathrm{T}}\)
+3. Write the columns of \(A\) as the rows of \(A^{\mathrm{T}}\)
+#+end_steps
