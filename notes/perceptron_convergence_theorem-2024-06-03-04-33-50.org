@@ -1,0 +1,120 @@
+:PROPERTIES:
+:ID:       edbb570a-e729-478e-b67c-5b50f3dbbc65
+:END:
+#+TITLE: Perceptron convergence theorem
+#+FILETAGS: :concept:theorem:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+The *perceptron convergence theorem* depends on the notion of [[id:46d7eeb7-d01e-46a8-a4ea-6b27285b265f][linear separability]] and the [[id:124bf23e-b47c-4acb-98f0-5b5fb9f8c85a][perceptron algorithm]].
+
+#+NAME: Perceptron convergence theorem
+#+begin_theorem latex
+Let \(D\) be a linearly separable data set such that \(\max_{(\mathbf{x},\,t) \in D} |\boldsymbol{\phi}(\mathbf{x})|^2 = R\). Suppose that the unit vector \( \mathbf{w}^{\ast} \) separates \( \mathbf{x} \in D \) with \( t = + 1 \) from \( \mathbf{x} \in D \) with \( t = -1 \) in the feature space \( \{\boldsymbol{\phi} (\mathbf{x}) \} \) with a margin \(\gamma\):
+
+\begin{align*}
+\gamma \equiv \min_{(\mathbf{x},\,t) \in D} \langle \mathbf{w}^{\ast},\, \boldsymbol{\phi} t \rangle 
+\end{align*}
+
+Then the perceptron learning algorithm converges after making at most \((R / \gamma)^2\) mistakes, for any learning rate, and any method of sampling from the data set.
+#+end_theorem
+
+The proof relies on [[id:cbf1931a-4dea-4bbe-958b-88f74f2259d3][Cauchy-Schwarz inequality]].
+
+#+NAME: Perceptron convergence theorem
+#+begin_proof latex
+To prove the perceptron convergence theorem, we start by considering the perceptron update rule:
+
+\begin{align*}
+\mathbf{w}^{(\tau+1)} = \mathbf{w}^{(\tau)} + \boldsymbol{\phi}(\mathbf{x}) t
+\end{align*}
+
+where \( \mathbf{w}^{(\tau)} \) is the weight vector at iteration \( \tau \), \( t \) is the true label of the data point \( \mathbf{x} \), and \( \boldsymbol{\phi}(\mathbf{x}) \) is the feature-mapped input vector.
+
+Step 1: Projection Increase
+
+From Step 1, each time a mistake occurs and the perceptron updates, we have:
+
+\[
+\langle \mathbf{w}^{(\tau+1)}, \mathbf{w}^* \rangle = \langle \mathbf{w}^{(\tau)}, \mathbf{w}^* \rangle + t \langle \boldsymbol{\phi}(\mathbf{x}), \mathbf{w}^* \rangle
+\]
+
+Given \( t \langle \boldsymbol{\phi}(\mathbf{x}), \mathbf{w}^* \rangle \geq \gamma \) (because \( t \) is the correct label and \( \boldsymbol{\phi}(\mathbf{x}) \) is on the correct side of the margin defined by \( \mathbf{w}^* \)), each update step due to a mistake increases the projection on \( \mathbf{w}^* \) by at least \( \gamma \):
+
+\[
+\langle \mathbf{w}^{(\tau+1)}, \mathbf{w}^* \rangle \geq \langle \mathbf{w}^{(\tau)}, \mathbf{w}^* \rangle + \gamma
+\]
+
+Now, if we sum this inequality over \( k \) mistakes, where \( k \) indices are from 1 to \( k \), each corresponding to a mistake, we accumulate the increases:
+
+\[
+\langle \mathbf{w}^{(1)}, \mathbf{w}^* \rangle \geq \langle \mathbf{w}^{(0)}, \mathbf{w}^* \rangle + \gamma
+\]
+
+\[
+\langle \mathbf{w}^{(2)}, \mathbf{w}^* \rangle \geq \langle \mathbf{w}^{(1)}, \mathbf{w}^* \rangle + \gamma
+\]
+
+\[
+\vdots
+\]
+
+\[
+\langle \mathbf{w}^{(k)}, \mathbf{w}^* \rangle \geq \langle \mathbf{w}^{(k-1)}, \mathbf{w}^* \rangle + \gamma
+\]
+
+Adding these inequalities together (telescoping sum), we get:
+\[
+\langle \mathbf{w}^{(k)}, \mathbf{w}^* \rangle \geq \langle \mathbf{w}^{(0)}, \mathbf{w}^* \rangle + k\gamma
+\]
+
+Since \( \mathbf{w}^{(0)} \) is typically initialized to zero in the perceptron algorithm, we have \( \langle \mathbf{w}^{(0)}, \mathbf{w}^* \rangle = 0 \). Therefore:
+
+\[
+\langle \mathbf{w}^{(k)}, \mathbf{w}^* \rangle \geq k\gamma
+\]
+
+This relation shows that after \( k \) mistakes, the inner product between the current weights and the optimal weight vector has increased by at least \( k\gamma \), indicating the progress made towards achieving a correct classification. This is an accumulation effect of the corrections made at each mistake.
+
+Step 2: Norm Increase
+
+The norm of the weight vector after the update is:
+
+\begin{align*}
+|\mathbf{w}^{(\tau+1)}|^2 &= |\mathbf{w}^{(\tau)} + \boldsymbol{\phi}(\mathbf{x}) t|^2 \\
+&= |\mathbf{w}^{(\tau)}|^2 + 2 t \langle \mathbf{w}^{(\tau)}, \boldsymbol{\phi}(\mathbf{x}) \rangle + |\boldsymbol{\phi}(\mathbf{x})|^2
+\end{align*}
+
+Since \( \langle \mathbf{w}^{(\tau)}, \boldsymbol{\phi}(\mathbf{x}) \rangle \leq 0 \) when a mistake is made, and \( |\boldsymbol{\phi}(\mathbf{x})|^2 \leq R \):
+
+\begin{align*}
+|\mathbf{w}^{(\tau+1)}|^2 \leq |\mathbf{w}^{(\tau)}|^2 + R
+\end{align*}
+
+Step 3: Cauchy-Schwarz inequality
+
+Combining the results from steps 1 and 2, we observe that after \( k \) mistakes:
+
+\begin{align*}
+\langle \mathbf{w}_k, \mathbf{w}^* \rangle \geq k \gamma \quad \text{and} \quad |\mathbf{w}_k|^2 \leq k R
+\end{align*}
+
+Using the Cauchy-Schwarz inequality, \( |\langle \mathbf{w}_k, \mathbf{w}^* \rangle | \leq |\mathbf{w}_k| |\mathbf{w}^*| \). Substituting and rearranging gives:
+
+\begin{align*}
+k \gamma \leq \sqrt{k} R |\mathbf{w}^*|
+\end{align*}
+
+Squaring both sides and simplifying gives the maximum number of mistakes \( k \) before convergence:
+
+\begin{align*}
+k \leq \left( \frac{R |\mathbf{w}^*|}{\gamma} \right)^2
+\end{align*}
+
+Substituting \( |\mathbf{w}^*| = 1 \), since \( \mathbf{w}^* \) is a unit vector, yields
+
+\begin{align*}
+k \leq \left( R / \gamma \right)^2
+\end{align*}
+
+Thus the perceptron learning algorithm converges after making at most \((R / \gamma)^2\) mistakes, for any learning rate, and any method of sampling from the data set.
+#+end_proof
