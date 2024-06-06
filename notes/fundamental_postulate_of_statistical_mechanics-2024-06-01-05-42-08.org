@@ -1,0 +1,26 @@
+:PROPERTIES:
+:ID:       a3002bd8-e220-438b-9996-e191f963a26d
+:END:
+#+TITLE: Fundamental postulate of statistical mechanics
+#+FILETAGS: :literature:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+In [[id:7c80611f-3eb6-49bd-81cb-108fec858c85][classical statistical mechanics]], [[id:2b3acff9-a43f-4fc5-92d8-a1296fb3f0f7][microstate]] are defined by points in [[id:b3944247-240d-4813-bec6-d98de03e6e99][phase space]], their time evolution governed by a [[id:28fb5913-91f6-4c6d-adec-6355e4b2fa80][Hamiltonian]] \(H(\mu)\). Since the [[id:6b9b1aff-8bc3-4b9f-b616-b8a3940d520c][canonical equations]] conserve the total energy of a given system, all microstates are confined to the surface \(H(\mu)=E\) in phase space. Let us assume that there are no other [[id:950ca53c-51ba-475b-8c03-07d40cdc1991][conserved quantities]], so that all points on this surface are mutually accessible. The *fundamental postulate of statistical mechanics* states that the /equilibrium probability distribution/ of the [[id:170f5ef3-3995-4720-bbdb-c2ca704f0739][the microcanonical ensemble]] is given by
+
+\[
+\boxed{
+p_{(E, \mathbf{x})}(\mu)=\frac{1}{\Omega(E, \mathbf{x})} \cdot \begin{cases}1 & \text { for } H(\mu)=E \\ 0 & \text { otherwise }\end{cases}
+} \tag{1}
+\]
+
+\( p_{(E, \mathbf{x})}(\mu) \) *is in fact the unbiased probability estimate in phase space subject to the constraint of constant energy.* This is why, the fundamental postulate of statistical mechanics is also called /Boltzmann's assumption of equal a priori equilibrium probabilities/. It is an application of the [[id:45b01b6e-984e-446f-a87f-14cdaabd0ed3][principle of maximum entropy]].
+
+#+BEGIN_COMMENT
+This assignment is consistent with, but not required by, [[id:2832b1e9-136e-44eb-b4a8-4523d3beeb55][Liouville's theorem]]. Note that the phase space specifying the microstates \(\mu\) must be composed of canonically conjugate pairs. Under a canonical change of variables, \(\mu \rightarrow \mu^{\prime}\), volumes in phase space are left invariant. The [[id:dad8b579-a898-43e8-a65c-78b8848b00fa][Jacobian]] of such transformations is unity, and the transformed probability, \(p\left(\mu^{\prime}\right)=p(\mu)\left|\partial \mu / \partial \mu^{\prime}\right|\), is again uniform on the surface of constant energy.
+#+END_COMMENT
+
+#+BEGIN_COMMENT
+The normalization factor \(\Omega(E, \mathbf{x})\) is the area of the surface of constant energy \(E\) in phase space. To avoid subtleties associated with densities that are non-zero only on a surface, it is sometimes more convenient to define the microcanonical ensemble by requiring \(E-\Delta \leq H(\mu) \leq E+\Delta\), that is, constraining the energy of the ensemble up to an uncertainty of \(\Delta\). In this case, the accessible phase space forms a shell of thickness \(2 \Delta\) around the surface of energy \(E\). The normalization is now the volume of the shell, \(\Omega^{\prime} \approx 2 \Delta \Omega\). Since \(\Omega\) typically depends exponentially on \(E\), as long as \(\Delta \sim \mathcal{O}\left(E^{0}\right)\) (or even \(\left.\mathcal{O}\left(E^{1}\right)\right)\), the difference between the surface and volume of the shell is negligible in the \(E \propto N \rightarrow \infty\) limit, and we can use \(\Omega\) and \(\Omega^{\prime}\) interchangeably.
+#+END_COMMENT
+
+The laws of [[id:39fcc45a-9b91-42f9-9960-19eab99aae83][thermodynamics]] now follow from (1), provided that we consider macroscopic systems with many [[id:ba8c624f-7b21-41b3-b070-a5f191c1a4ab][degrees of freedom]] (see [[id:2f55f143-4240-44a1-aa3c-3e6fa8a23dee][the zeroth law from the fundamental postulate]], [[id:a38a6c58-9613-4692-9e9e-13511db0335d][the first law from the fundamental postulate]], [[id:fc3c321a-dd87-45a8-a1cf-2d6ee1122e3a][the second law from the fundamental postulate]], and [[id:dd81489d-66b1-49f8-bbbf-f6404eeb890d][the stability conditions from the fundamental postulate]]).
