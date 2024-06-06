@@ -1,0 +1,24 @@
+:PROPERTIES:
+:ID:       954915f7-31f8-4910-8cab-116fead69656
+:END:
+#+TITLE: Boltzmann's entropy formula
+#+FILETAGS: :literature:spop:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+The [[id:954915f7-31f8-4910-8cab-116fead69656][Boltzmann's entropy formula]] refers to the [[id:b91504dd-9976-4ae9-bdfb-4f92903ee24c][entropy]] of the uniform probability distribution that (according to the [[id:a3002bd8-e220-438b-9996-e191f963a26d][fundamental postulate of statistical mechanics]]) gives unbiased estimates of the /equilibrium probability distribution/ 
+
+\[
+\boxed{
+p_{(E, \mathbf{x})}(\mu)=\frac{1}{\Omega(E, \mathbf{x})} \cdot \begin{cases}1 & \text { for } \mathcal{H}(\mu)=E \\ 0 & \text { otherwise }\end{cases}
+}
+\]
+
+for [[id:170f5ef3-3995-4720-bbdb-c2ca704f0739][the microcanonical ensemble]]. It takes the form
+
+\[
+S(E, \mathbf{x})=k_{B} \ln \Omega(E, \mathbf{x})
+\]
+
++ The factor of \(k_{B}\), called the [[id:f4efabf0-abdd-4ab1-9605-89957ce79e09][Boltzmann's constant]], is introduced, in contrast to [[id:7be68499-a66f-4186-b910-cf0dc24c2560][Shannon entropy formula]], so that the entropy has the correct dimensions of energy per degree Kelvin, used in [[id:39fcc45a-9b91-42f9-9960-19eab99aae83][thermodynamics]]. 
+
++ \(\Omega\) and \(S\) are not changed by a [[id:7e231308-1e56-4238-9b09-775c2198c34c][canonical transformation]] in [[id:b3944247-240d-4813-bec6-d98de03e6e99][phase space]]. For a collection of independent systems, the overall allowed phase space is the product of individual ones, that is, \(\Omega_{\text {Total }}=\prod_{i} \Omega_{i}\). The resulting entropy is thus additive, as expected for an [[id:8bff36e1-8fd3-48aa-88ba-8b508a8cdd86][extensive]] [[id:df6bf294-bc8a-441f-b16a-02fe248d59a9][state function]].

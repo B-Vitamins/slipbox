@@ -1,0 +1,7 @@
+:PROPERTIES:
+:ID:       68d1a293-051b-4238-ba7a-1ff958ca5c59
+:END:
+#+TITLE: Ad-hoc postulate of statistical mechanics
+#+FILETAGS: :literature:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
