@@ -1,0 +1,13 @@
+:PROPERTIES:
+:ID:       97207f0a-6ede-4c4b-be52-718fd739c09f
+:END:
+#+TITLE: Shannon's theorem
+#+FILETAGS: :concept:spop:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+#+NAME: Shannon's theorem
+#+begin_theorem latex
+The minimum number of bits necessary to ensure that the percentage of errors in \(N\) trials vanishes in the \(N \rightarrow \infty\) limit is \(\ln _{2} g\). For any non-uniform distribution, this is less than the \(N \ln _{2} M\) bits needed in the absence of any information on relative probabilities.
+#+end_theorem
+
+The *difference per trial* is thus attributed to the /information content/ of the probability distribution, which motivates the definition of  [[id:4b4a37a4-cf1f-4d6b-843f-fd5edffeca0c][information]].
