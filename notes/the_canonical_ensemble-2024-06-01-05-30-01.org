@@ -1,0 +1,56 @@
+:PROPERTIES:
+:ID:       d0ef6177-22a7-45e9-a756-ee12186d4eef
+:END:
+#+TITLE: The canonical ensemble
+#+FILETAGS: :literature:spop:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+Our starting point in [[id:39fcc45a-9b91-42f9-9960-19eab99aae83][thermodynamics]] was a mechanically and adiabatically isolated system which specified a [[id:d351a06e-42c5-4a72-98c9-bbfe8f40afe7][macrostate]] \(M \equiv(E, \mathbf{x})\). The corresponding set of mixed [[id:2b3acff9-a43f-4fc5-92d8-a1296fb3f0f7][microstates]] formed the [[id:170f5ef3-3995-4720-bbdb-c2ca704f0739][the microcanonical ensemble]].
+
+We now allow the input of [[id:5211418e-55fa-4d7e-b2f5-88148f84cc76][heat]] into the system but no external work. The system \(S\) is maintained at a constant [[id:73293bf4-e866-4339-ad08-4258cebfb93f][temperature]] through contact with a reservoir \(\mathrm{R}\). The reservoir is another macroscopic system that is sufficiently large so that its temperature is not changed due to interactions with \(\mathrm{S}\). In this setup, the [[id:73293bf4-e866-4339-ad08-4258cebfb93f][temperature]] \( T \) and the generalized coordinates \(\mathbf{x}\), are fixed, which specifies a [[id:d351a06e-42c5-4a72-98c9-bbfe8f40afe7][macrostate]] \(M \equiv(T, \mathbf{x})\). The corresponding set of mixed [[id:2b3acff9-a43f-4fc5-92d8-a1296fb3f0f7][microstates]] forms the [[id:d0ef6177-22a7-45e9-a756-ee12186d4eef][the canonical ensemble]].
+
+#+ATTR_HTML: :width 400px
+[[file:~/.local/images/kardar-spop-4.7.jpg]]
+#+CAPTION: The system S can be maintained at a temperature T through heat exchanges with the reservoir R.
+
+During [[id:5211418e-55fa-4d7e-b2f5-88148f84cc76][heat]] input at constant temperature with no work input, the [[id:73293bf4-e866-4339-ad08-4258cebfb93f][temperature]] \( T \) and the generalized coordinates \(\mathbf{x}\), are fixed, which specifies a [[id:d351a06e-42c5-4a72-98c9-bbfe8f40afe7][macrostate]] \(M \equiv(T, \mathbf{x})\).
+
+The corresponding set of mixed [[id:2b3acff9-a43f-4fc5-92d8-a1296fb3f0f7][microstate]] forms canonical ensemble (see [[id:bccee305-db73-49bb-a1e5-6379e80dd980][pure states and mixed states]] and [[id:21d62749-69ab-4e25-b366-eb6ff17a2f09][phase space density]]).
+
+The [[id:a3002bd8-e220-438b-9996-e191f963a26d][fundamental postulate of statistical mechanics]] provide unbiased estimates of the /equilibrium [[id:8c833811-3657-4af4-8be5-191d8788b779][joint probability distribution]]/ \(p_{(T,\,\mathbf{x})}\left(\mu_{\mathrm{S}} \otimes \mu_{\mathrm{R}}\right)\) for the joint system \(\mathrm{S} \oplus \mathrm{R}\) whose microstates form a [[id:170f5ef3-3995-4720-bbdb-c2ca704f0739][microcanonical ensemble]] of energy \( E_{\text{Tot}} \gg E_{S} \) is
+
+\[
+p_{(T,\,\mathbf{x})}\left(\mu_{\mathrm{S}} \otimes \mu_{\mathrm{R}}\right)=\frac{1}{\Omega_{\mathrm{S} \oplus \mathrm{R}}\left(E_{\mathrm{Tot}}\right)} \cdot \begin{cases}1 & \text { for } H_{\mathrm{S}}\left(\mu_{\mathrm{S}}\right)+H_{\mathrm{R}}\left(\mu_{\mathrm{R}}\right)=E_{\mathrm{Tot}} \\ 0 & \text { otherwise }\end{cases}
+\]
+
+Marginalization yields
+
+\[
+p\left(\mu_{\mathrm{S}}\right)=\sum_{\left\{\mu_{\mathrm{R}}\right\}} p\left(\mu_{\mathrm{S}} \otimes \mu_{\mathrm{R}}\right).
+\]
+
+Once \(\mu_{\mathrm{S}}\) is specified, the above sum is restricted to microstates of the reservoir with energy \(E_{\text {Tot }}-\mathcal{H}_{\mathrm{S}}\left(\mu_{\mathrm{S}}\right)\). The number of such states is related to the [[id:954915f7-31f8-4910-8cab-116fead69656][entropy]] of the reservoir, and leads to
+
+\[
+p\left(\mu_{\mathrm{S}}\right)=\frac{\Omega_{\mathrm{R}}\left(E_{\mathrm{Tot}}-H_{\mathrm{S}}\left(\mu_{\mathrm{S}}\right)\right)}{\Omega_{\mathrm{S} \oplus \mathrm{R}}\left(E_{\mathrm{Tot}}\right)} \propto \exp \left[\frac{1}{k_{B}} S_{\mathrm{R}}\left(E_{\mathrm{Tot}}-H_{\mathrm{S}}\left(\mu_{\mathrm{S}}\right)\right)\right]
+\]
+
+Since, by assumption, the energy of the system is insignificant compared with that of the reservoir,
+
+\[
+S_{\mathrm{R}}\left(E_{\mathrm{Tot}}-H_{\mathrm{S}}\left(\mu_{\mathrm{S}}\right)\right) \approx S_{\mathrm{R}}\left(E_{\mathrm{Tot}}\right)-H_{\mathrm{S}}\left(\mu_{\mathrm{S}}\right)\,\partial_{E_{\mathrm{R}}} S_{\mathrm{R}} =S_{\mathrm{R}}\left(E_{\mathrm{Tot}}\right)-\frac{H_{\mathrm{S}}\left(\mu_{\mathrm{S}}\right)}{T}
+\]
+
+We drop the subscript \(S\) from here on.
+
+The [[id:45b01b6e-984e-446f-a87f-14cdaabd0ed3][principle of maximum entropy]] provide unbiased estimates of the /equilibrium probability distribution/ \( p_{(T,\,\mathbf{x})}\left(\mu_{\mathrm{S}}\right) \) constrained by the /average energy/ for the *canonical ensemble*:
+
+\[
+\boxed{
+p_{(T,\,\mathbf{x})} (\mu) = \exp(-\beta H(\mu)) / Z(T, \mathbf{x}), \qquad Z(T, \mathbf{x})=\sum_{\{\mu\}} \exp(-\beta H(\mu))
+}
+\]
+
+The normalization \( Z(T, \mathbf{x})=\sum_{\{\mu\}} \exp(-\beta H(\mu)) \) is called the *partition function*, and \(\beta \equiv 1 / k_{B} T\).
+
+See [[id:b969d469-1e70-4ccf-beba-2c5405a01059][the canonical ensemble and Helmholtz free energy]] and [[id:fcf313b3-f373-4316-8a81-21f4affdca37][equivalence of microcanonical and canonical ensembles in the thermodynamic limit]].
