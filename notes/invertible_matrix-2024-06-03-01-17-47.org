@@ -1,0 +1,13 @@
+:PROPERTIES:
+:ID:       54ccf4e4-b753-4557-8510-ffdebea983f6
+:END:
+#+TITLE: Invertible matrix
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+The definition of an invertible matrix relies on the notion of [[id:0d47e29b-541c-437b-a4d6-3d7e7d6a9e16][identity matrix]] and [[id:4ede1be3-51eb-4da2-b77d-105aca77dd0b][matrix multiplication]].
+
+#+NAME: Invertible matrix
+#+begin_definition latex
+A square matrix \( A = (a_{ij})_{i=1,\ldots,n}^{j=1,\ldots,n} \) is called invertible or nonsingular or nondegenerate if there exists a square matrix \( A^{-1} = (a_{ij}^{-1})_{i=1,\ldots,n}^{j=1,\ldots,n} \) such that \( A A^{-1} = A^{-1} A = I \), where \( I \) is the identity matrix and the multiplication used is ordinary matrix multiplication.
+#+end_definition
