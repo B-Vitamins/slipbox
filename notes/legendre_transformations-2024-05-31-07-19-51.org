@@ -1,0 +1,316 @@
+:PROPERTIES:
+:ID:       25bfcf59-6b80-4b68-8fbf-86f2b37930a0
+:END:
+#+TITLE: Legendre transformations
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+The formal definition of the *Legendre transform* requires familiarity with the notion of [[id:dc1d007a-cb98-45cd-b6bd-b036cb0506e1][supremum]], [[id:4982f64d-c2c8-45c0-a1f6-5be68a67dd46][convex set]], and [[id:0cfd956e-fc5d-4b27-8066-c5f8d00d2163][convex function]].
+
+#+NAME: Legendre transform of a function of single variable
+#+ATTR_LATEX: :environment definition
+#+begin_definition latex
+Let \(I \subset \mathbb{R}\) be an interval, and \(f: I \rightarrow \mathbb{R}\) a convex function; then the Legendre transform of \(f\) is the function \(g: I^* \rightarrow \mathbb{R}\) defined by
+
+\begin{align*}
+g\left(y\right)=\sup _{x \in I}\left(y x-f(x)\right), \quad I^*=\left\{y \in \mathbb{R}: g\left(y\right)<\infty\right\}
+\end{align*}
+
+where \( \sup \) denotes the supremum over \(I\), e.g., \(x\) in \(I\) is chosen such that \(y x-f(x)\) is maximized at each \(y\), or \(y\) is such that \(y x-f(x)\) as a bounded value throughout \(x\) exists (e.g., when \(f(x)\) is a linear function).
+#+end_definition
+
++ The transform is always well-defined when \(f(x)\) is a [[id:0cfd956e-fc5d-4b27-8066-c5f8d00d2163][convex function]].
++ The definition above requires \(y x-f(x)\) to be bounded from above in \(I\) in order for the supremum to exist.
+
+#+NAME: Legendre transform of a function of multiple variables
+#+ATTR_LATEX: :environment definition
+#+begin_definition latex
+Let \(X \subset \mathbb{R}^n\) be a convex set, and \(f: X \rightarrow \mathbb{R}\) be a convex function; then the Legendre transform of \( f \) is a function \(g: Y \rightarrow \mathbb{R}\) that has domain
+
+\begin{align*}
+Y=\left\{y \in \mathbb{R}^n: \sup _{x \in X}\left(\left\langle y ,\, x\right\rangle-f(x)\right)<\infty\right\}
+\end{align*}
+
+and is defined by
+
+\begin{align*}
+g\left(y\right)=\sup _{x \in X}\left(\left\langle y ,\, x\right\rangle-f(x)\right), \quad y \in Y,
+\end{align*}
+
+where \(\left\langle y ,\, x\right\rangle\) denotes the dot product of \(y\) and \(x\).
+#+end_definition
+
+* Motivation
+Suppose \(f\) is a function of \(x\). The variations of \( f \) satisfy
+
+\begin{align*}
+\mathrm{d} f=\frac{\mathrm{d} f}{\mathrm{~d} x} \mathrm{~d} x .
+\end{align*}
+
+\( x \) is the /independent variable/ above. Performing a *Legendre transformation* on this function means that we take \(y=\mathrm{D}_x f\) as the /independent variable/, so that the above expression can be written as
+
+\begin{align*}
+\mathrm{d} f = y \mathrm{~d} x.
+\end{align*}
+
+Using the chain rule of differentiation \(\mathrm{d}(u v)=u \mathrm{~d} v+v \mathrm{~d} u\)
+
+\begin{align*}
+\mathrm{d}(x y-f)=x \mathrm{~d} y.
+\end{align*}
+
+If we define \(g = x y - f\), we have \(\mathrm{d} g = x \mathrm{~d} y\), which means
+
+\begin{align*}
+x = \mathrm{D}_y g.
+\end{align*}
+
+Similarly, suppose \(f\) is a function of \(n\) variables \(x_1, x_2, \cdots, x_n\). Then we can perform the Legendre transformation on each one or several variables: we have
+
+\begin{align*}
+\mathrm{d} f=y_1 \mathrm{~d} x_1+y_2 \mathrm{~d} x_2+\cdots+y_n \mathrm{~d} x_n
+\end{align*}
+
+where \(y_i=\partial_{x_i} f\) for \( i = 1, \ldots, n \). If we want to perform Legendre transformation on, e.g. \(x_1\), then we take \(y_1 = \partial_{x_1} f\) together with \(x_2, \cdots, x_n\) as independent variables, and with the chain rule we have
+
+\begin{align*}
+\mathrm{d}\left(f-x_1 y_1\right)=-x_1 \mathrm{~d} y_1+y_2 \mathrm{~d} x_2+\cdots+y_n \mathrm{~d} x_n .
+\end{align*}
+
+so for function \(h\left(y_1, x_2, \cdots, x_n\right)=f\left(x_1, x_2, \cdots, x_n\right)-x_1 y_1\), we have
+
+\begin{align*}
+(\partial_{y_1} h) = -x_1, \quad (\partial_{x_2} h) = y_2, \quad \cdots, \quad (\partial_{x_n} h) = y_n .
+\end{align*}
+
+We can also do this transformation for variables \(x_2, \cdots, x_n\). If we do it to all the variables, then we have
+
+\begin{align*}
+\mathrm{d} h = -x_1 \mathrm{~d} y_1 - x_2 \mathrm{~d} y_2 - \cdots - x_n \mathrm{~d} y_n \text { where } h = f - x_1 y_1 - x_2 y_2 - \cdots - x_n y_n .
+\end{align*}
+* Properties
+** Legendre transform of convex function
+#+NAME: Legendre transform of convex function
+#+begin_theorem latex
+The Legendre transform of a convex function, of which double derivative values are all positive, is also a convex function of which double derivative values are all positive.
+#+end_theorem
+
+#+NAME: Legendre transform of convex function
+#+begin_proof latex
+For a fixed \(y\), let \(\bar{x}\) maximize or make the function \(p x-f(x)\) bounded over \(x\).
+Then the Legendre transformation of \(f\) is \(g(y)=y \bar{x}-f(\bar{x})\). Note that \(\bar{x}\) depends on \(y\).
+\(\mathrm{D}_x(y x-f(x))=p-\mathrm{D}_x f(x)=0\) yields \( \mathrm{D}_x f (\bar{x})=y \). Assuming \(h \equiv\left(\mathrm{D}_x f\right)^{-1}\) exists, \(\mathrm{D}_x f (h(y))=y\) or \(\bar{x}=h(y)\).
+\(h\) is differentiable \( \mathrm{D}_y h(y) = 1/\mathrm{D}_x^2 f(h(y)) \). Thus, \(g(y)=y h(y)-f(h(y))\) is also differentiable.
+We have \( \mathrm{D}_y g = h(y) + [y-\mathrm{D}_x f (h(y))] \cdot \mathrm{D}_y h (y) = h (y) \) where we have used \(\bar{x}=h(y)\).
+It follows that \( \mathrm{D}_y^2 g = \mathrm{D}_y h(y) = 1/\mathrm{D}_x^2 f (h(y)) > 0 \). Thus \(g\) is convex with its double derivatives are all positive.
+#+end_proof
+
+** Identities
+#+NAME: Identities
+#+begin_corollary latex
+Let \( g(y) \) be the Legendre transform of \( f(x) \). Suppose that \(h = (\mathrm{D}_x f)^{-1}\) exists. The following identities hold:
+1) \(\mathrm{D}_x f(\bar{x})= y\),
+2) \(\bar{x}=h(y)\),
+3) \(\mathrm{D}_y g(y)=h(y)\).
+#+end_corollary
+
+** The Legendre transformation is an involution transform.
+
+#+NAME: Legendre transform is an involution transform
+#+begin_theorem latex
+If \( g(y) \) is the Legendre transform of \( f(x) \), then the Legendre transform of \( g(y) \) is \( f(x) \).
+#+end_theorem
+
+#+NAME: Legendre transform is an involution transform
+#+begin_proof latex
+By using the identities \(\mathrm{D}_x f(\bar{x})= y\), \(\bar{x}=h(y)\), and \(\mathrm{D}_y g(y)=h(y)\)
+\begin{align*}
+g{\ast}(z) & = (z \cdot \bar{y} - g(\bar{y})) \rvert_{\mathrm{D}_y g (\bar{h}) = z} \\
+& =h(\bar{y}) \cdot \bar{y}-g(\bar{y}) \\
+& =h(\bar{y}) \cdot \bar{y}-(\bar{y} h(\bar{y})-f(h(\bar{y}))) \\
+& =f(h(\bar{y})) \\
+& =f(z)
+\end{align*}
+#+end_proof
+
+* Examples
+** Example 1: \(f(x)=\exp(x)\).
+
+\(f(x)=\exp(x)\) is a [[id:0cfd956e-fc5d-4b27-8066-c5f8d00d2163][convex]] [[id:b5086a0f-7e0b-4568-a5ff-122c26469c69][continuous]] [[id:99fd37ee-e617-452f-8656-c8485f8ec2c2][differentiable]] [[id:ebf7891f-996b-46c5-8c64-0c419b9c0473][function]] on the [[id:1a249a1e-6223-4431-91a5-f0e9f58baaa4][open interval]] \( \mathbb{R} \).
+
+By definition, the Legendre transform is
+
+\begin{align*}
+g\left(y\right)=\sup _{x \in \mathbb{R}}\left(y x-\exp(x)\right), \quad y \in I^*
+\end{align*}
+
+where \(I^*\) remains to be determined. To evaluate the [[id:dc1d007a-cb98-45cd-b6bd-b036cb0506e1][supremum]], compute the derivative of \(y x-\exp(x)\) with respect to \(x\) and set equal to zero
+
+\begin{align*}
+\mathrm{D}_x \left(y x-\exp(x)\right)=y-\exp(x)=0 .
+\end{align*}
+
+The second derivative \( \mathrm{D}_x^2 \left(y x-\exp(x)\right) = -\exp(x)\) is negative everywhere, so the maximal value is achieved at \(x=\ln \left(y\right)\).
+
+Therefore
+
+\begin{align*}
+g\left(y\right)=y \ln \left(y\right)-\exp(\ln \left(y\right))=y \ln (y) - y
+\end{align*}
+
+and has domain \(I^*=(0, \infty)\). Notice that while \( f(x) \) is defined over the domain \( \mathbb{R} \), \( g(y) \) is defined over the domain \( (0,\,\infty) \).
+** Example 2: \(f(x)=k x^2 / 2, \qquad k > 0\)
+
+\(f(x)=k x^2/2\) is a [[id:0cfd956e-fc5d-4b27-8066-c5f8d00d2163][convex]] [[id:b5086a0f-7e0b-4568-a5ff-122c26469c69][continuous]] [[id:99fd37ee-e617-452f-8656-c8485f8ec2c2][differentiable]] [[id:ebf7891f-996b-46c5-8c64-0c419b9c0473][function]] on the [[id:1a249a1e-6223-4431-91a5-f0e9f58baaa4][open interval]] \( \mathbb{R} \). 
+
+By definition, the Legendre transform is
+
+\begin{align*}
+g\left(y\right)=\sup _{x \in \mathbb{R}}\left(y x-k x^2/2\right), \quad y \in I^*
+\end{align*}
+
+where \(I^*\) remains to be determined. To evaluate the [[id:dc1d007a-cb98-45cd-b6bd-b036cb0506e1][supremum]], compute the derivative of \(y x- k x^2/2\) with respect to \(x\) and set equal to zero
+
+\begin{align*}
+\mathrm{D}_x \left(y x- k x^2 /2\right) = y - k x = 0.
+\end{align*}
+
+The second derivative \( \mathrm{D}_x^2 \left(y x-k x^2/2\right) = - k\) is negative everywhere, so the maximal value is achieved at \(x=y/k\).
+
+Therefore
+
+\begin{align*}
+g\left(y\right)=y \cdot y/k - k \, (y/k)^2 /2 = y^2/2k
+\end{align*}
+
+and has domain \(I^*= \mathbb{R}\).
+** Example 3: \(f(x)=x^p / p, \qquad x > 0, \, p \geq 2\)
+
+\(f(x)= x^p/p\) is a [[id:0cfd956e-fc5d-4b27-8066-c5f8d00d2163][convex]] [[id:b5086a0f-7e0b-4568-a5ff-122c26469c69][continuous]] [[id:99fd37ee-e617-452f-8656-c8485f8ec2c2][differentiable]] [[id:ebf7891f-996b-46c5-8c64-0c419b9c0473][function]] on the [[id:1a249a1e-6223-4431-91a5-f0e9f58baaa4][open interval]] \((0,\,\infty)\).
+
+By definition, the Legendre transform is
+
+\begin{align*}
+g\left(y\right)=\sup _{x \in (0,\,\infty)}\left(y x- x^p/p\right), \quad y \in I^*
+\end{align*}
+
+where \(I^*\) remains to be determined. With \( y \) fixed,  To evaluate the [[id:dc1d007a-cb98-45cd-b6bd-b036cb0506e1][supremum]], compute the derivative of \(y x- x^p/p\) with respect to \(x\) and set equal to zero
+
+\begin{align*}
+\mathrm{D}_x \left(y x- x^p /p\right) = y - x^{p-1} = 0.
+\end{align*}
+
+The second derivative \( \mathrm{D}_x^2 \left(y x- x^p/p\right) = - (p-1) x^{p-2}\) is negative for \( x > 0 \) (recall \( p \geq 2 \)), so the maximal value is achieved at \(x=y^{1/(p-1)}\). It follows that \( I^{\ast} = (0,\, \infty) \).
+
+Therefore
+
+\begin{align*}
+g\left(y\right)=y \cdot y^{1/(p-1)} - y^{p/(p-1)} / p = \frac{p-1}{p} \cdot y^{p/(p-1)} = y^q / q
+\end{align*}
+
+where \( q = p/(p-1) \) or \( 1/p + 1/q = 1 \). \( g(y) \) and has domain \(I^*= (0, \infty)\).
+** Example 4: \(f(x)=x^2\) for \(x \in I=[2,3]\)
+
+\(f(x)=x^2\) is a [[id:0cfd956e-fc5d-4b27-8066-c5f8d00d2163][convex]] [[id:b5086a0f-7e0b-4568-a5ff-122c26469c69][continuous]] [[id:99fd37ee-e617-452f-8656-c8485f8ec2c2][differentiable]] [[id:ebf7891f-996b-46c5-8c64-0c419b9c0473][function]] on the [[id:53970f58-7d16-431f-a043-dce420e86937][closed interval]] \(I = [2,\,3]\).
+
+With \( y \) fixed, \( yx - x^2 \) is [[id:b5086a0f-7e0b-4568-a5ff-122c26469c69][continuous]] in the [[id:53970f58-7d16-431f-a043-dce420e86937][closed interval]] \(I\), hence \( yx - x^2 \) has a [[id:dc1d007a-cb98-45cd-b6bd-b036cb0506e1][supremum]] in \(I\) as a consequence of the [[id:0c4de6be-3c64-4ff2-9043-34beffeda1d9][least upper bound property]]. It follows that \( g(y) < \infty \) for all \( y \in \mathbb{R} \) i.e.,  \(I^*= \mathbb{R}\).
+
+By definition, the Legendre transform is
+
+\begin{align*}
+g\left(y\right)=\sup_{x \in [2,3]}\left(y x- x^2\right), \quad y \in I^*
+\end{align*}
+
+To evaluate the [[id:dc1d007a-cb98-45cd-b6bd-b036cb0506e1][supremum]], compute the derivative of \(y x- x^2\) with respect to \(x\) and set equal to zero
+
+\begin{align*}
+\mathrm{D}_x \left(y x- x^2\right) = y - 2 x = 0.
+\end{align*}
+
+The second derivative \( \mathrm{D}_x^2 \left(y x- x^2\right) = - 2\) is negative for \(x \in I=[2,3]\), so the maximal value is achieved at \(x=y/2\) if and only if \(4 \leq y \leq 6\). We have
+
+\[ \sup_{x \in [2,3]}\left(y x- x^2\right) = 2 y - 4, \qquad \text{for} \quad y < 4, \]
+
+and
+
+\[ \sup_{x \in [2,3]}\left(y x- x^2\right) = 3 y - 9, \qquad \text{for} \quad y > 6. \]
+
+Therefore
+
+\begin{align*}
+g \left(y\right) =
+\begin{cases}
+2 y-4, & y<4 \\
+y^2/4, & 4 \leq y \leq 6 \\
+3 y-9, & y>6
+\end{cases}.
+\end{align*}
+
+** Example 5: \(f(x)=c x\)
+
+\(f(x)=c x\) is a [[id:0cfd956e-fc5d-4b27-8066-c5f8d00d2163][convex]] [[id:b5086a0f-7e0b-4568-a5ff-122c26469c69][continuous]] [[id:99fd37ee-e617-452f-8656-c8485f8ec2c2][differentiable]] [[id:ebf7891f-996b-46c5-8c64-0c419b9c0473][function]] on the [[id:1a249a1e-6223-4431-91a5-f0e9f58baaa4][open interval]] \( \mathbb{R} \). 
+
+By definition, the Legendre transform is
+
+\begin{align*}
+g\left(y\right)=\sup _{x \in \mathbb{R}}\left(y x- c x \right), \quad y \in I^*
+\end{align*}
+
+where \(I^*\) remains to be determined. By definition, the Legendre transform requires the existence of the [[id:dc1d007a-cb98-45cd-b6bd-b036cb0506e1][supremum]]. Clearly \(y x-f(x)=\left(y-c\right) x\) does not have a [[id:dc1d007a-cb98-45cd-b6bd-b036cb0506e1][supremum]] for \(x \in \mathbb{R}\) unless \(y-c=0\).  Hence \(g\) is defined on \(I^*=\{c\}\) and \(g (c) = 0\).
+
+We can do the inverse Legendre transform to recover \( f(x) = cx \): with \( x \) fixed, \(xy-g(y)\) has a [[id:dc1d007a-cb98-45cd-b6bd-b036cb0506e1][supremum]] for \(y \in \{c\}\), hence \(I=\mathbb{R}\). Therefore
+
+\begin{align*}
+f(x) = \sup _{y \in\{c\}}\left(x y - g(y) \right) = c x, \qquad x \in \mathbb{R}.
+\end{align*}
+
+** Example 6: \(f(x)=|x|\)
+
+\(f(x)=|x|\) is a [[id:0cfd956e-fc5d-4b27-8066-c5f8d00d2163][convex]] [[id:b5086a0f-7e0b-4568-a5ff-122c26469c69][continuous]] [[id:ebf7891f-996b-46c5-8c64-0c419b9c0473][function]] that is not everywhere [[id:99fd37ee-e617-452f-8656-c8485f8ec2c2][differentiable]].
+
+By definition, the Legendre transform is
+
+\begin{align*}
+g(y) = \sup_{x \in \mathbb{R}} \left(yx - |x| \right), \qquad y \in I^{\ast}
+\end{align*}
+
+where \(I^*\) remains to be determined. By definition, the Legendre transform requires the existence of the [[id:dc1d007a-cb98-45cd-b6bd-b036cb0506e1][supremum]]. Clearly \(yx - |x|\) does not have a [[id:dc1d007a-cb98-45cd-b6bd-b036cb0506e1][supremum]] for \( x \in \mathbb{R} \) unless \( y \in [-1,\,1] \). Hence \( g \) is defined on \( I^{\ast} = [-1,\,1] \) and \( g(y) = 0 \) for \( y \in I^{\ast} \).
+
+We can do the inverse Legendre transform to recover \( f(x) = \lvert x \rvert \): with \( x \) fixed, \(xy-g(y)\) has a [[id:dc1d007a-cb98-45cd-b6bd-b036cb0506e1][supremum]] for \(y \in [-1,\,1]\), hence \(I=\mathbb{R}\). Therefore
+
+\begin{align*}
+f(x) = \sup _{y \in [-1, \, 1]}\left(x y - g(y) \right) =
+\begin{cases}
+x, & x \geq 0 \\
+-x, & x < 0
+\end{cases}.
+\end{align*}
+** Example 7: \( f(\mathbf{x})=\langle \mathbf{x} ,\, A \mathbf{x} \rangle + c\) for \(\mathbf{x} \in \mathbb{R}^n\) and \( A \) is positive-definite.
+
+\(f(\mathbf{x}) = \langle \mathbf{x},\,  A \mathbf{x} \rangle + c\) is a [[id:0cfd956e-fc5d-4b27-8066-c5f8d00d2163][convex function]] (follow from the  [[id:40a0ea59-9c10-49d6-b507-5680bc631c21][positive-definiteness]] of the matrix \( A \)) (\(\left\langle y ,\, x\right\rangle\) denotes the dot product of \(y\) and \(x\)).
+
+By definition, the Legendre transform is
+
+\begin{align*}
+g\left(y\right)=\sup_{\mathbf{x} \in X}\left(\left\langle y, \ x\right\rangle-\langle \mathbf{x} ,\, A \mathbf{x} \rangle - c\right), \quad y \in Y,
+\end{align*}
+
+where \(Y\) remains to be determined. To evaluate the [[id:dc1d007a-cb98-45cd-b6bd-b036cb0506e1][supremum]], compute the [[id:2ee3368b-cc7b-40bb-b40f-9c9deb59ee81][gradient]] of \(\left\langle y ,\, x\right\rangle-\langle \mathbf{x} ,\, A \mathbf{x} \rangle - c\) with respect to \(\mathbf{x}\) and set equal to zero
+
+\begin{align*}
+\nabla_{\mathbf{x}} \left(\left\langle y ,\, x\right\rangle-\langle \mathbf{x} ,\, A \mathbf{x} \rangle - c\right) = \mathbf{y} - 2 A \mathbf{x} = \mathbf{0}.
+\end{align*}
+
+The [[id:4982698a-3bff-4598-86ef-ffb1921fbc5f][Hessian]] \( \nabla_{\mathbf{x}}^{2} \left(\left\langle y ,\, x\right\rangle-\langle \mathbf{x} ,\, A \mathbf{x} \rangle - c\right) = - 2 A\) is negative everywhere, so the maximal value is achieved at \(\mathbf{x} = A^{-1} \mathbf{y}/2\) where \( A^{-1} \) is the [[id:54ccf4e4-b753-4557-8510-ffdebea983f6][inverse]] matrix of \( A \) (a positive-definite matrix is invertible, see [[id:40a0ea59-9c10-49d6-b507-5680bc631c21][positive-definite matrix]]).
+
+Therefore
+
+\begin{align*}
+g(\mathbf{y})=\frac{1}{4}\left\langle \mathbf{y}, A^{-1} \mathbf{y}\right\rangle-c.
+\end{align*}
+
+\begin{align*}
+g\left(y\right)=y \cdot y/k - k \, (y/k)^2 /2 = y^2/2k
+\end{align*}
+
+and has domain \(Y= \mathbb{R}^{n}\).

@@ -1,0 +1,67 @@
+:PROPERTIES:
+:ID:       431eb2f9-8640-4533-a5f2-a4f5b4d621d0
+:END:
+#+TITLE: Least squares for classification
+#+FILETAGS: :literature:prml:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+In Chapter 3, we considered models that were linear functions of the parameters, and we saw that the minimization of a sum-of-squares error function led to a simple closed-form solution for the parameter values. It is therefore tempting to see if we can apply the same formalism to classification problems. Consider a general classification problem with \(K\) classes, with a 1 -of- \(K\) binary coding scheme for the target vector \(\mathbf{t}\). One justification for using least squares in such a context is that it approximates the conditional expectation \(\mathbb{E}[\mathbf{t} \mid \mathbf{x}]\) of the target values given the input vector. For the binary coding scheme, this conditional expectation is given by the vector of posterior class probabilities. Unfortunately, however, these probabilities are typically approximated rather poorly, indeed the approximations can have values outside the range \((0,1)\), due to the limited flexibility of a linear model as we shall see shortly.
+
+Each class \(\mathcal{C}_{k}\) is described by its own linear model so that
+
+\begin{align*}
+y_{k}(\mathbf{x})=\mathbf{w}_{k}^{\mathrm{T}} \mathbf{x}+w_{k 0} \tag{4.13}
+\end{align*}
+
+where \(k=1, \ldots, K\). We can conveniently group these together using vector notation so that
+
+\begin{align*}
+\mathbf{y}(\mathbf{x})=\widetilde{\mathbf{W}}^{\mathrm{T}} \widetilde{\mathbf{x}} \tag{4.14}
+\end{align*}
+where \(\widetilde{\mathbf{W}}\) is a matrix whose \(k^{\text {th }}\) column comprises the \(D+1\)-dimensional vector \(\widetilde{\mathbf{w}}_{k}=\left(w_{k 0}, \mathbf{w}_{k}^{\mathrm{T}}\right)^{\mathrm{T}}\) and \(\widetilde{\mathbf{x}}\) is the corresponding augmented input vector \(\left(1, \mathbf{x}^{\mathrm{T}}\right)^{\mathrm{T}}\) with a dummy input \(x_{0}=1\). This representation was discussed in detail in Section 3.1. A new input \(\mathbf{x}\) is then assigned to the class for which the output \(y_{k}=\widetilde{\mathbf{w}}_{k}^{\mathrm{T}} \widetilde{\mathbf{x}}\) is largest.
+
+We now determine the parameter matrix \(\widetilde{\mathbf{W}}\) by minimizing a sum-of-squares error function, as we did for regression in Chapter 3. Consider a training data set \(\left\{\mathbf{x}_{n}, \mathbf{t}_{n}\right\}\) where \(n=1, \ldots, N\), and define a matrix \(\mathbf{T}\) whose \(n^{\text {th }}\) row is the vector \(\mathbf{t}_{n}^{\mathrm{T}}\), together with a matrix \(\widetilde{\mathbf{X}}\) whose \(n^{\text {th }}\) row is \(\widetilde{\mathbf{x}}_{n}^{\mathrm{T}}\). The sum-of-squares error function can then be written as
+
+\begin{align*}
+E_{D}(\widetilde{\mathbf{W}})=\frac{1}{2} \operatorname{Tr}\left\{(\widetilde{\mathbf{X}} \widetilde{\mathbf{W}}-\mathbf{T})^{\mathrm{T}}(\widetilde{\mathbf{X}} \widetilde{\mathbf{W}}-\mathbf{T})\right\} \tag{4.15}
+\end{align*}
+
+Setting the derivative with respect to \(\widetilde{\mathbf{W}}\) to zero, and rearranging, we then obtain the solution for \(\widetilde{\mathbf{W}}\) in the form
+
+\begin{align*}
+\widetilde{\mathbf{W}}=\left(\widetilde{\mathbf{X}}^{\mathrm{T}} \widetilde{\mathbf{X}}\right)^{-1} \widetilde{\mathbf{X}}^{\mathrm{T}} \mathbf{T}=\widetilde{\mathbf{X}}^{\dagger} \mathbf{T} \tag{4.16}
+\end{align*}
+
+where \(\widetilde{\mathbf{X}}^{\dagger}\) is the pseudo-inverse of the matrix \(\widetilde{\mathbf{X}}\), as discussed in Section 3.1.1. We then obtain the discriminant function in the form
+
+\begin{align*}
+\mathbf{y}(\mathbf{x})=\widetilde{\mathbf{W}}^{\mathrm{T}} \widetilde{\mathbf{x}}=\mathbf{T}^{\mathrm{T}}\left(\widetilde{\mathbf{X}}^{\dagger}\right)^{\mathrm{T}} \widetilde{\mathbf{x}} \tag{4.17}
+\end{align*}
+
+An interesting property of least-squares solutions with multiple target variables is that if every target vector in the training set satisfies some linear constraint
+
+\begin{align*}
+\mathbf{a}^{\mathrm{T}} \mathbf{t}_{n}+b=0 \tag{4.18}
+\end{align*}
+
+for some constants a and \(b\), then the model prediction for any value of \(\mathbf{x}\) will satisfy the same constraint so that
+
+\begin{align*}
+\mathbf{a}^{\mathrm{T}} \mathbf{y}(\mathbf{x})+b=0 \tag{4.19}
+\end{align*}
+
+Thus if we use a 1 -of- \(K\) coding scheme for \(K\) classes, then the predictions made by the model will have the property that the elements of \(\mathbf{y}(\mathbf{x})\) will sum to 1 for any value of \(\mathbf{x}\). However, this summation constraint alone is not sufficient to allow the model outputs to be interpreted as probabilities because they are not constrained to lie within the interval \((0,1)\).
+
+The least-squares approach gives an exact closed-form solution for the discriminant function parameters. However, even as a discriminant function (where we use it to make decisions directly and dispense with any probabilistic interpretation) it suffers from some severe problems. We have already seen that least-squares solutions lack robustness to outliers, and this applies equally to the classification application, as illustrated in Figure 4.4. Here we see that the additional data points in the right hand figure produce a significant change in the location of the decision boundary, even though these point would be correctly classified by the original decision boundary in the left-hand figure. The sum-of-squares error function penalizes predictions that are 'too correct' in that they lie a long way on the correct side of the decision
+![](https://cdn.mathpix.com/cropped/2024_05_16_3272ed398bb35c2b8696g-206.jpg?height=700&width=1470&top_left_y=251&top_left_x=124)
+
+Figure 4.4 The left plot shows data from two classes, denoted by red crosses and blue circles, together with the decision boundary found by least squares (magenta curve) and also by the logistic regression model (green curve), which is discussed later in Section 4.3.2. The right-hand plot shows the corresponding results obtained when extra data points are added at the bottom left of the diagram, showing that least squares is highly sensitive to outliers, unlike logistic regression.
+
+boundary. In Section 7.1.2, we shall consider several alternative error functions for classification and we shall see that they do not suffer from this difficulty.
+
+However, problems with least squares can be more severe than simply lack of robustness, as illustrated in Figure 4.5. This shows a synthetic data set drawn from three classes in a two-dimensional input space \(\left(x_{1}, x_{2}\right)\), having the property that linear decision boundaries can give excellent separation between the classes. Indeed, the technique of logistic regression, described later in this chapter, gives a satisfactory solution as seen in the right-hand plot. However, the least-squares solution gives poor results, with only a small region of the input space assigned to the green class.
+
+The failure of least squares should not surprise us when we recall that it corresponds to maximum likelihood under the assumption of a Gaussian conditional distribution, whereas binary target vectors clearly have a distribution that is far from Gaussian. By adopting more appropriate probabilistic models, we shall obtain classification techniques with much better properties than least squares. For the moment, however, we continue to explore alternative nonprobabilistic methods for setting the parameters in the linear classification models.
+
+
+
