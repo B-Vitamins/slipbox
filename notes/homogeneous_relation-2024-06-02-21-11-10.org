@@ -1,0 +1,15 @@
+:PROPERTIES:
+:ID:       55412a61-9999-4282-871f-744368c7d5ae
+:END:
+#+TITLE: Homogeneous relation
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+The definition of a homogeneous relation depends on the notion of [[id:8435eda4-5769-4d55-8890-2bf59018ef00][binary relation]].
+
+#+NAME: Homogeneous relation
+#+begin_definition latex
+Let \(R\) be a binary relation over sets \(X\) and \(Y\). When \(X=Y\), the binary relation \( R \) is called a homogeneous relation or endorelation.
+#+end_definition
+
+See [[id:6df53438-8d45-4a80-b969-f30040318d8a][Heterogeneous relation]].
