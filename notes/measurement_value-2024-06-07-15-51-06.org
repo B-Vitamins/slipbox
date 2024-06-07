@@ -1,0 +1,8 @@
+:PROPERTIES:
+:ID:       0e8d8303-1f24-4a88-b550-1da444245036
+:END:
+#+TITLE: Measurement value
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+A *measurement value* is a particular single choice for the value for the [[id:c86a0c88-e04a-4c94-9edb-2b61337411c0][measured]] quantity. This particular single choice for the value for the measured quantity may be optimal in some well-defined sense (e.g., a [[id:bcc0840b-058f-4110-8edf-8fb8bae3983b][mean]], [[id:4f1e5d24-25ed-4b2b-a138-9f385ac0b0b5][median]], or [[id:f192b66f-c1a9-4483-8bdd-8055b0f001c4][mode]]).
