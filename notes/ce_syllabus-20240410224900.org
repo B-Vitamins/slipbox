@@ -30,28 +30,84 @@
 
 * PH 354: Computational Physics
 ** Machine Representation, Precision, and Errors
+:LOGBOOK:
+CLOCK: [2024-06-07 Fri 14:09]--[2024-06-07 Fri 15:43] =>  1:34
+CLOCK: [2024-06-07 Fri 12:41]--[2024-06-07 Fri 13:29] =>  0:48
+CLOCK: [2024-06-07 Fri 12:25]--[2024-06-07 Fri 12:38] =>  0:13
+:END:
 *** Machine representation
 A computer represents numbers in a binary form. Hence, every computer has a limit how small/large a number can be.
 
+#+NAME: Word
+#+begin_definition latex
+In computing, a word is the natural unit of data used by a particular processor design. A word is a fixed-sized datum handled as a unit by the instruction set or the hardware of the processor.
+#+end_definition
 
-- Word length: number of bytes used to store a number. The number of bits processed by a computer's CPU in one go.
-- Most common architecture:
+#+NAME: Word length
+#+begin_definition latex
+The word length is the size of a word (in bits or bytes).
+#+end_definition
 
-Word length \(=4\) bytes \(=32\) bits.
-Word length \(=8\) bytes \(=64\) bits.
-( 1 byte \(=1 \mathrm{~B}=8\) bits: 00000000 )
-Integer representation
++ The majority of the registers in a processor are usually word-sized.
++ The largest datum that can be transferred to and from the working memory in a single operation is a word in many (not all) architectures.
++ The largest possible address size, used to designate a location in memory, is typically a word length.
++ Most common architecture have a word length of 4 bytes (32 bits) or 8 bytes (64 bits).
+*** Fixed-precision arithmetic vs. arbitrary precision arithmetic
++ In *fixed-precision arithmetic*, calculations are performed on numbers whose digits of precision are limited by the /word length/ of the particular processor design. Fixed-precision arithmetic is done using hardware arithmetic (ALU and FPU).
++ In *arbitrary-precision arithmetic*, calculations are performed on numbers whose digits of precision are potentially limited only by the available memory of the host system. Arbitrary-precision arithmetic is usually implemented in software.
++ Fixed-precision arithmetic is faster than arbitrary-precision arithmetic.
++ Arbitrary-precision arithmetic is available out of the box in languages like Lisp, Python, Perl, Haskell, Ruby and Raku.
+*** Integer representation
 - Integers are represented exactly on a computer.
-- Range usually depends only on the machine in C/Fortran!
-- Python is an exception - can represent arbritrarily large integers - show \(2^{10000}\)
-- For most other languages - dependent on the size of the integers:
-integer*4: 32 bits - highest number should be \(2^{32}-1\) But first bit is reserved for sign:
-\begin{align*}
--2^{31}-2^{31}-1
-\end{align*}
-
+- If using /fixed-precision arithmetic/, the range of a integer depends /word length/ of the processor and the /type/ of the integer as defined by the programming language:
+  + 32 bit signed :: The range is from \( - 2^{31} + 1 \) to \( 2^{31} - 1 \).
+  + 32 bit unsigned :: The range is from \( - 2^{32} + 1 \) to \( 2^{32} - 1 \).
+  + 64 bit signed :: The range is from \( - 2^{63} + 1 \) to \( 2^{63} - 1 \).
+  + 64 bit unsigned :: The range is from \( - 2^{64} + 1 \) to \( 2^{64} - 1 \).
+- If using /arbitrary-precision arithmetic/, the range of an integer depends only the memory of the host system.
 *** Floating point representation - single precision
 
+#+begin_src latex :file ~/.local/images/binary32.png :results file graphics
+\begin{tikzpicture}[scale=0.5, transform shape]
+    % Define font sizes
+    \newcommand{\largefont}{\fontsize{20}{22}\selectfont}
+
+    % Draw Sign bit
+    \draw[fill=gray!20] (2,0) rectangle (2.5,0.5);
+    \node at (2.25, 1.5) {\largefont Sign};
+
+    % Draw Exponent bits
+    \foreach \i in {1,...,8}
+        \draw[fill=green!20] (5.0 + \i/2,0) rectangle (5.0 + \i/2+0.5,0.5);
+    \node at (7.5, 1.5) {\largefont Exponent};
+
+    % Draw Mantissa bits
+    \foreach \i in {9,...,31}
+        \draw[fill=red!20] (8.0 + \i/2,0) rectangle (8.0 + \i/2+0.5,0.5);
+    \node at (18.0, 1.5) {\largefont Significand};
+
+    % Label bit sections
+    \node[below] at (2.25, -0.5) {\largefont 1 bit};
+    \node[below] at (7.5, -0.5) {\largefont 8 bits};
+    \node[below] at (18.0, -0.5) {\largefont 23 bits};
+
+\end{tikzpicture}
+#+end_src
+
+#+RESULTS:
+[[file:~/.local/images/binary32.png]]
+
++ Example: \(152,853.5047\)
+  + \(152,853.5047\) has 10 digits of precision
+  + In scientific notation (base-10): \(1.528535047 \times 10^{5}\)
+  + Significand :: 1,528,535,047
+  + Exponent :: 5
+
+\[
+\frac{s}{b^{(p-1)}} \times b^{e}
+\]
+
+where \( s \) is the /significand/, \( p \) is the /precision/ (the number of digits in the significand), \( b \) is the /base/, and \( e \) is the /exponent/.
 For eg. \(123.45 \mathrm{e} 6=0.12345 \mathrm{e} 9\)
 sign: + , exponent: +9 , mantissa: 12345
 \begin{tabular}{|c|c|}
@@ -353,4 +409,3 @@ Use of second order Taylor expansion vs first order can control this error bette
 ** Fourier Methods
 ** Ordinary Differential Equations
 ** Numerical Linear Algebra
-
