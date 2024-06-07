@@ -1,0 +1,9 @@
+:PROPERTIES:
+:ID:       4dff941f-4bce-4e6d-b6d5-aac643b6a6d6
+:END:
+#+TITLE: Fraction
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+A fraction represents a part of a whole or, more generally, any number of equal parts.
+
