@@ -1,0 +1,27 @@
+:PROPERTIES:
+:ID:       c8d07383-6b78-4142-b607-4049a7d1b24d
+:END:
+#+TITLE: Grand potential
+#+FILETAGS: :literature:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
++ *Grand potential* is useful for *isothermal transformations in the absence of mechanical work* (\(\mathrm{đ} W=0\)) *but at constant chemical potential* \( \mu \).
+
++  (chemical potentials measures the work necessary to add additional particles to the system)
+
++ The coordinate set \((T,\,\mu,\,\mathbf{x})\) (the quantities kept constant during an isothermal transformation with no mechanical work and chemical work at constant chemical potential) is most suitable for describing the Grand potential.
+
++ In chemical reactions, and in equilibrium between two phases, the number of particles in a given constituent may change. The change in the number of particles necessarily involves changes in the internal energy, which is expressed in terms of a chemical work \(\mathrm{đ} W=\mu \cdot \mathrm{d} \mathbf{N}\). Here \(\mathbf{N}=\left\{N_{1}, N_{2}, \cdots\right\}\) lists the number of particles of each species, and \(\mu=\left\{\mu_{1}, \mu_{2}, \cdots\right\}\) the associated chemical potentials that measure the work necessary to add additional particles to the system. 
+
+\[
+\delta \mathcal{G} \leq 0, \quad \text { where } \mathcal{G}=E-T S-\mu \cdot \mathbf{N} \tag{1}
+\]
+
+is the /Grand potential/.
+
++ The variations of \( \mathcal{G} \) in [[id:86c7268a-cf65-4f9b-bb99-03d810ee1bf8][thermal equilibrium]] are given by
+
+\[
+\mathrm{d} \mathcal{G}=-S \mathrm{~d} T+\mathbf{J} \cdot \mathrm{d} \mathbf{x}-\mathbf{N} \cdot \mathrm{d} \mu. \tag{2}
+\]
+
