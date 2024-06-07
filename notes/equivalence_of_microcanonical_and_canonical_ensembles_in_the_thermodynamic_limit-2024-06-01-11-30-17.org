@@ -1,0 +1,24 @@
+:PROPERTIES:
+:ID:       fcf313b3-f373-4316-8a81-21f4affdca37
+:END:
+#+TITLE: Equivalence of microcanonical and canonical ensembles in the thermodynamic limit
+#+FILETAGS: :literature:spop:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+Comparison of [[id:170f5ef3-3995-4720-bbdb-c2ca704f0739][the microcanonical ensemble]] and the [[id:d0ef6177-22a7-45e9-a756-ee12186d4eef][the canonical ensemble]].
+
+\begin{table}
+\centering
+\begin{tabular}{llll}
+\hline
+\hline
+Ensemble       & Macrostate          & \(p(\mu)\)                                   & Normalization                         \\ \hline
+Microcanonical & \((E, \mathbf{x})\) & \(\delta_{\Delta}( H(\mu) - E) / \Omega\)       & \(S(E, \mathbf{x}) = k_{B} \ln \Omega\) \\
+Canonical      & \((T, \mathbf{x})\) & \(\exp (-\beta H(\mu)) / Z\)                 & \(F(T, \mathbf{x}) = -k_{B} T \ln Z\) \\
+\hline
+\hline
+\end{tabular}
+\end{table}
+#+CAPTION: Comparison of canonical and microcanonical ensembles
+
+For any finite system, the canonical and microcanonical properties are distinct. However, in the so-called *thermodynamic limit* of \(N \rightarrow \infty\), the canonical energy probability is so sharply peaked around the average energy that the ensemble becomes essentially indistinguishable from the microcanonical ensemble at that energy (see [[id:b969d469-1e70-4ccf-beba-2c5405a01059][the canonical ensemble and Helmholtz free energy]]).
