@@ -1,0 +1,10 @@
+:PROPERTIES:
+:ID:       83ef5d58-c92a-4542-8572-2eae0be53b88
+:END:
+#+TITLE: Fixed-precision arithmetic
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+In *fixed-precision arithmetic*, calculations are performed on numbers whose digits of precision are limited by the /word length/ of the particular processor design.
+
++ Fixed-precision arithmetic is done using hardware arithmetic (ALU and FPU).
