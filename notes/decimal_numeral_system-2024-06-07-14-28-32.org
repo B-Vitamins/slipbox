@@ -1,0 +1,25 @@
+:PROPERTIES:
+:ID:       f96e4749-d37b-441e-b1cf-187996865c41
+:END:
+#+TITLE: Decimal numeral system
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+The *decimal numeral system* is the standard system for denoting integer and non-integer numbers. It is the extension of the [[id:cda5ecbb-2a8d-4029-8ebb-412f142a6ae1][Hindu numeral system]] to non-integer numbers. The contribution of each digit to the value of a number depends on its position in the numeral. That is, the decimal numeral system is a [[id:112a4be9-768e-4deb-945f-cb76da334e03][positional numeral system]]. The way of denoting numbers in the decimal system is called the [[id:1d45a701-e101-4afa-ac89-365825a7d73f][decimal notation]].
+
+/The numbers that may be represented in the decimal numeral system are the decimal fractions./ *Decimal fractions* are [[id:395e698e-8cb5-4553-8fa8-a9442deb2166][simple fractions]] of the form \( a / 10^{n} \) where \( a \) is an integer, and \( n \) is a non-negative integer.
+
+/Decimals are commonly used to approximate real numbers./ Decimal numerals do not allow an exact representation for all [[id:80501989-dde6-43ad-9a46-5dc5a04be5ac][real numbers]]. Nevertheless, they allow approximating every real number to arbitrarily small approximation errors by increasing the number of digits after the decimal separator, provided one has a method for computing the new digits.
+
+#+NAME: Decimal numerals are universal approximators of real numbers
+#+begin_theorem latex
+For every real number \(x\) and every positive integer \(n\), there are two decimals \(L\) and \(u\) with at most \(n\) digits after the decimal mark such that \(L \leq x \leq u\) and \((u-L)=10^{-n}\).
+#+end_theorem
+
+For example, the decimal numeral 3.14159 approximates \(\pi\), being less than \(10^{-5}\) off; so decimals are widely used in science, engineering and everyday life.
+
+/Decimal numerals can represents numbers obtained as a result of a [[id:c86a0c88-e04a-4c94-9edb-2b61337411c0][measurement]] to arbitrary [[id:8e1b22df-e5a5-4a3c-9e75-43d220da9a93][accuracy]] and/or [[id:dab9a2e2-883d-4739-8f9a-12a26573bdb3][precision]]/. Numbers are very often obtained as the result of measurement. As measurements are subject to [[id:0c716c57-42ac-44ea-a464-15bc0bf0aeb1][measurement error]], the result of a measurement is well-represented by a decimal with \(n\) digits after the decimal mark, as soon as the absolute [[id:0c716c57-42ac-44ea-a464-15bc0bf0aeb1][measurement error]] is bounded from above by \(10^{-n}\). The [[id:0e8d8303-1f24-4a88-b550-1da444245036][measurement value]] of [[id:930a461c-3a3e-4d55-a843-78edd15b4867][measurement result]] is often given with a certain number of digits after the decimal point, which indicate the measurement error bounds.
+
+#+begin_example
+Although 0.080 and 0.08 denote the same number according to the decimal numeral system, the decimal numeral 0.080 suggests a measurement with an error less than 0.001, while the numeral 0.08 indicates an absolute error bounded by 0.01. In both cases, the true value of the measured quantity could be, for example, 0.0803 or 0.0796.
+#+end_example
