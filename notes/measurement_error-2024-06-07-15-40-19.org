@@ -1,0 +1,18 @@
+:PROPERTIES:
+:ID:       0c716c57-42ac-44ea-a464-15bc0bf0aeb1
+:END:
+#+TITLE: Measurement error
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+*Measurement error* is the difference between a [[id:0e8d8303-1f24-4a88-b550-1da444245036][measurement value]] of a quantity and its unknown true value. Measurement errors can be divided into two components: [[id:5cfee3e7-d2da-4284-a982-f8a31c925a00][random (measurement) error]] and [[id:ce016961-7839-453f-a0d6-a8181ba9b03c][systematic (measurement) error]].
+
+#+ATTR_HTML: :width 500px
+[[file:~/.local/images/measurement-error.svg]]
+
+Every time a measurement is repeated, slightly different results are obtained. The common statistical model used is that the error has two additive parts:
+
+  1. [[id:ce016961-7839-453f-a0d6-a8181ba9b03c][Systematic error]] which always occurs, with the same value, when we use the instrument in the same way and in the same case.
+  2. [[id:5cfee3e7-d2da-4284-a982-f8a31c925a00][Random error]] which may vary from observation to another.
+
+
