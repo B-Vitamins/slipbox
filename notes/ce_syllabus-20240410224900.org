@@ -4,6 +4,16 @@
 #+TITLE: CE syllabus
 #+FILETAGS: :fleeting: :phd:
 #+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+#+BEGIN: clocktable :maxlevel 2 :scope nil :emphasize nil
+#+CAPTION: Clock summary at [2024-06-07 Fri 22:32]
+| Headline                                  | Time   |      |
+|-------------------------------------------+--------+------|
+| *Total time*                              | *6:59* |      |
+|-------------------------------------------+--------+------|
+| PH 354: Computational Physics             | 6:59   |      |
+| \_  Machine Representation, Precision,... |        | 6:36 |
+| \_  Roots of Equations                    |        | 0:23 |
+#+END
 * PH 202: Statistical Mechanics
 ** Probability Theory
 ** Fundamental Postulate, Phase Space
@@ -31,6 +41,7 @@
 * PH 354: Computational Physics
 ** Machine Representation, Precision, and Errors
 :LOGBOOK:
+CLOCK: [2024-06-07 Fri 18:02]--[2024-06-07 Fri 22:03] =>  4:01
 CLOCK: [2024-06-07 Fri 14:09]--[2024-06-07 Fri 15:43] =>  1:34
 CLOCK: [2024-06-07 Fri 12:41]--[2024-06-07 Fri 13:29] =>  0:48
 CLOCK: [2024-06-07 Fri 12:25]--[2024-06-07 Fri 12:38] =>  0:13
@@ -52,20 +63,25 @@ The word length is the size of a word (in bits or bytes).
 + The largest datum that can be transferred to and from the working memory in a single operation is a word in many (not all) architectures.
 + The largest possible address size, used to designate a location in memory, is typically a word length.
 + Most common architecture have a word length of 4 bytes (32 bits) or 8 bytes (64 bits).
-*** Fixed-precision arithmetic vs. arbitrary precision arithmetic
-+ In *fixed-precision arithmetic*, calculations are performed on numbers whose digits of precision are limited by the /word length/ of the particular processor design. Fixed-precision arithmetic is done using hardware arithmetic (ALU and FPU).
-+ In *arbitrary-precision arithmetic*, calculations are performed on numbers whose digits of precision are potentially limited only by the available memory of the host system. Arbitrary-precision arithmetic is usually implemented in software.
-+ Fixed-precision arithmetic is faster than arbitrary-precision arithmetic.
-+ Arbitrary-precision arithmetic is available out of the box in languages like Lisp, Python, Perl, Haskell, Ruby and Raku.
-*** Integer representation
+**** Integer representation
 - Integers are represented exactly on a computer.
 - If using /fixed-precision arithmetic/, the range of a integer depends /word length/ of the processor and the /type/ of the integer as defined by the programming language:
   + 32 bit signed :: The range is from \( - 2^{31} + 1 \) to \( 2^{31} - 1 \).
   + 32 bit unsigned :: The range is from \( - 2^{32} + 1 \) to \( 2^{32} - 1 \).
   + 64 bit signed :: The range is from \( - 2^{63} + 1 \) to \( 2^{63} - 1 \).
   + 64 bit unsigned :: The range is from \( - 2^{64} + 1 \) to \( 2^{64} - 1 \).
-- If using /arbitrary-precision arithmetic/, the range of an integer depends only the memory of the host system.
-*** Floating point representation - single precision
+- If using /arbitrary-precision arithmetic/, the range of an integer depends only the memory of the host system. Arbitrary-precision arithmetic is available out of the box in languages like Lisp, Python, Perl, Haskell, Ruby and Raku.
+**** Floating-point representation
+
++ To recover a number from its floating-point representation use the formula
+
+  \[
+  \frac{s}{b^{(p-1)}} \times b^{e}
+  \]
+
+where \( s \) is the /significand/, \( p \) is the /precision/ (the number of digits in the significand), \( b \) is the /base/, and \( e \) is the /exponent/.
+
+***** Single precision
 
 #+begin_src latex :file ~/.local/images/binary32.png :results file graphics
 \begin{tikzpicture}[scale=0.5, transform shape]
@@ -97,38 +113,74 @@ The word length is the size of a word (in bits or bytes).
 #+RESULTS:
 [[file:~/.local/images/binary32.png]]
 
++ Range of exponent :: \([-127,\,127]\) (\(2^{127} \sim 10^{+38}\))
++ Single precision :: \(6-7\) decimal places (\(1 / 2^{23} \sim 10^{-7}\))
++ Range max :: \(\pm 3.4 \times 10^{38}\).
++ Range min :: \(\pm 1.4 \times 10^{-45}\).
+
+#+begin_src latex :file ~/.local/images/binary32-overflow-underflow.png :results file graphics
+\begin{tikzpicture}
+    % Draw the number line
+    \draw[thick] (-8,0) -- (8,0);
+
+    % Overflow and Underflow regions
+    \fill[red!20] (-8, -0.5) rectangle (-5.5, 0.5);
+    \fill[red!20] (5.5, -0.5) rectangle (8, 0.5);
+    \fill[red!20] (-1, 0.5) rectangle (1, 1.5);
+
+    % Overflow and Underflow labels
+    \node[text=black] at (-6.75, 0) {\large\textbf{Overflow}};
+    \node[text=black] at (6.75, 0) {\large\textbf{Overflow}};
+    \node[text=black] at (0, 1.0) {\large\textbf{Underflow}};
+
+    % Zero mark
+    \draw[thick] (0,-0.2) -- (0,0.2);
+    \node[below] at (0, -0.5) {\large 0};
+
+    % Exponent labels in green boxes
+    \node[fill=green!20, inner sep=2pt, text=black] at (-5.5, -1) {\large $-10^{38}$};
+    \node[fill=green!20, inner sep=2pt, text=black] at (-1, -1) {\large $-10^{-45}$};
+    \node[fill=green!20, inner sep=2pt, text=black] at (1, -1) {\large $10^{-45}$};
+    \node[fill=green!20, inner sep=2pt, text=black] at (5.5, -1) {\large $10^{38}$};
+
+    % Draw lines to separate regions
+    \draw[thick] (-5.5, -0.5) -- (-5.5, 0.5);
+    \draw[thick] (5.5, -0.5) -- (5.5, 0.5);
+    \draw[thick] (-1, -0.5) -- (-1, 0.5);
+    \draw[thick] (1, -0.5) -- (1, 0.5);
+\end{tikzpicture}
+#+end_src
+
+#+RESULTS:
+[[file:~/.local/images/binary32-overflow-underflow.png]]
+
+
 + Example: \(152,853.5047\)
-  + \(152,853.5047\) has 10 digits of precision
-  + In scientific notation (base-10): \(1.528535047 \times 10^{5}\)
   + Significand :: 1,528,535,047
+  + Precision :: 10
+  + Base :: 10
   + Exponent :: 5
+  + In scientific notation: \(1.528535047 \times 10^{5}\).
 
-\[
-\frac{s}{b^{(p-1)}} \times b^{e}
-\]
++ The numbers that can be represented are *not* /uniformly spaced/; the difference between two consecutive numbers that can be represented varies with their exponent.
 
-where \( s \) is the /significand/, \( p \) is the /precision/ (the number of digits in the significand), \( b \) is the /base/, and \( e \) is the /exponent/.
-For eg. \(123.45 \mathrm{e} 6=0.12345 \mathrm{e} 9\)
-sign: + , exponent: +9 , mantissa: 12345
-\begin{tabular}{|c|c|}
-\hline & \\
-\hline पया| & पा|ा|ा|ा| \\
-\hline
-\end{tabular}
-- Range of exponent: \([-127,127]\left(2^{127} \sim 10^{+38}\right)\)
-- Single precision: \(6-7\) decimal places \(\left(1 / 2^{23} \sim 10^{-7}\right)\)
-- Range max: \(\pm 3.4 \times 10^{38}\).
-- Range min: \(\pm 1.4 \times 10^{-45}\).
-\(7 / 2\)
+#+ATTR_HTML: :width 800px
+[[file:~/.local/images/non-compactness-fp-representation.png]]
+#+CAPTION: Single-precision floating-point numbers on a number line: the green lines mark values that can be represented.
 
-*** Example
+#+ATTR_HTML: :width 800px
+[[file:~/.local/images/non-compactness-fp-representation-2.png]]
+#+CAPTION: Augmented version above showing both signs of representable values
 
-Getting a problem with single precision is quite easy:
-Example: Bohr's radius:
+****** Example: Bohr's radius
++ In it common to encounter problems in which naive application of single precision floating-point arithmetic is inadequate. Consider the formula for Bohr's radius
+
 \begin{align*}
 a_0=\frac{4 \pi \epsilon_0 \hbar^2}{m_e e^2}
 \end{align*}
+
 where
+
 \begin{align*}
 \begin{gathered}
 \epsilon_0=8.85 \times 10^{-12} \mathrm{C}^2 / \mathrm{N} / \mathrm{m}^2 \\
@@ -138,229 +190,562 @@ e=1.60 \times 10^{-19} \mathrm{C}
 \end{gathered}
 \end{align*}
 
-Numerator is: \(1.24 \times 10^{-78}\) and Denominator is: \(2.33 \times 10^{-68}\).
-\(8 / 2\)
++ Numerator is: \(1.24 \times 10^{-78}\) and Denominator is: \(2.33 \times 10^{-68}\).
++ To solve the problem of representation, we can:
+  + Restructure the equation,
+  + Change units - work in atomic units where all these quantites are \(\mathcal{O}(1)\),
+  + Increase precision.
 
-*** What can one do?
+***** Double precision
 
-- Restructure the equation.
-- Change units - work in atomic units where all these quantites are \(\mathcal{O}(1)\).
-- Increase precision!
-\(9 / 2\)
+#+begin_src latex :file ~/.local/images/binary64.png :results file graphics
+\begin{tikzpicture}[scale=0.5, transform shape]
+    % Define font sizes
+    \newcommand{\largefont}{\fontsize{20}{22}\selectfont}
 
-*** Floating point representation - double precision
+    % Draw Sign bit
+    \draw[fill=gray!20] (2,0) rectangle (2.5,0.5);
+    \node at (2.25, 1.5) {\largefont Sign};
 
-\begin{align*}
-10 / 2
-\end{align*}
+    % Draw Exponent bits
+    \foreach \i in {1,...,11}
+        \draw[fill=green!20] (5.0 + \i/2,0) rectangle (5.0 + \i/2+0.5,0.5);
+    \node at (8.0, 1.5) {\largefont Exponent};
 
-Underflow
-\begin{tabular}{r|r|r|r|l} 
-Overflow & & & & \\
-\cline { 2 - 5 } & & 0 & & \\
-& Overflow \\
-\(-10^{308}\) & \(-10^{-324}\) & \(10^{-324}\) & \(10^{308}\)
-\end{tabular}
-- In python, negative overflow set to -inf and positive to +inf.
-■ In python, underflow is set to 0 .
-\(11 / 2\)
+    % Draw Mantissa bits
+    \foreach \i in {9,...,52}
+        \draw[fill=red!20] (8.0 + \i/2,0) rectangle (8.0 + \i/2+0.5,0.5);
+    \node at (25.0, 1.5) {\largefont Significand};
+
+    % Label bit sections
+    \node[below] at (2.25, -0.5) {\largefont 1 bit};
+    \node[below] at (8.0, -0.5) {\largefont 11 bits};
+    \node[below] at (25.0, -0.5) {\largefont 52 bits};
+\end{tikzpicture}
+#+end_src
+
+#+RESULTS:
+[[file:~/.local/images/binary64.png]]
+
++ Range of exponent :: \([-1023,\,1023]\) (\(2^{1023} \sim 10^{+308}\))
++ Double precision :: \(15-16\) decimal places (\(1 / 2^{52} \sim 1.2 \times 10^{-15}\))
++ Range max :: \(\pm 1.78 \times 10^{308}\)
++ Range min :: \(\pm 4.94 \times 10^{-324}\)
+
+#+begin_src latex :file ~/.local/images/binary64-overflow-underflow.png :results file graphics
+\begin{tikzpicture}
+    % Draw the number line
+    \draw[thick] (-8,0) -- (8,0);
+
+    % Overflow and Underflow regions
+    \fill[red!20] (-8, -0.5) rectangle (-5.5, 0.5);
+    \fill[red!20] (5.5, -0.5) rectangle (8, 0.5);
+    \fill[red!20] (-1, 0.5) rectangle (1, 1.5);
+
+    % Overflow and Underflow labels
+    \node[text=black] at (-6.75, 0) {\large\textbf{Overflow}};
+    \node[text=black] at (6.75, 0) {\large\textbf{Overflow}};
+    \node[text=black] at (0, 1.0) {\large\textbf{Underflow}};
+
+    % Zero mark
+    \draw[thick] (0,-0.2) -- (0,0.2);
+    \node[below] at (0, -0.5) {\large 0};
+
+    % Exponent labels in green boxes
+    \node[fill=green!20, inner sep=2pt, text=black] at (-5.5, -1) {\large $-10^{308}$};
+    \node[fill=green!20, inner sep=2pt, text=black] at (-1, -1) {\large $-10^{-324}$};
+    \node[fill=green!20, inner sep=2pt, text=black] at (1, -1) {\large $10^{-324}$};
+    \node[fill=green!20, inner sep=2pt, text=black] at (5.5, -1) {\large $10^{308}$};
+
+    % Draw lines to separate regions
+    \draw[thick] (-5.5, -0.5) -- (-5.5, 0.5);
+    \draw[thick] (5.5, -0.5) -- (5.5, 0.5);
+    \draw[thick] (-1, -0.5) -- (-1, 0.5);
+    \draw[thick] (1, -0.5) -- (1, 0.5);
+\end{tikzpicture}
+#+end_src
+
+#+RESULTS:
+[[file:~/.local/images/binary64-overflow-underflow.png]]
+
+
++ In python, negative overflow set to -inf, positive to +inf, and underflow is set to 0.
 
 *** Machine precision
+#+NAME: Machine precision
+#+begin_definition latex
+The machine epsilon, denoted \(\epsilon_{\text {mach }}\), is the smallest number \(\epsilon\) such that \(f l(1+\epsilon)>1\). Thus, \(f l(1+\delta)=f l(1)=1\) whenever \(|\delta|<\epsilon_{\text {mach }}\).
 
-Machine precision is the smallest number \(\epsilon\) such that the difference between 1 and \(1+\epsilon\) is nonzero, ie., it is the smallest difference between two numbers that the computer recognizes.
-```
+It is the smallest difference between two numbers that the computer recognizes.
+#+end_definition
+
+#+NAME: Machine epsilon
+#+begin_definition latex
+The machine epsilon, denoted \(\epsilon_{\text {mach}}\), is the maximum possible absolute relative error in representing a nonzero real number \(x\) in a floating point number system.
+
+\begin{align*}
+\epsilon_{\text {mach }}=\max _x \frac{|x-f l(x)|}{|x|}
+\end{align*}
+#+end_definition
+
++ Machine epsilon can be used to measure the level of round-off error in the floating-point number system.
+
+#+begin_src python :results output
+import numpy as np
+
 def machineEpsilon(func=float):
     machine_epsilon = func(1)
-    while func(1)+func(machine_epsilon) != func(1):
+    while func(1) + func(machine_epsilon) != func(1):
         machine_epsilon_last = machine_epsilon
-        machine_epsilon = func(machine_epsilon)/func(2)
+        machine_epsilon = func(machine_epsilon) / func(2)
     return machine_epsilon_last
-#print (machineEpsilon(float))
-import numpy as np
-print (machineEpsilon(np.float16))
-print (machineEpsilon(np.float32))
-print (machineEpsilon(np.float64))
-print (machineEpsilon(np.longdouble))
-```
-\(12 / 2\)
+
+# Calculate machine epsilon for different float types
+float_eps = machineEpsilon(float)
+np_float16_eps = machineEpsilon(np.float16)
+np_float32_eps = machineEpsilon(np.float32)
+np_float64_eps = machineEpsilon(np.float64)
+np_longdouble_eps = machineEpsilon(np.longdouble)
+
+# Print the results with appropriate precision
+print(f"float: {float_eps:.16g}")
+print(f"np.float16: {np_float16_eps:.4g}")
+print(f"np.float32: {np_float32_eps:.7g}")
+print(f"np.float64: {np_float64_eps:.16g}")
+print(f"np.longdouble: {np_longdouble_eps:.19g}")
+#+end_src
+
+#+RESULTS:
+: float: 2.220446049250313e-16
+: np.float16: 0.0009766
+: np.float32: 1.192093e-07
+: np.float64: 2.220446049250313e-16
+: np.longdouble: 1.084202172485504434e-19
+
+*** Errors
+**** Round-off errors
+
+#+NAME: Round-off error
+#+begin_definition latex
+The difference between the true value of the number and its value on the computer is called round-off error.
+#+end_definition
+
++ Any floating-point number with significant figures greater than the precision of its representation is subject to round-off errors.
+***** Round-off error on a number behaves similarly to measurement error in a laboratory experiment
+
+#+NAME: Error constant
+#+begin_definition latex
+Assume that the error is a uniformly distributed random number with standard deviation \(\sigma=C x\), where \( C \) is a constant that depends on the floating-point representation under use.
+#+end_definition
+
++ Typically, \( C \simeq b^{-p} \) where \( b \) is the base and \( p \) is the precision. Using base-10, \(C \simeq 10^{-16}\) for double precision floating-point representation.
+
++ When quoting the error on a calculation we typically give the value of the standard deviation \(\sigma\). (We can't give the value of the error \(\epsilon\) itself, since we don't know it-if we did, then we could calculate \(x+\epsilon\) and recover the exact value for the quantity of interest, so there would in effect be no error in the calculation at all.)
++ In many ways the rounding error on a number behaves similarly to measurement error in a laboratory experiment, and the rules for combining errors are the same.
+
+****** Combining rounding error (addition and subtraction)
+Let \(x_1\) and \(x_2\) be random variables with standard deviations \(\sigma_1\) and \(\sigma_2\) respectively. The variance \(\sigma^2\) of the random variable \( x_1 + x_2 \) or \( x_1 - x_2 \) is given by
 
 \begin{align*}
-13 / 2
+\sigma^2=\sigma_1^2+\sigma_2^2 \Longrightarrow \sigma=\sqrt{\sigma_1^2+\sigma_2^2}
 \end{align*}
 
-*** Three types of Errors
+Since \(\sigma_1=C x_1\) and \(\sigma_2=C x_2\)
 
-From Acton's "An Exhortation"
-- Grammatical Using what is NOT in the programming language - the compiler finds these.
-- Run time errors ( \(\mathrm{n}-1\) ) errors; Inversion of logical tests etc. - we have to find them
-- Mirabile visu (strange to view)
-
-They show up only for some input parameters. The code works for the test cases but blows up for some values of parameters!
-Reason: Loss of significant digits (round off errors), unstable algorithms etc.
-\(14 / 2\)
-
-*** Typical Errors
-
-- Round off errors: Any number is represented by a finite number of bits.
-The difference between the true value of the number and its value on the computer is called round off error.
-- Approximation errors/ Truncation errors: From using approximations such as replacing
 \begin{align*}
-\begin{gathered}
-\int_0^{\infty} f(x) d x \text { with } \int_0^L f(x) d x \text { with finite } \mathrm{L} \\
-\frac{d f}{d t} \text { with } \frac{f_{n+1}-f_n}{\Delta t}
-\end{gathered}
+\sigma=\sqrt{C^2 x_1^2+C^2 x_2^2}=C \sqrt{x_1^2+x_2^2}.
 \end{align*}
-\(15 / 2\)
 
-*** Round off Errors
+The result trivially generalizes to the sum of \(N\) numbers \(x_1 \ldots x_N\) with errors having standard deviation \(\sigma_i=C x_i\):
 
-- Loss of significant digits
 \begin{align*}
-\begin{aligned}
+\sigma^2=\sum_{i=1}^N \sigma_i^2=\sum_{i=1}^N C^2 x_i^2=C^2 N \overline{x^2}
+\end{align*}
+
+where \(\overline{x^2}\) is the mean-square value of \(x\). Thus the standard deviation on the final result is
+
+\begin{align*}
+\sigma=C \sqrt{N \overline{x^2}}.
+\end{align*}
+
+The standard deviation behaves as \( \sigma \sim \sqrt{N} \).
+
+The relative error on \(\sum_i x_i\) is given by
+
+\begin{align*}
+\frac{\sigma}{\sum_i x_i}=\frac{C \sqrt{N \overline{x^2}}}{N \bar{x}}=\frac{C}{\sqrt{N}} \frac{\sqrt{\overline{x^2}}}{\bar{x}},
+\end{align*}
+
+where \(\bar{x}=N^{-1} \sum_i x_i\) is the mean value of \(x\).
+
+The relative error behaves as \( \sigma \sim \frac{1}{\sqrt{N}} \).
+
+****** Combining rounding error (multiplication and division)
+Let \(x_1\) and \(x_2\) be random variables with standard deviations \(\sigma_1\) and \(\sigma_2\) respectively. Suppose that \( x_2 \neq 0 \). The variance \(\sigma^2\) of the random variable \( x_1 \cdot x_2 \) or \( x_1 / x_2 \) is given by
+
+\begin{align*}
+\frac{\sigma^2}{x^2}=\frac{\sigma_1^2}{x_1^2}+\frac{\sigma_2^2}{x_2^2} .
+\end{align*}
+
+Since \(\sigma_1=C x_1\) and \(\sigma_2=C x_2\)
+
+\begin{align*}
+\sigma= \sqrt{x^2 \, (C^2 + C^2)} = \sqrt{2} \, C \, x.
+\end{align*}
+
+***** Round-off error leads to loss of significant digits
++ If repeated arithmetic operations are performed on two numbers represented by double precision floating-points and if a number of these operations introduce rounding errors, then there is an erosion of significant figures, the least significant digits being eroded first.
+
++ The loss of significant digits can occur in so many ways that it defies useful classification and lack systematic cures!
+
++ The average accumulated multiplication error after \(\mathrm{N}\) multiplications is \(\sqrt{N} \epsilon_{\text{mach}}\), where \(  \)\( \epsilon_{\text{mach}} \) is the machine epsilon.
+***** A tiny round-off error can grow rapidly if the algorithm being used is not numerically stable
++ Sometimes the problem is not round-off errors but numerical stability of the algorithm. Even tiny round-off errors grow rapidly if algorithm is not numerically stable.
+****** Example 1
+Consider
+
+\begin{align*}
 & x=1000000000000000.0 \\
-& y=1000000000000001.234567
-\end{aligned}
+& y=1000000000000001.2345678901234
 \end{align*}
 
-Calculating \(y-x=1.234567\) but the computer calculates this as \(y-x=1.25\) - instead of 16 figures we only have 2 figures!
-- Loss of precision
+The true difference \( y-x \) is \(1.2345678901234\). Since the number of significant digits in \( y \) is \(29 \) but the precision of double precision floating-point representation is \( 16 \), the computer rounds \( y \) so that
 
-Erosion by repeated rounding errors (least significant digits being eroded first).
-The average accumulated mulipication error after \(\mathrm{N}\) multiplications is \(\sqrt{N} \epsilon_0\).
-- Some times the problem is not round-off errors but numerical stability of the algorithm. Even tiny round-off errors grow rapidly if algorithm is not numerically stable.
-\(16 / 2\)
+\begin{align*}
+& x=1000000000000000.0 \\
+& y=1000000000000001.2
+\end{align*}
 
-*** Loss of significant digits
+The value of \( y - x \) on the computer is thus \(y-x=1.2\). 
 
-Loss of significant digits occurs in so many ways that it defies useful classification and lack systematic cures!
-```
+So instead of 16 significant figures we only have 2 significant figures.
+****** Example 2
++ If the difference between two numbers is very small, comparable with the error on the numbers, i.e., with the accuracy of the computer, then the fractional error can become large, leading to an erosion of significant figures. Here is an example showing a dramatic erosion. Consider the numbers
+
+\begin{align*}
+x=1, \quad y=1+10^{-14} \sqrt{2}.
+\end{align*}
+
+Trivially we see that
+
+\begin{align*}
+10^{14} \, (y-x)=\sqrt{2}.
+\end{align*}
+
+#+begin_src python :results output
 from math import sqrt
 x = 1.0
 y = 1.0 + (1e-14)*sqrt(2)
-print (1e14)*(y-x)
-print sqrt(2)
-1.42108547152
-1.41421356237
-```
-Calculation is accurate only to first decimal place - rest is garbage!
-\(17 / 2\)
+print((1e14)*(y-x))
+print(sqrt(2))
+#+end_src
 
-*** Numerical instability
+#+RESULTS:
+: 1.4210854715202004
+: 1.4142135623730951
 
-Calculate the series \(a_n=\phi^n n=0,1,2 \ldots\) where \(\phi\) is the golden ratio:
++ Only the first digit to the right of the decimal point is significant. The rest is garbage.
+****** Example 3
+Here's an example that illustrates how numerical instability can introduce round-off error.
+
+Suppose we want to calculate the series \(a_n=\phi^n n=0,1,2 \ldots\) where \(\phi\) is the golden ratio:
+
 \begin{align*}
 \phi=\frac{\sqrt{5}-1}{2}
 \end{align*}
-- Method 1: \(a_0=1\) and \(a_n=a_{n-1} \phi\)
-- Method 2: \(a_0=1 a_1=\phi\) and \(a_n=a_{n-2}-a_{n-1}\)
-\(18 / 2\)
+
+We will compare two distinct methods:
+
++ Method 1
 
 \begin{align*}
-19 / 2
+a_n = a_{n-1} \cdot \phi, \quad a_0 = 1.
 \end{align*}
+
+  + Requires only multiplication.
+  + If the initial \(\phi=\phi_c+\epsilon_m\), the error in \(\phi^n\) is \(\sqrt{n} \epsilon_m\).
+
++ Method 2
 
 \begin{align*}
-\begin{aligned}
-&\text { Method } 1 \text { is stable }- \text { while method } 2 \text { is not! }\\
-&20 / 2
-\end{aligned}
+a_n = a_{n-2} - a_{n-1}, \quad a_0 = 1, \, a_1 = \phi.
 \end{align*}
 
-*** Round off errors
-
-- Method 1: Requires only multiplication.
-- If the initial \(\phi=\phi_c+\epsilon_m\), the error in \(\phi^n\) is \(\sqrt{n} \epsilon_m\).
-- Method 2 relies on \(\phi\) being the root of the qudratic: \(\phi^2+\phi-1=0\).
-- If you iterate the above equation, you can get the algorithm. If you simplify each term, you see Fibonacci numbers: \(f_n\).
+  + Relies on \(\phi\) being the root of the qudratic equation: \(\phi^2+\phi-1=0\).
+  + If you iterate the above equation, you can get the algorithm. If you simplify each term, you see Fibonacci numbers: \(f_n\).
 - Then, \(\phi^n=(-1)^{n-1} f_n \phi+(-1)^n f_{n-1}\).
 - Now: \(\phi^n=(-1)^{n-1} f_n\left(\phi_c+\epsilon_m\right)+(-1)^n f_{n-1}\)
 - Error in \(\phi^n\) is \(f_n \epsilon_m\).
 - When \(\phi_c^n \sim f_n \epsilon_m\), the algorithm fails!
-\(21 / 2\)
 
-*** Truncation errors
+Thus Method 1 is stable, while Method 2 is not.
 
-- Dealing with infinity - sometimes change of variables can help (if it does not introduce any singularities). Other times "tails" can be evaluated analytically:
+**** Truncation errors
+
+#+NAME: Truncation error
+#+begin_definition latex
+An error caused by approximating a mathematical process.
+#+end_definition
+
++ Truncation error is better controlled, e.g., by choosing a more accurate method, than round off error which is set by the precision of the floating-point representation being used.
+
+***** Infinite series
+A summation series for \(e^x\) is given by an infinite series such as
+
 \begin{align*}
-\int_0^{\infty} \frac{\sqrt{x}}{x^2+1}=\int_0^L \frac{\sqrt{x}}{x^2+1}+\int_L^{\infty} \frac{\sqrt{x}}{x^2+1}
+e^x=1+x+\frac{x^2}{2!}+\frac{x^3}{3!}+\frac{x^4}{4!}+\cdots
 \end{align*}
-for \(L>1\) :
+
+In reality, we can only use a finite number of these terms as it would take an infinite amount of computational time to make use of all of them. So let's suppose we use only three terms of the series, then
+
 \begin{align*}
-\int_L^{\infty} \frac{\sqrt{x}}{x^2+1} \approx \int_L^{\infty} \frac{1}{x^{\frac{3}{2}}}=\frac{2}{\sqrt{L}}
+e^x \approx 1+x+\frac{x^2}{2!}
 \end{align*}
-- When a continuous problem is discretized - Use of Taylor series expansion etc
-Use of second order Taylor expansion vs first order can control this error better.
-\(22 / 2\)
 
-*** Truncation vs. Round-off error
+In this case, the truncation error is \(\frac{x^3}{3!}+\frac{x^4}{4!}+\cdots\)
 
-- Truncation error controlled by programmer; choose a more accurate method!
-- Round off error is fixed (16 decimal places in DP); less control
-- Typically truncation error » Round-off error; e.g., \(\Delta x=10^{-3}\) then Truncation error for second order expansion \(\sim 10^{-6}\).
-- In general, order of accuracy not the sole metric for a better algorithm - Stability, Robustness, Mathematical properties are more crucial.
-\(23 / 23\)
+****** Example
+*Given the following infinite series, find the truncation error for* \(x=0.75\) *if only the first three terms of the series are used.*
 
+\begin{align*}
+S=1+x+x^2+x^3+\cdots, \quad|x|<1
+\end{align*}
+
+Using only first three terms of the series gives
+
+\begin{align*}
+S_3 & =(1+x+x^2)_{x=0.75} \\
+& =1+0.75+(0.75)^2 \\
+& =2.3125
+\end{align*}
+
+The sum of an infinite geometrical series
+
+\begin{align*}
+S=a+a r+a r^2+a r^3+\cdots, r<1
+\end{align*}
+
+is given by
+
+\begin{align*}
+S=\frac{a}{1-r}
+\end{align*}
+
+For our series, \(a=1\) and \(r=0.75\), to give
+
+\begin{align*}
+S=\frac{1}{1-0.75}=4
+\end{align*}
+
+The truncation error hence is
+
+\begin{align*}
+\mathrm{TE}=4-2.3125=1.6875
+\end{align*}
+
+***** Differentiation
++ Consider the approximation
+
+\begin{align*}
+f^{\prime}(x)=\lim _{h \rightarrow 0} \frac{f(x+h)-f(x)}{h} \approx \frac{f(x+h)-f(x)}{h} \quad h > 0
+\end{align*}
+
++ The error caused by choosing \(h\) to be finite is a truncation error in the mathematical process of differentiation.
+****** Example
+*Find the truncation in calculating the first derivative of* \(f(x)=5 x^3\) at \(x=7\) *using a step size of* \(h=0.25\).
+
+The first derivative of \(f(x)=5 x^3\) is
+
+\begin{align*}
+f^{\prime}(x) & =15 x^2,
+\end{align*}
+
+and at \( x = 7 \),
+
+\begin{align*}
+f^{\prime}(7) & =735.
+\end{align*}
+
+The approximate value is given by
+
+\begin{align*}
+f^{\prime}(7)=\frac{f(7+0.25)-f(7)}{0.25}=761.5625
+\end{align*}
+
+The truncation error is hence
+
+\begin{align*}
+\mathrm{TE}=735-761.5625=-26.5625
+\end{align*}
+
+***** Integration
++ Consider the approximation
+
+\begin{align*}
+\int_a^b f(x) d x= \lim_{N \to \infty} \sum_{i=1}^N f\left(x_i^*\right) \Delta x_i \approx \sum_{i=1}^N f\left(x_i^*\right) \Delta x_i, \quad N < \infty
+\end{align*}
+
+where \(\Delta x_i=x_i-x_{i-1} = (b-a)/ N\) and \(x_i^* \in\left[x_{i-1}, \, x_i\right]\).
+
++ The error caused by choosing \(N\) to be finite is a truncation error in the mathematical process of integration.
+
++ Consider the approximation
+
+\begin{align*}
+\int_0^{\infty} f(x) d x = \lim_{L \to \infty} \int_0^{L} f(x) d x  \approx \int_0^L f(x) d x, \quad L < \infty
+\end{align*}
+
++ The error caused by choosing \(L\) to be finite is a truncation error in the mathematical process of integration.
+
++ In some cases, a change of variables can help avoid this kind of truncation error provided it does not introduce any singularities.
+
++ In some cases the "tails" can be evaluated analytically which also helps avoid truncation errors of this kind (see Example 2).
+
++ Note that this approximation (whether a change of variables or analytic evaluation of the tails eliminates the truncation error or not) still requires the evaluation of \( \int_0^L f(x) d x \) which will introduce truncation errors due the approximation
+
+\begin{align*}
+\int_a^b f(x) d x= \lim_{N \to \infty} \sum_{i=1}^N f\left(x_i^*\right) \Delta x_i \approx \sum_{i=1}^N f\left(x_i^*\right) \Delta x_i, \quad N < \infty.
+\end{align*}
+
+****** Example 1
+*For the integral*
+
+\begin{align*}
+\int_3^9 x^2 d x
+\end{align*}
+
+*find the truncation error if a two-segment left-hand Riemann sum is used with equal width of segments.*
+
+We have the exact value as
+
+\begin{align*}
+\int_3^9 x^2 d x & =\left[\frac{x^3}{3}\right]_3^9 =\left[\frac{9^3-3^3}{3}\right] =234.
+\end{align*}
+
+Using two rectangles of equal width to approximate the area under the curve, the approximate value of the integral
+\begin{align*}
+\int_3^9 x^2 d x &= (x^2)\vert_{x=3} (6-3) + (x^2)\vert_{x=6} (9-6) \\
+& =(3^2) 3 + (6^2) 3 \\
+& =27+108 =135.
+\end{align*}
+
+The truncation error is hence
+
+\begin{align*}
+\mathrm{TE}=234 - 135 = 99.
+\end{align*}
+
+****** Example 2
+ *For the integral*
+
+\begin{align*}
+\int_0^{\infty} \frac{\sqrt{x}}{x^2+1}=\int_0^L \frac{\sqrt{x}}{x^2+1}+\int_L^{\infty} \frac{\sqrt{x}}{x^2+1} \approx \int_0^L \frac{\sqrt{x}}{x^2+1}
+\end{align*}
+
+*show that truncation error introduced by dropping* \( \int_L^{\infty} \frac{\sqrt{x}}{x^2+1} \) *can be made to vanish for* \( L > 1 \).
+
+For \(L>1\) we have
+
+\begin{align*}
+\int_L^{\infty} \frac{\sqrt{x}}{x^2+1} \approx \int_L^{\infty} \frac{1}{x^{\frac{3}{2}}}=\frac{2}{\sqrt{L}},
+\end{align*}
+
+so we can write
+
+\begin{align*}
+\int_0^{\infty} \frac{\sqrt{x}}{x^2+1}=\int_0^L \frac{\sqrt{x}}{x^2+1}+\int_L^{\infty} \frac{\sqrt{x}}{x^2+1} = \int_0^L \frac{\sqrt{x}}{x^2+1} + \frac{2}{\sqrt{L}}.
+\end{align*}
 ** Roots of Equations
-*** Examples of nonlinear equations
+:LOGBOOK:
+CLOCK: [2024-06-07 Fri 22:09]--[2024-06-07 Fri 22:32] =>  0:23
+:END:
 *** Introduction
-*** Behaviour of non-linear function
-*** Some preliminaries
-*** Behaviour of non-linear functions
-*** Some preliminaries
-*** Bounding the solution
-*** Iterative refinement of the solution
-*** Types of methods
-*** Bracketing (closed-domain) method
+
+#+begin_problem
+Given a continuous non-linear function \(f(x)\), find the value \(x=c\) such that \(f(c)=0\).
+#+end_problem
+
++ The non-linear equation \(f(x)=0\) may be an algebraic equation (roots of polynomials) or a transcendental equation.
+
++ Equations of a single variable:
+
+  \[x^2-6 x+9 = 0\]
+
+  \[x^2-\cos (x) = 0\]
+
+  \[\exp (x) \ln (x^2)-x \cos (x) = 0\]
+
++ Equations of two variables:
+
+  \[y(x^3-1) = x^4\]
+
+  \[x^2+y^2 =1\]
+
++ Non-linear equations of a single variable can have no roots at all, have complex root(s) but no real roots, a single real root, two or more simple real roots, two or more multiple roots, some combination of simple root(s) and multiple root(s), etc.
+
++ All non-linear equations have to be solved iteratively. Therefore, we /bound the solution/ - find a rough estimate of the solution that can be used as an initial guess in an iterative process that refines the solution to a specified tolerance. We always start out with a guess - an approximate root.
+
++ Starting from the guess we iterate - the better the guess, the better our chances of converging to the solution and fewer the number of iterations required to converge to the solution. So, it is crucial to do a good job of bounding the solution and obtain a good approximate root.
+
+**** Bounding the solution
++ If possible, the root should be bracketed between two points at which the value of the non-linear function changes sign.
++ Graph the functions to get an idea of the solution and get an approximate solution. In case of multiple solutions it also ensures that you have the solution that you want.
++ To omit the sketch is to throw away the most important problem solving tool you possess - geometric intuition.
++ Incremental search - i.e., start with different guesses and search.
++ Past experience with the problem or a similar one.
++ Solution of a simplified approximate model.
++ Previous solution in a sequence of solutions.
+*** Closed-domain method
 **** Bisection method
-**** Bisection method: algorithm
-**** Bisection method: example
-**** Bisection method: analysis
-**** Bisection method: example
-**** Bisection method: code
-**** Bisection method: example
+***** Introduction
+***** Algorithm
+***** Analysis
+***** Examples
+***** Limitations
 **** False position method
-**** False position method: algorithm
-**** False position method: example
-**** False position method: code
-**** False position method: example
-*** Bracketing (open-domain) method
-**** Newton's method
-**** Newton's method: key idea
-**** Newton's method: algorithm
-**** Newton's method: example
-**** Newton's method: code
-**** Newton's method: example
-**** Possible problems
-**** Newton's method: general comments
+***** Introduction
+***** Algorithm
+***** Analysis
+***** Examples
+***** Limitations
+*** Open-domain method
+**** Newton's method for one variable
+***** Introduction
+***** Algorithm
+***** Analysis
+***** Examples
+***** Limitations
+**** Newton's method for two variables
+***** Introduction
+***** Algorithm
+***** Analysis
+***** Examples
+***** Limitations
 **** Method of secants
-**** Method of secants: algorithm
-**** Method of secants: code
-**** Method of secants: example
+***** Introduction
+***** Algorithm
+***** Analysis
+***** Examples
+***** Limitations
 **** Muller's method
-**** Muller's method: algorithm
+***** Introduction
+***** Algorithm
+***** Analysis
+***** Examples
+***** Limitations
 **** Fixed point iteration
-**** Fixed point iteration: example
-**** Fixed point iteration: code
-**** Fixed point iteration: example
-**** Fixed point iteration: general comments
-**** Fixed point iteration: example
-**** Bracketing methods: general remarks
-**** Complications
-**** More complications
-**** Multiple roots: brute force method
-**** Multiple roots: brute force method
-**** Step size in brute force methods
-**** General comments on roots of polynomials
-**** Bracketing methods: general remarks
-**** Non linear system of equations: two variables
-**** Extension of Newton's method to two variables
-**** Non linear systems of equations: example
-**** Non linear systems of equations: example
-**** Non linear systems of equations: example
-**** Newton's method for two variables: code
-**** Newton's method for two variables: example
-**** Pitfalls of root finding
-**** Some thoughts
+***** Introduction
+***** Algorithm
+***** Analysis
+***** Examples
+***** Limitations
+**** Brute force method
+***** Introduction
+***** Algorithm
+***** Analysis
+****** Step size in brute force methods
+***** Examples
+***** Limitations
 ** Quadrature
 *** Exact integration
 *** Numerical integration
