@@ -1,0 +1,14 @@
+:PROPERTIES:
+:ID:       cda5ecbb-2a8d-4029-8ebb-412f142a6ae1
+:END:
+#+TITLE: Hindu numeral system
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+The Hindu numeral system is a [[id:112a4be9-768e-4deb-945f-cb76da334e03][positional]] base ten numeral system for representing integers.
+
+The system was invented between the 1st and 4th centuries by Indian mathematicians. The system was adopted in Arabic mathematics by the 9th century. It became more widely known through the writings in Arabic of the Persian mathematician Al-Khwārizmī[3] (On the Calculation with Hindu Numerals, c. 825) and Arab mathematician Al-Kindi (On the Use of the Hindu Numerals, c. 830). The system had spread to medieval Europe by the High Middle Ages, notably following Fibonacci's 13th century Liber Abaci; until the evolution of the printing press in the 15th century, use of the system in Europe was mainly confined to Northern Italy.[4]
+
+It is based upon ten glyphs representing the numbers from zero to nine, and allows representing any natural number by a unique sequence of these glyphs. The symbols (glyphs) used to represent the system are in principle independent of the system itself. The glyphs in actual use are descended from Brahmi numerals and have split into various typographical variants since the Middle Ages.
+
+These symbol sets can be divided into three main families: Western Arabic numerals used in the Greater Maghreb and in Europe; Eastern Arabic numerals used in the Middle East; and the Indian numerals in various scripts used in the Indian subcontinent. 
