@@ -1,0 +1,27 @@
+:PROPERTIES:
+:ID:       99fd37ee-e617-452f-8656-c8485f8ec2c2
+:END:
+#+TITLE: Differentiable function
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+The definition of a differentiable function depends on the notion of a [[id:ebf7891f-996b-46c5-8c64-0c419b9c0473][function]], [[id:ddfe594a-c9bf-4440-917c-b63780bfc76c][limit]], and [[id:dc7c5812-7a8f-42c6-bddc-a92fe7d64438][open set]].
+
+#+NAME: Differentiable function
+#+begin_definition latex
+A function \(f: D \rightarrow \mathbb{R}\), defined on an open set \(D \subset \mathbb{R}\), is said to be differentiable at \(a \in D\) if the following limit exists:
+
+\begin{align*}
+f^{\prime}(a)=\lim _{h \rightarrow 0} \frac{f(a+h)-f(a)}{h}
+\end{align*}
+
+This implies that the function is continuous at \(a\).
+This function \(f\) is said to be differentiable on \(U\) if it is differentiable at every point of \(U\). In this case, the derivative of \(f\) is thus a function from \(U\) into \(\mathbb{R}\).
+#+end_definition
+
+The following corollary follows from the definition of a differentiable function. It depends on the notion of a [[id:b5086a0f-7e0b-4568-a5ff-122c26469c69][continuous function]].
+
+#+NAME: Differentiable functions are continuous functions
+#+begin_corollary latex
+If a function \(f: D \rightarrow \mathbb{R}\), defined on an open set \(D \subset \mathbb{R}\), is differentiable at \( a \in D \), then it is continuous at \( a \in D \). The converse is not necessarily true: a continuous function is not necessarily differentiable.
+#+end_corollary
