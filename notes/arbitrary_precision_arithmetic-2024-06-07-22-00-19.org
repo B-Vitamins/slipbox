@@ -1,0 +1,12 @@
+:PROPERTIES:
+:ID:       c91ae8bd-45c2-436a-b378-f7927a80f12f
+:END:
+#+TITLE: Arbitrary-precision arithmetic
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+In *arbitrary-precision arithmetic*, calculations are performed on numbers whose digits of precision are potentially limited only by the available memory of the host system.
+
++ Arbitrary-precision arithmetic is usually implemented in software.
++ Compared to [[id:83ef5d58-c92a-4542-8572-2eae0be53b88][fixed-precision arithmetic]], it is slower.
++ Arbitrary-precision arithmetic is available out of the box in languages like Lisp, Python, Perl, Haskell, Ruby and Raku.
