@@ -1,0 +1,18 @@
+:PROPERTIES:
+:ID:       0c4de6be-3c64-4ff2-9043-34beffeda1d9
+:END:
+#+TITLE: Least upper bound property (for real numbers)
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+The theorem on Least upper bound property (for real numbers) depends on the notions [[id:e15f8f6e-7897-42a0-a7d3-cb70193f9a67][upper bound]] and [[id:dc1d007a-cb98-45cd-b6bd-b036cb0506e1][supremum]].
+
+#+NAME: Least upper bound property (for real numbers)
+#+begin_theorem latex
+Let \(S\) be a non-empty set of real numbers. The least-upper-bound property states that any non-empty set of real numbers that has an upper bound must have a least upper bound in real numbers.
+#+end_theorem
+
+
+
+
+
