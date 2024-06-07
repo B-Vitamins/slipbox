@@ -1,0 +1,22 @@
+:PROPERTIES:
+:ID:       0cfd956e-fc5d-4b27-8066-c5f8d00d2163
+:END:
+#+TITLE: Convex function
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+#+NAME: Convex function
+#+begin_definition latex
+Let \(X\) be a convex subset of a real vector space and let \(f: X \rightarrow \mathbb{R}\) be a function.
+Then \(f\) is called convex if and only if any of the following equivalent conditions hold:
+1. For all \(0 \leq t \leq 1\) and all \(x_1, x_2 \in X\): \( f\left(t x_1+(1-t) x_2\right) \leq t f\left(x_1\right)+(1-t) f\left(x_2\right) \)
+2. For all \(0<t<1\) and all \(x_1, x_2 \in X\) such that \(x_1 \neq x_2\) : \( f\left(t x_1+(1-t) x_2\right) \leq t f\left(x_1\right)+(1-t) f\left(x_2\right) \)
+#+end_definition
+
+#+BEGIN_COMMENT
+The right hand side represents the straight line between \(\left(x_1, f\left(x_1\right)\right)\) and \(\left(x_2, f\left(x_2\right)\right)\) in the graph of \(f\) as a function of \(t\); increasing \(t\) from 0 to 1 or decreasing \(t\) from 1 to 0 sweeps this line. Similarly, the argument of the function \(f\) in the left hand side represents the straight line between \(x_1\) and \(x_2\) in \(X\) or the \(x\)-axis of the graph of \(f\). So, this condition requires that the straight line between any pair of points on the curve of \(f\) to be above or just meets the graph.
+#+END_COMMENT
+
+#+BEGIN_COMMENT
+The difference of this second condition with respect to the first condition above is that this condition does not include the intersection points (for example, \(\left(x_1, f\left(x_1\right)\right)\) and \(\left(x_2, f\left(x_2\right)\right)\) ) between the straight line passing through a pair of points on the curve of \(f\) (the straight line is represented by the right hand side of this condition) and the curve of \(f\); the first condition includes the intersection points as it becomes \(f\left(x_1\right) \leq f\left(x_1\right)\) or \(f\left(x_2\right) \leq f\left(x_2\right)\) at \(t=0\) or 1 , or \(x_1=x_2\). In fact, the intersection points do not need to be considered in a condition of convex using \( f\left(t x_1+(1-t) x_2\right) \leq t f\left(x_1\right)+(1-t) f\left(x_2\right) \) because \(f\left(x_1\right) \leq f\left(x_1\right)\) and \(f\left(x_2\right) \leq f\left(x_2\right)\) are always true (so not useful to be a part of a condition).
+#+END_COMMENT
