@@ -1,0 +1,15 @@
+:PROPERTIES:
+:ID:       ebf7891f-996b-46c5-8c64-0c419b9c0473
+:END:
+#+TITLE: Function
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+The definition of a function depends on the notion of [[id:8435eda4-5769-4d55-8890-2bf59018ef00][binary relation]].
+
+#+NAME: Function
+#+begin_definition latex
+A function with domain \(X\) and codomain \(Y\) is a binary relation \(R\) between \(X\) and \(Y\) that satisfies:
+1) For every \(x\) in \(X\) there exists \(y\) in \(Y\) such that \((x,\, y) \in R\),
+2) \((x,\, y) \in R\) and \((x, \,z) \in R\) imply \(y=z\).
+#+end_definition
