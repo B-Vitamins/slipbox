@@ -1,0 +1,12 @@
+:PROPERTIES:
+:ID:       da6d6183-9bb7-4266-ae19-67c7012cdbd8
+:END:
+#+TITLE: Observation
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+*Observation* is an act or instance of noticing or perceiving and the acquisition of [[id:4b4a37a4-cf1f-4d6b-843f-fd5edffeca0c][information]] from a primary source by use of instruments.
+
+The instrument may be /natural/, such as the sense organs in living beings, or /artificial/ such as scientific instruments.
+
+Observations can be /qualitative/, that is, the absence or presence of a property is noted and the observed phenomenon described, or /quantitative/ if a numerical value is attached to the observed phenomenon by counting or [[id:c86a0c88-e04a-4c94-9edb-2b61337411c0][measurement]].
