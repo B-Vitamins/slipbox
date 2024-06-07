@@ -1,0 +1,44 @@
+:PROPERTIES:
+:ID:       1d45a701-e101-4afa-ac89-365825a7d73f
+:END:
+#+TITLE: Decimal notation
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+For writing numbers, the [[id:f96e4749-d37b-441e-b1cf-187996865c41][decimal numeral system]] uses:
+
+1) ten decimal digits 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
+2) a decimal separator ".",
+3) a minus sign "\(-\)" for negative numbers.
+
+A decimal numeral consists of
+
+\begin{align*}
+a_m a_{m-1} \ldots a_0 \cdot b_1 b_2 \ldots b_n,
+\end{align*}
+
+and represents the number
+
+\begin{align*}
+a_m 10^m+a_{m-1} 10^{m-1}+\cdots+a_0 10^0+\frac{b_1}{10^1}+\frac{b_2}{10^2}+\cdots+\frac{b_n}{10^n} .
+\end{align*}
+
+1) either a (finite) sequence of digits, where the entire sequence represents an [[id:aa19fdce-a3c0-44c7-a6a8-34c10ce9012d][integer]]
+
+\begin{align*}
+a_m a_{m-1} \ldots a_0
+\end{align*}
+
+2) or a decimal mark separating two sequences of digits
+
+An example of the \( a_m a_{m-1} \ldots a_0 \) is 42. An example of the \( a_m a_{m-1} \ldots a_0 \cdot b_1 b_2 \ldots b_n \) representation is 2.718.
+
+If \(m>0\), that is, if the first sequence contains at least two digits, it is generally assumed that \(a_m \neq 0\), i.e., the first digit is not zero. Leading zeros may be added before the decimal mark without changing the represented number. For example: 3.14, 03.14, and 003.14 are the same.
+
+If \( n > 0 \), that is, if the second sequence contains at least two digits, it is generally assumed that \( b_n \neq 0 \), i.e., the last digit is not zero. Trailing zeros may be added after the decimal mark without changing the represented number. For example: 1.618, 1.6180, and 1.61800 are the same.
+
+For representing a negative number, a minus sign is placed before \(a_m\).
+
+The /integral part/ of a decimal numeral is the integer written to the left of the decimal separator. For a nonnegative decimal numeral, it is the largest integer that is not greater than the decimal.
+
+The /fractional part/ of a decimal numeral is the part from the decimal separator to the right. The fractional part is equal to the difference between the numeral and its integral part.
