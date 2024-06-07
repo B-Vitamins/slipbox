@@ -158,7 +158,7 @@ To answer the question, imagine forming sequential arrangements of all the balls
 #+end_src
 
 #+RESULTS:
-[[file:4.2.2.png]]
+[[file:~/.local/images/4.2.2.png]]
 
 The quantity \(\Omega\) - the number of ways to distribute \(M\) quanta of energy over N oscillators - was called /complexions/ by Plank. For a fixed energy \(E\), we have \(M = E/\hbar \omega - N/2\). The entropy as a function of energy is then given by
 

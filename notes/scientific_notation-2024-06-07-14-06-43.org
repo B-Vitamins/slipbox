@@ -1,0 +1,7 @@
+:PROPERTIES:
+:ID:       ec67185a-ec8e-45ee-9b67-51c040970e32
+:END:
+#+TITLE: Scientific notation
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
