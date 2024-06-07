@@ -1,0 +1,8 @@
+:PROPERTIES:
+:ID:       303fcccc-6a83-442d-ae54-860f043a5b0e
+:END:
+#+TITLE: Relative measurement uncertainty
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+The *relative measurement uncertainty* is the ratio of the [[id:e578ae1b-f24b-4de2-9e0a-292909cb8cfd][measurement uncertainty]] to the absolute value of the [[id:0e8d8303-1f24-4a88-b550-1da444245036][measurement value]] (provided the measurement value is nonzero).
