@@ -1,0 +1,13 @@
+:PROPERTIES:
+:ID:       49435674-c64b-4a19-8c7e-81c15a00c8d2
+:END:
+#+TITLE: Lower bound
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+The definition of lower bound depends on the notion of [[id:c4fd37c6-3784-44d2-84ec-a75d01bc6b17][partial order]].
+
+#+NAME: Lower bound
+#+begin_definition latex
+A lower bound of a subset \(S\) of a partial ordered set \((P, \leq)\) is an element \(a\) of \(P\) such that \(a \leq x\) for all \(x \in S\).
+#+end_definition
