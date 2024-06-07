@@ -1,0 +1,8 @@
+:PROPERTIES:
+:ID:       e578ae1b-f24b-4de2-9e0a-292909cb8cfd
+:END:
+#+TITLE: Measurement uncertainty
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+The *measurement uncertainty* is the expression of the [[id:d659aa10-b0d0-4826-aa4d-73bd15048ba0][statistical dispersion]] of the [[id:0e8d8303-1f24-4a88-b550-1da444245036][measurement value]] attributed to a [[id:c86a0c88-e04a-4c94-9edb-2b61337411c0][measured]] quantity. It reflects incomplete knowledge of the measurement value. It is a non-negative parameter. The measurement uncertainty is often taken as the [[id:44cf081f-b87d-44db-a78f-c39cc0dcde03][standard deviation]] of a state-of-knowledge [[id:f39a8683-abf8-4620-957d-b20795422d2d][probability distribution]] over the possible values that could be attributed to a measured quantity. That measurement uncertainty has a probabilistic basis is by international agreement.
