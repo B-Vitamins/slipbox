@@ -1,0 +1,42 @@
+:PROPERTIES:
+:ID:       8435eda4-5769-4d55-8890-2bf59018ef00
+:END:
+#+TITLE: Binary relation
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+The definition of a binary relation depends on the notion of [[id:c974fc24-8cb0-42c7-85ca-9ca76a77a1d6][Cartesian products]].
+
+#+NAME: Binary relation
+#+begin_definition latex
+A binary relation \(R\) over sets \(X\) and \(Y\) is a subset of its Cartesian product \(X \times Y\).
+#+end_definition
+
+#+NAME: Domain
+#+begin_definition latex
+Let \(R\) be a binary relation over sets \(X\) and \(Y\). The set \(X\) is called the domain or set of departure of \(R\).
+#+end_definition
+
+#+NAME: Codomain
+#+begin_definition latex
+Let \(R\) be a binary relation over sets \(X\) and \(Y\). The set \(Y\) is called the codomain or set of destination of \(R\).
+#+end_definition
+
+Let \(R\) be a binary relation over sets \(X\) and \(Y\). The statement \((x, y) \in R\) reads "\(x\) is \(R\) related to \(y^{\prime \prime}\) and is denoted by \( x\,R\,y \).
+
+#+NAME: Active domain
+#+begin_definition latex
+Let \(R\) be a binary relation over sets \(X\) and \(Y\). The active domain or domain of definition of \(R\) is the set of all \(x\) such that \(x \, R \, y\) for at least one \(y\).
+#+end_definition
+
+#+NAME: Active codomain
+#+begin_definition latex
+Let \(R\) be a binary relation over sets \(X\) and \(Y\). The active codomain or codomain of definition or image or range of \(R\) is the set of all \(y\) such that \(x R y\) for at least one \(x\). The field of \(R\) is the union of its domain of definition and its codomain of definition.[10][11][12]
+#+end_definition
+
+#+NAME: Field
+#+begin_definition latex
+Let \(R\) be a binary relation over sets \(X\) and \(Y\). The field of \(R\) is the union of its active domain and its active codomain.
+#+end_definition
+
+In a binary relation, the order of the elements is important; if \(x \neq y\) then \(y \, R \, x\) can be true or false independently of \(x \, R \, y\). As an example, 3 divides 9 , but 9 does not divide 3.
