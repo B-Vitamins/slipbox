@@ -1,0 +1,22 @@
+:PROPERTIES:
+:ID:       ac1c54f6-e58b-4e55-b373-e4beed0e3ce7
+:END:
+#+TITLE: Accuracy and precision
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+Given a set of data points from repeated [[id:c86a0c88-e04a-4c94-9edb-2b61337411c0][measurements]] of the same quantity:
+
++ the set is called [[id:8e1b22df-e5a5-4a3c-9e75-43d220da9a93][accurate]] if their average is close to the true value of the quantity being measured,
++ the set is called [[id:dab9a2e2-883d-4739-8f9a-12a26573bdb3][precision]] if their [[id:44cf081f-b87d-44db-a78f-c39cc0dcde03][standard deviation]] is relatively small.
+
+#+ATTR_HTML: :width 500px
+[[file:~/.local/images/accuracy-and-precision.svg]]
+
+A *measurement system* can be accurate but not precise, precise but not accurate, neither, or both. For example, if an experiment contains a systematic error, then increasing the sample size generally increases precision but does not improve accuracy. The result would be a consistent yet inaccurate string of results from the flawed experiment. Eliminating the systematic error improves accuracy but does not change precision.
+
+A measurement system is considered /valid/ if it is both accurate and precise.
+
+#+BEGIN_COMMENT
+The field of statistics, where the interpretation of measurements plays a central role, prefers to use the terms bias and variability instead of accuracy and precision: bias is the amount of inaccuracy and variability is the amount of imprecision.
+#+END_COMMENT
