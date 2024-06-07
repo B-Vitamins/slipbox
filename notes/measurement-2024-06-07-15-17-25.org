@@ -1,0 +1,11 @@
+:PROPERTIES:
+:ID:       c86a0c88-e04a-4c94-9edb-2b61337411c0
+:END:
+#+TITLE: Measurement
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+#+NAME: Measurement (classical)
+#+begin_definition latex
+Measurement is the determination or estimation of ratios of quantities.
+#+end_definition
