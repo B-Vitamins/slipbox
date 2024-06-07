@@ -1,0 +1,14 @@
+:PROPERTIES:
+:ID:       4982f64d-c2c8-45c0-a1f6-5be68a67dd46
+:END:
+#+TITLE: Convex set
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+The formal definition of a *Convex set* requires the notion of a [[id:9c711ea1-c9de-4e90-96cf-e7710bd11aeb][vector space]].
+
+#+NAME: Convex set
+#+ATTR_LATEX: :environment definition
+#+begin_definition latex
+Let \(S\) be a vector space over the real numbers. A subset \(C\) of \(S\) is convex if, for all \(x\) and \(y\) in \(C\), the line segment connecting \(x\) and \(y\) is included in \(C\) i.e., \((1-t) x+ ty\) belongs to \(C\) for all \(x, y\) in \(C\) and \(t\) in the interval \([0,1]\).
+#+end_definition
