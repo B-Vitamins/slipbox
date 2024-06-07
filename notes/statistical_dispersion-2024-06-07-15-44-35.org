@@ -1,0 +1,7 @@
+:PROPERTIES:
+:ID:       d659aa10-b0d0-4826-aa4d-73bd15048ba0
+:END:
+#+TITLE: Statistical dispersion
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+

@@ -1,0 +1,8 @@
+:PROPERTIES:
+:ID:       8e1b22df-e5a5-4a3c-9e75-43d220da9a93
+:END:
+#+TITLE: Accuracy
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+Accuracy is a quantification of [[id:ce016961-7839-453f-a0d6-a8181ba9b03c][systematic error]], a type of [[id:0c716c57-42ac-44ea-a464-15bc0bf0aeb1][measurement error]]. It is a measure of how close a given set of [[id:c86a0c88-e04a-4c94-9edb-2b61337411c0][measurements]] are to their /true value/ (see [[id:ac1c54f6-e58b-4e55-b373-e4beed0e3ce7][Accuracy and precision]]). Eliminating systematic error improves accuracy.
