@@ -1,0 +1,16 @@
+:PROPERTIES:
+:ID:       ce016961-7839-453f-a0d6-a8181ba9b03c
+:END:
+#+TITLE: Systematic (measurement) error
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+*Systematic error* are errors in [[id:c86a0c88-e04a-4c94-9edb-2b61337411c0][measurement]] that are not determined by chance but are introduced by repeatable processes inherent to the specific instrument of [[id:c86a0c88-e04a-4c94-9edb-2b61337411c0][measurement]] in use. It is a type of [[id:0c716c57-42ac-44ea-a464-15bc0bf0aeb1][measurement error]], the other being [[id:5cfee3e7-d2da-4284-a982-f8a31c925a00][random (measurement) error]].
+
+/Systematic errors always affect the results of an experiment in a predictable direction and typically with a constant magnitude/. They are also often proportional to the true value.
+
+/Systematic errors are not universal to an act of measurement./ They are caused by imperfect calibration of measurement instruments or imperfect methods of observation, or interference of the environment with the measurement process, and . Incorrect zeroing of an instrument is an example of systematic error in instrumentation.
+
+/Systematic errors can be eliminated (from the [[id:c86a0c88-e04a-4c94-9edb-2b61337411c0][measurement]] process)./ This can be done if the cause of the systematic error can be identified.
+
+Systematic error is sometimes called *statistical bias*. It may often be reduced with standardized procedures. Part of the learning process in the various sciences is learning how to use standard instruments and protocols so as to minimize systematic error.
