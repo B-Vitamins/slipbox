@@ -1,0 +1,8 @@
+:PROPERTIES:
+:ID:       dab9a2e2-883d-4739-8f9a-12a26573bdb3
+:END:
+#+TITLE: Precision
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+*Precision* is a quantification of [[id:5cfee3e7-d2da-4284-a982-f8a31c925a00][random error]], a type of [[id:0c716c57-42ac-44ea-a464-15bc0bf0aeb1][measurement error]]. It is a measure of how close a given set of [[id:c86a0c88-e04a-4c94-9edb-2b61337411c0][measurements]] are to /each other/ (see [[id:ac1c54f6-e58b-4e55-b373-e4beed0e3ce7][Accuracy and precision]]). Eliminating random error improves precision.
