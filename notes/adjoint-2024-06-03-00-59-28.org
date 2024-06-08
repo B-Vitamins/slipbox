@@ -1,0 +1,26 @@
+:PROPERTIES:
+:ID:       870eba32-9e8e-460d-b565-c99e4c3c678e
+:END:
+#+TITLE: Adjoint
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+The definition of the adjoint of a matrix relies on the notion of [[id:9bc364dd-7701-4adc-a010-7325ae74108a][complex conjugate]] of a [[id:6662b384-b484-4734-b766-d06ff5021b29][complex number]].
+
+#+NAME: Adjoint (of a matrix)
+#+begin_definition latex
+The adjoint or conjugate transpose of a matrix \( A = (a_{ij})_{i=1,\ldots,m}^{j=1,\ldots,n} \) is another matrix \(A^{\dagger} = (a_{ij}^{\dagger})_{i=1,\ldots,n}^{j=1,\ldots,m}\) such that for all \( (i,\,j) \) we have \(a_{ij}^{\mathrm{T}} = a_{ji}^{\ast}\). Here \( a_{ji}^{\ast} \) denotes the complex conjugate of \( a_{ji} \).
+#+end_definition
+
+The following prescription to construct the adjoint of a matrix relies on the prescription to construct the [[id:425bdbda-99c8-4f18-8284-8ea844eed0aa][transpose]] of a matrix.
+
+#+NAME: Constructing the transpose (of a matrix)
+#+begin_steps latex
+The adjoint of a matrix \(A\), denoted by \(A^{\mathrm{\dagger}}\) may be constructed as follows:
+1. Construct the transpose \( A^{\mathrm{T}} \) of \( A \).
+2. Construct another matrix \( A^{\dagger} \) by applying complex conjugation to each element of \( A^{\mathrm{T}} \).
+#+end_steps
+
+
+
+
