@@ -1,0 +1,30 @@
+:PROPERTIES:
+:ID:       dc2f11e4-f0e4-431e-adc4-6cfb2871de2f
+:END:
+#+TITLE: Vector expansion
+#+FILETAGS: :concept:linalg:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+The definition of *vector expansion* depends on the notion of [[id:9c711ea1-c9de-4e90-96cf-e7710bd11aeb][vector space]], [[id:c44d4e2b-ff20-4fcf-b3a8-fe2ba0b50352][linear independence]], [[id:fa2fe09b-950f-4e46-a23d-90eededf8060][linear span]] and [[id:f8d62dcb-134e-4a07-bbde-6e1672c3d6fb][basis]].
+
+#+NAME: Vector expansion
+#+ATTR_LATEX: :environment definition
+#+begin_definition latex
+Any \(|v\rangle \in V^n\) may be written as
+
+\[\vert v \rangle = \sum_{i=1}^{n} v_i \vert i \rangle\]
+
+where \(\{\vert 1\rangle, \ldots,|n\rangle\}\) are a set of \( n \) linearly independent vectors.
+#+end_definition
+
+#+NAME: Components of a Vector
+#+ATTR_LATEX: :environment definition
+#+begin_definition latex
+The coefficients of expansion \(v_i\) of a vector in terms of a linearly independent basis \(\{|i\rangle\}\) are called the components of the vector in that basis.
+#+end_definition
+
++ Expanding a vector in an [[id:06b1c92f-9f6f-4d77-9b2f-34e7f0cbb177][orthonormal basis]] simplifies finding the coefficients of its vector expansion in that basis
+
+\begin{align*}
+| V \rangle =\sum_i v_i | i\rangle, \quad \langle j \mid V \rangle=\sum_i v_i \underbrace{\langle j \mid i\rangle}_{\equiv \delta_{j i}}=v_j \Longrightarrow \vert V\rangle =\sum_i | i\rangle \langle i \mid V \rangle.
+\end{align*}
