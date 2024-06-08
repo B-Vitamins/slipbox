@@ -1,0 +1,22 @@
+:PROPERTIES:
+:ID:       9bc364dd-7701-4adc-a010-7325ae74108a
+:END:
+#+TITLE: Complex conjugate
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+The notion of complex conjugate is tied to the notion of a [[id:6662b384-b484-4734-b766-d06ff5021b29][complex number]].
+
+#+NAME: Complex conjugate
+#+begin_definition latex
+The complex conjugate of a complex number is the number with an equal real part and an imaginary part equal in magnitude but opposite in sign. That is, if \(a\) and \(b\) are real numbers then the complex conjugate of \(a+ ib\) is \(a-ib\). The complex conjugate of \(z\) is often denoted as \(\bar{z}\) or \(z^{\ast}\).
+#+end_definition
+
+#+begin_corollary latex
+The product of a complex number and its conjugate is a real number.
+#+end_corollary
+
+In polar form, if \(r\) and \(\varphi\) are real numbers then the conjugate of \(r e^{i \varphi}\) is \(r e^{-i \varphi}\). This can be shown using [[id:cb1c560f-5497-49a2-b243-fdc6a6adb8eb][Euler's formula]].
+
+
+
