@@ -1,0 +1,18 @@
+:PROPERTIES:
+:ID:       c44d4e2b-ff20-4fcf-b3a8-fe2ba0b50352
+:END:
+#+TITLE: Linear independence
+#+FILETAGS: :concept:linalg:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+The definition of *linear independence* depends on the notion of a [[id:9c711ea1-c9de-4e90-96cf-e7710bd11aeb][vector space]].
+
+#+NAME: Linear Independence
+#+ATTR_LATEX: :environment definition
+#+begin_definition latex
+A set of vectors is called linearly independent /iff/:
+\begin{align*}
+\sum_{i=1}^{n} a_{i} \vert i \rangle = 0 \Longrightarrow a_{i} = 0 \quad \text{for all} \quad i.
+\end{align*}
+#+end_definition
+
