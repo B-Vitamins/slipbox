@@ -1,0 +1,14 @@
+:PROPERTIES:
+:ID:       fa2fe09b-950f-4e46-a23d-90eededf8060
+:END:
+#+TITLE: Linear span
+#+FILETAGS: :concept:linalg:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+The definition of the *linear span* of a set of /linearly independent vectors/ depends on the notion of a [[id:9c711ea1-c9de-4e90-96cf-e7710bd11aeb][vector space]] and [[id:c44d4e2b-ff20-4fcf-b3a8-fe2ba0b50352][linear independence]].
+
+#+NAME: Span
+#+ATTR_LATEX: :environment definition
+#+begin_theorem latex
+Any \(|v\rangle \in V^n\) may be written as a linear combination of \(n\) linearly independent vectors \(\{11\rangle, \ldots,|n\rangle\}\).
+#+end_theorem
