@@ -1,0 +1,31 @@
+:PROPERTIES:
+:ID:       3a8e31ed-4903-40d7-82b2-b72f345ff6d9
+:END:
+#+TITLE: Gram–Schmidt algorithm
+#+FILETAGS: :concept:linalg:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+The *Gram-Schmidt algorithm* depends on the notion of [[id:c44d4e2b-ff20-4fcf-b3a8-fe2ba0b50352][linear independence]] and an [[id:06b1c92f-9f6f-4d77-9b2f-34e7f0cbb177][orthonormal basis]].
+
+#+NAME: Gram-Schmidt algorithm
+#+begin_theorem latex
+Any basis \(\{\vert i\rangle\}\) can be converted into an orthonormal basis. An orthonormal basis has the property:
+
+\begin{align*}
+\langle i \mid j\rangle= \delta_{ij} \equiv \begin{cases}1, & i=j \\ 0, & i \neq j\end{cases}.
+\end{align*}
+
+Here \(\delta_{ij}\) is the /Kronecker delta/.
+
+Let \(|I\rangle\), \(\vert II \rangle\), \(\dotso\) be a /linearly independent basis/. The orthonormal basis \(|1\rangle,|2\rangle, \ldots\) is:
+
+\[|1\rangle=|I\rangle /|I|\]
+
+\[\vert 2 \rangle = \vert 2^{\prime} \rangle / \lvert 2^{\prime} \rvert, \quad \vert 2^{\prime} \rangle = \vert II \rangle - \vert 1 \rangle \langle 1 \mid II \rangle\]
+
+\[\vert 3 \rangle= \vert 3^{\prime}\rangle / \lvert 3^{\prime} \rvert, \quad  \vert 3^{\prime} \rangle= \vert III \rangle - \vert 2 \rangle \langle 2 \mid III \rangle - |1 \rangle \langle 1 \mid III \rangle\]
+
+\[\vdots\]
+
+Linear independence of \(\{ \vert I \rangle, \vert II \rangle, \dotso \}\) guarantees /completion of the orthogonalization/.
+#+end_theorem
