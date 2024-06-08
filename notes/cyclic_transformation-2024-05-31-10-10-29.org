@@ -1,0 +1,8 @@
+:PROPERTIES:
+:ID:       aaccea55-c4f1-4617-a44f-8157cb500546
+:END:
+#+TITLE: Cyclic transformation
+#+FILETAGS: :literature:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+A *cyclic transformation* is one in which the value of the [[id:df6bf294-bc8a-441f-b16a-02fe248d59a9][state functions]] describing the [[id:39fcc45a-9b91-42f9-9960-19eab99aae83][thermodynamic system]] assume the same value at the beginning and end of the process. A cyclic transformation need not be a [[id:66684beb-eef9-4c9b-bd1e-c60b025420a3][quasi-static transformation]] or a [[id:a32a9269-5194-4356-887b-500f12b3f79d][reversible transformation]].
