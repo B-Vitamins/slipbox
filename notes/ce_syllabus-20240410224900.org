@@ -5,7 +5,7 @@
 #+FILETAGS: :fleeting: :phd:
 #+SETUPFILE: ~/.config/emacs/setup/setupfile.org
 #+BEGIN: clocktable :maxlevel 2 :scope nil :emphasize nil
-#+CAPTION: Clock summary at [2024-06-07 Fri 22:32]
+#+CAPTION: Clock summary at [2024-06-08 Sat 11:07]
 | Headline                                  | Time   |      |
 |-------------------------------------------+--------+------|
 | *Total time*                              | *6:59* |      |
@@ -794,3 +794,254 @@ Given a continuous non-linear function \(f(x)\), find the value \(x=c\) such tha
 ** Fourier Methods
 ** Ordinary Differential Equations
 ** Numerical Linear Algebra
+*** Matrix vector product
+
+- Let \(x\) be a \(n\)-dimensional column vector and \(A\) be an \(m \times n\) matrix ( \(m\) rows and \(n\) columns).
+
+- The matrix vector product \(b=A x\) is the \(m\)-dimensional column vector:
+
+\begin{align*}
+b_i=\sum_{j=1}^n a_{i j} x_j \quad i=1, \ldots, m .
+\end{align*}
+
+- Let \(a_j\) denote column \(j\) of \(A\), an \(m\)-vector. Then rewriting the above equation:
+
+\begin{align*}
+b=A x=\sum_{j=1}^n x_j a_j
+\end{align*}
+
+\[
+b = \left[ \begin{array}{c|c|c|c}
+    & & & \\
+    & & & \\
+    a_1 & a_2 & \cdots & a_n \\
+    & & & \\
+    & & & 
+\end{array} \right]
+\left[ \begin{array}{c}
+    x_1 \\
+    x_2 \\
+    \vdots \\
+    x_n
+\end{array} \right]
+= x_1 \left[ \begin{array}{c}
+    \\
+    \\
+    a_1 \\
+    \\
+    \\
+\end{array} \right] +
+x_2 \left[ \begin{array}{c}
+    \\
+    \\
+    a_2 \\
+    \\
+    \\
+\end{array} \right] + \cdots +
+x_n \left[ \begin{array}{c}
+    \\
+    \\
+    a_n \\
+    \\
+    \\
+\end{array} \right]
+\]
+
+- \(b\) can also be thought of as a linear combination of the columns \(a_j\)
+- \(A x=b\) is usually thought of as \(A\) acting on \(x\) to produce \(b\)
+- \(A x=b\) can also be thought of as \(x\) acting on \(A\) to produce \(b\) !
+- From \(x=A^{-1} b, x\) can be thought of just as the result of application of \(A^{-1}\) to \(b\).
+- Alternatively, \(A^{-1} b\) is the vector of coefficients of the expansion of \(b\) in the basis of columns of \(A\).
+*** QR decomposition
+**** Motivation
+- The concept of QR decomposition stands as a pivotal algorithmic idea in numerical linear algebra, fundamental to numerous applications.
+- Central to these applications is the interest in the column spaces of a matrix \(A\), which are defined by successive spans of its columns \(a_1, a_2, \ldots\):
+
+\begin{align*}
+\left\langle a_1 \right\rangle \subseteq \left\langle a_1, a_2 \right\rangle \subseteq \left\langle a_1, a_2, a_3 \right\rangle \subseteq \ldots
+\end{align*}
+
+where \(\langle \cdots \rangle\) denotes the subspace spanned by the included vectors.
+
+- QR factorization ingeniously constructs a sequence of orthonormal vectors \(q_1, q_2, \ldots\), each spanning these successive column spaces.
+- Let us consider a matrix \(A\) in \(\mathbb{C}^{m \times n}\) where \(m \geq n\). The goal is for the orthonormal vectors \(q_1, q_2, \ldots\) to satisfy:
+
+\begin{align*}
+\left\langle q_1, q_2, \ldots, q_j \right\rangle = \left\langle a_1, a_2, \ldots, a_j \right\rangle \quad \text{for } j = 1, \ldots, n
+\end{align*}
+
+- This is achieved by expressing matrix \(A\) as a product of two matrices:
+\[
+\left[ \begin{array}{c|c|c|c}
+    & & & \\
+    & & & \\
+    a_1 & a_2 & \cdots & a_n \\
+    & & & \\
+\end{array} \right] = 
+\left[ \begin{array}{c|c|c|c}
+    & & & \\
+    & & & \\
+    q_1 & q_2 & \cdots & q_n \\
+    & & & \\
+\end{array} \right]
+\left[ \begin{array}{cccc}
+    r_{11} & r_{12} & \cdots & r_{1n} \\
+    & r_{22} & \cdots & \vdots \\
+    & & \ddots & \vdots \\
+    & & & r_{nn}
+\end{array} \right]
+\]
+
+- Consequently, each \(a_i\) can be expressed as a linear combination of the vectors \(q_1, \ldots, q_k\), and reciprocally:
+\begin{align*}
+a_1 & = r_{11} q_1, \\
+a_2 & = r_{12} q_1 + r_{22} q_2, \\
+& \vdots \\
+a_n & = r_{n1} q_1 + r_{n2} q_2 + \cdots + r_{nn} q_n.
+\end{align*}
+
+- In the real matrix case (\(A \in \mathbb{R}^{m \times n}\)), vectors \(q_1, q_2, \ldots, q_n\) form an orthonormal set in \(\mathbb{R}^m\):
+\begin{align*}
+q_i^T q_j = \delta_{ij}
+\end{align*}
+where \(\delta_{ij}\) is the Kronecker delta.
+
+- The diagonal elements \(r_{ii}\) are non-zero. If any \(r_{ii} < 0\), we can switch the signs of \(r_{ii}, \ldots, r_{in}\) and the corresponding \(q_i\) to ensure \(r_{ii} > 0\), which guarantees the uniqueness of \(Q\) and \(R\).
+
+**** Motivation
+- One algorithmic idea in numerical linear algebra that is more important than all others.
+- In many applications, we are interested in column spaces of a matrix \(A\). These are successive spaces spanned by the columns \(a_1, a_2, \ldots\) of \(A\) :
+
+\begin{align*}
+\left\langle a_1\right\rangle \subseteq\left\langle a_1, a_2\right\rangle \subseteq\left\langle a_1, a_2, a_3\right\rangle \subseteq \ldots
+\end{align*}
+
+where \(\langle\cdots\rangle\) denotes the subspace spanned by whatever vectors are included in the brackets.
+
+- The idea of QR factorization is to construct a sequence of orthonormal vectors, \(q_1, q_2, \ldots\) that span these successive spaces.
+- Assume for the moment that \(A \in \mathbb{C}^{m \times n}(m \geq n)\), we want the sequence \(q_1, q_2, \ldots\) to have the property:
+
+\begin{align*}
+\left\langle q_1, q_2, \ldots, q_j\right\rangle=\left\langle a_1, a_2, \ldots, a_j\right\rangle \quad j=1, \ldots, n
+\end{align*}
+
+- This amounts to
+
+\[
+\left[ \begin{array}{c|c|c|c}
+   & & & \\
+    & & & \\
+    a_1 & a_2 & \cdots & a_n
+   & & & \\
+    & & &
+\end{array} \right] = 
+\left[ \begin{array}{c|c|c|c}
+   & & & \\
+    & & & \\
+    q_1 & q_2 & \cdots & q_n
+   & & & \\
+    & & &
+\end{array} \right]
+\left[ \begin{array}{cccc}
+    r_{11} & r_{12} & \cdots & r_{1n} \\
+    & r_{22} & \cdots & \vdots \\
+    & & \ddots & \vdots \\
+    & & & r_{nn}
+\end{array} \right]
+\]
+
+- Then \(a_1, \ldots, a_k\) can be expressed as a linear combination of \(q_1, \ldots q_k\), and vice versa!
+
+- Written out the equations are:
+
+\begin{align*}
+a_1 & =r_{11} q_1 \\
+a_2 & =r_{12} q_1+r_{22} q_2 \\
+& \vdots \\
+a_n & =r_{n 1} q_1+r_{2 n} q_2+\cdots+r_{n n} q_n
+\end{align*}
+
+- If \(A \in \mathbb{R}^{m \times n}\), vectors \(q_1, q_2, \ldots, q_n\) are orthonormal \(m\)-vectors:
+
+\begin{align*}
+q_i^T q_j=\delta_{i j}
+\end{align*}
+
+- Diagonal elements \(r_{i i}\) are non-zero.
+- If \(r_{i i}<0\), one can switch the signs of \(r_{i i}, \ldots, r_{i n}\) and the vector \(q_i\).
+- Require \(r_{i i}>0\); this makes \(Q\) and \(R\) unique.
+**** Definition
+***** Square matrix
+
+#+NAME: QR decomposition (real square matrix)
+#+begin_definition latex
+Let \( A \) be any real square matrix. It can be decomposed as
+\[
+A = QR,
+\]
+where \( Q \) is an orthogonal matrix (its columns are orthogonal unit vectors, implying that \( Q^{\top} = Q^{-1} \)), and \( R \) is an upper triangular matrix.
+#+end_definition
+
+#+NAME: QR decomposition (complex square matrix)
+#+begin_definition latex
+Let \( A \) be any complex square matrix. It can be decomposed as
+\[
+A = QR,
+\]
+where \( Q \) is a unitary matrix (its conjugate transpose \( Q^{\dagger} = Q^{-1} \)), and \( R \) is an upper triangular matrix.
+#+end_definition
+
+#+NAME: Uniqueness of QR factorization
+#+begin_corollary latex
+For an invertible matrix \( A \), the QR factorization is unique provided that the diagonal elements of \( R \) are positive.
+#+end_corollary
+
+#+NAME: Orthonormal Basis of Column Span
+#+begin_corollary latex
+For any \( 1 \leq k \leq n \), the first \( k \) columns of \( Q \) form an orthonormal basis for the span of the first \( k \) columns of \( A \).
+#+end_corollary
+
+#+NAME: Orthonormal Basis of Column Space
+#+begin_corollary latex
+If \( A \) has \( n \) linearly independent columns, then the first \( n \) columns of \( Q \) provide an orthonormal basis for the column space of \( A \).
+#+end_corollary
+
++ The fact that any column \(k\) of \(A\) only depends on the first \(k\) columns of \(Q\) corresponds to the triangular form of \(R\).
+
+***** Rectangular matrix
+#+NAME: QR decomposition (rectangular matrix)
+#+begin_definition latex
+Let \( A \) be a complex \( m \times n \) matrix, where \( m \geq n \). \( A \) can be factorized into the product of an \( m \times m \) unitary matrix \( Q \) and an \( m \times n \) upper triangular matrix \( R \). The matrix \( R \) can be further partitioned as:
+\[
+A = Q R = Q \left[ \begin{array}{c}
+R_1 \\
+0 
+\end{array} \right] = \left[ \begin{array}{ll}
+Q_1 & Q_2 
+\end{array} \right] \left[ \begin{array}{c}
+R_1 \\
+0
+\end{array} \right] = Q_1 R_1,
+\]
+where \( R_1 \) is an \( n \times n \) upper triangular matrix, \( 0 \) represents an \((m-n) \times n\) zero matrix, \( Q_1 \) is \( m \times n \), and \( Q_2 \) is \( m \times (m-n) \). Both \( Q_1 \) and \( Q_2 \) contain orthogonal columns.
+#+end_definition
+
+#+NAME: Uniqueness in QR decomposition (rectangular matrix)
+#+begin_corollary latex
+If \( R_1 \) in the QR decomposition of a rectangular matrix \( A \) has positive diagonal elements, then \( R_1 \) and \( Q_1 \) are unique. However, \( Q_2 \) is generally not unique unless additional constraints are specified.
+#+end_corollary
+
+#+NAME: Relation to Cholesky decomposition
+#+begin_corollary latex
+For a complex matrix \( A \), the matrix \( R_1 \) in the QR decomposition is equal to the upper triangular factor in the Cholesky decomposition of \( A^* A \). If \( A \) is real, this simplifies to \( A^\top A \).
+#+end_corollary
+
+**** 
+
+- \(\begin{aligned} {\left[\begin{array}{ccc}-1 & -1 & 1 \\ 1 & 3 & 3 \\ -1 & -1 & 5 \\ 1 & 3 & 7\end{array}\right] } & =\left[\begin{array}{ccc}-1 / 2 & 1 / 2 & -1 / 2 \\ 1 / 2 & 1 / 2 & -1 / 2 \\ -1 / 2 & 1 / 2 & 1 / 2 \\ 1 / 2 & 1 / 2 & 1 / 2\end{array}\right]\left[\begin{array}{lll}2 & 4 & 2 \\ 0 & 2 & 8 \\ 0 & 0 & 4\end{array}\right] \\ & =\left[q_1\left|q_2\right| \ldots \mid q_n\right]\left[\begin{array}{llll}r_{11} & r_{12} & \cdots & r_{1 n} \\ & r_{22} & & \\ & & \ddots & \vdots \\ & & & r_{n n}\end{array}\right] \\ & =Q R\end{aligned}\)
+
+- Compute the \(\mathrm{QR}\) factorization of \(A: A=Q R\).
+- Compute \(y=Q^T b\)
+- Solve \(R x=y\) for \(x\) : This is just backward substitution as \(R\) is upper triangular.
+
+*** 
