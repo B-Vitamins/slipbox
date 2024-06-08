@@ -1,0 +1,44 @@
+:PROPERTIES:
+:ID:       54479281-985b-4fb1-bfcf-982467c24ec0
+:END:
+#+TITLE: Triangle inequality
+#+FILETAGS: :concept:linalg:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+The *triangle inequality* depends on the notion of a [[id:9c711ea1-c9de-4e90-96cf-e7710bd11aeb][vector space]] and [[id:cbd0b6df-0c3f-43f2-a0fa-b232ea9e4799][norm]].
+
+#+NAME: Triangle inequality
+#+begin_theorem latex
+Let \( \vert V \rangle \) and \( \vert W \rangle \) be elements of a vector space with norms \( |V| \) and \( |W| \) respectively. We then have
+
+\begin{align*}
+\vert V+W \vert \leq |V|+|W|.
+\end{align*}
+#+end_theorem
+
+The proof of the triangle inequality depends on the notion of the [[id:bd078855-c4e2-4c48-b2ae-8a16b01a9547][inner product]] and relies on the [[id:cbf1931a-4dea-4bbe-958b-88f74f2259d3][Cauchy-Schwarz inequality]].
+
+#+NAME: Triangle inequality
+#+begin_proof latex
+\begin{align*}
+\vert V + W \vert ^2 &=\langle V+W \vert V+W\rangle^*\langle V+W \vert V+W\rangle \\
+&=\langle V+W \vert V\rangle^*\langle V+W \vert V\rangle+\langle V+W \vert W\rangle^*\langle V+W \vert W\rangle \\
+&+\langle V+W \vert V\rangle^*\langle V+W \vert W\rangle+\langle V+W \vert W\rangle^*\langle V+W \vert V\rangle \\
+&=\langle V \vert V+W\rangle\langle V+W \vert V\rangle+\langle W \vert V+W\rangle\langle V+W \vert W\rangle \\
+&+\langle V \vert V+W\rangle\langle V+W \vert W\rangle+\langle W \vert V+W\rangle\langle V+W \vert V\rangle \\
+&=\langle V \vert V\rangle+\langle W \vert W\rangle+2 \Re\langle V \vert W\rangle \\
+&\leq \vert V \vert^2+\vert W \vert^2+2 \Re\langle V \vert W \rangle \\
+&\leq \vert V \vert^2+\vert W \vert^2+2\vert\langle V \vert W \rangle\vert \\
+&\leq \vert V \vert^2+\vert W \vert^2+2\vert\langle V \vert W \rangle\vert \\
+&\leq  \vert V \vert^2+\vert W \vert^2+2\vert V \vert\vert W \vert \\
+&\leq (\vert V \vert+\vert W \vert)^2.
+\end{align*}
+
+The triangle inequality follows immediately
+
+\begin{align*}
+\left \lvert V + W  \right \rvert \leq \left \lvert V  \right \rvert + \left \lvert W  \right \rvert.
+\end{align*}
+
+The Cauchy-Schwarz inequality was used in going from \(\vert V + W \vert ^2 = \langle V \vert V\rangle+\langle W \vert W\rangle+2 \Re\langle V \vert W\rangle\) to \(\vert V + W \vert ^2 \leq \vert V \vert^2+\vert W \vert^2+2 \Re\langle V \vert W \rangle\). Equality demands \(\left \lvert V + W  \right \rvert = \left \lvert V  \right \rvert + \left \lvert W  \right \rvert\), i.e., sum of norms be equal to the norm of sums, i.e., \( \vert V \rangle = a \vert W \rangle \) where \(a\) is a real positive scalar.
+#+end_proof
