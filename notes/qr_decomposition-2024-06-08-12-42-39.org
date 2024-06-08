@@ -1,0 +1,73 @@
+:PROPERTIES:
+:ID:       1a8adb8b-86d0-4deb-a8aa-3c7c0a05dc27
+:END:
+#+TITLE: QR decomposition
+#+FILETAGS: :concept:linalg:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+* Definition
+** Square matrix
+#+NAME: QR decomposition (real square matrix)
+#+begin_definition latex
+Let \( A \) be any real square matrix. It can be decomposed as
+\[
+A = QR,
+\]
+where \( Q \) is an orthogonal matrix (its columns are orthogonal unit vectors, implying that \( Q^{\top} = Q^{-1} \)), and \( R \) is an upper triangular matrix.
+#+end_definition
+
+#+NAME: QR decomposition (complex square matrix)
+#+begin_definition latex
+Let \( A \) be any complex square matrix. It can be decomposed as
+\[
+A = QR,
+\]
+where \( Q \) is a unitary matrix (its conjugate transpose \( Q^{\dagger} = Q^{-1} \)), and \( R \) is an upper triangular matrix.
+#+end_definition
+
+#+NAME: Uniqueness of QR factorization
+#+begin_corollary latex
+For an invertible matrix \( A \), the QR factorization is unique provided that the diagonal elements of \( R \) are positive.
+#+end_corollary
+
+#+NAME: Orthonormal Basis of Column Span
+#+begin_corollary latex
+For any \( 1 \leq k \leq n \), the first \( k \) columns of \( Q \) form an orthonormal basis for the span of the first \( k \) columns of \( A \).
+#+end_corollary
+
+#+NAME: Orthonormal Basis of Column Space
+#+begin_corollary latex
+If \( A \) has \( n \) linearly independent columns, then the first \( n \) columns of \( Q \) provide an orthonormal basis for the column space of \( A \).
+#+end_corollary
+
++ The fact that any column \(k\) of \(A\) only depends on the first \(k\) columns of \(Q\) corresponds to the triangular form of \(R\).
+** Rectangular matrix
+#+NAME: QR decomposition (rectangular matrix)
+#+begin_definition latex
+Let \( A \) be a complex \( m \times n \) matrix, where \( m \geq n \). \( A \) can be factorized into the product of an \( m \times m \) unitary matrix \( Q \) and an \( m \times n \) upper triangular matrix \( R \). The matrix \( R \) can be further partitioned as:
+\[
+A = Q R = Q \left[ \begin{array}{c}
+R_1 \\
+0 
+\end{array} \right] = \left[ \begin{array}{ll}
+Q_1 & Q_2 
+\end{array} \right] \left[ \begin{array}{c}
+R_1 \\
+0
+\end{array} \right] = Q_1 R_1,
+\]
+where \( R_1 \) is an \( n \times n \) upper triangular matrix, \( 0 \) represents an \((m-n) \times n\) zero matrix, \( Q_1 \) is \( m \times n \), and \( Q_2 \) is \( m \times (m-n) \). Both \( Q_1 \) and \( Q_2 \) contain orthogonal columns.
+#+end_definition
+
+#+NAME: Uniqueness in QR decomposition (rectangular matrix)
+#+begin_corollary latex
+If \( R_1 \) in the QR decomposition of a rectangular matrix \( A \) has positive diagonal elements, then \( R_1 \) and \( Q_1 \) are unique. However, \( Q_2 \) is generally not unique unless additional constraints are specified.
+#+end_corollary
+
+#+NAME: Relation to Cholesky decomposition
+#+begin_corollary latex
+For a complex matrix \( A \), the matrix \( R_1 \) in the QR decomposition is equal to the upper triangular factor in the Cholesky decomposition of \( A^* A \). If \( A \) is real, this simplifies to \( A^\top A \).
+#+end_corollary
+
+
+* Algorithm
