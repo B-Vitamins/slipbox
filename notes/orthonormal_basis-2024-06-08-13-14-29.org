@@ -1,0 +1,14 @@
+:PROPERTIES:
+:ID:       06b1c92f-9f6f-4d77-9b2f-34e7f0cbb177
+:END:
+#+TITLE: Orthonormal basis
+#+FILETAGS: :concept:linalg:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+The definition of a *orthonormal basis* depends on the notion of a [[id:f722b69c-fda5-487b-aa69-6d6dd687eb84][orthogonal basis]].
+
+#+NAME: Orthonormal Basis
+#+begin_definition latex
+An orthogonal basis whose basis vectors are normalized is said to form an orthonormal basis.
+#+end_definition
+
