@@ -1,0 +1,8 @@
+:PROPERTIES:
+:ID:       112a4be9-768e-4deb-945f-cb76da334e03
+:END:
+#+TITLE: Positional numeral system
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+The *positional numeral system* usually denotes the extension of the [[id:cda5ecbb-2a8d-4029-8ebb-412f142a6ae1][Hindu numeral system]] to any base. More generally, a positional system is a numeral system in which the contribution of a digit to the value of a number is the value of the digit multiplied by a factor determined by the position of the digit. In early numeral systems, such as Roman numerals, a digit has only one value: I means one, X means ten and C a hundred (however, the values may be modified when combined). In modern positional systems, such as the decimal system, the position of the digit means that its value must be multiplied by some value: in 555, the three identical symbols represent five hundreds, five tens, and five units, respectively, due to their different positions in the digit string. 
