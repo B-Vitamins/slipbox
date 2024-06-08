@@ -1,0 +1,15 @@
+:PROPERTIES:
+:ID:       6764a03f-7428-4357-a45c-57d203fd69f8
+:END:
+#+TITLE: Orthogonality
+#+FILETAGS: :concept:linalg:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+The definition of *orthogonal vectors* depends on the notion of a [[id:bd078855-c4e2-4c48-b2ae-8a16b01a9547][inner product]].
+
+#+NAME: Orthogonality
+#+ATTR_LATEX: :environment definition
+#+begin_definition
+\(|V\rangle\) and \(|W\rangle\) are called orthogonal (to each other) iff \(\langle V \mid W\rangle=0\).
+#+end_definition
+
