@@ -2,10 +2,10 @@
 :ID:       cbf1931a-4dea-4bbe-958b-88f74f2259d3
 :END:
 #+TITLE: Cauchy-Schwarz inequality
-#+FILETAGS: :concept:
+#+FILETAGS: :concept:linalg:
 #+SETUPFILE: ~/.config/emacs/setup/setupfile.org
 
-The *Cauchy-Schwarz inequality* depends on the notion of a [[id:9c711ea1-c9de-4e90-96cf-e7710bd11aeb][vector space]].
+The *Cauchy-Schwarz inequality* depends on the notion of a [[id:9c711ea1-c9de-4e90-96cf-e7710bd11aeb][vector space]], [[id:bd078855-c4e2-4c48-b2ae-8a16b01a9547][inner product]], and [[id:cbd0b6df-0c3f-43f2-a0fa-b232ea9e4799][norm]].
 
 #+NAME: Cauchy-Schwarz inequality
 #+begin_theorem latex

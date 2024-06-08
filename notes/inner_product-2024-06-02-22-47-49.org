@@ -2,7 +2,7 @@
 :ID:       bd078855-c4e2-4c48-b2ae-8a16b01a9547
 :END:
 #+TITLE: Inner product
-#+FILETAGS: :concept:
+#+FILETAGS: :concept:linalg:
 #+SETUPFILE: ~/.config/emacs/setup/setupfile.org
 
 #+NAME: Inner Product
@@ -18,3 +18,13 @@ The inner-product between two vectors \(|V\rangle\) and \(|W\rangle\), denoted i
 #+begin_corollary latex
 Skew-symmetry implies anti-linearity of the inner product in bras \(\langle a W+b Z \mid V\rangle=a^*\langle W \mid V\rangle+b^*\langle Z \mid V\rangle\).
 #+end_corollary
+
+Given two vectors \(|V\rangle\) and \(|W\rangle\) expanded in two different [[id:f8d62dcb-134e-4a07-bbde-6e1672c3d6fb][basis]] \(\{|i\rangle\}\) and \(\{\vert j\rangle\}\), their inner product is given as
+
+\[\langle V \mid W \rangle=\sum_i \sum_j v_i^* w_j\langle i \mid j\rangle.\]
+
++ Expanding two vectors in a common [[id:06b1c92f-9f6f-4d77-9b2f-34e7f0cbb177][orthonormal basis]] simplifies the inner product
+
+\begin{align*}
+\langle V \mid W \rangle=\sum_i \sum_j v_i^* w_j \underbrace{ \langle i \vert j \rangle}_{\equiv\delta_{ij}} &=\sum_i v_i^* w_i\langle i \mid i\rangle =\sum_i v_i^* w_i.
+\end{align*}

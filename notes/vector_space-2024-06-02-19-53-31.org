@@ -2,7 +2,7 @@
 :ID:       9c711ea1-c9de-4e90-96cf-e7710bd11aeb
 :END:
 #+TITLE: Vector space
-#+FILETAGS: :concept:
+#+FILETAGS: :concept:linalg:
 #+SETUPFILE: ~/.config/emacs/setup/setupfile.org
 
 #+NAME: Vector Space
@@ -25,4 +25,10 @@ Let \(\mathbb{V} = \left \lbrace \vert 1 \rangle , \thinspace \vert 2 \rangle , 
   \[\vert V \rangle + \vert - V \rangle = \vert 0 \rangle\].
 #+end_definition
 
+
+#+NAME: Field
+#+ATTR_LATEX: :environment definition
+#+begin_definition latex
+The numbers \(a\), \(b\), \(\dotso\), are called the /field/ over which the vector space is defined.
+#+end_definition
 
