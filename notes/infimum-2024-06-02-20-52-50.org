@@ -1,0 +1,13 @@
+:PROPERTIES:
+:ID:       cc7c0636-daa4-465e-95c8-c615e2bded3d
+:END:
+#+TITLE: Infimum
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+The definition of infimum depends on the notion of [[id:49435674-c64b-4a19-8c7e-81c15a00c8d2][lower bound]].
+
+#+NAME: Lower bound
+#+begin_definition latex
+Let \(S\) be a subset of a partially ordered set \((P, \leq)\). A lower bound \(a\) of \(S\) is called an infimum or greatest lower bound or meet of \(S\) if for all lower bounds \(y\) of \(S\) in \(P, y \leq a\), i.e., \(a\) is larger than any other lower bound.
+#+end_definition
