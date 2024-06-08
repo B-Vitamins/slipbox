@@ -1,0 +1,18 @@
+:PROPERTIES:
+:ID:       f8d62dcb-134e-4a07-bbde-6e1672c3d6fb
+:END:
+#+TITLE: Basis (vector space)
+#+FILETAGS: :concept:linalg:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+The definition of *basis* depends on the notion of a [[id:9c711ea1-c9de-4e90-96cf-e7710bd11aeb][vector space]].
+
+#+NAME: Basis
+#+ATTR_LATEX: :environment definition
+#+begin_definition latex
+A set of \(n\) linearly independent vectors in an \(n\)-dimensional vector space is called a basis.
+
+\(|v\rangle=\sum_{i=1}^n v_i|i\rangle\)
+
+where \(\left \lbrace \vert 1 \rangle, \vert 2 \rangle, \dotso, \vert n \rangle  \right \rbrace\) form a basis.
+#+end_definition
