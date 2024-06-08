@@ -1,0 +1,13 @@
+:PROPERTIES:
+:ID:       f722b69c-fda5-487b-aa69-6d6dd687eb84
+:END:
+#+TITLE: Orthogonal basis
+#+FILETAGS: :concept:linalg:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+The definition of a *orthogonal basis* depends on the notion of [[id:6764a03f-7428-4357-a45c-57d203fd69f8][orthogonality]] and [[id:f8d62dcb-134e-4a07-bbde-6e1672c3d6fb][basis]].
+
+#+NAME: Orthonormal Basis
+#+begin_definition latex
+A set of basis vectors, that are pair-wise orthogonal are said to form an orthonormal basis.
+#+end_definition
