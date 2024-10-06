@@ -4,7 +4,6 @@
 #+TITLE: Stability conditions
 #+FILETAGS: :literature:spop:
 #+SETUPFILE: ~/.config/emacs/setup/setupfile.org
-
 The *stability condition* for a thermodynamic system is given by
 
 \[

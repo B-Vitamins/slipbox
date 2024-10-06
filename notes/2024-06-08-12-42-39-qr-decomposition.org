@@ -1,0 +1,116 @@
+:PROPERTIES:
+:ID:       1a8adb8b-86d0-4deb-a8aa-3c7c0a05dc27
+:END:
+#+TITLE: QR decomposition
+#+FILETAGS: :concept:linalg:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+* Definition
+** Square matrix
+The following definitions depend on the notion of [[id:fb073a10-364f-4177-bf8e-b5069e95a528][triangular matrix]] and [[id:c2bdb493-6fac-427f-8785-3847acc43c10][orthogonal matrix]].
+
+#+NAME: QR decomposition (real square matrix)
+#+begin_definition latex
+Let \( A \) be any real square matrix. It can be decomposed as
+\[
+A = QR,
+\]
+where \( Q \) is an orthogonal matrix (its columns are orthogonal unit vectors, implying that \( Q^{\top} = Q^{-1} \)), and \( R \) is an upper triangular matrix.
+#+end_definition
+
+#+NAME: QR decomposition (complex square matrix)
+#+begin_definition latex
+Let \( A \) be any complex square matrix. It can be decomposed as
+\[
+A = QR,
+\]
+where \( Q \) is a unitary matrix (its conjugate transpose \( Q^{\dagger} = Q^{-1} \)), and \( R \) is an upper triangular matrix.
+#+end_definition
+** Rectangular matrix
+#+NAME: QR decomposition (rectangular matrix)
+#+begin_definition latex
+Let \( A \) be a complex \( m \times n \) matrix, where \( m \geq n \). \( A \) can be factorized into the product of an \( m \times m \) unitary matrix \( Q \) and an \( m \times n \) upper triangular matrix \( R \). The matrix \( R \) can be further partitioned as:
+\[
+A = Q R = Q \left[ \begin{array}{c}
+R_1 \\
+0 
+\end{array} \right] = \left[ \begin{array}{ll}
+Q_1 & Q_2 
+\end{array} \right] \left[ \begin{array}{c}
+R_1 \\
+0
+\end{array} \right] = Q_1 R_1,
+\]
+where \( R_1 \) is an \( n \times n \) upper triangular matrix, \( 0 \) represents an \((m-n) \times n\) zero matrix, \( Q_1 \) is \( m \times n \), and \( Q_2 \) is \( m \times (m-n) \). Both \( Q_1 \) and \( Q_2 \) contain orthogonal columns.
+#+end_definition
+
+* Properties
+
+The following properties of the QR decomposition additionally depend on the notion of [[id:54ccf4e4-b753-4557-8510-ffdebea983f6][invertible matrix]], [[id:06b1c92f-9f6f-4d77-9b2f-34e7f0cbb177][orthonormal basis]], [[id:fa2fe09b-950f-4e46-a23d-90eededf8060][linear span]], [[id:0cfccfbf-752e-470f-81eb-c51a88311688][column space]], and the [[id:26facd99-8863-4faf-baf5-f91878be6762][Cholesky decomposition]].
+
+#+NAME: Uniqueness of QR factorization
+#+begin_corollary latex
+For an invertible matrix \( A \), the QR factorization is unique provided that the diagonal elements of \( R \) are positive.
+#+end_corollary
+
+#+NAME: Orthonormal Basis of Column Span
+#+begin_corollary latex
+For any \( 1 \leq k \leq n \), the first \( k \) columns of \( Q \) form an orthonormal basis for the span of the first \( k \) columns of \( A \).
+#+end_corollary
+
+#+NAME: Orthonormal Basis of Column Space
+#+begin_corollary latex
+If \( A \) has \( n \) linearly independent columns, then the first \( n \) columns of \( Q \) provide an orthonormal basis for the column space of \( A \).
+#+end_corollary
+
++ The fact that any column \(k\) of \(A\) only depends on the first \(k\) columns of \(Q\) corresponds to \( R \) being a [[id:fb073a10-364f-4177-bf8e-b5069e95a528][triangular matrix]].
+
+#+NAME: Uniqueness in QR decomposition (rectangular matrix)
+#+begin_corollary latex
+If \( R_1 \) in the QR decomposition of a rectangular matrix \( A \) has positive diagonal elements, then \( R_1 \) and \( Q_1 \) are unique. However, \( Q_2 \) is generally not unique unless additional constraints are specified.
+#+end_corollary
+
+#+NAME: Relation to Cholesky decomposition
+#+begin_corollary latex
+For a complex matrix \( A \), the matrix \( R_1 \) in the QR decomposition is equal to the upper triangular factor in the Cholesky decomposition of \( A^* A \). If \( A \) is real, this simplifies to \( A^\top A \).
+#+end_corollary
+
+* Application
++ Given a matrix \( A \) admits a QR decomposition, linear systems of the form \( Ax = b \) can be solved /without the need for matrix inversion/. The following steps depend on the additional notion of [[id:56eba9c6-089a-40b7-ba37-7fee58543764][backward substitution]].
+
+#+NAME: Solving linear systems using QR Decomposition
+#+begin_steps latex
+Let \( A \) be a matrix that admits a QR decomposition. The linear system \( Ax = b \) can be solved as follows:
+
+1. Compute the QR decomposition of \( A \):
+   Decompose matrix \( A \) into the product of an orthogonal matrix \( Q \) and an upper triangular matrix \( R \):
+   \[
+   A = QR.
+   \]
+2. Compute \( y \) by projecting \( b \) onto the columns of \( Q \):
+   Multiply the transpose of \( Q \) with vector \( b \) to compute \( y \):
+   \[
+   y = Q^T b.
+   \]
+   This step projects \( b \) onto the column space of \( Q \), effectively transforming the original system into a new coordinate system defined by \( Q \).
+3. Solve for \( x \) using backward substitution:
+   Since \( R \) is an upper triangular matrix, solve the equation \( Rx = y \) using backward substitution:
+   \[
+   R x = y.
+   \]
+   This process involves solving for \( x_n \) first, then \( x_{n-1} \), and so on until all entries of \( x \) are determined.
+
+\begin{align*}
+x_n &= \frac{y_n}{r_{n,n}}, \\
+x_{n-1} &= \frac{y_{n-1} - r_{n-1, n} x_n}{r_{n-1, n-1}}, \\
+& \vdots \\
+x_1 &= \frac{y_1 - \sum_{j=2}^{n} r_{1,j} x_j}{r_{1,1}}.
+\end{align*}
+
+This method leverages the orthogonality of \( Q \) and the triangular structure of \( R \) to simplify the solution process, avoiding the need for matrix inversion and thereby enhancing computational efficiency and stability.
+#+end_steps
+
+* Algorithm
+** Classical Gram-Schmidt
+** Modified Gram-Schmidt
+** Householder transformation

@@ -7,7 +7,7 @@
 #+BEGIN: clocktable :maxlevel 2 :scope nil :emphasize nil
 #+CAPTION:
 #+END
-* 3.7.1 Thermal conductivity
+* 3.7 Thermal conductivity
 
 Next: [[id:1ea0c669-3aec-4ac2-9fc2-8b32c927ecfc][Zeroth-order hydrodynamics]]
 

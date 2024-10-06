@@ -5,7 +5,7 @@
 #+FILETAGS: :concept:
 #+SETUPFILE: ~/.config/emacs/setup/setupfile.org
 
-#+NAME: Phase space density
+#+NAME: Poisson's bracket
 #+ATTR_LATEX: :environment definition
 #+begin_definition latex
 The \textit{Poisson bracket} of two functions \( A(\mathbf{p},\,\mathbf{q}) \) and \( B(\mathbf{p},\,\mathbf{q}) \) in phase space \(\Gamma=\prod_{i=1}^N\left\{\vec{q}_i,\,\vec{p}_i\right\}\) is defined as

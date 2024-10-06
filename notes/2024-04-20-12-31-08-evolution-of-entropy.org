@@ -5,7 +5,12 @@
 #+FILETAGS: :problem: :SPOP: :statmech:
 #+SETUPFILE: ~/.config/emacs/setup/setupfile.org
 #+BEGIN: clocktable :maxlevel 2 :scope nil :emphasize nil
-#+CAPTION:
+#+CAPTION: Clock summary at [2024-06-17 Mon 14:23]
+| Headline                 | Time   |
+|--------------------------+--------|
+| *Total time*             | *1:44* |
+|--------------------------+--------|
+| 3.2 Evolution of entropy | 1:44   |
 #+END
 * 3.2 Evolution of entropy
 :LOGBOOK:

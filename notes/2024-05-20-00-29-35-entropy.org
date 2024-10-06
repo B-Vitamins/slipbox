@@ -7,7 +7,7 @@
 
 [[id:be3bfa3c-0208-4857-a67a-67dfda059d65][The second law]] of [[id:39fcc45a-9b91-42f9-9960-19eab99aae83][thermodynamics]] is invoked to prove [[id:ec531792-6163-49c5-b833-e35a5b408676][Clausius's theorem]]. One of the [[id:a71b11c4-5806-4ce2-abcb-9705f1b6a5fb][consequences of Clausius's theorem]] is the existence of a [[id:df6bf294-bc8a-441f-b16a-02fe248d59a9][state function]] called the *entropy*. Like the [[id:7f36257b-4d45-453a-b704-ca458b4c941a][internal energy]] (2) only defines the entropy up to an overall constant.
 
-#+NAME: The internal energy
+#+NAME: Entropy
 #+begin_definition latex
 The integral \( \int_{A}^{B} \mathrm{đ} Q_{\mathrm{rev}}/T \) between any two arbitrary points \(A\) and \(B\) is path independent, a consequence of Clausius's theorem. This allows us to define a state function called the entropy as follows
 
