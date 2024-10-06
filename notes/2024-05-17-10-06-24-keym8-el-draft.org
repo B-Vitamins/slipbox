@@ -1,10 +1,10 @@
 :PROPERTIES:
 :ID:       f8af26c4-6539-415c-9247-d2cc17649648
 :END:
-#+TITLE: keym8.el - Yes, that keyboard from your phone, now in Emacs, without the telemetry that too!
+#+TITLE: keym8.el
 #+AUTHOR: Ayan and GPT-4 Omni
 #+DATE: 2024-05-17
-#+FILETAGS: :concept:projects:
+#+FILETAGS: :concept:projects:design:
 #+SETUPFILE: ~/.config/emacs/setup/setupfile.org
 * Introduction
 =keym8= is an Emacs package designed to enhance your typing efficiency by providing intelligent keyword completion. It learns from your keystrokes in real-time, offering suggestions to reduce the number of keystrokes required, thereby helping to prevent repetitive strain injury (RSI). The project utilizes Rust for performance-critical tasks and JAX for training advanced neural network models.
