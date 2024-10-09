@@ -1,0 +1,41 @@
+:PROPERTIES:
+:ID:       df63fd59-8026-4c5e-ba9c-fbdf61612394
+:END:
+#+TITLE: Syllabus for the comprehensive examination
+#+FILETAGS: :fleeting:
+#+DATE: April 10, 2024
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+* PH 202: Statistical Mechanics
+- Probability Theory
+- Fundamental Postulate, Phase Space
+- Micro-Canonical Ensemble, Connection with Thermodynamics
+- Canonical Ensemble
+- Classical Ideal Gas
+- Harmonic Oscillators
+- Ising Model and Paramagnetism
+- Thermodynamic Potentials
+- Legendre Transformations
+- Monte Carlo Methods
+
+* E0 270: Machine Learning
+- Learning as Optimization, Linear Regression
+- Probabilistic View: ML and MAP Estimates
+- Logistic Regression: Gradient Descent, Stochastic Gradient Methods
+- Perceptron, and Perceptron Convergence Theorem
+- Feedforward Neural Networks, Backpropagation Algorithm
+- Undirected Graphical Models, Markov Random Fields
+- Introduction to MCMC and Gibbs Sampling
+- Restricted Boltzmann Machine
+- EM Algorithm
+- Mixture Models
+
+* PH 354: Computational Physics
+- Machine Representation, Precision, and Errors
+- Roots of Equations
+- Quadrature
+- Random Numbers and Monte Carlo
+- Fourier Methods
+- Ordinary Differential Equations
+- Numerical Linear Algebra
+
