@@ -1,0 +1,170 @@
+\documentclass{article}
+
+% Document Layout and Fonts
+\usepackage[margin=0.9in]{geometry}    % Page margins
+\usepackage{fontspec}                  % For custom fonts (LuaLaTeX feature)
+\usepackage{tgpagella}
+\usepackage{mathpazo}
+\setmainfont{EB Garamond}              % Main font (EB Garamond)
+\usepackage{microtype}                 % Improves text appearance
+\usepackage{titlesec}                  % Customize section title fonts
+
+% Right-align section headings
+\titleformat{\section}
+  {\normalfont\large\scshape\raggedright}  % Right-align and small caps
+  {}{0em}{}[]
+
+% Right-align subsection headings and add a line below
+\titleformat{\subsection}
+  {\normalfont\normalsize\raggedleft}     % Right-align subsections
+  {}{0em}{\titlerule[0.5pt]}              % Horizontal line below
+
+% Right-align and italicize subsubsections
+\titleformat{\subsubsection}
+  {\normalfont\normalsize\itshape\raggedleft} % Right-align and italicize subsubsections
+  {}{0em}{}[]
+
+% Math and Science Packages
+\usepackage{amsmath, amsfonts, amssymb, mathtools, amsthm, dsfont}
+
+% Math commands and operators
+\newcommand{\minus}{\scalebox{0.8}{\(-\)}}
+\newcommand{\plus}{\scalebox{0.6}{\(+\)}}
+\DeclareMathOperator{\sech}{sech}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\tr}{Tr}
+\newcommand{\diff}{\mathop{}\!\mathrm{d}}    % Differential d
+
+% Definitions, theorems, corollaries, and friends
+\usepackage[english]{babel}
+\usepackage[hidelinks]{hyperref}
+\newtheorem{axiom}{Axiom}
+\newtheorem{postulate}{Postulate}
+\newtheorem{definition}{Definition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem*{remark}{Remark}
+
+\title{\LARGE\scshape\MakeUppercase{Appendix D: Distribution and Free Energy of K-SAT}}
+\author{\textit{Hidetoshi Nishimori}}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\begin{align*}
+-\frac{\beta F}{N} = -\sum_{j=0}^{n} \binom{n}{j} c(j) \log c(j) + \alpha \log \left\{ \sum_{j_{1}=0}^{n} \cdots \sum_{j_{K}=0}^{n} c(j_{1}) \cdots c(j_{K}) \cdot \sum_{\boldsymbol{\sigma}_{1}(j_{1})} \cdots \sum_{\boldsymbol{\sigma}_{K}(j_{K})} \prod_{\alpha=1}^{n} \left( 1 + \left( \mathrm{e}^{-\beta} - 1 \right) \prod_{k=1}^{K} \delta(\sigma_{k}^{\alpha}, 1) \right) \right\}
+\tag{D.1}
+\end{align*}
+
+\begin{align*}
+\frac{\delta}{\delta c(j)} \left( -\frac{\beta F}{N} \right) = -\binom{n}{j} (\log c(j) + 1) + \frac{K \alpha g}{f}
+\tag{D.2}
+\end{align*}
+
+\begin{align*}
+f &= \sum_{j_{1}=0}^{n} \cdots \sum_{j_{K}=0}^{n} c(j_{1}) \cdots c(j_{K}) \cdot \sum_{\boldsymbol{\sigma}_{1}(j_{1})} \cdots \sum_{\boldsymbol{\sigma}_{K}(j_{K})} \prod_{\alpha=1}^{n} \left( 1 + \left( \mathrm{e}^{-\beta} - 1 \right) \prod_{k=1}^{K} \delta(\sigma_{k}^{\alpha}, 1) \right)
+\tag{D.3}
+\end{align*}
+
+\begin{align*}
+g &= \sum_{j_{1}=0}^{n} \cdots \sum_{j_{K-1}=0}^{n} c(j_{1}) \cdots c(j_{K-1}) \cdot \sum_{\boldsymbol{\sigma}_{1}(j_{1})} \cdots \sum_{\boldsymbol{\sigma}_{K-1}(j_{K-1})} \sum_{\boldsymbol{\sigma}(j)} \prod_{\alpha=1}^{n} \left( 1 + \left( \mathrm{e}^{-\beta} - 1 \right) \delta(\sigma^{\alpha}, 1) \prod_{k=1}^{K-1} \delta(\sigma_{k}^{\alpha}, 1) \right)
+\tag{D.4}
+\end{align*}
+
+\begin{align*}
+c(\boldsymbol{\sigma}) = \int_{-1}^{1} \mathrm{~d} m \, P(m) \prod_{\alpha=1}^{n} \frac{1+m \sigma^{\alpha}}{2}
+\tag{D.5}
+\end{align*}
+
+\begin{align*}
+f &= \int_{-1}^{1} \prod_{k=1}^{K} \mathrm{~d} m_{k} \, P(m_{k}) \left( A_{K} \right)^{n}
+\tag{D.6}
+\end{align*}
+
+\begin{align*}
+g &= \binom{n}{j} \int_{-1}^{1} \prod_{k=1}^{K-1} \mathrm{~d} m_{k} \, P(m_{k}) \left( A_{K-1} \right)^{n-j}
+\tag{D.7}
+\end{align*}
+
+\begin{align*}
+A_{K} = 1 + \left( \mathrm{e}^{-\beta} - 1 \right) \prod_{k=1}^{K} \frac{1 + m_{k}}{2}
+\tag{D.8}
+\end{align*}
+
+\begin{align*}
+g & = \sum_{j_{1}=0}^{n} \cdots \sum_{j_{K-1}=0}^{n} c\left(j_{1}\right) \ldots c\left(j_{K-1}\right) \cdot \sum_{\boldsymbol{\sigma}_{1}\left(j_{1}\right)} \cdots \sum_{\boldsymbol{\sigma}_{K-1}\left(j_{K-1}\right)} \sum_{\boldsymbol{\sigma}(j)} \prod_{\alpha=1}^{n}\left(1+\left(\mathrm{e}^{-\beta}-1\right) \prod_{k=1}^{K-1} \delta\left(\sigma_{k}^{\alpha}, 1\right)\right) \\
+& \qquad \quad = \sum_{\boldsymbol{\sigma}(j)} \sum_{\boldsymbol{\sigma}_{1}} \cdots \sum_{\boldsymbol{\sigma}_{K-1}} c\left(\boldsymbol{\sigma}_{1}\right) \ldots c\left(\boldsymbol{\sigma}_{K-1}\right) \cdot \prod_{\alpha=1}^{n}\left(1+\left(\mathrm{e}^{-\beta}-1\right) \prod_{k=1}^{K-1} \delta\left(\sigma_{k}^{\alpha}, 1\right)\right)
+\tag{D.9}
+\end{align*}
+
+\begin{align*}
+g = \sum_{\boldsymbol{\sigma}(j)} \int_{-1}^{1} \prod_{k=1}^{K-1} \mathrm{~d} m_{k} \, P(m_{k}) \prod_{\alpha=1}^{n} A_{K-1} = \binom{n}{j} \int_{-1}^{1} \prod_{k=1}^{K-1} \mathrm{~d} m_{k} \, P(m_{k}) \left( A_{K-1} \right)^{n-j}
+\tag{D.10}
+\end{align*}
+
+\begin{align*}
+-2(\log c(j)+1)+K \alpha \int_{-1}^{1} \prod_{k=1}^{K-1} \mathrm{~d} m_{k} P\left(m_{k}\right) f^{-1}\left\{\left(A_{K-1}\right)^{n-j}+\left(A_{K-1}\right)^{j}\right\}-2 \lambda=0 \tag{D.11}
+\end{align*}
+
+\begin{align*}
+c(j) = \exp \left\{ -\lambda - 1 + \frac{K \alpha}{2 f} \int_{-1}^{1} \prod_{k=1}^{K-1} \mathrm{~d} m_{k} \, P(m_{k}) \left( \left( A_{K-1} \right)^{n-j} + \left( A_{K-1} \right)^{k} \right) \right\}
+\tag{D.12}
+\end{align*}
+
+\begin{align*}
+c(j)=\int_{-1}^{1} \mathrm{~d} m P(m)\left(\frac{1+m}{2}\right)^{n-j}\left(\frac{1-m}{2}\right)^{j} \tag{D.13}
+\end{align*}
+
+\begin{align*}
+P(m) &= \frac{1}{\pi \left( 1 - m^{2} \right)} \int_{-\infty}^{\infty} \mathrm{d} y \, c(\mathrm{i} y) \exp \left( -\mathrm{i} y \log \frac{1 - y}{1 + y} \right)
+\tag{D.14}
+\end{align*}
+
+\begin{align*}
+-\frac{\beta F}{N} &= -\sum_{j=0}^{n} \binom{n}{j} c(j) \log c(j) + \alpha \log f
+\tag{D.15}
+\end{align*}
+
+\begin{align*}
+f &= 1 + n a + \mathcal{O}(n^{2})
+\tag{D.16}
+\end{align*}
+
+\begin{align*}
+a &= \int_{-1}^{1} \prod_{k=1}^{K} \mathrm{~d} m_{k} \, P(m_{k}) \log A_{K}
+\tag{D.17}
+\end{align*}
+
+\begin{align*}
+\int_{-1}^{1} \prod_{k=1}^{K-1} \mathrm{~d} m_{k} P\left(m_{k}\right)\left(\left(A_{K-1}\right)^{n-j}+\left(A_{K-1}\right)^{j}\right) \tag{D.18}
+\end{align*}
+
+\begin{align*}
+\mathrm{e}^{\lambda+1}=\frac{\exp \left\{(K \alpha / 2 f) \int_{-1}^{1} \prod_{k=1}^{K-1} \mathrm{~d} m_{k} P\left(m_{k}\right)\left(\left(A_{K-1}\right)^{n-j}+\left(A_{K-1}\right)^{j}\right)\right\}}{\int_{-1}^{1} \mathrm{~d} m P(m)\left(\frac{1+m}{2}\right)^{n-j}\left(\frac{1-m}{2}\right)^{j}} \tag{D.19}
+\end{align*}
+
+\begin{align*}
+\lambda+1=K \alpha+n\left\{K \alpha\left(-a+\frac{b}{2}\right)+\log 2-\int_{-1}^{1} \mathrm{~d} m P(m) \log \left(1-m^{2}\right)\right\}+\mathcal{O}\left(n^{2}\right)
+\tag{D.20}
+\end{align*}
+
+\begin{align*}
+b &= \int_{-1}^{1} \prod_{k=1}^{K-1} \mathrm{~d} m_{k} \, P(m_{k}) \log A_{K-1}
+\tag{D.21}
+\end{align*}
+
+\begin{align*}
+\sum_{j=0}^{n}\binom{n}{j} \int_{-1}^{1} \mathrm{~d} m_{k} P\left(m_{k}\right)\left(\frac{1+m_{k}}{2}\right)^{n-j} & \left(\frac{1-m_{k}}{2}\right)^{j} \cdot \int_{-1}^{1} \prod_{k=1}^{K-1} \mathrm{~d} m_{k} P\left(m_{k}\right)\left(\left(A_{K-1}\right)^{n-j}+\left(A_{K-1}\right)^{j}\right) \\
+& =2 \int_{-1}^{1} \prod_{k=1}^{K} \mathrm{~d} m_{k} P\left(m_{k}\right)\left(\frac{1+m_{k}}{2} A_{K-1}+\frac{1-m_{k}}{2}\right)^{n} =2 f
+\tag{D.22}
+\end{align*}
+
+\begin{align*}
+-\frac{\beta F}{N n} &= \log 2 + \alpha(1 - K) a + \frac{\alpha K b}{2} - \frac{1}{2} \int_{-1}^{1} \mathrm{~d} m \, P(m) \log \left( 1 - m^{2} \right) + \mathcal{O}(n)
+\tag{D.23}
+\end{align*}
+
+\end{document}

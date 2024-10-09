@@ -1,0 +1,118 @@
+\documentclass{article}
+
+% Document Layout and Fonts
+\usepackage[margin=0.9in]{geometry}    % Page margins
+\usepackage{fontspec}                  % For custom fonts (LuaLaTeX feature)
+\usepackage{tgpagella}
+\usepackage{mathpazo}
+\setmainfont{EB Garamond}              % Main font (EB Garamond)
+\usepackage{microtype}                 % Improves text appearance
+\usepackage{titlesec}                  % Customize section title fonts
+
+% Right-align section headings
+\titleformat{\section}
+  {\normalfont\large\scshape\raggedright}  % Right-align and small caps
+  {}{0em}{}[]
+
+% Right-align subsection headings and add a line below
+\titleformat{\subsection}
+  {\normalfont\normalsize\raggedleft}     % Right-align subsections
+  {}{0em}{\titlerule[0.5pt]}              % Horizontal line below
+
+% Right-align and italicize subsubsections
+\titleformat{\subsubsection}
+  {\normalfont\normalsize\itshape\raggedleft} % Right-align and italicize subsubsections
+  {}{0em}{}[]
+
+% Math and Science Packages
+\usepackage{amsmath, amsfonts, amssymb, mathtools, amsthm, dsfont}
+
+% Math commands and operators
+\newcommand{\minus}{\scalebox{0.8}{\(-\)}}
+\newcommand{\plus}{\scalebox{0.6}{\(+\)}}
+\DeclareMathOperator{\sech}{sech}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\tr}{Tr}
+\newcommand{\diff}{\mathop{}\!\mathrm{d}}    % Differential d
+
+% Definitions, theorems, corollaries, and friends
+\usepackage[english]{babel}
+\usepackage[hidelinks]{hyperref}
+\newtheorem{axiom}{Axiom}
+\newtheorem{postulate}{Postulate}
+\newtheorem{definition}{Definition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem*{remark}{Remark}
+
+\title{\LARGE\scshape\MakeUppercase{Appendix B: Parisi equation}}
+\author{\textit{Hidetoshi Nishimori}}
+\date{}
+
+% Start of the document
+\begin{document}
+
+\maketitle
+
+\begin{align*}
+G = \operatorname{tr} \exp \left(\frac{1}{2} \sum_{\alpha, \beta=1}^{n} q_{\alpha \beta} S^{\alpha} S^{\beta} + h \sum_{\alpha}^{n} S^{\alpha}\right)_{\alpha, \beta} = \exp \left(\frac{1}{2} \sum_{\alpha \beta} \frac{\partial^{2}}{\partial h_{\alpha} \partial h_{\beta}}\right) \prod_{\alpha} 2 \cosh h_{\alpha}\bigg|_{h_{\alpha}=h}
+\tag{B.1}
+\end{align*}
+
+\begin{align*}
+G &= \exp \left(\frac{q}{2} \frac{\partial^{2}}{\partial h^{2}}\right)(2 \cosh h)^{n} 
+\tag{B.2}
+\end{align*}
+
+\begin{align*}
+\sum_{\alpha} \frac{\partial f\left(h_1, \ldots, h_n\right)}{\partial h_{\alpha}}\bigg|_{h_{\alpha}=h} &= \frac{\partial f(h, \ldots, h)}{\partial h}
+\tag{B.3}
+\end{align*}
+
+\begin{align*}
+g(m_K, h) &= \exp \left\{\frac{1}{2}\left(q_K - q_{K-1}\right) \frac{\partial^{2}}{\partial h^{2}}\right\} (2 \cosh h)^{m_K} 
+\tag{B.4}
+\end{align*}
+
+\begin{align*}
+g(m_{K-1}, h) &= \exp \left\{\frac{1}{2}\left(q_{K-1} - q_{K-2}\right) \frac{\partial^{2}}{\partial h^{2}}\right\} \left[g(m_K, h)\right]^{m_{K-1} / m_K}
+\tag{B.5}
+\end{align*}
+
+\begin{align*}
+G &= g(n, h) = \exp \left\{\frac{1}{2} q(0) \frac{\partial^{2}}{\partial h^{2}}\right\} \left[g(m_1, h)\right]^{n / m_1}
+\tag{B.6}
+\end{align*}
+
+\begin{align*}
+g(x + \mathrm{d} x, h) &= \exp \left\{-\frac{1}{2} \mathrm{d} q(x) \frac{\partial^{2}}{\partial h^{2}}\right\} g(x, h)^{1 + \mathrm{d} \log x}
+\tag{B.7}
+\end{align*}
+
+\begin{align*}
+\frac{\partial g}{\partial x} &= -\frac{1}{2} \frac{\mathrm{d} q}{\mathrm{~d} x} \frac{\partial^{2} g}{\partial h^{2}} + \frac{1}{x} g \log g 
+\tag{B.8}
+\end{align*}
+
+\begin{align*}
+\frac{\partial f_0}{\partial x} &= -\frac{1}{2} \frac{\mathrm{d} q}{\mathrm{~d} x} \left\{\frac{\partial^{2} f_0}{\partial h^{2}} + x\left(\frac{\partial f_0}{\partial h}\right)^2\right\}
+\tag{B.9}
+\end{align*}
+
+\begin{align*}
+\frac{1}{n} \log \operatorname{tr} \mathrm{e}^{L} &= \exp \left(\frac{1}{2} q(0) \frac{\partial^{2}}{\partial h^{2}}\right) \frac{1}{x} \log g(x, h)\bigg|_{x, h \to 0} = \exp \left(\frac{1}{2} q(0) \frac{\partial^{2}}{\partial h^{2}}\right) f_0(0, h)\bigg|_{h \to 0} = \int \mathrm{D} u f_0(0, \sqrt{q(0)} u) 
+\tag{B.10}
+\end{align*}
+
+\begin{align*}
+\beta f &= -\frac{\beta^2 J^2}{4} \left\{1 + \int_0^1 q(x)^2 \mathrm{d} x - 2 q(1)\right\} - \int \mathrm{D} u f_0(0, \sqrt{q(0)} u) 
+\tag{B.11}
+\end{align*}
+
+\begin{align*}
+\frac{\partial f_0(x, h)}{\partial x} &= -\frac{J^2}{2} \frac{\mathrm{d} q}{\mathrm{~d} x} \left\{\frac{\partial^{2} f_0}{\partial h^{2}} + x\left(\frac{\partial f_0}{\partial h}\right)^2\right\}
+\tag{B.12}
+\end{align*}
+
+\end{document}
