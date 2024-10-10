@@ -1,0 +1,900 @@
+% Created 2024-07-02 Tue 10:30
+% Intended LaTeX compiler: lualatex
+\documentclass[11pt]{article}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{capt-of}
+\usepackage{hyperref}
+\usepackage[margin=0.9in]{geometry}  % Page margins
+\usepackage{tgpagella}              % Font selection
+\usepackage{mathpazo}               % Math font
+\usepackage{microtype}              % Improves text appearance
+\usepackage{amsmath}                % Advanced math extensions
+\usepackage{amsfonts}               % Math fonts
+\usepackage{amssymb}                % Math symbols
+\usepackage{mathtools}              % Math tools extensions for amsmath
+\usepackage{mathrsfs}               % Provides a \mathscr command
+\usepackage{amsthm}                 % Theorem-like structures.
+\usepackage{siunitx}                % A modern interface for units in LaTeX
+\usepackage{tabularx}
+\usepackage{dsfont}
+\usepackage{graphicx}               % Enhanced support for graphics
+\usepackage{subcaption}             % Support for subcaptions
+\usepackage{tikz}                   % Creation of diagrams
+\usepackage{pgfplots}               % Creates normal/logarithmic plots
+\pgfplotsset{compat=newest}
+\usetikzlibrary{calc, angle, positioning, babel, quotes, patterns}
+\usetikzlibrary{arrows.meta, shapes.geometric}
+\usepgfplotslibrary{fillbetween}    % Allows filling between named plots
+\usepackage[english, american]{babel}
+\usepackage[hidelinks]{hyperref}
+\newtheorem{axiom}{Axiom}
+\newtheorem{postulate}{Postulate}
+\newtheorem{definition}{Definition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem*{remark}{Remark}
+\DeclareMathOperator{\sech}{sech}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\tr}{Tr}
+\usepackage{hyperref}               % Extensive support for hyperlinks
+\usepackage{cleveref}               % Intelligent cross-referencing
+\usepackage[backend=biber]{biblatex}
+\addbibresource{/home/b/slipbox/bibliographies/working.bib}
+\addbibresource{~/slipbox/bibliographies/working.bib}
+\addbibresource{~/slipbox/bibliographies/working.bib}
+\author{Ayan Das}
+\date{\today}
+\title{Q\&A}
+\hypersetup{
+ pdfauthor={Ayan Das},
+ pdftitle={Q\&A},
+ pdfkeywords={},
+ pdfsubject={},
+ pdfcreator={Emacs 29.3 (Org mode 9.6.28)}, 
+ pdflang={English}}
+\begin{document}
+
+\maketitle
+
+\section*{Probability}
+\label{sec:org7133609}
+\begin{definition}
+A random variable \(x\) is defined as a variable that for each observation randomly takes a value from among a set of finite or countably infinite possible outcomes \(\mathcal{S} \equiv\left\{x_{1}, x_{2}, \cdots\right\}\).
+The outcomes may be discrete or continuous.
+\label{org209571a}
+\end{definition}
+\begin{definition}
+Let \(\mathcal{S}\) denote the set of outcomes associated with a random variable \(x\). An event \(E\) is any subset of the outcomes, i.e., \(E \subset \mathcal{S}\).
+\label{org3c6f532}
+\end{definition}
+\begin{definition}
+Let \(\mathcal{S}\) denote the set of outcomes associated with a random variable \(x\). Given the set \(\mathcal{S}\), let \(p\) be a function that maps all possible event \(E\) to a real number \(p(E) \in \mathbb{R}\). The function is said to give the probability of the event \(E\), for example \(p_{\text {dice }}(\{1\})=1 / 6\) or \(p_{\text {dice }}(\{1,3\})=1 / 3\), if the following hold for all \(E\):
+\begin{enumerate}
+\item Positivity. \(p(E) \geq 0\), that is, all probabilities must be real and non-negative.
+\item Additivity. If \(A\) and \(B\) are disconnected events, i.e., \(A \cap B = \varnothing\), then \(p(A \text{ or } B)=p(A)+p(B)\).
+\item Normalization. \(p(\mathcal{S})=1\), that is, the random variable must have some outcome in \(\mathcal{S}\).
+\end{enumerate}
+\label{orgc7d0b59}
+\end{definition}
+\begin{definition}
+The cumulative probability function (CPF) \(P(x)\) is the probability of an outcome with any value less than \(x\), that is, \(P(x)=\operatorname{prob}(E \in (-\infty,\,x])\). \(P(x)\) must be a monotonically increasing function of \(x\), with \(P(-\infty)=0\) and \(P(+\infty)=1\).
+\label{org91f8155}
+\end{definition}
+\begin{definition}
+The probability density function (PDF) \(p(x)\) for a given \(x\) is defined by equation
+\[
+\mathrm{D}_{x} P(x) \equiv p(x).
+\]
+\label{orga94e6ec}
+\end{definition}
+\label{sec:org1b217f8}
+
+\textbf{What are the dimensions of a probability density function} \(p(x)\)?
+
+By definition \(\mathrm{D}_{x} P(x) \equiv p(x)\). Therefore, \(p(x)\) has dimensions \([x]^{-1}\).
+
+\label{sec:orgd8fa8aa}
+
+\textbf{Show that the the CPF and the PDF are related as}
+\[
+P(x)=\operatorname{prob}(E \in (-\infty,\,x]) = \int_{-\infty}^{x} p(x) \, \mathrm{d}x.
+\]
+
+By definition \(\mathrm{D}_{x} P(x) \equiv p(x)\). In integral form
+\[
+\int_{-\infty}^{x} \mathrm{D}_{x} P(x) \, \mathrm{d}x = \int_{-\infty}^{x} p(x) \, \mathrm{d}x
+\]
+But
+\[
+\int_{-\infty}^{x} \mathrm{D}_{x} P(x) \, \mathrm{d}x = P(x) - P(-\infty) = P(x),
+\]
+where in the final step we have used \(P(-\infty) \equiv 0\). Hence
+\[
+P(x)=\operatorname{prob}(E \in (-\infty,\,x]) = \int_{-\infty}^{x} p(x) \, \mathrm{d}x.
+\]
+\label{sec:org889c699}
+
+\textbf{Show that the probability of the event} \(E \in (a, \, b]\) \textbf{is given by} \(P(E) \equiv \int_{a}^{b} p(x)\, \mathrm{d}x = P(b) - P(a)\).
+
+
+Consider the probabilities \(\operatorname{prob}(E \in (-\infty, \, a])\) and \(\operatorname{prob}(E \in (a, \, b])\). By definition, we have 
+
+\[
+\operatorname{prob} (E \in (-\infty, \, a] \text{ or } E \in (a, \, b]) = \operatorname{prob}(E \in (-\infty, \, a]) + \operatorname{prob}(E \in (a, \, b]).
+\]
+
+The event \(E \in (-\infty, \, a] \text{ or } E \in (a, \, b])\) simplifies to \(E \in (-\infty, \, b]\) so that 
+
+\[
+\operatorname{prob}(E \in (a, \, b]) = \operatorname{prob} (E \in (-\infty, \, b)) - \operatorname{prob}(E \in (-\infty, \, a]).
+\]
+
+Since \(P(x) = \int_{-\infty}^{x} p(x) \, \mathrm{d}x = \operatorname{prob} (E \in (-\infty, \, x))\), we have
+
+\[
+\operatorname{prob}(E \in (a, \, b]) = \int_{-\infty}^{b} p(x) \, \mathrm{d}x - \int_{-\infty}^{a} p(x) \, \mathrm{d}x = \int_{a}^{b} p(x) \, \mathrm{d}x.
+\]
+
+\begin{enumerate}
+\item By definition, \(P(x)\) is a monotonically increasing function of \(x\); we must have \(\mathrm{D}_{x} P(x) = p(x) \geq 0\) for all \(x\). The integrand being non-negative, \(P(E) \geq 0\) for all \(x\). Thus \(P(E)\) obeys the condition of positivity.
+
+\item Now, consider two arbitrary events \(A \in (a,\, a + \Delta a]\) and \(B \in (b,\, b + \Delta b]\). Further suppose that \(A \cap B = \varnothing\), i.e., the intervals \((a, \, a+ \Delta a]\) and \((b, \, b + \Delta b]\) are non-overlapping. Since \(\int_{a}^{b} p(x) \, \mathrm{d}x = \operatorname{prob} (E \in (a, \, b])\), we have \(P(A \text{ or } B) = \int_{a}^{a + \Delta a} p(x) \mathrm{d}x + \int_{b}^{b + \Delta b} p(x) \mathrm{d}x = P(A) + P(B)\). Hence \(P(E)\) obeys the condition of additivity: \(\operatorname{prob} (A \text{ or } B) = \operatorname{prob}(A) + \operatorname{prob}(B)\) given \(A \cap B = \emptyset\).
+
+\item Finally, since \(P(x) = \int_{-\infty}^{x} p(x) \, \mathrm{d}x\), it follows that \(\int_{-\infty}^{\infty} p(x) \, \mathrm{d} x = P(\infty) = 1\). But \(P(\infty) = \operatorname{prob} (E \in(-\infty, \, \infty)) =  \operatorname{prob}(\mathcal{S})\). It follows that \(P(\mathcal{S}) = \operatorname{prob} (\mathcal{S})  = 1\). Thus, \(P(E)\) obeys the conditions of normalization.
+\end{enumerate}
+\label{sec:org12cdb71}
+\textbf{Let} \(x\) \textbf{be a random variable with a density} \(p_{x}\). \textbf{Suppose we transform} \(x\) \textbf{using} \(y = f(x)\) \textbf{so that} \(x = f^{-1}(y)\) \textbf{where} \(f^{-1}\) \textbf{is the inverse of} \(f\). \textbf{Give an expression for the density \(p_y\) for the random variable \(y\). If the random variable} \(x\) \textbf{has the real line} \(\mathbb{R}\) \textbf{as support, what is the support of the transformed variable} \(y = f(x) = x^{2}\)?
+
+Given random variables \(x\) and \(y\) with densities \(p_{x}\) and \(p_{y}\), and the solutions \(\{x_{i}\}\) for the equation \(f(x) = y\) for a fixed \(y\), we have
+
+\[
+p_y (y) \mathrm{d} y = \sum_{i} p(x_{i}) \mathrm{d} x_{i} \implies p_y (y) = \sum_{i} p_{x} (f^{-1}(y_{i})) \cdot \lvert \mathrm{D}_{y} f^{-1}(y_{i}) \rvert.
+\]
+where \(y_{i} = f(x_{i})\). In general, the support of \(x\) says nothing about the support of \(y\), it depends entirely on the functional form of \(f\). Given that \(x\) is a random variable over the real line \(\mathbb{R}\), the transformed variable \(y = x^{2}\) is non-negative and thus has the support \([0,~\infty)\).
+\section*{The ideal gas}
+\label{sec:org19e63cf}
+
+\textbf{Consider a gas comprised of} \(N\) \textbf{non-interacting particles trapped in a stationary box of volume} \(V\). \textbf{The gas is described by the Hamiltonian}
+\[
+H \left(\left\{q_i, p_i\right\}\right) = \sum_{i=1}^N\frac{\vec{p}_i \cdot \vec{p}_i}{2m}.
+\]
+
+\label{sec:org7078320}
+\textbf{Calculate the accessible phase space volume} \(\Omega_{(N,~V)}\) \textbf{for the full system in the microcanonical ensemble.}
+
+The contribution to the accessible phase space comes from the position and momentum degrees of freedom so that we have
+
+\[
+\Omega_{(N,~V)} = \Omega_{(N,~V)}^{(p)} \cdot \Omega_{(N,~V)}^{(q)}
+\]
+
+We have
+
+\[
+\Omega_{(N,~V)}^{(q)} = \idotsint_{V} \bigg( \prod_{i=1}^{N} \mathrm{d} \vec{q}_{i} \bigg) = \bigg(\int_{V} \mathrm{d} \vec{q}\bigg)^{N} = V^{N}.
+\]
+
+Similarly
+
+\[
+\Omega_{(N,~V)}^{(q)} = \idotsint_{H_{N}(\mathrm{p}) = E_{N}} ~\bigg(\prod_{i=1}^{N} \mathrm{d} \vec{p}_{i} \bigg).
+\]
+
+The accessible phase space for the momentum degrees of freedom is the surface of a \(3N\) dimensional hyper-sphere with radius \(R = (2 m E_{(N,~V)})^{1/2}\). For large \(N\), the surface area of a hyper-sphere in \(3N\) dimensions can be approximated by its volume volume \(V_d\), given as
+
+\[
+V_{d} = \frac{S_{d} R^{d}}{d}, \quad S_{d} = \frac{2 \pi^{d / 2}}{\Gamma (d / 2)}.
+\]
+
+where \(\Gamma (n) \equiv (n-1)!\) for integer-valued \(n\) is the Gamma function. Substituting \(R = (2 m E_{(N,~V)})^{1/2}\) and \(d = 3N\) we get
+
+\[
+\Omega_{(N,~V)}^{(p)} (E_{(N,~V)}) = \frac{2 \pi^{3N/2}}{(3N/2-1)!} \cdot \frac{1}{3N} \cdot \big(2mE_{(N,~V)}\big)^{3N/2}.
+\]
+
+For large \(N\), we can use Stirling's approximation \(N! \approx N^N \exp(-N)\) and further simplify \(\Omega_{(N,~V)}^{(p)}\):
+
+\[
+\Omega_{(N,~V)}^{(p)}(E_{(N,~V)}) = \frac{2^{3N/2+1} \pi^{3N/2}}{(3N)^{3N/2+1}} \cdot \big(2meE_{(N,~V)}\big)^{3N/2} \approx \bigg(\frac{4 \pi m e E_{(N,~V)}}{3 N}\bigg)^{3N/2}
+\]
+
+where the approximation is of the form \(3N/2 - 1 \approx 3N/2\) for \(N \gg 1\). The total accessible phase space volume is thus
+\[
+\boxed{
+\Omega_{(N,~V)}(E_{(N,~V)}) = V^{N} \cdot \bigg(\frac{4 \pi m e E_{(N,~V)}}{3 N}\bigg)^{3N/2}
+}
+\]
+\label{sec:orgbf1bd5a}
+
+\textbf{Calculate the entropy} \(S\).
+
+Substituting
+
+\[
+\Omega_{(N,~V)}(E_{(N,~V)}) = \bigg[V \cdot \bigg(\frac{4 \pi m e E_{(N,~V)}}{3 N}\bigg)^{3/2}\bigg]^{N}
+\]
+
+in the Boltzmann entropy formula
+
+\[
+S_{(N,~V)}(E_{(N,~V)})=k_{B} \ln \Omega_{(N,~V)}(E_{(N,~V)})
+\]
+
+we get
+
+\[
+\boxed{
+S_{(N,~V)}(E_{(N,~V)}) = N k_{B} \ln V \bigg(\frac{4 \pi m e E_{(N,~V)}}{3 N}\bigg)^{3/2}
+}
+\]
+\label{sec:org38f6203}
+
+\textbf{Find the inverse} \(E_{(N,~V)} \equiv S_{(N,~V)}^{-1}\) (\(E_{(N,~V)}(S_{(N,~V)}(x)) = x\)) \textbf{of the function}
+
+\[
+S_{(N,~V)}(E_{(N,~V)}) = N k_{B} \ln V \bigg(\frac{4 \pi m e E_{(N,~V)}}{3 N}\bigg)^{3/2}.
+\]
+
+\textbf{to express} \(E_{(N,~V)}\) \textbf{as a function of} \(S_{(N,~V)}\). \textbf{Thereafter, express} \(E_{(N,~V)}\) \textbf{as a function of the temperature} \(T\).
+
+Since the natural logarithm \(\ln\) is a strictly monotonic function of its argument, the inverse \(S_{(N,~V)}^{-1}\) exists and is unique for all \(E_{(N,~V)}\). We have
+
+\[
+S_{(N,~V)}(E_{(N,~V)}) = N k_{B} \ln V \bigg(\frac{4 \pi m e E_{(N,~V)}}{3 N}\bigg)^{3/2} \implies E_{(N,~V)}=\frac{3 N}{4 \pi m e}\left[\exp \left(\frac{S_{(N,~V)}}{N k_B}-\ln V\right)\right]^{2 / 3}.
+\]
+
+We identify \(\partial_{S_{(N,~V)}} E_{(N,~V)}\) appearing in the variations \(\mathrm{d} E_{(N,~V)} = (\partial_{S_{(N,~V)}} E_{(N,~V)})~ \mathrm{d} S_{(N,~V)}\) of \(E_{(N,~V)}\) as the conjugate variable of \(S_{(N,~V)}\), the temperature function \(T \equiv \partial_{S_{(N,~V)}} E_{(N,~V)}\). Clearly then
+
+\[
+T(S_{(N,~V)}) = \frac{2}{3} \cdot \frac{1}{k_B} \cdot \frac{3 N}{4 \pi m e} \cdot \exp \left[\frac{2}{3}\left(\frac{S_{(N, V)}}{N k_B}-\ln V\right)\right] \implies S_{(N,~V)} (T) = N k_{B} \ln V \bigg(\frac{4 \pi m e k_{B} T}{2}\bigg)^{3/2}.
+\]
+
+where once again we have used the strict monotonicity of the exponential function \(\exp\). We can now write \(E_{(N,~V)} (S_{(N,~V)}) \equiv E_{(N,~V)} (S_{(N,~V)}(T))\) and substitute \(S_{(N,~V)}(T)\) for a given \(T\) to eliminate \(S_{(N,~V)}\). Alternatively, we can compare \(S_{(N,~V)}(T)\) with the expression for \(S_{(N,~V)}(E_{(N,~V)})\) above and identify \(E_{(N,~V)}(T)\). Either way, we obtain
+
+\[
+\boxed{
+E_{(N,~V)} (T) = \frac{3}{2} N k_{B} T
+}
+\]
+\label{sec:org6a37679}
+
+\textbf{Consider two distinct gases, initially occupying volumes} \(V_{1}\) \textbf{and} \(V_{2}\) \textbf{at the same temperature} \(T\), \textbf{separated by a partition. Further suppose that the entropy of the combined system while the partition is in place is given by} \(S_{i}\). \textbf{The partition between them is removed, and they are allowed to expand and occupy the combined volume} \(V=V_{1}+V_{2}\). \textbf{Suppose the entropy of the combined system of the mixed gas is} \(S_{f}\). \textbf{The mixing entropy is defined as} \(\Delta S_{\text{Mix}} = S_{f} - S_{i}\). \textbf{Calculate the mixing entropy} \(\Delta S_{\text{Mix}}\) \textbf{of two distinct ideal gases.}
+
+The total energy \(E_{i}\) and entropy \(S_{i}\) of the combined system before mixing is simply the sum of energy and the entropy respectively of each individual gas:
+
+\[
+E_{i} = E_{1} + E_{2} = \frac{3}{2} ~ (N_{1} + N_{2})~ k_{B} T_{i} 
+\]
+
+\begin{align*}
+S_{i}=S_{1}+S_{2} &= N_{1} k_{B} \ln V_{1} \bigg(\frac{4 \pi m e E_{(N_{1},~V_{1})}}{3 N_{1}}\bigg)^{3/2} + N_{2} k_{B} \ln V_{2} \bigg(\frac{4 \pi m e E_{(N_{2},~V_{2})}}{3 N_{2}}\bigg)^{3/2} \\
+&= N_{1} k_{B} \ln V_{1} \big(2 \pi m e k_{B} T_{i}\big)^{3/2} + N_{2} k_{B} \ln V_{2} \big(2 \pi m e k_{B} T_{i}\big)^{3/2} \\
+&= k_{B} \cdot (N_{1} + N_{2}) \ln \big(2 \pi m e k_{B} T_{i}\big)^{3/2} + k_{B} \big[N_{1} \ln V_{1} + N_{2} \ln V_{2}\big].
+\end{align*}
+
+Similarly, after mixing we have
+
+\[
+E_{f} = \frac{3}{2} ~ (N_{1} + N_{2})~ k_{B} T_{f}
+\]
+
+\begin{align*}
+S_{f} &= (N_{1} + N_{2}) ~ k_{B} \ln (V_{1} + V_{2}) \bigg(\frac{4 \pi m e E_{f}}{3 (N_{1} + N_{2})}\bigg)^{3/2} \\
+&= (N_{1} + N_{2}) ~ k_{B} \ln (V_{1} + V_{2}) \big(2 \pi m e k_{B} T_{f}\big)^{3/2} \\
+&= k_{B} \cdot (N_{1} + N_{2}) \ln \big(2 \pi m e k_{B} T_{i}\big)^{3/2} + k_{B} (N_{1} + N_{2}) \ln (V_{1} + V_{2}).
+\end{align*}
+
+where we have first eliminated \(E_{f}\) and then, as consequence of \(E_{i} = E_{f}\), used the fact the the temperature remains the same before and after the mixing. The mixing entropy is therefore
+
+\[
+\boxed{
+\Delta S_{\text{Mix}} = S_{f} - S_{i} = N_{1} k_{B} \ln \bigg(\frac{V_{1} + V_{2}}{V_{1}}\bigg) + N_{2} k_{B} \ln \bigg(\frac{V_{1} + V_{2}}{V_{2}}\bigg)
+}
+\]
+\label{sec:org96f7b5b}
+
+\textbf{Consider the same scenario as in the previous question but now assume that the two ideal gases are identical, i.e., have the same number density} \(n\). \textbf{Comment on what is the expected mixing entropy in this scenario and why. Is the formula you derived in the previous question consistent with your expectation?}
+
+When the two ideal gases are identical, the presence (or absence) of the partition is immaterial, and there is nothing to mix: we do \emph{not} have a transformation where the subsystems, initially separately in a state of thermal equilibrium, upon removal of the partition, pass through a series of non-equilibrium states, and after the passage of a sufficient amount of time, jointly attain a state of thermal equilibrium. For identical ideal gases, thermal equilibrium is never lost. As such, the expectation is that the mixing entropy must vanish. The previous formula for the mixing entropy is \emph{not} consistent with this expectation: consider a minor rewrite
+
+\[
+\Delta S_{\text{Mix}} = N_{1} k_{B} \ln \bigg(1 + \frac{V_{2}}{V_{1}}\bigg) + N_{2} k_{B} \ln \bigg(1 + \frac{V_{1}}{V_{2}}\bigg).
+\]
+
+Since \(V_{1} \geq 0\) and \(V_{2} \geq 0\), both of the terms on the right hand side of the equation above are non-negative. In general, the mixing entropy does not vanish, i.e., \(\Delta S_{\text{Mix}} \neq 0\).
+
+\label{sec:org9667d04}
+\textbf{For non-interacting thermodynamic systems such as the ideal gas, functions of state such as the entropy} \(S\) \textbf{must satisfy extensivity:}
+
+\[
+S (\lambda E,~\lambda V,~\lambda N) = \lambda S(E,~V,~N).
+\]
+
+\textbf{Change the scale of your observation} \(\((E,~V,~N) \rightarrow (\lambda E,~\lambda V,~\lambda N)\), \textbf{and show that the entropy \(S\) of the ideal gas you derived earlier violates extensivity.}
+
+Previously, we obtained
+
+\[
+S_{(N,~V)}(E_{(N,~V)}) = N k_{B} \ln V \bigg(\frac{4 \pi m e E_{(N,~V)}}{3 N}\bigg)^{3/2}
+\]
+
+Under \((E,~V,~N) \rightarrow (\lambda E,~\lambda V,~\lambda N)\) we get
+
+\begin{align*}
+S_{(\lambda N,~\lambda V)}( \lambda E_{(N,~V)}) &= \lambda N k_{B} \ln \lambda V \bigg(\frac{4 \pi m e E_{(N,~V)}}{3 N}\bigg)^{3/2} \\
+&= \lambda S_{(N,~V)} (E_{(N,~V)}) + \lambda N k_{B} \ln \lambda.
+\end{align*}
+
+The previously derived entropy is violates extensivity due to the appearance of an additional term \(\lambda N k_{B} \ln \lambda\).
+\label{sec:orgae081b5}
+
+\textbf{Violation of extensivity by the entropy manifests in a non-vanishing mixing entropy of identical gases; an observation known as the Gibbs's paradox. The fundamental postulate of statistical mechanics cannot resolve this paradox; an additional postulate is necessary: the permutations of a given microstate of identical particles leads to the same observable macrostate and therefore does not contribute to the accessible phase space volume. This leads to an a posteriori correction to the accessible phase space volume with a multiplicative factor dubbed as \emph{correct Boltzmann counting}. What is the correction factor for an ideal gas with} \(N\) \textbf{identical particles?}
+
+Consider a microstate defined by the phase space coordinates \(\{\vec{p}_{i},~\vec{q}_{i}\}_{i=1\ldots N}\) and \(\mathbf{q} \equiv (\vec{q}_{i})_{i=1\ldots N}\). The number of microstates that are identical to this microstate, in the sense that they give rise to the exact same macrostate, is simply the number of ways we can relabel the indices of either the momenta or the position in \(\{\vec{p}_{i},~\vec{q}_{i}\}_{i=1\ldots N}\). If all \(N\) particles are identical, then there are \(N!\) possible ways to relabel the indices. Thus for \emph{each} microstate, we have over-counted \(N!\) additional microstates that are identical to it: a multiplicative factor of \(1/ N!\) will adequately correct the accessible phase space volume for this over-counting.
+\label{sec:orge11e73b}
+
+\textbf{Rederive} \(\Omega\) and \(S\) \textbf{using correct Boltzmann counting. Show that it resolves Gibbs's paradox. How do other functions of state change as a result of the correction?}
+
+The corrected accessible phase phase volume is given by
+
+\[
+\Omega_{(N,~V)}(E_{(N,~V)}) = \frac{V^{N}}{N!} \cdot \bigg(\frac{4 \pi m e E_{(N,~V)}}{3 N}\bigg)^{3N/2}.
+\]
+
+The corrected entropy is
+
+\begin{align*}
+S_{(N,~V)}(E_{(N,~V)}) &= N k_{B} \ln V \bigg(\frac{4 \pi m e E_{(N,~V)}}{3 N}\bigg)^{3/2} + \overbrace{N k_{B} \ln (e) - N k_{B} \ln N }^{\text{correction}} \\
+&= N k_{B} + N k_{B} \ln \bigg(\frac{4 \pi m e E_{(N,~V)}}{3 N}\bigg)^{3/2} + N k_{B} \ln V - N k_{B} \ln N \\ 
+&= N k_{B} \bigg[1 + \ln \bigg(\frac{4 \pi m e E_{(N,~V)}}{3 N}\bigg)^{3/2} + \ln (V/N) \bigg].
+\end{align*}
+
+It is clear that the new entropy formula satisfies extensivity
+
+\begin{align*}
+S_{(\lambda N,~\lambda V)}(\lambda E_{(N,~V)}) &= \lambda N k_{B} \bigg[1 + \ln \bigg(\frac{4 \pi m e E_{(N,~V)}}{3 N}\bigg)^{3/2} + \ln (V/N) \bigg] \\
+&= \lambda S_{(N,~V)}(\lambda E_{(N,~V)}),
+\end{align*}
+
+and the mixing entropy of two identical ideal gases (\(n = N_{1}/V_{1} = N_{2}/V_{2} = (N_{1}+N_{2})/(V_{1} + V_{2})\))
+
+\begin{align*}
+\Delta S_{\text {Mix}} &= \left(N_{1}+N_{2}\right) k_{B} \ln \bigg(\frac{V_{1}+V_{2}}{N_{1}+N_{2}}\bigg) - N_{1} k_{B} \ln \bigg(\frac{V_{1}}{N_{1}}\bigg) - N_{2} k_{B} \ln \bigg(\frac{V_{2}}{N_{2}}\bigg) \\
+&= \left(N_{1}+N_{2}\right) k_{B} \ln (n^{-1}) - (N_{1} + N_{2}) k_{B} \ln (n^{-1}) = 0
+\end{align*}
+
+vanishes as it must. The Gibbs's paradox is resolved. 
+
+The correction to accessible phase space volume \(\Omega\) and consequently the entropy \(S\) is only a function of the thermodynamic coordinate \(N\), the particle number. Therefore, any function of state expressed as thermodynamic relationship involving a partial derivative of \(S\) with respect to a quantity other than \(N\) in unchanged. For the ideal gas, the fundamental identity of thermodynamics is
+
+\[
+\mathrm{d}E = T \mathrm{d} S - P \mathrm{d}V + \mu \mathrm{d}N.
+\]
+
+From the resulting thermodynamic relationship \(T \equiv \partial_{S_{(N,~V)}} E_{(N,~V)} = (\partial_{E_{(N,~V)}} S_{(N,~V)})^{-1}\), it follows that \(T\) and \(E_{(N,~V)} (T)\) are unchanged, whereas from \(\mu = - T \cdot \partial_{N} S_{(E,~V)}(N)\), it is clear that the chemical potential will require a additive correction of \(k_{B} T \ln N\). Note also that the mixing entropy of distinct gases
+
+\begin{align*}
+\Delta S_{\text {Mix }}=S_{f}-S_{i} & =N_{1} k_{B} \ln \bigg(\frac{V_{1} + V_{2}}{N_{1}} \bigg) + N_{2} k_{B} \ln \bigg(\frac{V_{1} + V_{2}}{N_{2}}\bigg) - N_{1} k_{B} \ln \bigg(\frac{V_{1}}{N_{1}}\bigg) - N_{2} k_{B} \ln \bigg(\frac{V_{2}}{N_{2}} \bigg) \\
+& =N_{1} k_{B} \ln \bigg(\frac{V_{1} + V_{2}}{V_{1}}\bigg) + N_{2} k_{B} \ln \bigg(\frac{V_{1} + V_{2}}{V_{2}}\bigg) \geq 0
+\end{align*}
+is unchanged.
+\begin{remark}
+Two particles are identical when no conceivable experiment can distinguish between their intrinsic properties. Strictly speaking, classical mechanics does not admit a concept of identical particles: \emph{intrinsic} to each particle is its unique trajectory in phase space governed by the canonical equations. Thus, within the framework of classical statistical mechanics, correct Boltzmann counting is an \emph{a posteriori} statement derived via induction: it does not follow from the fundamental postulate of statistical mechanics. In contrast, \emph{non-locality} and \emph{superposition} in quantum mechanics allows for the notion of identical particles. Thus, within the framework of quantum statistical mechanics, the same factors introduced via \emph{correct Boltzmann counting} reappear, but \emph{a priori}, their deduction relying on nothing more than the postulates of quantum mechanics.
+\label{orgf1b6c0c}
+\end{remark}
+\begin{remark}
+The volume of phase space involves products \(pq\), of coordinates and conjugate momenta. Its value depends on the units in which \(p\) and \(q\) are measured. This leads to the conclusion that the number of microstates depends on the units in which \(p\) and \(q\) are measured, which is clearly unphysical. The product \(pq\) has dimensions
+\[
+[pq] = [p][q] = (MLT^{-1})(L) = ML^2T^{-1} = [h],
+\]
+where \(h\) is the Plank's constant. In quantum statistical mechanics, The dimensionless measure \(pq/h\) appears naturally in quantum statistical mechanics, and eliminates the scale-dependence of the phase space volume.
+\label{orgf629321}
+\end{remark}
+\section*{Simple harmonic oscillator}
+\label{sec:orgfca07f5}
+
+\textbf{Consider} \(N\) \textbf{non-interacting harmonic oscillators with coordinates and momenta} \(\left\{q_i, p_i\right\}_{i=1\ldots N}\), \textbf{and subject to a Hamiltonian}
+\[
+H \left(\left\{q_i, p_i\right\}\right)=\sum_{i=1}^N \bigg(\frac{p_i^2}{2 m}+\frac{m \omega^2 q_i^2}{2}\bigg).
+\]
+\label{sec:orgd37bd42}
+\textbf{Calculate the accessible phase space volume} \(\Omega\) \textbf{for the full system in the microcanonical ensemble.}
+
+
+In the absence of heat or work input to the system, the internal energy \(E\), and the particle number \(N\), are fixed, specifying a macrostate \(M \equiv(E,~N)\). The corresponding set of microstates \(\{\mu\} \equiv \big\{ (q_i, p_i)_{i=1\ldots N}\big \}\) forms the \emph{microcanonical ensemble}.
+
+Under \(p_i \rightarrow \sqrt{m\omega} p_i\), \(q_i \rightarrow q_i/ \sqrt{m\omega}\), the Hamiltonian transforms like
+
+\[
+H(\{q_i, p_i\}) = \frac{1}{2} \sum_{i=1}^{N} \omega \big( p_i^2 + q_i^2 \big).
+\]
+
+Because the transformation above is canonical (the Jacobian is unity), it preserves phase space volumes so that for fixed energy \(E_{N}\), the accessible phase space volume of the original Hamiltonian and the transformed Hamiltonian are the same. 
+
+For the transformed Hamiltonian, the accessible phase space is a \(2N\) dimensional hyper-sphere with radius \(R = \sqrt{2E_{N}/\omega h}\). \(h\) has been absorbed from the phase space measure \(\prod_{i} (\mathrm{d} q_i \mathrm{d} p_i / h)\) to make \(R\) is a dimensionless and the accessible phase space volume in invariant under change of units for the momenta \((p_{i})_{i=1\ldotsN}\) and the coordinates \((q_{i})_{i=1\ldots N}\) as it should.
+
+For large \(N\), the volume \(V_d\) of a hyper-sphere in \(2N\) dimensions can be approximated by its surface area, given as
+
+\[
+V_{d} = \frac{S_{d} R^{d}}{d}, \quad S_{d} = \frac{2 \pi^{d / 2}}{\Gamma (d / 2)}.
+\]
+
+where \(\Gamma (n) \equiv (n-1)!\) for integer-valued \(n\) is the Gamma function. Substituting \(R = \sqrt{2E_{N}/\omega h}\) and \(d = 2N\) we get
+
+\[
+\Omega_{N} (E_{N}) = \frac{2 \pi^{N}}{(N-1)!} \cdot \frac{1}{2N} \cdot \bigg(\frac{2E_{N}}{h \omega}\bigg)^{N} = \bigg(\frac{2 \pi E_{N}}{h \omega}\bigg)^{N} \cdot \frac{1}{N!}
+\]
+
+For large \(N\), we can use Stirling's approximation \(N! \approx N^N \exp(-N) \sqrt{2 \pi N}\) and further simplify \(\Omega_{N} (E_{N})\):
+\[
+\boxed{
+\Omega_{N}(E_N) = \left(\frac{2 \pi E_{N}}{h \omega}\right)^N \cdot \frac{1}{N^N \exp(-N) \sqrt{2 \pi N}} = \frac{1}{\sqrt{2 \pi N}} \cdot \left(\frac{2 \pi E_{N}}{h \omega} \cdot \frac{e}{N}\right)^N
+}
+\]
+\label{sec:orgc549a65}
+
+\textbf{Calculate the entropy} \(S\).
+
+Substituting
+
+\[
+\Omega_{N}(E_N) = \frac{1}{\sqrt{2 \pi N}} \cdot \left(\frac{2 \pi E_{N}}{h \omega} \cdot \frac{e}{N}\right)^N.
+\]
+
+in the Boltzmann entropy formula
+
+\[
+S_{N}(E_{N})=k_{B} \ln \Omega_{N}(E_{N})
+\]
+
+we get
+
+\[
+\boxed{
+S_{N}(E_{N}) = N k_{B} \ln \bigg(\frac{2 \pi e E_{N}}{N h \omega}\bigg) + \mathcal{O} (\ln N) \approx N k_{B} \ln \bigg(\frac{2 \pi e E_{N}}{N h \omega}\bigg)
+}
+\]
+\label{sec:org2a0f958}
+
+\textbf{Find the inverse} \(E_{N} \equiv S_{N}^{-1}\) (\(E_{N}(S_{N}(x)) = x\)) \textbf{of the function}
+\[
+S_{N}(E_{N}) = N k_{B} \ln \bigg(\frac{2 \pi e E_{N}}{N h \omega}\bigg)
+\]
+
+\textbf{to express} \(E_{N}\) \textbf{as a function of} \(S_{N}\). \textbf{Thereafter, express} \(E_{N}\) \textbf{as a function of the temperature} \(T\).
+
+Since the natural logarithm \(\ln\) is a strictly monotonic function of its argument, the inverse \(S_{N}^{-1}\) exists and is unique for all \(E_{N}\). We have
+
+\[
+S_{N}(E_N) = N k_B \ln \left( \frac{2 \pi e E_N}{N h \omega} \right) \implies E_{N}(S_{N}) = \frac{N h \omega}{2 \pi e} \exp \left( \frac{S_{N}}{N k_B} \right).
+\]
+
+We identify \(\partial_{S_{N}} E_{N}\) appearing in the variations \(\mathrm{d} E_{N} = (\partial_{S_{N}} E_{N})~ \mathrm{d} S_{N}\) of \(E_{N}\) as the conjugate variable of \(S_{N}\), the temperature function \(T(S_{N}) \equiv \partial_{S_{N}} E_{N} (S_{N})\). Clearly then
+
+\[
+T(S_{N}) = \frac{h \omega}{2 \pi e k_B} \exp \left( \frac{S_{N}}{N k_B} \right) \implies S_{N} (T) = N k_{B} \ln \bigg(\frac{2 \pi e k_{B} T}{h \omega}\bigg),
+\]
+
+where once again we have used the strict monotonicity of the exponential function \(\exp\). We can now write \(E_{N} (S_{N}) \equiv E_{N} (S_{N}(T))\) and substitute \(S_{N}(T)\) for a given \(T\) to eliminate \(S_{N}\). Alternatively, we can compare \(S_{N}(T)\) with the expression for \(S_{N}(E_{N})\) above and identify \(E_{N}(T)\). Either way, we obtain
+
+\[
+\boxed{
+E_{N} (T) = N k_{B} T
+}
+\]
+\label{sec:org34ad940}
+
+\textbf{Show that the joint probability density} \(\rho_{T}(p,~q)\) \textbf{for a single oscillator in the microstate \(\{p,~q\}\) corresponding to a canonical ensemble is the Gibbs-Boltzmann distribution.}
+
+Let us begin by considering the total system as well as the single oscillator in the microcanonical ensemble where the macrostate is specified as \(M \equiv (E,~N)\). Let \(E_{N}\) be the total internal energy of the \(N\) oscillators. The phase space volume \(\Omega_{N}(E_{N})\) admits the decomposition
+
+\[
+\Omega_{N} (E_{N}) = \Omega_{1} (E_{1}) \cdot \Omega_{N-1} (E_{N-1})
+\]
+
+so that
+
+\[
+\rho_{E}(p,~q) \equiv \frac{1}{\Omega_{1} (E_{1})} = \frac{1}{h} \cdot \frac{\Omega_{N-1}(E_{N-1})}{\Omega_{N}(E_{N})},
+\]
+
+in accordance with the fundamental postulate of statistical mechanics. Substituting \(\Omega_{N-1}(E_{N-1})\) and \(\Omega_{N}(E_{N})\) we have
+\[
+\rho_{E}(p,~q) & = \frac{\omega}{2 \pi} \cdot \frac{N}{E} \cdot \frac{1}{e} \cdot\left(\frac{E_{N-1}}{E_{N}}\right)^{N-1} \cdot \frac{\sqrt{N}}{\sqrt{N-1}} \approx \frac{\omega}{2 \pi} \cdot \frac{N}{E} \cdot \frac{1}{e} \cdot\left(\frac{E_{N-1}}{E_{N}}\right)^{N},
+\]
+
+where the approximation is of the form \(N-1 \approx N\) for \(N \gg 1\). However, we want \(\rho_{T} (p,~q)\) for the \emph{canonical ensemble} not \(\rho_{E} (p,~q)\) of the microcanonical ensemble. To that end, we now treat the system comprised of the \(N-1\) oscillators as the external world with energy \(E_{N-1}\) and the denote the energy of the single oscillator with \(E_{1}\). Since \(E_{N} = E_{N-1} + E_{1}\), we have \(E_{N-1} = E_{N} - E_{1}\). We now change over to the canonical ensemble by using \(E_{N}(T) = N k_{B} T\):
+
+\[
+E_{N}(T) = N k_{B} T, \quad E_{N-1}(T) = N k_{B} T - \bigg(\frac{p^{2}}{2m} + \frac{m \omega^{2} q^{2}}{2}\bigg).
+\]
+
+(note that we have used the original coordinates and momenta above). Earlier \(E_{N}\) was a constant; it is now a random variable whose variations are governed by \(\mathrm{d}E = (\partial_{T} E)~\mathrm{d} T\). The macrostate is \(M \equiv (T,~N)\), that of the canonical ensemble. Having eliminated \(E\), we have \(\rho_{E}(p,~q) \to \rho_{T}(p,~q)\) where
+
+\begin{align*}
+\rho_{T} (p,~q) & =\frac{1}{2 \pi K_{B} T} \cdot \frac{\omega}{e} \cdot\bigg(\frac{N K_{B} T-p^{2} / 2 m-m \omega^{2} q^{2} / 2}{N K_{B} T}\bigg)^{N} \\
+& =\frac{1}{2 \pi K_{B} T} \cdot \frac{\omega}{e}\bigg(1-\frac{1}{N}\bigg[\frac{p^{2}}{2 m K_{B} T}+\frac{m \omega^{2} q^{2} }{2 K_{B} T}\bigg]\bigg)^{N} \\
+& \approx \frac{\omega}{2 \pi} \cdot \frac{1}{k_{B} T} \cdot \exp \bigg(-\frac{1}{K_{B} T}\left[\frac{p^{2}}{2 m}+\frac{m \omega^{2} q^{2} }{2}\right]\bigg).
+\end{align*}
+
+In the final step, we have used the definition of the exponential function
+
+\[
+\exp(x) \equiv \lim_{N \to \infty} \bigg(1 + \frac{x}{N}\bigg)^{N}.
+\]
+\label{sec:org586be5a}
+
+\textbf{Calculate} \(\langle p^{2} / ~ 2m \rangle\), \textbf{the mean kinetic energy, and} \(\langle m \omega^{2} q^{2} / 2 \rangle\), \textbf{the mean potential energy, for each oscillator. Is your result consistent with the equipartition theorem?}
+
+\(\rho_{T} (p,~q)\) is a properly normalized joint Gaussian density function over \(p\) and \(q\). In fact \(p\) and \(q\) are \emph{independent random variable}. To see this, recall that under the canonical transformation \(p_i \rightarrow \sqrt{m\omega} p_i\), \(q_i \rightarrow q_i/ \sqrt{m\omega}\), the Hamiltonian transforms like
+
+\[
+H(\{q_i, p_i\}) = \frac{1}{2} \sum_{i=1}^{N} \omega \big( p_i^2 + q_i^2 \big).
+\]
+
+so that \(\rho_{T} (p,~q)\) decomposes as the product of two Gaussian density functions
+
+\[
+\rho_{T} (p,~q) = \bigg[\bigg(\frac{\omega}{2 \pi k_{B} T}\bigg)^{1/2} \exp \bigg(- \frac{\omega~p^{2}}{2~k_{B} T}\bigg) \bigg] \cdot \bigg[\bigg(\frac{\omega}{2 \pi k_{B} T}\bigg)^{1/2} \exp \bigg(- \frac{\omega~q^{2}}{2~k_{B} T}\bigg) \bigg].
+\]
+
+Each of the individual Gaussian densities is properly normalized and we have the cumulants
+
+\[
+\langle p \rangle_{c} = 0,\quad \langle p^{2} \rangle_{c} = k_{B} T / \omega, \quad \langle q \rangle_{c} = 0, \quad \langle q^{2} \rangle_{c} = k_{B} T / \omega.
+\]
+
+Switch back to \(p_i \rightarrow p_i / \sqrt{m\omega}\) and \(q_i \rightarrow \sqrt{m\omega}~q_i\), we immediately obtain the mean kinetic energy and mean potential energy
+
+\[
+\langle p^{2} / m \rangle_{\rho_{T}} = k_{B} T, \quad \langle m \omega^{2} q^{2} \rangle_{\rho_{T}} = k_{B} T \implies \langle p^{2} / 2m \rangle_{\rho_{T}} = k_{B} T/2, \quad \langle m \omega^{2} q^{2} /2 \rangle_{\rho_{T}} = k_{B} T /2.
+\]
+
+Yes, the result is consistent with the equipartition theorem which states that every quadratic degree of freedom appearing in the Hamiltonian contributes \(k_{B} T / 2\) to the internal energy \(E\) of the system:
+
+\[
+E_{1} \equiv \langle H_{1} (p,~q) \rangle_{\rho_{T}} = \bigg \langle \frac{p^2}{2 m} \bigg \rangle_{\rho_{T}} + \bigg \langle \frac{m \omega^2 q^2}{2} \bigg \rangle_{\rho_{T}} = k_{B} T / 2 + k_{B} T /2 = k_{B} T \implies E_{N} = N k_{B} T.
+\]
+
+\label{sec:org38abcc0}
+
+\textbf{Using} \(\rho_{T} (p,~q)\) \textbf{find an expression for the partition function} \(\mathcal{Z}_{N}(\beta)\) \textbf{and the Helmholtz free energy} \(F_{N}(T)\) \textbf{of the the full system of} \(N\) \textbf{non-interacting oscillators in the canonical ensemble.} \(\beta \equiv 1 / k_{B} T\) \textbf{is the inverse temperature.}
+
+With \(\beta \equiv 1/k_{B} T\), \(\rho_{T} (p,~q)~\mathrm{d}p~\mathrm{d} q\) reduces to
+
+\[
+\rho_{T} (p,~q)~\mathrm{d}p~\mathrm{d} q = \beta \cdot \frac{h}{2\pi} \cdot \omega \cdot \exp\big[- \beta H(p,~q)\big] ~\mathrm{d}p~\mathrm{d} q = \beta~\hbar~\omega \cdot \exp\big[- \beta H(p,~q)\big] ~\mathrm{d}p~\mathrm{d} q,
+\]
+
+so that
+
+\[
+\boxed{
+\rho_{T} (p,~q) = \beta\hbar\omega \cdot \exp\big[- \beta H(p,~q)\big]
+}
+\]
+
+Since \(\rho_{T} (p,~q)\) is properly normalized, we can identify the partition function for the single oscillator from the equation above
+
+\[
+\boxed{
+\mathcal{Z}_{1} (\beta) = \frac{1}{\beta\hbar\omega}
+}
+\]
+
+The joint partition function of \(N\) non-interacting oscillators is simply the product of the \(N\) single oscillator partition functions:
+
+\[
+\boxed{
+\mathcal{Z}_{N} (\beta) = [\mathcal{Z}_{1}(\beta)]^{N} = \bigg(\frac{1}{\beta\hbar\omega}\bigg)^{N}
+}
+\]
+
+In the canonical ensemble, the Helmholtz free energy \(F_{N}\) given \(\beta\) is \(F_{N}(\beta) = - \beta^{-1} \ln \mathcal{Z}_{N} (\beta)\). Therefore, for the \(N\) non-interacting oscillator system, we have
+
+\[
+\boxed{
+F_{N}(\beta) = \beta^{-1} N \ln (\beta \hbar \omega) = N k_{B} T \ln \bigg(\frac{h \omega}{2 \pi k_{B} T}\bigg)
+}
+\]
+
+\section*{Sampling}
+\label{sec:org426e1ab}
+
+\textbf{Suppose that} \(z\) \textbf{is a random variable with uniform distribution over \([0,~1]\) and that we transform} \(z\) \textbf{using} \(y = h^{-1}(z)\) \textbf{where} \(h(y)\) \textbf{is given by}
+
+\[
+z=h(y) \equiv \int_{-\infty}^y p(\widehat{y}) \mathrm{d} \widehat{y}
+\]
+
+\textbf{Show that} \(y\) \textbf{has the distribution} \(p(y)\).
+
+
+For random variables \(z\) and \(y\) with densities \(p_{z}\) and \(p_{y}\), and the solutions \(\{z_{i}\}\) for the equation \(h(y) = z\) for a fixed \(y\), we have
+\[
+p_y (y) \mathrm{d} y = \sum_{i} p(z_{i}) \mathrm{d} z_{i} \implies p_y (y) = \sum_{i} p_{z} (h(y_{i})) \cdot \lvert \mathrm{D}_{y} h(y_{i}) \rvert,
+\]
+such that \(z_{i} = h(y_{i})\). Given
+\[
+z=h(y) \equiv \int_{-\infty}^y p(\widehat{y}) \mathrm{d} \widehat{y}
+\]
+we have
+\[
+\mathrm{D}_{y} h(y) = \mathrm{D}_{y} \bigg(\int_{-\infty}^{y} p(\hat{y})~ \mathrm{d} \hat{y}\bigg) = p(y), \quad p_{z} (h(y)) = 1.
+\]
+The first equality is a consequence of the fundamental theorem of calculus. \(p_{z} (h(y)) = 1\) because \(z\) is a random variable with a uniform distribution over \([0,~1]\). Substituting in the expression for \(p_{y}\) yields the ask \(p_y(y)  = p(y)\).
+\label{sec:org79946d8}
+
+\textbf{Consider the expectation and its finite sample estimator given below}
+\[
+\mathbb{E}[f] \equiv \int f(\mathbf{z}) p(\mathbf{z}) \mathrm{d} \mathbf{z}, \quad \hat{f} = \frac{1}{L} \sum_{l=1}^{L} f(\mathbf{z}^{(l)}).
+\]
+\textbf{Show that}
+\[
+\mathbb{E} [\hat{f}] = \mathbb{E}[f], \quad \operatorname{var}[\hat{f}] = \frac{1}{L} \mathbb{E}[(f - \mathbb{E}[f])^{2}].
+\]
+
+By definition
+\[
+\mathbb{E} [\hat{f}] = \int \bigg(\frac{1}{L} \sum_{l=1}^{L} f(\mathbf{z}^{(l)})\bigg) p(\mathbf{z}) \mathrm{d}\mathbf{z} = \frac{1}{L} \sum_{l=1}^{L} \bigg(\int f(\mathbf{z}^{(l)}) p(\mathbf{z}) \mathrm{d}\mathbf{z} \bigg) = \mathbb{E}[f].
+\]
+
+Using the decomposition
+
+\[
+\sum_{k} \sum_{l} f(\mathbf{z}^{(k)}) f(\mathbf{z}^{(l)}) = \sum_{k} f(\mathbf{z}^{(k)})^{2} + \sum_{k} \sum_{l \neq k} f(\mathbf{z}^{(k)}) f(\mathbf{z}^{(l)})
+\]
+
+in the definition of the variance of \(\hat{f}\) yields
+
+\begin{align*}
+\operatorname{var} [\hat{f}] &= \int \bigg(\frac{1}{L} \sum_{l=1}^{L} f(\mathbf{z}^{(l)})\bigg)^{2} p(\mathbf{z}) \mathrm{d}\mathbf{z} - \bigg[\int \bigg(\frac{1}{L} \sum_{l=1}^{L} f(\mathbf{z}^{(l)})\bigg) p(\mathbf{z}) \mathrm{d}\mathbf{z} \bigg]^{2} \\
+&= \frac{1}{L} \frac{1}{L} \sum_{l=1}^{L} \bigg(\underbrace{\int f(\mathbf{z}^{(l)})^{2} p(\mathbf{z}) \mathrm{d}\mathbf{z}}_{= \mathbb{E}[f^{2}]} \bigg) + \underbrace{\frac{1}{L^{2}} \sum_{l=1}^{L} \sum_{k \neq l}^{L} \bigg( \int f(\mathbf{z}^{(k)}) f(\mathbf{z}^{(l)}) p(\mathbf{z}) \mathrm{d}\mathbf{z} \bigg)}_{\text{vanishes because } \mathbf{z}^{(l)} \text{ are independent samples}} - \frac{1}{L} \frac{1}{L} \sum_{l=1}^{L} \bigg(\underbrace{\int f(\mathbf{z}^{(l)}) p(\mathbf{z}) \mathrm{d}\mathbf{z}}_{= \mathbb{E}[f]} \bigg)^{2} \\
+&= \frac{1}{L} (\mathbb{E}[f^{2}] - \mathbb{E}[f]^{2}) = \frac{\operatorname{var} [f]}{L} = \frac{1}{L} \mathbb{E} [(f - \mathbb{E}[f])^{2}].
+\end{align*}
+
+Therefore
+\[
+\mathbb{E} [\hat{f}] = \mathbb{E}[f], \quad \operatorname{var}[\hat{f}] = \frac{1}{L} \mathbb{E}[(f - \mathbb{E}[f])^{2}].
+\]
+\label{sec:org55ced25}
+
+\textbf{Let} \(p(\mathbf{z})\) \textbf{be a distribution such that direct sampling of} \(\mathbf{z}\) \textbf{according to} \(p\) \textbf{is difficult whereas, given} \(\mathbf{z}\), \textbf{evaluation of} \(p(\mathbf{z})\) \textbf{upto a normalizing constant} \(Z\) \textbf{is easy, i.e.,}
+
+\[
+p(\mathbf{z})=\frac{1}{Z_p} \widetilde{p}(\mathbf{z})
+\]
+
+\textbf{where} \(\widetilde{p}(\mathbf{z})\) \textbf{can readily be evaluated, but} \(Z_p\) \textbf{is unknown. Rejection sampling works as follows:}
+
+\begin{enumerate}
+\item \emph{Start with a proposal distribution} \(q(z)\) \emph{that is easy to sample from.}
+\item \emph{Introduce a constant} \(k\) \emph{such that} \(k q(z) \geqslant \widetilde{p}(z)\) \emph{for all} \(z\).  \(k q(z)\) \emph{is called the comparison function.}
+\item \emph{Generate a number} \(z_0\) \emph{from the distribution} \(q(z)\).
+\item \emph{Generate a number} \(u_0\) \emph{from the uniform distribution over} \(\left[0, k q\left(z_0\right)\right]\).
+\item \emph{If} \(u_0>\widetilde{p}\left(z_0\right)\) \emph{then the sample is rejected, otherwise \(u_0\) is retained.}
+\end{enumerate}
+
+\textbf{Find the acceptance probability} \(p(A)\) \textbf{in this scheme and show that}
+
+\[
+p(\mathbf{z} \mid A) = p(\mathbf{z})
+\]
+
+We have
+
+\[
+p (A \mid \mathbf{z}) = \frac{\tilde{p}(\mathbf{z})}{k q (\mathbf{z})}, \quad p (A) = \int_{\mathbf{z}} p(A \mid \mathbf{z}) ~ q(\mathbf{z}) \mathrm{d} \mathbf{z} = \frac{1}{k} \int_{\mathbf{z}} \tilde{p} (\mathbf{z}) = \frac{Z_{p}}{k}
+\]
+
+Plugging into Bayes's theorem yields the ask
+
+\[
+p(\mathbf{z} \mid A) = \frac{p(A \mid \mathbf{z}) \cdot q(\mathbf{z})}{p(A)} = \frac{\tilde{p}(\mathbf{z})}{Z_{p}} = p(\mathbf{z}).
+\]
+\label{sec:org706a760}
+
+\textbf{A first-order Markov chain is defined to be a series of random variables} \(\mathbf{z}^{(1)}, \ldots, \mathbf{z}^{(M)}\) \textbf{such that the following} \textbf{conditional independence property holds for} \(m \in\{1, \ldots, M-1\}\)
+
+\[
+p(\mathbf{z}^{(m+1)} \mid \mathbf{z}^{(1)}, \ldots, \mathbf{z}^{(m)})=p(\mathbf{z}^{(m+1)} \mid \mathbf{z}^{(m)}).
+\]
+
+\textbf{A Markov chain is fully specified by:}
+
+\begin{enumerate}
+\item \emph{the probability distribution for the initial variable} \(p(\mathbf{z}^{(0)})\),
+\item \emph{the form of transition probabilities} \(T_m (\mathbf{z}^{(m)} \to \mathbf{z}^{(m+1)}) \equiv p (\mathbf{z}^{(m+1)} \mid \mathbf{z}^{(m)})\).
+\end{enumerate}
+
+\textbf{The marginal probabilities in the chain satisfy the following equation}
+
+\begin{align*}
+p(\mathbf{z}^{(m+1)})=\sum_{\mathbf{z}^{(m)}} p(\mathbf{z}^{(m+1)} \mid \mathbf{z}^{(m)}) \cdot p(\mathbf{z}^{(m)}).
+\end{align*}
+
+\textbf{A Markov chain is called \emph{homogeneous} if the transition probabilities are the same for all} \(m\). \textbf{For a homogeneous Markov chain with transition probabilities} \(T\left(\mathbf{z}^{\prime} \to \mathbf{z}\right)\), \textbf{the distribution} \(p^{\star}(\mathbf{z})\) \textbf{is \emph{stationary} if}
+
+\[
+p^{\star}(\mathbf{z})=\sum_{\mathbf{z}^{\prime}} T(\mathbf{z}^{\prime} \to \mathbf{z}) \cdot p^{\star}(\mathbf{z}^{\prime})
+\]
+
+\textbf{Suppose that}
+
+\[
+p^{\star}(\mathbf{z}) T(\mathbf{z} \to \mathbf{z}^{\prime})=p^{\star}(\mathbf{z}^{\prime}) T(\mathbf{z}^{\prime} \to \mathbf{z}),
+\]
+
+\textbf{called the condition of \emph{detailed balance}. A Markov chain that respects detailed balance is said to be \emph{reversible}. Given that condition of detailed balance, show that} \(p^{\star} (\mathbf{z})\) \textbf{is stationary and hence reversible.}
+
+Under the action of \(\sum_{\mathbf{z}^{\prime}}\), the detailed balance condition implies that
+
+\[
+\sum_{\mathbf{z}^{\prime}} p^{\star}(\mathbf{z}^{\prime}) T(\mathbf{z}^{\prime} \to \mathbf{z}) = \sum_{\mathbf{z}^{\prime}} p^{\star}(\mathbf{z}) T(\mathbf{z} \to \mathbf{z}^{\prime}).
+\]
+
+Given \(\mathbf{z}\), \(p^{\star} (\mathbf{z})\) on the right hand side is not a constant.
+
+\[
+p^{\star}(\mathbf{z}) \sum_{\mathbf{z}^{\prime}} T(\mathbf{z} \to \mathbf{z}^{\prime}) = \sum_{\mathbf{z}^{\prime}} p^{\star}(\mathbf{z}^{\prime}) T(\mathbf{z}^{\prime} \to \mathbf{z}).
+\]
+
+Using \(\sum_{\mathbf{z}^{\prime}} T(\mathbf{z} \to \mathbf{z}^{\prime}) \equiv 1\) yields the condition for stationarity:
+
+\[
+p^{\star}(\mathbf{z})=\sum_{\mathbf{z}^{\prime}} T(\mathbf{z}^{\prime} \to \mathbf{z}) \cdot p^{\star}(\mathbf{z}^{\prime}).
+\]
+
+
+\[
+\sum_{\mathbf{z}^{\prime}} T(\mathbf{z}^{\prime} \to \mathbf{z}) \cdot p^{\star}(\mathbf{z}^{\prime})
+\]
+
+\begin{remark}
+A Markov chain may have more than one stationary distribution depending on the transition probabilities \(T(\mathbf{z} \to \mathbf{z}^{\prime}\) and the the starting proposal \(p(\mathbf{z}^{(0)})\). A Markov chain is called \emph{ergodic} if required invariant distribution \(p^{\star}(\mathbf{z})\), irrespective of the choice of initial distribution \(p(\mathbf{z}^{(0)})\). This property is called \emph{ergodicity}, and the stationary distribution is then called the \emph{equilibrium distribution}.
+\label{orgabfa7d4}
+\end{remark}
+\section*{Finite-difference approximations}
+\label{sec:org1018c40}
+Without loss of generality to higher-order systems (see the sections on IVPs defined by simultaneous ODEs and higher-order ODEs), we restrict ourselves to linear first-order differential equations, because a linear higher-order ODE can be converted into a larger system of linear first-order equations by introducing extra variables. 
+
+\begin{definition}
+A first-order differential equation is an initial value problem of the form
+\begin{align*}
+\mathrm{D}_t x(t) = f(t, x(t)), \quad x\left(0\right)=x_0
+\end{align*}
+where \(f\) is a function \(f:\left[0, \infty\right) \times \mathbb{R} \rightarrow \mathbb{R}\), and the initial condition \(x_0 \in \mathbb{R}\).
+\label{orgb96ec21}
+\end{definition}
+Initial values problems are solving using finite difference methods.
+\subsection*{Forward difference}
+\label{sec:org85b66b9}
+Expanding \(x(t + h)\) in a Taylor's series at \(x (t)\) we have \(x(t + h) = x(t) + \mathrm{D}_t x(t) \, h + \mathcal{O} (h^{2})\). Using \(\mathrm{D}_t x(t) = f(t, x(t))\) we get
+\[
+\boxed{
+x(t+h) = x(t) + h \, f(t,\,x(t))  + \mathcal{O} (h^{2}).
+}
+\]
+When \(h\) is only allowed to assume discrete values and terms that are \(\mathcal{O} (h^{2})\) are dropped from the right hand side, this scheme is called the \emph{forward difference approximation}:
+\[
+\boxed{
+x_{n+1} = x_{n} + h f(t_n + h,\, x_{n}).
+}
+\]
+\subsection*{Backward difference}
+\label{sec:org9b73712}
+Expanding \(x(t - h)\) in a Taylor's series at \(x (t)\) we have \(x(t- h) = x(t) - \mathrm{D}_t x(t) \, h + \mathcal{O} (h^{2})\). Using \(\mathrm{D}_t x(t) = f(t, x(t))\) and transforming \(t \to t + h\) we get
+\[
+\boxed{
+x(t+h) = x(t) + h \, f(t+h,\,x(t+h))  + \mathcal{O} (h^{2}).
+}
+\]
+When \(h\) is only allowed to assume discrete values and terms that are \(\mathcal{O} (h^{2})\) are dropped from the right hand side, this scheme is called the \emph{backward difference approximation}:
+\[
+\boxed{
+x_{n+1} = x_{n} + h f(t_n + h,\, x_{n+1}).
+}
+\]
+\subsection*{Central difference}
+\label{sec:org1386d78}
+Expanding \(x(t + h)\) in a Taylor's series at \(x (t)\) we have
+\[
+x(t + h) = x(t) + \mathrm{D}_t x(t) \, h + \frac{1}{2!} \mathrm{D}_t^{2} x(t) \, h^{2} + \mathcal{O} (h^{3}). \tag{1}
+\]
+Expanding \(x(t - h)\) in a Taylor's series at \(x (t)\) we have
+\[
+x(t- h) = x(t) - \mathrm{D}_t x(t) \, h + \frac{1}{2!} \mathrm{D}_t^{2} x(t) \, h^{2} + \mathcal{O} (h^{3}). \tag{2}
+\]
+Subtracting (2) from (1) and transforming \(h \to h / 2\) we obtain
+\[
+x(t + h / 2) - x(t- h/2) = \mathrm{D}_t x(t) \, h + \mathcal{O} (h^{3})
+\]
+Using \(\mathrm{D}_t x(t) = f(t, x(t))\) and transforming \(t \to t + h/2\) we get
+\[
+\boxed{
+x(t+h) = x(t) + h \, f(t + h/2,\,x(t + h/2))  + \mathcal{O} (h^{3}).
+}
+\]
+\subsubsection{Forward central difference}
+\label{sec:org353e83b}
+Starting from \(x(t+h) = x(t) + h \, f(t + h/2,\,x(t + h/2))  + \mathcal{O} (h^{3})\) we can expand \(x(t + h/2)\) in a Taylor series about \(x(t)\) to obtain \(x(t + h/2) = x(t) + (h/2) \mathrm{D}_t x(t) + \mathcal{O}(h^2)\) and use \(\mathrm{D}_t x(t) = f(t, x(t))\) to obtain
+\[
+\boxed{
+x(t+h) = x(t) + h \, f(t + h/2,\,x(t) + (h/2) \cdot f(t,\,x(t)))  + \mathcal{O} (h^{3}).
+}
+\]
+Note that while the approximation \(x(t + h/2) \approx x(t) + (h/2) \mathrm{D}_t x(t)\) by itself introduces error that is \(\mathcal{O} (h^2)\), it appears as an argument of \(f\) which multiplies a factor of \(h\) so that the overall we have a leading order error of \(\mathcal{O} (h^3)\). When \(h\) is only allowed to assume discrete values and terms that are \(\mathcal{O} (h^{3})\) are dropped from the right hand side, this scheme is called the \emph{forward central difference approximation}:
+\[
+\boxed{
+x_{n+1} = x_{n} + h f(t_n + h/2,\, x_n + (h/2) \cdot f(t_n,\,y_n)).
+}
+\]
+\subsubsection{Backward central difference}
+\label{sec:orgdc9f7b1}
+Starting from \(x(t+h) = x(t) + h \, f(t + h/2,\,x(t + h/2))  + \mathcal{O} (h^{2})\) we can expand \(x(t + h/2)\) in a Taylor series about \(x(t + h)\) to obtain \(x(t + h/2) = x(t+h) - (h/2) \mathrm{D}_t x(t+h) + \mathcal{O}(h^2)\) and use \(\mathrm{D}_t x(t) = f(t, x(t))\) to obtain
+\[
+\boxed{
+x(t+h) = x(t) + h \, f(t + h/2,\,x(t+h) - (h/2) \cdot f(t+h,\,x(t+h)))  + \mathcal{O} (h^{3}).
+}
+\]
+When \(h\) is only allowed to assume discrete values and terms that are \(\mathcal{O} (h^{2})\) are dropped from the right hand side, this scheme is called the \emph{backwards central difference approximation}:
+\[
+\boxed{
+x_{n+1} = x_{n} + h f(t_n + h/2,\, x_{n+1} - (h/2) \cdot f(t_{n+1},\,x_{n+1})).
+}
+\]
+\section*{Euler's methods}
+\label{sec:orgea414bc}
+\subsection*{Explicit Euler's method}
+\label{sec:org1d22b20}
+The explicit Euler method refers to first-order forward difference approximation in solving the IVP described a first order ODE.
+\begin{definition}
+Let \(f\) is a function \(f:\left[0, \infty\right) \times \mathbb{R} \rightarrow \mathbb{R}\). Consider the IVP
+\begin{align*}
+\mathrm{D}_t x(t) = f(t, x(t)), \quad x\left(0\right)=x_0.
+\end{align*}
+The explicit Euler's method is a first-order forward difference approximation that solves this IVP:
+\[
+x_{n+1} \approx x_{n} + h \, f(t_{n},\,x_{n})
+\]
+\label{orgfd82f57}
+\end{definition}
+It is explicit since \(f\left(t_n, x_n\right)\) does not depend on \(x_{n+1}\). The explicit Euler's method is a example of a single point method since it requires only one known point. A limitation of this method (overcome by the implicit Euler's method) is that the method is \emph{conditionally stable}.
+\subsection*{Implicit Euler's method}
+\label{sec:org952f43f}
+\begin{definition}
+Let \(f\) is a function \(f:\left[0, \infty\right) \times \mathbb{R} \rightarrow \mathbb{R}\). Further assume that \(f\) is linear. Consider the IVP
+\begin{align*}
+\mathrm{D}_t x(t) = f(t, x(t)), \quad x\left(0\right)=x_0.
+\end{align*}
+The implicit Euler's method is a first-order backward difference approximation that solves this IVP:
+\[
+x_{n+1} \approx x_{n} + h \, f(t_{n+1},\,x_{n+1}).
+\]
+\label{orgebbbe4e}
+\end{definition}
+It is implicit since \(f(t_{n+1}, x_{n+1})\) depends on \(x_{n+1}\).
+The explicit Euler's method simply requires the evaluation of the right hand side of the forward finite difference approximation that defines it. In contrast, when using the implicit Euler's method, a transcendental equation must be solved for every step, possibly by using a suitable root-finding method. Thus the use of the implicit Euler's method is computationally expensive relative to the use of the explicit Euler's method.
+\subsection*{Errors}
+\label{sec:org6e8d7fd}
+\subsubsection*{Local truncation error \(\mathcal{O} (h^2)\)}
+\label{sec:orga61186d}
+The local truncation error of both of the Euler's method is \(\mathcal{O}\left(h^2\right)\), same as the error for the forward and backward finite difference approximations.
+\subsubsection*{Global truncation error \(\mathcal{O} (h)\)}
+\label{sec:org98772ed}
+The global error accumulated after \(n\) steps is \(\mathcal{O}(h)\). The global truncation error is the error at a fixed time \(t_i\), after however many steps the method needs to take to reach that time from the initial time. The global truncation error is the cumulative effect of the local truncation errors committed in each step. The number of steps is \((t_i-t_0)/h \simeq \mathcal{O}(1/h)\) and the error committed in each step is \(\mathcal{O}(h^2)\) (see the previous section). Thus, the global truncation error is \(\mathcal{O}(h)\).
+\subsubsection*{Local round-off error \(\sim \epsilon_{\text{mach}} x_{n}\)}
+\label{sec:org4eb9881}
+In step \(n\) of the Euler method, the rounding error is roughly of the magnitude \(\epsilon_{\text{mach}} x_n\) where \(\epsilon_{\text{mach}}\) is the machine epsilon.
+\subsubsection*{Global round-off error \(\mathcal{O}(1/\sqrt{h})\)}
+\label{sec:org07d3b47}
+Assuming that the rounding errors are independent random variables, the expected total rounding error is proportional to \(\epsilon_{\text{mach}}/\sqrt{h}\). 
+Thus, for extremely small values of the step size the truncation error will be small but the effect of rounding error may be big due to catastrophic cancellation.
+\end{document}
