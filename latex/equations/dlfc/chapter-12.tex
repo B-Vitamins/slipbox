@@ -1,0 +1,326 @@
+\documentclass{article}
+
+% Document Layout and Fonts
+\usepackage[margin=0.9in]{geometry}    % Page margins
+\usepackage{fontspec}                  % For custom fonts (LuaLaTeX feature)
+\usepackage{tgpagella}
+\usepackage{mathpazo}
+\setmainfont{EB Garamond}              % Main font (EB Garamond)
+\usepackage{microtype}                 % Improves text appearance
+\usepackage{titlesec}                  % Customize section title fonts
+\usepackage{algorithm}
+\usepackage{algorithmic}
+
+% Right-align section headings
+\titleformat{\section}
+  {\normalfont\large\scshape\raggedright}  % Right-align and small caps
+  {}{0em}{}[]
+
+% Right-align subsection headings and add a line below
+\titleformat{\subsection}
+  {\normalfont\normalsize\raggedleft}     % Right-align subsections
+  {}{0em}{\titlerule[0.5pt]}              % Horizontal line below
+
+% Right-align and italicize subsubsections
+\titleformat{\subsubsection}
+  {\normalfont\normalsize\itshape\raggedleft} % Right-align and italicize subsubsections
+  {}{0em}{}[]
+
+% Math and Science Packages
+\usepackage{amsmath, amsfonts, amssymb, mathtools, amsthm, dsfont}
+
+% Math commands and operators
+\newcommand{\minus}{\scalebox{0.8}{\(-\)}}
+\newcommand{\plus}{\scalebox{0.6}{\(+\)}}
+\DeclareMathOperator{\sech}{sech}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\tr}{Tr}
+\newcommand{\diff}{\mathop{}\!\mathrm{d}}    % Differential d
+
+% Definitions, theorems, corollaries, and friends
+\usepackage[english]{babel}
+\usepackage[hidelinks]{hyperref}
+\newtheorem{axiom}{Axiom}
+\newtheorem{postulate}{Postulate}
+\newtheorem{definition}{Definition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem*{remark}{Remark}
+
+\title{\LARGE\scshape\MakeUppercase{Chapter 12: Transformers}}
+\author{\textit{Bishop and Bishop}}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{Attention}
+
+\subsection{Transformer processing}
+\begin{align*}
+\widetilde{\mathbf{X}}=\text{ TransformerLayer }[
+\mathbf{X}]
+\tag{12.1}
+\end{align*}
+
+\subsection{Attention coefficients}
+\begin{align*}
+\mathbf{y}_{n}=\sum_{m=1}^{N} a_{n m} \mathbf{x}_{m} \tag{12.2}
+\end{align*}
+
+\begin{align*}
+a_{n m} \geqslant 0  \tag{12.3}
+\end{align*}
+
+\begin{align*}
+\sum_{m=1}^{N} a_{n m}=1 \tag{12.4}
+\end{align*}
+
+\subsection{Self-attention}
+\begin{align*}
+a_{n m}=\frac{\exp \left(\mathbf{x}_{n}^{\top} \mathbf{x}_{m}\right)}{\sum_{m^{\prime}=1}^{N} \exp \left(\mathbf{x}_{n}^{\top} \mathbf{x}_{m^{\prime}}\right)} \tag{12.5}
+\end{align*}
+
+\begin{align*}
+\mathbf{Y}=\operatorname{Softmax}\left[
+\mathbf{X} \mathbf{X}^{\top}\right]
+\mathbf{X} \tag{12.6}
+\end{align*}
+
+\subsection{Network parameters}
+\begin{align*}
+\tilde{\mathbf{X}}=\mathbf{XU} \tag{12.7}
+\end{align*}
+
+\begin{align*}
+\mathbf{Y}=\operatorname{Softmax}\left[
+\mathbf{X} \mathbf{U} \mathbf{U}^{\top} \mathbf{X}^{\top}\right]
+\mathbf{X} \mathbf{U} \tag{12.8}
+\end{align*}
+
+\begin{align*}
+\mathbf{X} \mathbf{U} \mathbf{U}^{\top} \mathbf{X}^{\top} \tag{12.9}
+\end{align*}
+
+\begin{align*}
+& \mathbf{Q}=\mathbf{X} \mathbf{W}^{(\mathrm{q})}  \tag{12.10}\\
+& \mathbf{K}=\mathbf{X} \mathbf{W}^{(\mathrm{k})}  \tag{12.11}\\
+& \mathbf{V}=\mathbf{X} \mathbf{W}^{(\mathrm{v})} \tag{12.12}
+\end{align*}
+
+\begin{align*}
+\mathbf{Y}=\operatorname{Softmax}\left[
+\mathbf{Q K}^{\top}\right]
+\mathbf{V} \tag{12.13}
+\end{align*}
+
+\subsection{Scaled self-attention}
+
+\begin{align*}
+\mathbf{Y}=\operatorname{Attention}(\mathbf{Q}, \mathbf{K}, \mathbf{V}) \equiv \operatorname{Softmax}\left[
+\frac{\mathbf{Q K}^{\top}}{\sqrt{D_{\mathrm{k}}}}\right]
+\mathbf{V} \tag{12.14}
+\end{align*}
+
+\subsubsection{Algorithm 12.1: Scaled dot-product self-attention}
+
+\begin{algorithm}[H]
+\caption{Scaled Dot-Product Self-Attention}
+\begin{algorithmic}[1]
+\STATE \textbf{Input:} Set of tokens $X \in \mathbb{R}^{N \times D} : \{x_1, \ldots, x_N\}$
+\STATE \quad Weight matrices $\{W^{(q)}, W^{(k)}, W^{(v)}\} \in \mathbb{R}^{D \times D_k}$ and $W^{(v)} \in \mathbb{R}^{D \times D_v}$
+\STATE \textbf{Output:} $\text{Attention(Q, K, V)} \in \mathbb{R}^{N \times D_v} : \{y_1, \ldots, y_N\}$
+\STATE $Q \gets X W^{(q)}$ \COMMENT{// compute queries $Q \in \mathbb{R}^{N \times D_k}$}
+\STATE $K \gets X W^{(k)}$ \COMMENT{// compute keys $K \in \mathbb{R}^{N \times D_k}$}
+\STATE $V \gets X W^{(v)}$ \COMMENT{// compute values $V \in \mathbb{R}^{N \times D}$}
+\RETURN $\text{Attention(Q, K, V)} = \text{Softmax}\left(\frac{Q K^T}{\sqrt{D_k}}\right) V$
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Multi-head attention}
+\begin{align*}
+\mathbf{H}_{h}=\operatorname{Attention}\left(\mathbf{Q}_{h}, \mathbf{K}_{h}, \mathbf{V}_{h}\right) \tag{12.15}
+\end{align*}
+
+\begin{align*}
+\mathbf{Q}_{h} & =\mathbf{X} \mathbf{W}_{h}^{(\mathrm{q})}  \tag{12.16}\\
+\mathbf{K}_{h} & =\mathbf{X} \mathbf{W}_{h}^{(\mathrm{k})}  \tag{12.17}\\
+\mathbf{V}_{h} & =\mathbf{X} \mathbf{W}_{h}^{(\mathrm{v})} \tag{12.18}
+\end{align*}
+
+\begin{align*}
+\mathbf{Y}(\mathbf{X})=\operatorname{Concat}\left[
+\mathbf{H}_{1}, \ldots, \mathbf{H}_{H}\right]
+\mathbf{W}^{(o)} \tag{12.19}
+\end{align*}
+
+\subsubsection{Algorithm 12.2: Multi-head attention}
+
+\begin{algorithm}[H]
+\caption{Multi-Head Attention}
+\begin{algorithmic}[1]
+\STATE \textbf{Input:} Set of tokens $X \in \mathbb{R}^{N \times D} : \{x_1, \ldots, x_N\}$
+\STATE \quad Query weight matrices $\{W^{(q)}_1, \ldots, W^{(q)}_H\} \in \mathbb{R}^{D \times D}$
+\STATE \quad Key weight matrices $\{W^{(k)}_1, \ldots, W^{(k)}_H\} \in \mathbb{R}^{D \times D}$
+\STATE \quad Value weight matrices $\{W^{(v)}_1, \ldots, W^{(v)}_H\} \in \mathbb{R}^{D \times D_v}$
+\STATE \quad Output weight matrix $W^{(o)} \in \mathbb{R}^{H D_v \times D}$
+\STATE \textbf{Output:} $Y \in \mathbb{R}^{N \times D} : \{y_1, \ldots, y_N\}$
+\STATE \textbf{// compute self-attention for each head (Algorithm 12.1)}
+\FOR{h = 1, \ldots, H}
+    \STATE $Q_h = X W^{(q)}_h$
+    \STATE $K_h = X W^{(k)}_h$
+    \STATE $V_h = X W^{(v)}_h$
+    \STATE $H_h = \text{Attention}(Q_h, K_h, V_h)$ \COMMENT{// $H_h \in \mathbb{R}^{N \times D_v}$}
+\ENDFOR
+\STATE $H = \text{Concat}[H_1, \ldots, H_H]$ \COMMENT{// concatenate heads}
+\RETURN $Y(X) = H W^{(o)}$
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Transformer layers}
+\begin{align*}
+\mathbf{Z}=\text{ LayerNorm }[
+\mathbf{Y}(\mathbf{X})+\mathbf{X}] \tag{12.20}
+\end{align*}
+
+\begin{align*}
+\mathbf{Z}=\mathbf{Y}\left(\mathbf{X}^{\prime}\right)+\mathbf{X}, \text{ where } \mathbf{X}^{\prime}=\text{ LayerNorm }[
+\mathbf{X}] \tag{12.21}
+\end{align*}
+
+\begin{align*}
+\widetilde{\mathbf{X}}=\text{ LayerNorm }[
+\operatorname{MLP}[
+\mathbf{Z}]
++\mathbf{Z}] \tag{12.22}
+\end{align*}
+
+\begin{align*}
+\widetilde{\mathbf{X}}=\operatorname{MLP}\left(\mathbf{Z}^{\prime}\right)+\mathbf{Z}, \text{ where } \mathbf{Z}^{\prime}=\text{ LayerNorm }[
+\mathbf{Z}] \tag{12.23}
+\end{align*}
+
+\subsubsection{Algorithm 12.3: Transformer Layer}
+
+\begin{algorithm}[H]
+\caption{Transformer Layer}
+\begin{algorithmic}[1]
+\STATE \textbf{Input:} Set of tokens $X \in \mathbb{R}^{N \times D} : \{x_1, \ldots, x_N\}$
+\STATE \quad Multi-head self-attention layer parameters
+\STATE \quad Feed-forward network parameters
+\STATE \textbf{Output:} $\tilde{X} \in \mathbb{R}^{N \times D} : \{\tilde{x}_1, \ldots, \tilde{x}_N\}$
+\STATE $Z \gets \text{LayerNorm}[Y(X) + X]$ \COMMENT{// $Y(X)$ from Algorithm 12.2}
+\STATE $\tilde{X} \gets \text{LayerNorm}[\text{MLP}[Z] + Z]$ \COMMENT{// shared neural network}
+\RETURN $\tilde{X}$
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Computational complexity}
+
+No equations.
+
+\subsection{Positional encoding}
+
+\begin{align*}
+\widetilde{\mathbf{x}}_{n}=\mathbf{x}_{n}+\mathbf{r}_{n} \tag{12.24}
+\end{align*}
+
+\begin{align*}
+r_{n i}= \begin{cases}\sin \left(\frac{n}{L^{i / D}}\right), & \text{ if } i \text{ is even }  \tag{12.25}\\ \cos \left(\frac{n}{L^{(i-1) / D}}\right), & \text{ if } i \text{ is odd }\end{cases}
+\end{align*}
+
+\section{Natural Language}
+
+\subsection{Word embedding}
+\begin{align*}
+\mathbf{v}_{n}=\mathbf{E} \mathbf{x}_{n} \tag{12.26}
+\end{align*}
+
+\begin{align*}
+\mathbf{v}(\text{ Paris })-\mathbf{v}(\text{ France })+\mathbf{v}(\text{ Italy }) \simeq \mathbf{v}(\text{ Rome }) \tag{12.27}
+\end{align*}
+
+\subsection{Tokenization}
+No equations
+
+\subsection{Bag of words}
+\begin{align*}
+p\left(\mathbf{x}_{1}, \ldots, \mathbf{x}_{N}\right)=\prod_{n=1}^{N} p\left(\mathbf{x}_{n}\right) \tag{12.28}
+\end{align*}
+
+\begin{align*}
+p\left(\mathbf{x}_{1}, \ldots, \mathbf{x}_{N} \mid \mathcal{C}_{k}\right)=\prod_{n=1}^{N} p\left(\mathbf{x}_{n} \mid \mathcal{C}_{k}\right) \tag{12.29}
+\end{align*}
+
+\begin{align*}
+p\left(\mathcal{C}_{k} \mid \mathbf{x}_{1}, \ldots, \mathbf{x}_{N}\right) \propto p\left(\mathcal{C}_{k}\right) \prod_{n=1}^{N} p\left(\mathbf{x}_{n} \mid \mathcal{C}_{k}\right) \tag{12.30}
+\end{align*}
+
+\subsection{Autoregressive models}
+\begin{align*}
+p\left(\mathbf{x}_{1}, \ldots, \mathbf{x}_{N}\right)=\prod_{n=1}^{N} p\left(\mathbf{x}_{n} \mid \mathbf{x}_{1}, \ldots, \mathbf{x}_{n-1}\right) \tag{12.31}
+\end{align*}
+
+\begin{align*}
+p\left(\mathbf{x}_{1}, \ldots, \mathbf{x}_{N}\right)=p\left(\mathbf{x}_{1}\right) p\left(\mathbf{x}_{2} \mid \mathbf{x}_{1}\right) \prod_{n=3}^{N} p\left(\mathbf{x}_{n} \mid \mathbf{x}_{n-1}, \mathbf{x}_{n-2}\right) \tag{12.32}
+\end{align*}
+
+\subsection{Recurrent neural networks}
+No equations
+
+\subsection{Backpropagation through time}
+No equations
+
+\section{Transformer Language Models}
+
+\subsection{Decoder transformers}
+\begin{align*}
+\mathbf{Y}=\operatorname{Softmax}\left(\widetilde{\mathbf{X}} \mathbf{W}^{(\mathrm{p})}\right) \tag{12.33}
+\end{align*}
+
+\begin{align*}
+p\left(\mathbf{y}_{1}, \ldots, \mathbf{y}_{N}\right)=\prod_{n=1}^{N} p\left(\mathbf{y}_{n} \mid \mathbf{y}_{1}, \ldots, \mathbf{y}_{n-1}\right) \tag{12.34}
+\end{align*}
+
+\subsection{Sampling strategies}
+\begin{align*}
+y_{i}=\frac{\exp \left(a_{i} / T\right)}{\sum_{j} \exp \left(a_{j} / T\right)} \tag{12.35}
+\end{align*}
+
+\subsection{Encoder transformers}
+No equations
+
+\subsection{Sequence-to-sequence transformers}
+No equations
+
+\subsection{Large language models}
+\begin{align*}
+\widehat{\mathbf{W}}=\mathbf{W}_{0}+\mathbf{A B} \tag{12.36}
+\end{align*}
+
+\section{Multimodal Transformers}
+
+\subsection{Vision transformers}
+No equations
+
+\subsection{Generative image transformers}
+\begin{align*}
+p\left(\mathbf{x}_{1}, \ldots, \mathbf{x}_{N}\right)=\prod_{n=1}^{N} p\left(\mathbf{x}_{n} \mid \mathbf{x}_{1}, \ldots, \mathbf{x}_{n-1}\right) \tag{12.37}
+\end{align*}
+
+\begin{align*}
+\mathbf{x}_{n} \rightarrow \underset{\mathbf{c}_{k} \in \mathcal{C}}{\arg \min }\left\|\mathbf{x}_{n}-\mathbf{c}_{k}\right\|^{2} \tag{12.38}
+\end{align*}
+
+\subsection{Audio data}
+No equations
+
+\subsection{Text-to-speech}
+No equations
+
+\subsection{Vision and language transformers}
+No equations
+
+\end{document}

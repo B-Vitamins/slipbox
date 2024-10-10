@@ -1,0 +1,489 @@
+\documentclass{article}
+
+% Document Layout and Fonts
+\usepackage[margin=0.9in]{geometry}    % Page margins
+\usepackage{fontspec}                  % For custom fonts (LuaLaTeX feature)
+\usepackage{tgpagella}
+\usepackage{mathpazo}
+\setmainfont{EB Garamond}              % Main font (EB Garamond)
+\usepackage{microtype}                 % Improves text appearance
+\usepackage{titlesec}                  % Customize section title fonts
+\usepackage{algorithm}
+\usepackage{algorithmic}
+
+% Right-align section headings
+\titleformat{\section}
+  {\normalfont\large\scshape\raggedright}  % Right-align and small caps
+  {}{0em}{}[]
+
+% Right-align subsection headings and add a line below
+\titleformat{\subsection}
+  {\normalfont\normalsize\raggedleft}     % Right-align subsections
+  {}{0em}{\titlerule[0.5pt]}              % Horizontal line below
+
+% Right-align and italicize subsubsections
+\titleformat{\subsubsection}
+  {\normalfont\normalsize\itshape\raggedleft} % Right-align and italicize subsubsections
+  {}{0em}{}[]
+
+% Math and Science Packages
+\usepackage{amsmath, amsfonts, amssymb, mathtools, amsthm, dsfont}
+
+% Math commands and operators
+\newcommand{\minus}{\scalebox{0.8}{\(-\)}}
+\newcommand{\plus}{\scalebox{0.6}{\(+\)}}
+\DeclareMathOperator{\sech}{sech}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\tr}{Tr}
+\newcommand{\diff}{\mathop{}\!\mathrm{d}}    % Differential d
+
+% Definitions, theorems, corollaries, and friends
+\usepackage[english]{babel}
+\usepackage[hidelinks]{hyperref}
+\newtheorem{axiom}{Axiom}
+\newtheorem{postulate}{Postulate}
+\newtheorem{definition}{Definition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem*{remark}{Remark}
+
+% Custom headers for the document
+\title{\LARGE\scshape\MakeUppercase{Chapter 7: Gradient Descent}}
+\author{\textit{Bishop and Bishop}}
+\date{}
+
+% Start of the document
+\begin{document}
+
+\maketitle
+
+\section{Error Surfaces}
+
+\subsection{Local quadratic approximation}
+
+\begin{align*}
+\delta E \simeq \delta \mathbf{w}^{\top} \nabla E(\mathbf{w}) 
+\tag{7.1}
+\end{align*}
+
+\begin{align*}
+\nabla E(\mathbf{w})=0 
+\tag{7.2}
+\end{align*}
+
+\begin{align*}
+E(\mathbf{w}) \simeq E(\widehat{\mathbf{w}})+(\mathbf{w}-\widehat{\mathbf{w}})^{\top} \mathbf{b}+\frac{1}{2}(\mathbf{w}-\widehat{\mathbf{w}})^{\top} \mathbf{H}(\mathbf{w}-\widehat{\mathbf{w}})
+\tag{7.3}
+\end{align*}
+
+\begin{align*}
+\left.\mathbf{b} \equiv \nabla E\right|_{\mathbf{w}=\widehat{\mathbf{w}}}
+\tag{7.4}
+\end{align*}
+
+\begin{align*}
+\mathbf{H}(\widehat{\mathbf{w}})=\left.\nabla \nabla E(\mathbf{w})\right|_{\mathbf{w}=\widehat{\mathbf{w}}}
+\tag{7.5}
+\end{align*}
+
+\begin{align*}
+\nabla E(\mathbf{w})=\mathbf{b}+\mathbf{H}(\mathbf{w}-\widehat{\mathbf{w}})
+\tag{7.6}
+\end{align*}
+
+\begin{align*}
+E(\mathbf{w})=E\left(\mathbf{w}^{\star}\right)+\frac{1}{2}\left(\mathbf{w}-\mathbf{w}^{\star}\right)^{\top} \mathbf{H}\left(\mathbf{w}-\mathbf{w}^{\star}\right)
+\tag{7.7}
+\end{align*}
+
+\begin{align*}
+\mathbf{H} \mathbf{u}_{i}=\lambda_{i} \mathbf{u}_{i}
+\tag{7.8}
+\end{align*}
+
+\begin{align*}
+\mathbf{u}_{i}^{\top} \mathbf{u}_{j}=\delta_{i j}
+\tag{7.9}
+\end{align*}
+
+\begin{align*}
+\mathbf{w}-\mathbf{w}^{\star}=\sum_{i} \alpha_{i} \mathbf{u}_{i}
+\tag{7.10}
+\end{align*}
+
+\begin{align*}
+E(\mathbf{w})=E\left(\mathbf{w}^{\star}\right)+\frac{1}{2} \sum_{i} \lambda_{i} \alpha_{i}^{2}
+\tag{7.11}
+\end{align*}
+
+\begin{align*}
+\mathbf{v}^{\top} \mathbf{H} \mathbf{v}>0, \quad \text{ for all } \mathbf{v}
+\tag{7.12}
+\end{align*}
+
+\begin{align*}
+\mathbf{v}=\sum_{i} c_{i} \mathbf{u}_{i}
+\tag{7.13}
+\end{align*}
+
+\begin{align*}
+\mathbf{v}^{\top} \mathbf{H} \mathbf{v}=\sum_{i} c_{i}^{2} \lambda_{i}
+\tag{7.14}
+\end{align*}
+
+\section{Gradient Descent Optimization}
+
+\subsection{Use of gradient information}
+
+No equations.
+
+\subsection{Batch gradient descent}
+
+\begin{align*}
+\mathbf{w}^{(\tau)}=\mathbf{w}^{(\tau-1)}-\eta \nabla E\left(\mathbf{w}^{(\tau-1)}\right)
+\tag{7.16}
+\end{align*}
+
+\subsection{Stochastic gradient descent}
+
+\begin{align*}
+E(\mathbf{w})=\sum_{n=1}^{N} E_{n}(\mathbf{w})
+\tag{7.17}
+\end{align*}
+
+\begin{align*}
+\mathbf{w}^{(\tau)}=\mathbf{w}^{(\tau-1)}-\eta \nabla E_{n}\left(\mathbf{w}^{(\tau-1)}\right)
+\tag{7.18}
+\end{align*}
+
+\subsection{Mini-batches}
+
+No equations.
+
+\subsubsection{Algorithm 7.1: Stochastic gradient descent}
+
+\begin{algorithm}
+\caption{Stochastic Gradient Descent}
+\begin{algorithmic}[1]
+\STATE \textbf{Input:} Training set of data points indexed by $n \in \{1, \ldots, N\}$
+\STATE \quad Error function per data point $E_n(w)$
+\STATE \quad Learning rate parameter $\eta$
+\STATE \quad Initial weight vector $w$
+\STATE \textbf{Output:} Final weight vector $w$
+\STATE $n \gets 1$
+\REPEAT
+    \STATE $w \gets w - \eta \nabla E_n(w)$ \COMMENT{update weight vector}
+    \STATE $n \gets n + 1 \mod N$ \COMMENT{iterate over data}
+\UNTIL convergence
+\RETURN $w$
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Parameter initialization}
+
+\begin{align*}
+a_{i}^{(l)} & =\sum_{j=1}^{M} w_{i j} z_{j}^{(l-1)}  
+\tag{7.19}
+\end{align*}
+
+\begin{align*}
+z_{i}^{(l)} & =\operatorname{ReLU}\left(a_{i}^{(l)}\right)
+\tag{7.20}
+\end{align*}
+
+\begin{align*}
+\mathbb{E}\left[ a_{i}^{(l)}\right] =0  
+\tag{7.21}
+\end{align*}
+
+\begin{align*}
+\operatorname{var}\left[ z_{j}^{(l)}\right] =\frac{M}{2} \epsilon^{2} \lambda^{2}
+\tag{7.22}
+\end{align*}
+
+\begin{align*}
+\epsilon=\sqrt{\frac{2}{M}}
+\tag{7.23}
+\end{align*}
+
+\subsubsection{Algorithm 7.2: Mini-batch stochastic gradient descent}
+
+\begin{algorithm}
+\caption{Mini-Batch Stochastic Gradient Descent}
+\begin{algorithmic}[1]
+\STATE \textbf{Input:} Training set of data points indexed by $n \in \{1, \ldots, N\}$
+\STATE \quad Batch size $B$
+\STATE \quad Error function per mini-batch $E_{n:n+B-1}(w)$
+\STATE \quad Learning rate parameter $\eta$
+\STATE \quad Initial weight vector $w$
+\STATE \textbf{Output:} Final weight vector $w$
+\STATE $n \gets 1$
+\REPEAT
+    \STATE $w \gets w - \eta \nabla E_{n:n+B-1}(w)$ \COMMENT{weight vector update}
+    \STATE $n \gets n + B$
+    \IF{$n > N$}
+        \STATE shuffle data
+        \STATE $n \gets 1$
+    \ENDIF
+\UNTIL convergence
+\RETURN $w$
+\end{algorithmic}
+\end{algorithm}
+
+\section{Convergence}
+
+\begin{align*}
+\nabla E=\sum_{i} \alpha_{i} \lambda_{i} \mathbf{u}_{i} 
+\tag{7.24}
+\end{align*}
+
+\begin{align*}
+\Delta \mathbf{w}=\sum_{i} \Delta \alpha_{i} \mathbf{u}_{i}
+\tag{7.25}
+\end{align*}
+
+\begin{align*}
+\Delta \alpha_{i}=-\eta \lambda_{i} \alpha_{i}
+\tag{7.26}
+\end{align*}
+
+\begin{align*}
+\alpha_{i}^{\text{new }}=\left(1-\eta \lambda_{i}\right) \alpha_{i}^{\text{old }}
+\tag{7.27}
+\end{align*}
+
+\begin{align*}
+\mathbf{u}_{i}^{\top}\left(\mathbf{w}-\mathbf{w}^{\star}\right)=\alpha_{i}
+\tag{7.28}
+\end{align*}
+
+\begin{align*}
+\alpha_{i}^{(T)}=\left(1-\eta \lambda_{i}\right)^{T} \alpha_{i}^{(0)}
+\tag{7.29}
+\end{align*}
+
+\begin{align*}
+\left(1-\frac{2 \lambda_{\min }}{\lambda_{\max }}\right)
+\tag{7.30}
+\end{align*}
+
+\subsection{Momentum}
+
+\begin{align*}
+\Delta \mathbf{w}^{(\tau-1)}=-\eta \nabla E\left(\mathbf{w}^{(\tau-1)}\right)+\mu \Delta \mathbf{w}^{(\tau-2)}
+\tag{7.31}
+\end{align*}
+
+\begin{align*}
+\Delta \mathbf{w} & =-\eta \nabla E\left\{1+\mu+\mu^{2}+\ldots\right\}  
+\tag{7.32}\\
+& =-\frac{\eta}{1-\mu} \nabla E
+\tag{7.33}
+\end{align*}
+
+\begin{align*}
+\Delta \mathbf{w}^{(\tau-1)} = - \eta \cdot \nabla E (\mathbf{w}^{(\tau - 1)} + \mu \cdot \mathbf{w}^{(\tau - 2)}) + \mu \cdot \Delta \mathbf{w}^{(\tau - 2)} 
+\tag{7.34}
+\end{align*}
+
+\subsubsection{Algorithm 7.3: Stochastic gradient descent with momentum}
+
+\begin{algorithm}
+\caption{Stochastic Gradient Descent with Momentum}
+\begin{algorithmic}[1]
+\STATE \textbf{Input:} Training set of data points indexed by $n \in \{1, \ldots, N\}$
+\STATE \quad Batch size $B$
+\STATE \quad Error function per mini-batch $E_{n:n+B-1}(w)$
+\STATE \quad Learning rate parameter $\eta$
+\STATE \quad Momentum parameter $\mu$
+\STATE \quad Initial weight vector $w$
+\STATE \textbf{Output:} Final weight vector $w$
+\STATE $n \gets 1$
+\STATE $\Delta w \gets 0$
+\REPEAT
+    \STATE $\Delta w \gets -\eta \nabla E_{n:n+B-1}(w) + \mu \Delta w$ \COMMENT{calculate update term}
+    \STATE $w \gets w + \Delta w$ \COMMENT{weight vector update}
+    \STATE $n \gets n + B$
+    \IF{$n > N$}
+        \STATE shuffle data
+        \STATE $n \gets 1$
+    \ENDIF
+\UNTIL convergence
+\RETURN $w$
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Learning rate schedule}
+
+\begin{align*}
+\mathbf{w}^{(\tau)}=\mathbf{w}^{(\tau-1)}-\eta^{(\tau-1)} \nabla E_{n}\left(\mathbf{w}^{(\tau-1)}\right)
+\tag{7.35}
+\end{align*}
+
+\begin{align*}
+\eta^{(\tau)}=(1-\tau / K) \eta^{(0)}+(\tau / K) \eta^{(K)}  
+\tag{7.36}
+\end{align*}
+
+\begin{align*}
+\eta^{(\tau)}=\eta^{(0)}(1+\tau / s)^{c}  
+\tag{7.37}
+\end{align*}
+
+\begin{align*}
+\eta^{(\tau)}=\eta^{(0)} c^{\tau / s}
+\tag{7.38}
+\end{align*}
+
+\subsection{RMSProp and Adam}
+
+\begin{align*}
+r_{i}^{(\tau)} & =r_{i}^{(\tau-1)}+\left(\frac{\partial E(\mathbf{w})}{\partial w_{i}}\right)^{2}  
+\tag{7.39}
+\end{align*}
+
+\begin{align*}
+w_{i}^{(\tau)} & =w_{i}^{(\tau-1)}-\frac{\eta}{\sqrt{r_{i}^{\tau}}+\delta}\left(\frac{\partial E(\mathbf{w})}{\partial w_{i}}\right)
+\tag{7.40}
+\end{align*}
+
+\begin{align*}
+r_{i}^{(\tau)}=\beta r_{i}^{(\tau-1)}+(1-\beta)\left(\frac{\partial E(\mathbf{w})}{\partial w_{i}}\right)^{2}  
+\tag{7.41}
+\end{align*}
+
+\begin{align*}
+w_{i}^{(\tau)}=w_{i}^{(\tau-1)}-\frac{\eta}{\sqrt{r_{i}^{\tau}}+\delta}\left(\frac{\partial E(\mathbf{w})}{\partial w_{i}}\right)
+\tag{7.42}
+\end{align*}
+
+\begin{align*}
+s_{i}^{(\tau)} & =\beta_{1} s_{i}^{(\tau-1)}+\left(1-\beta_{1}\right)\left(\frac{\partial E(\mathbf{w})}{\partial w_{i}}\right)  
+\tag{7.43}
+\end{align*}
+
+\begin{align*}
+r_{i}^{(\tau)} & =\beta_{2} r_{i}^{(\tau-1)}+\left(1-\beta_{2}\right)\left(\frac{\partial E(\mathbf{w})}{\partial w_{i}}\right)^{2}  
+\tag{7.44}
+\end{align*}
+
+\begin{align*}
+\widehat{s}_{i}^{(\tau)}=\frac{s_{i}^{(\tau)}}{1-\beta_{1}^{\tau}}  
+\tag{7.45}
+\end{align*}
+
+\begin{align*}
+\widehat{r}_{i}^{\tau} =\frac{r_{i}^{\tau}}{1-\beta_{2}^{\tau}}  
+\tag{7.46}
+\end{align*}
+
+\begin{align*}
+w_{i}^{(\tau)} =w_{i}^{(\tau-1)}-\eta \frac{{\widehat{s_{i}}}^{\tau}}{\sqrt{\widehat{r}_{i}^{\tau}}+\delta}
+\tag{7.47}
+\end{align*}
+
+
+\subsubsection{Algorithm 7.4: Adam optimization}
+
+\begin{algorithm}
+\caption{Adam Optimization}
+\begin{algorithmic}[1]
+\STATE \textbf{Input:} Training set of data points indexed by $n \in \{1, \ldots, N\}$
+\STATE \quad Batch size $B$
+\STATE \quad Error function per mini-batch $E_{n:n+B-1}(w)$
+\STATE \quad Learning rate parameter $\eta$
+\STATE \quad Decay parameters $\beta_1$ and $\beta_2$
+\STATE \quad Stabilization parameter $\delta$
+\STATE \textbf{Output:} Final weight vector $w$
+\STATE $n \gets 1$
+\STATE $s \gets 0$
+\STATE $r \gets 0$
+\REPEAT
+    \STATE Choose a mini-batch at random from $\mathcal{D}$
+    \STATE $g \gets -\nabla E_{n:n+B-1}(w)$ \COMMENT{evaluate gradient vector}
+    \STATE $s \gets \beta_1 s + (1 - \beta_1) g$
+    \STATE $r \gets \beta_2 r + (1 - \beta_2) g \odot g$ \COMMENT{element-wise multiply}
+    \STATE $\hat{s} \gets s / (1 - \beta_1^t)$ \COMMENT{bias correction}
+    \STATE $\hat{r} \gets r / (1 - \beta_2^t)$ \COMMENT{bias correction}
+    \STATE $\Delta w \gets -\frac{\eta \hat{s}}{\sqrt{\hat{r}} + \delta}$ \COMMENT{element-wise operations}
+    \STATE $w \gets w + \Delta w$ \COMMENT{weight vector update}
+    \STATE $n \gets n + B$
+    \IF{$n + B > N$}
+        \STATE shuffle data
+        \STATE $n \gets 1$
+    \ENDIF
+\UNTIL convergence
+\RETURN $w$
+\end{algorithmic}
+\end{algorithm}
+
+\section{Normalization}
+
+\subsection{Data normalization}
+
+\begin{align*}
+\mu_{i}=\frac{1}{N} \sum_{n=1}^{N} x_{n i}
+\tag{7.48}
+\end{align*}
+
+\begin{align*}
+\sigma_{i}^{2}=\frac{1}{N} \sum_{n=1}^{N}\left(x_{n i}-\mu_{i}\right)^{2}
+\tag{7.49}
+\end{align*}
+
+\begin{align*}
+\widetilde{x}_{n i}=\frac{x_{n i}-\mu_{i}}{\sigma_{i}}
+\tag{7.50}
+\end{align*}
+
+\subsection{Batch normalization}
+
+\begin{align*}
+\mu_{i} =\frac{1}{K} \sum_{n=1}^{K} a_{n i}
+\tag{7.52}
+\end{align*}
+
+\begin{align*}
+\sigma_{i}^{2} =\frac{1}{K} \sum_{n=1}^{K}\left(a_{n i}-\mu_{i}\right)^{2}
+\tag{7.53}
+\end{align*}
+
+\begin{align*}
+\widehat{a}_{n i} =\frac{a_{n i}-\mu_{i}}{\sqrt{\sigma_{i}^{2}+\delta}}
+\tag{7.54}
+\end{align*}
+
+\begin{align*}
+\widetilde{a}_{n i}=\gamma_{i} \widehat{a}_{n i}+\beta_{i}
+\tag{7.55}
+\end{align*}
+
+\begin{align*}
+\bar{\mu}_{i}^{(\tau)}=\alpha \bar{\mu}_{i}^{(\tau-1)}+(1-\alpha) \mu_{i}
+\tag{7.56}
+\end{align*}
+
+\begin{align*}
+\bar{\sigma}_{i}^{(\tau)}=\alpha \bar{\sigma}_{i}^{(\tau-1)}+(1-\alpha) \sigma_{i}
+\tag{7.57}
+\end{align*}
+
+\subsection{Layer normalization}
+
+\begin{align*}
+\mu_{n} =\frac{1}{M} \sum_{i=1}^{M} a_{n i}
+\tag{7.58}
+\end{align*}
+
+\begin{align*}
+\sigma_{n}^{2} =\frac{1}{M} \sum_{i=1}^{M}\left(a_{n i}-\mu_{n}\right)^{2}
+\tag{7.59}
+\end{align*}
+
+\begin{align*}
+\widehat{a}_{n i} =\frac{a_{n i}-\mu_{n}}{\sqrt{\sigma_{n}^{2}+\delta}}
+\tag{7.60}
+\end{align*}
+
+\end{document}

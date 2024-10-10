@@ -1,0 +1,363 @@
+\documentclass{article}
+
+% Document Layout and Fonts
+\usepackage[margin=0.9in]{geometry}    % Page margins
+\usepackage{fontspec}                  % For custom fonts (LuaLaTeX feature)
+\usepackage{tgpagella}
+\usepackage{mathpazo}
+\setmainfont{EB Garamond}              % Main font (EB Garamond)
+\usepackage{microtype}                 % Improves text appearance
+\usepackage{titlesec}                  % Customize section title fonts
+
+% Right-align section headings
+\titleformat{\section}
+  {\normalfont\large\scshape\raggedright}  % Right-align and small caps
+  {}{0em}{}[]
+
+% Right-align subsection headings and add a line below
+\titleformat{\subsection}
+  {\normalfont\normalsize\raggedleft}     % Right-align subsections
+  {}{0em}{\titlerule[0.5pt]}              % Horizontal line below
+
+% Right-align and italicize subsubsections
+\titleformat{\subsubsection}
+  {\normalfont\normalsize\itshape\raggedleft} % Right-align and italicize subsubsections
+  {}{0em}{}[]
+
+% Math and Science Packages
+\usepackage{amsmath, amsfonts, amssymb, mathtools, amsthm, dsfont}
+
+% Math commands and operators
+\newcommand{\minus}{\scalebox{0.8}{\(-\)}}
+\newcommand{\plus}{\scalebox{0.6}{\(+\)}}
+\DeclareMathOperator{\sech}{sech}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\tr}{Tr}
+\newcommand{\diff}{\mathop{}\!\mathrm{d}}    % Differential d
+
+% Definitions, theorems, corollaries, and friends
+\usepackage[english]{babel}
+\usepackage[hidelinks]{hyperref}
+\newtheorem{axiom}{Axiom}
+\newtheorem{postulate}{Postulate}
+\newtheorem{definition}{Definition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem*{remark}{Remark}
+
+% Custom headers for the document
+\title{\LARGE\scshape\MakeUppercase{Chapter 6: Deep Neural Networks}}
+\author{\textit{Bishop and Bishop}}
+\date{}  % No date
+
+% Start of the document
+\begin{document}
+
+\maketitle
+
+\section{Limitations of Fixed Basis Functions}
+
+\subsection{The curse of dimensionality}
+
+\begin{align*}
+y(\mathbf{x}, \mathbf{w})=f\left(\sum_{j=1}^{M} w_{j} \phi_{j}(\mathbf{x})+w_{0}\right) 
+\tag{6.1}
+\end{align*}
+
+\begin{align*}
+y(x, \mathbf{w})=w_{0}+w_{1} x+w_{2} x^{2}+\ldots+w_{M} x^{M} 
+\tag{6.2}
+\end{align*}
+
+\begin{align*}
+y(\mathbf{x}, \mathbf{w})=w_{0}+\sum_{i=1}^{D} w_{i} x_{i}+\sum_{i=1}^{D} \sum_{j=1}^{D} w_{i j} x_{i} x_{j}+\sum_{i=1}^{D} \sum_{j=1}^{D} \sum_{k=1}^{D} w_{i j k} x_{i} x_{j} x_{k} 
+\tag{6.3}
+\end{align*}
+
+\subsection{High-dimensional spaces}
+
+\begin{align*}
+V_{D}(r)=K_{D} r^{D} 
+\tag{6.4}
+\end{align*}
+
+\begin{align*}
+\frac{V_{D}(1)-V_{D}(1-\epsilon)}{V_{D}(1)}=1-(1-\epsilon)^{D} 
+\tag{6.5}
+\end{align*}
+
+\subsection{Data-dependent basis functions}
+
+\begin{align*}
+\phi_{n}(\mathbf{x})=\exp \left(-\frac{\left\|\mathbf{x}-\mathbf{x}_{n}\right\|^{2}}{s^{2}}\right) 
+\tag{6.6}
+\end{align*}
+
+\section{Multilayer Networks}
+
+\subsection{Multilayer Networks}
+
+\begin{align*}
+a_{j}^{(1)}=\sum_{i=1}^{D} w_{j i}^{(1)} x_{i}+w_{j 0}^{(1)} 
+\tag{6.7}
+\end{align*}
+
+\begin{align*}
+z_{j}^{(1)}=h\left(a_{j}^{(1)}\right) 
+\tag{6.8}
+\end{align*}
+
+\begin{align*}
+a_{k}^{(2)}=\sum_{j=1}^{M} w_{k j}^{(2)} z_{j}^{(1)}+w_{k 0}^{(2)} 
+\tag{6.9}
+\end{align*}
+
+\subsection{Parameter matrices}
+
+\begin{align*}
+a_{j}=\sum_{i=0}^{D} w_{j i}^{(1)} x_{i} 
+\tag{6.10}
+\end{align*}
+
+\begin{align*}
+y_{k}(\mathbf{x}, \mathbf{w})=f\Bigg(\sum_{j=0}^{M} w_{k j}^{(2)} h\bigg[\sum_{i=0}^{D} w_{j i}^{(1)} x_{i}\bigg]\Bigg) 
+\tag{6.11}
+\end{align*}
+
+\begin{align*}
+\mathbf{y}(\mathbf{x}, \mathbf{w})=f\big(\mathbf{W}^{(2)} h\big(\mathbf{W}^{(1)} \mathbf{x}\big)\big) 
+\tag{6.12}
+\end{align*}
+
+\subsection{Hidden unit activation functions}
+
+\begin{align*}
+\sigma(a)=\frac{1}{1+\exp (-a)} 
+\tag{6.13}
+\end{align*}
+
+\begin{align*}
+\tanh (a)=\frac{e^{a}-e^{-a}}{e^{a}+e^{-a}} 
+\tag{6.14}
+\end{align*}
+
+\begin{align*}
+h(a)=\max (-1, \min (1, a)) 
+\tag{6.15}
+\end{align*}
+
+\begin{align*}
+h(a)=\ln (1+\exp (a)) 
+\tag{6.16}
+\end{align*}
+
+\begin{align*}
+h(a)=\max (0, a) 
+\tag{6.17}
+\end{align*}
+
+\begin{align*}
+h(a)=\max (0, a)+\alpha \min (0, a) 
+\tag{6.18}
+\end{align*}
+
+\subsection{Weight-space symmetries}
+
+No equations.
+
+\section{Deep Networks}
+
+\subsection{Deep Networks}
+
+\begin{align*}
+\mathbf{z}^{(l)}=h^{(l)}\left(\mathbf{W}^{(l)} \mathbf{z}^{(l-1)}\right) 
+\tag{6.19}
+\end{align*}
+
+\subsection{Contrastive learning}
+
+\begin{align*}
+E(\mathbf{w})=-\ln \frac{\exp \left\{\mathbf{f}_{\mathbf{w}}(\mathbf{x})^{\top} \mathbf{f}_{\mathbf{w}}\left(\mathbf{x}^{+}\right)\right\}}{\exp \left\{\mathbf{f}_{\mathbf{w}}(\mathbf{x})^{\top} \mathbf{f}_{\mathbf{w}}\left(\mathbf{x}^{+}\right)\right\}+\sum_{n=1}^{N} \exp \left\{\mathbf{f}_{\mathbf{w}}(\mathbf{x})^{\top} \mathbf{f}_{\mathbf{w}}\left(\mathbf{x}_{n}^{-}\right)\right\}} 
+\tag{6.20}
+\end{align*}
+
+\begin{align*}
+E(\mathbf{w})= & -\frac{1}{2} \ln \frac{\exp \left\{\mathbf{f}_{\mathbf{w}}\left(\mathbf{x}^{+}\right)^{\top} \mathbf{g}_{\theta}\left(\mathbf{y}^{+}\right)\right\}}{\exp \left\{\mathbf{f}_{\mathbf{w}}\left(\mathbf{x}^{+}\right)^{\top} \mathbf{g}_{\boldsymbol{\theta}}\left(\mathbf{y}^{+}\right)\right\}+\sum_{n=1}^{N} \exp \left\{\mathbf{f}_{\mathbf{w}}\left(\mathbf{x}_{n}^{-}\right)^{\top} \mathbf{g}_{\theta}\left(\mathbf{y}^{+}\right)\right\}} \\
+& -\frac{1}{2} \ln \frac{\exp \left\{\mathbf{f}_{\mathbf{w}}\left(\mathbf{x}^{+}\right)^{\top} \mathbf{g}_{\boldsymbol{\theta}}\left(\mathbf{y}^{+}\right)\right\}}{\exp \left\{\mathbf{f}_{\mathbf{w}}\left(\mathbf{x}^{+}\right)^{\top} \mathbf{g}_{\boldsymbol{\theta}}\left(\mathbf{y}^{+}\right)\right\}+\sum_{m=1}^{M} \exp \left\{\mathbf{f}_{\mathbf{w}}\left(\mathbf{x}^{+}\right)^{\top} \mathbf{g}_{\theta}\left(\mathbf{y}_{m}^{-}\right)\right\}}
+\tag{6.21}
+\end{align*}
+
+\subsection{General network architectures}
+
+\begin{align*}
+z_{k}=h\left(\sum_{j \in \mathcal{A}(k)} w_{k j} z_{j}+b_{k}\right) 
+\tag{6.22}
+\end{align*}
+
+\subsection{Tensors}
+
+No equations.
+
+\section{Error Functions}
+
+\subsection{Regression}
+
+\begin{align*}
+p(t \mid \mathbf{x}, \mathbf{w})=\mathcal{N}\left(t \mid y(\mathbf{x}, \mathbf{w}), \sigma^{2}\right) 
+\tag{6.23}
+\end{align*}
+
+\begin{align*}
+p\left(\mathbf{t} \mid \mathbf{X}, \mathbf{w}, \sigma^{2}\right)=\prod_{n=1}^{N} p\left(t_{n} \mid y\left(\mathbf{x}_{n}, \mathbf{w}\right), \sigma^{2}\right) 
+\tag{6.24}
+\end{align*}
+
+\begin{align*}
+\frac{1}{2 \sigma^{2}} \sum_{n=1}^{N}\left\{y\left(\mathbf{x}_{n}, \mathbf{w}\right)-t_{n}\right\}^{2}+\frac{N}{2} \ln \sigma^{2}+\frac{N}{2} \ln (2 \pi) 
+\tag{6.25}
+\end{align*}
+
+\begin{align*}
+E(\mathbf{w})=\frac{1}{2} \sum_{n=1}^{N}\left\{y\left(\mathbf{x}_{n}, \mathbf{w}\right)-t_{n}\right\}^{2} 
+\tag{6.26}
+\end{align*}
+
+\begin{align*}
+\sigma^{2 \star}=\frac{1}{N} \sum_{n=1}^{N}\left\{y\left(\mathbf{x}_{n}, \mathbf{w}^{\star}\right)-t_{n}\right\}^{2} 
+\tag{6.27}
+\end{align*}
+
+\begin{align*}
+p(\mathbf{t} \mid \mathbf{x}, \mathbf{w})=\mathcal{N}\left(\mathbf{t} \mid \mathbf{y}(\mathbf{x}, \mathbf{w}), \sigma^{2} \mathbf{I}\right) 
+\tag{6.28}
+\end{align*}
+
+\begin{align*}
+E(\mathbf{w})=\frac{1}{2} \sum_{n=1}^{N}\left\|\mathbf{y}\left(\mathbf{x}_{n}, \mathbf{w}\right)-\mathbf{t}_{n}\right\|^{2} 
+\tag{6.29}
+\end{align*}
+
+\begin{align*}
+\sigma^{2 \star}=\frac{1}{N K} \sum_{n=1}^{N}\left\|\mathbf{y}\left(\mathbf{x}_{n}, \mathbf{w}^{\star}\right)-\mathbf{t}_{n}\right\|^{2} 
+\tag{6.30}
+\end{align*}
+
+\begin{align*}
+\frac{\partial E}{\partial a_{k}}=y_{k}-t_{k} 
+\tag{6.31}
+\end{align*}
+
+\subsection{Binary classification}
+
+\begin{align*}
+p(t \mid \mathbf{x}, \mathbf{w})=y(\mathbf{x}, \mathbf{w})^{t}\{1-y(\mathbf{x}, \mathbf{w})\}^{1-t} 
+\tag{6.32}
+\end{align*}
+
+\begin{align*}
+E(\mathbf{w})=-\sum_{n=1}^{N}\left\{t_{n} \ln y_{n}+\left(1-t_{n}\right) \ln \left(1-y_{n}\right)\right\} 
+\tag{6.33}
+\end{align*}
+
+\begin{align*}
+p(\mathbf{t} \mid \mathbf{x}, \mathbf{w})=\prod_{k=1}^{K} y_{k}(\mathbf{x}, \mathbf{w})^{t_{k}}\left[ 1-y_{k}(\mathbf{x}, \mathbf{w})\right]^{1-t_{k}} 
+\tag{6.34}
+\end{align*}
+
+\begin{align*}
+E(\mathbf{w})=-\sum_{n=1}^{N} \sum_{k=1}^{K}\left\{t_{n k} \ln y_{n k}+\left(1-t_{n k}\right) \ln \left(1-y_{n k}\right)\right\} 
+\tag{6.35}
+\end{align*}
+
+\subsection{Multiclass classification}
+
+\begin{align*}
+E(\mathbf{w})=-\sum_{n=1}^{N} \sum_{k=1}^{K} t_{k n} \ln y_{k}\left(\mathbf{x}_{n}, \mathbf{w}\right) 
+\tag{6.36}
+\end{align*}
+
+\begin{align*}
+y_{k}(\mathbf{x}, \mathbf{w})=\frac{\exp \left(a_{k}(\mathbf{x}, \mathbf{w})\right)}{\sum_{j} \exp \left(a_{j}(\mathbf{x}, \mathbf{w})\right)} 
+\tag{6.37}
+\end{align*}
+
+\section{Mixture Density Networks}
+
+\subsection{Robot kinematics example}
+No equations.
+
+\subsection{Conditional mixture distributions}
+
+\begin{align*}
+p(\mathbf{t} \mid \mathbf{x})=\sum_{k=1}^{K} \pi_{k}(\mathbf{x}) \mathcal{N}\left(\mathbf{t} \mid \boldsymbol{\mu}_{k}(\mathbf{x}), \sigma_{k}^{2}(\mathbf{x})\right) 
+\tag{6.38}
+\end{align*}
+
+\begin{align*}
+\sum_{k=1}^{K} \pi_{k}(\mathbf{x})=1, \quad 0 \leqslant \pi_{k}(\mathbf{x}) \leqslant 1 
+\tag{6.39}
+\end{align*}
+
+\begin{align*}
+\pi_{k}(\mathbf{x})=\frac{\exp \left(a_{k}^{\pi}\right)}{\sum_{l=1}^{K} \exp \left(a_{l}^{\pi}\right)} 
+\tag{6.40}
+\end{align*}
+
+\begin{align*}
+\sigma_{k}(\mathbf{x})=\exp \left(a_{k}^{\sigma}\right) 
+\tag{6.41}
+\end{align*}
+
+\begin{align*}
+\mu_{k j}(\mathbf{x})=a_{k j}^{\mu} 
+\tag{6.42}
+\end{align*}
+
+\begin{align*}
+E(\mathbf{w})=-\sum_{n=1}^{N} \ln \left\{\sum_{k=1}^{K} \pi_{k}\left(\mathbf{x}_{n}, \mathbf{w}\right) \mathcal{N}\left(\mathbf{t}_{n} \mid \boldsymbol{\mu}_{k}\left(\mathbf{x}_{n}, \mathbf{w}\right), \sigma_{k}^{2}\left(\mathbf{x}_{n}, \mathbf{w}\right)\right)\right\} 
+\tag{6.43}
+\end{align*}
+
+\subsection{Gradient optimization}
+
+\begin{align*}
+\gamma_{n k}=\gamma_{k}\left(\mathbf{t}_{n} \mid \mathbf{x}_{n}\right)=\frac{\pi_{k} \mathcal{N}_{n k}}{\sum_{l=1}^{K} \pi_{l} \mathcal{N}_{n l}} 
+\tag{6.44}
+\end{align*}
+
+\begin{align*}
+\frac{\partial E_{n}}{\partial a_{k}^{\pi}}=\pi_{k}-\gamma_{n k} 
+\tag{6.45}
+\end{align*}
+
+\begin{align*}
+\frac{\partial E_{n}}{\partial a_{k l}^{\mu}}=\gamma_{n k}\left\{\frac{\mu_{k l}-t_{n l}}{\sigma_{k}^{2}}\right\} 
+\tag{6.46}
+\end{align*}
+
+\begin{align*}
+\frac{\partial E_{n}}{\partial a_{k}^{\sigma}}=\gamma_{n k}\left\{L-\frac{\left\|\mathbf{t}_{n}-\boldsymbol{\mu}_{k}\right\|^{2}}{\sigma_{k}^{2}}\right\} 
+\tag{6.47}
+\end{align*}
+
+\subsection{Predictive distribution}
+
+\begin{align*}
+\mathbb{E}[
+\mathbf{t} \mid \mathbf{x}]
+=\int \mathbf{t} p(\mathbf{t} \mid \mathbf{x}) \mathrm{d} \mathbf{t}=\sum_{k=1}^{K} \pi_{k}(\mathbf{x}) \boldsymbol{\mu}_{k}(\mathbf{x}) 
+\tag{6.48}
+\end{align*}
+
+\begin{align*}
+s^{2}(\mathbf{x}) & =\mathbb{E}\left[
+\|\mathbf{t}-\mathbb{E}[
+\mathbf{t} \mid \mathbf{x}]
+\|^{2} \mid \mathbf{x}\right]
+\tag{6.49}\\
+& =\sum_{k=1}^{K} \pi_{k}(\mathbf{x})\left\{\sigma_{k}^{2}(\mathbf{x})+\left\|\boldsymbol{\mu}_{k}(\mathbf{x})-\sum_{l=1}^{K} \pi_{l}(\mathbf{x}) \boldsymbol{\mu}_{l}(\mathbf{x})\right\|^{2}\right\}
+\tag{6.50}
+\end{align*}
+
+\end{document}

@@ -1,0 +1,442 @@
+\documentclass{article}
+
+% Document Layout and Fonts
+\usepackage[margin=0.9in]{geometry}    % Page margins
+\usepackage{fontspec}                  % For custom fonts (LuaLaTeX feature)
+\usepackage{tgpagella}
+\usepackage{mathpazo}
+\setmainfont{EB Garamond}              % Main font (EB Garamond)
+\usepackage{microtype}                 % Improves text appearance
+\usepackage{titlesec}                  % Customize section title fonts
+
+% Right-align section headings
+\titleformat{\section}
+  {\normalfont\large\scshape\raggedright}  % Right-align and small caps
+  {}{0em}{}[]
+
+% Right-align subsection headings and add a line below
+\titleformat{\subsection}
+  {\normalfont\normalsize\raggedleft}     % Right-align subsections
+  {}{0em}{\titlerule[0.5pt]}              % Horizontal line below
+
+% Right-align and italicize subsubsections
+\titleformat{\subsubsection}
+  {\normalfont\normalsize\itshape\raggedleft} % Right-align and italicize subsubsections
+  {}{0em}{}[]
+
+% Math and Science Packages
+\usepackage{amsmath, amsfonts, amssymb, mathtools, amsthm, dsfont}
+
+% Math commands and operators
+\newcommand{\minus}{\scalebox{0.8}{\(-\)}}
+\newcommand{\plus}{\scalebox{0.6}{\(+\)}}
+\DeclareMathOperator{\sech}{sech}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\tr}{Tr}
+\newcommand{\diff}{\mathop{}\!\mathrm{d}}    % Differential d
+
+% Definitions, theorems, corollaries, and friends
+\usepackage[english]{babel}
+\usepackage[hidelinks]{hyperref}
+\newtheorem{axiom}{Axiom}
+\newtheorem{postulate}{Postulate}
+\newtheorem{definition}{Definition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem*{remark}{Remark}
+
+\title{\LARGE\scshape\MakeUppercase{Chapter 16: Continuous Latent Variables}}
+\author{\textit{Bishop and Bishop}}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{Principal Component Analysis}
+
+\subsection{Maximum variance formulation}
+
+\begin{align*}
+\overline{\mathbf{x}}=\frac{1}{N} \sum_{n=1}^{N} \mathbf{x}_{n} \tag{16.1}
+\end{align*}
+
+\begin{align*}
+\frac{1}{N} \sum_{n=1}^{N}\left\{\mathbf{u}_{1}^{\top} \mathbf{x}_{n}-\mathbf{u}_{1}^{\top} \overline{\mathbf{x}}\right\}^{2}=\mathbf{u}_{1}^{\top} \mathbf{S} \mathbf{u}_{1} \tag{16.2}
+\end{align*}
+
+\begin{align*}
+\mathbf{S}=\frac{1}{N} \sum_{n=1}^{N}\left(\mathbf{x}_{n}-\overline{\mathbf{x}}\right)\left(\mathbf{x}_{n}-\overline{\mathbf{x}}\right)^{\top} \tag{16.3}
+\end{align*}
+
+\begin{align*}
+\mathbf{u}_{1}^{\top} \mathbf{S} \mathbf{u}_{1}+\lambda_{1}\left(1-\mathbf{u}_{1}^{\top} \mathbf{u}_{1}\right) . \tag{16.4}
+\end{align*}
+
+\begin{align*}
+\mathbf{S} \mathbf{u}_{1}=\lambda_{1} \mathbf{u}_{1} \tag{16.5}
+\end{align*}
+
+\begin{align*}
+\mathbf{u}_{1}^{\top} \mathbf{S} \mathbf{u}_{1}=\lambda_{1} \tag{16.6}
+\end{align*}
+
+\subsection{Minimum-error formulation}
+
+\begin{align*}
+\mathbf{u}_{i}^{\top} \mathbf{u}_{j}=\delta_{i j} \tag{16.7}
+\end{align*}
+
+\begin{align*}
+\mathbf{x}_{n}=\sum_{i=1}^{D} \alpha_{n i} \mathbf{u}_{i} \tag{16.8}
+\end{align*}
+
+\begin{align*}
+\mathbf{x}_{n}=\sum_{i=1}^{D}\left(\mathbf{x}_{n}^{\top} \mathbf{u}_{i}\right) \mathbf{u}_{i} \tag{16.9}
+\end{align*}
+
+\begin{align*}
+\widetilde{\mathbf{x}}_{n}=\sum_{i=1}^{M} z_{n i} \mathbf{u}_{i}+\sum_{i=M+1}^{D} b_{i} \mathbf{u}_{i} \tag{16.10}
+\end{align*}
+
+\begin{align*}
+z_{n j}=\mathbf{x}_{n}^{\top} \mathbf{u}_{j} \tag{16.12}
+\end{align*}
+
+\begin{align*}
+b_{j}=\overline{\mathbf{x}}^{\top} \mathbf{u}_{j} \tag{16.13}
+\end{align*}
+
+\begin{align*}
+\mathbf{x}_{n}-\widetilde{\mathbf{x}}_{n}=\sum_{i=M+1}^{D}\left\{\left(\mathbf{x}_{n}-\overline{\mathbf{x}}\right)^{\top} \mathbf{u}_{i}\right\} \mathbf{u}_{i} \tag{16.14}
+\end{align*}
+
+\begin{align*}
+J=\frac{1}{N} \sum_{n=1}^{N} \sum_{i=M+1}^{D}\left(\mathbf{x}_{n}^{\top} \mathbf{u}_{i}-\overline{\mathbf{x}}^{\top} \mathbf{u}_{i}\right)^{2}=\sum_{i=M+1}^{D} \mathbf{u}_{i}^{\top} \mathbf{S} \mathbf{u}_{i} \tag{16.15}
+\end{align*}
+
+\begin{align*}
+\widetilde{J}=\mathbf{u}_{2}^{\top} \mathbf{S} \mathbf{u}_{2}+\lambda_{2}\left(1-\mathbf{u}_{2}^{\top} \mathbf{u}_{2}\right) \tag{16.16}
+\end{align*}
+
+\begin{align*}
+\mathbf{S} \mathbf{u}_{i}=\lambda_{i} \mathbf{u}_{i} \tag{16.17}
+\end{align*}
+
+\begin{align*}
+J=\sum_{i=M+1}^{D} \lambda_{i} \tag{16.18}
+\end{align*}
+
+\subsection{Data compression}
+
+\begin{align*}
+\widetilde{\mathbf{x}}_{n} & =\sum_{i=1}^{M}\left(\mathbf{x}_{n}^{\top} \mathbf{u}_{i}\right) \mathbf{u}_{i}+\sum_{i=M+1}^{D}\left(\overline{\mathbf{x}}^{\top} \mathbf{u}_{i}\right) \mathbf{u}_{i}  \tag{16.19}\\
+& =\overline{\mathbf{x}}+\sum_{i=1}^{M}\left(\mathbf{x}_{n}^{\top} \mathbf{u}_{i}-\overline{\mathbf{x}}^{\top} \mathbf{u}_{i}\right) \mathbf{u}_{i}
+ \tag{16.20}
+\end{align*}
+
+\begin{align*}
+\overline{\mathbf{x}}=\sum_{i=1}^{D}\left(\overline{\mathbf{x}}^{\top} \mathbf{u}_{i}\right) \mathbf{u}_{i} \tag{16.21}
+\end{align*}
+
+\subsection{Data whitening}
+
+\begin{align*}
+\rho_{i j}=\frac{1}{N} \sum_{n=1}^{N} \frac{\left(x_{n i}-\bar{x}_{i}\right)}{\sigma_{i}} \frac{\left(x_{n j}-\bar{x}_{j}\right)}{\sigma_{j}} \tag{16.22}
+\end{align*}
+
+\begin{align*}
+\mathbf{S U}=\mathbf{U L} \tag{16.23}
+\end{align*}
+
+\begin{align*}
+\mathbf{y}_{n}=\mathbf{L}^{-1 / 2} \mathbf{U}^{\top}\left(\mathbf{x}_{n}-\overline{\mathbf{x}}\right) \tag{16.24}
+\end{align*}
+
+\begin{align*}
+\frac{1}{N} \sum_{n=1}^{N} \mathbf{y}_{n} \mathbf{y}_{n}^{\top} & =\frac{1}{N} \sum_{n=1}^{N} \mathbf{L}^{-1 / 2} \mathbf{U}^{\top}\left(\mathbf{x}_{n}-\overline{\mathbf{x}}\right)\left(\mathbf{x}_{n}-\overline{\mathbf{x}}\right)^{\top} \mathbf{U L}^{-1 / 2} \\
+& =\mathbf{L}^{-1 / 2} \mathbf{U}^{\top} \mathbf{S} \mathbf{U} \mathbf{L}^{-1 / 2}=\mathbf{L}^{-1 / 2} \mathbf{L} \mathbf{L}^{-1 / 2}=\mathbf{I}
+\tag{16.25}
+\end{align*}
+
+\subsection{High-dimensional data}
+
+\begin{align*}
+\frac{1}{N} \mathbf{X}^{\top} \mathbf{X} \mathbf{u}_{i}=\lambda_{i} \mathbf{u}_{i} \tag{16.26}
+\end{align*}
+
+\begin{align*}
+\frac{1}{N} \mathbf{X} \mathbf{X}^{\top}\left(\mathbf{X} \mathbf{u}_{i}\right)=\lambda_{i}\left(\mathbf{X} \mathbf{u}_{i}\right) \tag{16.27}
+\end{align*}
+
+\begin{align*}
+\frac{1}{N} \mathbf{X} \mathbf{X}^{\top} \mathbf{v}_{i}=\lambda_{i} \mathbf{v}_{i} \tag{16.28}
+\end{align*}
+
+\begin{align*}
+\left(\frac{1}{N} \mathbf{X}^{\top} \mathbf{X}\right)\left(\mathbf{X}^{\top} \mathbf{v}_{i}\right)=\lambda_{i}\left(\mathbf{X}^{\top} \mathbf{v}_{i}\right) \tag{16.29}
+\end{align*}
+
+\begin{align*}
+\mathbf{u}_{i}=\frac{1}{\left(N \lambda_{i}\right)^{1 / 2}} \mathbf{X}^{\top} \mathbf{v}_{i} \tag{16.30}
+\end
+
+\section{Probabilistic Latent Variables}
+
+\subsection{Generative model}
+
+\begin{align*}
+p(\mathbf{z})=\mathcal{N}(\mathbf{z} \mid \mathbf{0}, \mathbf{I}) \tag{16.31}
+\end{align*}
+
+\begin{align*}
+p(\mathbf{x} \mid \mathbf{z})=\mathcal{N}\left(\mathbf{x} \mid \mathbf{W} \mathbf{z}+\boldsymbol{\mu}, \sigma^{2} \mathbf{I}\right) \tag{16.32}
+\end{align*}
+
+\begin{align*}
+\mathbf{x}=\mathbf{W} \mathbf{z}+\boldsymbol{\mu}+\boldsymbol{\epsilon} \tag{16.33}
+\end{align*}
+
+\subsection{Likelihood function}
+
+\begin{align*}
+p(\mathbf{x})=\int p(\mathbf{x} \mid \mathbf{z}) p(\mathbf{z}) \mathrm{d} \mathbf{z} \tag{16.34}
+\end{align*}
+
+\begin{align*}
+p(\mathbf{x})=\mathcal{N}(\mathbf{x} \mid \boldsymbol{\mu}, \mathbf{C}) \tag{16.35}
+\end{align*}
+
+\begin{align*}
+\mathbf{C}=\mathbf{W} \mathbf{W}^{\top}+\sigma^{2} \mathbf{I} \tag{16.36}
+\end{align*}
+
+\begin{align*}
+\mathbb{E}[\mathbf{x}] & =\boldsymbol{\mu}  \tag{16.37}\\
+\operatorname{cov}[\mathbf{x}] & =\mathbf{W} \mathbf{W}^{\top}+\sigma^{2} \mathbf{I} \tag{16.39}
+\end{align*}
+
+\begin{align*}
+\widetilde{\mathbf{W}} \widetilde{\mathbf{W}}^{\top}=\mathbf{W} \mathbf{W}^{\top} \tag{16.40}
+\end{align*}
+
+\begin{align*}
+\mathbf{C}^{-1}=\sigma^{-2} \mathbf{I}-\sigma^{-2} \mathbf{W M}^{-1} \mathbf{W}^{\top} \tag{16.41}
+\end{align*}
+
+\begin{align*}
+\mathbf{M}=\mathbf{W}^{\top} \mathbf{W}+\sigma^{2} \mathbf{I} \tag{16.42}
+\end{align*}
+
+\begin{align*}
+p(\mathbf{z} \mid \mathbf{x})=\mathcal{N}(\mathbf{z} \mid \mathbf{M}^{-1} \mathbf{W}^{\top}(\mathbf{x}-\boldsymbol{\mu}),~\sigma^{2} \mathbf{M}^{-1}) \tag{16.43}
+\end{align*}
+
+\subsection{Maximum likelihood}
+
+\begin{align*}
+\ln p\left(\mathbf{X} \mid \mathbf{W}, \boldsymbol{\mu}, \sigma^{2}\right)=-\frac{N}{2}\left\{D \ln (2 \pi)+\ln |\mathbf{C}|+\operatorname{Tr}\left(\mathbf{C}^{-1} \mathbf{S}\right)\right\} \tag{16.45}
+\end{align*}
+
+\begin{align*}
+\mathbf{W}_{\mathrm{ML}}=\mathbf{U}_{M}\left(\mathbf{L}_{M}-\sigma^{2} \mathbf{I}\right)^{1 / 2} \mathbf{R} \tag{16.46}
+\end{align*}
+
+\begin{align*}
+\sigma_{\mathrm{ML}}^{2}=\frac{1}{D-M} \sum_{i=M+1}^{D} \lambda_{i} \tag{16.47}
+\end{align*}
+
+\begin{align*}
+\mathbf{C}=\mathbf{U L} \mathbf{U}^{\top}=\mathbf{S} \tag{16.48}
+\end{align*}
+
+\begin{align*}
+\mathbb{E}[\mathbf{z} \mid \mathbf{x}] = \mathbf{M}^{-1} \mathbf{W}_{\mathrm{ML}}^{\top}(\mathbf{x}-\overline{\mathbf{x}}) \tag{16.49}
+\end{align*}
+
+\begin{align*}
+\mathbf{W} \mathbb{E}[\mathbf{z} \mid \mathbf{x}] + \boldsymbol{\mu} \tag{16.50}
+\end{align*}
+
+\begin{align*}
+\left(\mathbf{W}_{\mathrm{ML}}^{\top} \mathbf{W}_{\mathrm{ML}}\right)^{-1} \mathbf{W}_{\mathrm{ML}}^{\top}(\mathbf{x}-\overline{\mathbf{x}}) \tag{16.51}
+\end{align*}
+
+\begin{align*}
+D M+1-M(M-1) / 2 \tag{16.52}
+\end{align*}
+
+\subsection{Factor analysis}
+
+\begin{align*}
+p(\mathbf{x} \mid \mathbf{z})=\mathcal{N}(\mathbf{x} \mid \mathbf{W} \mathbf{z}+\boldsymbol{\mu}, \boldsymbol{\Psi}) \tag{16.53}
+\end{align*}
+
+\begin{align*}
+\mathbf{C}=\mathbf{W} \mathbf{W}^{\top}+\mathbf{\Psi} \tag{16.54}
+\end{align*}
+
+\subsection{Independent component analysis}
+
+\begin{align*}
+p(\mathbf{z})=\prod_{j=1}^{M} p\left(z_{j}\right) \tag{16.55}
+\end{align*}
+
+\begin{align*}
+p\left(z_{j}\right)=\frac{1}{\pi \cosh \left(z_{j}\right)}=\frac{2}{\pi\left(e^{z_{j}}+e^{-z_{j}}\right)} \tag{16.56}
+\end{align*}
+
+\subsection{Kalman filters}
+
+No equations.
+
+\section{Evidence Lower Bound}
+
+\subsection{Evidence Lower Bound}
+
+\begin{align*}
+\ln p(\mathbf{x} \mid \mathbf{w})=\mathcal{L}(\mathbf{w})+\operatorname{KL}(q(\mathbf{z}) \| p(\mathbf{z} \mid \mathbf{x}, \mathbf{w})) \tag{16.57}
+\end{align*}
+
+\begin{align*}
+\mathcal{L}(q, \mathbf{w}) = \int q(\mathbf{z}) \ln \left\{\frac{p(\mathbf{x}, \mathbf{z} \mid \mathbf{w})}{q(\mathbf{z})}\right\} \mathrm{d} \mathbf{z} \tag{16.58}
+\end{align*}
+
+\begin{align*}
+\mathrm{KL}(q(\mathbf{z}) \| p(\mathbf{z} \mid \mathbf{x}, \mathbf{w})) = -\int q(\mathbf{z}) \ln \left\{\frac{p(\mathbf{z} \mid \mathbf{x}, \mathbf{w})}{q(\mathbf{z})}\right\} \mathrm{d} \mathbf{z} \tag{16.59}
+\end{align*}
+
+\begin{align*}
+\ln p(\mathbf{x} \mid \mathbf{w}) \geqslant \mathcal{L}(\mathbf{w}) \tag{16.60}
+\end{align*}
+
+\begin{align*}
+\mathcal{L}(q, \mathbf{w}) &= \int p\left(\mathbf{z} \mid \mathbf{x}, \mathbf{w}^{(\text{old })}\right) \ln p(\mathbf{x}, \mathbf{z} \mid \mathbf{w}) \mathrm{d} \mathbf{z} \\
+& \quad -\int p\left(\mathbf{z} \mid \mathbf{x}, \mathbf{w}^{(\text{old })}\right) \ln p\left(\mathbf{z} \mid \mathbf{x}, \mathbf{w}^{(\text{old })}\right) \mathrm{d} \mathbf{z} \tag{16.61}
+\end{align*}
+
+\begin{align*}
+\ln p(\mathbf{X} \mid \mathbf{w})=\sum_{n=1}^{N} \ln p\left(\mathbf{x}_{n} \mid \mathbf{w}\right) \tag{16.62}
+\end{align*}
+
+\begin{align*}
+\mathcal{L}(q, \mathbf{w})=\sum_{n=1}^{N} \int q\left(\mathbf{z}_{n}\right) \ln \left\{\frac{p\left(\mathbf{x}_{n}, \mathbf{z}_{n} \mid \mathbf{w}\right)}{q\left(\mathbf{z}_{n}\right)}\right\} \mathrm{d} \mathbf{z}_{n} \tag{16.63}
+\end{align*}
+
+\subsection{Expectation maximization}
+
+\begin{align*}
+\ln p\left(\mathbf{X}, \mathbf{Z} \mid \boldsymbol{\mu}, \mathbf{W}, \sigma^{2}\right)=\sum_{n=1}^{N}\left\{\ln p\left(\mathbf{x}_{n} \mid \mathbf{z}_{n}\right)+\ln p\left(\mathbf{z}_{n}\right)\right\} \tag{16.64}
+\end{align*}
+
+\begin{align*}
+& \mathbb{E}\left[\ln p\left(\mathbf{X}, \mathbf{Z} \mid \boldsymbol{\mu}, \mathbf{W}, \sigma^{2}\right)\right] \\
+& \quad = -\sum_{n=1}^{N}\left\{\frac{D}{2} \ln \left(2 \pi \sigma^{2}\right)+\frac{1}{2} \operatorname{Tr}\left(\mathbb{E}\left[\mathbf{z}_{n} \mathbf{z}_{n}^{\top}\right]\right)\right. \\
+& \quad +\frac{1}{2 \sigma^{2}}\left\|\mathbf{x}_{n}-\boldsymbol{\mu}\right\|^{2}-\frac{1}{\sigma^{2}} \mathbb{E}\left[\mathbf{z}_{n}\right]^{\top} \mathbf{W}^{\top}\left(\mathbf{x}_{n}-\boldsymbol{\mu}\right) \\
+& \quad \left. +\frac{1}{2 \sigma^{2}} \operatorname{Tr}\left(\mathbb{E}\left[\mathbf{z}_{n} \mathbf{z}_{n}^{\top}\right] \mathbf{W}^{\top} \mathbf{W}\right)+\frac{M}{2} \ln (2 \pi)\right\}
+\tag{16.65}
+\end{align*}
+
+\begin{align*}
+\mathbb{E}\left[\mathbf{z}_{n}\right] &=\mathbf{M}^{-1} \mathbf{W}^{\top}\left(\mathbf{x}_{n}-\overline{\mathbf{x}}\right) \tag{16.66}
+\end{align*}
+
+\begin{align*}
+\mathbb{E}\left[\mathbf{z}_{n} \mathbf{z}_{n}^{\top}\right]& =\sigma^{2} \mathbf{M}^{-1}+\mathbb{E}\left[\mathbf{z}_{n}\right]\mathbb{E}\left[\mathbf{z}_{n}\right]^{\top} \tag{16.67}
+\end{align*}
+
+\begin{align*}
+\mathbf{W}_{\text{new }} = & \left[\sum_{n=1}^{N}\left(\mathbf{x}_{n}-\overline{\mathbf{x}}\right) \mathbb{E}\left[\mathbf{z}_{n}\right]^{\top}\right] \left[\sum_{n=1}^{N} \mathbb{E}\left[\mathbf{z}_{n} \mathbf{z}_{n}^{\top}\right]\right]^{-1} \tag{16.68}
+\end{align*}
+
+\begin{align*}
+\sigma_{\text{new }}^{2}= & \frac{1}{N D} \sum_{n=1}^{N}\left\{\left\|\mathbf{x}_{n}-\overline{\mathbf{x}}\right\|^{2}-2 \mathbb{E}\left[\mathbf{z}_{n}\right]^{\top} \mathbf{W}_{\text{new}}^{\top}\left(\mathbf{x}_{n}-\overline{\mathbf{x}}\right)\right. \\
+& \left. +\operatorname{Tr}\left(\mathbb{E}\left[\mathbf{z}_{n} \mathbf{z}_{n}^{\top}\right] \mathbf{W}_{\text{new }}^{\top} \mathbf{W}_{\text{new }}\right)\right\} \tag{16.69}
+\end{align*}
+
+\begin{align*}
+\boldsymbol{\Omega}=\left(\mathbf{W}_{\text{old }}^{\top} \mathbf{W}_{\text{old }}\right)^{-1} \mathbf{W}_{\text{old }}^{\top} \widetilde{\mathbf{X}}^{\top} \tag{16.70}
+\end{align*}
+
+\begin{align*}
+\mathbf{W}_{\text{new }}=\widetilde{\mathbf{X}}^{\top} \boldsymbol{\Omega}^{\top}\left(\boldsymbol{\Omega} \boldsymbol{\Omega}^{\top}\right)^{-1} \tag{16.71}
+\end{align*}
+
+\subsection{EM for factor analysis}
+
+\begin{align*}
+\mathbb{E}\left[\mathbf{z}_{n}\right] &= \mathbf{G} \mathbf{W}^{\top} \mathbf{\Psi}^{-1}\left(\mathbf{x}_{n}-\overline{\mathbf{x}}\right) \tag{16.72}
+\end{align*}
+
+\begin{align*}
+\mathbb{E}\left[\mathbf{z}_{n} \mathbf{z}_{n}^{\top}\right] & =\mathbf{G}+\mathbb{E}\left[\mathbf{z}_{n}\right] \mathbb{E}\left[\mathbf{z}_{n}\right]^{\top} \tag{16.73}
+\end{align*}
+
+\begin{align*}
+\mathbf{G}=\left(\mathbf{I}+\mathbf{W}^{\top} \boldsymbol{\Psi}^{-1} \mathbf{W}\right)^{-1} \tag{16.74}
+\end{align*}
+
+\begin{align*}
+\mathbf{W}_{\text{new }} & =\left[\sum_{n=1}^{N}\left(\mathbf{x}_{n}-\overline{\mathbf{x}}\right) \mathbb{E}\left[\mathbf{z}_{n}\right]^{\top}\right] \left[\sum_{n=1}^{N} \mathbb{E}\left[\mathbf{z}_{n} \mathbf{z}_{n}^{\top}\right]\right]^{-1} \tag{16.75}
+\end{align*}
+
+\begin{align*}
+\mathbf{\Psi}_{\text{new }} =\operatorname{diag}\left\{\mathbf{S}-\mathbf{W}_{\text{new }} \frac{1}{N} \sum_{n=1}^{N} \mathbb{E}\left[\mathbf{z}_{n}\right] \left(\mathbf{x}_{n}-\overline{\mathbf{x}}\right)^{\top}\right\} \tag{16.76}
+\end{align*}
+
+\section{Nonlinear Latent Variable Models}
+
+\subsection{Nonlinear Latent Variable Models}
+
+\begin{align*}
+p_{\mathbf{z}}(\mathbf{z})=\mathcal{N}(\mathbf{z} \mid \mathbf{0}, \mathbf{I}) \tag{16.77}
+\end{align*}
+
+\begin{align*}
+p_{\mathbf{x}}(\mathbf{x})=p_{\mathbf{z}}(\mathbf{z}(\mathbf{x}))|\operatorname{det} \mathbf{J}(\mathbf{x})| \tag{16.78}
+\end{align*}
+
+\begin{align*}
+J_{i j}(\mathbf{x})=\frac{\partial z_{i}}{\partial x_{j}} \tag{16.79}
+\end{align*}
+
+\subsection{Nonlinear manifolds}
+
+\begin{align*}
+p(\mathbf{x} \mid \mathbf{z}, \mathbf{w})=\mathcal{N}\left(\mathbf{x} \mid \mathbf{g}(\mathbf{z}, \mathbf{w}), \sigma^{2} \mathbf{I}\right) \tag{16.80}
+\end{align*}
+
+\begin{align*}
+p(\mathbf{x})=\int p(\mathbf{z}) p(\mathbf{x} \mid \mathbf{z}) \mathrm{d} \mathbf{z} \tag{16.81}
+\end{align*}
+
+\subsection{Likelihood function}
+
+\begin{align*}
+p(\mathbf{x} \mid \mathbf{w}) =\int p(\mathbf{x} \mid \mathbf{z}, \mathbf{w}) p(\mathbf{z}) \mathrm{d} \mathbf{z} =\int \mathcal{N}\left(\mathbf{x} \mid \mathbf{g}(\mathbf{z}, \mathbf{w}), \sigma^{2} \mathbf{I}\right) \mathcal{N}(\mathbf{z} \mid \mathbf{0}, \mathbf{I}) \mathrm{d} \mathbf{z} \tag{16.82}
+\end{align*}
+
+\begin{align*}
+p(\mathbf{x} \mid \mathbf{w}) \simeq \frac{1}{K} \sum_{i=1}^{K} p\left(\mathbf{x} \mid \mathbf{z}_{i}, \mathbf{w}\right) \tag{16.83}
+\end{align*}
+
+\subsection{Discrete data}
+
+\begin{align*}
+p(\mathbf{x} \mid \mathbf{z}, \mathbf{w})=\prod_{i=1}^{D} g_{i}(\mathbf{z}, \mathbf{w})^{x_{i}}\left(1-g_{i}(\mathbf{z}, \mathbf{w})\right)^{1-x_{i}} \tag{16.84}
+\end{align*}
+
+\begin{align*}
+p(\mathbf{x} \mid \mathbf{z}, \mathbf{w})=\prod_{i=1}^{D} g_{i}(\mathbf{z}, \mathbf{w})^{x_{i}} \tag{16.85}
+\end{align*}
+
+\begin{align*}
+g_{i}(\mathbf{z}, \mathbf{w})=\frac{\exp \left(a_{i}(\mathbf{z}, \mathbf{w})\right)}{\sum_{j} \exp \left(a_{j}(\mathbf{z}, \mathbf{w})\right)} \tag{16.86}
+\end{align*}
+
+\subsection{Four approaches to generative modelling}
+
+No equations
+
+\end{document}

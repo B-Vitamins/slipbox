@@ -1,0 +1,468 @@
+\documentclass{article}
+
+% Document Layout and Fonts
+\usepackage[margin=0.9in]{geometry}    % Page margins
+\usepackage{fontspec}                  % For custom fonts (LuaLaTeX feature)
+\usepackage{tgpagella}
+\usepackage{mathpazo}
+\setmainfont{EB Garamond}              % Main font (EB Garamond)
+\usepackage{microtype}                 % Improves text appearance
+\usepackage{titlesec}                  % Customize section title fonts
+\usepackage{algorithm}
+\usepackage{algorithmic}
+
+% Right-align section headings
+\titleformat{\section}
+  {\normalfont\large\scshape\raggedright}  % Right-align and small caps
+  {}{0em}{}[]
+
+% Right-align subsection headings and add a line below
+\titleformat{\subsection}
+  {\normalfont\normalsize\raggedleft}     % Right-align subsections
+  {}{0em}{\titlerule[0.5pt]}              % Horizontal line below
+
+% Right-align and italicize subsubsections
+\titleformat{\subsubsection}
+  {\normalfont\normalsize\itshape\raggedleft} % Right-align and italicize subsubsections
+  {}{0em}{}[]
+
+% Math and Science Packages
+\usepackage{amsmath, amsfonts, amssymb, mathtools, amsthm, dsfont}
+
+% Math commands and operators
+\newcommand{\minus}{\scalebox{0.8}{\(-\)}}
+\newcommand{\plus}{\scalebox{0.6}{\(+\)}}
+\DeclareMathOperator{\sech}{sech}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\tr}{Tr}
+\newcommand{\diff}{\mathop{}\!\mathrm{d}}    % Differential d
+
+% Definitions, theorems, corollaries, and friends
+\usepackage[english]{babel}
+\usepackage[hidelinks]{hyperref}
+\newtheorem{axiom}{Axiom}
+\newtheorem{postulate}{Postulate}
+\newtheorem{definition}{Definition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem*{remark}{Remark}
+
+\title{\LARGE\scshape\MakeUppercase{Chapter 14: Sampling}}
+\author{\textit{Bishop and Bishop}}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{Basic Sampling Algorithms}
+
+\subsection{Expectations}
+
+\begin{align*}
+\mathbb{E}[f] =\int f(\mathbf{z}) p(\mathbf{z}) \mathrm{d} \mathbf{z} 
+\tag{14.1}
+\end{align*}
+
+\begin{align*}
+\bar{f}=\frac{1}{L} \sum_{l=1}^{L} f\left(\mathbf{z}^{(l)}\right)
+\tag{14.2}
+\end{align*}
+
+\begin{align*}
+\mathbb{E}[
+f(\mathbf{z})]
+\simeq \frac{1}{L} \sum_{l=1}^{L} f\left(\mathbf{z}^{(l)}\right)
+\tag{14.3}
+\end{align*}
+
+\begin{align*}
+\operatorname{var}[
+\bar{f}]
+=\frac{1}{L} \mathbb{E}\left[
+(f-\mathbb{E}[
+f]
+)^{2}\right]
+\tag{14.4}
+\end{align*}
+
+\subsection{Standard distributions}
+
+\begin{align*}
+p(y)=p(z)\left|\frac{\mathrm{d} z}{\mathrm{~d} y}\right|
+\tag{14.5}
+\end{align*}
+
+\begin{align*}
+z=\int_{-\infty}^{y} p(\widehat{y}) \equiv h(y) \mathrm{d} \widehat{y}
+\tag{14.6}
+\end{align*}
+
+\begin{align*}
+p(y)=\lambda \exp (-\lambda y)
+\tag{14.7}
+\end{align*}
+
+\begin{align*}
+p(y)=\frac{1}{\pi} \cdot \frac{1}{1+y^{2}}
+\tag{14.8}
+\end{align*}
+
+\begin{align*}
+p\left(y_{1}, \ldots, y_{M}\right)=p\left(z_{1}, \ldots, z_{M}\right)\left|\frac{\partial\left(z_{1}, \ldots, z_{M}\right)}{\partial\left(y_{1}, \ldots, y_{M}\right)}\right|
+\tag{14.9}
+\end{align*}
+
+\begin{align*}
+y_{1}=z_{1}\left(\frac{-2 \ln r^{2}}{r^{2}}\right)^{1 / 2}
+\tag{14.10}
+\end{align*}
+
+\begin{align*}
+y_{2}=z_{2}\left(\frac{-2 \ln r^{2}}{r^{2}}\right)^{1 / 2}
+\tag{14.11}
+\end{align*}
+
+\begin{align*}
+p\left(y_{1}, y_{2}\right) & =p\left(z_{1}, z_{2}\right)\left|\frac{\partial\left(z_{1}, z_{2}\right)}{\partial\left(y_{1}, y_{2}\right)}\right| \\
+& =\left[
+\frac{1}{\sqrt{2 \pi}} \exp \left(-y_{1}^{2} / 2\right)\right]
+\left[
+\frac{1}{\sqrt{2 \pi}} \exp \left(-y_{2}^{2} / 2\right)\right]
+\tag{14.12}
+\end{align*}
+
+\subsection{Rejection sampling}
+
+\begin{align*}
+p(z)=\frac{1}{Z_{p}} \widetilde{p}(z)
+\tag{14.13}
+\end{align*}
+
+\begin{align*}
+p(\text{ accept }) & =\int\{\widetilde{p}(z) / k q(z)\} q(z) \mathrm{d} z \\
+& =\frac{1}{k} \int \widetilde{p}(z) \mathrm{d} z
+\tag{14.14}
+\end{align*}
+
+\begin{align*}
+\operatorname{Gam}(z \mid a, b)=\frac{b^{a} z^{a-1} \exp (-b z)}{\Gamma(a)}
+\tag{14.15}
+\end{align*}
+
+\begin{align*}
+q(z)=\frac{k}{1+(z-c)^{2} / b^{2}}
+\tag{14.16}
+\end{align*}
+
+\subsection{Adaptive rejection sampling}
+
+\begin{align*}
+q(z)=k_{i} \lambda_{i} \exp \left\{-\lambda_{i}\left(z-z_{i-1}\right)\right\}, \quad z_{i-1}<z \leqslant z_{i}
+\tag{14.17}
+\end{align*}
+
+\subsection{Importance sampling}
+
+\begin{align*}
+\mathbb{E}[
+f]
+\simeq \sum_{l=1}^{L} p\left(\mathbf{z}^{(l)}\right) f\left(\mathbf{z}^{(l)}\right)
+\tag{14.18}
+\end{align*}
+
+\begin{align*}
+\mathbb{E}[
+f]
+\simeq \frac{1}{L} \sum_{l=1}^{L} \frac{p\left(\mathbf{z}^{(l)}\right)}{q\left(\mathbf{z}^{(l)}\right)} f\left(\mathbf{z}^{(l)}\right)
+\tag{14.19}
+\end{align*}
+
+\begin{align*}
+\frac{Z_{p}}{Z_{q}} & =\frac{1}{Z_{q}} \int \widetilde{p}(\mathbf{z}) \mathrm{d} \mathbf{z}=\int \frac{\widetilde{p}(\mathbf{z})}{\widetilde{q}(\mathbf{z})} q(\mathbf{z}) \mathrm{d} \mathbf{z} \\
+& \simeq \frac{1}{L} \sum_{l=1}^{L} \widetilde{r}_{l}
+\tag{14.21}
+\end{align*}
+
+\begin{align*}
+\mathbb{E}[
+f]
+\simeq \sum_{l=1}^{L} w_{l} f\left(\mathbf{z}^{(l)}\right)
+\tag{14.22}
+\end{align*}
+
+\begin{align*}
+w_{l}=\frac{\widetilde{r}_{l}}{\sum_{m} \widetilde{r}_{m}}=\frac{\widetilde{p}\left(\mathbf{z}^{(l)}\right) / q\left(\mathbf{z}^{(l)}\right)}{\sum_{m} \widetilde{p}\left(\mathbf{z}^{(m)}\right) / q\left(\mathbf{z}^{(m)}\right)}
+\tag{14.23}
+\end{align*}
+
+\subsection{Sampling-importance-resampling}
+
+\begin{align*}
+p(z \leqslant a) & =\sum_{l: z^{(l)} \leqslant a} w_{l} \\
+& =\frac{\sum_{l} I\left(z^{(l)} \leqslant a\right) \widetilde{p}\left(z^{(l)}\right) / q\left(z^{(l)}\right)}{\sum_{l} \widetilde{p}\left(z^{(l)}\right) / q\left(z^{(l)}\right)}
+\tag{14.24}
+\end{align*}
+
+\begin{align*}
+\mathbb{E}[
+f(\mathbf{z})]
+& =\sum_{l=1}^{L} w_{l} f\left(\mathbf{z}_{l}\right) .
+\tag{14.26}
+\end{align*}
+
+\section{Markov Chain Monte Carlo}
+\subsection{The Metropolis algorithm}
+
+\begin{align*}
+A\left(\mathbf{z}^{\star}, \mathbf{z}^{(\tau)}\right)=\min \left(1, \frac{\widetilde{p}\left(\mathbf{z}^{\star}\right)}{\widetilde{p}\left(\mathbf{z}^{(\tau)}\right)}\right) \tag{14.27}
+\end{align*}
+
+\begin{align*}
+p\left(z^{(\tau+1)}=z^{(\tau)}\right) & =0.5  \tag{14.28}
+\end{align*}
+
+\begin{align*}
+p\left(z^{(\tau+1)}=z^{(\tau)}+1\right) & =0.25  \tag{14.29}
+\end{align*}
+
+\begin{align*}
+p\left(z^{(\tau+1)}=z^{(\tau)}-1\right) & =0.25
+\tag{14.30}
+\end{align*}
+
+\subsubsection{Algorithm 14.1: Metropolis sampling}
+
+\begin{algorithm}[H]
+\caption{Metropolis Sampling}
+\begin{algorithmic}[1]
+\STATE \textbf{Input:} Unnormalized distribution $\tilde{p}(z)$
+\STATE \quad Proposal distribution $q(z | z_{\text{prev}})$
+\STATE \quad Initial state $z^{(0)}$
+\STATE \quad Number of iterations $T$
+\STATE \textbf{Output:} $z \sim \tilde{p}(z)$
+\STATE $z_{\text{prev}} \gets z^{(0)}$
+\STATE \textbf{// Iterative message-passing}
+\FOR{$\tau \in \{1, \ldots, T\}$}
+    \STATE $z^* \sim q(z | z_{\text{prev}})$ \COMMENT{// Sample from proposal distribution}
+    \STATE $u \sim U(0, 1)$ \COMMENT{// Sample from uniform}
+    \IF{$\frac{\tilde{p}(z^*)}{\tilde{p}(z_{\text{prev}})} > u$}
+        \STATE $z_{\text{prev}} \gets z^*$ \COMMENT{// $z^{(\tau)} = z^*$}
+    \ELSE
+        \STATE $z_{\text{prev}} \gets z_{\text{prev}}$ \COMMENT{// $z^{(\tau)} = z_{\text{prev}}$}
+    \ENDIF
+\ENDFOR
+\RETURN $z_{\text{prev}}$ \COMMENT{// $z^{(T)}$}
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Markov chains}
+
+\begin{align*}
+p\left(\mathbf{z}^{(m+1)} \mid \mathbf{z}^{(1)}, \ldots, \mathbf{z}^{(m)}\right)=p\left(\mathbf{z}^{(m+1)} \mid \mathbf{z}^{(m)}\right) \tag{14.31}
+\end{align*}
+
+\begin{align*}
+p\left(\mathbf{z}^{(m+1)}\right)=\int p\left(\mathbf{z}^{(m+1)} \mid \mathbf{z}^{(m)}\right) p\left(\mathbf{z}^{(m)}\right) \mathrm{d} \mathbf{z}^{(m)} \tag{14.32}
+\end{align*}
+
+\begin{align*}
+p^{\star}(\mathbf{z})=\int T\left(\mathbf{z}^{\prime}, \mathbf{z}\right) p^{\star}\left(\mathbf{z}^{\prime}\right) \mathrm{d} \mathbf{z}^{\prime} \tag{14.33}
+\end{align*}
+
+\begin{align*}
+p^{\star}(\mathbf{z}) T\left(\mathbf{z}, \mathbf{z}^{\prime}\right)=p^{\star}\left(\mathbf{z}^{\prime}\right) T\left(\mathbf{z}^{\prime}, \mathbf{z}\right) \tag{14.34}
+\end{align*}
+
+\subsection{The Metropolis-Hastings algorithm}
+
+\begin{align*}
+A_{k}\left(\mathbf{z}^{\star}, \mathbf{z}^{(\tau)}\right)=\min \left(1, \frac{\widetilde{p}\left(\mathbf{z}^{\star}\right) q_{k}\left(\mathbf{z}^{(\tau)} \mid \mathbf{z}^{\star}\right)}{\widetilde{p}\left(\mathbf{z}^{(\tau)}\right) q_{k}\left(\mathbf{z}^{\star} \mid \mathbf{z}^{(\tau)}\right)}\right) \tag{14.40}
+\end{align*}
+
+\begin{align*}
+p(\mathbf{z}) q_{k}\left(\mathbf{z}^{\prime} \mid \mathbf{z}\right) A_{k}\left(\mathbf{z}^{\prime}, \mathbf{z}\right) & =\min \left(p(\mathbf{z}) q_{k}\left(\mathbf{z}^{\prime} \mid \mathbf{z}\right), p\left(\mathbf{z}^{\prime}\right) q_{k}\left(\mathbf{z} \mid \mathbf{z}^{\prime}\right)\right) \\
+& =p\left(\mathbf{z}^{\prime}\right) q_{k}\left(\mathbf{z} \mid \mathbf{z}^{\prime}\right) A_{k}\left(\mathbf{z}, \mathbf{z}^{\prime}\right)
+ \tag{14.41}
+\end{align*}
+
+\subsubsection{Algorithm 14.2: Metropolis-Hastings sampling}
+
+\begin{algorithm}[H]
+\caption{Metropolis-Hastings Sampling}
+\begin{algorithmic}[1]
+\STATE \textbf{Input:} Unnormalized distribution $\tilde{p}(z)$
+\STATE \quad Proposal distributions $\{q_k(z | z_{\text{prev}}) : k \in \{1, \ldots, K\}\}$
+\STATE \quad Mapping from iteration index to distribution index $M(\cdot)$
+\STATE \quad Initial state $z^{(0)}$
+\STATE \quad Number of iterations $T$
+\STATE \textbf{Output:} $z \sim \tilde{p}(z)$
+\STATE $z_{\text{prev}} \gets z^{(0)}$
+\STATE \textbf{// Iterative message-passing}
+\FOR{$\tau \in \{1, \ldots, T\}$}
+    \STATE $k \gets M(\tau)$ \COMMENT{// get distribution index for this iteration}
+    \STATE $z^* \sim q_k(z | z_{\text{prev}})$ \COMMENT{// sample from proposal distribution}
+    \STATE $u \sim U(0, 1)$ \COMMENT{// sample from uniform}
+    \IF{$\frac{\tilde{p}(z^*) q(z_{\text{prev}} | z^*)}{\tilde{p}(z_{\text{prev}}) q(z^* | z_{\text{prev}})} > u$}
+        \STATE $z_{\text{prev}} \gets z^*$ \COMMENT{// $z^{(\tau)} = z^*$}
+    \ELSE
+        \STATE $z_{\text{prev}} \gets z_{\text{prev}}$ \COMMENT{// $z^{(\tau)} = z_{\text{prev}}$}
+    \ENDIF
+\ENDFOR
+\RETURN $z_{\text{prev}}$ \COMMENT{// $z^{(T)}$}
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Gibbs sampling}
+
+\begin{align*}
+p\left(z_{1} \mid z_{2}^{(\tau)}, z_{3}^{(\tau)}\right) \tag{14.42}
+\end{align*}
+
+\begin{align*}
+p\left(z_{2} \mid z_{1}^{(\tau+1)}, z_{3}^{(\tau)}\right) \tag{14.43}
+\end{align*}
+
+\begin{align*}
+p\left(z_{3} \mid z_{1}^{(\tau+1)}, z_{2}^{(\tau+1)}\right) \tag{14.44}
+\end{align*}
+
+\begin{align*}
+A\left(\mathbf{z}^{\star}, \mathbf{z}\right)=\frac{p\left(\mathbf{z}^{\star}\right) q_{k}\left(\mathbf{z} \mid \mathbf{z}^{\star}\right)}{p(\mathbf{z}) q_{k}\left(\mathbf{z}^{\star} \mid \mathbf{z}\right)}=1 \tag{14.45}
+\end{align*}
+
+\subsubsection{Algorithm 14.3: Gibbs sampling}
+
+\begin{algorithm}[H]
+\caption{Gibbs Sampling}
+\begin{algorithmic}[1]
+\STATE \textbf{Input:} Initial values $\{z_i : i \in \{1, \ldots, M\}\}$
+\STATE \quad Conditional distributions $\{p(z_i | \{z_j : j \neq i\}) : i \in \{1, \ldots, M\}\}$
+\STATE \quad Number of iterations $T$
+\STATE \textbf{Output:} Final values $\{z_i : i \in \{1, \ldots, M\}\}$
+\FOR{$\tau \in \{1, \ldots, T\}$}
+    \FOR{$i \in \{1, \ldots, M\}$}
+        \STATE $z_i \sim p(z_i | \{z_j : j \neq i\})$
+    \ENDFOR
+\ENDFOR
+\RETURN $\{z_i : i \in \{1, \ldots, M\}\}$
+\end{algorithmic}
+\end{algorithm}
+
+\begin{align*}
+z_{i}^{\prime}=\mu_{i}+\alpha_{i}\left(z_{i}-\mu_{i}\right)+\sigma_{i}\left(1-\alpha_{i}^{2}\right)^{1 / 2} \nu \tag{14.46}
+\end{align*}
+
+\subsection{Ancestral sampling}
+
+\begin{align*}
+p(\mathbf{z})=\prod_{i=1}^{M} p\left(\mathbf{z}_{i} \mid \mathrm{pa}(i)\right) \tag{14.47}
+\end{align*}
+
+\begin{align*}
+r(\mathbf{z})=\prod_{\mathbf{z}_{i} \in \mathbf{e}} p\left(\mathbf{z}_{i} \mid \mathrm{pa}(i)\right) \tag{14.48}
+\end{align*}
+
+\section{Langevin Sampling}
+
+\subsection{Energy-based models}
+
+\begin{align*}
+\int p(\mathbf{x} \mid \mathbf{w}) p(\mathbf{x}) \mathrm{d} \mathbf{x}=1 \tag{14.49}
+\end{align*}
+
+\begin{align*}
+p(\mathbf{x} \mid \mathbf{w})=\frac{1}{Z(\mathbf{w})} \exp \{-E(\mathbf{x}, \mathbf{w})\} \tag{14.50}
+\end{align*}
+
+\begin{align*}
+Z(\mathbf{w})=\int \exp \{-E(\mathbf{x}, \mathbf{w})\} \mathrm{d} \mathbf{x} \tag{14.51}
+\end{align*}
+
+\begin{align*}
+\ln p(\mathcal{D} \mid \mathbf{w})=-\sum_{n=1}^{N} E\left(\mathbf{x}_{n}, \mathbf{w}\right)-N \ln Z(\mathbf{w}) \tag{14.52}
+\end{align*}
+
+\subsection{Maximizing the likelihood}
+
+\begin{align*}
+\nabla_{\mathbf{w}} \ln p(\mathbf{x} \mid \mathbf{w})=-\nabla_{\mathbf{w}} E(\mathbf{x}, \mathbf{w})-\nabla_{\mathbf{w}} \ln Z(\mathbf{w})
+\tag{14.53}
+\end{align*}
+
+\begin{align*}
+\mathbb{E}_{\mathbf{x} \sim p_{\mathcal{D}}}\left[
+\nabla_{\mathbf{w}} \ln p(\mathbf{x} \mid \mathbf{w})\right]
+=-\mathbb{E}_{\mathbf{x} \sim p_{\mathcal{D}}}\left[
+\nabla_{\mathbf{w}} E(\mathbf{x}, \mathbf{w})\right]
+-\nabla_{\mathbf{w}} \ln Z(\mathbf{w}) \tag{14.54}
+\end{align*}
+
+\begin{align*}
+-\nabla_{\mathbf{w}} \ln Z(\mathbf{w})=\int\left\{\nabla_{\mathbf{w}} E(\mathbf{x}, \mathbf{w})\right\} p(\mathbf{x} \mid \mathbf{w}) \mathrm{d} \mathbf{x} \tag{14.55}
+\end{align*}
+
+\begin{align*}
+\int\left\{\nabla_{\mathbf{w}} E(\mathbf{x}, \mathbf{w})\right\} p(\mathbf{x} \mid \mathbf{w}) \mathrm{d} \mathbf{x}=\mathbb{E}_{\mathbf{x} \sim \mathcal{M}}\left[
+\nabla_{\mathbf{w}} E(\mathbf{x}, \mathbf{w})\right]
+\tag{14.56}
+\end{align*}
+
+\begin{align*}
+& \nabla_{\mathbf{w}} \mathbb{E}_{\mathbf{x} \sim p_{\mathcal{D}}}[
+\ln p(\mathbf{x} \mid \mathbf{w})]
+=-\mathbb{E}_{\mathbf{x} \sim p_{\mathcal{D}}}\left[
+\nabla_{\mathbf{w}} E(\mathbf{x}, \mathbf{w})\right]
+\\
+& \quad+\mathbb{E}_{\mathbf{x} \sim p_{\mathcal{M}}(\mathbf{x})}\left[
+\nabla_{\mathbf{w}} E(\mathbf{x}, \mathbf{w})\right]
+\tag{14.57}
+\end{align*}
+
+\subsection{Langevin dynamics}
+
+\begin{align*}
+\mathbb{E}_{\mathbf{x} \sim p_{\mathcal{D}}}\left[
+\nabla_{\mathbf{w}} E(\mathbf{x}, \mathbf{w})\right]
+\simeq \frac{1}{N} \sum_{n=1}^{N} \nabla_{\mathbf{w}} E\left(\mathbf{x}_{n}, \mathbf{w}\right) \tag{14.58}
+\end{align*}
+
+\begin{align*}
+\mathbf{s}(\mathbf{x}, \mathbf{w})=\nabla_{\mathbf{x}} \ln p(\mathbf{x} \mid \mathbf{w}) \tag{14.59}
+\end{align*}
+
+\begin{align*}
+\mathbf{s}(\mathbf{x}, \mathbf{w})=-\nabla_{\mathbf{x}} E(\mathbf{x}, \mathbf{w}) \tag{14.60}
+\end{align*}
+
+\begin{align*}
+\mathbf{x}^{(\tau+1)}=\mathbf{x}^{(\tau)}+\eta \nabla_{\mathbf{x}} \ln p\left(\mathbf{x}^{(\tau)}, \mathbf{w}\right)+\sqrt{2 \eta} \boldsymbol{\epsilon}^{(\tau)}, \quad \tau \in 1, \ldots, \mathcal{T} \tag{14.61}
+\end{align*}
+
+\begin{align*}
+\mathbb{E}_{\mathbf{x} \sim p_{\mathcal{M}}(\mathbf{x})}\left[
+\nabla_{\mathbf{w}} E(\mathbf{x}, \mathbf{w})\right]
+\simeq \frac{1}{M} \sum_{m=1}^{M} \nabla_{\mathbf{w}} E\left(\mathbf{x}_{m}, \mathbf{w}\right) \tag{14.62}
+\end{align*}
+
+\subsubsection{Algorithm 14.4: Langevin sampling}
+
+\begin{algorithm}[H]
+\caption{Langevin Sampling}
+\begin{algorithmic}[1]
+\STATE \textbf{Input:} Initial value $x^{(0)}$
+\STATE \quad Probability density $p(x, w)$
+\STATE \quad Learning rate parameter $\eta$
+\STATE \quad Number of iterations $T$
+\STATE \textbf{Output:} Final value $x^{(T)}$
+\STATE $x \gets x^{(0)}$
+\FOR{$\tau \in \{1, \ldots, T\}$}
+    \STATE $\epsilon \sim \mathcal{N}(0, I)$
+    \STATE $x \gets x + \eta \nabla_x \ln p(x, w) + \sqrt{2\eta} \epsilon$
+\ENDFOR
+\RETURN $x$ \COMMENT{// Final value $x^{(T)}$}
+\end{algorithmic}
+\end{algorithm}
+
+\end{document}

@@ -1,0 +1,459 @@
+\documentclass{article}
+
+% Document Layout and Fonts
+\usepackage[margin=0.9in]{geometry}    % Page margins
+\usepackage{fontspec}                  % For custom fonts (LuaLaTeX feature)
+\usepackage{tgpagella}
+\usepackage{mathpazo}
+\setmainfont{EB Garamond}              % Main font (EB Garamond)
+\usepackage{microtype}                 % Improves text appearance
+\usepackage{titlesec}                  % Customize section title fonts
+\usepackage{algorithm}
+\usepackage{algorithmic}
+
+% Right-align section headings
+\titleformat{\section}
+  {\normalfont\large\scshape\raggedright}  % Right-align and small caps
+  {}{0em}{}[]
+
+% Right-align subsection headings and add a line below
+\titleformat{\subsection}
+  {\normalfont\normalsize\raggedleft}     % Right-align subsections
+  {}{0em}{\titlerule[0.5pt]}              % Horizontal line below
+
+% Right-align and italicize subsubsections
+\titleformat{\subsubsection}
+  {\normalfont\normalsize\itshape\raggedleft} % Right-align and italicize subsubsections
+  {}{0em}{}[]
+
+% Math and Science Packages
+\usepackage{amsmath, amsfonts, amssymb, mathtools, amsthm, dsfont}
+
+% Math commands and operators
+\newcommand{\minus}{\scalebox{0.8}{\(-\)}}
+\newcommand{\plus}{\scalebox{0.6}{\(+\)}}
+\DeclareMathOperator{\sech}{sech}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\tr}{Tr}
+\newcommand{\diff}{\mathop{}\!\mathrm{d}}    % Differential d
+
+% Definitions, theorems, corollaries, and friends
+\usepackage[english]{babel}
+\usepackage[hidelinks]{hyperref}
+\newtheorem{axiom}{Axiom}
+\newtheorem{postulate}{Postulate}
+\newtheorem{definition}{Definition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem*{remark}{Remark}
+
+\title{\LARGE\scshape\MakeUppercase{Chapter 15: Discrete Latent Variables}}
+\author{\textit{Bishop and Bishop}}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{K-means Clustering}
+
+\begin{align*}
+J=\sum_{n=1}^{N} \sum_{k=1}^{K} r_{n k}\left\|\mathbf{x}_{n}-\boldsymbol{\mu}_{k}\right\|^{2}
+\tag{15.1}
+\end{align*}
+
+\begin{align*}
+r_{n k}= \begin{cases}
+1, & \text{ if } k=\arg \min _{j}\left\|\mathbf{x}_{n}-\boldsymbol{\mu}_{j}\right\|^{2}  \\
+0, & \text{ otherwise }
+\end{cases}
+\tag{15.2}
+\end{align*}
+
+\begin{align*}
+2 \sum_{n=1}^{N} r_{n k}\left(\mathbf{x}_{n}-\boldsymbol{\mu}_{k}\right)=0
+\tag{15.3}
+\end{align*}
+
+\begin{align*}
+\boldsymbol{\mu}_{k}=\frac{\sum_{n} r_{n k} \mathbf{x}_{n}}{\sum_{n} r_{n k}}
+\tag{15.4}
+\end{align*}
+
+\begin{align*}
+\boldsymbol{\mu}_{k}^{\text{new}}=\boldsymbol{\mu}_{k}^{\text{old}}+\frac{1}{N_{k}}\left(\mathbf{x}_{n}-\boldsymbol{\mu}_{k}^{\text{old}}\right)
+\tag{15.5}
+\end{align*}
+
+\subsubsection{Algorithm 15.1: K-means algorithm}
+
+\begin{algorithm}
+\caption{$K$-means Algorithm}
+\begin{algorithmic}[1]
+\STATE \textbf{Input:} Initial prototype vectors $\mu_1, \ldots, \mu_K$
+\STATE \quad Data set $x_1, \ldots, x_N$
+\STATE \textbf{Output:} Final prototype vectors $\mu_1, \ldots, \mu_K$
+\STATE $\{r_{nk} \gets 0\}$ \COMMENT{// Initially set all assignments to zero}
+\REPEAT
+    \STATE $\{r_{nk}^{(\text{old})}\} \gets \{r_{nk}\}$
+    \COMMENT{// Update assignments}
+    \FOR{$n \in \{1, \ldots, N\}$}
+        \STATE $k \gets \arg \min_{j} \|x_n - \mu_j\|^2$
+        \STATE $r_{nk} \gets 1$
+        \STATE $r_{nj} \gets 0, \quad j \in \{1, \ldots, K\}, j \neq k$
+    \ENDFOR
+    \COMMENT{// Update prototype vectors}
+    \FOR{$k \in \{1, \ldots, K\}$}
+        \STATE $\mu_k \gets \frac{\sum_n r_{nk} x_n}{\sum_n r_{nk}}$
+    \ENDFOR
+\UNTIL $\{r_{nk}\} = \{r_{nk}^{(\text{old})}\}$ \COMMENT{// Assignments unchanged}
+\RETURN $\mu_1, \ldots, \mu_K, \{r_{nk}\}$
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Image segmentation}
+No equations
+
+\section{Mixtures of Gaussians}
+
+\begin{align*}
+p(\mathbf{x})=\sum_{k=1}^{K} \pi_{k} \mathcal{N}\left(\mathbf{x} \mid \boldsymbol{\mu}_{k}, \boldsymbol{\Sigma}_{k}\right)
+\tag{15.6}
+\end{align*}
+
+\begin{align*}
+0 \leqslant \pi_{k} \leqslant 1
+\tag{15.7}
+\end{align*}
+
+\begin{align*}
+\sum_{k=1}^{K} \pi_{k}=1
+\tag{15.8}
+\end{align*}
+
+\begin{align*}
+p(\mathbf{z})=\prod_{k=1}^{K} \pi_{k}^{z_{k}}
+\tag{15.9}
+\end{align*}
+
+\begin{align*}
+p(\mathbf{x} \mid \mathbf{z})=\prod_{k=1}^{K} \mathcal{N}\left(\mathbf{x} \mid \boldsymbol{\mu}_{k}, \boldsymbol{\Sigma}_{k}\right)^{z_{k}}
+\tag{15.10}
+\end{align*}
+
+\begin{align*}
+p(\mathbf{x})=\sum_{\mathbf{z}} p(\mathbf{z}) p(\mathbf{x} \mid \mathbf{z})=\sum_{k=1}^{K} \pi_{k} \mathcal{N}\left(\mathbf{x} \mid \boldsymbol{\mu}_{k}, \boldsymbol{\Sigma}_{k}\right)
+\tag{15.11}
+\end{align*}
+
+\begin{align*}
+\gamma\left(z_{k}\right) \equiv p\left(z_{k}=1 \mid \mathbf{x}\right)= & \frac{\pi_{k} \mathcal{N}\left(\mathbf{x} \mid \boldsymbol{\mu}_{k}, \boldsymbol{\Sigma}_{k}\right)}{\sum_{j=1}^{K} \pi_{j} \mathcal{N}\left(\mathbf{x} \mid \boldsymbol{\mu}_{j}, \boldsymbol{\Sigma}_{j}\right)}
+\tag{15.12}
+\end{align*}
+
+\subsection{Likelihood function}
+
+\begin{align*}
+\ln p(\mathbf{X} \mid \boldsymbol{\pi}, \boldsymbol{\mu}, \boldsymbol{\Sigma})=\sum_{n=1}^{N} \ln \left\{\sum_{k=1}^{K} \pi_{k} \mathcal{N}\left(\mathbf{x}_{n} \mid \boldsymbol{\mu}_{k}, \boldsymbol{\Sigma}_{k}\right)\right\}
+\tag{15.13}
+\end{align*}
+
+\begin{align*}
+\mathcal{N}\left(\mathbf{x}_{n} \mid \mathbf{x}_{n}, \sigma_{j}^{2} \mathbf{I}\right)=\frac{1}{(2 \pi)^{1 / 2}} \frac{1}{\sigma_{j}}
+\tag{15.14}
+\end{align*}
+
+\subsection{Maximum likelihood}
+
+\begin{align*}
+0=\sum_{n=1}^{N} \underbrace{\frac{\pi_{k} \mathcal{N}\left(\mathbf{x}_{n} \mid \boldsymbol{\mu}_{k}, \boldsymbol{\Sigma}_{k}\right)}{\sum_{j} \pi_{j} \mathcal{N}\left(\mathbf{x}_{n} \mid \boldsymbol{\mu}_{j}, \boldsymbol{\Sigma}_{j}\right)}}_{\gamma\left(z_{n k}\right)} \boldsymbol{\Sigma}_{k}^{-1}\left(\mathbf{x}_{n}-\boldsymbol{\mu}_{k}\right)
+\tag{15.15}
+\end{align*}
+
+\begin{align*}
+\boldsymbol{\mu}_{k}=\frac{1}{N_{k}} \sum_{n=1}^{N} \gamma\left(z_{n k}\right) \mathbf{x}_{n}
+\tag{15.16}
+\end{align*}
+
+\begin{align*}
+N_{k}=\sum_{n=1}^{N} \gamma\left(z_{n k}\right)
+\tag{15.17}
+\end{align*}
+
+\begin{align*}
+\boldsymbol{\Sigma}_{k}=\frac{1}{N_{k}} \sum_{n=1}^{N} \gamma\left(z_{n k}\right)\left(\mathbf{x}_{n}-\boldsymbol{\mu}_{k}\right)\left(\mathbf{x}_{n}-\boldsymbol{\mu}_{k}\right)^{\top}
+\tag{15.18}
+\end{align*}
+
+\begin{align*}
+\left.\ln p(\mathbf{X} \mid \boldsymbol{\pi}, \boldsymbol{\mu}, \boldsymbol{\Sigma})+\lambda \quad \sum_{k=1}^{K} \pi_{k}-1\right)
+\tag{15.19}
+\end{align*}
+
+\begin{align*}
+0=\sum_{n=1}^{N} \frac{\mathcal{N}\left(\mathbf{x}_{n} \mid \boldsymbol{\mu}_{k}, \boldsymbol{\Sigma}_{k}\right)}{\sum_{j} \pi_{j} \mathcal{N}\left(\mathbf{x}_{n} \mid \boldsymbol{\mu}_{j}, \boldsymbol{\Sigma}_{j}\right)}+\lambda
+\tag{15.20}
+\end{align*}
+
+\begin{align*}
+\pi_{k}=\frac{N_{k}}{N}
+\tag{15.21}
+\end{align*}
+
+\section{Expectation-Maximization Algorithm}
+
+\begin{align*}
+\ln p(\mathbf{X} \mid \boldsymbol{\theta})=\ln \left\{\sum_{\mathbf{Z}} p(\mathbf{X}, \mathbf{Z} \mid \boldsymbol{\theta})\right\} 
+\tag{15.22}
+\end{align*}
+
+\begin{align*}
+\mathcal{Q}\left(\boldsymbol{\theta}, \boldsymbol{\theta}^{\text{old }}\right)=\sum_{\mathbf{Z}} p\left(\mathbf{Z} \mid \mathbf{X}, \boldsymbol{\theta}^{\text{old }}\right) \ln p(\mathbf{X}, \mathbf{Z} \mid \boldsymbol{\theta}) 
+\tag{15.23}
+\end{align*}
+
+\begin{align*}
+\boldsymbol{\theta}^{\text{new }}=\underset{\boldsymbol{\theta}}{\arg \max } \mathcal{Q}\left(\boldsymbol{\theta}, \boldsymbol{\theta}^{\text{old }}\right) 
+\tag{15.24}
+\end{align*}
+
+\subsection{Gaussian mixtures}
+
+\begin{align*}
+p(\mathbf{X}, \mathbf{Z} \mid \boldsymbol{\mu}, \boldsymbol{\Sigma}, \boldsymbol{\pi})=\prod_{n=1}^{N} \prod_{k=1}^{K} \pi_{k}^{z_{n k}} \mathcal{N}\left(\mathbf{x}_{n} \mid \boldsymbol{\mu}_{k}, \boldsymbol{\Sigma}_{k}\right)^{z_{n k}} 
+\tag{15.25}
+\end{align*}
+
+\begin{align*}
+\ln p(\mathbf{X}, \mathbf{Z} \mid \boldsymbol{\mu}, \boldsymbol{\Sigma}, \boldsymbol{\pi})=\sum_{n=1}^{N} \sum_{k=1}^{K} z_{n k}\left\{\ln \pi_{k}+\ln \mathcal{N}\left(\mathbf{x}_{n} \mid \boldsymbol{\mu}_{k}, \boldsymbol{\Sigma}_{k}\right)\right\} 
+\tag{15.26}
+\end{align*}
+
+\begin{align*}
+\pi_{k}=\frac{1}{N} \sum_{n=1}^{N} z_{n k} 
+\tag{15.27}
+\end{align*}
+
+\begin{align*}
+p(\mathbf{Z} \mid \mathbf{X}, \boldsymbol{\mu}, \boldsymbol{\Sigma}, \boldsymbol{\pi}) \propto \prod_{n=1}^{N} \prod_{k=1}^{K}\left[
+\pi_{k} \mathcal{N}\left(\mathbf{x}_{n} \mid \boldsymbol{\mu}_{k}, \boldsymbol{\Sigma}_{k}\right)\right]^{z_{n k}} 
+\tag{15.28}
+\end{align*}
+
+\begin{align*}
+\mathbb{E}\left[
+z_{n k}\right]=\frac{\pi_{k} \mathcal{N}\left(\mathbf{x}_{n} \mid \boldsymbol{\mu}_{k}, \boldsymbol{\Sigma}_{k}\right)}{\sum_{j=1}^{K} \pi_{j} \mathcal{N}\left(\mathbf{x}_{n} \mid \boldsymbol{\mu}_{j}, \boldsymbol{\Sigma}_{j}\right)}=\gamma\left(z_{n k}\right) 
+\tag{15.29}
+\end{align*}
+
+\begin{align*}
+\mathbb{E}_{\mathbf{Z}}[\ln p(\mathbf{X}, \mathbf{Z} \mid \boldsymbol{\mu}, \boldsymbol{\Sigma}, \boldsymbol{\pi})]=\sum_{n=1}^{N} \sum_{k=1}^{K} \gamma\left(z_{n k}\right)\left\{\ln \pi_{k}+\ln \mathcal{N}\left(\mathbf{x}_{n} \mid \boldsymbol{\mu}_{k}, \boldsymbol{\Sigma}_{k}\right)\right\} 
+\tag{15.30}
+\end{align*}
+
+\subsubsection{Algorithm 15.2: EM algorithm for a Gaussian mixture model}
+
+\begin{algorithm}[H]
+\caption{EM Algorithm for a Gaussian Mixture Model}
+\begin{algorithmic}[1]
+\STATE \textbf{Input:} Initial model parameters $\{\mu_k\}, \{\Sigma_k\}, \{\pi_k\}$
+\STATE \quad Data set $\{x_1, \ldots, x_N\}$
+\STATE \textbf{Output:} Final model parameters $\{\mu_k\}, \{\Sigma_k\}, \{\pi_k\}$
+\REPEAT
+    \STATE \textbf{// E step}
+    \FOR{$n \in \{1, \ldots, N\}$}
+        \FOR{$k \in \{1, \ldots, K\}$}
+            \STATE $\gamma(z_{nk}) \gets \frac{\pi_k N(x_n | \mu_k, \Sigma_k)}{\sum_{j=1}^{K} \pi_j N(x_n | \mu_j, \Sigma_j)}$
+        \ENDFOR
+    \ENDFOR
+    \STATE \textbf{// M step}
+    \FOR{$k \in \{1, \ldots, K\}$}
+        \STATE $N_k \gets \sum_{n=1}^{N} \gamma(z_{nk})$
+        \STATE $\mu_k \gets \frac{1}{N_k} \sum_{n=1}^{N} \gamma(z_{nk}) x_n$
+        \STATE $\Sigma_k \gets \frac{1}{N_k} \sum_{n=1}^{N} \gamma(z_{nk}) (x_n - \mu_k)(x_n - \mu_k)^T$
+        \STATE $\pi_k \gets \frac{N_k}{N}$
+    \ENDFOR
+    \STATE \textbf{// Log likelihood}
+    \STATE $L \gets \sum_{n=1}^{N} \ln \left\{ \sum_{k=1}^{K} \pi_k N(x_n | \mu_k, \Sigma_k) \right\}$
+\UNTIL convergence
+\RETURN $\{\mu_k\}, \{\Sigma_k\}, \{\pi_k\}$
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Relation to K-means}
+
+\begin{align*}
+p\left(\mathbf{x} \mid \boldsymbol{\mu}_{k}, \boldsymbol{\Sigma}_{k}\right)=\frac{1}{(2 \pi \epsilon)^{D / 2}} \exp \left\{-\frac{1}{2 \epsilon}\left\|\mathbf{x}-\boldsymbol{\mu}_{k}\right\|^{2}\right\} 
+\tag{15.31}
+\end{align*}
+
+\begin{align*}
+\gamma\left(z_{n k}\right)=\frac{\pi_{k} \exp \left\{-\left\|\mathbf{x}_{n}-\boldsymbol{\mu}_{k}\right\|^{2} / 2 \epsilon\right\}}{\sum_{j} \pi_{j} \exp \left\{-\left\|\mathbf{x}_{n}-\boldsymbol{\mu}_{j}\right\|^{2} / 2 \epsilon\right\}} 
+\tag{15.32}
+\end{align*}
+
+\begin{align*}
+\mathbb{E}_{\mathbf{Z}}[\ln p(\mathbf{X}, \mathbf{Z} \mid \boldsymbol{\mu}, \boldsymbol{\Sigma}, \boldsymbol{\pi})]\rightarrow-\frac{1}{2} \sum_{n=1}^{N} \sum_{k=1}^{K} r_{n k}\left\|\mathbf{x}_{n}-\boldsymbol{\mu}_{k}\right\|^{2}+\text{ const. } 
+\tag{15.33}
+\end{align*}
+
+\subsection{Mixtures of Bernoulli distributions}
+
+\begin{align*}
+p(\mathbf{x} \mid \boldsymbol{\mu})=\prod_{i=1}^{D} \mu_{i}^{x_{i}}\left(1-\mu_{i}\right)^{\left(1-x_{i}\right)} 
+\tag{15.34}
+\end{align*}
+
+\begin{align*}
+\mathbb{E}[\mathbf{x}]=\boldsymbol{\mu} 
+\tag{15.35}
+\end{align*}
+
+\begin{align*}
+\operatorname{cov}[\mathbf{x}]=\operatorname{diag}\left\{\mu_{i}\left(1-\mu_{i}\right)\right\} 
+\tag{15.36}
+\end{align*}
+
+\begin{align*}
+p(\mathbf{x} \mid \boldsymbol{\mu}, \boldsymbol{\pi})=\sum_{k=1}^{K} \pi_{k} p\left(\mathbf{x} \mid \boldsymbol{\mu}_{k}\right) 
+\tag{15.37}
+\end{align*}
+
+\begin{align*}
+p\left(\mathbf{x} \mid \boldsymbol{\mu}_{k}\right)=\prod_{i=1}^{D} \mu_{k i}^{x_{i}}\left(1-\mu_{k i}\right)^{\left(1-x_{i}\right)} 
+\tag{15.38}
+\end{align*}
+
+\begin{align*}
+\mathbb{E}[\mathbf{x}]=\sum_{k=1}^{K} \pi_{k} \boldsymbol{\mu}_{k} 
+\tag{15.39}
+\end{align*}
+
+\begin{align*}
+\operatorname{cov}[\mathbf{x}]=\sum_{k=1}^{K} \pi_{k}\left\{\boldsymbol{\Sigma}_{k}+\boldsymbol{\mu}_{k} \boldsymbol{\mu}_{k}^{\top}\right\}-\mathbb{E}[\mathbf{x}]\mathbb{E}[\mathbf{x}]^{\top}
+\tag{15.40}
+\end{align*}
+
+\begin{align*}
+\ln p(\mathbf{X} \mid \boldsymbol{\mu}, \boldsymbol{\pi})=\sum_{n=1}^{N} \ln \left\{\sum_{k=1}^{K} \pi_{k} p\left(\mathbf{x}_{n} \mid \boldsymbol{\mu}_{k}\right)\right\} 
+\tag{15.41}
+\end{align*}
+
+\begin{align*}
+\ln p(\mathbf{X}, \mathbf{Z} \mid \boldsymbol{\mu}, \boldsymbol{\pi}) = \sum_{n=1}^{N} \sum_{k=1}^{K} z_{n k}\bigg\{\ln \pi_{k} + \sum_{i=1}^{D}\left[x_{n i} \ln \mu_{k i}+\left(1-x_{n i}\right) \ln \left(1-\mu_{k i}\right)\right]\bigg\}
+\tag{15.44}
+\end{align*}
+
+\begin{align*}
+\mathbb{E}_{\mathbf{Z}}[\ln p(\mathbf{X}, \mathbf{Z} \mid \boldsymbol{\mu}, \boldsymbol{\pi})]=\sum_{n=1}^{N} \sum_{k=1}^{K} \gamma\left(z_{n k}\right)\left\{\ln \pi_{k}+\sum_{i=1}^{D}\left[x_{n i} \ln \mu_{k i}+\left(1-x_{n i}\right) \ln \left(1-\mu_{k i}\right)\right]\right\} 
+\tag{15.45}
+\end{align*}
+
+\begin{align*}
+\gamma\left(z_{n k}\right)=\frac{\pi_{k} p\left(\mathbf{x}_{n} \mid \boldsymbol{\mu}_{k}\right)}{\sum_{j=1}^{K} \pi_{j} p\left(\mathbf{x}_{n} \mid \boldsymbol{\mu}_{j}\right)} 
+\tag{15.46}
+\end{align*}
+
+\begin{align*}
+N_{k} =\sum_{n=1}^{N} \gamma\left(z_{n k}\right) 
+\tag{15.47}
+\end{align*}
+
+\begin{align*}
+\overline{\mathbf{x}}_{k} =\frac{1}{N_{k}} \sum_{n=1}^{N} \gamma\left(z_{n k}\right) \mathbf{x}_{n} 
+\tag{15.48}
+\end{align*}
+
+\begin{align*}
+\boldsymbol{\mu}_{k}=\overline{\mathbf{x}}_{k} 
+\tag{15.49}
+\end{align*}
+
+\begin{align*}
+\pi_{k}=\frac{N_{k}}{N} 
+\tag{15.50}
+\end{align*}
+
+\section{Evidence Lower Bound}
+
+\begin{align*}
+p(\mathbf{X} \mid \boldsymbol{\theta})=\sum_{\mathbf{Z}} p(\mathbf{X}, \mathbf{Z} \mid \boldsymbol{\theta}) 
+\tag{15.51}
+\end{align*}
+
+\begin{align*}
+\ln p(\mathbf{X} \mid \boldsymbol{\theta})=\mathcal{L}(q, \boldsymbol{\theta})+\mathrm{KL}(q \| p) 
+\tag{15.52}
+\end{align*}
+
+\begin{align*}
+\mathcal{L}(q, \boldsymbol{\theta}) & =\sum_{\mathbf{Z}} q(\mathbf{Z}) \ln \left\{\frac{p(\mathbf{X}, \mathbf{Z} \mid \boldsymbol{\theta})}{q(\mathbf{Z})}\right\}  
+\tag{15.53}\\
+\mathrm{KL}(q \| p) & =-\sum_{\mathbf{Z}} q(\mathbf{Z}) \ln \left\{\frac{p(\mathbf{Z} \mid \mathbf{X}, \boldsymbol{\theta})}{q(\mathbf{Z})}\right\}
+\tag{15.54}
+\end{align*}
+
+\begin{align*}
+\ln p(\mathbf{X}, \mathbf{Z} \mid \boldsymbol{\theta})=\ln p(\mathbf{Z} \mid \mathbf{X}, \boldsymbol{\theta})+\ln p(\mathbf{X} \mid \boldsymbol{\theta})
+\tag{15.55}
+\end{align*}
+
+\subsection{EM revisited}
+
+\begin{align*}
+\mathcal{L}(q, \boldsymbol{\theta}) & =\sum_{\mathbf{Z}} p\left(\mathbf{Z} \mid \mathbf{X}, \boldsymbol{\theta}^{\text{old }}\right) \ln p(\mathbf{X}, \mathbf{Z} \mid \boldsymbol{\theta})\\
+& -\sum_{\mathbf{Z}} p\left(\mathbf{Z} \mid \mathbf{X}, \boldsymbol{\theta}^{\text{old }}\right) \ln p\left(\mathbf{Z} \mid \mathbf{X}, \boldsymbol{\theta}^{\text{old }}\right) \\
+& =\mathcal{Q}\left(\boldsymbol{\theta}, \boldsymbol{\theta}^{\text{old }}\right)+\text{ const }
+\tag{15.56}
+\end{align*}
+
+\subsection{Independent and identically distributed data}
+
+\begin{align*}
+p(\mathbf{Z} \mid \mathbf{X}, \boldsymbol{\theta})=\prod_{n=1}^{N} p\left(\mathbf{z}_{n} \mid \mathbf{x}_{n}, \boldsymbol{\theta}\right)
+\tag{15.57}
+\end{align*}
+
+\subsection{Parameter priors}
+
+\begin{align*}
+\ln p(\boldsymbol{\theta} \mid \mathbf{X}) & =\ln p(\boldsymbol{\theta}, \mathbf{X})-\ln p(\mathbf{X}) \tag{15.58}\\
+\ln p(\boldsymbol{\theta} \mid \mathbf{X}) & \geqslant \mathcal{L}(q, \boldsymbol{\theta})+\ln p(\boldsymbol{\theta})-\ln p(\mathbf{X})
+\tag{15.59}
+\end{align*}
+
+\subsection{Generalized EM}
+
+\subsubsection{Algorithm 15.3: General EM algorithm}
+
+\begin{algorithm}[H]
+\caption{General EM Algorithm}
+\begin{algorithmic}[1]
+\STATE \textbf{Input:} Joint distribution $p(X, Z | \theta)$
+\STATE \quad Initial parameters $\theta^{\text{old}}$
+\STATE \quad Data set $\{x_1, \ldots, x_N\}$
+\STATE \textbf{Output:} Final parameters $\theta$
+\REPEAT
+    \STATE $Q(\theta, \theta^{\text{old}}) \gets \sum_Z p(Z | X, \theta^{\text{old}}) \ln p(X, Z | \theta)$ \COMMENT{// E step}
+    \STATE $\theta^{\text{new}} \gets \arg \max_\theta Q(\theta, \theta^{\text{old}})$ \COMMENT{// M step}
+    \STATE $L \gets p(X | \theta^{\text{new}})$ \COMMENT{// Evaluate log likelihood}
+    \STATE $\theta^{\text{old}} \gets \theta^{\text{new}}$ \COMMENT{// Update the parameters}
+\UNTIL convergence
+\RETURN $\theta^{\text{new}}$
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Sequential EM}
+
+\begin{align*}
+\boldsymbol{\mu}_{k}^{\text{new }}=\boldsymbol{\mu}_{k}^{\text{old }}+\left(\frac{\gamma^{\text{new }}\left(z_{m k}\right)-\gamma^{\text{old }}\left(z_{m k}\right)}{N_{k}^{\text{new }}}\right)\left(\mathbf{x}_{m}-\boldsymbol{\mu}_{k}^{\text{old }}\right)
+\tag{15.60}
+\end{align*}
+
+\begin{align*}
+N_{k}^{\text{new }}=N_{k}^{\text{old }}+\gamma^{\text{new }}\left(z_{m k}\right)-\gamma^{\text{old }}\left(z_{m k}\right)
+\tag{15.61}
+\end{align*}
+
+\end{document}
