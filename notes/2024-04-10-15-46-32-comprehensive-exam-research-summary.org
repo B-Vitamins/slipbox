@@ -53,7 +53,7 @@ which yield trivial identities
 #+header: :results file drawer
 #+header: :file dbm.png
 #+header: :headers '("\\usepackage{tikz}")
-#+begin_src latex
+#+begin_src latex :noexport
 \begin{figure}[h]
   \centering
   \begin{tikzpicture}[
