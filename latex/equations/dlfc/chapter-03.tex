@@ -1,0 +1,1108 @@
+\documentclass{article}
+
+% Document Layout and Fonts
+\usepackage[margin=0.9in]{geometry}    % Page margins
+\usepackage{fontspec}                  % For custom fonts (LuaLaTeX feature)
+\usepackage{tgpagella}
+\usepackage{mathpazo}
+\setmainfont{EB Garamond}              % Main font (EB Garamond)
+\usepackage{microtype}                 % Improves text appearance
+\usepackage{titlesec}                  % Customize section title fonts
+
+% Right-align section headings
+\titleformat{\section}
+  {\normalfont\large\scshape\raggedright}  % Right-align and small caps
+  {}{0em}{}[]
+
+% Right-align subsection headings and add a line below
+\titleformat{\subsection}
+  {\normalfont\normalsize\raggedleft}     % Right-align subsections
+  {}{0em}{\titlerule[0.5pt]}              % Horizontal line below
+
+% Right-align and italicize subsubsections
+\titleformat{\subsubsection}
+  {\normalfont\normalsize\itshape\raggedleft} % Right-align and italicize subsubsections
+  {}{0em}{}[]
+
+% Math and Science Packages
+\usepackage{amsmath, amsfonts, amssymb, mathtools, amsthm, dsfont}
+
+% Math commands and operators
+\newcommand{\minus}{\scalebox{0.8}{\(-\)}}
+\newcommand{\plus}{\scalebox{0.6}{\(+\)}}
+\DeclareMathOperator{\sech}{sech}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\tr}{Tr}
+\newcommand{\diff}{\mathop{}\!\mathrm{d}}    % Differential d
+
+% Definitions, theorems, corollaries, and friends
+\usepackage[english]{babel}
+\usepackage[hidelinks]{hyperref}
+\newtheorem{axiom}{Axiom}
+\newtheorem{postulate}{Postulate}
+\newtheorem{definition}{Definition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem*{remark}{Remark}
+
+\title{\LARGE\scshape\MakeUppercase{Chapter 3: Standard Distributions}}
+\author{\textit{Bishop and Bishop}}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{Discrete Variables}
+
+\subsection{Bernoulli distribution}
+
+\begin{align*}
+p(x=1 \mid \mu)=\mu
+\tag{3.1}
+\end{align*}
+
+\begin{align*}
+\operatorname{Bern}(x \mid \mu)=\mu^{x}(1-\mu)^{1-x}
+\tag{3.2}
+\end{align*}
+
+\begin{align*}
+\mathbb{E}[x] &= \mu
+\tag{3.3}
+\end{align*}
+
+\begin{align*}
+\operatorname{var}[x] &= \mu(1-\mu)
+\tag{3.4}
+\end{align*}
+
+\begin{align*}
+p(\mathcal{D} \mid \mu)=\prod_{n=1}^{N} p(x_{n} \mid \mu)=\prod_{n=1}^{N} \mu^{x_{n}}(1-\mu)^{1-x_{n}}
+\tag{3.5}
+\end{align*}
+
+\begin{align*}
+\ln p(\mathcal{D} \mid \mu)=\sum_{n=1}^{N} \ln p(x_{n} \mid \mu)=\sum_{n=1}^{N}\left\{x_{n} \ln \mu+(1-x_{n}) \ln (1-\mu)\right\}
+\tag{3.6}
+\end{align*}
+
+\begin{align*}
+\mu_{\mathrm{ML}}=\frac{1}{N} \sum_{n=1}^{N} x_{n}
+\tag{3.7}
+\end{align*}
+
+\begin{align*}
+\mu_{\mathrm{ML}}=\frac{m}{N}
+\tag{3.8}
+\end{align*}
+
+\subsection{Binomial distribution}
+
+\begin{align*}
+\operatorname{Bin}(m \mid N, \mu)=\binom{N}{m} \mu^{m}(1-\mu)^{N-m}
+\tag{3.9}
+\end{align*}
+
+\begin{align*}
+\binom{N}{m}=\frac{N!}{(N-m)!m!}
+\tag{3.10}
+\end{align*}
+
+\begin{align*}
+\mathbb{E}[m] &= N \mu
+\tag{3.11}
+\end{align*}
+
+\begin{align*}
+\operatorname{var}[m] &= N \mu(1-\mu)
+\tag{3.12}
+\end{align*}
+
+\subsection{Multinomial distribution}
+
+\begin{align*}
+\mathbf{x}=(0,0,1,0,0,0)^{\top}
+\tag{3.13}
+\end{align*}
+
+\begin{align*}
+p(\mathbf{x} \mid \boldsymbol{\mu})=\prod_{k=1}^{K} \mu_{k}^{x_{k}}
+\tag{3.14}
+\end{align*}
+
+\begin{align*}
+\sum_{\mathbf{x}} p(\mathbf{x} \mid \boldsymbol{\mu})=\sum_{k=1}^{K} \mu_{k}=1
+\tag{3.15}
+\end{align*}
+
+\begin{align*}
+\mathbb{E}[\mathbf{x} \mid \boldsymbol{\mu}] = \boldsymbol{\mu}
+\tag{3.16}
+\end{align*}
+
+\begin{align*}
+p(\mathcal{D} \mid \boldsymbol{\mu})=\prod_{k=1}^{K} \mu_{k}^{m_{k}}
+\tag{3.17}
+\end{align*}
+
+\begin{align*}
+m_{k}=\sum_{n=1}^{N} x_{n k}
+\tag{3.18}
+\end{align*}
+
+\begin{align*}
+\sum_{k=1}^{K} m_{k}=N
+\tag{3.19}
+\end{align*}
+
+\begin{align*}
+\sum_{k=1}^{K} m_{k} \ln \mu_{k}+\lambda\left(\sum_{k=1}^{K} \mu_{k}-1\right)
+\tag{3.20}
+\end{align*}
+
+\begin{align*}
+\mu_{k}=-m_{k} / \lambda
+\tag{3.21}
+\end{align*}
+
+\begin{align*}
+\mu_{k}^{\mathrm{ML}}=\frac{m_{k}}{N}
+\tag{3.22}
+\end{align*}
+
+\begin{align*}
+\operatorname{Mult}\left(m_{1}, m_{2}, \ldots, m_{K} \mid \boldsymbol{\mu}, N\right)=\binom{N}{m_{1} m_{2} \ldots m_{K}} \prod_{k=1}^{K} \mu_{k}^{m_{k}}
+\tag{3.23}
+\end{align*}
+
+\begin{align*}
+\binom{N}{m_{1} m_{2} \ldots m_{K}}=\frac{N!}{m_{1}!m_{2}!\ldots m_{K}!}
+\tag{3.24}
+\end{align*}
+
+\section{The Multivariate Gaussian}
+
+\begin{align*}
+\mathcal{N}\left(x \mid \mu, \sigma^{2}\right) = \frac{1}{\left(2 \pi \sigma^{2}\right)^{1 / 2}} \exp \left\{-\frac{1}{2 \sigma^{2}}(x-\mu)^{2}\right\} 
+\tag{3.25}
+\end{align*}
+
+\begin{align*}
+\mathcal{N}(\mathbf{x} \mid \boldsymbol{\mu}, \boldsymbol{\Sigma}) = \frac{1}{(2 \pi)^{D / 2}} \frac{1}{|\boldsymbol{\Sigma}|^{1 / 2}} \exp \left\{-\frac{1}{2}(\mathbf{x}-\boldsymbol{\mu})^{\top} \boldsymbol{\Sigma}^{-1}(\mathbf{x}-\boldsymbol{\mu})\right\} 
+\tag{3.26}
+\end{align*}
+
+\subsection{Geometry of the Gaussian}
+
+\begin{align*}
+\Delta^{2} = (\mathbf{x}-\boldsymbol{\mu})^{\top} \boldsymbol{\Sigma}^{-1}(\mathbf{x}-\boldsymbol{\mu}) 
+\tag{3.27}
+\end{align*}
+
+\begin{align*}
+\boldsymbol{\Sigma} \mathbf{u}_{i} = \lambda_{i} \mathbf{u}_{i} 
+\tag{3.28}
+\end{align*}
+
+\begin{align*}
+\mathbf{u}_{i}^{\top} \mathbf{u}_{j} = I_{i j} 
+\tag{3.29}
+\end{align*}
+
+\begin{align*}
+I_{i j} = 
+\begin{cases} 
+1, & \text{ if } i=j  \\
+0, & \text{ otherwise } 
+\end{cases}
+\tag{3.30}
+\end{align*}
+
+\begin{align*}
+\boldsymbol{\Sigma} = \sum_{i=1}^{D} \lambda_{i} \mathbf{u}_{i} \mathbf{u}_{i}^{\top} 
+\tag{3.31}
+\end{align*}
+
+\begin{align*}
+\boldsymbol{\Sigma}^{-1} = \sum_{i=1}^{D} \frac{1}{\lambda_{i}} \mathbf{u}_{i} \mathbf{u}_{i}^{\top} 
+\tag{3.32}
+\end{align*}
+
+\begin{align*}
+\Delta^{2} = \sum_{i=1}^{D} \frac{y_{i}^{2}}{\lambda_{i}} 
+\tag{3.33}
+\end{align*}
+
+\begin{align*}
+y_{i} = \mathbf{u}_{i}^{\top}(\mathbf{x}-\boldsymbol{\mu}) 
+\tag{3.34}
+\end{align*}
+
+\begin{align*}
+\mathbf{y} = \mathbf{U}(\mathbf{x}-\boldsymbol{\mu}) 
+\tag{3.35}
+\end{align*}
+
+\begin{align*}
+J_{i j} = \frac{\partial x_{i}}{\partial y_{j}} = U_{j i} 
+\tag{3.36}
+\end{align*}
+
+\begin{align*}
+| \mathbf{J} | ^{2} = \left | \mathbf{U}^{\top} \right | ^{2} = \left | \mathbf{U}^{\top} \right |  | \mathbf{U} | = \left | \mathbf{U}^{\top} \mathbf{U} \right | = | \mathbf{I} | = 1 
+\tag{3.37}
+\end{align*}
+
+\begin{align*}
+| \boldsymbol{\Sigma} | ^{1 / 2} = \prod_{j=1}^{D} \lambda_{j}^{1 / 2} 
+\tag{3.38}
+\end{align*}
+
+\begin{align*}
+p(\mathbf{y}) = p(\mathbf{x})|\mathbf{J}| = \prod_{j=1}^{D} \frac{1}{\left(2 \pi \lambda_{j}\right)^{1 / 2}} \exp \left\{-\frac{y_{j}^{2}}{2 \lambda_{j}}\right\} 
+\tag{3.39}
+\end{align*}
+
+\begin{align*}
+\int p(\mathbf{y}) \, \mathrm{d} \mathbf{y} = \prod_{j=1}^{D} \int_{-\infty}^{\infty} \frac{1}{\left(2 \pi \lambda_{j}\right)^{1 / 2}} \exp \left\{-\frac{y_{j}^{2}}{2 \lambda_{j}}\right\} \, \mathrm{d} y_{j} = 1 
+\tag{3.40}
+\end{align*}
+
+\subsection{Moments}
+
+\begin{align*}
+\mathbb{E}[\mathbf{x}] 
+& = \frac{1}{(2 \pi)^{D / 2}} \frac{1}{|\boldsymbol{\Sigma}|^{1 / 2}} \int \exp \left\{-\frac{1}{2}(\mathbf{x}-\boldsymbol{\mu})^{\top} \boldsymbol{\Sigma}^{-1}(\mathbf{x}-\boldsymbol{\mu})\right\} \mathbf{x} \, \mathrm{d} \mathbf{x} \\
+& = \frac{1}{(2 \pi)^{D / 2}} \frac{1}{|\boldsymbol{\Sigma}|^{1 / 2}} \int \exp \left\{-\frac{1}{2} \mathbf{z}^{\top} \boldsymbol{\Sigma}^{-1} \mathbf{z}\right\} (\mathbf{z} + \boldsymbol{\mu}) \, \mathrm{d} \mathbf{z}
+\tag{3.41}
+\end{align*}
+
+\begin{align*}
+\mathbb{E}[\mathbf{x}] 
+= \boldsymbol{\mu}
+\tag{3.42}
+\end{align*}
+
+\begin{align*}
+\mathbb{E}\left[\mathbf{x} \mathbf{x}^{\top}\right] 
+& = \frac{1}{(2 \pi)^{D / 2}} \frac{1}{|\boldsymbol{\Sigma}|^{1 / 2}} \int \exp \left\{-\frac{1}{2}(\mathbf{x}-\boldsymbol{\mu})^{\top} \boldsymbol{\Sigma}^{-1}(\mathbf{x}-\boldsymbol{\mu})\right\} \mathbf{x} \mathbf{x}^{\top} \, \mathrm{d} \mathbf{x} \\
+& = \frac{1}{(2 \pi)^{D / 2}} \frac{1}{|\boldsymbol{\Sigma}|^{1 / 2}} \int \exp \left\{-\frac{1}{2} \mathbf{z}^{\top} \boldsymbol{\Sigma}^{-1} \mathbf{z}\right\} (\mathbf{z} + \boldsymbol{\mu})(\mathbf{z} + \boldsymbol{\mu})^{\top} \, \mathrm{d} \mathbf{z}
+\tag{3.43}
+\end{align*}
+
+\begin{align*}
+\mathbf{z} = \sum_{j=1}^{D} y_{j} \mathbf{u}_{j} 
+\tag{3.44}
+\end{align*}
+
+\begin{align*}
+\sum_{i=1}^{D} \mathbf{u}_{i} \mathbf{u}_{i}^{\top} \lambda_{i} = \boldsymbol{\Sigma}
+\tag{3.45}
+\end{align*}
+
+\begin{align*}
+\mathbb{E}\left[\mathbf{x} \mathbf{x}^{\top}\right] = \boldsymbol{\mu} \boldsymbol{\mu}^{\top} + \boldsymbol{\Sigma}
+\tag{3.46}
+\end{align*}
+
+\begin{align*}
+\operatorname{cov}[\mathbf{x}] = \mathbb{E}\left[ (\mathbf{x} - \mathbb{E}[\mathbf{x}]) (\mathbf{x} - \mathbb{E}[\mathbf{x}])^{\top} \right]
+\tag{3.47}
+\end{align*}
+
+\begin{align*}
+\operatorname{cov}[\mathbf{x}] = \boldsymbol{\Sigma}
+\tag{3.48}
+\end{align*}
+
+\subsection{Limitations}
+
+No equations
+
+\subsection{Conditional distribution}
+
+\begin{align*}
+\mathbf{x} = \binom{\mathbf{x}_{a}}{\mathbf{x}_{b}} 
+\tag{3.49}
+\end{align*}
+
+\begin{align*}
+\boldsymbol{\mu} = \binom{\boldsymbol{\mu}_{a}}{\boldsymbol{\mu}_{b}} 
+\tag{3.50}
+\end{align*}
+
+\begin{align*}
+\boldsymbol{\Sigma} = \left(\begin{array}{ll}
+\boldsymbol{\Sigma}_{a a} & \boldsymbol{\Sigma}_{a b} \\
+\boldsymbol{\Sigma}_{b a} & \boldsymbol{\Sigma}_{b b}
+\end{array}\right)
+\tag{3.51}
+\end{align*}
+
+\begin{align*}
+\mathbf{\Lambda} \equiv \boldsymbol{\Sigma}^{-1} 
+\tag{3.52}
+\end{align*}
+
+\begin{align*}
+\boldsymbol{\Lambda} = \left(\begin{array}{ll}
+\boldsymbol{\Lambda}_{a a} & \boldsymbol{\Lambda}_{a b} \\
+\boldsymbol{\Lambda}_{b a} & \boldsymbol{\Lambda}_{b b}
+\end{array}\right)
+\tag{3.53}
+\end{align*}
+
+\begin{align*}
+-\frac{1}{2}(\mathbf{x}-\boldsymbol{\mu})^{\top} \boldsymbol{\Sigma}^{-1}(\mathbf{x}-\boldsymbol{\mu}) 
+& = -\frac{1}{2}\left(\mathbf{x}_{a}-\boldsymbol{\mu}_{a}\right)^{\top} \boldsymbol{\Lambda}_{a a}\left(\mathbf{x}_{a}-\boldsymbol{\mu}_{a}\right) \\
+& \quad - \frac{1}{2}\left(\mathbf{x}_{a}-\boldsymbol{\mu}_{a}\right)^{\top} \boldsymbol{\Lambda}_{a b}\left(\mathbf{x}_{b}-\boldsymbol{\mu}_{b}\right) \\
+& \quad - \frac{1}{2}\left(\mathbf{x}_{b}-\boldsymbol{\mu}_{b}\right)^{\top} \boldsymbol{\Lambda}_{b a}\left(\mathbf{x}_{a}-\boldsymbol{\mu}_{a}\right) \\
+& \quad - \frac{1}{2}\left(\mathbf{x}_{b}-\boldsymbol{\mu}_{b}\right)^{\top} \boldsymbol{\Lambda}_{b b}\left(\mathbf{x}_{b}-\boldsymbol{\mu}_{b}\right)
+\tag{3.54}
+\end{align*}
+
+\begin{align*}
+-\frac{1}{2} \mathbf{x}_{a}^{\top} \boldsymbol{\Lambda}_{a a} \mathbf{x}_{a}
+\tag{3.56}
+\end{align*}
+
+\begin{align*}
+\boldsymbol{\Sigma}_{a \mid b} = \boldsymbol{\Lambda}_{a a}^{-1}
+\tag{3.57}
+\end{align*}
+
+\begin{align*}
+\mathbf{x}_{a}^{\top}\left\{\boldsymbol{\Lambda}_{a a} \boldsymbol{\mu}_{a} - \boldsymbol{\Lambda}_{a b} \left(\mathbf{x}_{b}-\boldsymbol{\mu}_{b}\right)\right\}
+\tag{3.58}
+\end{align*}
+
+\begin{align*}
+\boldsymbol{\mu}_{a \mid b} 
+& = \boldsymbol{\Sigma}_{a \mid b} \left\{\boldsymbol{\Lambda}_{a a} \boldsymbol{\mu}_{a} - \boldsymbol{\Lambda}_{a b} \left(\mathbf{x}_{b}-\boldsymbol{\mu}_{b}\right)\right\} \\
+& = \boldsymbol{\mu}_{a} - \boldsymbol{\Lambda}_{a a}^{-1} \boldsymbol{\Lambda}_{a b}\left(\mathbf{x}_{b} - \boldsymbol{\mu}_{b}\right)
+\tag{3.59}
+\end{align*}
+
+\begin{align*}
+\left(\begin{array}{ll}
+\mathbf{A} & \mathbf{B} \\
+\mathbf{C} & \mathbf{D}
+\end{array}\right)^{-1} = \left(\begin{array}{cc}
+\mathbf{M} & -\mathbf{M B D}^{-1} \\
+-\mathbf{D}^{-1} \mathbf{C M} & \mathbf{D}^{-1} + \mathbf{D}^{-1} \mathbf{C M B D}^{-1}
+\end{array}\right)
+\tag{3.60}
+\end{align*}
+
+\begin{align*}
+\mathbf{M} = \left(\mathbf{A} - \mathbf{B D}^{-1} \mathbf{C}\right)^{-1}
+\tag{3.61}
+\end{align*}
+
+\begin{align*}
+\left(\begin{array}{ll}
+\boldsymbol{\Sigma}_{a a} & \boldsymbol{\Sigma}_{a b} \\
+\boldsymbol{\Sigma}_{b a} & \boldsymbol{\Sigma}_{b b}
+\end{array}\right)^{-1} = \left(\begin{array}{ll}
+\boldsymbol{\Lambda}_{a a} & \boldsymbol{\Lambda}_{a b} \\
+\boldsymbol{\Lambda}_{b a} & \boldsymbol{\Lambda}_{b b}
+\end{array}\right)
+\tag{3.62}
+\end{align*}
+
+\begin{align*}
+\boldsymbol{\Lambda}_{a a} & = \left(\boldsymbol{\Sigma}_{a a} - \boldsymbol{\Sigma}_{a b} \boldsymbol{\Sigma}_{b b}^{-1} \boldsymbol{\Sigma}_{b a}\right)^{-1}
+\tag{3.63}
+\end{align*}
+
+\begin{align*}
+\boldsymbol{\Lambda}_{a b} & = -\left(\boldsymbol{\Sigma}_{a a} - \boldsymbol{\Sigma}_{a b} \boldsymbol{\Sigma}_{b b}^{-1} \boldsymbol{\Sigma}_{b a}\right)^{-1} \boldsymbol{\Sigma}_{a b} \boldsymbol{\Sigma}_{b b}^{-1}
+\tag{3.64}
+\end{align*}
+
+\begin{align*}
+\boldsymbol{\mu}_{a \mid b} 
+& = \boldsymbol{\mu}_{a} + \boldsymbol{\Sigma}_{a b} \boldsymbol{\Sigma}_{b b}^{-1} \left(\mathbf{x}_{b} - \boldsymbol{\mu}_{b}\right)
+\tag{3.65}
+\end{align*}
+
+\begin{align*}
+\boldsymbol{\Sigma}_{a \mid b} = \boldsymbol{\Sigma}_{a a} - \boldsymbol{\Sigma}_{a b} \boldsymbol{\Sigma}_{b b}^{-1} \boldsymbol{\Sigma}_{b a}
+\tag{3.66}
+\end{align*}
+
+\subsection{Marginal distribution}
+
+\begin{align*}
+p\left(\mathbf{x}_{a}\right) = \int p\left(\mathbf{x}_{a}, \mathbf{x}_{b}\right) \, \mathrm{d} \mathbf{x}_{b} 
+\tag{3.67}
+\end{align*}
+
+\begin{align*}
+-\frac{1}{2} \mathbf{x}_{b}^{\top} \boldsymbol{\Lambda}_{b b} \mathbf{x}_{b} + \mathbf{x}_{b}^{T} \mathbf{m} 
+& = -\frac{1}{2} \left(\mathbf{x}_{b} - \boldsymbol{\Lambda}_{b b}^{-1} \mathbf{m}\right)^{\top} \boldsymbol{\Lambda}_{b b}\left(\mathbf{x}_{b} - \boldsymbol{\Lambda}_{b b}^{-1} \mathbf{m}\right) \\
+& \quad + \frac{1}{2} \mathbf{m}^{\top} \boldsymbol{\Lambda}_{b b}^{-1} \mathbf{m}
+\tag{3.68}
+\end{align*}
+
+\begin{align*}
+\mathbf{m} = \boldsymbol{\Lambda}_{b b} \boldsymbol{\mu}_{b} - \boldsymbol{\Lambda}_{b a}\left(\mathbf{x}_{a} - \boldsymbol{\mu}_{a}\right)
+\tag{3.69}
+\end{align*}
+
+\begin{align*}
+\int \exp \left\{-\frac{1}{2}\left(\mathbf{x}_{b} - \boldsymbol{\Lambda}_{b b}^{-1} \mathbf{m}\right)^{\top} \boldsymbol{\Lambda}_{b b}\left(\mathbf{x}_{b} - \boldsymbol{\Lambda}_{b b}^{-1} \mathbf{m}\right)\right\} \mathrm{d} \mathbf{x}_{b}
+\tag{3.70}
+\end{align*}
+
+\begin{align*}
+-\frac{1}{2} \mathbf{x}_{a}^{\top}\left(\boldsymbol{\Lambda}_{a a} - \boldsymbol{\Lambda}_{a b} \boldsymbol{\Lambda}_{b b}^{-1} \boldsymbol{\Lambda}_{b a}\right) \mathbf{x}_{a} 
++ \mathbf{x}_{a}^{\top}\left(\boldsymbol{\Lambda}_{a a} - \boldsymbol{\Lambda}_{a b} \boldsymbol{\Lambda}_{b b}^{-1} \boldsymbol{\Lambda}_{b a}\right) \boldsymbol{\mu}_{a}
+\tag{3.71}
+\end{align*}
+
+\begin{align*}
+\boldsymbol{\Sigma}_{a} = \left(\boldsymbol{\Lambda}_{a a} - \boldsymbol{\Lambda}_{a b} \boldsymbol{\Lambda}_{b b}^{-1} \boldsymbol{\Lambda}_{b a}\right)^{-1}
+\tag{3.72}
+\end{align*}
+
+\begin{align*}
+\boldsymbol{\Sigma}_{a}\left(\boldsymbol{\Lambda}_{a a} - \boldsymbol{\Lambda}_{a b} \boldsymbol{\Lambda}_{b b}^{-1} \boldsymbol{\Lambda}_{b a}\right) \boldsymbol{\mu}_{a} = \boldsymbol{\mu}_{a}
+\tag{3.73}
+\end{align*}
+
+\begin{align*}
+\left(\boldsymbol{\Lambda}_{a a} - \boldsymbol{\Lambda}_{a b} \boldsymbol{\Lambda}_{b b}^{-1} \boldsymbol{\Lambda}_{b a}\right)^{-1} = \boldsymbol{\Sigma}_{a a}
+\tag{3.75}
+\end{align*}
+
+\begin{align*}
+\mathbb{E}\left[\mathbf{x}_{a}\right] = \boldsymbol{\mu}_{a}
+\tag{3.76}
+\end{align*}
+
+\begin{align*}
+\operatorname{cov}\left[\mathbf{x}_{a}\right] = \boldsymbol{\Sigma}_{a a}
+\tag{3.77}
+\end{align*}
+
+\begin{align*}
+\mathbf{x} = \binom{\mathbf{x}_{a}}{\mathbf{x}_{b}}, \quad \boldsymbol{\mu} = \binom{\boldsymbol{\mu}_{a}}{\boldsymbol{\mu}_{b}} 
+\tag{3.78}
+\end{align*}
+
+\begin{align*}
+\boldsymbol{\Sigma} = \left(\begin{array}{ll}
+\boldsymbol{\Sigma}_{a a} & \boldsymbol{\Sigma}_{a b} \\
+\boldsymbol{\Sigma}_{b a} & \boldsymbol{\Sigma}_{b b}
+\end{array}\right), \quad \boldsymbol{\Lambda} = \left(\begin{array}{ll}
+\boldsymbol{\Lambda}_{a a} & \boldsymbol{\Lambda}_{a b} \\
+\boldsymbol{\Lambda}_{b a} & \boldsymbol{\Lambda}_{b b}
+\end{array}\right)
+\tag{3.79}
+\end{align*}
+
+\begin{align*}
+p\left(\mathbf{x}_{a} \mid \mathbf{x}_{b}\right) & = \mathcal{N}\left(\mathbf{x}_{a} \mid \boldsymbol{\mu}_{a \mid b}, \boldsymbol{\Lambda}_{a a}^{-1}\right)
+\tag{3.80}
+\end{align*}
+
+\begin{align*}
+\boldsymbol{\mu}_{a \mid b} & = \boldsymbol{\mu}_{a} - \boldsymbol{\Lambda}_{a a}^{-1} \boldsymbol{\Lambda}_{a b}\left(\mathbf{x}_{b} - \boldsymbol{\mu}_{b}\right)
+\tag{3.81}
+\end{align*}
+
+\begin{align*}
+p\left(\mathbf{x}_{a}\right) = \mathcal{N}\left(\mathbf{x}_{a} \mid \boldsymbol{\mu}_{a}, \boldsymbol{\Sigma}_{a a}\right)
+\tag{3.82}
+\end{align*}
+
+\subsection{Bayes' theorem}
+
+\begin{align*}
+p(\mathbf{x}) & = \mathcal{N}\left(\mathbf{x} \mid \boldsymbol{\mu}, \boldsymbol{\Lambda}^{-1}\right) 
+\tag{3.83}
+\end{align*}
+
+\begin{align*}
+p(\mathbf{y} \mid \mathbf{x}) & = \mathcal{N}\left(\mathbf{y} \mid \mathbf{A} \mathbf{x} + \mathbf{b}, \mathbf{L}^{-1}\right)
+\tag{3.84}
+\end{align*}
+
+\begin{align*}
+\mathbf{z} = \binom{\mathbf{x}}{\mathbf{y}} 
+\tag{3.85}
+\end{align*}
+
+\begin{align*}
+\ln p(\mathbf{z}) 
+& = -\frac{1}{2} (\mathbf{x} - \boldsymbol{\mu})^{\top} \boldsymbol{\Lambda} (\mathbf{x} - \boldsymbol{\mu}) \\
+& \quad - \frac{1}{2} (\mathbf{y} - \mathbf{A} \mathbf{x} - \mathbf{b})^{\top} \mathbf{L} (\mathbf{y} - \mathbf{A} \mathbf{x} - \mathbf{b}) + \text{ const }
+\tag{3.86}
+\end{align*}
+
+\begin{align*}
+-\frac{1}{2} \binom{\mathbf{x}}{\mathbf{y}}^{\top} \left(\begin{array}{cc}
+\boldsymbol{\Lambda} + \mathbf{A}^{\top} \mathbf{L} \mathbf{A} & -\mathbf{A}^{\top} \mathbf{L} \\
+-\mathbf{L} \mathbf{A} & \mathbf{L}
+\end{array} \right) \binom{\mathbf{x}}{\mathbf{y}} = -\frac{1}{2} \mathbf{z}^{\top} \mathbf{R} \mathbf{z}
+\tag{3.87}
+\end{align*}
+
+\begin{align*}
+\mathbf{R} = \left(\begin{array}{cc}
+\boldsymbol{\Lambda} + \mathbf{A}^{\top} \mathbf{L} \mathbf{A} & -\mathbf{A}^{\top} \mathbf{L} \\
+-\mathbf{L} \mathbf{A} & \mathbf{L}
+\end{array} \right)
+\tag{3.88}
+\end{align*}
+
+\begin{align*}
+\operatorname{cov}[\mathbf{z}] = \mathbf{R}^{-1} = \left(\begin{array}{cc}
+\boldsymbol{\Lambda}^{-1} & \boldsymbol{\Lambda}^{-1} \mathbf{A}^{\top} \\
+\mathbf{A} \boldsymbol{\Lambda}^{-1} & \mathbf{L}^{-1} + \mathbf{A} \boldsymbol{\Lambda}^{-1} \mathbf{A}^{\top}
+\end{array} \right)
+\tag{3.89}
+\end{align*}
+
+\begin{align*}
+\mathbf{x}^{\top} \boldsymbol{\Lambda} \boldsymbol{\mu}-\mathbf{x}^{\top} \mathbf{A}^{\top} \mathbf{L} \mathbf{b}+\mathbf{y}^{\top} \mathbf{L} \mathbf{b}=\binom{\mathbf{x}}{\mathbf{y}}^{\top}\binom{\boldsymbol{\Lambda} \boldsymbol{\mu}-\mathbf{A}^{\top} \mathbf{L} \mathbf{b}}{\mathbf{L} \mathbf{b}}
+\tag{3.90}
+\end{align*}
+
+\begin{align*}
+\mathbb{E}[\mathbf{z}] = \mathbf{R}^{-1} \binom{\boldsymbol{\Lambda} \boldsymbol{\mu} - \mathbf{A}^{\top} \mathbf{L} \mathbf{b}}{\mathbf{L} \mathbf{b}}
+\tag{3.91}
+\end{align*}
+
+\begin{align*}
+\mathbb{E}[\mathbf{z}] = \binom{\boldsymbol{\mu}}{\mathbf{A} \boldsymbol{\mu} + \mathbf{b}}
+\tag{3.92}
+\end{align*}
+
+\begin{align*}
+\mathbb{E}[\mathbf{y}] = \mathbf{A} \boldsymbol{\mu} + \mathbf{b}
+\tag{3.93}
+\end{align*}
+
+\begin{align*}
+\operatorname{cov}[\mathbf{y}] = \mathbf{L}^{-1} + \mathbf{A} \boldsymbol{\Lambda}^{-1} \mathbf{A}^{\top}
+\tag{3.94}
+\end{align*}
+
+\begin{align*}
+\mathbb{E}[\mathbf{x} \mid \mathbf{y}] = \left(\boldsymbol{\Lambda} + \mathbf{A}^{\top} \mathbf{L} \mathbf{A}\right)^{-1} \left\{\mathbf{A}^{\top} \mathbf{L} (\mathbf{y} - \mathbf{b}) + \boldsymbol{\Lambda} \boldsymbol{\mu}\right\}
+\tag{3.95}
+\end{align*}
+
+\begin{align*}
+\operatorname{cov}[\mathbf{x} \mid \mathbf{y}] = \left(\boldsymbol{\Lambda} + \mathbf{A}^{\top} \mathbf{L} \mathbf{A}\right)^{-1}
+\tag{3.96}
+\end{align*}
+
+\begin{align*}
+p(\mathbf{x}) =\mathcal{N}\left(\mathbf{x} \mid \boldsymbol{\mu}, \boldsymbol{\Lambda}^{-1}\right)
+\tag{3.97}
+\end{align*}
+
+\begin{align*}
+p(\mathbf{y} \mid \mathbf{x}) = \mathcal{N}\left(\mathbf{y} \mid \mathbf{A} \mathbf{x}+\mathbf{b}, \mathbf{L}^{-1}\right)
+\tag{3.98}
+\end{align*}
+
+\begin{align*}
+p(\mathbf{y}) & = \mathcal{N}\left(\mathbf{y} \mid \mathbf{A} \boldsymbol{\mu} + \mathbf{b}, \mathbf{L}^{-1} + \mathbf{A} \boldsymbol{\Lambda}^{-1} \mathbf{A}^{\top}\right)
+\tag{3.99}
+\end{align*}
+
+\begin{align*}
+p(\mathbf{x} \mid \mathbf{y}) & = \mathcal{N}\left(\mathbf{x} \mid \boldsymbol{\Sigma} \left\{\mathbf{A}^{\top} \mathbf{L} (\mathbf{y} - \mathbf{b}) + \boldsymbol{\Lambda} \boldsymbol{\mu}\right\}, \boldsymbol{\Sigma}\right)
+\tag{3.100}
+\end{align*}
+
+\begin{align*}
+\boldsymbol{\Sigma} = \left(\boldsymbol{\Lambda} + \mathbf{A}^{\top} \mathbf{L} \mathbf{A}\right)^{-1}
+\tag{3.101}
+\end{align*}
+
+\subsection{Maximum likelihood}
+
+\begin{align*}
+\ln p(\mathbf{X} \mid \boldsymbol{\mu}, \boldsymbol{\Sigma}) = -\frac{N D}{2} \ln (2 \pi) - \frac{N}{2} \ln |\boldsymbol{\Sigma}| - \frac{1}{2} \sum_{n=1}^{N}\left(\mathbf{x}_{n} - \boldsymbol{\mu}\right)^{\top} \boldsymbol{\Sigma}^{-1}\left(\mathbf{x}_{n} - \boldsymbol{\mu}\right)
+\tag{3.102}
+\end{align*}
+
+\begin{align*}
+\sum_{n=1}^{N} \mathbf{x}_{n}, \quad \sum_{n=1}^{N} \mathbf{x}_{n} \mathbf{x}_{n}^{\top}
+\tag{3.103}
+\end{align*}
+
+\begin{align*}
+\frac{\partial}{\partial \boldsymbol{\mu}} \ln p(\mathbf{X} \mid \boldsymbol{\mu}, \boldsymbol{\Sigma}) = \sum_{n=1}^{N} \boldsymbol{\Sigma}^{-1}\left(\mathbf{x}_{n} - \boldsymbol{\mu}\right)
+\tag{3.104}
+\end{align*}
+
+\begin{align*}
+\boldsymbol{\mu}_{\mathrm{ML}} = \frac{1}{N} \sum_{n=1}^{N} \mathbf{x}_{n}
+\tag{3.105}
+\end{align*}
+
+\begin{align*}
+\boldsymbol{\Sigma}_{\mathrm{ML}} = \frac{1}{N} \sum_{n=1}^{N}\left(\mathbf{x}_{n} - \boldsymbol{\mu}_{\mathrm{ML}}\right)\left(\mathbf{x}_{n} - \boldsymbol{\mu}_{\mathrm{ML}}\right)^{\top}
+\tag{3.106}
+\end{align*}
+
+\begin{align*}
+\mathbb{E}\left[\boldsymbol{\mu}_{\mathrm{ML}}\right] = \boldsymbol{\mu}
+\tag{3.107}
+\end{align*}
+
+\begin{align*}
+\mathbb{E}\left[\boldsymbol{\Sigma}_{\mathrm{ML}}\right] = \frac{N-1}{N} \boldsymbol{\Sigma}
+\tag{3.108}
+\end{align*}
+
+\begin{align*}
+\widetilde{\boldsymbol{\Sigma}} = \frac{1}{N-1} \sum_{n=1}^{N}\left(\mathbf{x}_{n} - \boldsymbol{\mu}_{\mathrm{ML}}\right)\left(\mathbf{x}_{n} - \boldsymbol{\mu}_{\mathrm{ML}}\right)^{\top}
+\tag{3.109}
+\end{align*}
+
+\subsection{Sequential estimation}
+
+\begin{align*}
+\boldsymbol{\mu}_{\mathrm{ML}}^{(N)} 
+& = \frac{1}{N} \sum_{n=1}^{N} \mathbf{x}_{n} \\
+& = \frac{1}{N} \mathbf{x}_{N} + \frac{1}{N} \sum_{n=1}^{N-1} \mathbf{x}_{n} \\
+& = \frac{1}{N} \mathbf{x}_{N} + \frac{N-1}{N} \boldsymbol{\mu}_{\mathrm{ML}}^{(N-1)} \\
+& = \boldsymbol{\mu}_{\mathrm{ML}}^{(N-1)} + \frac{1}{N} \left(\mathbf{x}_{N} - \boldsymbol{\mu}_{\mathrm{ML}}^{(N-1)}\right)
+\tag{3.110}
+\end{align*}
+
+\subsection{Mixtures of Gaussians}
+
+\begin{align*}
+p(\mathbf{x}) = \sum_{k=1}^{K} \pi_{k} \mathcal{N}\left(\mathbf{x} \mid \boldsymbol{\mu}_{k}, \boldsymbol{\Sigma}_{k}\right)
+\tag{3.111}
+\end{align*}
+
+\begin{align*}
+\sum_{k=1}^{K} \pi_{k} = 1 
+\tag{3.112}
+\end{align*}
+
+\begin{align*}
+0 \leqslant \pi_{k} \leqslant 1
+\tag{3.113}
+\end{align*}
+
+\begin{align*}
+p(\mathbf{x}) = \sum_{k=1}^{K} p(k) p(\mathbf{x} \mid k)
+\tag{3.114}
+\end{align*}
+
+\begin{align*}
+\gamma_{k}(\mathbf{x}) \equiv p(k \mid \mathbf{x}) 
+& = \frac{p(k) p(\mathbf{x} \mid k)}{\sum_{l} p(l) p(\mathbf{x} \mid l)} \\
+& = \frac{\pi_{k} \mathcal{N}\left(\mathbf{x} \mid \boldsymbol{\mu}_{k}, \boldsymbol{\Sigma}_{k}\right)}{\sum_{l} \pi_{l} \mathcal{N}\left(\mathbf{x} \mid \boldsymbol{\mu}_{l}, \boldsymbol{\Sigma}_{l}\right)}
+\tag{3.115}
+\end{align*}
+
+\begin{align*}
+\ln p(\mathbf{X} \mid \boldsymbol{\pi}, \boldsymbol{\mu}, \boldsymbol{\Sigma}) = \sum_{n=1}^{N} \ln \left\{\sum_{k=1}^{K} \pi_{k} \mathcal{N}\left(\mathbf{x}_{n} \mid \boldsymbol{\mu}_{k}, \boldsymbol{\Sigma}_{k}\right)\right\}
+\tag{3.116}
+\end{align*}
+
+\section{Periodic Variables}
+
+\subsection{Von Mises distribution}
+
+\begin{align*}
+\overline{\mathbf{x}} = \frac{1}{N} \sum_{n=1}^{N} \mathbf{x}_{n} 
+\tag{3.117}
+\end{align*}
+
+\begin{align*}
+\bar{x}_{1} = \bar{r} \cos \bar{\theta} = \frac{1}{N} \sum_{n=1}^{N} \cos \theta_{n}, \quad 
+\bar{x}_{2} = \bar{r} \sin \bar{\theta} = \frac{1}{N} \sum_{n=1}^{N} \sin \theta_{n} 
+\tag{3.118}
+\end{align*}
+
+\begin{align*}
+\bar{\theta} = \tan^{-1} \left\{ \frac{\sum_{n} \sin \theta_{n}}{\sum_{n} \cos \theta_{n}} \right\} 
+\tag{3.119}
+\end{align*}
+
+\begin{align*}
+p(\theta) \geqslant 0  
+\tag{3.120}
+\end{align*}
+
+\begin{align*}
+\int_{0}^{2 \pi} p(\theta) \, \mathrm{d} \theta = 1 
+\tag{3.121}
+\end{align*}
+
+\begin{align*}
+p(\theta + 2\pi) = p(\theta) 
+\tag{3.122}
+\end{align*}
+
+\begin{align*}
+p(x_1, x_2) = \frac{1}{2\pi \sigma^2} \exp \left\{ -\frac{(x_1 - \mu_1)^2 + (x_2 - \mu_2)^2}{2\sigma^2} \right\}
+\tag{3.123}
+\end{align*}
+
+\begin{align*}
+x_1 = r \cos \theta, \quad x_2 = r \sin \theta
+\tag{3.124}
+\end{align*}
+
+\begin{align*}
+\mu_1 = r_0 \cos \theta_0, \quad \mu_2 = r_0 \sin \theta_0 
+\tag{3.125}
+\end{align*}
+
+\begin{align*}
+-\frac{1}{2\sigma^2} \left\{ \left( r \cos \theta - r_0 \cos \theta_0 \right)^2 + \left( r \sin \theta - r_0 \sin \theta_0 \right)^2 \right\}
+= \frac{r_0}{\sigma^2} \cos(\theta - \theta_0) + \text{const}
+\tag{3.126}
+\end{align*}
+
+\begin{align*}
+\cos^2 A + \sin^2 A = 1
+\tag{3.127}
+\end{align*}
+
+\begin{align*}
+\cos A \cos B + \sin A \sin B = \cos(A - B) 
+\tag{3.128}
+\end{align*}
+
+\begin{align*}
+p(\theta \mid \theta_0, m) = \frac{1}{2\pi I_0(m)} \exp \left\{ m \cos(\theta - \theta_0) \right\} 
+\tag{3.129}
+\end{align*}
+
+\begin{align*}
+I_0(m) = \frac{1}{2\pi} \int_0^{2\pi} \exp \left\{ m \cos \theta \right\} \, \mathrm{d} \theta 
+\tag{3.130}
+\end{align*}
+
+\begin{align*}
+\ln p(\mathcal{D} \mid \theta_0, m) = -N \ln (2\pi) - N \ln I_0(m) + m \sum_{n=1}^{N} \cos(\theta_n - \theta_0) 
+\tag{3.131}
+\end{align*}
+
+\begin{align*}
+\sum_{n=1}^{N} \sin (\theta_n - \theta_0) = 0
+\tag{3.132}
+\end{align*}
+
+\begin{align*}
+\sin(A - B) = \cos B \sin A - \cos A \sin B 
+\tag{3.133}
+\end{align*}
+
+\begin{align*}
+\theta_0^{\mathrm{ML}} = \tan^{-1} \left\{ \frac{\sum_n \sin \theta_n}{\sum_n \cos \theta_n} \right\} 
+\tag{3.134}
+\end{align*}
+
+\begin{align*}
+A(m_{\mathrm{ML}}) = \frac{1}{N} \sum_{n=1}^{N} \cos(\theta_n - \theta_0^{\mathrm{ML}}) 
+\tag{3.135}
+\end{align*}
+
+\begin{align*}
+A(m) = \frac{I_1(m)}{I_0(m)} 
+\tag{3.136}
+\end{align*}
+
+\begin{align*}
+A(m_{\mathrm{ML}}) = \left( \frac{1}{N} \sum_{n=1}^{N} \cos \theta_n \right) \cos \theta_0^{\mathrm{ML}} + \left( \frac{1}{N} \sum_{n=1}^{N} \sin \theta_n \right) \sin \theta_0^{\mathrm{ML}}
+\tag{3.137}
+\end{align*}
+
+\section{The Exponential Family}
+
+\begin{align*}
+p(\mathbf{x} \mid \boldsymbol{\eta}) = h(\mathbf{x}) g(\boldsymbol{\eta}) \exp \left\{ \boldsymbol{\eta}^{\top} \mathbf{u}(\mathbf{x}) \right\} 
+\tag{3.138}
+\end{align*}
+
+\begin{align*}
+g(\boldsymbol{\eta}) \int h(\mathbf{x}) \exp \left\{ \boldsymbol{\eta}^{\top} \mathbf{u}(\mathbf{x}) \right\} \mathrm{d} \mathbf{x} = 1 
+\tag{3.139}
+\end{align*}
+
+\begin{align*}
+p(x \mid \mu) = \operatorname{Bern}(x \mid \mu) = \mu^x (1-\mu)^{1-x} 
+\tag{3.140}
+\end{align*}
+
+\begin{align*}
+p(x \mid \mu) = \exp \{ x \ln \mu + (1-x) \ln (1-\mu) \} = (1-\mu) \exp \left\{ \ln \left( \frac{\mu}{1-\mu} \right) x \right\} 
+\tag{3.141}
+\end{align*}
+
+\begin{align*}
+\eta = \ln \left( \frac{\mu}{1-\mu} \right) 
+\tag{3.142}
+\end{align*}
+
+\begin{align*}
+\sigma(\eta) = \frac{1}{1 + \exp(-\eta)} 
+\tag{3.143}
+\end{align*}
+
+\begin{align*}
+p(x \mid \eta) = \sigma(-\eta) \exp(\eta x) 
+\tag{3.144}
+\end{align*}
+
+\begin{align*}
+u(x) = x 
+\tag{3.145}
+\end{align*}
+
+\begin{align*}
+h(x) = 1 
+\tag{3.146}
+\end{align*}
+
+\begin{align*}
+g(\eta) = \sigma(-\eta) 
+\tag{3.147}
+\end{align*}
+
+\begin{align*}
+p(\mathbf{x} \mid \boldsymbol{\mu}) = \prod_{k=1}^{M} \mu_k^{x_k} = \exp \left\{ \sum_{k=1}^{M} x_k \ln \mu_k \right\} 
+\tag{3.148}
+\end{align*}
+
+\begin{align*}
+p(\mathbf{x} \mid \boldsymbol{\eta}) = \exp \left( \boldsymbol{\eta}^{\top} \mathbf{x} \right) 
+\tag{3.149}
+\end{align*}
+
+\begin{align*}
+\mathbf{u}(\mathbf{x}) = \mathbf{x} 
+\tag{3.150}
+\end{align*}
+
+\begin{align*}
+h(\mathbf{x}) = 1 
+\tag{3.151}
+\end{align*}
+
+\begin{align*}
+g(\boldsymbol{\eta}) = 1 
+\tag{3.152}
+\end{align*}
+
+\begin{align*}
+\sum_{k=1}^{M} \mu_k = 1 
+\tag{3.153}
+\end{align*}
+
+\begin{align*}
+0 \leqslant \mu_k \leqslant 1, \quad \sum_{k=1}^{M-1} \mu_k \leqslant 1 
+\tag{3.154}
+\end{align*}
+
+\begin{align*}
+\exp \left\{ \sum_{k=1}^{M} x_k \ln \mu_k \right\} = \exp \left\{ \sum_{k=1}^{M-1} x_k \ln \mu_k + \left( 1 - \sum_{k=1}^{M-1} x_k \right) \ln \left( 1 - \sum_{k=1}^{M-1} \mu_k \right) \right\} 
+\tag{3.155}
+\end{align*}
+
+\begin{align*}
+\ln \left( \frac{\mu_k}{1 - \sum_j \mu_j} \right) = \eta_k 
+\tag{3.156}
+\end{align*}
+
+\begin{align*}
+\mu_k = \frac{\exp(\eta_k)}{1 + \sum_j \exp(\eta_j)} 
+\tag{3.157}
+\end{align*}
+
+\begin{align*}
+p(\mathbf{x} \mid \boldsymbol{\eta}) = \left( 1 + \sum_{k=1}^{M-1} \exp(\eta_k) \right)^{-1} \exp \left( \boldsymbol{\eta}^{\top} \mathbf{x} \right) 
+\tag{3.158}
+\end{align*}
+
+\begin{align*}
+\mathbf{u}(\mathbf{x}) = \mathbf{x} 
+\tag{3.159}
+\end{align*}
+
+\begin{align*}
+h(\mathbf{x}) = 1 
+\tag{3.160}
+\end{align*}
+
+\begin{align*}
+g(\boldsymbol{\eta}) = \left( 1 + \sum_{k=1}^{M-1} \exp(\eta_k) \right)^{-1} 
+\tag{3.161}
+\end{align*}
+
+\begin{align*}
+p(x \mid \mu, \sigma^2) = \frac{1}{\left( 2\pi \sigma^2 \right)^{1/2}} \exp \left\{ -\frac{1}{2\sigma^2} (x - \mu)^2 \right\} 
+\tag{3.162}
+\end{align*}
+
+\begin{align*}
+p(x \mid \mu, \sigma^2) = \frac{1}{\left( 2\pi \sigma^2 \right)^{1/2}} \exp \left\{ -\frac{1}{2\sigma^2} x^2 + \frac{\mu}{\sigma^2} x - \frac{1}{2\sigma^2} \mu^2 \right\} 
+\tag{3.163}
+\end{align*}
+
+\begin{align*}
+\boldsymbol{\eta} = \binom{\mu / \sigma^2}{-1 / 2\sigma^2} 
+\tag{3.164}
+\end{align*}
+
+\begin{align*}
+\mathbf{u}(x) = \binom{x}{x^2} 
+\tag{3.165}
+\end{align*}
+
+\begin{align*}
+h(x) = (2 \pi)^{-1/2} 
+\tag{3.166}
+\end{align*}
+
+\begin{align*}
+g(\boldsymbol{\eta}) = \left( -2 \eta_2 \right)^{1/2} \exp \left( \frac{\eta_1^2}{4 \eta_2} \right) 
+\tag{3.167}
+\end{align*}
+
+\begin{align*}
+\frac{1}{s} f \left( \frac{1}{s} \mathbf{x} \right) 
+\tag{3.168}
+\end{align*}
+
+\begin{align*}
+p(\mathbf{x} \mid \boldsymbol{\lambda}_k, s) = \frac{1}{s} h \left( \frac{1}{s} \mathbf{x} \right) g(\boldsymbol{\lambda}_k) \exp \left\{ \frac{1}{s} \boldsymbol{\lambda}_k^{\top} \mathbf{x} \right\} 
+\tag{3.169}
+\end{align*}
+
+\subsection{Sufficient statistics}
+
+\begin{align*}
+\nabla g(\boldsymbol{\eta}) \int h(\mathbf{x}) \exp \left\{ \boldsymbol{\eta}^{\top} \mathbf{u}(\mathbf{x}) \right\} \mathrm{d} \mathbf{x} + g(\boldsymbol{\eta}) \int h(\mathbf{x}) \exp \left\{ \boldsymbol{\eta}^{\top} \mathbf{u}(\mathbf{x}) \right\} \mathbf{u}(\mathbf{x}) \mathrm{d} \mathbf{x} = 0
+\tag{3.170}
+\end{align*}
+
+\begin{align*}
+-\frac{1}{g(\boldsymbol{\eta})} \nabla g(\boldsymbol{\eta}) = g(\boldsymbol{\eta}) \int h(\mathbf{x}) \exp \left\{ \boldsymbol{\eta}^{\top} \mathbf{u}(\mathbf{x}) \right\} \mathbf{u}(\mathbf{x}) \mathrm{d} \mathbf{x} = \mathbb{E}[\mathbf{u}(\mathbf{x})] 
+\tag{3.171}
+\end{align*}
+
+\begin{align*}
+-\nabla \ln g(\boldsymbol{\eta})=\mathbb{E}[\mathbf{u}(\mathbf{x})]
+\tag{3.172}
+\end{align*}
+
+\begin{align*}
+p(\mathbf{X} \mid \boldsymbol{\eta})=\left(\prod_{n=1}^{N} h\left(\mathbf{x}_{n}\right)\right) g(\boldsymbol{\eta})^{N} \exp \left\{\boldsymbol{\eta}^{\top} \sum_{n=1}^{N} \mathbf{u}\left(\mathbf{x}_{n}\right)\right\}
+\tag{3.173}
+\end{align*}
+
+\begin{align*}
+-\nabla \ln g\left(\boldsymbol{\eta}_{\mathrm{ML}}\right)=\frac{1}{N} \sum_{n=1}^{N} \mathbf{u}\left(\mathbf{x}_{n}\right)
+\tag{3.174}
+\end{align*}
+
+\section{Nonparametric Methods}
+
+\subsection{Histograms}
+
+\begin{align*}
+p_{i} = \frac{n_{i}}{N \Delta_{i}} 
+\tag{3.175}
+\end{align*}
+
+\subsection{Kernel densities}
+
+\begin{align*}
+P = \int_{\mathcal{R}} p(\mathbf{x}) \, \mathrm{d} \mathbf{x} 
+\tag{3.176}
+\end{align*}
+
+\begin{align*}
+\operatorname{Bin}(K \mid N, P) = \frac{N!}{K!(N-K)!} P^{K} (1-P)^{N-K} 
+\tag{3.177}
+\end{align*}
+
+\begin{align*}
+K \simeq N P 
+\tag{3.178}
+\end{align*}
+
+\begin{align*}
+P \simeq p(\mathbf{x}) V 
+\tag{3.179}
+\end{align*}
+
+\begin{align*}
+p(\mathbf{x}) = \frac{K}{N V} 
+\tag{3.180}
+\end{align*}
+
+\begin{align*}
+k(\mathbf{u}) = \begin{cases} 
+1, & |u_{i}| \leqslant 1 / 2, \quad i = 1, \ldots, D \\
+0, & \text{otherwise} 
+\end{cases}
+\tag{3.181}
+\end{align*}
+
+\begin{align*}
+K = \sum_{n=1}^{N} k\left( \frac{\mathbf{x} - \mathbf{x}_n}{h} \right) 
+\tag{3.182}
+\end{align*}
+
+\begin{align*}
+p(\mathbf{x}) = \frac{1}{N} \sum_{n=1}^{N} \frac{1}{h^{D}} k\left( \frac{\mathbf{x} - \mathbf{x}_n}{h} \right) 
+\tag{3.183}
+\end{align*}
+
+\begin{align*}
+p(\mathbf{x}) = \frac{1}{N} \sum_{n=1}^{N} \frac{1}{(2\pi h^2)^{D/2}} \exp \left\{ -\frac{\|\mathbf{x} - \mathbf{x}_n\|^2}{2 h^2} \right\} 
+\tag{3.184}
+\end{align*}
+
+\begin{align*}
+k(\mathbf{u}) & \geqslant 0
+\tag{3.185}
+\end{align*}
+
+\begin{align*}
+\int k(\mathbf{u}) \, \mathrm{d} \mathbf{u} = 1
+\tag{3.186}
+\end{align*}
+
+\subsection{Nearest-neighbours}
+
+\begin{align*}
+p\left(\mathbf{x} \mid \mathcal{C}_k\right) = \frac{K_{k}}{N_{k} V} 
+\tag{3.187}
+\end{align*}
+
+\begin{align*}
+p(\mathbf{x}) = \frac{K}{N V} 
+\tag{3.188}
+\end{align*}
+
+\begin{align*}
+p\left(\mathcal{C}_k\right) = \frac{N_k}{N} 
+\tag{3.189}
+\end{align*}
+
+\begin{align*}
+p\left(\mathcal{C}_k \mid \mathbf{x}\right) = \frac{p\left(\mathbf{x} \mid \mathcal{C}_k\right) p\left(\mathcal{C}_k\right)}{p(\mathbf{x})} = \frac{K_{k}}{K} 
+\tag{3.190}
+\end{align*}
+
+\end{document}

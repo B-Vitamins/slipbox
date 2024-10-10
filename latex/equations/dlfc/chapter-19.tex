@@ -1,0 +1,202 @@
+\documentclass{article}
+
+% Document Layout and Fonts
+\usepackage[margin=0.9in]{geometry}    % Page margins
+\usepackage{fontspec}                  % For custom fonts (LuaLaTeX feature)
+\usepackage{tgpagella}
+\usepackage{mathpazo}
+\setmainfont{EB Garamond}              % Main font (EB Garamond)
+\usepackage{microtype}                 % Improves text appearance
+\usepackage{titlesec}                  % Customize section title fonts
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{float}
+
+% Right-align section headings
+\titleformat{\section}
+  {\normalfont\large\scshape\raggedright}  % Right-align and small caps
+  {}{0em}{}[]
+
+% Right-align subsection headings and add a line below
+\titleformat{\subsection}
+  {\normalfont\normalsize\raggedleft}     % Right-align subsections
+  {}{0em}{\titlerule[0.5pt]}              % Horizontal line below
+
+% Right-align and italicize subsubsections
+\titleformat{\subsubsection}
+  {\normalfont\normalsize\itshape\raggedleft} % Right-align and italicize subsubsections
+  {}{0em}{}[]
+
+% Math and Science Packages
+\usepackage{amsmath, amsfonts, amssymb, mathtools, amsthm, dsfont}
+
+% Math commands and operators
+\newcommand{\minus}{\scalebox{0.8}{\(-\)}}
+\newcommand{\plus}{\scalebox{0.6}{\(+\)}}
+\DeclareMathOperator{\sech}{sech}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\tr}{Tr}
+\newcommand{\diff}{\mathop{}\!\mathrm{d}}    % Differential d
+
+% Definitions, theorems, corollaries, and friends
+\usepackage[english]{babel}
+\usepackage[hidelinks]{hyperref}
+\newtheorem{axiom}{Axiom}
+\newtheorem{postulate}{Postulate}
+\newtheorem{definition}{Definition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem*{remark}{Remark}
+
+\title{\LARGE\scshape\MakeUppercase{Chapter 19: Autoencoders}}
+\author{\textit{Bishop and Bishop}}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{Deterministic Autoencoders}
+
+\subsection{Linear autoencoders}
+\begin{align*}
+E(\mathbf{w})=\frac{1}{2} \sum_{n=1}^{N}\left\|\mathbf{y}\left(\mathbf{x}_{n}, \mathbf{w}\right)-\mathbf{x}_{n}\right\|^{2} 
+\tag{19.1}
+\end{align*}
+
+\subsection{Deep autoencoders}
+No equations
+
+\subsection{Sparse autoencoders}
+
+\begin{align*}
+\widetilde{E}(\mathbf{w})=E(\mathbf{w})+\lambda \sum_{k=1}^{K}\left|z_{k}\right| 
+\tag{19.2}
+\end{align*}
+
+\subsection{Denoising autoencoders}
+
+\begin{align*}
+E(\mathbf{w})=\sum_{n=1}^{N}\left\|\mathbf{y}\left(\widetilde{\mathbf{x}}_{n}, \mathbf{w}\right)-\mathbf{x}_{n}\right\|^{2} 
+\tag{19.3}
+\end{align*}
+
+\subsection{Masked autoencoders}
+
+No equations
+
+\section{Variational Autoencoders}
+
+\begin{align*}
+p(\mathbf{x} \mid \mathbf{w})=\int p(\mathbf{x} \mid \mathbf{z}, \mathbf{w}) p(\mathbf{z}) \mathrm{d} \mathbf{z} 
+\tag{19.4}
+\end{align*}
+
+\begin{align*}
+p(\mathbf{z})=\mathcal{N}(\mathbf{z} \mid \mathbf{0}, \mathbf{I}) 
+\tag{19.5}
+\end{align*}
+
+\begin{align*}
+\ln p(\mathbf{x} \mid \mathbf{w})=\mathcal{L}(\mathbf{w})+\operatorname{KL}(q(\mathbf{z}) \| p(\mathbf{z} \mid \mathbf{x}, \mathbf{w})) 
+\tag{19.6}
+\end{align*}
+
+\begin{align*}
+\mathcal{L}(\mathbf{w})=\int q(\mathbf{z}) \ln \left\{\frac{p(\mathbf{x} \mid \mathbf{z}, \mathbf{w}) p(\mathbf{z})}{q(\mathbf{z})}\right\} \mathrm{d} \mathbf{z} 
+\tag{19.7}
+\end{align*}
+
+\begin{align*}
+\mathrm{KL}(q(\mathbf{z}) \| p(\mathbf{z} \mid \mathbf{x}, \mathbf{w}))=-\int q(\mathbf{z}) \ln \left\{\frac{p(\mathbf{z} \mid \mathbf{x}, \mathbf{w})}{q(\mathbf{z})}\right\} \mathrm{d} \mathbf{z} 
+\tag{19.8}
+\end{align*}
+
+\begin{align*}
+\ln p(\mathbf{x} \mid \mathbf{w}) \geqslant \mathcal{L} 
+\tag{19.9}
+\end{align*}
+
+\begin{align*}
+\ln p(\mathcal{D} \mid \mathbf{w})=\sum_{n=1}^{N} \mathcal{L}_{n}+\sum_{n=1}^{N} \mathrm{KL}\left(q_{n}\left(\mathbf{z}_{n}\right) \| p\left(\mathbf{z}_{n} \mid \mathbf{x}_{n}, \mathbf{w}\right)\right) 
+\tag{19.10}
+\end{align*}
+
+\begin{align*}
+\mathcal{L}_{n}=\int q_{n}\left(\mathbf{z}_{n}\right) \ln \left\{\frac{p\left(\mathbf{x}_{n} \mid \mathbf{z}_{n}, \mathbf{w}\right) p\left(\mathbf{z}_{n}\right)}{q_{n}\left(\mathbf{z}_{n}\right)}\right\} \mathrm{d} \mathbf{z}_{n} 
+\tag{19.11}
+\end{align*}
+
+\begin{align*}
+p\left(\mathbf{z}_{n} \mid \mathbf{x}_{n}, \mathbf{w}\right)=\frac{p\left(\mathbf{x}_{n} \mid \mathbf{z}_{n}, \mathbf{w}\right) p\left(\mathbf{z}_{n}\right)}{p\left(\mathbf{x}_{n} \mid \mathbf{w}\right)} 
+\tag{19.12}
+\end{align*}
+
+\subsection{Amortized inference}
+
+\begin{align*}
+q(\mathbf{z} \mid \mathbf{x}, \boldsymbol{\phi})=\prod_{j=1}^{M} \mathcal{N}\left(z_{j} \mid \mu_{j}(\mathbf{x}, \boldsymbol{\phi}), \sigma_{j}^{2}(\mathbf{x}, \boldsymbol{\phi})\right) 
+\tag{19.13}
+\end{align*}
+
+\subsection{The reparameterization trick}
+
+\begin{align*}
+& \mathcal{L}_{n}(\mathbf{w}, \boldsymbol{\phi})=\int q\left(\mathbf{z}_{n} \mid \mathbf{x}_{n}, \boldsymbol{\phi}\right) \ln \left\{\frac{p\left(\mathbf{x}_{n} \mid \mathbf{z}_{n}, \mathbf{w}\right) p\left(\mathbf{z}_{n}\right)}{q\left(\mathbf{z}_{n} \mid \mathbf{x}_{n}, \boldsymbol{\phi}\right)}\right\} \mathrm{d} \mathbf{z}_{n} \\
+= & \int q\left(\mathbf{z}_{n} \mid \mathbf{x}_{n}, \boldsymbol{\phi}\right) \ln p\left(\mathbf{x}_{n} \mid \mathbf{z}_{n}, \mathbf{w}\right) \mathrm{d} \mathbf{z}_{n}-\mathrm{KL}\left(q\left(\mathbf{z}_{n} \mid \mathbf{x}_{n}, \boldsymbol{\phi}\right) \| p\left(\mathbf{z}_{n}\right)\right) 
+\tag{19.14}
+\end{align*}
+
+\begin{align*}
+\mathrm{KL}\left(q\left(\mathbf{z}_{n} \mid \mathbf{x}_{n}, \boldsymbol{\phi}\right) \| p\left(\mathbf{z}_{n}\right)\right)=\frac{1}{2} \sum_{j=1}^{M}\left\{1+\ln \sigma_{j}^{2}\left(\mathbf{x}_{n}\right)-\mu_{j}^{2}\left(\mathbf{x}_{n}\right)-\sigma_{j}^{2}\left(\mathbf{x}_{n}\right)\right\} 
+\tag{19.15}
+\end{align*}
+
+\begin{align*}
+\int q\left(\mathbf{z}_{n} \mid \mathbf{x}_{n}, \boldsymbol{\phi}\right) \ln p\left(\mathbf{x}_{n} \mid \mathbf{z}_{n}, \mathbf{w}\right) \mathrm{d} \mathbf{z}_{n} \simeq \frac{1}{L} \sum_{l=1}^{L} \ln p\left(\mathbf{x}_{n} \mid \mathbf{z}_{n}^{(l)}, \mathbf{w}\right) 
+\tag{19.16}
+\end{align*}
+
+\begin{align*}
+z=\sigma \epsilon+\mu 
+\tag{19.17}
+\end{align*}
+
+\begin{align*}
+z_{n j}^{(l)}=\mu_{j}\left(\mathbf{x}_{n}, \boldsymbol{\phi}\right) \epsilon_{n j}^{(l)}+\sigma_{j}^{2}\left(\mathbf{x}_{n}, \boldsymbol{\phi}\right) 
+\tag{19.18}
+\end{align*}
+
+\begin{align*}
+\mathcal{L}=\sum_{n}\left\{\frac{1}{2} \sum_{j=1}^{M}\left\{1+\ln \sigma_{n j}^{2}-\mu_{n j}^{2}-\sigma_{n j}^{2}\right\}+\frac{1}{L} \sum_{l=1}^{L} \ln p\left(\mathbf{x}_{n} \mid \mathbf{z}_{n}^{(l)}, \mathbf{w}\right)\right\} 
+\tag{19.19}
+\end{align*}
+
+\subsubsection{Algorithm 19.1: Variational autoencoder training}
+
+\begin{algorithm}[H]
+\caption{Variational Autoencoder Training}
+\begin{algorithmic}[1]
+\STATE \textbf{Input:} Training data set $D = \{x_1, \ldots, x_N\}$
+\STATE \quad Encoder network $\{\mu_j(x_n, \phi), \sigma_j^2(x_n, \phi)\}, \; j \in \{1, \ldots, M\}$
+\STATE \quad Decoder network $g(z, w)$
+\STATE \quad Initial weight vectors $w, \phi$
+\STATE \quad Learning rate $\eta$
+\STATE \textbf{Output:} Final weight vectors $w, \phi$
+\REPEAT
+    \STATE $L \gets 0$
+    \FOR{$j \in \{1, \ldots, M\}$}
+        \STATE $\epsilon_{nj} \sim \mathcal{N}(0, 1)$
+        \STATE $z_{nj} \gets \mu_j(x_n, \phi) + \sigma_j(x_n, \phi) \epsilon_{nj}$
+        \STATE $L \gets L + \frac{1}{2} \left\{ 1 + \ln \sigma_j^2(x_n, \phi) - \mu_j^2(x_n, \phi) - \sigma_j^2(x_n, \phi) \right\}$
+    \ENDFOR
+    \STATE $L \gets L + \ln p(x_n | z_n, w)$
+    \STATE $w \gets w + \eta \nabla_w L$ \COMMENT{// Update decoder weights}
+    \STATE $\phi \gets \phi + \eta \nabla_\phi L$ \COMMENT{// Update encoder weights}
+\UNTIL converged
+\RETURN $w, \phi$
+\end{algorithmic}
+\end{algorithm}
+
+\end{document}

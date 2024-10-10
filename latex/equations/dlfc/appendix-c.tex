@@ -1,0 +1,105 @@
+\documentclass{article}
+
+% Document Layout and Fonts
+\usepackage[margin=0.9in]{geometry}    % Page margins
+\usepackage{fontspec}                  % For custom fonts (LuaLaTeX feature)
+\usepackage{tgpagella}
+\usepackage{mathpazo}
+\setmainfont{EB Garamond}              % Main font (EB Garamond)
+\usepackage{microtype}                 % Improves text appearance
+\usepackage{titlesec}                  % Customize section title fonts
+
+% Right-align section headings
+\titleformat{\section}
+  {\normalfont\large\scshape\raggedright}  % Right-align and small caps
+  {}{0em}{}[]
+
+% Right-align subsection headings and add a line below
+\titleformat{\subsection}
+  {\normalfont\normalsize\raggedleft}     % Right-align subsections
+  {}{0em}{\titlerule[0.5pt]}              % Horizontal line below
+
+% Right-align and italicize subsubsections
+\titleformat{\subsubsection}
+  {\normalfont\normalsize\itshape\raggedleft} % Right-align and italicize subsubsections
+  {}{0em}{}[]
+
+% Math and Science Packages
+\usepackage{amsmath, amsfonts, amssymb, mathtools, amsthm, dsfont}
+
+% Math commands and operators
+\newcommand{\minus}{\scalebox{0.8}{\(-\)}}
+\newcommand{\plus}{\scalebox{0.6}{\(+\)}}
+\DeclareMathOperator{\sech}{sech}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\tr}{Tr}
+\newcommand{\diff}{\mathop{}\!\mathrm{d}}    % Differential d
+
+% Definitions, theorems, corollaries, and friends
+\usepackage[english]{babel}
+\usepackage[hidelinks]{hyperref}
+\newtheorem{axiom}{Axiom}
+\newtheorem{postulate}{Postulate}
+\newtheorem{definition}{Definition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem*{remark}{Remark}
+
+\title{\LARGE\scshape\MakeUppercase{Appendix C. Lagrange Multipliers}}
+\author{\textit{Bishop and Bishop}}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\begin{align*}
+g\left(x_{1}, x_{2}\right)=0 
+\tag{C.1}
+\end{align*}
+
+\begin{align*}
+g(\mathbf{x}+\boldsymbol{\epsilon}) \simeq g(\mathbf{x})+\boldsymbol{\epsilon}^{\mathrm{T}} \nabla g(\mathbf{x}) 
+\tag{C.2}
+\end{align*}
+
+\begin{align*}
+\nabla f+\lambda \nabla g=0 
+\tag{C.3}
+\end{align*}
+
+\begin{align*}
+L(\mathbf{x}, \lambda) \equiv f(\mathbf{x})+\lambda g(\mathbf{x}) 
+\tag{C.4}
+\end{align*}
+
+\begin{align*}
+L(\mathbf{x}, \lambda)=1-x_{1}^{2}-x_{2}^{2}+\lambda\left(x_{1}+x_{2}-1\right) 
+\tag{C.5}
+\end{align*}
+
+\begin{align*}
+\begin{aligned}
+-2 x_{1}+\lambda & =0  \tag{C.6}\\
+-2 x_{2}+\lambda & =0  \tag{C.7}\\
+x_{1}+x_{2}-1 & =0 
+\end{aligned}
+\tag{C.8}
+\end{align*}
+
+\begin{align*}
+\begin{aligned}
+g(\mathbf{x}) & \geqslant 0  \tag{C.9}\\
+\lambda & \geqslant 0  \tag{C.10}\\
+\lambda g(\mathbf{x}) & =0
+\end{aligned}
+\tag{C.11}
+\end{align*}
+
+\begin{align*}
+L\left(\mathbf{x},\left\{\lambda_{j}\right\},\left\{\mu_{k}\right\}\right)=f(\mathbf{x})+\sum_{j=1}^{J} \lambda_{j} g_{j}(\mathbf{x})+\sum_{k=1}^{K} \mu_{k} h_{k}(\mathbf{x}) 
+\tag{C.12}
+\end{align*}
+
+\end{document}

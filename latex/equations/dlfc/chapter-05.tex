@@ -1,0 +1,592 @@
+\documentclass{article}
+
+% Document Layout and Fonts
+\usepackage[margin=0.9in]{geometry}    % Page margins
+\usepackage{fontspec}                  % For custom fonts (LuaLaTeX feature)
+\usepackage{tgpagella}
+\usepackage{mathpazo}
+\setmainfont{EB Garamond}              % Main font (EB Garamond)
+\usepackage{microtype}                 % Improves text appearance
+\usepackage{titlesec}                  % Customize section title fonts
+
+% Right-align section headings
+\titleformat{\section}
+  {\normalfont\large\scshape\raggedright}  % Right-align and small caps
+  {}{0em}{}[]
+
+% Right-align subsection headings and add a line below
+\titleformat{\subsection}
+  {\normalfont\normalsize\raggedleft}     % Right-align subsections
+  {}{0em}{\titlerule[0.5pt]}              % Horizontal line below
+
+% Right-align and italicize subsubsections
+\titleformat{\subsubsection}
+  {\normalfont\normalsize\itshape\raggedleft} % Right-align and italicize subsubsections
+  {}{0em}{}[]
+
+% Math and Science Packages
+\usepackage{amsmath, amsfonts, amssymb, mathtools, amsthm, dsfont}
+
+% Math commands and operators
+\newcommand{\minus}{\scalebox{0.8}{\(-\)}}
+\newcommand{\plus}{\scalebox{0.6}{\(+\)}}
+\DeclareMathOperator{\sech}{sech}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\tr}{Tr}
+\newcommand{\diff}{\mathop{}\!\mathrm{d}}    % Differential d
+
+% Definitions, theorems, corollaries, and friends
+\usepackage[english]{babel}
+\usepackage[hidelinks]{hyperref}
+\newtheorem{axiom}{Axiom}
+\newtheorem{postulate}{Postulate}
+\newtheorem{definition}{Definition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem*{remark}{Remark}
+
+\title{\LARGE\scshape\MakeUppercase{Chapter 5: Single-layer Networks: Classification}}
+\author{\textit{Bishop and Bishop}}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\begin{align*}
+p\left(\mathcal{C}_{k} \mid \mathbf{x}\right)=\frac{p\left(\mathbf{x} \mid \mathcal{C}_{k}\right) p\left(\mathcal{C}_{k}\right)}{p(\mathbf{x})}
+\tag{5.1}
+\end{align*}
+
+\section{Discriminant Functions}
+
+\subsection{Two classes}
+
+\begin{align*}
+y(\mathbf{x}) = \mathbf{w}^{\top} \mathbf{x} + w_0 
+\tag{5.2}
+\end{align*}
+
+\begin{align*}
+\frac{\mathbf{w}^{\top} \mathbf{x}}{\|\mathbf{w}\|} = -\frac{w_0}{\|\mathbf{w}\|}
+\tag{5.3}
+\end{align*}
+
+\begin{align*}
+\mathbf{x} = \mathbf{x}_{\perp} + r \frac{\mathbf{w}}{\|\mathbf{w}\|}
+\tag{5.4}
+\end{align*}
+
+\begin{align*}
+r = \frac{y(\mathbf{x})}{\|\mathbf{w}\|}
+\tag{5.5}
+\end{align*}
+
+\begin{align*}
+y(\mathbf{x}) = \widetilde{\mathbf{w}}^{\top} \widetilde{\mathbf{x}}
+\tag{5.6}
+\end{align*}
+
+\subsection{Multiple classes}
+
+\begin{align*}
+y_k(\mathbf{x}) = \mathbf{w}_k^{\top} \mathbf{x} + w_{k0}
+\tag{5.7}
+\end{align*}
+
+\begin{align*}
+\left(\mathbf{w}_k - \mathbf{w}_j\right)^{\top} \mathbf{x} + \left(w_{k0} - w_{j0}\right) = 0
+\tag{5.8}
+\end{align*}
+
+\begin{align*}
+\widehat{\mathbf{x}} = \lambda \mathbf{x}_{\mathrm{A}} + (1-\lambda) \mathbf{x}_{\mathrm{B}}
+\tag{5.9}
+\end{align*}
+
+\begin{align*}
+y_k(\widehat{\mathbf{x}}) = \lambda y_k(\mathbf{x}_{\mathrm{A}}) + (1-\lambda) y_k(\mathbf{x}_{\mathrm{B}})
+\tag{5.10}
+\end{align*}
+
+\subsection{1-of-K coding}
+
+\begin{align*}
+\mathbf{t} = (0, 1, 0, 0, 0)^{\top}
+\tag{5.11}
+\end{align*}
+
+\subsection{Least squares for classification}
+
+\begin{align*}
+y_k(\mathbf{x}) = \mathbf{w}_k^{\top} \mathbf{x} + w_{k0}
+\tag{5.12}
+\end{align*}
+
+\begin{align*}
+\mathbf{y}(\mathbf{x}) = \widetilde{\mathbf{W}}^{\top} \widetilde{\mathbf{x}}
+\tag{5.13}
+\end{align*}
+
+\begin{align*}
+E_D(\widetilde{\mathbf{W}}) = \frac{1}{2} \operatorname{Tr}\left\{ (\widetilde{\mathbf{X}} \widetilde{\mathbf{W}} - \mathbf{T})^{\top} (\widetilde{\mathbf{X}} \widetilde{\mathbf{W}} - \mathbf{T}) \right\}
+\tag{5.14}
+\end{align*}
+
+\begin{align*}
+\widetilde{\mathbf{W}} = \left( \widetilde{\mathbf{X}}^{\top} \widetilde{\mathbf{X}} \right)^{-1} \widetilde{\mathbf{X}}^{\top} \mathbf{T} = \widetilde{\mathbf{X}}^{\dagger} \mathbf{T}
+\tag{5.15}
+\end{align*}
+
+\begin{align*}
+\mathbf{y}(\mathbf{x}) = \widetilde{\mathbf{W}}^{\top} \widetilde{\mathbf{x}} = \mathbf{T}^{\top} \left( \widetilde{\mathbf{X}}^{\dagger} \right)^{\top} \widetilde{\mathbf{x}}
+\tag{5.16}
+\end{align*}
+
+\begin{align*}
+\mathbf{a}^{\top} \mathbf{t}_n + b = 0
+\tag{5.17}
+\end{align*}
+
+\begin{align*}
+\mathbf{a}^{\top} \mathbf{y}(\mathbf{x}) + b = 0
+\tag{5.18}
+\end{align*}
+
+
+\section{Decision Theory}
+
+\begin{align*}
+p\left(\mathcal{C}_k \mid \mathbf{x}\right) = \frac{p\left(\mathbf{x} \mid \mathcal{C}_k\right) p\left(\mathcal{C}_k\right)}{p(\mathbf{x})}
+\tag{5.19}
+\end{align*}
+
+\subsection{Misclassification rate}
+
+\begin{align*}
+p(\text{ mistake }) = \int_{\mathcal{R}_{1}} p\left(\mathbf{x}, \mathcal{C}_2\right) d\mathbf{x} + \int_{\mathcal{R}_{2}} p\left(\mathbf{x}, \mathcal{C}_1\right) d\mathbf{x}
+\tag{5.20}
+\end{align*}
+
+\begin{align*}
+p(\text{ correct }) = \sum_{k=1}^K \int_{\mathcal{R}_{k}} p\left(\mathbf{x}, \mathcal{C}_k\right) d\mathbf{x}
+\tag{5.21}
+\end{align*}
+
+\subsection{Expected loss}
+
+\begin{align*}
+\mathbb{E}[L] = \sum_{k} \sum_{j} \int_{\mathcal{R}_{j}} L_{kj} p\left(\mathbf{x}, \mathcal{C}_k\right) d\mathbf{x}
+\tag{5.22}
+\end{align*}
+
+\begin{align*}
+\sum_{k} L_{kj} p\left(\mathcal{C}_k \mid \mathbf{x}\right)
+\tag{5.23}
+\end{align*}
+
+\subsection{The reject option}
+
+No equations
+
+\subsection{Inference and decision}
+
+\begin{align*}
+p\left(\mathcal{C}_k \mid \mathbf{x}\right) = \frac{p\left(\mathbf{x} \mid \mathcal{C}_k\right) p\left(\mathcal{C}_k\right)}{p(\mathbf{x})}
+\tag{5.24}
+\end{align*}
+
+\begin{align*}
+p(\mathbf{x}) = \sum_k p\left(\mathbf{x} \mid \mathcal{C}_k\right) p\left(\mathcal{C}_k\right)
+\tag{5.25}
+\end{align*}
+
+\begin{align*}
+p\left(\mathbf{x}_{\mathrm{I}}, \mathbf{x}_{\mathrm{B}} \mid \mathcal{C}_k\right) = p\left(\mathbf{x}_{\mathrm{I}} \mid \mathcal{C}_k\right) p\left(\mathbf{x}_{\mathrm{B}} \mid \mathcal{C}_k\right)
+\tag{5.26}
+\end{align*}
+
+\begin{align*}
+p\left(\mathcal{C}_k \mid \mathbf{x}_{\mathrm{I}}, \mathbf{x}_{\mathrm{B}}\right) \propto \frac{p\left(\mathcal{C}_k \mid \mathbf{x}_{\mathrm{I}}\right) p\left(\mathcal{C}_k \mid \mathbf{x}_{\mathrm{B}}\right)}{p\left(\mathcal{C}_k\right)}
+\tag{5.27}
+\end{align*}
+
+\subsection{Classifier accuracy}
+
+\begin{align*}
+N = N_{\mathrm{TP}} + N_{\mathrm{FP}} + N_{\mathrm{TN}} + N_{\mathrm{FN}}
+\tag{5.28}
+\end{align*}
+
+\begin{align*}
+\text{Accuracy} = \frac{N_{\mathrm{TP}} + N_{\mathrm{TN}}}{N_{\mathrm{TP}} + N_{\mathrm{FP}} + N_{\mathrm{TN}} + N_{\mathrm{FN}}}
+\tag{5.29}
+\end{align*}
+
+\begin{align*}
+\text{Precision} = \frac{N_{\mathrm{TP}}}{N_{\mathrm{TP}} + N_{\mathrm{FP}}}
+\tag{5.30}
+\end{align*}
+
+\begin{align*}
+\text{Recall} = \frac{N_{\mathrm{TP}}}{N_{\mathrm{TP}} + N_{\mathrm{FN}}}
+\tag{5.31}
+\end{align*}
+
+\begin{align*}
+\text{False positive rate} = \frac{N_{\mathrm{FP}}}{N_{\mathrm{FP}} + N_{\mathrm{TN}}}
+\tag{5.32}
+\end{align*}
+
+\begin{align*}
+\text{False discovery rate} = \frac{N_{\mathrm{FP}}}{N_{\mathrm{FP}} + N_{\mathrm{TP}}}
+\tag{5.33}
+\end{align*}
+
+\begin{align*}
+N_{\mathrm{FP}} / N = E
+\tag{5.34}
+\end{align*}
+
+\begin{align*}
+N_{\mathrm{TP}} / N = D + E
+\tag{5.35}
+\end{align*}
+
+\begin{align*}
+N_{\mathrm{FN}} / N = B + C
+\tag{5.36}
+\end{align*}
+
+\begin{align*}
+N_{\mathrm{TN}} / N = A + C
+\tag{5.37}
+\end{align*}
+
+\subsection{ROC curve}
+
+\begin{align*}
+F = \frac{2 \times \text{precision} \times \text{recall}}{\text{precision} + \text{recall}}
+\tag{5.38}
+\end{align*}
+
+\begin{align*}
+F = \frac{2 N_{\mathrm{TP}}}{2 N_{\mathrm{TP}} + N_{\mathrm{FP}} + N_{\mathrm{FN}}}
+\tag{5.39}
+\end{align*}
+
+\section{Generative Classifiers}
+
+\begin{align*}
+p\left(\mathcal{C}_{1} \mid \mathbf{x}\right) = \frac{1}{1 + \exp(-a)} = \sigma(a)
+\tag{5.40}
+\end{align*}
+
+\begin{align*}
+a = \ln \frac{p\left(\mathbf{x} \mid \mathcal{C}_{1}\right) p\left(\mathcal{C}_{1}\right)}{p\left(\mathbf{x} \mid \mathcal{C}_{2}\right) p\left(\mathcal{C}_{2}\right)}
+\tag{5.41}
+\end{align*}
+
+\begin{align*}
+\sigma(a) = \frac{1}{1 + \exp(-a)}
+\tag{5.42}
+\end{align*}
+
+\begin{align*}
+\sigma(-a) = 1 - \sigma(a)
+\tag{5.43}
+\end{align*}
+
+\begin{align*}
+a = \ln \left( \frac{\sigma}{1 - \sigma} \right)
+\tag{5.44}
+\end{align*}
+
+\begin{align*}
+p\left(\mathcal{C}_k \mid \mathbf{x}\right) = \frac{\exp \left(a_k\right)}{\sum_{j} \exp \left(a_j\right)}
+\tag{5.45}
+\end{align*}
+
+\begin{align*}
+a_k = \ln \left( p\left(\mathbf{x} \mid \mathcal{C}_k\right) p\left(\mathcal{C}_k\right) \right)
+\tag{5.46}
+\end{align*}
+
+\subsection{Continuous inputs}
+
+\begin{align*}
+p\left(\mathbf{x} \mid \mathcal{C}_k\right) = \frac{1}{(2 \pi)^{D/2}} \frac{1}{|\boldsymbol{\Sigma}|^{1/2}} \exp \left\{ -\frac{1}{2} \left(\mathbf{x} - \boldsymbol{\mu}_k \right)^{\top} \boldsymbol{\Sigma}^{-1} \left(\mathbf{x} - \boldsymbol{\mu}_k \right) \right\}
+\tag{5.47}
+\end{align*}
+
+\begin{align*}
+p\left(\mathcal{C}_{1} \mid \mathbf{x}\right) = \sigma\left( \mathbf{w}^{\top} \mathbf{x} + w_0 \right)
+\tag{5.48}
+\end{align*}
+
+\begin{align*}
+\mathbf{w} = \boldsymbol{\Sigma}^{-1} \left( \boldsymbol{\mu}_1 - \boldsymbol{\mu}_2 \right)
+\tag{5.49}
+\end{align*}
+
+\begin{align*}
+w_0 = -\frac{1}{2} \boldsymbol{\mu}_1^{\top} \boldsymbol{\Sigma}^{-1} \boldsymbol{\mu}_1 + \frac{1}{2} \boldsymbol{\mu}_2^{\top} \boldsymbol{\Sigma}^{-1} \boldsymbol{\mu}_2 + \ln \frac{p\left(\mathcal{C}_{1}\right)}{p\left(\mathcal{C}_{2}\right)}
+\tag{5.50}
+\end{align*}
+
+\begin{align*}
+a_k(\mathbf{x}) = \mathbf{w}_k^{\top} \mathbf{x} + w_{k0}
+\tag{5.51}
+\end{align*}
+
+\begin{align*}
+\mathbf{w}_k = \boldsymbol{\Sigma}^{-1} \boldsymbol{\mu}_k
+\tag{5.52}
+\end{align*}
+
+\begin{align*}
+w_{k0} = -\frac{1}{2} \boldsymbol{\mu}_k^{\top} \boldsymbol{\Sigma}^{-1} \boldsymbol{\mu}_k + \ln p\left(\mathcal{C}_k\right)
+\tag{5.53}
+\end{align*}
+
+\subsection{Maximum likelihood solution}
+
+\begin{align*}
+p\left(\mathbf{t}, \mathbf{X} \mid \pi, \boldsymbol{\mu}_1, \boldsymbol{\mu}_2, \boldsymbol{\Sigma}\right) = \prod_{n=1}^{N} \left[ \pi \mathcal{N}\left( \mathbf{x}_n \mid \boldsymbol{\mu}_1, \boldsymbol{\Sigma} \right) \right]^{t_n} \left[ (1 - \pi) \mathcal{N}\left( \mathbf{x}_n \mid \boldsymbol{\mu}_2, \boldsymbol{\Sigma} \right) \right]^{1 - t_n}
+\tag{5.54}
+\end{align*}
+
+\begin{align*}
+\sum_{n=1}^{N} \left\{ t_n \ln \pi + \left( 1 - t_n \right) \ln (1 - \pi) \right\}
+\tag{5.55}
+\end{align*}
+
+\begin{align*}
+\pi = \frac{N_1}{N} = \frac{N_1}{N_1 + N_2}
+\tag{5.56}
+\end{align*}
+
+\begin{align*}
+\sum_{n=1}^{N} t_{n} \ln \mathcal{N}\left(\mathbf{x}_{n} \mid \boldsymbol{\mu}_{1}, \boldsymbol{\Sigma}\right)=-\frac{1}{2} \sum_{n=1}^{N} t_{n}\left(\mathbf{x}_{n}-\boldsymbol{\mu}_{1}\right)^{\top} \boldsymbol{\Sigma}^{-1}\left(\mathbf{x}_{n}-\boldsymbol{\mu}_{1}\right)+\text{ const. } 
+\tag{5.57}
+\end{align*}
+
+\begin{align*}
+\boldsymbol{\mu}_1 = \frac{1}{N_1} \sum_{n=1}^{N} t_n \mathbf{x}_n
+\tag{5.58}
+\end{align*}
+
+\begin{align*}
+\boldsymbol{\mu}_2 = \frac{1}{N_2} \sum_{n=1}^{N} \left(1 - t_n\right) \mathbf{x}_n
+\tag{5.59}
+\end{align*}
+
+\begin{align*}
+& -\frac{1}{2} \sum_{n=1}^{N} t_{n} \ln |\boldsymbol{\Sigma}|-\frac{1}{2} \sum_{n=1}^{N} t_{n}\left(\mathbf{x}_{n}-\boldsymbol{\mu}_{1}\right)^{\top} \boldsymbol{\Sigma}^{-1}\left(\mathbf{x}_{n}-\boldsymbol{\mu}_{1}\right) \\
+& -\frac{1}{2} \sum_{n=1}^{N}\left(1-t_{n}\right) \ln |\boldsymbol{\Sigma}|-\frac{1}{2} \sum_{n=1}^{N}\left(1-t_{n}\right)\left(\mathbf{x}_{n}-\boldsymbol{\mu}_{2}\right)^{\top} \boldsymbol{\Sigma}^{-1}\left(\mathbf{x}_{n}-\boldsymbol{\mu}_{2}\right) \\
+& =-\frac{N}{2} \ln |\boldsymbol{\Sigma}|-\frac{N}{2} \operatorname{Tr}\left\{\boldsymbol{\Sigma}^{-1} \mathbf{S}\right\}
+\tag{5.60}
+\end{align*}
+
+\begin{align*}
+\mathbf{S} = \frac{N_1}{N} \mathbf{S}_1 + \frac{N_2}{N} \mathbf{S}_2
+\tag{5.61}
+\end{align*}
+
+\begin{align*}
+\mathbf{S}_1 = \frac{1}{N_1} \sum_{n \in \mathcal{C}_1} \left( \mathbf{x}_n - \boldsymbol{\mu}_1 \right) \left( \mathbf{x}_n - \boldsymbol{\mu}_1 \right)^{\top}
+\tag{5.62}
+\end{align*}
+
+\begin{align*}
+\mathbf{S}_2 = \frac{1}{N_2} \sum_{n \in \mathcal{C}_2} \left( \mathbf{x}_n - \boldsymbol{\mu}_2 \right) \left( \mathbf{x}_n - \boldsymbol{\mu}_2 \right)^{\top}
+\tag{5.63}
+\end{align*}
+
+\subsection{Discrete features}
+
+\begin{align*}
+p\left(\mathbf{x} \mid \mathcal{C}_k\right) = \prod_{i=1}^{D} \mu_{ki}^{x_i} \left(1 - \mu_{ki}\right)^{1 - x_i}
+\tag{5.64}
+\end{align*}
+
+\begin{align*}
+a_k(\mathbf{x}) = \sum_{i=1}^{D} \left\{ x_i \ln \mu_{ki} + \left(1 - x_i\right) \ln \left(1 - \mu_{ki}\right) \right\} + \ln p\left(\mathcal{C}_k\right)
+\tag{5.65}
+\end{align*}
+
+\subsection{Exponential family}
+
+\begin{align*}
+p\left(\mathbf{x} \mid \boldsymbol{\lambda}_k, s\right) = \frac{1}{s} h\left( \frac{1}{s} \mathbf{x} \right) g\left( \boldsymbol{\lambda}_k \right) \exp \left\{ \frac{1}{s} \boldsymbol{\lambda}_k^{\top} \mathbf{x} \right\}
+\tag{5.66}
+\end{align*}
+
+\begin{align*}
+a(\mathbf{x}) = \left( \boldsymbol{\lambda}_1 - \boldsymbol{\lambda}_2 \right)^{\top} \mathbf{x} + \ln g\left( \boldsymbol{\lambda}_1 \right) - \ln g\left( \boldsymbol{\lambda}_2 \right) + \ln p\left( \mathcal{C}_1 \right) - \ln p\left( \mathcal{C}_2 \right)
+\tag{5.67}
+\end{align*}
+
+\begin{align*}
+a_k(\mathbf{x}) = \boldsymbol{\lambda}_k^{\top} \mathbf{x} + \ln g\left( \boldsymbol{\lambda}_k \right) + \ln p\left(\mathcal{C}_k\right)
+\tag{5.68}
+\end{align*}
+
+
+\section{Discriminative Classifiers}
+
+\subsection{Activation functions}
+
+\begin{align*}
+y(\mathbf{x}, \mathbf{w}) = \mathbf{w}^{\top} \mathbf{x} + w_{0}
+\tag{5.69}
+\end{align*}
+
+\begin{align*}
+y(\mathbf{x}, \mathbf{w}) = f\left( \mathbf{w}^{\top} \mathbf{x} + w_{0} \right)
+\tag{5.70}
+\end{align*}
+
+\subsection{Fixed basis functions}
+
+No equations
+
+\subsection{Logistic regression}
+
+\begin{align*}
+p\left(\mathcal{C}_1 \mid \boldsymbol{\phi}\right) = y(\boldsymbol{\phi}) = \sigma\left( \mathbf{w}^{\top} \boldsymbol{\phi} \right)
+\tag{5.71}
+\end{align*}
+
+\begin{align*}
+\frac{\mathrm{d} \sigma}{\mathrm{d} a} = \sigma(1 - \sigma)
+\tag{5.72}
+\end{align*}
+
+\begin{align*}
+p(\mathbf{t} \mid \mathbf{w}) = \prod_{n=1}^{N} y_{n}^{t_n} \left\{ 1 - y_n \right\}^{1 - t_n}
+\tag{5.73}
+\end{align*}
+
+\begin{align*}
+E(\mathbf{w}) = -\ln p(\mathbf{t} \mid \mathbf{w}) = -\sum_{n=1}^{N} \left\{ t_n \ln y_n + \left( 1 - t_n \right) \ln \left( 1 - y_n \right) \right\}
+\tag{5.74}
+\end{align*}
+
+\begin{align*}
+\nabla E(\mathbf{w}) = \sum_{n=1}^{N} \left( y_n - t_n \right) \boldsymbol{\phi}_n
+\tag{5.75}
+\end{align*}
+
+\subsection{Multi-class logistic regression}
+
+\begin{align*}
+p\left(\mathcal{C}_k \mid \boldsymbol{\phi}\right) = y_k(\boldsymbol{\phi}) = \frac{\exp\left( a_k \right)}{\sum_j \exp \left( a_j \right)}
+\tag{5.76}
+\end{align*}
+
+\begin{align*}
+a_k = \mathbf{w}_k^{\top} \boldsymbol{\phi}
+\tag{5.77}
+\end{align*}
+
+\begin{align*}
+\frac{\partial y_k}{\partial a_j} = y_k \left( I_{k j} - y_j \right)
+\tag{5.78}
+\end{align*}
+
+\begin{align*}
+p\left(\mathbf{T} \mid \mathbf{w}_{1}, \ldots, \mathbf{w}_{K}\right)=\prod_{n=1}^{N} \prod_{k=1}^{K} p\left(\mathcal{C}_{k} \mid \boldsymbol{\phi}_{n}\right)^{t_{n k}}=\prod_{n=1}^{N} \prod_{k=1}^{K} y_{n k}^{t_{n k}} 
+\tag{5.79}
+\end{align*}
+
+\begin{align*}
+E\left(\mathbf{w}_{1}, \ldots, \mathbf{w}_{K}\right)=-\ln p\left(\mathbf{T} \mid \mathbf{w}_{1}, \ldots, \mathbf{w}_{K}\right)=-\sum_{n=1}^{N} \sum_{k=1}^{K} t_{n k} \ln y_{n k}
+\tag{5.80}
+\end{align*}
+
+\begin{align*}
+\nabla_{\mathbf{w}_j} E\left(\mathbf{w}_1, \ldots, \mathbf{w}_K\right) = \sum_{n=1}^{N} \left( y_{n j} - t_{n j} \right) \boldsymbol{\phi}_n
+\tag{5.81}
+\end{align*}
+
+\begin{align*}
+\frac{\partial E\left(\mathbf{w}_1, \ldots, \mathbf{w}_K\right)}{\partial w_{i k}} = \sum_{n=1}^{N} \left( y_{n k} - t_{n k} \right) \phi_i\left(\mathbf{x}_n\right)
+\tag{5.82}
+\end{align*}
+
+\subsection{Probit regression}
+
+\begin{align*}
+p(t=1 \mid a) = f(a)
+\tag{5.83}
+\end{align*}
+
+\begin{align*}
+\begin{cases}
+t_n = 1, & \text{if } a_n \geqslant \theta \\
+t_n = 0, & \text{otherwise}
+\end{cases}
+\tag{5.84}
+\end{align*}
+
+\begin{align*}
+f(a) = \int_{-\infty}^{a} p(\theta) \, \mathrm{d} \theta
+\tag{5.85}
+\end{align*}
+
+\begin{align*}
+\Phi(a) = \int_{-\infty}^{a} \mathcal{N}(\theta \mid 0,1) \, \mathrm{d} \theta
+\tag{5.86}
+\end{align*}
+
+\begin{align*}
+\operatorname{erf}(a) = \frac{2}{\sqrt{\pi}} \int_0^a \exp\left( -\theta^2 / 2 \right) \, \mathrm{d} \theta
+\tag{5.87}
+\end{align*}
+
+\begin{align*}
+\Phi(a) = \frac{1}{2} \left\{ 1 + \frac{1}{\sqrt{2}} \operatorname{erf}(a) \right\}
+\tag{5.88}
+\end{align*}
+
+\subsection{Canonical link functions}
+
+\begin{align*}
+p(t \mid \eta, s) = \frac{1}{s} h\left( \frac{t}{s} \right) g(\eta) \exp\left( \frac{\eta t}{s} \right)
+\tag{5.89}
+\end{align*}
+
+\begin{align*}
+y = \mathbb{E}[t \mid \eta] = -s \frac{d}{d \eta} \ln g(\eta)
+\tag{5.90}
+\end{align*}
+
+\begin{align*}
+y = f\left( \mathbf{w}^{\top} \boldsymbol{\phi} \right)
+\tag{5.91}
+\end{align*}
+
+\begin{align*}
+\ln p(\mathbf{t} \mid \eta, s)=\sum_{n=1}^{N} \ln p\left(t_{n} \mid \eta, s\right)=\sum_{n=1}^{N}\left\{\ln g\left(\eta_{n}\right)+\frac{\eta_{n} t_{n}}{s}\right\}+\text{ const }
+\tag{5.92}
+\end{align*}
+
+\begin{align*}
+\nabla_{\mathbf{w}} \ln p(\mathbf{t} \mid \eta, s) & =\sum_{n=1}^{N}\left\{\frac{\mathrm{d}}{\mathrm{d} \eta_{n}} \ln g\left(\eta_{n}\right)+\frac{t_{n}}{s}\right\} \frac{\mathrm{d} \eta_{n}}{\mathrm{~d} y_{n}} \frac{\mathrm{d} y_{n}}{\mathrm{~d} a_{n}} \nabla_{\mathbf{w}} a_{n} \\
+& =\sum_{n=1}^{N} \frac{1}{s}\left\{t_{n}-y_{n}\right\} \psi^{\prime}\left(y_{n}\right) f^{\prime}\left(a_{n}\right) \phi_{n}
+\tag{5.93}
+\end{align*}
+
+\begin{align*}
+f^{-1}(y) = \psi(y)
+\tag{5.94}
+\end{align*}
+
+\begin{align*}
+\nabla \ln E(\mathbf{w}) = \frac{1}{s} \sum_{n=1}^{N} \left\{ y_n - t_n \right\} \boldsymbol{\phi}_n
+\tag{5.95}
+\end{align*}
+
+\end{document}
