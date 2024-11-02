@@ -1,0 +1,45 @@
+:PROPERTIES:
+:ID:       a49b60b2-010b-4c88-96e0-641d381ddc53
+:END:
+#+TITLE: Shot (film)
+#+FILETAGS: :concept:films
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+A *shot* is the fundamental unit of visual storytelling in film. It is a continuous sequence of frames captured by the camera from a single setup without interruption. Shots vary in type, angle, and duration, and each represents a distinct visual point of view. Every time the camera angle, position, or setup changes, a new shot is created.
+
+In a scene involving multiple characters or actions, various shots are used to convey different perspectives and emotional cues. Here are some hypothetical examples:
+
++ Close-Up Shot :: A close-up shot focuses on a character’s face to capture emotion. For instance, during an intense argument, a close-up of Character A’s face shows their anger and frustration.
++ Over-the-Shoulder Shot :: Taken from over one character’s shoulder, framing another character in front of them. In a conversation between Character A and Character B, an over-the-shoulder shot of Character A would show B’s reaction.
++ Wide Shot :: Shows the entire scene or setting, placing characters in context with their surroundings. For example, a wide shot might show all three characters sitting in a café, establishing the scene.
++ Cutaway Shot :: A brief shot that interrupts the main action to show a detail related to it. For instance, during a tense conversation, a cutaway to a ticking clock could emphasize time pressure.
+
+* Examples
+** The Godfather (1972)
++ Close-Up Shot :: In *The Godfather*, close-up shots are frequently used to emphasize intensity, such as the close-up of Michael Corleone’s face during the restaurant assassination scene. His calm, focused expression contrasts with the violent act he is about to commit.
++ Over-the-Shoulder Shot :: When Michael speaks with his father, Vito Corleone, an over-the-shoulder shot emphasizes the power dynamics between them, with Vito often framed to look larger, symbolizing authority.
++ Wide Shot :: The famous wedding scene opens with a wide shot, establishing the entire Corleone estate and its attendees, which underscores the family’s influence and social reach.
++ Cutaway Shot :: During tense moments, such as the hospital scene where Michael watches over his father, a cutaway shot to the empty, dimly lit hallway heightens the suspense, suggesting potential danger.
+
+** Breaking Bad (2008-2013)
++ Point-of-View (POV) Shot :: In *Breaking Bad*, POV shots are used to immerse the audience in a character’s experience. For example, in the episode “Box Cutter,” a POV shot from Jesse’s perspective looking at Gus creates a sense of vulnerability and fear.
++ Jump Cut :: Used frequently in *Breaking Bad* to emphasize time passing or to show Walter White’s evolving plans, such as in the famous montage where Walter and Jesse cook meth over several days.
++ Wide Shot :: In the desert scenes, wide shots emphasize the isolation and desolation of the environment, reflecting the characters’ moral decline.
++ Close-Up Shot :: Close-ups on Walt’s face often reveal subtle shifts in his character, such as his growing ruthlessness, by focusing on his eyes or expression during pivotal moments.
+
+** Westworld (Season 1)
+
++ Close-Up Shot :: One of the most iconic close-up shots in *Westworld* is when Dolores gazes directly into the camera during her diagnostic sessions. The camera lingers on her face, capturing subtle nuances as she responds to Bernard's questions. The moment when she swats a fly on her neck—an unprecedented action for a host—symbolizes the beginning of her awakening and defiance against her programming. This shot reveals her internal struggle and invites the audience to question the nature of consciousness.
+
++ Extreme Wide Shot :: The breathtaking aerial shots of the Delos park's vast landscapes, with guests riding on horseback across endless deserts and rugged terrains, establish the grandeur and illusion of freedom within Westworld. These wide shots contrast the beauty of the scenery with the controlled, artificial existence of the hosts.
+
++ Reverse Shot :: In the climactic moment when Dolores confronts her own identity, the camera alternates between her face and her reflection in a shattered mirror. This reverse shot poignantly visualizes her fractured sense of self and the merging of her personas, deepening the narrative of self-discovery.
+
+** Peaky Blinders
+
++ Silhouette Shot :: An iconic image from *Peaky Blinders* is the silhouette of Thomas Shelby walking through the smoky, dimly lit streets of Birmingham, often with a cigarette and the razor-edged cap on his head. The backlighting creates a stark contrast between his figure and the industrial backdrop, symbolizing his enigmatic and formidable nature.
+
++ Slow Motion Tracking Shot :: In the opening sequence of the series, a slow-motion shot follows Thomas riding a black horse through the streets, red dust swirling around him as he orchestrates a betting scam. This shot establishes his authority and the mystical aura surrounding him, enhanced by the haunting soundtrack.
+
++ Close-Up Shot :: Close-ups of Thomas Shelby's eyes, often framed under the brim of his cap, have become emblematic of the show. These shots capture the intensity of his gaze, reflecting his cunning, determination, and the burden of his war-induced trauma.
+

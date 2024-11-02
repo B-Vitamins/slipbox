@@ -1,0 +1,41 @@
+:PROPERTIES:
+:ID:       48e2173b-c7de-450e-9866-6c16dfe5e21d
+:END:
+#+TITLE: Transition (film)
+#+FILETAGS: :concept:films:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+A *transition* is a technique used in film editing to move from one shot to the next. Transitions control the rhythm and mood of a film, guiding the audience's experience from scene to scene or moment to moment. They vary in style, purpose, and effect, ranging from subtle cuts to dramatic effects.
+
+In film, various types of transitions convey distinct meanings or tones. Here are some common types:
+
++ Cut :: The most direct and common transition where one shot instantly replaces another without any visual effect. Cuts maintain the flow of action and are the standard transition in most scenes.
++ Match Cut :: A transition that connects two shots with similar visual or thematic elements. This can include graphic match cuts where similar shapes, colors, or compositions bridge two shots, enhancing continuity.
++ Dissolve :: A gradual transition where one shot fades into another, often used to imply the passage of time or create a soft, poetic transition.
++ Fade :: A transition that moves to or from a single color, usually black. Fade-out signals the end of a scene, while fade-in marks a new beginning or passage of time.
++ Wipe :: A transition where one shot is replaced by another with a visible motion, like a sliding line or shape that “wipes” the old image away. Wipes often add a stylized or nostalgic effect.
++ L-Cut and J-Cut (Sound Transitions) :: Sound transitions where audio overlaps shots:
+  - L-Cut: The audio from the first shot continues over the beginning of the next shot, creating a sense of continuity.
+  - J-Cut: The audio from the upcoming shot begins before the visual transition, introducing the new scene through sound.
++ Crossfade :: A blend of both video and audio from one shot into the next, creating a seamless merging. Crossfades are often used in montages or dream sequences.
++ Iris :: A circular transition, often seen in silent films, where the shot opens or closes as though viewed through a lens. This effect lends a retro or stylized feel.
++ Smash Cut :: A sudden, jarring cut often used to emphasize contrast, surprise, or heightened emotion, such as a cut from calm to loud or from intense action to quiet.
++ Jump Cut :: An intentional, often disorienting cut within a single shot or scene to create a jarring effect. Jump cuts suggest discontinuity, time jumps, or reflect a character's fragmented mindset.
+
+* Examples
+** Lawrence of Arabia (1962)
++ Match Cut :: The famous match cut from a blown-out match in T.E. Lawrence’s hand to a burning sunrise in the desert visually connects two flames, symbolizing Lawrence's journey from Britain to Arabia.
++ Crossfade :: The crossfades between desert scenes create a sense of timelessness and vastness, highlighting the endless nature of Lawrence's journey through the arid landscape.
++ Fade :: The film uses fades to black after major turning points in Lawrence’s life, such as the massacre scene, emphasizing the irreversible change in his character.
+
+** Fight Club (1999)
++ Jump Cut :: Jump cuts are used to reflect the narrator's disjointed, insomnia-fueled reality. For instance, during scenes where he zones out or experiences mental lapses, jump cuts capture his erratic state.
++ Smash Cut :: A smash cut from the quiet office scene to the high-energy fight club meetings mirrors the narrator's descent into chaos, shocking viewers with the contrast.
++ L-Cut :: During the narrator’s conversations with Tyler Durden, L-cuts carry Tyler’s voice into scenes where he's not visible, reinforcing the idea that Tyler is a part of his psyche.
+
+** The Sopranos (1999–2007)
++ Dissolve :: Dissolves between therapy scenes and family scenes highlight Tony Soprano's duality as a mob boss and family man, contrasting his two worlds in a visually smooth, continuous way.
++ Wipe :: In dream sequences, subtle wipes are used to transition between surreal and real imagery, creating an otherworldly effect that mirrors Tony’s subconscious.
++ J-Cut :: Tony’s therapist’s voice is heard over scenes of his daily life, as though her advice lingers with him, connecting his reflections in therapy with his real-world actions.
+
+These transitions define the pacing, mood, and style of a film or series, guiding the viewer’s emotional experience from one shot to the next and influencing the interpretation of each scene.

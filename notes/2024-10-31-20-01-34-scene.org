@@ -1,0 +1,64 @@
+:PROPERTIES:
+:ID:       616ecef2-81aa-4894-8112-68580336f921
+:END:
+#+TITLE: Scene (film)
+#+FILETAGS: :concept:film:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+A *scene* is a unit of storytelling in a film that takes place within a single location or continuous moment in time, presenting a cohesive action, interaction, or emotional moment. Scenes are typically made up of multiple shots combined through transitions, which convey a specific part of the narrative. Each scene serves a purpose within the film, whether to advance the plot, develop characters, establish setting, or build mood.
+
+* Demarcating a Scene
+Scenes can be identified using the following criteria:
+1. **Location Consistency**: A scene usually remains in one distinct place. A change in location generally signifies a transition to a new scene.
+2. **Temporal Continuity**: Scenes typically follow a continuous flow in time. Any leap forward or backward in time will likely mark the start of a new scene.
+3. **Unified Action or Objective**: A scene often centers around a single objective, action, or conversation that provides cohesion. This objective or action usually completes within the scene.
+4. **Emotional or Tonal Shift**: When the mood or tone of a moment changes drastically, it often marks the boundary of one scene and the start of another, even within the same location.
+5. **Character Focus and Engagement**: A change in the main character’s engagement or in the focus of interaction (like switching between two separate conversations) may indicate a scene change.
+
+* Types of Scenes
+Scenes in film vary in purpose and structure, but here are some common types along with hypothetical descriptions and functions.
+
++ Establishing Scene :: Introduces the setting, context, or world of the story. Typically composed of wide shots, it places characters in a recognizable environment, orienting the viewer.
++ Dialogue Scene :: Focuses on conversations between characters, often to reveal motivations, develop relationships, or introduce conflict. These scenes use close-ups, over-the-shoulder shots, and reverse shots to capture reactions and emotions.
++ Action Scene :: Emphasizes dynamic movement or conflict, like fights, chases, or physical confrontations. Action scenes often employ fast cuts, handheld shots, and tracking shots to create tension and energy.
++ Montage Scene :: Compresses time through a series of quick shots, showing events like training sequences, routines, or character progression. Montages provide information efficiently, allowing for visual storytelling over time.
++ Expository Scene :: Provides essential background information or plot details. Expository scenes are often used to catch the audience up on story events or to lay the foundation for the narrative.
++ Flashback Scene :: A sequence from the past that provides insight into a character’s background or motivations. Flashbacks are often marked by visual or audio cues to signify the shift in time.
++ Dream/Fantasy Scene :: Takes place within a character’s mind, often marked by stylized visuals, altered colors, or surreal elements to distinguish it from the main narrative.
+
+* Examples
+** Inception (2010)
++ Establishing Scene :: The film opens with an establishing shot of the beach, followed by shots of Cobb washed ashore. This scene introduces the surreal world of dreams and sets the tone for the complex layering that will follow.
++ Action Scene :: The rotating hallway fight scene, composed with rotating sets, slow motion, and quick cuts, immerses viewers in the dream logic of zero gravity and emphasizes the high stakes for Cobb’s team.
++ Montage Scene :: In a scene where Cobb’s team prepares for their mission, a montage shows each member gathering resources and creating strategies, effectively building anticipation and urgency for the upcoming heist.
++ Flashback Scene :: Cobb’s memories of Mal, portrayed in quick cuts and sepia tones, act as flashbacks to reveal his emotional struggle and guilt over her death.
+
+** Mad Men (2007–2015)
++ Dialogue Scene :: In “The Wheel,” Don Draper’s pitch for the Kodak Carousel uses close-ups and slow zooms, intensifying the emotion in his presentation and exposing his nostalgia for a simpler past.
++ Establishing Scene :: Each episode opens with an establishing shot of the Sterling Cooper office or New York City skyline, grounding viewers in the show’s 1960s setting.
++ Expository Scene :: In season 1, Don’s conversation with Rachel provides insight into his views on family and ambition, serving to build his character’s inner conflict.
++ Dream/Fantasy Scene :: Don’s recurring visions and dreams about past events and his childhood appear in muted tones and blurred edges, giving the scenes a surreal, subconscious feel.
+
+** The Matrix (1999)
++ Action Scene :: The lobby shootout, using slow-motion and quick cuts, shows Neo and Trinity skillfully dispatching guards, heightening the intensity and tension as they move closer to freeing Morpheus.
++ Dialogue Scene :: The “red pill or blue pill” scene between Morpheus and Neo is carefully crafted with medium close-ups and reverse shots, emphasizing the gravity of Neo’s choice to enter the Matrix.
++ Flashback Scene :: Neo’s flashbacks to moments of deja vu within the Matrix reveal his growing awareness and connection to the world’s artificiality.
++ Dream/Fantasy Scene :: Neo’s premonitions of the Matrix collapsing are portrayed with distorted audio and visuals, suggesting an altered reality within his mind.
+
+** The Lord of the Rings: The Fellowship of the Ring (2001)
++ Establishing Scene :: The opening scene of the Shire, with sweeping landscape shots, sets up Middle-earth’s pastoral beauty and provides the audience a sense of Frodo’s peaceful homeland.
++ Expository Scene :: The prologue narrated by Galadriel serves as an expository scene that explains the history of the One Ring, providing essential context for the entire trilogy.
++ Action Scene :: The fight scene in Balin’s Tomb, using quick cuts, handheld shots, and close-ups, immerses viewers in the intense battle between the Fellowship and the orcs.
++ Flashback Scene :: Arwen’s vision of her future with Aragorn acts as a flash-forward, showing the potential outcome of her choice to remain in Middle-earth, adding depth to her character’s motivations.
+
+Scenes act as the modular units of a film’s narrative, allowing the audience to experience specific moments, emotions, and events within a cohesive story framework. With various types of scenes, filmmakers can build rhythm, create layers of meaning, and guide viewers through complex or subtle emotional shifts, leading to a more engaging and impactful film experience.
+
+** Westworld (Season 1)
++ The Revelation of Bernard's True Identity :: In Episode 7, "Trompe L'Oeil," the scene where Bernard discovers he is a host is masterfully executed. Set in a secret lab, Theresa confronts Bernard about his duplicity, only for Dr. Ford to reveal Bernard's true nature. The tension escalates as the camera circles them, and the lighting casts ominous shadows. Bernard's confusion and horror are palpable as he grapples with his identity, culminating in Dr. Ford commanding him to harm Theresa. This pivotal scene alters the audience's understanding of the boundaries between human and host.
++ Maeve's Self-Mutilation Scene :: In Episode 2, "Chestnut," Maeve awakens from a nightmare and, in a desperate attempt to understand her reality, cuts open her abdomen to retrieve a bullet she suspects is there. The raw intensity of her actions, combined with haunting music and close-up shots of her trembling hands, create a visceral scene that underscores her terror and the dawning realization of her artificial existence.
++ Dolores and William's Farewell :: In Episode 10, "The Bicameral Mind," the emotionally charged scene where William realizes Dolores doesn't remember him captures the tragedy of unrequited love and the loss of innocence. The warm lighting contrasts with the coldness of Dolores's programmed responses, highlighting the chasm between human emotion and artificial memory.
+** Peaky Blinders
++ The Billy Kimber Confrontation :: In Season 1, Episode 6, the climactic scene where the Peaky Blinders face off against Billy Kimber's gang is a masterclass in building tension. Set on a deserted field, the rival gangs line up as the camera captures wide shots of the standoff and tight close-ups of the characters' faces. Thomas's negotiation with Kimber escalates into a violent shootout, culminating in Thomas killing Kimber. This scene solidifies the Peaky Blinders' dominance and Thomas's ruthlessness.
++ Grace's Betrayal Revealed :: In Season 1, Episode 5, the scene where Thomas discovers Grace's true identity as an undercover agent is emotionally charged. The intimate setting of the Garrison Pub contrasts with the explosive revelation. Close-ups capture the hurt and betrayal on Thomas's face, while muted lighting underscores the somber mood. This scene shifts their relationship dynamics and propels the narrative forward.
++ Arthur's Breakdown :: In Season 2, Episode 2, Arthur Shelby's struggle with PTSD culminates in a harrowing scene where he accidentally kills a young man in the boxing ring. Shaky camera work, rapid cuts, and distorted sound convey Arthur's mental turmoil, delving deep into the psychological scars of war.
+

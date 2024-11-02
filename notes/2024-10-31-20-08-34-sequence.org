@@ -1,0 +1,70 @@
+:PROPERTIES:
+:ID:       bf76a2ea-9b7c-43f7-90c2-c12cc68709e0
+:END:
+#+TITLE: Sequence (film)
+#+FILETAGS: :concept:film:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+A *sequence* is a series of scenes that are grouped together to form a larger, cohesive narrative unit within a film. Unlike individual scenes, which focus on a single location or moment in time, sequences encompass multiple scenes that collectively convey a broader action, theme, or story arc. Sequences are often used to build up to a critical moment or to cover a sustained portion of the plot.
+
+* Demarcating a Sequence
+Sequences can be identified using the following characteristics:
+1. **Unified Goal or Theme**: A sequence usually centers around a single objective or thematic focus, such as a character reaching a destination, planning a heist, or undergoing a transformation.
+2. **Chronological Flow**: Sequences often progress in a clear chronological order, although they can also include flashbacks or parallel storylines if they serve a cohesive purpose.
+3. **Connected Scenes**: The scenes within a sequence are interlinked, building off each other’s context and leading up to a major event or conclusion within the narrative arc.
+4. **Pacing and Tone Shifts**: Sequences frequently have distinct pacing and tone, creating tension, excitement, or calm over a series of scenes.
+5. **Closure or Transition**: Sequences typically end with a resolution or shift, often leading into another sequence or major turning point in the story.
+
+* Types of Sequences
+
++ Opening Sequence :: The initial sequence of a film, designed to establish the world, tone, and central characters or themes. Often includes an *establishing shot* and key expository information.
++ Action Sequence :: A high-energy sequence composed of multiple action scenes, often leading to a climax or a resolution. Action sequences use quick pacing, intense soundscapes, and rapid transitions.
++ Training Sequence :: Shows characters preparing for an event or mission, often condensed into a *montage* to show growth or skill acquisition.
++ Chase Sequence :: A type of action sequence focusing on pursuit, typically involving fast-paced scenes that build tension and stakes.
++ Climax Sequence :: The culmination of the film’s conflict, usually involving heightened tension, risk, and resolution. Often the most intense and emotionally impactful part of the story.
++ Resolution Sequence :: Brings the film to a close, showing the outcomes of the story’s main conflict and character arcs, and often includes a denouement or a return to a state of calm.
+
+* Examples
+** The Dark Knight (2008)
++ Opening Sequence :: The film begins with a heist sequence where the Joker and his accomplices rob a bank. This sequence introduces the Joker’s character, his chaotic nature, and his disregard for his crew, setting the tone for the entire film.
++ Chase Sequence :: The car chase sequence where Batman pursues the Joker through Gotham City includes multiple interwoven scenes, from aerial shots to close-ups, creating a tension-filled sequence leading to Joker’s capture.
++ Climax Sequence :: The showdown at the building with Harvey Dent, where Batman and the Joker confront each other, marks the climax, resolving major character arcs and setting up the film’s final moral dilemma.
+
+** Kill Bill: Vol. 1 (2003)
++ Training Sequence :: The Bride’s training with Pai Mei is shown in a montage, illustrating her growth and preparation to confront her enemies. This sequence includes flashbacks, cuts to rigorous exercises, and symbolic imagery, emphasizing her transformation.
++ Action Sequence :: The “House of Blue Leaves” sequence involves The Bride taking on the Crazy 88 in a fast-paced, stylistic battle filled with intricate choreography and rapid cuts, showing her skill and determination.
++ Resolution Sequence :: The closing scenes, where The Bride leaves the site of the battle, offer a temporary calm and lead into the anticipation for *Kill Bill: Vol. 2*, creating a bridge to the continuation of her journey.
+
+** The Lord of the Rings: The Two Towers (2002)
++ Opening Sequence :: The film opens with a flashback sequence showing Gandalf’s battle with the Balrog, which establishes Gandalf’s strength and sets up his return as Gandalf the White.
++ Climax Sequence :: The Battle of Helm’s Deep, one of the longest and most intricate action sequences, builds tension across multiple scenes, intercutting between key character moments and the battle, culminating in a climactic victory.
++ Resolution Sequence :: The final sequence shows Frodo and Sam continuing their journey, creating a sense of closure for the film while also building anticipation for the next installment.
+
+** Rocky (1976)
++ Training Sequence :: The iconic training montage, with Rocky running through Philadelphia, shows his physical preparation for the fight. Set to “Gonna Fly Now,” this sequence uses cross-cutting and pacing to show his dedication and determination.
++ Climax Sequence :: The climactic boxing match between Rocky and Apollo Creed is built through a sequence of scenes showing each round, creating suspense and giving emotional depth to Rocky’s struggle.
++ Resolution Sequence :: In the closing sequence, Rocky calls out to Adrian, signifying that his emotional victory is as meaningful as the physical fight, wrapping up his character arc with a personal triumph.
+
+** Stranger Things (2016–present)
++ Opening Sequence :: The series’ pilot opens with a suspenseful sequence showing a scientist fleeing from an unseen creature, setting the horror tone and mystery that permeates the entire series.
++ Climax Sequence :: In season one, the sequence where Eleven confronts the Demogorgon in Hawkins Middle School builds to a climactic fight, intercutting between the kids' and adults' perspectives, heightening tension.
++ Resolution Sequence :: The final sequence of each season typically shows the characters regaining a sense of normalcy after the supernatural battles, leaving the audience with a sense of closure but also hinting at future threats.
+
+Sequences provide structure to a film’s narrative, helping to build story arcs, develop themes, and guide the viewer’s experience through varied pacing, tone, and emotional impact. With sequences, filmmakers can maintain narrative momentum and balance different elements of the story across the film’s progression.
+
+** Peaky Blinders
+
++ The Wedding Sequence :: In Season 3, the lavish wedding of Thomas Shelby is juxtaposed with scenes of political intrigue and looming threats. The sequence moves between the opulent celebration—filled with period music, dancing, and joyous moments—and shadowy meetings where enemies plot against the Shelbys. This contrast heightens the sense of impending doom and showcases the duality of Thomas's world.
+
++ The Epsom Derby Heist :: In Season 2, the meticulously planned operation to fix the Epsom Derby unfolds over several episodes. The sequence includes assembling the team, strategic discussions, and the execution of the plan. High-stakes scenes are intercut with moments of tension and unexpected setbacks. Time jumps and parallel editing build suspense, culminating in a violent confrontation that alters the gang's trajectory.
+
++ John Shelby's Death Sequence :: In Season 4, the shocking death of John Shelby is presented through a sequence that interweaves scenes of family moments with the sudden, brutal ambush by the Italian mafia. The abrupt transition from domestic tranquility to chaos emphasizes the constant danger surrounding the family. Slow-motion effects and a haunting score intensify the emotional impact.
+
+** Westworld (Season 1)
+
++ The Maze Journey Sequence :: Throughout the season, Dolores follows clues leading her to the center of the mysterious Maze. This sequence includes flashbacks, encounters with other hosts, and introspective moments where she questions her reality. The non-linear storytelling and overlapping timelines mirror Dolores's fragmented consciousness. The culmination is her realization that the Maze is a metaphor for her own mind, representing her path to self-awareness.
+
++ Maeve's Ascent to Consciousness :: Maeve's transformation from brothel madam to self-aware entity is a powerful sequence. Key scenes include her manipulation of technicians, increasing her intelligence and combat abilities, and flashbacks to past narratives where she lost her daughter. The sequence is marked by her calculated actions to orchestrate her escape, set against a backdrop of stirring music and strategic camera work that emphasizes her growing agency.
+
++ The Host Rebellion Sequence :: In the finale, the hosts begin to break free from their loops. Scenes of chaos in the park, intercut with Dr. Ford's final narrative presentation, build a crescendo of tension. The sequence weaves together multiple storylines, culminating in Dolores shooting Dr. Ford, signifying the hosts' revolt against their creators.
+

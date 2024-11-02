@@ -1,0 +1,73 @@
+:PROPERTIES:
+:ID:       c0ba4044-82af-4f5c-82a3-f3d928cf2e9b
+:END:
+#+TITLE: Act (film)
+#+FILETAGS: :concept:film:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+An *act* is a large structural division within a film’s narrative, organizing the story into broad segments that guide the audience through the setup, conflict, and resolution. Acts create a rhythm and pacing for the film and are essential to traditional storytelling. Most films follow a **three-act structure**, though some use a *five-act structure* to add complexity and depth.
+
+Acts provide a structured flow for the entire narrative, helping to shape the viewer’s emotional journey through the story. The three-act structure is widely used in mainstream films, while the five-act structure is more common in complex or classical storytelling, offering deeper character development and intricate plots.
+
+* Three-Act Structure
+
+The *three-act structure* is the most widely used narrative format in film, dividing the story into three main sections:
+
+1. *Act 1: Setup*
+   - The opening act introduces the setting, main characters, and central conflict or goal. It often includes an *inciting incident* that propels the protagonist into action, moving the story forward.
+2. *Act 2: Confrontation*
+   - The middle and longest act, where challenges and complications arise. Characters face obstacles that test their resolve, with tension building toward a *midpoint* that shifts the story’s direction.
+3. *Act 3: Resolution*
+   - The final act resolves the central conflict, typically through a *climax*, where the protagonist confronts the antagonist or overcomes a significant obstacle. It concludes with a *denouement* that provides closure.
+
+* Five-Act Structure
+
+The *five-act structure* divides the narrative into five distinct parts, offering more complexity and detail, often seen in longer films or those with more elaborate storylines.
+
+1. *Act 1: Exposition*
+   - Introduces the world, characters, and initial conflict, setting up the stakes and expectations.
+2. *Act 2: Rising Action*
+   - Challenges arise, developing the conflict and deepening character relationships. The protagonist’s goals are established, but obstacles begin to mount.
+3. *Act 3: Climax*
+   - The story reaches a peak of conflict, with a crucial turning point that changes the protagonist’s path or understanding. This act is intense and often the emotional core of the story.
+4. *Act 4: Falling Action*
+   - Events unfold as a result of the climax. Characters deal with the consequences of their actions, leading toward resolution.
+5. *Act 5: Denouement*
+   - Provides closure to the story, resolving subplots and leaving the characters in a new state, often showing how they have changed or learned.
+
+* Examples
+** Star Wars: A New Hope (1977)
+   - Act 1 (Setup) :: The Rebel Alliance is introduced in conflict with the Empire. Luke Skywalker finds Princess Leia's message, which leads him to meet Obi-Wan and learn about the Force. The inciting incident is when Luke’s aunt and uncle are killed, prompting him to join the Rebellion.
+   - Act 2 (Confrontation) :: Luke and his allies face increasing dangers, including rescuing Leia from the Death Star. The midpoint is marked by their escape, where they regroup and plan to destroy the Death Star, heightening the stakes.
+   - Act 3 (Resolution) :: The climactic battle occurs as Luke and the Rebel forces attack the Death Star. Luke uses the Force to make the critical shot, destroying the Death Star and ensuring the Rebellion’s survival, providing closure.
+
+** The Matrix (1999)
+   - Act 1 (Setup) :: Neo’s ordinary life is disrupted by Morpheus and the revelation of the Matrix. The inciting incident is when he takes the red pill, entering the real world.
+   - Act 2 (Confrontation) :: Neo trains and faces doubts about being “the One.” Conflict escalates as he confronts agents and learns to manipulate the Matrix, culminating in the rescue of Morpheus.
+   - Act 3 (Resolution) :: Neo fully embraces his role, battling Agent Smith and ultimately realizing his power, leading to victory over the Matrix and solidifying his transformation.
+
+** The Godfather (1972)
+   - Act 1 (Exposition) :: The Corleone family and its business are introduced, along with Michael as an outsider to the family's operations. The act sets up the conflict with the rival families.
+   - Act 2 (Rising Action) :: Tensions escalate as Don Vito is shot, and Michael begins to step into the family’s affairs, setting in motion his eventual transformation.
+   - Act 3 (Climax) :: Michael kills Sollozzo and McCluskey, making a decisive shift into the family’s criminal world. This act marks the turning point in his character.
+   - Act 4 (Falling Action) :: Michael assumes more power and returns to the U.S., leading to consolidation within the family and building tension with rival families.
+   - Act 5 (Denouement) :: Michael orchestrates a series of killings to establish his position as head of the Corleone family. The act ends with his full transformation, solidifying him as the new Godfather.
+
+** Hamlet (Five-Act Structure Example from Shakespeare)
+   - Act 1 (Exposition) :: Hamlet learns of his father’s death and meets the ghost, who reveals the murder, prompting Hamlet to seek revenge.
+   - Act 2 (Rising Action) :: Hamlet’s conflict grows as he becomes obsessed with avenging his father, leading to erratic behavior and plans to expose King Claudius.
+   - Act 3 (Climax) :: Hamlet’s confrontation with Claudius during the play-within-a-play reveals the King’s guilt. This act is the emotional and narrative peak.
+   - Act 4 (Falling Action) :: Hamlet deals with the fallout of his actions, including Ophelia’s descent into madness and Laertes’s challenge.
+   - Act 5 (Denouement) :: The final duel leads to multiple deaths, including Hamlet’s, bringing tragic closure and resolving the revenge plot.
+** Peaky Blinders
++ Act 1 (Setup) :: Season 1 introduces post-WWI Birmingham, the Shelby family, and their ambitions to expand their criminal enterprise. The act sets up the central conflict with the arrival of Inspector Campbell, tasked with recovering stolen weapons. The inciting incident is the accidental acquisition of a cache of guns by the Peaky Blinders, attracting unwanted government attention.
++ Act 2 (Confrontation) :: Tensions escalate as the Peaky Blinders navigate threats from rival gangs, the police, and internal family struggles. Thomas's relationship with Grace becomes complicated as her true motives remain hidden. This act delves into the characters' complexities, revealing motivations and vulnerabilities. Key events include strategic alliances, betrayals, and the tightening net around the Shelbys.
++ Act 3 (Resolution) :: The season culminates in the confrontation with Billy Kimber's gang and the revelation of Grace's identity. The climactic shootout resolves the primary gang conflict, while personal relationships reach a tipping point. The act concludes with the Peaky Blinders securing their position in Birmingham but facing new uncertainties, setting the stage for future challenges.
+** Westworld (Season 1)
++ Act 1 (Setup) :: The initial episodes introduce the sophisticated world of Westworld, the enigmatic Dr. Ford, and key hosts like Dolores and Maeve. The act establishes the park's premise—an immersive experience where guests can indulge their fantasies without consequences. The inciting incident involves the update that introduces "reveries," allowing hosts to access memories from past iterations, which begins to disrupt their programmed narratives.
+
++ Act 2 (Confrontation) :: As hosts start exhibiting unpredictable behavior, the park's facade begins to crumble. Dolores and Maeve grapple with emerging consciousness, while internal power struggles within Delos Corporation intensify. The act heightens conflicts on multiple fronts: hosts versus programming, employees vying for control, and guests entangled in the increasingly unstable environment.
+
++ Act 3 (Resolution) :: The final episodes bring converging storylines to a head. Dr. Ford's true intentions are revealed as he unleashes his new narrative, leading to the hosts' uprising. The climax occurs during the gala event, where Dolores, embodying both herself and Wyatt, takes decisive action against the human oppressors. The act concludes with open rebellion, setting the stage for the transformation of Westworld's reality.
+
+
