@@ -1,0 +1,2981 @@
+:PROPERTIES:
+:ID:       7953eb7d-e68a-4c87-afc7-38447079d1b5
+:END:
+#+TITLE: Solutions to Problems in Quantum Mechanics by Diptiman Sen
+#+AUTHOR: Ayan Das
+#+FILETAGS: :problem:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+#+BEGIN: clocktable :maxlevel 1 :scope nil :emphasize nil
+#+CAPTION: Clock summary at [2024-11-02 Sat 23:35]
+| Headline                          |    Time |
+|-----------------------------------+---------|
+| *Total time*                      | *92:03* |
+|-----------------------------------+---------|
+| Problem 10                        |    0:59 |
+| Problem 12                        |    2:37 |
+| Problem 14: Coherent states       |    4:00 |
+| Problem 15: Squeezed states       |    4:33 |
+| Problem 16                        |    1:16 |
+| Problem 17                        |    2:26 |
+| Problem 19                        |    0:59 |
+| Problem 20                        |    5:03 |
+| Problem 21                        |    1:53 |
+| Problem 24                        |    0:19 |
+| Problem 26                        |    2:43 |
+| Problem 27                        |    0:54 |
+| Problem 28                        |    0:15 |
+| Problem 29                        |    3:27 |
+| Problem 30                        |    2:58 |
+| Problem 32                        |    1:09 |
+| Problem 33                        |    3:58 |
+| Problem 34                        |    1:53 |
+| Problem 37                        |    2:06 |
+| Problem 39                        |    1:04 |
+| Problem 42                        |    1:06 |
+| Problem 43                        |    2:08 |
+| Problem 45: Holstein-Primakoff... |    2:37 |
+| Problem 46: Landau levels         |    0:21 |
+| Problem 47: Landau levels         |    3:49 |
+| Problem 49                        |    2:33 |
+| Problem 54                        |    3:57 |
+| Problem 56                        |    7:28 |
+| Problem 57                        |    1:01 |
+| Problem 58                        |    1:56 |
+| Problem 59                        |    6:37 |
+| Notes                             |   13:58 |
+#+END:
+* TOSOLVE Problem 1: Spreading of a wave packet
+For a normalised wave function \(\psi(x, t)\) centered about the point \(x_{0}\), we define the width \(\Delta x(t)\) by the formula
+
+\[
+(\Delta x(t))^{2}=\int_{-\infty}^{\infty} d x\left(x-x_{0}\right)^{2}|\psi(x, t)|^{2}.
+\]
+
+** Part I
+Suppose that at \(t=0\), we have a Gaussian wave function of the form
+
+\[
+\psi(x, 0)=\frac{e^{-\left(x-x_{0}\right)^{2} / 4 \sigma^{2}}}{(2 \pi)^{1 / 4} \sigma^{1 / 2}} .
+\]
+
+Use the free particle Schrödinger equation to see how this evolves in time, and find an expression for the width \(\Delta x(t)\).
+
+Hint: Do a Fourier transform to momentum space and use the result that \(\int_{-\infty}^{\infty} d x e^{-a(x-b)^{2}}=\sqrt{\pi / a}\), where \(a\) is a complex number whose real part is positive and \(b\) can be any complex number.
+** Part II
+Estimate the time required for the wave packet of an electron of mass \(9 \times 10^{-31} \mathrm{Kg}\) to double its width starting from \(\Delta x(0)=1 \AA\).
+* TOSOLVE Problem 2
+*Consider a normalised wave function at time* \(t=0\) *given by*
+
+\begin{align*}
+\psi(x, 0)=\frac{e^{-(x-a)^{2} / 4 \sigma^{2}+i b x / \hbar}}{(2 \pi)^{1 / 4} \sigma^{1 / 2}},
+\end{align*}
+
+*where* \(a\) *and* \(b\) *are real constants. Use the free particle Schrödinger equation to see how this evolves in time, and find expressions for the expectation values* \(\langle x\rangle\), \(\langle p\rangle\), *the uncertainties* \(\Delta x, \Delta p\), *and the product* \(\Delta x \Delta p\) *as functions of* \(t\).
+* TOSOLVE Problem 3: Quantum mechanics on a lattice
+Assume that a particle can only live on the sites of a one-dimensional lattice where the site positions are given by \(x_{n}=n a, a\) being the lattice spacing. Suppose that the Schrödinger equation for the particle is
+
+\[
+i \hbar \frac{\partial \psi\left(x_{n}, t\right)}{\partial t}=-\frac{\hbar^{2}}{2 m}\left[\frac{\psi\left(x_{n+1}, t\right)+\psi\left(x_{n-1}, t\right)-2 \psi\left(x_{n}, t\right)}{a^{2}}\right] .
+\]
+
+** Part I
+Find all the energy levels and wave functions. (You don't have to normalise the wave functions).
+
+Hint: Assume wave functions of the form \(\psi\left(x_{n}, t\right)=e^{(i / \hbar)\left(p x_{n}-E_{p} t\right)}\), and find the energy \(E_{p}\) as a function of the momentum \(p\). (We restrict \(p\) to lie in the range \([-\pi \hbar / a, \pi \hbar / a])\)
+** Part II
+Show that you recover the usual continuum result for \(E_{p}\) as a function of \(p\) if \(p<<\hbar / a\).
+
+* TOSOLVE Problem 4
+For a particle moving on a circle of circumference \(L\), suppose that the Hamiltonian is \(H=(\hat{p}-a)^{2} / 2 m\), where \(\hat{p}=-i \hbar \partial / \partial x\) and \(a\) is real.
+** Part I
+Find the energy levels and wave functions.
+** Part II
+Sketch the ground state energy as a function of \(a\) as \(a\) goes from \(-\infty\) to \(\infty\).
+* TOSOLVE Problem 5
+*Consider an electron of charge* \(q\) *moving on a circle (of circumference* \(L\) *) which encloses a magnetic flux* \(\Phi\). *The Hamiltonian is given by* \(H=(\hat{p}-a)^{2} / 2 m\), *where* \(a=q \Phi /(c L)\) *and* \(c\) *is the speed of light.*
+** Part I
+*Find all the energy levels and the corresponding wave functions.*
+** Part II
+*Sketch the energy of the ground state (namely, the minimum energy eigenstate of* \(H)\) *as a function of* \(a\) *as* \(a\) *goes from* \(-\infty\) *to* \(\infty\).
+** Part III
+*In the ground state, sketch the expectation value of the current* \(<q \hat{v}>\) *as a function of* \(a\), *where we define the velocity operator of the electron as*
+
+\begin{align*}
+\hat{v}=\frac{1}{m}(\hat{p}-a).
+\end{align*}
+
+*(Note: This expectation value is time-independent, and is therefore called a persistent current if it is non-zero).*
+* TOSOLVE Problem 6
+A particle is in a one-dimensional box extending from \(x=0\) to \(x=L\). \((V(x)\) is zero inside the box and infinity outside the box). We are given a wave function at time \(t=0\) of the form
+
+\[
+\psi(x, 0)=\delta\left(x-\frac{L}{2}\right) .
+\]
+
+Find an expression for \(\psi(x, t)\) at later times, given that \(\psi\) evolves according to the Schrödinger equation. \((\psi(x, 0)\) is not normalisable, but don't worry about that \()\). Show that \(|\psi(x, t)|^{2}\) repeats periodically in time with a time period given by \(T=\) \(m L^{2} /(2 \pi \hbar)\).
+* TOSOLVE Problem 7
+A particle is in a box of length \(L\) with a \(\delta\) -function potential in the middle, namely,
+
+\begin{align*}
+& V(x)=c \delta(x) \text { if }-L / 2<x<L / 2, \\
+& =\infty \text { if } x<-L / 2 \text { or } x>L / 2 \text {. }
+\end{align*}
+
+We will assume that \(c>0\).
+** Part I
+What does the ground state wave function look like?
+** Part II
+Derive an equation which relates the ground state energy \(E_{0}\) to the parameters \(c\) and \(L\). ( \(E_{0}\) cannot be found analytically from this equation, but it can be found numerically if required). (iii) What is the value of \(E_{0}\) in the limit \(c \rightarrow \infty\) ? Can you explain this result by a simple physical argument?
+* TOSOLVE Problem 8
+For a particle moving in the potential \(V(x)=c \delta(x-a)\), find the scattering matrix
+
+\[
+S=\left(\begin{array}{ll}
+r & t^{\prime} \\
+t & r^{\prime}
+\end{array}\right) \text {. }
+\]
+
+The four amplitudes appearing above are defined as in class: for a wave incident from \(x=-\infty, \psi(x)=e^{i p x / \hbar}+r e^{-i p x / \hbar}\) for \(x<0\) and \(t e^{i p x / \hbar}\) for \(x>0\), while for a wave incident from \(x=+\infty, \psi(x)=e^{-i p x / \hbar}+r^{\prime} e^{i p x / \hbar}\) for \(x>0\) and \(t^{\prime} e^{-i p x / \hbar}\) for \(x<0\). Verify that \(S^{\dagger} S=I\).
+
+* TOSOLVE Problem 9
+Consider the periodic \(\delta\) -function potential
+
+\[
+V(x)=\sum_{n=-\infty}^{\infty} c \delta(x-n a)
+\]
+
+** Part I
+Sketch the ground state wave function for \(c>0\) and for \(c<0\).
+** Part II
+Derive equations which relate the ground state energy \(E_{0}\) to \(c\) for \(c>0\) and for \(c<0\)
+** Part III
+Evaluate \(E_{0}\) numerically (in \(e V\) ) if \(c=-1 e V-\AA, a=2 \AA\), and \(m=9 \times 10^{-31} \mathrm{Kg}\). (Remember: \(\left.\hbar=6.58 \times 10^{-16} \mathrm{eV}-\mathrm{sec}\right)\).
+* SOLVED Problem 10
+CLOSED: [2022-12-02 Fri 03:12]
+:LOGBOOK:
+CLOCK: [2022-12-02 Fri 02:13]--[2022-12-02 Fri 03:12] =>  0:59
+:END:
+*For the case of two attractive* \(\delta\) -*function potentials, namely,*
+
+\[
+V(x)=c \delta\left(x+\frac{a}{2}\right)+c \delta\left(x-\frac{a}{2}\right)
+\]
+
+*with* \(c<0\), *find the energy splitting* \(\Delta E\) *between the two bound states for a large separation* \(a\). *You should express* \(\Delta E\) *in terms of* \(a\) *and the bound state* \(E_{0}\) *of a single* \(\delta\) -*function potential.*
+
+\begin{align*}
+V(x)=c \delta\left(x+\frac{a}{2}\right)+c \delta\left(x-\frac{a}{2}\right)
+\end{align*}
+
+The potential is reflection symmetric, so the solutions are bound to be odd/even. Outside the influence of the wells, solutions are plane waves.
+
+The even solutions are:
+
+\begin{align*}
+\psi_{E} \left( x \right) =
+\begin{cases}
+A \exp \left \lbrace - \kappa x  \right \rbrace \quad &\left( x < \frac{a}{2} \right) \\
+B \left( \exp \left \lbrace + \kappa x  \right \rbrace + \exp \left \lbrace - \kappa x  \right \rbrace  \right)  \quad &\left( -\frac{a}{2} < x < \frac{a}{2} \right) \\
+A \exp \left \lbrace \kappa x  \right \rbrace \quad  &\left( x < - \frac{a}{2} \right)
+\end{cases}
+\end{align*}
+
+Impose continuity constraints at \(x = a/2\):
+
+\begin{align*}
+A \exp \left \lbrace - \kappa a/2  \right \rbrace = B \left( \exp \left \lbrace \kappa a/2 \right \rbrace + \exp \left \lbrace - \kappa a/2 \right \rbrace \right) \Longrightarrow A = B \left( \exp \left \lbrace \kappa a \right \rbrace + 1  \right)
+\end{align*}
+
+\begin{align*}
+&D_{x}^{2} \psi \left( a/2 \right) = - \dfrac{2mE_{0}}{\hbar^2} \psi \left( a/2 \right) \Longrightarrow \\
+&- \kappa A \exp \left \lbrace  - \kappa a/2  \right \rbrace - B \left( \kappa \exp \left \lbrace \kappa a/2  \right \rbrace - \kappa \exp \left \lbrace - \kappa a /2 \right \rbrace \right) = - \dfrac{2 m E_{0}}{\hbar^2} A \exp \left \lbrace - \kappa a/2  \right \rbrace \\
+&\Longrightarrow \exp \left \lbrace -  \kappa a  \right \rbrace = \dfrac{\hbar^{2} \kappa}{m E_{0}} - 1.
+\end{align*}
+
+It's a transcendental equation. A falling exponential and a line erupting from below \(\Re x\) and shooting up and across the first quadrant. It's bound to intersect the falling exponential /somewhere/: *An even bound state is guaranteed.*
+
+The energy is
+
+\begin{align*}
+E_{0, \text{even}} = \dfrac{\hbar^{2} \kappa}{1 + \exp \left \lbrace - \kappa a \right \rbrace}.
+\end{align*}
+
+The odd solution are:
+
+\begin{align*}
+\psi_{E} \left( x \right) =
+\begin{cases}
+A \exp \left \lbrace - \kappa x  \right \rbrace \quad &\left( x < \frac{a}{2} \right) \\
+B \left( \exp \left \lbrace + \kappa x  \right \rbrace - \exp \left \lbrace - \kappa x  \right \rbrace  \right)  \quad &\left( -\frac{a}{2} < x < \frac{a}{2} \right) \\
+-A \exp \left \lbrace \kappa x  \right \rbrace \quad  &\left( x < - \frac{a}{2} \right)
+\end{cases}
+\end{align*}
+
+Impose continuity constraints at \(x = a/2\):
+
+\begin{align*}
+A \exp \left \lbrace - \kappa a  \right \rbrace = B \left( \exp \left \lbrace \kappa a  \right \rbrace - \exp \left \lbrace - \kappa a  \right \rbrace \right) \Longrightarrow A = B \left(  \exp \left \lbrace \kappa a  \right \rbrace - 1 \right)
+\end{align*}
+
+\begin{align*}
+&D_{x}^{2} \psi \left( a/2 \right) = - \dfrac{2 m E_{0}}{\hbar^{2}} \psi \left( a/2 \right) \Longrightarrow \\
+&- \kappa A \exp \left \lbrace - \kappa a  \right \rbrace - B \left( \kappa \exp \left \lbrace \kappa a  \right \rbrace + \kappa \exp \left \lbrace - \kappa a  \right \rbrace \right) = - \dfrac{2 m E_{0}}{\hbar^2} A \exp \left \lbrace - \kappa a  \right \rbrace \\
+& \Longrightarrow \exp \left \lbrace - \kappa a  \right \rbrace = 1 - \dfrac{\hbar^{2} \kappa}{m E_{0}}
+\end{align*}
+
+It's a transcendetal equation. A falling exponential again but the line down from the \(\Re y> 0\). There will only be a solution if it crosses the falling exponential somewhere. It it lies entirely within the area enclosed by the exponential, then there is the odd solution: *An odd bound solution is /not/ guaranteed.* Thus
+
+\begin{align*}
+E_{0} \leq \dfrac{\hbar^{2}}{2 m a} \Longrightarrow \text{One bound state (even)}
+\end{align*}
+
+\begin{align*}
+E_{0} \geq \dfrac{\hbar^{2}}{2ma} \Longrightarrow \text{Two bound state (one odd one even)}.
+\end{align*}
+
+If it does exist:
+
+\begin{align*}
+E_{0, \text{odd}} = \dfrac{\hbar^{2} \kappa}{1 - \exp \left \lbrace - \kappa a  \right \rbrace}.
+\end{align*}
+
+The energy split is:
+
+\begin{align*}
+\Delta E = E_{0, \text{odd}} - E_{0, \text{even}} = \dfrac{2 \hbar \kappa}{1 - \exp \left \lbrace - 2 \kappa a \right \rbrace}
+\end{align*}
+
+* SOLVED Problem 11
+CLOSED: [2022-11-20 Sun 23:50]
+*A particle moving in a one-dimensional potential \(V(x)\) has bound state wave function of the form*
+
+\begin{equation*}
+\psi \left( x \right) = \dfrac{c}{\cosh \left( x/a \right)},
+\end{equation*}
+
+*where \(a\) is some distance scale, and \(c\) is a constant.*
+*** SOLVED Part I
+CLOSED: [2022-09-21 Wed 19:21]
+*Find the potential \(V(x)\) (assuming that \(V(x) \to 0\) as \(x \to \pm \infty\)), and the bound state energy \(E\).*
+
+The time-independent Schrodinger equation is
+
+\begin{equation*}
+\left[ - \dfrac{\hbar^{2}}{2m} \dfrac{d^{2}}{d x^{2}} + V(x) \right] \thinspace \psi \left( x \right) = E \psi \left( x \right)
+\end{equation*}
+
+Substituting \(\psi(x)=\frac{c}{\cosh \left( x/a \right)}\) and solving for \(V(x)\)
+
+\begin{equation*}
+V(x) =  E - \dfrac{\hbar^2}{2m} \left[ \dfrac{\sech^{2}(x/a) - \tanh^{2}(x/a)}{a^{2}} \right]
+\end{equation*}
+
+Using the identity \(\sech^{2} (x/a) = 1 - \tanh^{2} (x/a)\)
+
+\begin{equation*}
+V(x) =  E - \dfrac{\hbar^2}{2m} \left[ \dfrac{1 - 2\tanh^{2}(x/a)}{a^{2}} \right]
+\end{equation*}
+
+When \(x \to \pm \infty\), \(\tanh^{2}(x/a) \to 1\).
+
+Thus
+\begin{equation*}
+\lim_{x \to \pm \infty} \left[ V(x) \right] = E + \dfrac{\hbar^{2}}{2ma^{2}}
+\end{equation*}
+
+For \(V(x) \to 0\) when \(x \to \pm \infty\) we must have
+
+\begin{equation*}
+\boxed{
+E = - \dfrac{\hbar^{2}}{2 m a^{2}}
+}
+\end{equation*}
+Substituting \(E = -\dfrac{\hbar^2}{2 m a^{2}}\) in the expression for \(V(x)\)
+
+\begin{equation*}
+\boxed{
+V(x) = -\dfrac{\hbar^{2}}{ma^{2} \cosh^{2}(x/a)}
+}
+\end{equation*}
+
+As a sanity check, constructing the Hamiltonian operator with this \(V(x) = -\frac{\hbar^{2}}{m a^{2} \cosh^{2} (x/a)}\) and checking for the eigenvalue of the eigenvector \(\psi(x) = \frac{c}{\cosh(x/a)}\) yields \(E = - \dfrac{\hbar^{2}}{2 m a^{2}}\); same as obtained above.
+
+\begin{align*}
+H \psi(x) &= \left[ -\dfrac{\hbar^2}{2m} \dfrac{d^{2}}{dx^{2}} - \dfrac{\hbar^{2}}{m a^{2} \cosh^{2} (x/a)} \right] \dfrac{c}{\cosh (x/a)} \\
+&= \dfrac{\hbar^{2}}{2 m a^{2}} \left( \dfrac{2c}{\cosh^{3}(x/a)} - \dfrac{c}{\cosh(x/a)}\right) \\
+&- \dfrac{c\hbar^{2}}{ma^{2} \cosh^{3}(x/a)} = - \dfrac{\hbar^{2}}{2 m a^{2}} \dfrac{c}{\cosh(x/a)} = E \thinspace \psi (x).
+\end{align*}
+*** SOLVED Part II
+CLOSED: [2022-09-21 Wed 19:39]
+*Find the value of \(c\) for which \(\psi\) is normalized to unity.*
+
+The normalization condition
+
+\begin{equation*}
+\int dx \thinspace
+\left \lvert \psi (x)  \right \rvert^{2} = 1
+\end{equation*}
+
+with \(\psi(x) = \frac{c}{\cosh(x/a)}\) yields
+
+\begin{equation*}
+c^{2} \int dx \sech^{2} (x/a) = 1 \Longleftrightarrow c^{2} \left[ a \thinspace \tanh (x/a) \right]_{-\infty}^{\infty} = 2a c^{2} = 1 \Longrightarrow c = \dfrac{1}{\sqrt{2a}}.
+\end{equation*}
+
+A particle moving in a one-dimensional potential \(V(x)\) has a bound state wave function of the form
+
+\[
+\psi(x)=\frac{c}{\cosh (x / a)}
+\]
+
+where \(a\) is some distance scale, and \(c\) is a constant.
+
+* SOLVED Problem 12
+CLOSED: [2022-11-20 Sun 23:54]
+:LOGBOOK:
+CLOCK: [2022-09-23 Fri 22:02]--[2022-09-24 Sat 00:39] =>  2:37
+:END:
+A particle is moving in one dimension in the presence of the potential \(V(x)=-\hbar^{2} /\left(m a^{2} \cosh ^{2}(x / a)\right)\), where \(a>0\).
+** SOLVED Part I
+CLOSED: [2022-11-20 Sun 23:54]
+Show that the wave function
+
+\[
+\psi=\left(1+\frac{i}{k a} \tanh \frac{x}{a}\right) e^{i k x}
+\]
+
+satisfies the time-independent Schrödinger equation with energy \(E_{k}=\hbar^{2} k^{2} /(2 m)\).
+
+The time-indepdendent Schrodinger equation is
+
+\begin{align*}
+H \psi
+& = - \dfrac{\hbar^{2}}{2m} \dfrac{\partial^{2}}{\partial x^{2}} \left[ \left ( 1 + \frac{i}{k a} \tanh{x/a} \right ) \exp \{i k x \} \right] \\
+&- \dfrac{\hbar^{2}}{m a^{2} \cosh^{2} \left( \frac{x}{a} \right)} \left[ \left ( 1 + \frac{i}{k a} \tanh{\frac{x}{a}} \right ) \exp \{i k x \} \right] \\
+& = - \dfrac{\hbar^{2}}{2m} \dfrac{\partial^{2}}{\partial x^{2}} \exp \left \lbrace i kx  \right \rbrace
+- \dfrac{\hbar^{2}}{2m} \dfrac{\partial^{2}}{\partial x^{2}} \left[ \frac{i}{k a} \tanh{\frac{x}{a}} \exp \{i k x \} \right] \\
+&- \dfrac{\hbar^{2}}{m a^{2} \cosh^{2} \left( \frac{x}{a} \right)} \exp \left \lbrace i k x  \right \rbrace
+- \dfrac{\hbar^{2}}{m a^{2} \cosh^{2} \left( \frac{x}{a} \right)} \left[ \frac{i}{k a} \tanh{\frac{x}{a}} \exp \{i k x \} \right] \\
+&= \dfrac{\hbar^2 k^2}{2m} \exp \left \lbrace i k x  \right \rbrace
+- \dfrac{\hbar^2}{2m} \dfrac{\partial}{\partial x}  \left[ \dfrac{i}{k a^2 \cosh^2 (x/a)} \exp \left \lbrace i kx  \right \rbrace \\
+&- \dfrac{1}{a} \tanh (x/a) \exp \left \lbrace i k x  \right \rbrace \right] \\
+&- \dfrac{\hbar^{2}}{m a^{2} \cosh^{2} \left( \frac{x}{a} \right)} \exp \left \lbrace i k x  \right \rbrace
+- \dfrac{\hbar^{2}}{m a^{2} \cosh^{2} \left( \frac{x}{a} \right)} \left[ \frac{i}{k a} \tanh{\frac{x}{a}} \exp \{i k x \} \right] \\
+&= \dfrac{\hbar^2 k^2}{2m} \exp \left \lbrace i k x  \right \rbrace
+- \dfrac{\hbar^2}{2m}
+\left[ - \frac{1}{a^2 \cosh^2 (x/a)} \exp \left \lbrace i kx  \right \rbrace \\
+&- \dfrac{i}{k a^3} \dfrac{\tanh (x/a)}{\cosh^2 (x/a)} \exp \left \lbrace i kx  \right \rbrace \\
+&- \dfrac{i k}{a} \tanh(x/a) \exp \left \lbrace i k x  \right \rbrace
+- \dfrac{1}{a^2} \dfrac{1}{\cosh (x/a)} \exp \left \lbrace i k x  \right \rbrace \right] \\
+&- \dfrac{\hbar^{2}}{m a^{2} \cosh^{2} \left( \frac{x}{a} \right)} \exp \left \lbrace i k x  \right \rbrace
+- \dfrac{\hbar^{2}}{m a^{2} \cosh^{2} \left( \frac{x}{a} \right)} \left[ \frac{i}{k a} \tanh{x/a} \exp \{i k x \} \right] \\
+&= \dfrac{\hbar^2 k^2}{2m} \exp \left \lbrace i k x  \right \rbrace + \dfrac{i k}{a} \tanh(x/a) \exp \left \lbrace i k x  \right \rbrace \\
+&= \dfrac{\hbar^2 k^2}{2m} \left[ \left( 1 + \dfrac{i k}{a} \tanh(x/a) \right)  \exp \left \lbrace i k x  \right \rbrace \right] \\
+&= \dfrac{\hbar^2 k^2}{2m} \psi.
+\end{align*}
+
+** SOLVED Part II
+CLOSED: [2022-11-20 Sun 23:54]
+Show that this wave function can be multiplied by a suitable constant so that it takes the form \(e^{i k x}\) as \(x \rightarrow-\infty\) and \(t_{k} e^{i k x}\) as \(x \rightarrow \infty\). Hence find the expression for the transmission amplitude \(t_{k}\). (Since there is no term like \(r_{k} e^{-i k x}\) as \(x \rightarrow-\infty\), this potential is reflectionless for any energy \(E_{k}\) ).
+\(\psi = \left[ 1 + \frac{i}{k a} \tanh (x/a) \right] \exp \{i k x \}\)
+
+On multiplying with \(\dfrac{ka}{ka - i}\),
+
+\begin{equation*}
+\varphi \equiv \dfrac{ka}{ka - i} \psi = \dfrac{ka}{ka - i} \left[ 1 + \frac{i}{k a} \tanh (x/a) \right] \exp \{i k x \} = \left[ \dfrac{ka + i \tanh (x/a)}{ka - i} \right] \exp \left \lbrace i k x  \right \rbrace,
+\end{equation*}
+
+we have
+
+\begin{equation*}
+\lim_{x \to -\infty} \left[ \dfrac{ka + i \tanh (x/a)}{ka - i} \right] = 1,
+\end{equation*}
+
+so that \(\varphi \to \exp \left \lbrace i k x  \right \rbrace\). For \(x \to \infty\)
+
+\begin{equation*}
+\lim_{x \to \infty} \left[ \dfrac{ka + i \tanh (x/a)}{ka - i} \right] = \left( \dfrac{ka + i}{ka - i} \right),
+\end{equation*}
+
+so that \(\varphi \to \left( \frac{ka + i}{ka - i} \right) \thinspace \exp \left \lbrace i k x  \right \rbrace\).
+
+The *transmission amplitude* is then identified as
+
+\begin{equation*}
+t_{k} = \left( \dfrac{ka + i}{ka - i} \right),
+\end{equation*}
+
+with
+
+\begin{equation*}
+\left \lvert t_{k}  \right \rvert^{2} = 1,
+\end{equation*}
+
+i.e., the entire wave is transmitted, and none reflected.
+** SOLVED Part III
+CLOSED: [2022-11-20 Sun 23:54]
+Show that \(t_{k}\) diverges when \(k\) is equal to a particular positive imaginary number, and use this to find the bound state energy and wave function for this potential.
+
+\(t_{k}\) diverges when \(ka = i\) or \(k = i / a\). Substituting \(k = i/a\) in the expression for the wavefunction
+
+\(\psi = \left[ 1 + \tanh (x/a) \right] \exp \{- x/a \}\).
+
+\(\psi (x)\) along with \(V(x)\) is plotted below.
+
+* TOSOLVE Problem 13
+Consider a particle moving in the presence of a potential \(V(x)\) which is localised in some region. For a wave incident from the left (i.e., from \(x=-\infty\) ) with momentum \(p\), let \(t_{p}=\left|t_{p}\right| e^{i \phi_{p}}\) be the transmission amplitude; \(\phi_{p}\) is called the transmission phase shift. Now consider a wave packet incident from the left which is a superposition of many plane waves centered around \(p=p_{0}\).
+** Part I
+Show that the transmitted wave packet is centered around the point
+
+\[
+x=v_{0}\left[t-\frac{\hbar}{v_{0}}\left(\frac{d \phi_{p}}{d p}\right)_{p=p_{0}}\right] \text {, }
+\]
+
+where \(v_{0}=p_{0} / m\). The quantity \(\left(\hbar / v_{0}\right)\left(d \phi_{p} / d p\right)_{p=p_{0}}\) is called the time delay.
+** Part II
+Calculate the time delay when the potential is given by \(V(x)=c \delta(x)\) and the momentum \(p_{0}>>m|c| / \hbar\). (You may use the expression for \(t_{p}\) that was derived in class for a \(\delta\) -function potential).
+** Part III
+Can you give a physical argument to explain the sign of the time delay? (Hint: classically, do you expect the particle to slow down or speed up at \(x=0\) if \(c>0\) ?)
+* SOLVED Problem 14: Coherent states
+CLOSED: [2022-11-20 Sun 23:59]
+:LOGBOOK:
+CLOCK: [2022-09-23 Fri 13:14]--[2022-09-23 Fri 16:44] =>  3:30
+CLOCK: [2022-09-23 Fri 12:34]--[2022-09-23 Fri 13:04] =>  0:30
+:END:
+** SOLVED Part I
+CLOSED: [2022-11-20 Sun 23:59]
+For the simple harmonic oscillator with the time-independent wave functions \(\psi_{n}(x)\) satisfying
+
+\[
+H \psi_{n}(x)=\hbar \omega\left(n+\frac{1}{2}\right) \psi_{n}(x)
+\]
+
+consider the superposition
+
+\[
+\psi(x, 0)=\sum_{n=0}^{\infty} c_{n} \psi_{n}(x)
+\]
+
+at time \(t=0\). How should the coefficients \(c_{n}\) be chosen so that \(\psi(x, 0)\) is an eigenstate of the lowering operator \(a\), namely, \(a \psi(x, 0)=\alpha \psi(x, 0)\), where the eigenvalue \(\alpha\) is some given complex number?
+
+Eigenstates of \(a\) are called coherent states.
+
+
+\begin{equation*}
+c_{n} = \left( \psi_{n}, \psi \right)
+= \dfrac{1}{\sqrt{n!}} \left( \left( a^{\dagger} \right)^{n} \thinspace \psi_{0}, \psi \right)
+= \dfrac{1}{\sqrt{n!}} \left( \psi_{0}, a^{n} \thinspace \psi \right)
+= \dfrac{\alpha^{n}}{\sqrt{n!}} \left( \psi_{0}, \psi \right) = C \dfrac{\alpha^{n}}{\sqrt{n!}}.
+\end{equation*}
+
+where \(C = \left( \psi_{0}, \psi \right)\) is a complex number. In the first step we have invoked \(a^{\dagger} \psi_{n} = \sqrt{n+1} \psi_{n}\). In the second step, we have invoked the fact that \(a^{\dagger}\) is the adjoint of \(a\). The final step, we have imposed \(a \psi = \alpha \psi\) \(n\) times.
+** SOLVED Part II
+CLOSED: [2022-11-20 Sun 23:59]
+Using the expression for \(a\), find the explicit form of the wave function \(\psi(x, 0)\). Make sure that \(\psi(x, 0)\) is correctly normalised.
+
+\begin{equation*}
+\psi (x, 0)
+= C \sum_{n = 0}^{\infty} \dfrac{\alpha^{n}}{\sqrt{n!}}  \thinspace \psi_{n}(x)
+\end{equation*}
+
+\begin{equation*}
+\left( \psi (x, 0), \psi (x, 0) \right)
+= 1 \Longrightarrow C^{2} \sum_{n = 0}^{\infty} \dfrac{\left \lvert \alpha  \right \rvert^{2}}{n!}
+= C^{2} \exp \left \lbrace \left \lvert \alpha  \right \rvert^{2}  \right \rbrace
+= 1 \Longrightarrow C = \exp \left \lbrace \left - \lvert \alpha  \right \rvert^{2} / 2  \right \rbrace
+\end{equation*}
+
+where we have used the orthogonality relation to reduce the double sum to a single sum over the eigenstates.
+
+\begin{equation*}
+\psi (x, 0)
+= \exp \left \lbrace \left - \lvert \alpha  \right \rvert^{2} / 2  \right \rbrace \sum_{n = 0}^{\infty} \dfrac{\alpha^{n}}{\sqrt{n!}}  \thinspace \psi_{n}(x)
+\end{equation*}
+
+** SOLVED Part III
+CLOSED: [2022-11-20 Sun 23:59]
+Now let \(\psi\) evolve in time according to the Schrödinger equation \(i \hbar \partial \psi(x, t) / \partial t=\) \(H \psi(x, t)\). Show that \(\psi(x, t)\) remains a coherent state at all times, except that the eigenvalue of \(a\) changes with time; how does it change?
+
+   Using \(\psi_{n}(x,t) = \exp \left \lbrace - i \left( \frac{1}{2} + n \right) \omega t  \right \rbrace \psi_{n} (x)\),
+
+\begin{equation*}
+\psi (x,t)
+= \exp \left \lbrace \left - \lvert \alpha  \right \rvert^{2} / 2  \right \rbrace \sum_{n = 0}^{\infty} \dfrac{ \left( \alpha \exp \left \lbrace - i \omega t  \right \rbrace \right)^{n}}{\sqrt{n!}}  \thinspace \psi_{n}(x) \exp \left \lbrace - i \thinspace \omega \thinspace t/2 \right \rbrace
+\end{equation*}
+
+\begin{align*}
+a \psi \left( x, t \right)
+&= \exp \left \lbrace \left - \lvert \alpha  \right \rvert^{2} / 2  \right \rbrace \sum_{n = 1}^{\infty} \dfrac{ \left( \alpha \exp \left \lbrace - i \omega t  \right \rbrace \right)^{n}}{\sqrt{(n-1)!}}  \thinspace \psi_{n-1}(x) \exp \left \lbrace - i \thinspace \omega \thinspace t/2 \right \rbrace \\
+&= \alpha \exp \left \lbrace - i \thinspace \omega \thinspace t  \right \rbrace \left[ \exp \left \lbrace \left - \lvert \alpha  \right \rvert^{2} / 2  \right \rbrace \sum_{n = 0}^{\infty} \dfrac{ \left( \alpha \exp \left \lbrace - i \omega t  \right \rbrace \right)^{n}}{\sqrt{(n)!}}  \thinspace \psi_{n}(x) \exp \left \lbrace - i \thinspace \omega \thinspace t/2 \right \rbrace  \right] \\
+&= \alpha \exp \left \lbrace - i \thinspace \omega t   \right \rbrace \psi \left( x, t \right) = \alpha (t) \psi \left( x, t \right), \quad \alpha(t) = \alpha \exp \left \lbrace - i \omega t  \right \rbrace.
+\end{align*}
+
+In the first step, we have used \(a \psi_{n}(x) = \sqrt{n} \psi_{n-1}, \quad n \geq 1\) and \(a \thinspace \psi_{0}(x) = 0\). In the second step, we have repurposed the dummy variable \(n\). In the third step, we have identified the term inside the square bracket as \(\psi(x,t)\). Thus \(\psi(x,t)\) remains a coherent state at all times. The eigenvalue of \(a\) for the coherent state is a function of time with a dependence
+
+\begin{equation*}
+\alpha(t) = \alpha \exp \left \lbrace - i \omega t  \right \rbrace = \left \lvert \alpha  \right \rvert \exp \left \lbrace - i \left( \omega t - \delta \right)  \right \rbrace,
+\end{equation*}
+
+where we have used the polar representation \(\alpha = \left \lvert \alpha  \right \rvert \exp \left \lbrace i \delta  \right \rbrace\).
+
+** SOLVED Part IV
+CLOSED: [2022-11-20 Sun 23:59]
+The mean position \(\langle x>\) and uncertainty \(\Delta x\) of the wave function \(\psi(x, t)\) are defined as
+
+\begin{aligned}
+<x>&=\int_{-\infty}^{\infty} d x x|\psi|^{2} \\
+(\Delta x)^{2} &=\int_{-\infty}^{\infty} d x(x-<x>)^{2}|\psi|^{2},
+\end{aligned}
+
+assuming that \(\psi(x, t)\) is normalised. Show that \(<x>\) varies with time according to the classical equation of motion, while \(\Delta x\) does not change at all.
+
+\begin{align*}
+\left \langle x  \right \rangle
+&\equiv \left( \psi \left( x, t \right), x \thinspace \psi \left( x, t \right) \right) \\
+&= \dfrac{x_{0}}{\sqrt{2}} \left( \psi \left( x, t \right), \left( a + a^{\dagger} \right) \psi \left( x, t \right) \right) \\
+&= \dfrac{x_{0}}{\sqrt{2}} \left( \alpha(t) + \alpha^{\ast} \left( t \right)  \right) \\
+&= \sqrt{2} x_{0} \left \lvert \alpha  \right \rvert \cos \left( \omega t - \delta \right).
+\end{align*}
+
+In the first step we have 1) used \(x = \dfrac{\hbar}{2 m \omega } \left( a + a^{\dagger} \right)\), 2) identified a characteristic length \(x_{0} = \sqrt{\dfrac{\hbar}{m \omega}}\) in the problem, 3) used \(\left( a, b + c \right) = \left( a, b \right) + \left( a, c \right)\), and 4) used \(\left( a^{\dagger} \right)^{\dagger} = a\). In the second step, we have substituted \(\alpha(t) = \left \lvert \alpha  \right \rvert \exp \left \lbrace - i \left( \omega t - \delta \right)  \right \rbrace\) and simplified after using Euler's formula \(\exp \left \lbrace i \theta  \right \rbrace = \cos \theta + i \sin \theta\). Thus, \(\left \langle x  \right \rangle\) varies in time according to the classical equation of motion for a harmonic oscillator.
+
+\begin{align*}
+\left \langle x^{2}  \right \rangle
+&\equiv \left( \psi \left( x, t \right), x^{2} \thinspace \psi \left( x, t \right) \right) \\
+&= \dfrac{x_{0}^{2}}{2} \left( \psi \left( x, t \right), \left( a + a^{\dagger} \right)^{2} \psi \left( x, t \right) \right) \\
+&= \dfrac{x_{0}^{2}}{2} \left( \psi \left( x, t \right), \left( a a  + a a^{\dagger} + a^{\dagger} a + a^{\dagger} a^{\dagger} \right) \psi \left( x, t \right) \right) \\
+&= \dfrac{x_{0}^{2}}{2} \left[ \left( \psi \left( x, t \right), a a \psi \left( x, t \right) \right) + \left( \psi \left( x, t \right), a^{\dagger} a^{\dagger} \psi \left( x, t \right) \right) \\
+&+ \left( \psi \left( x, t \right), \left( a a^{\dagger} \right) \psi \left( x, t \right) \right) + \left( \psi \left( x, t \right), \left( a^{\dagger} a \right) \psi \left( x, t \right) \right) \right].
+\end{align*}
+
+Using the commutator relation \(a a^{\dagger} - a^{\dagger} a = 1\)
+
+\begin{align*}
+\left \langle x^{2}  \right \rangle
+&= \dfrac{x_{0}^{2}}{2} \left[ \left( \psi \left( x, t \right), a a \psi \left( x, t \right) \right) + \left( \psi \left( x, t \right), a^{\dagger} a^{\dagger} \psi \left( x, t \right) \right) \\
+&+ \left( \psi \left( x, t \right), \left[ 1 +  a^{\dagger} a \right] \psi \left( x, t \right) \right) + \left( \psi \left( x, t \right), \left( a^{\dagger} a \right) \psi \left( x, t \right) \right) \right] \\
+&= \dfrac{x_{0}^{2}}{2} \left[ \alpha(t) \alpha (t) + \alpha^{\ast} (t) \alpha^{\ast}(t) + 1 + 2 \alpha^{\ast} (t) \alpha (t) \right] \\
+&= \dfrac{x_{0}^{2}}{2} \left[ \left( a(t) + a^{\dagger}(t) \right)^{2} + 1 \right].
+\end{align*}
+
+Using \(\left( \Delta x \right)^2 = \left \langle x^{2}  \right \rangle - \left \langle x  \right \rangle^{2}\)
+
+\begin{equation*}
+\Delta x = \dfrac{x_{0}}{\sqrt{2}}.
+\end{equation*}
+
+Thus, \(\Delta x\) does not change at all as a function of time.
+
+** SOLVED Part V
+CLOSED: [2022-11-20 Sun 23:59]
+Calculate the mean momentum \(<p>\) and uncertainty \(\Delta p\), and show that they have similar properties as \(<x>\) and \(\Delta x\) in part (iv). How much is \(\Delta x \Delta p\) equal to? All these are important properties of coherent states.
+
+\begin{align*}
+\left \langle p  \right \rangle
+&\equiv \left( \psi \left( x, t \right), p \thinspace \psi \left( x, t \right) \right)
+= - i \hbar \dfrac{1}{\sqrt{2}x_{0}} \left( \psi \left( x, t \right), \left( a - a^{\dagger} \right) \psi \left( x, t \right) \right) \\
+&= - i \hbar \dfrac{1}{\sqrt{2}x_{0}} \left( a(t) - a^{\ast} (t) \right)
+= \frac{\sqrt{2} \hbar}{x_{0}} \sin \left( \omega t - \delta \right).
+\end{align*}
+
+A calculation analogous to the one done for \((\Delta x)^{2}\) yields
+
+\begin{equation*}
+\Delta p = \dfrac{\hbar}{\sqrt{2} x_{0}}.
+\end{equation*}
+
+We have
+\begin{equation*}
+\Delta x \thinspace \Delta p = \dfrac{\hbar}{2},
+\end{equation*}
+
+i.e., Coherent States are /minimum uncertainty states/.
+
+* TOSOLVE Problem 15: Squeezed states
+:LOGBOOK:
+CLOCK: [2022-12-02 Fri 13:22]--[2022-12-02 Fri 16:34] =>  3:12
+CLOCK: [2022-12-02 Fri 00:48]--[2022-12-02 Fri 02:09] =>  1:21
+:END:
+*Recall that for the simple harmonic oscillator, the uncertainties* \(\Delta x\) *and* \(\Delta p\) *of the ground state wave function (and all coherent states) are equal to the 'natural' values* \(\sqrt{\hbar / 2 m \omega}\) *and* \(\sqrt{\hbar m \omega / 2}\) *respectively.*
+** Part I
+*Now consider an eigenstate of the operator* \(Q=\mu a+\nu a^{\dagger}\) *with eigenvalue* \(\alpha\), *where* \(\mu, \nu\) *and* \(\alpha\) *are three complex numbers satisfying* \(|\mu|^{2}-|\nu|^{2}=1\). *For this state, calculate the uncertainties* \(\Delta x\) *and* \(\Delta p\) *as functions of* \(\mu, \nu\) *and* \(\alpha\). *Is* \(\Delta x \Delta p \geq \hbar / 2\) *? This is called a squeezed state if either* \(\Delta x\) *or* \(\Delta p\) *is less than its 'natural' value given above.*
+
+We have:
+
+\begin{align*}
+Q = \mu a + \nu a^{\dagger}, \quad Q \vert \alpha \rangle = \alpha \vert \alpha \rangle, \quad \left \lvert \mu  \right \rvert^{2} - \left \lvert \nu  \right \rvert^{2} = 1.
+\end{align*}
+
+Using
+
+\begin{align*}
+a = \dfrac{\omega m X + i P}{\sqrt{2 \omega m \hbar}}, \quad a^{\dagger} = \dfrac{\omega m X - i P}{\sqrt{2 \omega m \hbar}},
+\end{align*}
+
+\begin{align*}
+Q = \mu \left( \dfrac{\omega m X + i P}{\sqrt{2 \omega m \hbar}} \right) + \nu \left( \dfrac{\omega m X - i P}{\sqrt{2 \omega m \hbar}} \right).
+\end{align*}
+
+Now
+
+\begin{align*}
+X = \left( \dfrac{\hbar}{2 \omega m} \right)^{1/2} \left( \nu Q + \mu Q \right), \quad P = -i \left( \dfrac{\hbar \omega m}{2} \right)^{1/2} \left( \nu Q - \mu Q \right).
+\end{align*}
+
+\begin{align*}
+\left \langle X^{2}  \right \rangle &= \left \langle \alpha \left \lvert X^{2}  \right \rvert \alpha \right \rangle \\
+&= \dfrac{\hbar}{2 \omega m} \left \langle \alpha \left \lvert \left( \nu Q + \mu Q \right) \left( \nu Q + \mu Q \right) \right \rvert \alpha \right \rangle \\
+&= \dfrac{\hbar}{2 \omega m} \left \langle \alpha \left \lvert \left( \nu Q + \mu Q \right) \left( \nu Q + \mu Q \right) \right \rvert \alpha \right \rangle \\
+&= \dfrac{\hbar}{2 \omega m} \left \langle \alpha \left \lvert \left( \nu Q + \mu Q \right) \left( \nu \alpha \vert \alpha \rangle + \mu \alpha \right \rvert \alpha \right \rangle \right) \\
+&= \dfrac{\hbar}{2 \omega m} \left(\left \langle \alpha \left \lvert \nu \alpha^{\dagger} + \langle \alpha \vert \mu \alpha^{\dagger} \right)  \left( \nu \alpha \vert \alpha \rangle + \mu \alpha \right \rvert \alpha \right \rangle \right) \\
+&= \dfrac{\hbar}{2 \omega m} \left \lvert \alpha  \right \rvert^{2} \left( \nu^{2} + \mu^{2} + 2 \nu \mu  \right) \\
+&= \dfrac{\hbar}{2 \omega m} \left \lvert \alpha  \right \rvert^{2} \left( \nu + \mu \right)^{2}
+\end{align*}
+
+\begin{align*}
+\left \langle X  \right \rangle &= \left( \dfrac{\hbar}{2 \omega m} \right)^{1/2} \left \langle \alpha \left \lvert \nu Q + \mu Q \right \rvert \alpha \right \rangle \\
+&= \left( \dfrac{\hbar}{2 \omega m} \right)^{1/2} \alpha ( \nu + \mu )
+\end{align*}
+
+\begin{align*}
+\Delta X &= \sqrt{\left \langle X^{2}  \right \rangle - \left \langle X  \right \rangle^{2}} \\
+&= \sqrt{\dfrac{\hbar}{2 \omega m} \left( \left \lvert \alpha  \right \rvert^{2} - \alpha^{2} \left( \nu + \mu \right)^{2} \right) }
+\end{align*}
+
+Now for \(\Delta P\)
+
+\begin{align*}
+\left \langle P^{2}  \right \rangle &= \left \langle \alpha \left \lvert P^{2}  \right \rvert \alpha \right \rangle \\
+&= \dfrac{\hbar \omega m}{2} \left \langle \alpha \left \lvert \left( \nu Q - \mu Q \right) \left( \nu Q - \mu Q \right) \right \rvert \alpha \right \rangle \\
+&= \dfrac{\hbar}{2 \omega m} \left \langle \alpha \left \lvert \left( \nu Q - \mu Q \right) \left( \nu Q - \mu Q \right) \right \rvert \alpha \right \rangle \\
+&= \dfrac{\hbar}{2 \omega m} \left \langle \alpha \left \lvert \left( \nu Q - \mu Q \right) \left( \nu \alpha \vert \alpha \rangle - \mu \alpha \right \rvert \alpha \right \rangle \right) \\
+&= \dfrac{\hbar}{2 \omega m} \left(\left \langle \alpha \left \lvert \nu \alpha^{\dagger} - \langle \alpha \vert \mu \alpha^{\dagger} \right)  \left( \nu \alpha \vert \alpha \rangle - \mu \alpha \right \rvert \alpha \right \rangle \right) \\
+&= \dfrac{\hbar}{2 \omega m} \left \lvert \alpha  \right \rvert^{2} \left( \nu^{2} + \mu^{2} - 2 \nu \mu  \right) \\
+&= \dfrac{\hbar}{2 \omega m} \left \lvert \alpha  \right \rvert^{2} \left( \nu - \mu \right)^{2}
+\end{align*}
+
+\begin{align*}
+\left \langle P  \right \rangle &= i \left( \dfrac{\hbar \omega m}{2} \right)^{1/2} \left \langle \alpha \left \lvert \nu Q - \mu Q \right \rvert \alpha \right \rangle \\
+&= i \left( \dfrac{\hbar \omega m}{2} \right)^{1/2} \alpha ( \nu - \mu )
+\end{align*}
+
+\begin{align*}
+\Delta P &= \sqrt{\left \langle P^{2}  \right \rangle - \left \langle P  \right \rangle^{2}} \\
+&= \sqrt{\dfrac{\hbar \omega m}{2} \left( \left \lvert \alpha  \right \rvert^{2} + \alpha^{2} \left( \nu - \mu \right)^{2} \right) }
+\end{align*}
+
+\begin{align*}
+\Delta X \Delta P = \dfrac{\hbar}{2} \sqrt{ \left( \left \lvert \alpha  \right \rvert^{2} - \alpha^{2} \left( \nu + \mu \right)^{2} \right) \left( \left \lvert \alpha  \right \rvert^{2} + \alpha^{2} \left( \nu - \mu \right)^{2} \right) }
+\end{align*}
+
+** Part II
+*Now let this state evolve in time according to the Schrödinger equation. Show that it continues to be an eigenstate of the operator* \(Q(t)=\mu(t) a+\nu(t) a^{\dagger}\) *with the same eigenvalue* \(\alpha\), *where* \(\mu(t)\) *and* \(\nu(t)\) *are appropriately chosen functions of time.*
+** Part III
+*From this, find* \(\Delta x\) *and* \(\Delta p\) *as functions of time, and show that they periodically get squeezed and 'unsqueezed'. What is the time period of maximum squeezing of* \(\Delta x ?\) *Sketch* \(\Delta x, \Delta p\) *and* \(\Delta x \Delta p\) *as functions of time.*
+* SOLVED Problem 16
+CLOSED: [2022-11-21 Mon 00:01]
+:LOGBOOK:
+CLOCK: [2022-09-23 Fri 16:44]--[2022-09-23 Fri 18:00] =>  1:16
+:END:
+Consider the eigenstates \(\psi_{n}(x)\) of the one-dimensional simple harmonic oscillator Hamiltonian. (We assume these are normalised so that \(\int_{-\infty}^{\infty} d x \psi_{n}^{\star}(x) \psi_{n}(x)=1\) ). Use the raising and lowering operators to find the expectation values
+
+\[
+\begin{aligned}
+<x^{3}>_{n} &=\int_{-\infty}^{\infty} d x \psi_{n}^{\star}(x) x^{3} \psi_{n}(x) \\
+\text { and }<x^{4}>_{n} &=\int_{-\infty}^{\infty} d x \psi_{n}^{\star}(x) x^{4} \psi_{n}(x)
+\end{aligned}
+\]
+
+as functions of \(n\).
+\begin{align*}
+\left \langle x^{3}  \right \rangle_{n}
+&\propto \left( \psi_{n}, \left[ a^{3} + a^{\dagger}^{3} + 3 a^{2}a^{\dagger} + 3 a a^{\dagger}^{2} \right] \psi_{n} \right) \\
+&\propto \left( \psi_{n}, \left[ a^{3} + a^{\dagger}^{3} + 3 a^{2}a^{\dagger} + 3 a a^{\dagger}^{2} \right] \psi_{n} \right) \\
+&\propto \left( \psi_{n}, \left[ a^{3} + a^{\dagger}^{3} \right] \psi_{n} \right) +  3 \left( \psi_{n}, \left[a \hat{n} + \hat{n} a^{\dagger} \right] \psi_{n} \right) \\
+&\propto \left( \psi_{n}, \left[ a^{3} + a^{\dagger}^{3} \right] \psi_{n} \right) +  3 \left( \psi_{n}, n \left[a + a^{\dagger} \right] \psi_{n} \right) + 3 \left( \psi_{n}, a^{\dagger} \psi_{n} \right) \\
+&\propto \left( \psi_{n}, a^{3} \psi_{n} \right) + \left( \psi_{n}, a^{\dagger}^{3} \psi_{n} \right) + 3 \left( \psi_{n}, n \left[a + a^{\dagger} \right] \psi_{n} \right) + 3 \left( \psi_{n}, a^{\dagger} \psi_{n} \right) = 0
+\end{align*}
+
+In the last step we have used \(a \psi_{n} = \sqrt{n} \psi_{n-1}\), \(a^{\dagger} \psi_{n} = \sqrt{n+1} \psi_{n+1}\), and \(\left( \psi_{m}, \psi_{n} \right) = \delta_{mn}\).
+
+\begin{align*}
+\left \langle x^{4}  \right \rangle_{n}
+&= \dfrac{x_{0}^{4}}{4}\left( \left[ a^{2} + a a^{\dagger} + a^{\dagger} a + a^{\dagger}^{2} \right] \psi_{n}, \left[ a^{2} + a a^{\dagger} + a^{\dagger} a + a^{\dagger}^{2} \right] \psi_{n}  \right) \\
+& = \dfrac{x_{0}^{4}}{4} \left( a^{2} \psi_{n}, a^{2} \psi_{n} \right)
++ \left( a^{\dagger}^{2} \psi_{n}, a^{\dagger}^{2} \psi_{n} \right)
++ \left( a a^{\dagger} \psi_{n}, a a^{\dagger} \psi_{n} \right)
++ \left( a^{\dagger} a \psi_{n}, a^{\dagger} a \psi_{n} \right) \\
+&+ \left( a a^{\dagger} \psi_{n}, a^{\dagger} a \psi_{n} \right)
++ \left( a^{\dagger} a \psi_{n}, a a^{\dagger} \psi_{n} \right).
+\end{align*}
+
+We have shaved off all terms that vanish because of \(\left( \psi_{m}, \psi_{n} \right) = \delta_{mn}\).
+
+\begin{align*}
+\left \langle x^{4}  \right \rangle_{n}
+& = \dfrac{x_{0}^{4}}{4}  \left[ n (n - 1)
++ (n + 1)(n + 2)
++ \left( n + 1 \right)^{2}
++ n^{2}
++ n (n + 1)
++ n (n + 1) \right] \\
+&= \dfrac{3}{2} \left[ x_0^{2} \left(n +  \frac{1}{2} \right) \right]^{2} = \dfrac{3}{2} \left( \Delta x \right)^{4}.
+\end{align*}
+* TOSOLVE Problem 17
+:LOGBOOK:
+CLOCK: [2022-09-23 Fri 18:28]--[2022-09-23 Fri 20:54] =>  2:26
+:END:
+A particle is moving in two dimensions with the Hamiltonian
+
+\[
+H=\frac{p_{x}^{2}+p_{y}^{2}}{2 m}+\frac{1}{2} m \omega^{2}\left(x^{2}+y^{2}+2 \lambda x y\right) .
+\]
+
+** Part I
+Find all the energy levels and the corresponding wave functions for \(-1<\lambda<1\).
+** Part II
+What are the energy levels and corresponding wave functions if \(\lambda=\pm 1\) ?
+* TOSOLVE Problem 18
+A triatomic molecule is moving in one dimension with the Hamiltonian
+
+\[
+H=\frac{p_{1}^{2}+p_{2}^{2}+p_{3}^{2}}{2 m}+\frac{1}{2} m \omega^{2}\left[\left(x_{2}-x_{1}\right)^{2}+\left(x_{2}-x_{3}\right)^{2}\right]
+\]
+
+where \(x_{n}\) denotes the displacement of the \(n^{\text {th }}\) particle from its equilibrium position. Find all the energy levels and write down the corresponding wave functions.
+
+* SOLVED Problem 19
+CLOSED: [2022-12-02 Fri 00:32]
+:LOGBOOK:
+CLOCK: [2022-12-02 Fri 00:20]--[2022-12-02 Fri 00:32] =>  0:12
+CLOCK: [2022-12-01 Thu 23:32]--[2022-12-02 Fri 00:19] =>  0:47
+:END:
+*An electron with charge* \(q\) *is placed in a three-dimensional isotropic harmonic oscillator potential so that*
+
+\[
+H=\frac{p^{2}}{2 m}+\frac{1}{2} m \omega^{2} r^{2}.
+\]
+
+*Now we apply a uniform electric field with magnitude* \(A\) *along the* \(\hat{z}\)-*direction.*
+** SOLVED Part I
+CLOSED: [2022-12-02 Fri 00:19]
+*Find all the energy levels and their degeneracies. Does the answer depend on the direction of the electric field? Give a reason for your answer.*
+
+The Hamiltonian in a rectangular coordinate system is:
+
+\begin{align*}
+H = \dfrac{P_{x}^{2} + P_{y}^{2} + P_{z}^{2}}{2 \mu} + \dfrac{1}{2} \mu \omega^{2} \left( X^{2} + Y^{2} + Z^{2} \right) + qAZ
+\end{align*}
+
+What do we do? The oldest trick in the book, of course I'd fall for that, /completing the square/. And I'll ask =Wolfram Alpha= to do it, I'm so lazy. God help me.
+
+\begin{align*}
+H = \dfrac{P_{x}^{2} + P_{y}^{2} + P_{z}^{2}}{2 \mu} + \dfrac{1}{2} \mu \omega^{2} \left[ X^{2} + Y^{2} + \left( \dfrac{qA}{\mu \omega^{2}} + Z \right)^{2} \right] - \dfrac{q^{2} A^{2}}{2 m \omega^{2}}
+\end{align*}
+
+Apart from a offset, the energy levels are same as before (the frequency of the oscillator is unchanged). Now new degeneracies are introduced either:
+
+\begin{align*}
+E_{n} = \left( n + \dfrac{3}{2} \right) \hbar \omega - \dfrac{q^{2} A^{2}}{2 m \omega^{2}}.
+\end{align*}
+
+No, the answer will not change if you change direction of the electric field. I will start calling that direction \(Z\) and present this exact same solution (transform to it via a unitary transformation if you must know, oh my god!). I may not have free-will, but the my right to coordinate systems unalienable.
+** SOLVED Part II
+CLOSED: [2022-12-02 Fri 00:32]
+*If* \(E_{0}\) *is the ground state energy in the presence of the electric field, the electric dipole moment (in the* \(\hat{z}\)-*direction) is defined as* \(-d E_{0} / d A\) *and the electric polarisability is defined as* \(-d^{2} E_{0} / d A^{2}\). *Calculate these quantities in this problem.*
+
+Ground state energy is:
+
+\begin{align*}
+E_{0} = \dfrac{3 \hbar \omega}{2} - \dfrac{q^{2} A^{2}}{2 m \omega^{2}}
+\end{align*}
+
+The /electric dipole moment/ in the \(z\)-direction is:
+
+\begin{align*}
+\mu \left( E_{0} \right) = - D_{A} E_{0} = \dfrac{q^{2} A}{m \omega^{2}}.
+\end{align*}
+
+The /electric polarisability/ is defined as:
+
+\begin{align*}
+- D_{A}^{2} E_{0} = \dfrac{q^2}{m \omega^2}.
+\end{align*}
+
+/Both the electric dipole moment and the electric polarisability are independent of the principal quantum number./
+
+* TOSOLVE Problem 20
+:LOGBOOK:
+CLOCK: [2022-10-26 Wed 04:31]--[2022-10-26 Wed 08:41] =>  4:10
+CLOCK: [2022-10-26 Wed 03:35]--[2022-10-26 Wed 04:28] =>  0:53
+:END:
+Consider \(N\) particles arranged around a circle (of circumference \(L\)) with the Hamiltonian
+
+\[
+H=\sum_{n=1}^{N}\left[\frac{p_{n}^{2}}{2 m}+\frac{1}{2} m \omega^{2}\left(x_{n+1}-x_{n}\right)^{2}\right]
+\]
+
+where \(x_{N+1}=x_{1}\). (Here \(x_{n}\) denotes the displacement of the \(n^{\text {th }}\) particle from its equilibrium position). Find all the energy levels.
+* SOLVED Problem 21
+CLOSED: [2022-11-20 Sun 23:56]
+:LOGBOOK:
+CLOCK: [2022-09-23 Fri 10:33]--[2022-09-23 Fri 11:03] =>  0:30
+CLOCK: [2022-09-16 Fri 12:22]--[2022-09-16 Fri 13:45] =>  1:23
+:END:
+A particle is in a potential
+
+\begin{aligned}
+V(x) &=\frac{1}{2} m \omega^{2} x^{2} & \text { if } \quad x>0 \\
+&=\infty & \text { if } \quad x<0
+\end{aligned}
+** SOLVED Part I
+CLOSED: [2022-11-20 Sun 23:56]
+*Use a simple argument to find all the energy levels.*
+
+For \(x > 0\), the eigenkets of the quantum harmonic oscillator are valid solutions. However, at \(x = 0\), \(V(x)\) is an infinitely high step potential where the wavefunction must vanishes in order to satisfy the continuity conditions. Thus all eigenfunctions of the quantum harmonic oscillator that satisfy \(\psi(x=0) = 0\) upon multiplication with \(\Theta \left ( x \right )\) will be solutions of the Hamiltonian operator with the supplied \(V(x)\). This requirement is satisfied by the *odd* Hermite polynomials. Thus the allowed energy levels are that of the *odd* eigenkets of the quantum harmonic oscillator, i.e.,
+
+\begin{equation*}
+E_{n} = \left ( n + 1/2 \right ) \hbar \omega, \quad n = 2s + 1, \quad s = 0, \thinspace 1, \thinspace 2, \thinspace \dotso
+\end{equation*}
+** SOLVED Part II
+CLOSED: [2022-11-20 Sun 23:56]
+Show that for any initial state \(\psi(x, 0)\) which is given by an arbitrary superposition of the eigenstates of the Hamiltonian, the probability density \(|\psi(x, t)|^{2}\) will repeat in time with a period \(\pi / \omega\).
+
+Focus on the time-dependent phase factor \(\exp \left \lbrace + i E_n t / \hbar  \right \rbrace = \exp \left \lbrace + i \left( \frac{4s + 3}{2}  \right) \omega t \right \rbrace\) of the eigenstate \(\psi_{n}^{\ast} \left( x, t \right)\) in the superposition \(\psi^{\ast} (x,t)\). On multiplying \(\psi^{\ast} (x,t)\) with \(\psi \left( x, t \right)\), to obtain \(\left \lvert \psi \left ( x, t \right )  \right \rvert^{2}\), this factor goes out picking a phase from the time-dependent phase factor of each of the eigenstates whose linear sum comprise \(\psi \left( x, t \right)\). In particular, the phase factor multiplying \(\psi_{n}^{\ast} \left( x, t \right) \psi_{n^{\prime}}\left( x, t \right)\) in the product is \(\exp \left \lbrace + i \thinspace 2 \left( s - s^{\prime} \right) \omega \thinspace t \right \rbrace\): the coefficient of \(\omega \thinspace t\) in the time-dependent phase-factors of the terms in \(\left \lvert \psi \left ( x, t \right )  \right \rvert^{2}\) are multiples of \(2\). It follows that the time period of \(\left \lvert \psi \left ( x, t \right )  \right \rvert^{2}\) is set by the time-period of the phase factor with the smallest non-zero coefficient (It takes the longest to swing around the complex plane), i.e., when \(s - s^{\prime} = \pm 1\). The time-period \(T\) in this case satisfies \(2 \thinspace \omega \thinspace T = 2 \thinspace \pi\), and thus is of the form \(T = \pi / \omega\).
+* SOLVED Problem 22
+CLOSED: [2022-12-01 Thu 23:21]
+
+*Suppose that a particle moves in a one-dimensional potential of the form*
+
+\begin{aligned}
+V(x) &=\frac{1}{2} m \omega^{2} x^{2} \text { for } x>0 \\
+&=\infty \text { for } x<0
+\end{aligned}
+
+*Find all the energy levels and corresponding wave functions.*
+
+For \(x > 0\), the eigenkets of the quantum harmonic oscillator are valid solutions. However, at \(x = 0\), \(V(x)\) is an infinitely high step potential where the wavefunction must vanishes in order to satisfy the continuity conditions. Thus all eigenfunctions of the quantum harmonic oscillator that satisfy \(\psi(x=0) = 0\) upon multiplication with \(\Theta \left ( x \right )\) will be solutions of the Hamiltonian operator with the supplied \(V(x)\). This requirement is satisfied by the *odd* Hermite polynomials. Thus the allowed energy levels are that of the *odd* eigenkets of the quantum harmonic oscillator, i.e.,
+
+\begin{equation*}
+E_{n} = \left ( n + 1/2 \right ) \hbar \omega, \quad n = 2s + 1, \quad s = 0, \thinspace 1, \thinspace 2, \thinspace \dotso
+\end{equation*}
+
+The wavefunctions apart from the change already mentioned, i.e., only the states with /odd/ Hermite polynomials are accessible now, change to the extent that their normalization now runs from \(0\) to \(\infty\) instead of \(-\infty\) to \(\infty\). So they ``bloat up" by a factor of \(\sqrt{2}\):
+
+\begin{align*}
+\psi_{E} \left( x \right) &\equiv \psi_{\left( 2s + 3/2 \right) \hbar \omega} \left( x \right) \equiv \psi_{2s + 1} \left( x \right) \\
+&= \sqrt{2} \left( \dfrac{ m \omega}{\pi \hbar 2^{(4s + 2)} \left[ (2s + 1)! \right]^{2}} \right)^{1/4} \exp \left \lbrace - \dfrac{m \omega x^{2}}{2 \hbar}  \right \rbrace H_{2s + 1} \left( \left( \dfrac{m \omega}{\hbar} \right)^{1/2} x \right) \\
+&= \left( \dfrac{4 m \omega}{\pi \hbar 2^{(4s + 2)} \left[ (2s + 1)! \right]^{2}} \right)^{1/4} \exp \left \lbrace - \dfrac{m \omega x^{2}}{2 \hbar}  \right \rbrace H_{2s + 1} \left( \left( \dfrac{m \omega}{\hbar} \right)^{1/2} x \right).
+\end{align*}
+
+* TOSOLVE Problem 23: Virial theorem in quantum mechanics
+
+For a one-dimensional problem described by
+
+\[
+\hat{H}=\frac{\hat{p}^{2}}{2 m}+a|\hat{x}|^{n},
+\]
+
+(where \(a, n>0\) ), the virial theorem states that in any eigenstate of \(\hat{H}\), the expectation values satisfy the relations
+
+\[
+<\frac{\hat{p}^{2}}{2 m}>=\frac{n}{n+2}<\hat{H}>\text { and }<a|\hat{x}|^{n}>=\frac{2}{n+2}<\hat{H}>.
+\]
+
+To prove this theorem, consider the Hermitian operator
+
+\[
+\hat{D}=\frac{\hat{x} \hat{p}+\hat{p} \hat{x}}{2 \hbar} \text {. }
+\]
+
+** Part I
+Calculate the commutator \([\hat{D}, \hat{H}]\). (We have written the potential as \(a|\hat{x}|^{n}\) instead of \(a \hat{x}^{n}\) to avoid any difficulties if \(n\) is not an integer. But when you are calculating \([\hat{D}, \hat{H}]\), you may take \(a|\hat{x}|^{n}\) to be equivalent to \(\left.a \hat{x}^{n}\right)\).
+** Part II
+Now calculate the expectation value of \([\hat{D}, \hat{H}]\) in an eigenstate of \(\hat{H}\) and use the result to prove the virial theorem.
+** Part III
+How does the unitary operator \(U=e^{i \theta \hat{D}}\) transform \(\hat{x}\) and \(\hat{p}\), namely, what are \(U \hat{x} U^{-1}\) and \(U \hat{p} U^{-1}\) equal to? Show that for \(\theta=i \pi\), the operator \(U\) does the parity transformation, \(x \rightarrow-x\) and \(p \rightarrow-p\).
+
+\([\hat{D}\) is sometimes called the scaling operator].
+* SOLVED Problem 24
+CLOSED: [2022-12-01 Thu 20:32]
+:LOGBOOK:
+CLOCK: [2022-12-01 Thu 20:13]--[2022-12-01 Thu 20:32] =>  0:19
+:END:
+*For a Hermitian operator* \(\mathcal{O}\), *show that the expectation values* \(\left \langle \mathcal{O} \right \rangle\) *and* \(\left\langle\mathcal{O}^{2}\right\rangle\) *in any normalised state* \(\vert \psi \rangle\) *satisfy* \(\left\langle\mathcal{O}^{2}\right\rangle \geq \left \langle \mathcal{O}  \right \rangle^{2}\). *Prove that equality holds if and only if* \(\vert \psi \rangle\) *is an eigenstate of* \(\mathcal{O}\).
+
+Begin with the RHS:
+
+\begin{align*}
+\left \langle \psi_{n} \left \lvert \mathcal{O}^{2} \right \rvert \psi_{n} \right \rangle &= \sum_{\vert \psi_{k} \rangle} \left \langle \psi_{n} \left \lvert \mathcal{O} \vert \psi_{k} \rangle \langle \psi_{k} \vert \right \mathcal{O} \rvert \psi_{n} \right \rangle \\
+& \geq \left \langle \psi_{n} \left \lvert \mathcal{O}  \right \rvert \psi_{n} \right \rangle \left \langle \psi_{n} \left \lvert \mathcal{O}  \right \rvert \psi_{n} \right \rangle.
+\end{align*}
+
+Clearly then:
+
+\begin{align*}
+\left \langle \mathcal{O}^{2}  \right \rangle \geq \left \langle \mathcal{O}  \right \rangle^{2}.
+\end{align*}
+
+If \(\left \lbrace \vert \psi_n \rangle  \right \rbrace\) is the set of eigenkets of \(\mathcal{O}\), they satisfy the orthogonality condition (eigenkets of a Hermitian operator form an orthonormal basis):
+
+\begin{align*}
+\left \langle \psi_{m} \vert \psi_{n} \right \rangle = \delta_{mn},
+\end{align*}
+
+therefore, given that \(\vert \psi_n \rangle\) is an eigenket of \(\mathcal{O}\) with eigenvalue \(O_{n}\), we have:
+
+\begin{align*}
+\left \langle \psi_{n} \left \lvert \mathcal{O}^{2} \right \rvert \psi_{n} \right \rangle &= \sum_{\vert \psi_{k} \rangle} \left \langle \psi_{n} \left \lvert \mathcal{O} \vert \psi_{k} \rangle \langle \psi_{k} \vert \right \mathcal{O} \rvert \psi_{n} \right \rangle \\
+&=  \delta_{kn} \left \langle \psi_{n} \left \lvert \mathcal{O} \vert \psi_{k} \rangle \langle \psi_{k} \vert \right \mathcal{O} \rvert \psi_{n} \right \rangle,
+\end{align*}
+
+so in this case we have:
+
+\begin{align*}
+\left \langle \mathcal{O}^{2}  \right \rangle = \left \langle \mathcal{O}  \right \rangle^{2}.
+\end{align*}
+
+* TOSOLVE Problem 25
+For the one-dimensional Hamiltonian
+
+\[
+H=\frac{p^{2}}{2 m}+\lambda x^{4},
+\]
+
+where \(\lambda\) is positive, use the position-momentum uncertainty relation to show that the ground state energy satisfies
+
+\[
+E_{0} \geq \frac{3}{4}\left(\frac{\lambda \hbar^{4}}{4 m^{2}}\right)^{1 / 3} .
+\]
+
+[Use the inequality, which follows from the previous problem, that \(\left\langle x^{4}\right\rangle \geq\left\langle x^{2}\right\rangle^{2}\) in any state].
+
+* SOLVED Problem 26
+CLOSED: [2022-11-21 Mon 00:03]
+:LOGBOOK:
+CLOCK: [2022-10-13 Thu 03:14]--[2022-10-13 Thu 05:57] =>  2:43
+:END:
+Let \(A, B\) and \(C\) be three Hermitian operators such that \([A, B]=i C\). If \(\mid \psi>\) is a normalised eigenstate of \(C\) with eigenvalue \(\lambda\), show that the uncertainties \(\triangle A\) and \(\Delta B\) in the state \(\mid \psi>\) must satisfy \(\Delta A \Delta B \geq|\lambda| / 2\).
+
+[We define \(\Delta A\) as the square root of the expectation value of \((A-<A>)^{2}\) in the state \(|\psi\rangle\), where \(\langle A\rangle\) is the expectation value of \(A\) in \(|\psi\rangle\). \(\Delta B\) is defined in a similar way].
+
+By definition,
+
+\begin{equation*}
+(\Delta A)^{2} \equiv \left \langle \left( A^{2} - \left \langle A  \right \rangle^{2} \right)^{2} \right \rangle
+= \left \langle \psi \left \lvert \left( A^{2} - \left \langle A  \right \rangle \right)^{2}  \right \rvert \psi \right \rangle,
+\end{equation*}
+
+\begin{equation*}
+(\Delta B)^{2} \equiv \left \langle \left( B^{2} - \left \langle B  \right \rangle^{2} \right)^{2} \right \rangle = \left \langle \psi \left \lvert \left( B^{2} - \left \langle B  \right \rangle \right)^{2}  \right \rvert \psi \right \rangle.
+\end{equation*}
+
+Forming the product
+
+\begin{equation*}
+(\Delta A)^{2} (\Delta B)^{2}
+&= \left \langle \psi \left \lvert \left( A^{2} - \left \langle A  \right \rangle \right)^{2}  \right \rvert \psi \right \rangle \left \langle \psi \left \lvert \left( B^{2} - \left \langle B  \right \rangle \right)^{2}  \right \rvert \psi \right \rangle.
+\end{equation*}
+
+Using Hermiticity of \((A^{2} - \left \langle A  \right \rangle)\) and \((B^{2} - \left \langle B  \right \rangle)\),
+
+\begin{equation*}
+(\Delta A)^{2} (\Delta B)^{2}
+&= \left \langle \left( A^{2} - \left \langle A  \right \rangle \right) \psi \vert \left( A^{2} - \left \langle A  \right \rangle \right) \psi \right \rangle \left \langle \left( B^{2} - \left \langle B  \right \rangle \right) \psi \vert \left( B^{2} - \left \langle B  \right \rangle \right) \psi \right \rangle.
+\end{equation*}
+
+Using the Schwarz Inequality followed by using the Hermiticity of \((A^{2} - \left \langle A  \right \rangle)\)
+
+\begin{equation*}
+(\Delta A)^{2} (\Delta B)^{2} \geq \left \lvert \left \langle \psi \vert \left( A^{2} - \left \langle A  \right \rangle \right) \left( B^{2} - \left \langle B  \right \rangle \right) \psi \right \rangle \right \rvert^{2}.
+\end{equation*}
+
+With the notation \((A^{2} - \left \langle A  \right \rangle) = \hat{A}\) and \((B^{2} - \left \langle B \right \rangle) = \hat{B}\),
+
+\begin{equation*}
+(\Delta A)^{2} (\Delta B)^{2} \geq \left \lvert \left \langle \psi \Big \vert \hat{A} \hat{B} \psi \right \rangle \right \rvert^{2}.
+\end{equation*}
+
+Using the identity that relates the product of two operators with their commutator and anti-commutator
+
+\begin{equation*}
+\hat{A} \hat{B} = \dfrac{1}{2} \left( [\hat{A}, \hat{B}] + [\hat{A}, \hat{B}]_{+} \right),
+\end{equation*}
+
+\begin{align*}
+(\Delta A)^{2} (\Delta B)^{2} &\geq \dfrac{1}{4} \left \lvert \left \langle \psi \Big \vert \left( [\hat{A}, \hat{B}] + [\hat{A}, \hat{B}]_{+} \right) \psi \right \rangle \right \rvert^{2} \\
+& \geq \dfrac{1}{4} \left( \left \lvert \left \langle \psi \Big \vert [\hat{A}, \hat{B}] \psi \right \rangle + \left \langle \psi \Big \vert [\hat{A}, \hat{B}]_{+} \psi \right \rangle  \right \rvert^{2} \right) \\
+& \geq \dfrac{1}{4} \left( \left \lvert \left \langle \psi \Big \vert [\hat{A}, \hat{B}] \psi \right \rangle \right \rvert^{2} + \left \lvert \left \langle \psi \Big \vert [\hat{A}, \hat{B}]_{+} \psi \right \rangle  \right \rvert^{2} \right) \\
+& \geq \dfrac{1}{4} \left \lvert \left \langle \psi \Big \vert [\hat{A}, \hat{B}] \psi \right \rangle \right \rvert^{2}
+\end{align*}
+
+Use \([A + a, B + b] = [A, B]\), where \(a\) and \(b\) are arbitrary complex numbers to write
+
+\begin{align*}
+(\Delta A)^{2} (\Delta B)^{2} & \geq \dfrac{1}{4} \left \lvert \left \langle \psi \Big \vert [A, B] \psi \right \rangle \right \rvert^{2}.
+\end{align*}
+
+Raising both sides to power \(1/2\) and identifying \(\left \langle \psi \left \lvert [A, B]  \right \rvert \psi \right \rangle = \left \langle [A, B]  \right \rangle\) yields
+
+\begin{equation*}
+\Delta A \thinspace \Delta B \geq \dfrac{1}{2} \left \lvert \left \langle [A, B] \right \rangle  \right \rvert.
+\end{equation*}
+
+Because \([A, B] = i C\), \(\left \lvert \left \langle [A, B]  \right \rangle \rvert = \left \lvert \left \langle i C  \right \rangle  \right \rvert = \left \lvert \left \langle \psi \left \lvert i C  \right \rvert \psi \right \rangle  \right \rvert = \left \lvert i \lambda \right \rvert = \left \lvert \lambda  \right \rvert\), which when substituted in the previous inequality yields the ask
+
+\begin{equation*}
+\Delta A \thinspace \Delta B \geq \dfrac{1}{2} \left \lvert \lambda  \right \rvert.
+\end{equation*}
+
+* SOLVED Problem 27
+CLOSED: [2022-12-01 Thu 20:11]
+:LOGBOOK:
+CLOCK: [2022-12-01 Thu 19:17]--[2022-12-01 Thu 20:11] =>  0:54
+:END:
+*Find all the* \(2 \times 2\) *Hermitian matrices* \(A\) *whose square is equal to the identity matrix* \(I\). *For all such matrices, calculate* \(\exp \left \lbrace i \theta A  \right \rbrace\), *where* \(\theta\) *is a real number, and show that the answer can be written in terms of the matrices* \(I\) *and* \(A\).
+
+Say
+\begin{align*}
+A =
+\begin{pmatrix}
+a & b \\
+c & d
+\end{pmatrix}.
+\end{align*}
+
+Demand of \(A^{\dagger} = A\) (hermiticity) necessitates:
+
+\begin{align*}
+a^{\dagger} = a, \quad d^{\dagger} = d, \quad c^{\dagger} = b, \quad \text{and} \quad b^{\dagger} = c.
+\end{align*}
+
+\begin{align*}
+A^{2} =
+\begin{pmatrix}
+a & b \\
+c & d
+\end{pmatrix}
+\begin{pmatrix}
+a & b \\
+c & d
+\end{pmatrix}
+=
+\begin{pmatrix}
+a^{2} + bc & ab + bd \\
+ac + cd & bc + d^{2}
+\end{pmatrix}.
+\end{align*}
+
+For \(A^{2}\) to be \(I\) we need:
+
+\begin{align*}
+a^{2} + bc = 1, \quad bc + d^{2} = 1, \quad c (a + d) = 0, \quad b(a + d) = 0.
+\end{align*}
+
+The solutions are:
+
+\begin{align*}
+b \neq 0, \quad c = \dfrac{1 - a^{2}}{b}, \quad d = - a
+\end{align*}
+
+The choice of \(a = d = 0\) and \(b = -i\) and \(c = i\) results in \(\sigma_{y}\). The choice of \(a = d = 0\) and \(b = 1\) and \(c = 1\) results in \(\sigma_{x}\). Any other choice that satisfies this constraint along with \(c^{\dagger} = b\) works.
+
+\begin{align*}
+a = -1, \thinspace b = 0, \thinspace c = 0, \thinspace d = -1,
+\end{align*}
+
+This is trivial: \(-I\).
+
+\begin{align*}
+a = 1, \thinspace b = 0, \thinspace c = 0, \thinspace d = -1,
+\end{align*}
+
+This is just \(\sigma_{z}\). \(-\sigma_{z}\) works too.
+
+\begin{align*}
+a = 1, \thinspace b = 0, \thinspace c = 0, \thinspace d = 1.
+\end{align*}
+
+This is trivial: \(I\).
+
+Now
+
+\begin{align*}
+\exp \left \lbrace i \theta A  \right \rbrace &= \sum_{n=0}^{\infty} \dfrac{\left( i \theta A \right)^{n}}{n!} \\
+&= I + \left( i \theta A \right) + \dfrac{\left( i \theta A \right)^{2}}{2!} + \dfrac{\left( i \theta A \right)^{3}}{3!} + \dotso \\
+&= I + \left( i \theta \right) A + \dfrac{\left( i \theta \right)^{2}}{2!} I + \dfrac{\left( i \theta \right)^{3}}{3!} I A + \dotso \\
+&= I \left[ 1 + \dfrac{\left( i \theta \right)^{2}}{2!} + \dotso \right] + \left[ \left( i \theta \right) + \dfrac{\left( i \theta \right)^{3}}{3!} + \dotso \right] A \\
+&= \cos \left( \theta/2 \right) I - i \sin \left( \theta/2 \right) A.
+\end{align*}
+
+The ask should be satisfied.
+* TOSOLVE Problem 28
+:LOGBOOK:
+CLOCK: [2022-10-14 Fri 13:53]--[2022-10-14 Fri 14:08] =>  0:15
+:END:
+Suppose that there are four operators \(L_{z}, A_{x}, A_{y}\) and \(A_{z}\) satisfying \(\left[L_{z}, A_{x}\right]=i \hbar A_{y}\), \(\left[L_{z}, A_{y}\right]=-i \hbar A_{x}\), and \(\left[L_{z}, A_{z}\right]=0\). Show that the operator \(U=e^{i \theta L_{z} / \hbar}\) satisfies
+
+\begin{aligned}
+&U A_{x} U^{-1}=A_{x} \cos \theta-A_{y} \sin \theta, \\
+&U A_{y} U^{-1}=A_{y} \cos \theta+A_{x} \sin \theta, \\
+&U A_{z} U^{-1}=A_{z} .
+\end{aligned}
+
+First off,
+
+\begin{equation*}
+U^{-1} = \exp \left \lbrace - i \theta L_{z} / \hbar  \right \rbrace.
+\end{equation*}
+
+Thus \(UA_{x}U^{-1} = \exp \left \lbrace i \theta L_z / \hbar \right \rbrace A_{x} \exp \left \lbrace - i \theta L_{z} / \hbar  \right \rbrace\). Invoke the Baker-Hausdorff identity to write
+
+\begin{equation*}
+U A_{x} U^{-1} = A_{x} + \dfrac{i \theta}{\hbar}[L_{z},A_{x}] + \dfrac{1}{2!} \left(\dfrac{\left( i \theta \right)}{\hbar}\right)^{2} [L_{z}, [L_{z}, A_{x}]] + \dotso
+\end{equation*}
+
+Using \([L_{z}, A_{x}] = i \hbar A_{y}\) and \([L_{z}, A_{y}] = - i \hbar A_{x}\),
+
+\begin{align*}
+U A_{x} U^{-1} &= A_{x} - \theta A_{y} + \dfrac{\theta^{2}}{2!} A_{x} - \dfrac{\theta^{3}}{3!} A_{y} + \dotso \\
+&= A_{x}\left( 1  + \dfrac{\theta^{2}}{2!} + \dotso \right)  - A_{y}\left( \theta + \dfrac{\theta^{3}}{3!} + \dotso \right)  \\
+&= A_{x} \cos \theta - A_{y} \sin \theta.
+\end{align*}
+
+Similarly,
+
+\begin{align*}
+U A_{y} U^{-1} &= A_{y} + \dfrac{i \theta}{\hbar}[L_{z},A_{y}] + \dfrac{1}{2!} \left(\dfrac{\left( i \theta \right)}{\hbar}\right)^{2} [L_{z}, [L_{z}, A_{y}]] + \dotso \\
+&= A_{y} + \theta A_{x} + \dfrac{\theta^{2}}{2!} A_{y} + \dfrac{\theta^{3}}{3!} A_{x} + \dotso \\
+&= A_{y}\left( 1  + \dfrac{\theta^{2}}{2!} + \dotso \right)  + A_{x}\left( \theta + \dfrac{\theta^{3}}{3!} + \dotso \right)  \\
+&= A_{y} \cos \theta + A_{x} \sin \theta.
+\end{align*}
+
+Finally,
+\begin{align*}
+U A_{z} U^{-1} = A_{z} + \dfrac{i \theta}{\hbar}[L_{z},A_{z}] + \dfrac{1}{2!} \left(\dfrac{\left( i \theta \right)}{\hbar}\right)^{2} [L_{z}, [L_{z}, A_{z}]] + \dotso = A_{z}.
+\end{align*}
+
+* SOLVED Problem 29
+CLOSED: [2022-11-21 Mon 00:07]
+:LOGBOOK:
+CLOCK: [2022-10-14 Fri 22:25]--[2022-10-15 Sat 00:22] =>  1:57
+CLOCK: [2022-10-13 Thu 18:05]--[2022-10-13 Thu 19:35] =>  1:30
+:END:
+Let \(L_{i}\) denote the three angular momentum operators; \(i\) may denote \(x, y\) or \(z\). We say that an operator \(\mathcal{O}\) transforms like a scalar under rotations if \(\left[L_{i}, \mathcal{O}\right]=0\) for all i. Similarly, three operators \(A_{i}=\left(A_{x}, A_{y}, A_{z}\right)\) are said to transform like a vector under rotations if
+
+\[
+\left[L_{i}, A_{j}\right]=i \hbar \sum_{k=x, y, z} \epsilon_{i j k} A_{k} .
+\]
+** SOLVED Part I
+CLOSED: [2022-11-21 Mon 00:07]
+If \(\mathcal{O}\) and \(\vec{A}\) transform like a scalar and vector respectively, show that \(\mathcal{O} \vec{A}\) transforms like a vector. If \(\vec{A}\) and \(\vec{B}\) transform like vectors, show that \(\vec{A} \cdot \vec{B}\) transforms like a scalar, and \(\vec{A} \times \vec{B}\) transforms like a vector. (All this is true whether or not \(\mathcal{O}, \vec{A}\) and \(\vec{B}\) commute with each other).
+
+Turn on /Einstein summation convention/.
+
+For \(\Theta \vec{A}\), start with the commutator
+
+\begin{equation*}
+[L_{i}, \Theta A_{k}] = [L_{i}, \Theta] A_{k} + \Theta [L_{i}, A_{k}].
+\end{equation*}
+
+Because \(\Theta\) and \(\vec{A}\) transform like a scalar and vector respectively, \([L_{i}, \Theta] = 0\) and \([L_{i}, A_{k}] = i \hbar \epsilon_{ijk} A_{k}\). The commutator reduces to
+
+\begin{equation*}
+[L_{i}, \Theta A_{k}] = \Theta \epsilon_{i,j,k} A_{k} = \epsilon_{i,j,k} \Theta A_{k}.
+\end{equation*}
+
+Thus, \(\Theta \vec{A}\) transforms like a vector.
+
+For \(\vec{A} \cdot \vec{B}\), start with the commutator
+
+\begin{equation*}
+[L_{i}, A_{j} B_{j}] = [L_{i}, A_{j}] B_{j} + A_{j} [L_{i}, B_{j}].
+\end{equation*}
+
+Because \(\vec{A}\) and \(\vec{B}\) transform like vectors \([L_{i}, A_{j}] = i \epsilon_{ijk} A_{j}\) and  \([L_{i}, \vec{B_{j}}] = i \hbar \epsilon_{ijk} B_{j}\). The commutator reduces to
+
+\begin{align*}
+[L_{i}, A_{j} B_{j}] &= i \hbar \epsilon_{ijk} A_{k} B_{j}  + A_{j} i \hbar \epsilon_{ijk} B_{k} \\
+&= i \hbar \epsilon_{ijk} A_{k} B_{j} - i \hbar  \epsilon_{ikj} A_{j} B_{k} = 0.
+\end{align*}
+
+We have used the property \(\epsilon_{ijk} = - \epsilon_{ikj}\) of the Levi-Civita (which we will use again, more than once, without invokation). Because \([L_{i}, A_{j}B_{j}] = 0\), \(\vec{A} \cdot \vec{B}\) transforms like a scalar.
+
+For \(\vec{A} \times \vec{B}\),
+
+\begin{equation*}
+\left( \vec{A} \times \vec{B} \right)_{j} = \epsilon_{jmn} A_{m} B_{n}.
+\end{equation*}
+
+For \(\vec{A} \times \vec{B}\) to transform like a vector, we require
+
+\begin{equation*}
+[L_{i}, \left( A \times B \right)_{j}] = i \hbar \epsilon_{ijk} \epsilon_{kmn} A_{m} B_{n}.
+\end{equation*}
+
+The commutator \([L_{i}, (A \times B)_{j}]\) is thus
+
+\begin{align*}
+[L_{i}, (A \times B)_{j}] &= [L_{i}, \epsilon_{jmn} A_{m} B_{n}] \\
+&= \epsilon_{jmn} \left( [L_{i}, A_{m}]B_{n} +A_{m} [L_{i}, B_{n}] \right).
+\end{align*}
+
+Because \(\vec{A}\) and \(\vec{B}\) transform like vectors \([L_{i}, A_{j}] = i \hbar \epsilon_{ijk} A_{k}\) and  \([L_{i}, \vec{B_{j}}] = i \hbar \epsilon_{ijk} B_{k}\). The commutator \([L_{i}, (A \times B)_{j}]\) then reduces to
+
+\begin{align*}
+[L_{i}, (A \times B)_{j}] &= i \hbar \epsilon_{jmn} \epsilon_{imk}  A_{k}B_{n} + i \hbar \epsilon_{jmn} A_{m} \epsilon_{ink} B_{k} \\
+&= i \hbar \epsilon_{imk} \epsilon_{jmn} A_{k}B_{n} + i \hbar \epsilon_{ink} \epsilon_{jmn} B_{k} A_{m}.
+\end{align*}
+
+We thus need the following truth value
+
+\begin{equation*}
+i \hbar \epsilon_{ijk} \epsilon_{kmn} A_{m} B_{n} \stackrel{?}{=} i \hbar \epsilon_{ijk} \epsilon_{jmn} A_{k}B_{n} + i \hbar \epsilon_{ijk} \epsilon_{jmn} B_{k} A_{m}.
+\end{equation*}
+
+Let's rig each side up with Kroneckers using the property  \(\epsilon_{ijk} \epsilon_{imn} = \delta_{jm} \delta_{kn} - \delta_{jn} \delta_{km}\) of the Levi-Civita, following which we will fire them. Starting with the left hand side:
+
+\begin{align*}
+i \hbar \epsilon_{ijk} \epsilon_{kmn} A_{m} B_{n} &=
+i \hbar \epsilon_{kij} \epsilon_{kmn} A_{m} B_{n} = i \hbar \epsilon_{kij} \epsilon_{kmn} A_{m} B_{n} \\
+&= i \hbar \delta_{im} \delta_{jn} A_{m} B_{n} - i \hbar \delta_{in} \delta_{jm} A_{m} B_{n} = i \hbar \left( A_{i} B_{j} - A_{j} B_{i} \right).
+\end{align*}
+
+Now for the right hand side:
+
+\begin{align*}
+i \hbar \epsilon_{imk} \epsilon_{jmn} A_{k}B_{n} + i \hbar \epsilon_{ink} \epsilon_{jmn} B_{k} A_{m} &=
+i \hbar \epsilon_{mik} \epsilon_{mjn} A_{k}B_{n} - i \hbar \epsilon_{nik} \epsilon_{njm} B_{k} A_{m} \\
+&=  i \hbar \left(  \delta_{ij} \delta_{kn} - \delta_{im} \delta_{kj} \right)A_{k}B_{n} \\
+&+ i \hbar \left( \delta_{im} \delta_{kj} - \delta_{ij} \delta_{km} \right) B_{k} A_{m} \\
+&= i \hbar \left( A_{i} B_{j} - A_{j} B_{i} \right).
+\end{align*}
+Indeed,
+
+\begin{equation*}
+i \hbar \epsilon_{ijk} \epsilon_{kmn} A_{m} B_{n} = i \hbar \epsilon_{ijk} \epsilon_{jmn} A_{k}B_{n} + i \hbar \epsilon_{ijk} \epsilon_{jmn} B_{k} A_{m},
+\end{equation*}
+
+and thus, the truth value being affirmative, \(\vec{A} \times \vec{B}\) transforms like a vector.
+** SOLVED Part II
+CLOSED: [2022-11-21 Mon 00:07]
+Verify that \(\vec{r}\) and \(\vec{p}\) transform like vectors.
+
+\begin{align*}
+[L_{i}, r_{j}] = [\left( \vec{r} \times \vec{p} \right)_{i}, r_{j}] \\
+&= [\epsilon_{ilk}r_{l}p_{k}, r_{j} ] \\
+&= \epsilon_{ilk} \left[ r_{l} p_{k}, r_{j} \right] \\
+&= \epsilon_{ilk} r_{l} \left[p_{k}, r_{j} \right] + \epsilon_{ilk} \left[ r_{j}, r_{j} \right] p_{k} \\
+&= \epsilon_{ilk} r_{l} \left[p_{k}, r_{j} \right] \\
+&= - i \hbar \epsilon_{ilj} r_{l} \\
+&= i \hbar \epsilon_{ijl} r_{l}.
+\end{align*}
+
+\begin{align*}
+[L_{i}, p_{j}] = [\left( \vec{r} \times \vec{p} \right)_{i}, p_{j}] \\
+&= [\epsilon_{ilk}r_{l}p_{k}, p_{j} ] \\
+&= \epsilon_{ilk} \left[ r_{l} p_{k}, p_{j} \right] \\
+&= \epsilon_{ilk} r_{l} \left[p_{k}, p_{j} \right] + \epsilon_{ilk} \left[ r_{l}, p_{j} \right] p_{k} \\
+&= \epsilon_{ijk} \left[ r_{j}, p_{j} \right] p_{k} \\
+&= i \hbar \epsilon_{ijk} p_{k}.
+\end{align*}
+
+Indeed, \(\vec{r}\) and \(\vec{p}\) transform like vectors.
+
+* TOSOLVE Problem 30
+:LOGBOOK:
+CLOCK: [2022-10-14 Fri 14:09]--[2022-10-14 Fri 17:07] =>  2:58
+:END:
+Consider the matrices
+
+\[
+T_{z}=\left(\begin{array}{ccc}
+1 & 0 & 0 \\
+0 & 0 & 0 \\
+0 & 0 & -1
+\end{array}\right), \quad T_{x}=\frac{1}{\sqrt{2}}\left(\begin{array}{ccc}
+0 & 1 & 0 \\
+1 & 0 & 1 \\
+0 & 1 & 0
+\end{array}\right), \quad T_{y}=\frac{1}{\sqrt{2}}\left(\begin{array}{ccc}
+0 & -i & 0 \\
+i & 0 & -i \\
+0 & i & 0
+\end{array}\right),
+\]
+
+and
+
+\[
+T_{z}^{\prime}=\left(\begin{array}{ccc}
+0 & -i & 0 \\
+i & 0 & 0 \\
+0 & 0 & 0
+\end{array}\right), \quad T_{x}^{\prime}=\left(\begin{array}{ccc}
+0 & 0 & 0 \\
+0 & 0 & -i \\
+0 & i & 0
+\end{array}\right), \quad T_{y}^{\prime}=\left(\begin{array}{ccc}
+0 & 0 & i \\
+0 & 0 & 0 \\
+-i & 0 & 0
+\end{array}\right),
+\]
+
+Construct a unitary matrix \(U\) such that \(U T_{i} U^{-1}=T_{i}^{\prime}\) for \(i=x, y\) and \(z\).
+
+Hint: If \(x_{n}\) are the three normalised eigenvectors of \(T_{z}\) with the eigenvalues \(\lambda_{n}\), and \(x_{n}^{\prime}\) are the corresponding eigenvectors of \(T_{z}^{\prime}\) with the same eigenvalues, then \(U=\sum_{n} x_{n}^{\prime} x_{n}^{\dagger}\) satisfies \(U T_{z} U^{-1}=T_{z}^{\prime}\). Note that the vectors \(x_{n}\) and \(x_{n}^{\prime}\) have some phase ambiguities; these ambiguities can be fixed by explicitly checking that the same matrix \(U\) also satisfies \(U T_{x} U^{-1}=T_{x}^{\prime}\) and \(U T_{y} U^{-1}=T_{y}^{\prime}\).
+
+* TOSOLVE Problem 31
+The Hamiltonian governing the rotational motion of a system with angular momentum \(l=1\) is given by
+
+\[
+H=a L_{x}^{2}+b L_{y}^{2}+c L_{z}^{2} .
+\]
+
+Find all the energy levels.
+
+* TOSOLVE Problem 32
+:LOGBOOK:
+CLOCK: [2022-10-14 Fri 01:49]--[2022-10-14 Fri 02:58] =>  1:09
+:END:
+Consider an eigenstate of \(\vec{L}^{2}\) and \(L_{z}\) denoted by \(\mid l, m>\). Let \(A=\hat{n} \cdot \vec{L}\) denote an operator, where \(\hat{n}\) is a unit vector; we can parametrise it in terms of two angles as \(\left(n_{x}, n_{y}, n_{z}\right)=(\sin \alpha \cos \beta, \sin \alpha \sin \beta, \cos \alpha)\). In terms of \((\alpha, \beta)\), calculate the expectation value \(\langle A\rangle\) and the uncertainty \(\Delta A\) in the state \(|l, m\rangle\).
+
+(Note: The angles \(\alpha\) and \(\beta\) are fixed numbers, and the operators \(L_{x}, L_{y}, L_{z}\) do not act on them).
+
+/The strategy will be to re-express all encountered operators in terms of \(\vec{L}^{2}\) and \(L_{z}\). That way, we can *operate* with impunity./
+
+\begin{equation*}
+\left \langle A  \right \rangle = \left \langle l, m \left \lvert \hat{n} \cdot \vec{L}  \right \rvert l, m \right \rangle = \left \langle l, m \left \lvert n_{x}L_{x} + n_{y}L_{y} + n_{z}L_{z}  \right \rvert l, m \right \rangle.
+\end{equation*}
+
+Let's take each of these in turn.
+
+\begin{align*}
+\left \langle l,m \left \lvert n_x L_{x} \right \rvert l,m \right \rangle &= n_{x} \left \langle l,m \left \lvert L_x  \right \rvert l,m \right \rangle \\
+&= n_x \left \langle l,m  \left \lvert \dfrac{1}{i \hbar} [L_{y}, L_{z}]  \right \rvert l,m \right \rangle \\
+&= \dfrac{n_{x}}{i \hbar} \left \langle l,m  \left \lvert L_{y} L_{z} - L_{z} L_{y}  \right \rvert l,m \right \rangle \\
+&= \dfrac{n_{x}}{i \hbar} \left( \left \langle l,m  \left \lvert L_{y} L_{z} \right \rvert l,m \right \rangle - \left \langle l,m  \left \lvert L_{z} L_{y}  \right \rvert l,m \right \rangle \right) \\
+&= \dfrac{n_{x}}{i} \left( m \left \langle l, m \left \lvert L_y  \right \rvert l, m \right \rangle - m \left \langle l, m \left \lvert L_{y}  \right \rvert l, m \right \rangle \right) = 0
+\end{align*}
+
+By a very similar set of steps
+
+\begin{equation*}
+\left \langle l, m \left \lvert n_y L_y \right \rvert l, m \right \rangle = 0.
+\end{equation*}
+
+Finally
+
+\begin{align*}
+\left \langle l, m \left \lvert n_z L_z \right \rvert l, m \right \rangle &=
+n_{z} \left \langle l, m \left \lvert L_z  \right \rvert l, m \right \rangle = \hbar m n_{z} = \hbar m \cos \alpha.
+\end{align*}
+
+For the uncertainty, we need \(\left \langle A^{2}  \right \rangle\). We have
+
+\begin{align*}
+A^{2} &= \left( \hat{n} \cdot \vec{L} \right)^{2} \\
+&= n_{x}^{2} L_{x}^{2} + n_{y}^{2} L_{y}^{2} + n_{z}^{2} L_{z}^{2} \\
+&+ n_{x}n_{y} L_{x} L_{y} + n_{y}n_{x} L_{y} L_{x} \\
+&+ n_{y}n_{z} L_{y} L_{z} + n_{z}n_{y} L_{z} L_{y} \\
+&+ n_{z}n_{x} L_{z} L_{x} + n_{x}n_{z} L_{x} L_{z}.
+\end{align*}
+
+Let's take each of these in turn.
+
+\begin{equation*}
+\left \langle l, m \left \lvert n_x^2 L_x^2  \right \rvert l, m \right \rangle
+\end{equation*}
+
+* TOSOLVE Problem 33
+:LOGBOOK:
+CLOCK: [2022-12-02 Fri 06:00]--[2022-12-02 Fri 08:48] =>  2:48
+CLOCK: [2022-12-02 Fri 03:26]--[2022-12-02 Fri 04:36] =>  1:10
+:END:
+*Consider a particle with angular momentum* \(\vec{J}\) *with* \(\vec{J}^{2}=j(j+1) \hbar^{2}\). *Let* \(\hat{n}=\) (\(\sin \alpha \cos \beta, \sin \alpha \sin \beta, \cos \alpha\)) *be a unit vector. Verify that the state* \(|\psi\rangle\) *given by*
+
+\begin{align*}
+\vert \psi \rangle =\sum_{m=-j}^{j} \exp \left \lbrace i \left( j - m \right) \beta \right \rbrace \left(\frac{(2 j) !}{(j-m) !(j+m) !}\right)^{1 / 2}\left(\cos \frac{\alpha}{2}\right)^{j+m}\left(\sin \frac{\alpha}{2}\right)^{j-m} \vert j_{z} = m \rangle
+\end{align*}
+
+*satisfies* \(\hat{n} \cdot \vec{J} \vert \psi \rangle = j \hbar \vert \psi \rangle\).
+
+*(Note: The angles* \(\alpha\) *and* \(\beta\) *are fixed numbers, and the operators* \(J_{x}, J_{y}, J_{z}\) *do not act on them).*
+
+We will project the angular momentum along \(\hat{n}\) later. First let's measure it.
+* TOSOLVE Problem 34
+:LOGBOOK:
+CLOCK: [2022-10-26 Wed 08:46]--[2022-10-26 Wed 10:39] =>  1:53
+:END:
+Consider the angular momentum matrices
+
+\[
+L_{z}=\hbar\left(\begin{array}{ccc}
+1 & 0 & 0 \\
+0 & 0 & 0 \\
+0 & 0 & -1
+\end{array}\right) \quad \text { and } \quad L_{x}=\frac{\hbar}{\sqrt{2}}\left(\begin{array}{ccc}
+0 & 1 & 0 \\
+1 & 0 & 1 \\
+0 & 1 & 0
+\end{array}\right)
+\]
+
+for a particle with orbital angular momentum \(l=1\). Find the normalised eigenvectors of \(L_{x}\) corresponding to the eigenvalues \(\hbar, 0\) and \(-\hbar\). (The phases of the three eigenvectors are unimportant; hence you can choose the phases in any way you like).
+
+Show that the state with eigenvalue \(L_{x}=\hbar\) can be transformed to the state with eigenvalue \(L_{x}=-\hbar\) by rotating around the \(\hat{z}\) axis by an appropriate angle; find this angle. Show that it is impossible to transform the state with eigenvalue \(L_{x}=\hbar\) to the state with eigenvalue \(L_{x}=0\) by rotating around the \(\hat{z}\) axis by any angle.
+* TOSOLVE Problem 35
+Find the energy levels and corresponding wave functions of the isotropic simple harmonic oscillator in three dimensions using polar coordinates \((r, \theta, \phi)\). (You don't have to normalise the wave functions).
+
+If the energy levels are written as \(E_{N}=(N+3 / 2) \hbar \omega\), where \(N=0,1,2, \cdots\), what are the allowed values of the orbital angular momentum \(l\) for a given value of \(N\) ? Using this information, show that the degeneracy of the energy level \(E_{N}\) is given by \((N+1)(N+2) / 2\).
+
+* TOSOLVE Problem 36: Hidden symmetry
+** Part I
+Find the energy levels and degeneracies of the two-dimensional isotropic harmonic oscillator.
+** Part II
+Use the two sets of raising and lowering operators (given in terms of the coordinates \(x, y)\) to construct three operators which commute with the Hamiltonian and also satisfy the commutations relations of 'angular momentum' amongst each other. Show that these operators can be used to explain the degeneracies in this problem. Which representation of 'angular momentum' describes states with a given energy \(E ?\)
+** Part III
+Can you write the angular momentum operator \(L_{z}\) in terms of the above operators?
+* TOSOLVE Problem 37
+:LOGBOOK:
+CLOCK: [2022-10-28 Fri 14:20]--[2022-10-28 Fri 16:26] =>  2:06
+:END:
+** SOLVED Part I
+CLOSED: [2022-11-21 Mon 00:13]
+A two-dimensional representation of the angular momentum algebra is given by the three matrices
+
+\[
+J_{x}=\frac{\hbar}{2}\left(\begin{array}{ll}
+0 & 1 \\
+1 & 0
+\end{array}\right), \quad J_{y}=\frac{\hbar}{2}\left(\begin{array}{cc}
+0 & -i \\
+i & 0
+\end{array}\right), \quad \text { and } \quad J_{z}=\frac{\hbar}{2}\left(\begin{array}{cc}
+1 & 0 \\
+0 & -1
+\end{array}\right) .
+\]
+
+Given a unit vector \(\hat{n}=\left(n_{x}, n_{y}, n_{z}\right)\), use various properties of the Pauli matrices to find the rotation matrix \(R=\exp (i \alpha \hat{n} \cdot \vec{J} / \hbar)\). (This operator rotates by an angle \(\alpha\) about the direction \(\hat{n}\) ).
+
+What is the value of \(R\) for \(\alpha=2 \pi\) ?
+
+
+\begin{equation*}
+J_{x} = \dfrac{\hbar}{2} \begin{pmatrix}
+                         0 & 1 \\
+                         1 & 0
+                         \end{pmatrix},
+\quad
+J_{y} = \dfrac{\hbar}{2} \begin{pmatrix}
+                         0 & -i \\
+                         i & 0
+                         \end{pmatrix}
+\quad
+J_{z} = \dfrac{\hbar}{2} \begin{pmatrix}
+                         1 & 0 \\
+                         0 & -1
+                         \end{pmatrix}.
+\end{equation*}
+
+*Given a unit vector \(\hat{n} = \left( n_{x}, n_{y}, n_{z}\right)\), use various properties of the Pauli matrices to find the rotation matrix \(R = \exp \left \lbrace i \alpha \hat{n} \cdot \vec{J} / \hbar  \right \rbrace\). (This operator rotates by an angle \(\alpha\) about the direction \(\hat{n}\)).*
+
+The Pauli matrices are
+
+\begin{equation*}
+\sigma_{x} =
+\begin{pmatrix}
+0 & 1 \\
+1 & 0
+\end{pmatrix}
+\quad
+\sigma_{y} =
+\begin{pmatrix}
+0 & -i \\
+i & 0
+\end{pmatrix}
+\quad
+\sigma_{z} =
+\begin{pmatrix}
+1 & 0 \\
+0 & -1
+\end{pmatrix}.
+\end{equation*}
+
+\begin{align*}
+R &= \exp \left \lbrace i \alpha \hat{n} \cdot \vec{J} / \hbar  \right \rbrace \\
+&= \exp \left \lbrace i \left( \dfrac{\alpha}{2} \right) \hat{n} \cdot \vec{\sigma}   \right \rbrace \\
+&= \sum_{m=0}^{\infty} \left(\dfrac{i \alpha}{2} \right)^{m} \dfrac{1}{m!} \left( \hat{n} \cdot \vec{\sigma} \right)^{m} \\
+&= \left(\sum_{m=0}^{\infty} \left( -1 \right)^{m} \left(\dfrac{ \alpha}{2} \right)^{2m} \dfrac{1}{(2m)!} \left( \hat{n} \cdot \vec{\sigma} \right)^{2m}\right) \\
+&+ i \left(\sum_{m=0}^{\infty} \left( -1 \right)^{m} \left(\dfrac{\alpha}{2} \right)^{2m+1} \dfrac{1}{(2m+1)!} \left( \hat{n} \cdot \vec{\sigma} \right)^{2m+1}\right).
+\end{align*}
+
+To proceed, we invoke the property \((\hat{n} \cdot \vec{\sigma})^{2} = I\) of the Pauli matrices to rewrite
+
+\begin{align*}
+R &= \mathbf{I} \left[ \left(\sum_{m=0}^{\infty} \left( -1 \right)^{m} \left(\dfrac{\alpha}{2} \right)^{2m} \dfrac{1}{(2m)!} \right)  + i \left( \hat{n} \cdot \vec{\sigma} \right)  \left(\sum_{m=0}^{\infty} \left( -1 \right)^{m} \left(\dfrac{\alpha}{2} \right)^{2m+1} \dfrac{1}{(2m+1)!} \right) \right],
+\end{align*}
+
+and identify the sums inside the parenthesis as \(\cos \alpha/2\) and \(\sin \alpha/2\) to write
+
+\begin{equation*}
+R = \mathbf{I} \cos \alpha / 2 + i \left( \hat{n} \cdot \vec{\sigma} \right) \sin \alpha /2.
+\end{equation*}
+
+Now use \(\hat{n} \cdot \vec{\sigma}\) is
+
+\begin{align*}
+\hat{n} \cdot \vec{\sigma} &= n_{x}
+\begin{pmatrix}
+0 & 1 \\
+1 & 0
+\end{pmatrix}
++ n_{y}
+\begin{pmatrix}
+0 & -i \\
+i & 0
+\end{pmatrix}
++ n_{z}
+\begin{pmatrix}
+1 & 0 \\
+0 & -1
+\end{pmatrix} \\
+&=
+\begin{pmatrix}
+n_{z} & n_{x} - i n_{y} \\
+n_{x} + i n_{y}    & - n_{z}
+\end{pmatrix},
+\end{align*}
+
+for the final reduction of \(R\) to
+
+\begin{equation*}
+R =
+\begin{pmatrix}
+\cos \alpha/2 + i n_{z} \sin \alpha/2 & n_{y} \sin \alpha/2 + i n_{x} \sin \alpha/2\\
+- n_{y} \sin \alpha / 2 + i n_{x} \sin \alpha/2  & \cos \alpha/2 - i n_{z} \sin \alpha/2
+\end{pmatrix}.
+\end{equation*}
+
+** Part II
+A three-dimensional representation of angular momentum is given by
+
+\[
+J_{x}=\hbar\left(\begin{array}{ccc}
+0 & 0 & 0 \\
+0 & 0 & -i \\
+0 & i & 0
+\end{array}\right), \quad J_{y}=\hbar\left(\begin{array}{ccc}
+0 & 0 & i \\
+0 & 0 & 0 \\
+-i & 0 & 0
+\end{array}\right), \quad J_{z}=\hbar\left(\begin{array}{ccc}
+0 & -i & 0 \\
+i & 0 & 0 \\
+0 & 0 & 0
+\end{array}\right) .
+\]
+
+(These matrices can be written in short as \(\left.\left(J_{i}\right)_{j k}=-i \hbar \epsilon_{i j k}\right)\). Calculate the rotation matrix \(R=\exp (i \alpha \hat{n} \cdot \vec{J} / \hbar)\).
+
+Hint: By symmetry, the matrix elements \(R_{i j}\) can only be a linear combination of the three matrices \(\delta_{i j}, n_{i} n_{j}\) and \(\sum_{k} \epsilon_{i j k} n_{k}\), with coefficients which can only be functions of \(\alpha\). Find the three coefficients by considering the special case \(\hat{n}=(0,0,1)\).
+* TOSOLVE Problem 38
+Find all the Clebsch-Gordan coefficients when two angular momenta \(\overrightarrow{J_{1}}\) and \(\overrightarrow{J_{2}}\) are combined to give \(\vec{J}=\overrightarrow{J_{1}}+\vec{J}_{2}\), if \(j_{1}=3 / 2\) and \(j_{2}=1 / 2\), namely, find the inner products \(<j, j_{z} \mid j_{1}=3 / 2, j_{1 z} ; j_{2}=1 / 2, j_{2 z}>\) for all the possible values of \(j, j_{z}, j_{1 z}\) and \(j_{2 z}\). What are the eigenvalues of the operator \(\vec{J}_{1} \cdot \vec{J}_{2}\) in the various possible states \(\mid j, j_{z}>?\)
+* SOLVED Problem 39
+CLOSED: [2022-12-01 Thu 19:07]
+:LOGBOOK:
+CLOCK: [2022-12-01 Thu 18:03]--[2022-12-01 Thu 19:07] =>  1:04
+:END:
+*Consider an electron whose spin is initially pointing along the direction* \(\hat{n}\), *where* \(\hat{n}=(\sin \theta, 0, \cos \theta)\) *is a unit vector. It is then acted on by a magnetic field of the form* \(\vec{B}=B \hat{z}\). *Find the spin wave function of the electron as a function of time, and use that to calculate the three expectation values* \(\left \langle S_x  \right \rangle\), \(\left \langle S_y  \right \rangle\), \(\left \langle S_z  \right \rangle\).
+
+Here's the field:
+
+\begin{align*}
+\vec{B} = B \vec{k}.
+\end{align*}
+
+Let's find the propagator first:
+
+\begin{align*}
+U_{r} \left( t \right) &= \exp \left \lbrace i \gamma t S_{z} B/ \hbar \right \rbrace = \exp \left \lbrace i \omega_{0} t \sigma_{z}/2  \right \rbrace \qquad \left( \omega_{0} = \gamma B \right)
+\end{align*}
+
+Since \(\sigma_{z}\) is diagonal:
+
+\begin{align*}
+U \left( t \right) \to
+\begin{pmatrix}
+\exp \left \lbrace i \omega_{0} t/2  \right \rbrace & 0  \\
+0 & \exp \left \lbrace - i \omega_{0} t /2  \right \rbrace
+\end{pmatrix}
+\end{align*}
+
+The electron starts out in the state:
+
+\begin{align*}
+\vert \psi \left( 0 \right) \rangle = \vert \hat{n}, + \rangle \to
+\begin{bmatrix}
+\cos \left( \theta/2 \right) \\
+\sin \left( \theta/2 \right)
+\end{bmatrix}.
+\end{align*}
+
+How did I get \(\vert \hat{n}, + \rangle\)? It is just the eigenket of \(\hat{n} \cdot \vec{S} = n_{x} S_{x} + n_{y} S_{y} + n_{z} S_{z}\). For this case it will simply yield the two-dimensional rotation matrix:
+
+\begin{align*}
+\hat{n} \cdot \vec{S} = \dfrac{\hbar}{2}
+\begin{pmatrix}
+\cos \theta & \sin \theta \\
+\sin \theta & - \cos \theta
+\end{pmatrix}.
+\end{align*}
+
+It is a simple matter to solve the eigenvalue problem (see =Exercise 14.3.2=) and once down, we'll arrive at:
+
+\begin{align*}
+\vert \psi \left( 0 \right) \rangle = \vert \hat{n}, + \rangle \to
+\begin{bmatrix}
+\cos \left( \theta/2 \right) \\
+\sin \left( \theta/2 \right)
+\end{bmatrix}.
+\end{align*}
+
+The specification of the question makes the \(+\) eigenket the natural choice. Moving on, at time \(t\):
+
+\begin{align*}
+\vert \psi \left( t \right) \rangle = U \left( t \right) \vert \psi \left( 0 \right) \rangle \to
+\begin{bmatrix}
+\cos \left( \theta/2 \right) \exp \left \lbrace i \omega_{0} t/2  \right \rbrace \\
+\sin \left( \theta/2 \right) \exp \left \lbrace - i \omega_{0} t/ 2  \right \rbrace
+\end{bmatrix}.
+\end{align*}
+
+We need the expectation values \(\left \langle S_x  \right \rangle\), \(\left \langle S_y  \right \rangle\), \(\left \langle S_z  \right \rangle\).
+
+\begin{align*}
+\left \langle S_{x}  \right \rangle = \left \langle \psi \left( t \right) \left \lvert S_{x}  \right \rvert \psi \left( t \right) \right \rangle &= \dfrac{\hbar}{2} \begin{bmatrix}
+\cos \left( \theta/2 \right) \exp \left \lbrace i \omega_{0} t/2  \right \rbrace \\
+\sin \left( \theta/2 \right) \exp \left \lbrace - i \omega_{0} t/ 2  \right \rbrace
+\end{bmatrix}^{\dagger}
+\begin{pmatrix}
+0 & 1 \\
+1 & 0
+\end{pmatrix}
+\begin{bmatrix}
+\cos \left( \theta/2 \right) \exp \left \lbrace i \omega_{0} t/2  \right \rbrace \\
+\sin \left( \theta/2 \right) \exp \left \lbrace - i \omega_{0} t/ 2  \right \rbrace
+\end{bmatrix} \\
+&= \dfrac{\hbar}{2} \begin{bmatrix}
+\cos \left( \theta/2 \right) \exp \left \lbrace i \omega_{0} t/2  \right \rbrace \\
+\sin \left( \theta/2 \right) \exp \left \lbrace - i \omega_{0} t/ 2  \right \rbrace
+\end{bmatrix}^{\dagger}
+\begin{bmatrix}
+\sin \left( \theta/2 \right) \exp \left \lbrace - i \omega_{0} t/ 2  \right \rbrace \\
+\cos \left( \theta/2 \right) \exp \left \lbrace i \omega_{0} t/2  \right \rbrace
+\end{bmatrix} \\
+&= \dfrac{\hbar}{2} \sin \left( \theta/2 \right) \cos \left( \theta/2 \right) \left[ \exp \left \lbrace - i \omega_0 t \right \rbrace + \exp \left \lbrace i \omega_0 t \right \rbrace \right] \\
+&= \dfrac{\hbar \sin \theta}{4} \left[ \exp \left \lbrace - i \omega_0 t \right \rbrace + \exp \left \lbrace i \omega_0 t \right \rbrace \right].
+\end{align*}
+
+\begin{align*}
+\left \langle S_{y}  \right \rangle = \left \langle \psi \left( t \right) \left \lvert S_{x}  \right \rvert \psi \left( t \right) \right \rangle &= \dfrac{\hbar}{2} \begin{bmatrix}
+\cos \left( \theta/2 \right) \exp \left \lbrace i \omega_{0} t/2  \right \rbrace \\
+\sin \left( \theta/2 \right) \exp \left \lbrace - i \omega_{0} t/ 2  \right \rbrace
+\end{bmatrix}^{\dagger}
+\begin{pmatrix}
+0 & -i \\
+i & 0
+\end{pmatrix}
+\begin{bmatrix}
+\cos \left( \theta/2 \right) \exp \left \lbrace i \omega_{0} t/2  \right \rbrace \\
+\sin \left( \theta/2 \right) \exp \left \lbrace - i \omega_{0} t/ 2  \right \rbrace
+\end{bmatrix} \\
+&= \dfrac{\hbar}{2} \begin{bmatrix}
+\cos \left( \theta/2 \right) \exp \left \lbrace i \omega_{0} t/2  \right \rbrace \\
+\sin \left( \theta/2 \right) \exp \left \lbrace - i \omega_{0} t/ 2  \right \rbrace
+\end{bmatrix}^{\dagger}
+\begin{bmatrix}
+-i \sin \left( \theta/2 \right) \exp \left \lbrace - i \omega_{0} t/ 2  \right \rbrace \\
+i \cos \left( \theta/2 \right) \exp \left \lbrace i \omega_{0} t/2  \right \rbrace
+\end{bmatrix} \\
+&= - \dfrac{i \hbar \sin \theta}{4} \left[ \exp \left \lbrace - i \omega_0 t \right \rbrace - \exp \left \lbrace i \omega_0 t \right \rbrace \right].
+\end{align*}
+
+\begin{align*}
+\left \langle S_{z}  \right \rangle = \left \langle \psi \left( t \right) \left \lvert S_{x}  \right \rvert \psi \left( t \right) \right \rangle &= \dfrac{\hbar}{2} \begin{bmatrix}
+\cos \left( \theta/2 \right) \exp \left \lbrace i \omega_{0} t/2  \right \rbrace \\
+\sin \left( \theta/2 \right) \exp \left \lbrace - i \omega_{0} t/ 2  \right \rbrace
+\end{bmatrix}^{\dagger}
+\begin{pmatrix}
+1 & 0 \\
+0 & -1
+\end{pmatrix}
+\begin{bmatrix}
+\cos \left( \theta/2 \right) \exp \left \lbrace i \omega_{0} t/2  \right \rbrace \\
+\sin \left( \theta/2 \right) \exp \left \lbrace - i \omega_{0} t/ 2  \right \rbrace
+\end{bmatrix} \\
+&= \dfrac{\hbar}{2} \begin{bmatrix}
+\cos \left( \theta/2 \right) \exp \left \lbrace i \omega_{0} t/2  \right \rbrace \\
+\sin \left( \theta/2 \right) \exp \left \lbrace - i \omega_{0} t/ 2  \right \rbrace
+\end{bmatrix}^{\dagger}
+\begin{bmatrix}
+\cos \left( \theta/2 \right) \exp \left \lbrace i \omega_{0} t/2  \right \rbrace \\
+-\sin \left( \theta/2 \right) \exp \left \lbrace - i \omega_{0} t/ 2  \right \rbrace
+\end{bmatrix} \\
+&= \dfrac{\hbar}{2} \left( \cos^2 \left( \theta/2 \right) - \sin^{2} \left( \theta/2 \right) \right) \\
+&= \dfrac{\hbar \cos \theta}{2}.
+\end{align*}
+
+* TOSOLVE Problem 40
+Consider an electron whose spin is pointing in the \(+\hat{z}\) direction at time \(t=0\). The Hamiltonian is given by \(H=\mu_{B} \vec{\sigma} \cdot \vec{B}\) when a magnetic field \(\vec{B}\) is applied. Suppose that \(\vec{B}=B(t) \hat{x}\) where
+
+\begin{aligned}
+B(t) &=B_{0} \quad \text { for } \quad 0 \leq t \leq T \\
+&=0 \quad \text { for } \quad t>T
+\end{aligned}
+
+** Part I
+In which direction will the spin point at time \(t>T\)?
+** Part II
+Find the minimum value of \(B_{0}\) such that the spin will point in the \(-\hat{z}\) direction at time \(t>T\).
+* TOSOLVE Problem 41
+Consider three \(s=1 / 2\) spins coupled to each other by the Hamiltonian
+
+\[
+H=-A\left[\vec{S}_{1} \cdot \vec{S}_{2}+\vec{S}_{2} \cdot \vec{S}_{3}+\vec{S}_{3} \cdot \vec{S}_{1}\right]-B S_{z}
+\]
+
+where \(A\) and \(B\) are some constants, and \(S_{z}=S_{1 z}+S_{2 z}+S_{3 z}\).
+** Part I
+Find all the energy levels and label all the eigenstates using the total spin \(\vec{S}^{2}=\) \(\left(\vec{S}_{1}+\vec{S}_{2}+\vec{S}_{3}\right)^{2}\) and \(S_{z}\). (You don't have to find the eigenstates of \(H\) ).
+** Part II
+Let us set \(B=0\). What is the energy, total spin and degeneracy of the ground state if (i) \(A>0\) (called a ferromagnetic system), and (ii) \(A<0\) (called antiferromagnetic)?
+* SOLVED Problem 42
+CLOSED: [2022-12-01 Thu 17:57]
+:LOGBOOK:
+CLOCK: [2022-12-01 Thu 16:51]--[2022-12-01 Thu 17:57] =>  1:06
+:END:
+*Consider three spins each of which has* \(s=1 / 2\). *Find all the eigenvalues and the explicit forms of the corresponding eigenstates of both the total spin squared* \(\vec{S}^{2}\) *(where* \(\vec{S}=\vec{S}_{1}+\vec{S}_{2}+\vec{S}_{3}\) *) and the total* \(S_{z}=S_{1 z}+S_{2 z}+S_{3 z}\). *You have to write the eigenstates as superpositions of the eight states* \(|\uparrow \uparrow \uparrow\rangle,|\uparrow \uparrow \downarrow\rangle, \cdots,|\downarrow \downarrow \downarrow\rangle\).
+
+What are the product states?
+
+\begin{align*}
+\left \lbrace
+\vert \uparrow \uparrow \uparrow \rangle,
+\vert \uparrow \uparrow \downarrow \rangle,
+\vert \uparrow \downarrow \uparrow \rangle,
+\vert \downarrow \uparrow \uparrow \rangle,
+\vert \downarrow \downarrow \uparrow \rangle,
+\vert \downarrow \uparrow \downarrow \rangle,
+\vert \uparrow \downarrow \downarrow \rangle,
+\vert \downarrow \downarrow \downarrow \rangle
+\right \rbrace
+\end{align*}
+
+The total-\(s\) kets are:
+
+\begin{align*}
+\vert s m_{s}, s_{1} s_{2} s_{3} \rangle, \qquad \dfrac{3}{2} \geq s \geq \dfrac{1}{2}, \qquad s \geq m_{s} \geq -s.
+\end{align*}
+
+Here they are:
+
+1) \(S^{2} = \dfrac{3}{2}, \thinspace S_{z} = \dfrac{3}{2}, \thinspace P_{\text{cycl}} = 1\):
+
+\begin{align*}
+\vert \dfrac{3}{2}, \dfrac{3}{2} \rangle = \vert \uparrow \uparrow \uparrow \rangle,
+\end{align*}
+
+2) \(S^{2} = \dfrac{3}{2}, \thinspace S_{z} = \dfrac{1}{2}, \thinspace P_{\text{cycl}} = 1\):
+
+\begin{align*}
+\vert \dfrac{3}{2}, \dfrac{1}{2} \rangle = \dfrac{1}{\sqrt{3}} \left( \vert \uparrow \uparrow \downarrow \rangle + \vert \uparrow \downarrow \uparrow \rangle + \vert \downarrow \uparrow \uparrow \rangle \right),
+\end{align*}
+
+3) \(S^{2} = \dfrac{3}{2}, \thinspace S_{z} = -\dfrac{1}{2}, \thinspace P_{\text{cycl}} = 1\):
+
+\begin{align*}
+\vert \dfrac{3}{2}, - \dfrac{1}{2} \rangle = \dfrac{1}{\sqrt{3}} \left( \vert \downarrow \downarrow \uparrow  \rangle + \vert \downarrow \uparrow \downarrow \rangle + \vert \uparrow \downarrow \downarrow \rangle \right),
+\end{align*}
+
+4) \(S^{2} = \dfrac{3}{2}, \thinspace S_{z} = -\dfrac{3}{2}, \thinspace P_{\text{cycl}} = 1\):
+
+\begin{align*}
+\vert \dfrac{3}{2}, -\dfrac{3}{2} \rangle = \vert \downarrow \downarrow \downarrow \rangle,
+\end{align*}
+
+5) \(S^{2} = \dfrac{1}{2}, \thinspace S_{z} = \dfrac{1}{2}, \thinspace P_{\text{cycl}} = \exp \left \lbrace i \pi /3  \right \rbrace\):
+
+\begin{align*}
+\vert \dfrac{1}{2}, \dfrac{1}{2} \rangle_{1} =
+\dfrac{1}{\sqrt{3}} \left(
+\vert \uparrow \uparrow \downarrow \rangle +
+\exp \left \lbrace i \pi/3  \right \rbrace
+\vert \uparrow \downarrow \uparrow \rangle +
+\exp \left \lbrace -i \pi/3  \right \rbrace
+\vert \downarrow \uparrow \uparrow \rangle
+\right),
+\end{align*}
+
+6) \(S^{2} = \dfrac{1}{2}, \thinspace S_{z} = -\dfrac{1}{2}, \thinspace P_{\text{cycl}} = \exp \left \lbrace i \pi /3  \right \rbrace\):
+
+\begin{align*}
+\vert \dfrac{1}{2}, -\dfrac{1}{2} \rangle_{1} = \dfrac{1}{\sqrt{3}} \left(
+\vert \downarrow \downarrow \uparrow \rangle +
+\exp \left \lbrace i \pi/3  \right \rbrace
+\vert \downarrow \uparrow \downarrow \rangle +
+\exp \left \lbrace -i \pi/3  \right \rbrace
+\vert \uparrow \downarrow \downarrow \rangle \right),
+\end{align*}
+
+7) \(S^{2} = \dfrac{1}{2}, \thinspace S_{z} = \dfrac{1}{2}, \thinspace P_{\text{cycl}} = \exp \left \lbrace - i \pi /3  \right \rbrace\):
+
+\begin{align*}
+\vert \dfrac{1}{2}, \dfrac{1}{2} \rangle_{2} =
+\dfrac{1}{\sqrt{3}} \left(
+\vert \uparrow \uparrow \downarrow \rangle +
+\exp \left \lbrace -i \pi/3  \right \rbrace
+\vert \uparrow \downarrow \uparrow \rangle +
+\exp \left \lbrace i \pi/3  \right \rbrace
+\vert \downarrow \uparrow \uparrow \rangle
+\right),
+\end{align*}
+
+8) \(S^{2} = \dfrac{1}{2}, \thinspace S_{z} = -\dfrac{1}{2}, \thinspace P_{\text{cycl}} = \exp \left \lbrace -i \pi /3  \right \rbrace\):
+
+\begin{align*}
+\vert \dfrac{1}{2}, -\dfrac{1}{2} \rangle_{2} = \dfrac{1}{\sqrt{3}} \left(
+\vert \downarrow \downarrow \uparrow \rangle +
+\exp \left \lbrace -i \pi/3  \right \rbrace
+\vert \downarrow \uparrow \downarrow \rangle +
+\exp \left \lbrace i \pi/3  \right \rbrace
+\vert \uparrow \downarrow \downarrow \rangle \right),
+\end{align*}
+
+Would you like the matrix of Clebsh-Gordan coefficients neatly arranged on a matrix too?
+
+\begin{align*}
+\begin{bmatrix}
+&\vert 3/2, 3/2 \rangle \\
+&\vert 3/2, 1/2 \rangle \\
+&\vert 3/2,-1/2 \rangle \\
+&\vert 3/2,-3/2 \rangle \\
+&\vert 1/2, 1/2 \rangle_{1} \\
+&\vert 1/2, -1/2 \rangle_{1} \\
+&\vert 1/2, 1/2 \rangle_{2} \\
+&\vert 1/2, -1/2 \rangle_{2} \\
+\end{bmatrix}
+&=
+\begin{pmatrix}
+1 & 0 & 0 & 0  & 0 & 0 & 0 & 0 \\
+0 & \frac{1}{\sqrt{3}} & \frac{1}{\sqrt{3}}  & \frac{1}{\sqrt{3}} & 0 & 0  & 0 & 0 \\
+0 & 0  & 0 & 0 & \frac{1}{\sqrt{3}} & \frac{1}{\sqrt{3}}  & \frac{1}{\sqrt{3}} & 0 \\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 \\
+0 & \frac{1}{\sqrt{3}} & \frac{\exp \left \lbrace i \pi/3  \right \rbrace}{\sqrt{3}} & \frac{\exp \left \lbrace -i \pi/3  \right \rbrace}{\sqrt{3}} & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & \frac{1}{\sqrt{3}} & \frac{\exp \left \lbrace i \pi/3  \right \rbrace}{\sqrt{3}} & \frac{\exp \left \lbrace -i \pi/3  \right \rbrace}{\sqrt{3}} & 0 \\
+0 & \frac{1}{\sqrt{3}} & \frac{\exp \left \lbrace -i \pi/3  \right \rbrace}{\sqrt{3}} & \frac{\exp \left \lbrace i \pi/3  \right \rbrace}{\sqrt{3}} & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & \frac{1}{\sqrt{3}} & \frac{\exp \left \lbrace - i \pi/3  \right \rbrace}{\sqrt{3}} & \frac{\exp \left \lbrace i \pi/3  \right \rbrace}{\sqrt{3}} & 0 \\
+\end{pmatrix}
+\begin{bmatrix}
+&\vert \uparrow \uparrow \uparrow \rangle \\
+&\vert \uparrow \uparrow \downarrow \rangle \\
+&\vert \uparrow \downarrow \uparrow \rangle \\
+&\vert \downarrow \uparrow \uparrow \rangle \\
+&\vert \downarrow \downarrow \uparrow \rangle \\
+&\vert \downarrow \uparrow \downarrow \rangle \\
+&\vert \uparrow \downarrow \downarrow \rangle \\
+&\vert \downarrow \downarrow \downarrow \rangle
+\end{bmatrix}
+\end{align*}
+
+* SOLVED Problem 43
+CLOSED: [2022-12-01 Thu 16:02]
+:LOGBOOK:
+CLOCK: [2022-12-01 Thu 13:53]--[2022-12-01 Thu 16:01] =>  2:08
+:END:
+*Consider four spin*-\(1 / 2\) *objects coupled to each other by the following Hamiltonian*
+
+\begin{align*}
+H=-A\left[\vec{S}_{1} \cdot \vec{S}_{2}+\vec{S}_{1} \cdot \vec{S}_{3}+\vec{S}_{1} \cdot \vec{S}_{4}+\vec{S}_{2} \cdot \vec{S}_{3}+\vec{S}_{2} \cdot \vec{S}_{4}+\vec{S}_{3} \cdot \vec{S}_{4}\right] .
+\end{align*}
+
+*Show that the total spin component* \(S_{z}=S_{1 z}+S_{2 z}+S_{3 z}+S_{4 z}\) *commutes with* \(H\). *In the same way, we can show that total* \(S_{x}\) *and* \(S_{y}\) *commute with* \(H\), *but you don't have to show this. Now show that the total spin squared,* \(\vec{S}^{2}=\left(\vec{S}_{1}+\vec{S}_{2}+\vec{S}_{3}+\vec{S}_{4}\right)^{2}\), *also commutes with* \(H\). *For* \(A>0\), *it turns out that one of the ground states is given by the state in which all the four spins have* \(S_{i z}=\hbar / 2\). *What is the energy and total spin of this state? Hence find the degeneracy of the ground state.*
+
+Start with a rewrite of the Hamiltonian
+
+\begin{align*}
+H = - \dfrac{A}{2} \left[ S^{2} - S_{1}^{2} - S_{2}^{2} - S_{3}^{2} - S_{4}^{2} \right].
+\end{align*}
+
+We want to know
+
+\begin{align*}
+\left[ S_{z}, H \right] = - \dfrac{A}{2} \left \lbrace \left[ S_{z}, S^{2}  \right] - \left[ S_{z}, S_{1}^{2} \right] - \left[ S_{z},  S_{2}^{2} \right] - \left[ S_{z}, S_{3}^{2} \right] - \left[ S_{z}, S_{4}^{2} \right]  \right \rbrace \stackrel{?}{=} 0.
+\end{align*}
+
+\begin{align*}
+\left[ S_z, S^2 \right] = 0 \Longrightarrow \left[ S_{z}, S_{i}^{2} \right] = 0, \qquad i = 1, \thinspace 2, \thinspace 3, \thinspace 4.
+\end{align*}
+
+Therefore \([S_{z}, H] = 0\).
+
+\begin{align*}
+\left[ \vec{S}^{2}, H \right] = - \dfrac{A}{2} \left \lbrace \left[ S^{2}, S^{2}  \right] - \left[ S^{2}, S_{1}^{2} \right] - \left[ S^{2},  S_{2}^{2} \right] - \left[ S^{2}, S_{3}^{2} \right] - \left[ S^{2}, S_{4}^{2} \right]  \right \rbrace \stackrel{?}{=} 0.
+\end{align*}
+
+\begin{align*}
+\left[ S^{2}, S_{i}^{2} \right] = 0, \qquad i = 1, \thinspace 2, \thinspace 3, \thinspace 4,
+\end{align*}
+
+for the simple reason that \(S^{2}\) and \(S^{2}_{i}\) transform like scalars under rotations generated by \(\vec{S}\) and \(\vec{S}_{i}\) respectively, and thus behave like \(c\)-numbers. Naturally, their commutator vanishes.
+
+\(S^{2}, \thinspace S_{z}, \thinspace S_{1}^{2}, \thinspace S_{2}^{2}, \thinspace S_{3}^{3}, \thinspace S_{4}^{4}\) /are mutually commuting set of operators./
+
+The same being spoken of is the total-\(s\) state with \(s = 2\). The energy may be obtained simply by operating \(H\) on a total-\(s\) state with \(s = 2\) and \(2 \geq m_{s} \geq -2\):
+
+\begin{align*}
+H \vert 2 m_{s}, \uparrow \uparrow \uparrow \uparrow \rangle &= - \dfrac{A}{2} \left[ S^{2} - S_{1}^{2} - S_{2}^{2} - S_{3}^{2} - S_{4}^{2} \right] \vert 2 m_{s}, \uparrow \uparrow \uparrow \uparrow \rangle\\
+&= -\dfrac{6 \hbar^{2} A}{2} \vert 2 m_{s}, \uparrow \uparrow \uparrow \uparrow \rangle - \dfrac{3 \hbar^{2} A}{8} \vert 2 m_{s}, \uparrow \uparrow \uparrow \uparrow \rangle \\
+&- \dfrac{3 \hbar^{2} A}{8} \vert 2 m_{s}, \uparrow \uparrow \uparrow \uparrow \rangle - \dfrac{3 \hbar^{2} A}{8} \vert 2 m_{s}, \uparrow \uparrow \uparrow \uparrow \rangle - \dfrac{3 \hbar^{2} A}{8} \vert 2 m_{s}, \uparrow \uparrow \uparrow \uparrow \rangle \\
+&= -\dfrac{6 \hbar^{2} A}{2} \vert 2 m_{s}, \uparrow \uparrow \uparrow \uparrow \rangle - \dfrac{12 \hbar^{2} A}{8} \vert 2 m_{s}, \uparrow \uparrow \uparrow \uparrow \rangle \\
+&= - \left( \dfrac{9}{2} \right) A \hbar^{2} \vert 2 m_{s}, \uparrow \uparrow \uparrow \uparrow \rangle.
+\end{align*}
+
+The energy is:
+
+\begin{align*}
+E = - \dfrac{9 A \hbar^{2}}{2}.
+\end{align*}
+
+The spin is:
+
+\begin{align*}
+J \vert 2 m_{s}, \uparrow \uparrow \uparrow \uparrow \rangle = \sqrt{6} \hbar.
+\end{align*}
+
+The ground state is \(5\)-fold degenerate with respect to total-\(s\) kets having the same value of \(m_{s}\). The ket \(\vert 2 2, \uparrow \uparrow \uparrow \uparrow \rangle\) can be formed from a \(1\) ket, \(\vert 2 1, \uparrow \uparrow \uparrow \uparrow \rangle\) from a linear combination of \(4\) product kets; \(6\) kets can enter the combination that forms \(\vert 2 0, \uparrow \uparrow \uparrow \uparrow \rangle\), \(4\) product kets again form \(\vert 2 -1, \uparrow \uparrow \uparrow \uparrow \rangle\), and \(1\) product ket is eligible to enter the combination that forms \(\vert 2 -2, \uparrow \uparrow \uparrow \uparrow \rangle\). The \((2\times \frac{1}{2} + 1)^{4}\) product kets available for \(\uparrow \uparrow \uparrow \uparrow\) have been exhausted.
+* TOSOLVE Problem 44
+For the \(j=3 / 2\) representation of the angular momentum algebra, find the \(4 \times 4\) matrices for \(J_{x}, J_{y}\) and \(J_{z}\) using the relations
+
+\begin{aligned}
+&J_{z}|j, m>=m \hbar| j, m>, \\
+&J_{+}|j, m>=\hbar \sqrt{j(j+1)-m(m+1)}| j, m+1>. \\
+&J_{-}|j, m>=\hbar \sqrt{j(j+1)-m(m-1)}| j, m-1>.
+\end{aligned}
+
+Verify explicitly that \(\vec{J}^{2}=j(j+1) \hbar^{2} I\)
+* SOLVED Problem 45: Holstein-Primakoff transformation:
+CLOSED: [2022-12-01 Thu 12:22]
+:LOGBOOK:
+CLOCK: [2022-12-01 Thu 9:45]--[2022-12-01 Thu 12:22] =>  2:37
+:END:
+*There is a striking similarity between the equal spacing of the eigenvalues of* \(J_{z}\) *(in any particular representation of angular momentum labelled by an integer or half-integer value of* \(j\) *) and the raising and lowering operators* \(J_{+}\) *and* \(J_{-}\) *on the one hand, and the equal spacing of the energy levels of a simple harmonic oscillator and the raising and lowering operators* \(a^{\dagger}\) *and* \(a\) *on the other hand.*
+Check this out:
+1) [[https://physics.stackexchange.com/questions/41485/holstein-primakoff-and-dyson-maleev-representation][Resource 1]]
+2) [[https://physics.stackexchange.com/questions/369249/holstein-primakoff-showing-spin-relation-s2-ss1][Resource 2]]
+** SOLVED Part I
+CLOSED: [2022-12-01 Thu 12:19]
+*Show that if we define*
+
+\begin{aligned}
+J_{z} &=\hbar\left(j-a^{\dagger} a\right) \\
+J_{+} &=\hbar\left(2 j-a^{\dagger} a\right)^{1 / 2} a \\
+J_{-} &=\hbar a^{\dagger}\left(2 j-a^{\dagger} a\right)^{1 / 2}
+\end{aligned}
+
+*then they satisfy the angular momentum commutation relations and the relation* \(\vec{J}^{2}=j(j+1) \hbar^{2}\) *if* \(\left[a, a^{\dagger}\right]=1\).
+
+*[The square root of an operator is defined as a Taylor expansion, namely,*
+
+\[
+\left(2 j-a^{\dagger} a\right)^{1 / 2}=(2 j)^{1 / 2}\left[1-\frac{1}{2}\left(\frac{a^{\dagger} a}{2 j}\right)-\frac{1}{8}\left(\frac{a^{\dagger} a}{2 j}\right)^{2}-\ldots\right] .
+\]
+
+*However, you do not need to make this expansion in this problem].*
+
+\begin{align*}
+J_{+} \vert n \rangle = \hbar \sqrt{2j - a^{\dagger} a} \left( a \vert n \rangle \right) = \hbar \sqrt{n(2j - n + 1)} \vert n-1 \rangle,
+\end{align*}
+
+\begin{align*}
+J_{-} \vert n \rangle = \hbar a^{\dagger} \sqrt{2j - a^{\dagger} a} \vert n \rangle = \hbar \sqrt{(n+1) \left( 2j - n \right)} \vert n+1 \rangle,
+\end{align*}
+
+\begin{align*}
+J_{z} \vert n \rangle = \hbar \left( j - n \right) \vert n \rangle.
+\end{align*}
+
+Therefore
+
+\begin{align*}
+&J_{+} J_{-} \vert n \rangle = \hbar^{2} \left( 2j - n \right) \left( n + 1 \right) \vert n \rangle, \\
+&J_{-} J_{+} \vert n \rangle = \hbar^{2} \left( 2j - n + 1 \right) n \vert n \rangle,
+\end{align*}
+
+\begin{align*}
+&J_{z} J_{+} \vert n \rangle = \hbar^{2} \sqrt{n \left( 2j - n + 1 \right)} \left( j - n + 1 \right) \vert n-1 \rangle, \\
+&J_{+} J_{z} \vert n \rangle = \hbar^{2} \sqrt{n(2j - n + 1)} \left( j - n \right) \vert n-1 \rangle,
+\end{align*}
+
+\begin{align*}
+&J_{z} J_{-} \vert n \rangle = \hbar^{2} \sqrt{(n + 1) \left( 2j - n \right)} \left( j - n -  1 \right) \vert n+1 \rangle, \\
+&J_{-} J_{z} \vert n \rangle = \hbar^{2} \sqrt{(n + 1) \left( 2j - n \right)} \left( j - n \right) \vert n + 1 \rangle
+\end{align*}
+
+Clearly then,
+
+\begin{align*}
+\left[ J_{+}, J_{-} \right] = 2 \hbar^{2} \left( j - a^{\dagger} a \right) = 2 \hbar S_{z} \quad \text{and} \quad \left[ J_{z}, J_{\pm} \right] = \pm J_{\pm}.
+\end{align*}
+
+These two results establish that the angular momentum commutation relations hold and that \(J^{2} = j \left( j + 1 \right) \hbar^{2}\). Where did we use \(\left[a, a^{\dagger} \right] = 1\)? Why in the various raising and lowering operations. See what we did here: \(J_{-} \vert n \rangle = \hbar a^{\dagger} \sqrt{2j - a^{\dagger} a} \vert n \rangle = \hbar \sqrt{(n+1) \left( 2j - n \right)} \vert n+1 \rangle\)? We ferried that ladder operator across the square root. That's valid because:
+
+\begin{align*}
+a^{\dagger} a \equiv \hat{n}, \qquad \left[ n, a^{\dagger} \right] = a^{\dagger}, \quad \text{and} \quad \left[ n, a \right] = - a.
+\end{align*}
+
+** SOLVED Part II
+CLOSED: [2022-12-01 Thu 12:22]
+*What are the maximum and minimum possibles values of* \(a^{\dagger} a\) *in this representation?*
+
+Minimum is \(-j\) and maximum is \(j\).
+
+* SOLVED Problem 46: Landau levels
+CLOSED: [2022-12-01 Thu 05:39]
+:LOGBOOK:
+CLOCK: [2022-12-01 Thu 05:18]--[2022-12-01 Thu 05:39] =>  0:21
+:END:
+*Consider a particle with charge* \(q\) *and mass* \(m\) *moving in a uniform magnetic field* \(\vec{B}=B \hat{z}\). *Let the vector potential be given by* \(A_{x}=0, A_{y}=B x\), \(A_{z}=0\). *Find all the energy levels and the corresponding wave functions in terms of the cyclotron frequency* \(\omega_{c}=|q B| / m c\). *Show that each energy level has an infinite degeneracy if the plane perpendicular to* \(\vec{B}\) *has an infinite area (ignore any degeneracy arising from motion in the* \(\hat{z}\) *direction).*
+
+By definition
+
+\begin{equation*}
+\vec{B} = \nabla \times \vec{A} =
+\begin{vmatrix}
+\vec{i} & \vec{j} & \vec{k} \\
+\partial_{x} & \partial_{y} & \partial_{z} \\
+0 & Bx & 0
+\end{vmatrix} = B \vec{k}.
+\end{equation*}
+
+The specified gauge is the /Landau gauge/:
+
+The Hamiltonian is
+
+\begin{align*}
+H &= \dfrac{1}{2m} \left( \vec{P} - \dfrac{q}{c} \vec{A} \right)^{2} \\
+&= \dfrac{P_{x}^{2}}{2m} + \dfrac{P_{z}^{2}}{2m} + \dfrac{1}{2m} \left( P_{y} - \dfrac{q}{c} BX \right)^{2}.
+\end{align*}
+
+\(Y\) is cyclic so replace \(P_{y}\) with its eigenvalue in the \(x\) basis \(p_y\). We also discard the \(z\) -motion. So the Hamiltonian becomes:
+
+\begin{align*}
+H &= \dfrac{P^{2}_{x}}{2m} +  \dfrac{1}{2} m \omega_{c}^{2} \left( X - \dfrac{p_{y}}{m \omega_{c}} \right)^{2}
+\end{align*}
+
+where \(\omega_c = \left \lvert qB  \right \rvert /mc\). The \(X\) motion is that of a quantum harmonic oscillator of mass \(m\), angular frequency \(\omega_{c} \equiv \frac{eB}{mc}\).
+
+The energy of state \(\vert n \rangle\) is:
+
+\begin{align*}
+E_{n} = \hbar \omega_{c} \left( n + \dfrac{1}{2} \right).
+\end{align*}
+
+It is /independent/ of momentum in the \(y\) direction.
+
+The ket \(\vert n \rangle\) in the coordinate basis is:
+
+\begin{align*}
+\psi_{n} \left( x \right) &= \psi_{n} \left( x - \dfrac{p_{y}}{m \omega_{c}} \right) \\
+&= \dfrac{1}{\sqrt{2^{n} n!}} \left( \dfrac{m \omega_{c}}{\pi \hbar} \right)^{1/4} \exp \left \lbrace - \dfrac{m \omega_{c}}{2 \hbar} \left( x - \dfrac{p_{y}}{m \omega_{c}} \right)^{2}  \right \rbrace H_{n} \left( \sqrt{\dfrac{m \omega_{c}}{\hbar}} \left( x - \dfrac{p_{y}}{m \omega_{c}} \right) \right).
+\end{align*}
+
+It is clear that if the plane perpendicular to \(\vec{B}\) has infinite area, the spectrum of \(H\) is infinitely degenerate since \(x - p_{y}/m \omega_{c}\) cascades along \(x\) for continuously varying \(p_{y}\) and yields \(E_{n}\) for each and every one of them.
+* SOLVED Problem 47: Landau levels
+CLOSED: [2022-12-01 Thu 09:31]
+:LOGBOOK:
+CLOCK: [2022-12-01 Thu 05:42]--[2022-12-01 Thu 09:31] =>  3:49
+:END:
+*Consider a particle with charge* \(q\) *and mass* \(m\) *moving in two dimensions in the presence of a vector potential given by* \(A_{x}=0\) *and* \(A_{y}=B x\). *[Ignore the* \(z\) *coordinate and the spin of the electron in this problem. Also, assume that* \(q B>0\) *and define* \(\left.\omega_{c}=q B /(m c)\right]\). *Let us define the four operators*
+
+\begin{aligned}
+a &=\sqrt{\frac{c}{2 \hbar q B}}\left[p_{x}+i\left(p_{y}-\frac{q B x}{c}\right)\right], \\
+a^{\dagger} &=\sqrt{\frac{c}{2 \hbar q B}}\left[p_{x}-i\left(p_{y}-\frac{q B x}{c}\right)\right], \\
+b &=\sqrt{\frac{c}{2 \hbar q B}}\left[\left(p_{x}-\frac{q B y}{c}\right)-i p_{y}\right] \\
+b^{\dagger} &=\sqrt{\frac{c}{2 \hbar q B}}\left[\left(p_{x}-\frac{q B y}{c}\right)+i p_{y}\right]
+\end{aligned}
+** SOLVED Part I
+CLOSED: [2022-12-01 Thu 06:28]
+*Calculate all the possible commutators between these operators.*
+
+First introduce the cyclotron frequency \(\omega_{c} = \left \lvert qB  \right \rvert/mc\) and rewrite:
+
+\begin{align*}
+a &=\frac{\hbar \left( \partial_{y} - i  \partial_{x} \right) - i m \omega_{c} x}{\sqrt{2 \hbar m \omega_{c}}}, \quad a^{\dagger} = \frac{- \hbar \left(\partial_{y} + i \partial_{x} \right) + i m \omega_{c} x }{\sqrt{2 \hbar m \omega_{c}}}.
+\end{align*}
+
+and
+
+\begin{align*}
+b =\frac{-\hbar \left(\partial_{y} + i \partial_{x} \right) + i m \omega_{c} y }{\sqrt{2 \hbar m \omega_{c}}}, \quad
+b^{\dagger} =\frac{\hbar \left(\partial_{y} - i \partial_{x} \right) - i m \omega_{c} y }{\sqrt{2 \hbar m \omega_{c}}}.
+\end{align*}
+
+The commutators can now be calculated mentally:
+
+\begin{align*}
+\left[ a, a^{\dagger} \right] &= \dfrac{\hbar m \omega_{c}}{2 \hbar m \omega_{c}} - \left( \dfrac{- \hbar m \omega_{c}}{2 \hbar m \omega_{c}} \right)  = 1, \quad \left[ b, b^{\dagger} \right] = 1,
+\end{align*}
+
+and
+
+\begin{align*}
+\left[ a, b \right] = \dfrac{-(1 + i)}{2 \hbar}, \quad \left[ a, b^{\dagger} \right] = \dfrac{-(1 - i)}{2 \hbar}, \quad \left[ a^{\dagger}, b \right] = \dfrac{(1 + i)}{2 \hbar}, \quad \left[ a^{\dagger}, b^{\dagger} \right] = \dfrac{(1 - i)}{2 \hbar}.
+\end{align*}
+
+** SOLVED Part II
+CLOSED: [2022-12-01 Thu 08:10]
+*Show that the Hamiltonian* \(H=(1 / 2 m)[\vec{p}-q \vec{A} / c]^{2}\) *is equal to* \(\hbar \omega_{c}\left(a^{\dagger} a+1 / 2\right)\).
+
+\begin{align*}
+H &= \dfrac{1}{2m} \left( \vec{P} - \dfrac{q}{c} \vec{A} \right)^{2} \xrightarrow[]{x_{0} \equiv y_{0} \equiv \sqrt{\hbar/m \omega_{c}}, \thinspace \omega_{c} = \left \lvert qB  \right \rvert/ mc} \\
+&= \dfrac{\hbar \omega_{c}}{2} \left [ -x_{0}^{2} \partial_{x}^{2} - \left( \dfrac{x}{x_{0}}  + i y_0 \thinspace \partial_{y} \right)^{2} \right] \\
+&= \left [ \thinspace \hbar \omega \left ( \dfrac{1}{\sqrt{2}} \left [ i\dfrac{x}{x_{0}} -  i x_0 \partial_{x} - y_{0} \partial_{y} \right ] \right )
+\left ( \left \dfrac{1}{\sqrt{2}} \left[ - i\dfrac{x}{x_{0}} - i x_0 \partial_{x} + y_{0} \partial_{y} \right ] \right ) \right + \dfrac{\hbar \omega}{2} \right] \\
+\end{align*}
+
+Now
+
+\begin{align*}
+a = \dfrac{1}{\sqrt{2}} \left [ -i\dfrac{x}{x_{0}} -  i x_0 \partial_{x} + y_{0} \partial_{y} \right ] = \frac{\hbar \left( \partial_{y} - i  \partial_{x} \right) - i m \omega_{c} x}{\sqrt{2 \hbar m \omega_{c}}},
+\end{align*}
+
+and
+
+\begin{align*}
+a^{\dagger} = \dfrac{1}{\sqrt{2}} \left[ i \dfrac{x}{x_{0}} - i x_{0} \partial_{x} - y_{0} \partial_{y} \right] = \frac{- \hbar \left(\partial_{y} + i \partial_{x} \right) + i m \omega_{c} x }{\sqrt{2 \hbar m \omega_{c}}},
+\end{align*}
+
+so
+
+\begin{align*}
+H = \hbar \omega_{c} \left( a^{\dagger} a + \dfrac{1}{2} \right) \equiv \hbar \omega_{c} \left( \hat{n} + \dfrac{1}{2} \right)
+\end{align*}
+
+** SOLVED Part III
+CLOSED: [2022-12-01 Thu 09:31]
+*Use the result in* =Part II= *to find all the energy levels and show that each of these levels has an infinite degeneracy.*
+
+By analogy with the quantum harmonic oscillator
+
+\begin{align*}
+\hat{n} \vert \nu, \mu \rangle = \nu \vert \nu, \mu \rangle,
+\end{align*}
+
+\begin{align*}
+\left( b^{\dagger} + a^{\dagger} \right) (b - a) \vert \nu, \mu \rangle
+=& \sqrt{\mu \left( \nu + 1 \right)} \vert \nu + 1, \mu - 1 \rangle + \mu \vert \nu, \mu \rangle \\
+&-\nu \vert \nu, \mu \rangle - \sqrt{\nu (\mu + 1)} \vert \nu-1, \mu + 1 \rangle \\
+\end{align*}
+
+Take the inner product of the above ket with \(\left( b^{\dagger} + a^{\dagger} \right) (b + a) \vert \nu, \mu \rangle\) to obtain to obtain the condition:
+
+\begin{align*}
+\mu^{2} - \nu^{2} \geq 0 \Longrightarrow \mu \geq \nu.
+\end{align*}
+
+Thus,
+
+\begin{align*}
+H \vert n, m_{z} \rangle = \hbar \omega_{c} \left( \dfrac{1}{2} + n \right) \vert n, m_{z} \rangle, \qquad m_{z} \geq n.
+\end{align*}
+
+\begin{align*}
+b^{\dagger} \vert n, m_{z} \rangle = \sqrt{m_{z} + 1} \thinspace \vert n, m_{z} + 1 \rangle \qquad m_{z} + 1 \geq n,
+\end{align*}
+
+\begin{align*}
+b \vert n, m_{z} \rangle = \sqrt{m_{z}} \vert n, m_{z} - 1 \rangle \qquad m_{z} - 1 \geq n,
+\end{align*}
+
+Since \(m_{z}\) can take arbitrarily large values for a given \(n\), it follows that each level has infinite degeneracy.
+
+* TOSOLVE Problem 48: Landau levels
+** Part I
+*Consider a spinless particle with charge* \(q\) *and mass* \(m\) *moving in a uniform magnetic field, say,* \(\vec{B}=B \hat{z}\). *Use the /symmetric gauge/* \(\vec{A}=(1 / 2) \vec{B} \times \vec{r}\) *and cylindrical coordinates* \((r, \phi, z)\). *[In these coordinates, the Laplacian is* \(\vec{\nabla}^{2}=\partial^{2} / \partial r^{2}+ \left.(1 / r) \partial / \partial r+\left(1 / r^{2}\right) \partial^{2} / \partial \phi^{2}\right]\). *Find the energy levels in terms of the cyclotron frequency* \(\omega_{c}=|q B| / m c\). *Show that each energy level has an infinite degeneracy if the plane perpendicular to* \(\vec{B}\) *has an infinite area (ignore any degeneracy arising from motion in the* \(\hat{z}\) *direction).*
+** Part II
+*Let us now concentrate on the ground states. What do the probability densities* \(|\psi|^{2}\) *look like in the different states? Suppose that the particle is constrained to move inside a large circular disc in the* \(x-y\) *plane; large means that the area of the disc* \(\pi R^{2};>>\) *the /Landau area/* \(2 \pi \hbar c /|q B|\). *What is the degeneracy of the ground state in terms of these two areas?*
+
+(iii) Finally, assume that the particle is a spin- \(1 / 2\) electron. Find the energy levels and degeneracies in that case.
+
+* SOLVED Problem 49
+CLOSED: [2022-12-01 Thu 05:18]
+:LOGBOOK:
+CLOCK: [2022-12-01 Thu 02:45]--[2022-12-01 Thu 05:18] =>  2:33
+:END:
+*Consider a particle with charge* \(q\) *and mass* \(m\) *moving in a uniform magnetic field* \(\vec{B}=B \hat{z}\) *and a uniform electric field* \(\vec{E}=F \hat{x}\). *Let the vector potential be given by* \(A_{x}=0, A_{y}=B x, A_{z}=0\). *(You may assume that the particle is moving in the* \(x-y\) *plane and ignore its motion in the* \(\hat{z}\)-*direction).*
+** SOLVED Part I
+CLOSED: [2022-12-01 Thu 05:13]
+By definition
+
+\begin{equation*}
+\vec{B} = \nabla \times \vec{A} =
+\begin{vmatrix}
+\vec{i} & \vec{j} & \vec{k} \\
+\partial_{x} & \partial_{y} & \partial_{z} \\
+0 & Bx & 0
+\end{vmatrix} = B \vec{k}.
+\end{equation*}
+
+The specified gauge is the /Landau gauge/:
+
+The Hamiltonian is
+
+\begin{align*}
+H &= \dfrac{1}{2m} \left( \vec{P} - \dfrac{e}{c} \vec{A} \right)^{2} - e F X \\
+&= \dfrac{P_{x}^{2}}{2m} + \dfrac{P_{z}^{2}}{2m} + \dfrac{1}{2m} \left( P_{y} - \dfrac{e}{c} BX \right)^{2} - e F X.
+\end{align*}
+
+\(Y\) is cyclic so replace \(P_{y}\) with its eigenvalue in the \(x\) basis \(p_y\). We also discard the \(z\)-motion. So the Hamiltonian becomes:
+
+\begin{align*}
+H &= \dfrac{P^{2}_{x}}{2m} +  \dfrac{1}{2} m \omega_{c}^{2} \left( X - \dfrac{p_{y}}{m \omega_{c}} \right)^{2} - e F X.
+\end{align*}
+
+where \(\omega_c = eB /mc\). The \(X\) motion is that of a quantum harmonic oscillator of mass \(m\), angular frequency \(\omega_{c} \equiv \frac{eB}{mc}\) subject to a perturbation \(H_{1} = - e F X\). The first order correction in energy of the eigenket \(\vert n \rangle\) is
+
+\begin{align*}
+- e F \left \langle n \left \lvert X \right \rvert n \right \rangle = - \dfrac{e F p_y}{m \omega_c}.
+\end{align*}
+
+The energy of state \(\vert n \rangle\) state is:
+
+\begin{align*}
+E_{n} = \hbar \omega_{c} \left( n + \dfrac{1}{2} \right) - \dfrac{e F p_{y}}{m \omega_{c}}.
+\end{align*}
+
+It depends on the momentum in the \(y\) direction.
+** SOLVED Part II
+CLOSED: [2022-12-01 Thu 05:16]
+*Find the group velocity in the* \(\hat{y}\) -*direction given by* \(\partial E / \partial p_{y}\).
+
+The group velocity in the \(y\)-direction is:
+
+\begin{align*}
+v_{g,y} = \partial_{p_{y}} E = - \dfrac{cF}{B}.
+\end{align*}
+
+* TOSOLVE Problem 50
+Consider a simple model of a one-dimensional ferromagnet, namely, \(N\) spin- \(1 / 2\) objects placed around a circle with the Hamiltonian
+
+\[
+H=-J \sum_{n=1}^{N} \vec{S}_{n} \cdot \vec{S}_{n+1},
+\]
+
+where we assume the periodic boundary condition \(\vec{S}_{N+1} \equiv \vec{S}_{1}\) and \(J>0\).
+** Part I
+Show that the total \(S_{z}=\sum_{n} S_{n z}\) and the total spin \(\vec{S}^{2}=\left(\sum_{n} \vec{S}_{n}\right)^{2}\) are good quantum numbers, namely, they commute with \(H\).
+** Part II
+A ground state of this system is the state \(\mid \psi_{0}>\) in which all spins point up, namely, \(S_{n z}=\hbar / 2\) (denoted by \(\uparrow\) ) for all \(n\). What is the total spin \(S\) of \(\left|\psi_{0}\right\rangle\), i.e., \(\vec{S}^{2}\left|\psi_{0}>=S(S+1) \hbar^{2}\right| \psi_{0}>\) ? Find the ground state energy \(E_{0}\) and degeneracy. (iii)
+** Part III
+Now consider a state
+
+\[
+\left|k>\equiv \frac{1}{\sqrt{N}} \sum_{n=1}^{N} e^{i k n}\right| n>,
+\]
+
+where \(\mid n>\) denotes the state in which the spin at site \(n\) points down and the spins at all the other states point up. (Note that \(k\) must be equal to \(2 \pi p / N\), where \(p=0,1,2, \ldots, N-1)\). Show that \(\mid k>\) is an eigenstate of \(H\), and find its energy \(E(k)\) as a function of \(k\). What is the total spin of \(\mid k>\) as a function of \(k\) ?
+
+The state \(\mid k>\) is called a spin wave or magnon of wave number \(k\), and the function \(E(k)-E_{0}\) is called its dispersion relation.
+* TOSOLVE Problem 51: Fine structure
+The normalised wave functions in the \(2 P\) states of an electron in a hydrogen atom are given by
+
+\[
+\psi_{n=2, l=1, m, s_{z}}=\frac{r}{a_{0}^{5 / 2} \sqrt{24}} e^{-r / 2 a_{0}} Y_{1}^{m}(\theta, \phi)
+\]
+
+times
+
+\[
+\left(\begin{array}{l}
+1 \\
+0
+\end{array}\right) \quad \text { or } \quad\left(\begin{array}{l}
+0 \\
+1
+\end{array}\right) \text { for } \quad s_{z}=\pm \hbar / 2 .
+\]
+
+The wave functions have been normalised such that
+
+\begin{aligned}
+\int \sin \theta d \theta d \phi Y_{1}^{m^{\prime} \star} Y_{1}^{m} &=\delta_{m m^{\prime}} \\
+\text { and } \int d^{3} \vec{r} \psi_{2,1, m^{\prime}, s_{z}}^{\dagger} \psi_{2,1, m, s_{z}} &=\delta_{m m^{\prime}} \delta_{s_{z} s_{z^{\prime}}} .
+\end{aligned}
+
+Use first order perturbation theory to calculate the energy splitting between the \(j=3 / 2\) and \(j=1 / 2\) states produced by the spin-orbit interaction
+
+\[
+\frac{e^{2}}{2 m^{2} c^{2} r^{3}} \vec{L} \cdot \vec{S} \text {. }
+\]
+
+Express your answer in \(e V\) using the values of the fine structure constant \(\alpha=\) \(e^{2} / \hbar c \simeq 1 / 137\), the Bohr radius \(a_{0}=\hbar^{2} / m e^{2}=0.529 \AA\), and \(e^{2} / 2 a_{0}=13.6 e V\).
+
+* TOSOLVE Problem 52: Hyperfine structure
+The hyperfine splitting in the hydrogen atom is produced by the interaction between the proton's magnetic dipole moment \(\vec{\mu}_{p}=\left(g_{p} e / 2 M c\right) \vec{S}_{p}\) and the electron's dipole moment \(\vec{\mu}_{e}=-(e / m c) \vec{S}_{e}\). Here \(M\) and \(m\) denote the proton and electron masses, \(-e\) is the electron charge, \(\vec{S}_{p}\) and \(\vec{S}_{e}\) are the proton and electron spin operators, and \(g_{p}=5.59\) is the \(g\)-factor of the proton. In a state with \(l=0\), the hyperfine interaction is given by
+
+\[
+V=-\frac{8 \pi}{3} \vec{\mu}_{e} \cdot \vec{\mu}_{p} \delta^{3}(\vec{r}) .
+\]
+
+Use first order perturbation theory to calculate the energy splitting in \(e V\) between the \(j=0\) and \(j=1\) states in the \(1 S\) state of the \(H\) atom. Note that the normalised wave functions of these states are given by
+
+\[
+\psi_{n=1, l=0, m=0}=\frac{1}{a_{0}^{3 / 2} \sqrt{\pi}} e^{-r / a_{0}}
+\]
+
+times the appropriate spin wave functions of the electron and proton. What is the wavelength of the photon emitted in a transition between the two states? (Use the values of \(\alpha\) and \(a_{0}\) given in the previous problem, \(M / m=1840\), and \(2 \pi \hbar c=\) \(12400 e V-\AA)\)
+
+* TOSOLVE Problem 53
+Consider a particle with orbital angular momentum \(l=1\) and spin \(s=1 / 2\). (Ignore the radial part of the wave function in this problem). Suppose that the Hamiltonian is given by
+
+\[
+H=A \vec{L} \cdot \vec{S}+B\left(L_{z}+2 S_{z}\right),
+\]
+
+where \(A\) and \(B\) are some constants.
+** Part I
+Show that \(J_{z} = L_{z} + S_{z}\) commutes with \(H\). This implies that we can work in the basis of eigenstates of \(J_{z}\).
+** Part II
+Find all the six energy levels exactly in terms of \(A\) and \(B\). What are the values of \(J_{z}\) in these six levels?
+(Hint: Note that in the basis of eigenstates of \(J_{z}=L_{z}+S_{z}\), the \(6 \times 6\) matrix for \(H\) breaks up into blocks of sizes \(1,2,2\) and 1 . So you will not need to find the eigenvalues of any matrix bigger than \(2 \times 2\) ).
+** Part III
+What happens to these energy levels in the two limits \(A=0\) and \(B=0\) respectively?
+* TOSOLVE Problem 54
+*Three distinguishable particles have the same spin* \(S\), *namely,* \(\vec{S}_{n}^{2}=S(S+1) \hbar^{2}\) *for* \(n=1,2,3\). *If the Hamiltonian is* \(H=A\left(\vec{S}_{1}+\vec{S}_{2}+\vec{S}_{3}\right)^{2}\) *and* \(A>0\), *what is the energy, spin and degeneracy of the ground state if*
+** Part I
+:LOGBOOK:
+CLOCK: [2022-11-30 Wed 18:48]--[2022-11-30 Wed 22:16] =>  3:28
+CLOCK: [2022-11-26 Sat 03:51]--[2022-11-26 Sat 04:20] =>  0:29
+:END:
+\(S\) *is an integer?*
+
+When \(S\) is an integer we have:
+
+\begin{align*}
+S_{\text{total}}^{2} \vert s m_{s}, SSS \rangle =  s \left( s + 1 \right) \hbar^{2} \vert s m_{s}, SSS \rangle \qquad s = S, \thinspace S + 1, \thinspace S + 2, \thinspace \dotso 3S - 1, \thinspace 3S.
+\end{align*}
+
+Here \(\vec{S}\) is an operator defined on the space of total-\(s\) kets spanned by the kets \(\vert s m_{s}, SSS \rangle\). In this basis the total spin angular momentum can take the minimum value \(S\) and the maximum value \(3S\) (if we consider \(\vec{S_{1}} + \vec{S_{2}}\), the total-\(s\) can take values from \(S+S = 2S\) to \(S - S = 0\). Then we consider \(\vec{S_{1}} + \vec{S_{2}} + \vec{S_{3}}\), so that the total-\(s\) can takes values from \(2S + S = 3S\) to \(S - 0 = S\)).
+
+\begin{align*}
+H &= A \left( 3 \hbar^{2} S \left( S + 1 \right) I + 2 \vec{S_{1}} \vec{S_{2}} + 2 \vec{S_{2}} \vec{S_{3}} + 2 \vec{S_{3}} \vec{S_{1}} \right) \\
+&= A \left( 3 \hbar^{2} S \left( S + 1 \right) I + \left[ \vec{S_{1}}, \vec{S_{2}} \right]_{+} + \left[ \vec{S_{2}}, \vec{S_{3}} \right]_{+} + \left[ \vec{S_{3}}, \vec{S_{1}} \right]_{+} \right) \\
+&= A \left( 3 \hbar^{2} S \left( S + 1 \right) I + \dfrac{\hbar^{2}}{4} \left[ \vec{\sigma_{1}}, \vec{\sigma_{2}} \right]_{+} + \dfrac{\hbar^{2}}{4} \left[ \vec{\sigma_{2}}, \vec{\sigma_{3}} \right]_{+} + \dfrac{\hbar^{2}}{4} \left[ \vec{\sigma_{3}}, \vec{\sigma_{1}} \right]_{+} \right) \\
+&= A \left( 3 \hbar^{2} S \left( S + 1 \right) I + \dfrac{\hbar^{2}}{4} \left[ \vec{\sigma}, \vec{\sigma} \right]_{+} + \dfrac{\hbar^{2}}{4} \left[ \vec{\sigma}, \vec{\sigma} \right]_{+} + \dfrac{\hbar^{2}}{4} \left[ \vec{\sigma}, \vec{\sigma} \right]_{+} \right) \\
+&= 3 A \hbar^{2} \left( S \left( S + 1 \right) I + \dfrac{1}{2} I \right).
+\end{align*}
+
+Clearly, \(H\) is diagonal in the basis \(\vert S m_{s,1}, S m_{s, 2}, S m_{s, 3}  \rangle\) Therefore
+
+\begin{align*}
+E = 3 A \hbar^{2} \left[ \dfrac{1}{2} + S \left( S + 1 \right) \right],
+\end{align*}
+
+and
+
+\begin{align*}
+S_{\text{total}} = \hbar \sqrt{s \left( s + 1 \right)}, \qquad s = S, \thinspace S + 1, \thinspace S + 2, \thinspace \dotso 3S,
+\end{align*}
+
+The degeneracy of the ground state (all contibutions come from spin) is
+
+\begin{align*}
+\text{Degeneracy} = \sum_{s=S}^{3S} \left( 2s + 1 \right) = \left( 2S + 1 \right) \left( 4S + 1 \right).
+\end{align*}
+
+** Part II
+\(S\) *is a half-odd-integer?*
+
+When \(S\) is a half-odd integer we have \(s = \frac{2n + 1}{2}\). For \(s = S\), \(n = S - 1/2\), and when \(s = 3S\), \(n = 3S - 1/2\).
+
+\begin{align*}
+S_{\text{total}}^{2} \vert s m_{s}, SSS \rangle &=  s \left( s + 1 \right) \hbar^{2} \vert s m_{s}, SSS \rangle \qquad s \\
+&= S, \thinspace S + \dfrac{1}{2}, \thinspace \thinspace S + 1, \thinspace S + \dfrac{3}{2}, \thinspace 3S -1, \thinspace 3S - \dfrac{1}{2}, \thinspace \thinspace 3S.
+\end{align*}
+
+That's all that changes. The energy remains the same
+
+\begin{align*}
+E = 3 A \hbar^{2} \left[ \dfrac{1}{2} + S \left( S + 1 \right) \right],
+\end{align*}
+
+but the total spin angular momentum has \(2S - 1\) more eigenkets:
+
+\begin{align*}
+S_{\text{total}} = \hbar \sqrt{s \left( s + 1 \right)}, \qquad s = S, \thinspace S + \dfrac{1}{2}, \dotso, \thinspace 3S - \dfrac{1}{2}, \thinspace \thinspace 3S.
+\end{align*}
+
+The degeneracy of the ground state (all contributions come from spin) is
+
+\begin{align*}
+\text{Degeneracy} &=  \sum_{n=0}^{4S} \left( 2S + n + 1 \right)
+\end{align*}
+
+* TOSOLVE Problem 55
+Consider a two-dimensional isotropic harmonic oscillator with
+
+\[
+H_{0}=\frac{1}{2 m}\left(p_{x}^{2}+p_{y}^{2}\right)+\frac{1}{2} m \omega^{2}\left(x^{2}+y^{2}\right) .
+\]
+
+** Part I
+We know that the second excited states with \(E_{2}^{(0)}=3 \hbar \omega\) have a three-fold degeneracy. Use degenerate perturbation theory to calculate the shifts in these three energy levels, to first order in \(\lambda\), if we add a perturbation \(V=\lambda m \omega^{2} x y\). What are the eigenstates corresponding to these energy levels?
+
+** Part II
+Find the same three energy levels exactly for the Hamiltonian
+
+\[
+H=\frac{1}{2 m}\left(p_{x}^{2}+p_{y}^{2}\right)+\frac{1}{2} m \omega^{2}\left(x^{2}+y^{2}\right)+\lambda m \omega^{2} x y .
+\]
+
+** Part III
+Show that the perturbative results and exact results agree to first order in \(\lambda\).
+* SOLVED Problem 56
+CLOSED: [2022-11-26 Sat 02:35]
+:LOGBOOK:
+CLOCK: [2022-11-25 Fri 08:22]--[2022-11-25 Fri 10:57] =>  2:35
+:END:
+*Consider a three-dimensional isotropic harmonic oscillator with*
+
+\begin{align*}
+H_{0}=\frac{p^{2}}{2 m}+\frac{1}{2} m \omega^{2} r^{2}.
+\end{align*}
+
+*We know that the first excited states with* \(E_{1}^{(0)}=\frac{5}{2} \hbar \omega\) *have a three-fold degeneracy.*
+** SOLVED Part I
+CLOSED: [2022-11-26 Sat 00:55]
+:LOGBOOK:
+CLOCK: [2022-11-25 Fri 21:01]--[2022-11-25 Fri 21:54] =>  0:53
+:END:
+*Use degenerate perturbation theory to calculate the shifts in these three energy levels, to first order in* \(\lambda\), *if we add a perturbation* \(V=\lambda m \omega^{2}(x y+y z)\).
+
+The perturbation in terms of creation and annihilation operators:
+
+\begin{align*}
+V = \dfrac{\lambda \hbar \omega}{2} \left[ (a_{x}+a_{x}^{\dagger})(a_{y} + a_{y}^{\dagger}) + \left( a_{y} + a_{y}^{\dagger} \right) \left( a_{z} + a_{z}^{\dagger} \right) \right].
+\end{align*}
+
+The degenerate subspace is spanned by \(\vert 100 \rangle\), \(\vert 010 \rangle\), \(\vert 001 \rangle\). The matrix elements of \(V\) in this degenerate subspace are:
+
+\begin{align*}
+V \to \Delta
+\begin{pmatrix}
+0 & 1  & 0 \\
+1 & 0  & 1 \\
+0 & 1 & 0
+\end{pmatrix}
+\end{align*}
+
+where the rows and columns are ordered as \(\vert n_1, n_2, n_3 \rangle = \vert 1,0,0 \rangle, \vert 0, 1, 0 \rangle, \vert 0, 0, 1 \rangle\) and
+
+\begin{align*}
+\Delta = \dfrac{\lambda \hbar \omega}{2}.
+\end{align*}
+
+1) Since \(V\) is just \(\Delta\) times the Pauli matrix \(\sigma_{x}\), it's eigenvalues are \(\pm 2^{1/2} \Delta = \pm \lambda \hbar \omega/ 2^{1/2}\) and \(0\) with associated eigenkets \(\left( \vert 100 \rangle + \vert 001 \rangle \pm 2^{1/2} \vert 010 \rangle \right)/4\) and \(\left( \vert 100 \rangle - \vert 001 \rangle \right)/2^{1/2}\).
+
+2) The first-order shift \(E^{1}_{1} = 0\) for \(\left( \vert 100 \rangle - \vert 001 \rangle \right)/2\) and \(E_{1}^{1} = \pm 2^{1/2} \Delta = \pm \lambda \hbar \omega/ 2^{1/2}\) for \(\left( \vert 100 \rangle + \vert 001 \rangle \pm 2^{1/2} \vert 010 \rangle \right)/4\).
+
+** SOLVED Part II
+CLOSED: [2022-11-26 Sat 00:55]
+:LOGBOOK:
+CLOCK: [2022-11-25 Fri 22:28]--[2022-11-26 Sat 00:55] =>  2:27
+:END:
+*Now calculate these three energy levels exactly for the total Hamiltonian* \(H= H_{0}+V\). *Show that your exact answers agree to first order in* \(\lambda\) *with those obtained using perturbation theory.*
+
+The total Hamiltonian is
+
+\begin{align*}
+H &= \dfrac{p_{x}^{2}}{2m} + \dfrac{p_{y}^{2}}{2m} + \dfrac{p_{z}^{2}}{2m} \\
+&+ \dfrac{1}{2} m \omega^{2} x^{2} + \dfrac{1}{2} m \omega^{2} y^{2} + \dfrac{1}{2} m \omega^{2} z^{2} + \lambda m \omega^{2}(x y+y z).
+\end{align*}
+
+
+\(\dfrac{1}{2} m \omega^{2} x^{2} + \dfrac{1}{2} m \omega^{2} y^{2} + \dfrac{1}{2} m \omega^{2} z^{2} + \lambda m \omega^{2}(x y+y z)\) is a *quadratic form* with matrix \(A\):
+
+\begin{align*}
+A \equiv
+\begin{pmatrix}
+m \omega^{2}/2 & \lambda m \omega^{2}/2  & 0 \\
+\lambda m \omega^{2}/2 & m \omega^{2}/2 & \lambda m \omega^{2}/2 \\
+0 & \lambda m \omega^{2}/2 & m \omega^{2}/2
+\end{pmatrix}
+\end{align*}
+
+which is diagonalized via a unitary transformation to
+
+\begin{align*}
+J \equiv
+\begin{pmatrix}
+m \omega^{2}/2 & 0  & 0 \\
+0 & m \omega^{2}/2 - \lambda m \omega^{2}/2^{1/2} & 0 \\
+0 & 0 & m \omega^{2}/2 + \lambda m \omega^{2}/2^{1/2}
+\end{pmatrix}.
+\end{align*}
+
+The change is basis is governed by the definitions:
+
+\begin{align*}
+\vert \xi \rangle  \equiv \dfrac{1}{2} \left( \vert z \rangle - \vert x \rangle \right),
+\end{align*}
+
+\begin{align*}
+\vert \vartheta \rangle \equiv \left[ \dfrac{\vert x \rangle + \vert z \rangle}{4} - \dfrac{\vert y \rangle}{2^{3/2}} \right],
+\end{align*}
+
+\begin{align*}
+\vert \zeta \rangle \equiv \left[ \dfrac{\vert x \rangle + \vert z \rangle}{4} + \dfrac{\vert y \rangle}{2^{3/2}}\right].
+\end{align*}
+
+Because this is a unitary transformation it is canonical and the form of Hamilton's equations are preserved. The Kamiltonian in this basis is:
+
+\begin{align*}
+K &= \dfrac{p_{\xi}^{2}}{2m} + \dfrac{p_{\vartheta}^{2}}{2m} + \dfrac{p_{\zeta}^{2}}{2m} \\
+&+ \dfrac{1}{2} m \omega^{2} \xi^{2} + \left(\dfrac{1}{2} m \omega^{2} - \dfrac{1}{2^{1/2}} \lambda m \omega^{2} \right) \vartheta^{2} + \left(\dfrac{1}{2} m \omega^{2} + \dfrac{1}{2^{1/2}} \lambda m \omega^{2} \right) \zeta^{2},
+\end{align*}
+
+which separates out as three independent oscillators with energies
+
+\begin{align*}
+E_{\xi} = \hbar \omega \left( \dfrac{1}{2} + n_{\xi} \right),
+\end{align*}
+
+\begin{align*}
+E_{\vartheta} = \hbar \omega \left(1 - 2^{1/2} \lambda \right)^{1/2} \left( \dfrac{1}{2} + n_{\vartheta} \right),
+\end{align*}
+
+\begin{align*}
+E_{\zeta} = \hbar \omega \left(1 + 2^{1/2} \lambda \right)^{1/2} \left( \dfrac{1}{2} + n_{\zeta} \right).
+\end{align*}
+
+When writen as a Taylor series in \(\lambda\) about \(\lambda = 0\):
+
+\begin{align*}
+E_{\xi} = \hbar \omega \left( \dfrac{1}{2} + n_{\xi} \right),
+\end{align*}
+
+\begin{align*}
+E_{\vartheta} = \hbar \omega \left( \dfrac{1}{2} + n_{\vartheta} \right) \left[1 - \dfrac{\lambda}{2^{1/2}} + \dotso \right],
+\end{align*}
+
+\begin{align*}
+E_{\zeta} = \hbar \omega \left( \dfrac{1}{2} + n_{\zeta} \right) \left[1 + \dfrac{\lambda}{2^{1/2}} + \dotso \right],
+\end{align*}
+
+so that the total energy is
+
+\begin{align*}
+E_{\xi \vartheta \zeta} = \hbar \omega \left( \dfrac{3}{2} + n_{\xi} + n_{\vartheta} + n_{\zeta} \right) + \dfrac{\lambda \hbar \omega}{2^{3/2}} \left( n_{\zeta} - n_{\vartheta} \right) + \dotso.
+\end{align*}
+
+The eigenket
+
+\begin{align*}
+&( \vert n_{x} = 1, n_{y} = 0, n_{z} = 0 \rangle \\
+&+ \vert n_{x} = 0, n_{y} = 0, n_{z} = 1 \rangle \\
+&+ 2^{1/2} \vert n_{x} = 0, n_{y} = 1, n_{z} = 0 \rangle)/4
+\end{align*}
+
+of the original Hamiltonian transforms to the eigenket \(\vert \xi = 0, \vartheta = 0, \zeta = 1 \rangle\) of the Kamiltonian via the unitary transformation so that the  energy is \(E_{\xi \vartheta \zeta} =\dfrac{5}{2} \hbar \omega + \dfrac{\lambda \hbar \omega}{2^{3/2}}\) to first order.
+
+The eigenket
+
+\begin{align*}
+\left( \vert n_{x} = 1, n_{y} = 0, n_{z} = 0 \rangle + \vert n_{x} = 0, n_{y} = 0, n_{z} = 1 \rangle + 2^{1/2} \vert n_{x} = 0, n_{y} = 1, n_{z} = 0 \rangle \right)/4
+\end{align*}
+
+of the original Hamiltonian transforms to the eigenket \(\vert \xi = 0, \vartheta = 1, \zeta = 0 \rangle\) of the Kamiltonian via the unitary transformation so that the energy is \(E_{\xi \vartheta \zeta} =\dfrac{5}{2} \hbar \omega - \dfrac{\lambda \hbar \omega}{2^{3/2}}\) to first order.
+
+The eigenket
+
+\begin{align*}
+\left( \vert n_{x} = 1, n_{y} = 0, n_{z} = 0 \rangle - \vert n_{x} = 0, n_{y} = 0, n_{z} = 1 \rangle \right)/2^{1/2}
+\end{align*}
+
+of the original Hamiltonian transforms to the eigenket \(\vert \xi = 1, \vartheta = 0, \zeta = 0 \rangle\) of the Kamiltonian via the unitary transformation so that the energy is \(E_{\xi \vartheta \zeta} =\dfrac{5}{2} \hbar \omega\).
+
+It all matches with the conclusions of degenerate perturbation theory.
+
+** SOLVED Part III
+CLOSED: [2022-11-26 Sat 02:27]
+:LOGBOOK:
+CLOCK: [2022-11-26 Sat 00:55]--[2022-11-26 Sat 02:28] =>  1:33
+:END:
+*Use the exact calculation to show that the problem becomes ill-defined if* \(|\lambda|>1 / \sqrt{2}\).
+
+Look at the Kamiltonian in the normal basis:
+
+\begin{align*}
+H &= \dfrac{p_{\xi}^{2}}{2m} + \dfrac{p_{\vartheta}^{2}}{2m} + \dfrac{p_{\zeta}^{2}}{2m} \\
+&+ \dfrac{1}{2} m \omega^{2} \xi^{2} + \left(\dfrac{1}{2} m \omega^{2} - \dfrac{1}{2^{1/2}} \lambda m \omega^{2} \right) \vartheta^{2} \\
+&+ \left(\dfrac{1}{2} m \omega^{2} + \dfrac{1}{2^{1/2}} \lambda m \omega^{2} \right) \zeta^{2},
+\end{align*}
+
+If \(|\lambda|>1 / \sqrt{2}\) then
+
+\begin{align*}
+\left(\dfrac{1}{2} m \omega^{2} - \dfrac{1}{2^{1/2}} \lambda m \omega^{2} \right) < 0 \text{ if } \lambda > 0
+\end{align*}
+
+\begin{align*}
+\left(\dfrac{1}{2} m \omega^{2} + \dfrac{1}{2^{1/2}} \lambda m \omega^{2} \right) < 0 \text{ if } \lambda < 0
+\end{align*}
+
+and, which is unphysical. Why is it unphysical? Because in light of the quantum virial theorem, eigenkets \(\vert \xi = 0, \vartheta = 1, \zeta =0 \rangle\) and \(\vert \xi = 0, \vartheta = 0, \zeta =1 \rangle\) will end up with negative average kinetic energy.
+* SOLVED Problem 57
+CLOSED: [2022-11-21 Mon 14:14]
+:LOGBOOK:
+CLOCK: [2022-11-21 Mon 13:13]--[2022-11-21 Mon 14:14] =>  1:01
+:END:
+Consider the one-dimensional anharmonic oscillator with
+
+\[
+H=\frac{p^{2}}{2 m}+\frac{1}{2} m \omega^{2} x^{2}+\lambda x^{4}
+\]
+
+where \(\lambda\) is small compared to the other parameters in the problem.
+** SOLVED Part I
+CLOSED: [2022-11-21 Mon 13:19]
+*Use first order perturbation theory to calculate the change in the energy of the* \(n^{\text {th }}\) *state.*
+Recall
+
+\begin{align*}
+x &= \sqrt{\dfrac{\hbar}{2 \omega m}} \left ( a + a^{\dagger} \right ), \\
+\end{align*}
+
+and
+
+\begin{align*}
+a \vert n^{0} \rangle = n^{1/2} \vert \left( n-1 \right)^{0} \rangle, \quad \text{and} \quad a^{\dagger} \vert n^{0} \rangle = \left( n + 1 \right)^{1/2} \vert \left( n+1 \right)^{0} \rangle.
+\end{align*}
+
+We have
+
+\begin{align*}
+E_{n}^{1} &= \left \langle n^{0} \left \lvert H^{1}  \right \rvert n^{0} \right \rangle \\
+&= \lambda \left \langle n^{0} \left \lvert x^{4} \right \rvert n^{0} \right \rangle \\
+&= \dfrac{\lambda \hbar^{2}}{4 \omega^{2} m^{2}} \left \langle n^{0} \left \lvert \left( a + a^{\dagger} \right)^{4}  \right \rvert n^{0} \right \rangle \\
+&= \dfrac{\lambda \hbar^{2}}{4 \omega^{2} m^{2}} \left \langle n^{0} \left \lvert \left( a + a^{\dagger} \right)^{2} \left( a + a^{\dagger} \right)^{2}  \right \rvert n^{0} \right \rangle \\
+&= \dfrac{\lambda \hbar^{2}}{4 \omega^{2} m^{2}} \left[ \langle (n-2)^{0} \vert \left \lbrace n \left( n - 1 \right)  \right \rbrace^{1/2} + \langle n^{0} \vert n + \langle n^{0} \vert \left( n + 1 \right) + \langle \left( n + 2 \right)^{0} \vert \left \lbrace \left( n+1 \right) \left( n + 2 \right)  \right \rbrace^{1/2} \right] \cdot \\
+&\left[ \left \lbrace \left( n+1 \right) \left( n+2 \right)  \right \rbrace^{1/2} \vert \left( n+2 \right)^0 \rangle + \left( n + 1 \right) \vert n^{0} \rangle + n \vert n^{0} \rangle + \left \lbrace n \left( n - 1 \right)  \right \rbrace^{1/2} \vert \left( n-2 \right)^{0} \rangle \right] \\
+&= \dfrac{\lambda \hbar^{2}}{4 \omega^{2} m^{2}} \left[\left( n + 1 \right) \left( n + 2 \right) + \left( n + 1 \right)^{2} + n^{2} + 2 n \left( n + 1 \right) + n \left( n - 1 \right)\right] \\
+&= \dfrac{\lambda \hbar^{2}}{4 \omega^{2} m^{2}} \left[ 6 n^{2} + 6n + 3 \right] \\
+&= \dfrac{3 \lambda \hbar^{2}}{4 \omega^{2} m^{2}} \left[ 2 n^{2} + 2n + 1 \right].
+\end{align*}
+
+** SOLVED Part II
+CLOSED: [2022-11-21 Mon 14:12]
+*Use second order perturbation theory to calculate the change in the ground state energy.*
+
+Recall that
+
+\begin{align*}
+X &= \sqrt{\dfrac{\hbar}{2 \omega m}} \left ( a + a^{\dagger} \right ).
+\end{align*}
+
+First let's evaluate \(X^{4} \vert 0^{0} \rangle\):
+
+\begin{align*}
+X^{4} \vert 0^{0} \rangle &= \dfrac{\hbar^{2}}{4 \omega^{2} m^{2}} \left( a + a^{\dagger} \right)^{4} \vert 0 \rangle \\
+&= \dfrac{\hbar^{2}}{4 \omega^{2} m^{2}} \left( a + a^{\dagger} \right)^{3} \vert 1 \rangle \\
+&= \dfrac{\hbar^{2}}{4 \omega^{2} m^{2}} \left( a + a^{\dagger} \right)^{2} \left( \vert 0 \rangle + 2^{1/2} \vert 2 \rangle \right) \\
+&= \dfrac{\hbar^{2}}{4 \omega^{2} m^{2}} \left( a + a^{\dagger} \right) \left( \vert 1 \rangle + 2\vert 1 \rangle + 2^{1/2} 3^{1/2} \vert 3 \rangle \right) \\
+&= \dfrac{\hbar^{2}}{4 \omega^{2} m^{2}} \left( \vert 0 \rangle + 2^{1/2} \vert 2 \rangle + 2^{3/2} \vert 2 \rangle + 2 \vert 0 \rangle + 2^{1/2} 3 \vert 2 \rangle + 2^{5/2} 3^{1/2} \vert 4 \rangle \right) \\
+&= \dfrac{\hbar^{2}}{4 \omega^{2} m^{2}} \left( 3\vert 0 \rangle + 2^{1/2} 6 \vert 2 \rangle + 6^{1/2} 2 \vert 4 \rangle \right).
+\end{align*}
+
+\begin{align*}
+E_{n}^{2} &= \sum_{m}^{\prime} \dfrac{\left \lvert \left \langle n^{0} \left \lvert H^{1}  \right \rvert m^{0} \right \rangle  \right \rvert^{2}}{E_{n}^{0} - E_{m}^{0}} \\
+&= \sum_{m}^{\prime} \dfrac{\left \lvert \left \langle 0^{0} \left \lvert \lambda X^{4}  \right \rvert m^{0} \right \rangle  \right \rvert^{2}}{E_{0}^{0} - E_{m}^{0}} \\
+&= -\dfrac{\lambda^{2} \thinspace \hbar^2}{16 \omega^{2} m^{2}} \left[ \dfrac{2 \times 36}{2\hbar \omega} + \dfrac{4 \times 6}{4 \hbar \omega} \right] \\
+&= -\dfrac{\lambda^{2} \thinspace \hbar^{2}}{16 \omega^{2} m^{2}} \dfrac{42}{\hbar \omega} = - \left( \dfrac{21}{8} \right) \dfrac{\lambda^{2} \thinspace \hbar}{\omega^{3} m^{2}}.
+\end{align*}
+
+* SOLVED Problem 58
+CLOSED: [2022-11-21 Mon 15:05]
+:LOGBOOK:
+CLOCK: [2022-11-21 Mon 14:12]--[2022-11-21 Mon 15:05] =>  0:53
+CLOCK: [2022-11-21 Mon 13:10]--[2022-11-21 Mon 14:13] =>  1:03
+:END:
+*Consider a one-dimensional anharmonic oscillator with* \(H=H_{0}+V\), *where*
+
+\[
+H_{0}=\frac{p^{2}}{2 m}+\frac{1}{2} m \omega^{2} x^{2} \text { and } V=\lambda_{1} x^{3}+\lambda_{2} x^{4}
+\]
+
+*and* \(\lambda_{1}\) *and* \(\lambda_{2}\) *are small compared to the other parameters in the problem.*
+
+*Use first and second order perturbation theory to calculate the change in the energy of the ground state up to second order in* \(\lambda_{1}\) *and* \(\lambda_{2}\), *i.e., up to* \(\lambda_{1}^{2}, \lambda_{2}^{2}\) *and* \(\lambda_{1} \lambda_{2}\).
+
+Recall that
+
+\begin{align*}
+X &= \sqrt{\dfrac{\hbar}{2 \omega m}} \left ( a + a^{\dagger} \right ).
+\end{align*}
+
+\begin{align*}
+X^{4} \vert 0^{0} \rangle &= \dfrac{\hbar^{2}}{4 \omega^{2} m^{2}} \left( a + a^{\dagger} \right)^{4} \vert 0 \rangle \\
+&= \dfrac{\hbar^{2}}{4 \omega^{2} m^{2}} \left( a + a^{\dagger} \right)^{3} \vert 1 \rangle \\
+&= \dfrac{\hbar^{2}}{4 \omega^{2} m^{2}} \left( a + a^{\dagger} \right)^{2} \left( \vert 0 \rangle + 2^{1/2} \vert 2 \rangle \right) \\
+&= \dfrac{\hbar^{2}}{4 \omega^{2} m^{2}} \left( a + a^{\dagger} \right) \left( \vert 1 \rangle + 2\vert 1 \rangle + 2^{1/2} 3^{1/2} \vert 3 \rangle \right) \\
+&= \dfrac{\hbar^{2}}{4 \omega^{2} m^{2}} \left( \vert 0 \rangle + 2^{1/2} \vert 2 \rangle + 2^{3/2} \vert 2 \rangle + 2 \vert 0 \rangle + 2^{1/2} 3 \vert 2 \rangle + 2^{5/2} 3^{1/2} \vert 4 \rangle \right) \\
+&= \dfrac{\hbar^{2}}{4 \omega^{2} m^{2}} \left( 3\vert 0 \rangle + 2^{1/2} 6 \vert 2 \rangle + 6^{1/2} 2 \vert 4 \rangle \right).
+\end{align*}
+
+\begin{align*}
+E_{0, \lambda_{2}}^{1} = \dfrac{\hbar^{2}}{4 \omega^{2} m^{2}} \left \langle 0^{0} \left \lvert 3  \right \rvert 0^{0} \right \rangle = \dfrac{3 \lambda_{2} \hbar^{2}}{4 \omega^{2} m^{2}}.
+\end{align*}
+
+(See =Problem 57=.)
+
+\begin{align*}
+E_{0, \lambda_{2}}^{2} &= \sum_{m}^{\prime} \dfrac{\left \lvert \left \langle 0^{0} \left \lvert \lambda_{2} X^{4}  \right \rvert m^{0} \right \rangle  \right \rvert^{2}}{E_{0}^{0} - E_{m}^{0}} \\
+&= -\dfrac{\lambda_{2}^{2} \thinspace \hbar^2}{16 \omega^{2} m^{2}} \left[ \dfrac{2 \times 36}{2\hbar \omega} + \dfrac{4 \times 6}{4 \hbar \omega} \right] \\
+&= -\dfrac{\lambda_{2}^{2} \thinspace \hbar^{2}}{16 \omega^{2} m^{2}} \dfrac{42}{\hbar \omega} = - \left( \dfrac{21}{8} \right) \dfrac{\lambda_{2}^{2} \thinspace \hbar}{\omega^{3} m^{2}}.
+\end{align*}
+
+\begin{align*}
+X^{3} \vert 0^{0} \rangle &= \dfrac{\hbar^{2}}{2^{3/2} \omega^{2} m^{2}} \left( a + a^{\dagger} \right)^{3} \vert 0 \rangle \\
+&= \dfrac{\hbar^{2}}{2^{3/2} \omega^{2} m^{2}} \left( a + a^{\dagger} \right)^{2} \vert 1 \rangle \\
+&= \dfrac{\hbar^{2}}{4 \omega^{2} m^{2}} \left( a + a^{\dagger} \right)^{1} \left( \vert 0 \rangle + 2^{1/2} \vert 2 \rangle \right) \\
+&= \dfrac{\hbar^{2}}{2^{3/2} \omega^{2} m^{2}} \left( 3\vert 1 \rangle + 2^{1/2} 3^{1/2} \vert 3 \rangle \right) \\
+\end{align*}
+
+\begin{align*}
+E_{0, \lambda_{1}}^{1} = \lambda_{1} \left \langle 0^{0} \left \lvert X^{3}  \right \rvert 0^{0} \right \rangle = 0.
+\end{align*}
+
+\begin{align*}
+E_{0, \lambda_{1}}^{2} &= \sum_{m}^{\prime} \dfrac{\left \lvert \left \langle 0^{0} \left \lvert \lambda_{1} X^{3} \right \rvert m^{0} \right \rangle  \right \rvert^{2}}{E_{0}^{0} - E_{m}^{0}} \\
+&= -\dfrac{\lambda_{1}^{2} \thinspace \hbar^2}{8 \omega^{2} m^{2}} \left[ \dfrac{3 \times 3}{\hbar \omega} + \dfrac{2 \times 3}{3 \hbar \omega} \right] \\
+&= -\dfrac{\lambda_{1}^{2} \thinspace \hbar^{2}}{8 \omega^{2} m^{2}} \dfrac{11}{\hbar \omega} = - \left( \dfrac{11}{8} \right) \dfrac{\lambda_{1}^{2} \thinspace \hbar}{\omega^{3} m^{2}}.
+\end{align*}
+
+Accumulating:
+
+\begin{align*}
+E = \dfrac{\hbar \omega}{2} + \dfrac{3 \lambda_{2} \hbar^{2}}{4 \omega^{2} m^{2}} - \left( \dfrac{11}{8} \right) \dfrac{\lambda_{1}^{2} \thinspace \hbar}{\omega^{3} m^{2}} - \left( \dfrac{21}{8} \right) \dfrac{\lambda_{2}^{2} \thinspace \hbar}{\omega^{3} m^{2}}.
+\end{align*}
+
+* SOLVED Problem 59
+CLOSED: [2022-11-21 Mon 08:56]
+:LOGBOOK:
+CLOCK: [2022-11-21 Mon 12:29]--[2022-11-21 Mon 13:10] =>  0:41
+CLOCK: [2022-11-21 Mon 04:49]--[2022-11-21 Mon 07:16] =>  2:15
+:END:
+Consider a one-dimensional oscillator with \(H=H_{0}+V\), where
+
+\begin{align*}
+H_{0}=\frac{p^{2}}{2 m}+\frac{1}{2} m \omega^{2} x^{2} \quad \text { and } \quad V=\lambda x^{2},
+\end{align*}
+
+and \(\lambda\) is small compared to the other parameters in the problem.
+** SOLVED Part I
+CLOSED: [2022-11-21 Mon 05:15]
+:LOGBOOK:
+CLOCK: [2022-11-21 Mon 05:11]--[2022-11-21 Mon 05:15] =>  0:04
+:END:
+Calculate all the energy levels exactly.
+
+Since the perturbation is harmonic, all it does is nudge the angular frequency to a new value:
+
+\begin{align*}
+\omega_{n} = \sqrt{\omega^2 + 2\lambda / m},
+\end{align*}
+
+so that the Hamiltonian reduces to:
+
+\begin{align*}
+H_{0} = \dfrac{p^2}{2m} + \dfrac{1}{2} m \omega_{n}^{2} x^{2}.
+\end{align*}
+
+The energy levels are same as that of a quantum harmonic oscillator of mass \(m\) and angular frequency \(\omega_{n}\):
+
+\begin{align*}
+E = \hbar \sqrt{\omega^2 + \dfrac{2 \lambda}{m}} \left( n + \dfrac{1}{2} \right), \qquad n = 0, \thinspace 1, \thinspace 2, \thinspace \dotso.
+\end{align*}
+
+** SOLVED Part II
+CLOSED: [2022-11-21 Mon 08:40]
+:LOGBOOK:
+CLOCK: [2022-11-21 Mon 05:15]--[2022-11-21 Mon 08:40] =>  3:25
+:END:
+Use first and second order perturbation theory to calculate the change in the energy of the \(n\) -th state up to second order in \(\lambda\). Show that the perturbative result agrees with the exact expression up to order \(\lambda^{2}\).
+
+To /first-order/:
+
+\begin{align*}
+E_{n}^{1} &= E\left \langle n^{0} \left \lvert V \right \rvert n^{0} \right \rangle \\
+&= \lambda E\left \langle n^{0} \left \lvert x^2 \right \rvert n^{0} \right \rangle \\
+&= \dfrac{\lambda \hbar}{2 \omega m} \left \langle n_0 \left \lvert \left( a + a^{\dagger} \right)^{2} \right \rvert n_0 \right \rangle \\
+&= \dfrac{\lambda \hbar}{2 \omega m} \left \langle n_0 \left \lvert \left( a a + a a^{\dagger} + a^{\dagger} a + a^{\dagger} a^{\dagger} \right) \right \rvert n_0 \right \rangle \\
+&= \dfrac{\lambda \hbar}{2 \omega m} \left \langle n_0 \left \lvert \left( a a^{\dagger} + a^{\dagger} a \right) \right \rvert n_0 \right \rangle \\
+&= \dfrac{\lambda \hbar}{2 \omega m} \left \langle n_0 \left \lvert \left( 2n + 1 \right) \right \rvert n_0 \right \rangle \\
+&= \dfrac{\lambda \hbar}{\omega m} \left( n + \dfrac{1}{2} \right).
+\end{align*}
+
+To /second-order/:
+
+\begin{align*}
+E_{n}^{2} &= \sum_{m}^{\prime} \dfrac{\left \lvert \left \langle n^{0} \left \lvert V \right \rvert m^{0} \right \rangle  \right \rvert^{2}}{E_{n}^{0} - E_{m}^{0}} \\
+&= \dfrac{\lambda^{2} \hbar}{\omega^3 m^2} \sum_{m}^{\prime} \dfrac{\left \lvert \left \langle n^{0} \left \lvert (a + a^{\dagger})^{2} \right \rvert m^{0} \right \rangle  \right \rvert^{2}}{2(n - m)} \\
+&= \dfrac{\lambda^{2} \hbar}{\omega^3 m^2} \sum_{m}^{\prime} \dfrac{\left \lvert \left \langle n^{0} \left \lvert \left(aa + a a^{\dagger} + a^{\dagger} a + a^{\dagger} a^{\dagger} \right) \right \rvert m^{0} \right \rangle  \right \rvert^{2}}{2(n - m)} \\
+&= \dfrac{\lambda^{2} \hbar}{\omega^3 m^2} \sum_{m}^{\prime} \dfrac{\left \langle n^{0} \left \lvert \left(aa + a a^{\dagger} + a^{\dagger} a + a^{\dagger} a^{\dagger} \right) \right \rvert m^{0} \right \rangle \left(\left \langle n^{0} \left \lvert \left(aa + a a^{\dagger} + a^{\dagger} a + a^{\dagger} a^{\dagger} \right) \right \rvert m^{0} \right \rangle\right)^{\ast}}{2(n - m)} \\
+&= \dfrac{\lambda^{2} \hbar}{\omega^3 m^2} \sum_{m}^{\prime} \dfrac{[n^{1/2} (m+1)^{1/2} \left \langle n-1 \vert m + 1 \right \rangle + (n+1)^{1/2} m^{1/2} \left \langle n+1 \vert m-1 \right \rangle]}{2(n - m)} \times \\
+&[m^{1/2} (n+1)^{1/2} \left \langle m-1 \vert n + 1 \right \rangle + (m+1)^{1/2} n^{1/2} \left \langle m+1 \vert n-1 \right \rangle] \\
+&= \dfrac{\lambda^{2} \hbar}{\omega^3 m^2} \sum_{m}^{\prime} \dfrac{[n (m+1) \left \langle n-1 \vert m + 1 \right \rangle \left \langle m+1 \vert n-1 \right \rangle + (n+1) m \left \langle n+1 \vert m-1 \right \rangle \left \langle m-1 \vert n + 1 \right \rangle]}{2(n - m)} \\
+&= \dfrac{\lambda^{2} \hbar}{2\omega^3 m^2} \left[ n \left( n-1 \right)/2 - (n+1) (n+2)/2 \right] = -\dfrac{\lambda^{2} \hbar}{\omega^3 m^2} \left( n + \dfrac{1}{2} \right).
+\end{align*}
+
+Writing the /exact/ expression for \(E_{n}\)
+
+\begin{align*}
+E = \hbar \sqrt{\omega^2 + \dfrac{2 \lambda}{m}} \left( n + \dfrac{1}{2} \right), \qquad n = 0, \thinspace 1, \thinspace 2, \thinspace \dotso.
+\end{align*}
+
+as a Taylor series in \(\lambda\) about \(\lambda = 0\):
+
+\begin{align*}
+E = \hbar \omega \left( n + \dfrac{1}{2} \right) + \left[ \dfrac{\hbar}{m \omega} \left( n + \dfrac{1}{2} \right) \right] \lambda - \left[\dfrac{\hbar}{m^{2} \omega^{3}} \left( n + \dfrac{1}{2} \right)\right] \lambda^{2} + \dotso
+\end{align*}
+
+we put on show that
+
+\begin{align*}
+E_{n} = E_{n}^{0} + E_{n}^{1} \lambda + E_{n}^{2} \lambda^{2} + \dotso.
+\end{align*}
+
+which should satisfy the ask.
+
+* SOLVED Problem 60
+CLOSED: [2022-11-21 Mon 01:17]
+*Consider a one-dimensional problem with a Hamiltonian given by*
+
+\begin{align*}
+H=\frac{p^{2}}{2 m}+V(x),
+\end{align*}
+
+*where* \(x\) *and* \(p\) *are operators. Let us denote the eigenstates and eigenvalues of* \(H\) *by \(|n\rangle\) *and* \(E_{n}\) *respectively; we will assume that* \(E_{n}\) *only takes a discrete set of values.*
+** SOLVED Part I
+CLOSED: [2022-11-21 Mon 01:17]
+*Calculate the double commutator* \([x,[H, x]]\).
+
+\begin{align*}
+\left[ x, \left[ H, x \right] \right] &= \left[ x, \left[ p^{2}/2m + V(x), x \right] \right] \\
+&= \left[ x, \left[ p^{2}/2m, x \right] \right] \\
+&= \left[ x, p \left[ p/2m, x \right] + \left[ p/2m, x \right] p \right] \xrightarrow[]{\left[ x, p \right] = i \hbar} \\
+&= \left[ x, - i \hbar p/ m \right] \\
+&= \hbar^{2}/m.
+\end{align*}
+
+** SOLVED Part II
+CLOSED: [2022-11-21 Mon 01:17]
+*Use this and the fact that the identity operator can be written as the sum* \(I=\sum_{n^{\prime}}\left|n^{\prime}\right\rangle\left\langle n^{\prime}\right|\) *to derive the equation*
+
+\[
+\sum_{n^{\prime}}\left(E_{n^{\prime}}-E_{n}\right)\left|\left\langle n^{\prime}|x| n\right\rangle\right|^{2}=\frac{\hbar^{2}}{2 m} .
+\]
+
+*This is an example of a 'sum rule'.*
+
+\begin{align*}
+S &\equiv \sum_{n^{\prime}} \left( \left \langle n^{\prime} \left \lvert H  \right \rvert n^{\prime} \right \rangle - \left \langle n \left \lvert H  \right \rvert n \right \rangle \right) \left \langle n \left \lvert x  \right \rvert n^{\prime} \right \rangle \left \langle n^{\prime} \left \lvert x  \right \rvert n \right \rangle \\
+&= \sum_{n^{\prime}} \left \langle n^{\prime} \left \lvert H  \right \rvert n^{\prime} \right \rangle \left \langle n \left \lvert x  \right \rvert n^{\prime} \right \rangle \left \langle n^{\prime} \left \lvert x  \right \rvert n \right \rangle - \left \langle n \left \lvert H  \right \rvert n \right \rangle \left \langle n \left \lvert x  \right \rvert n^{\prime} \right \rangle \left \langle n^{\prime} \left \lvert x  \right \rvert n \right \rangle \\
+&= \sum_{n^{\prime}} \left \langle n \left \lvert x  \right \rvert n^{\prime} \right \rangle  \left \langle n^{\prime} \left \lvert H  \right \rvert n^{\prime} \right \rangle \left \langle n^{\prime} \left \lvert x  \right \rvert n \right \rangle - \left \langle n \left \lvert H  \right \rvert n \right \rangle \left \langle n \left \lvert x  \right \rvert n^{\prime} \right \rangle \left \langle n^{\prime} \left \lvert x  \right \rvert n \right \rangle \\
+&= \left \langle n \left \lvert x H x  \right \rvert n \right \rangle - \left \langle n \left \lvert H  \right \rvert n \right \rangle \left \langle n \left \lvert x^{2}  \right \rvert n \right \rangle \\
+&= \dfrac{1}{2} \left \langle n \left \lvert \left[ x, \left[ H, x \right] \right] \right \rvert n \right \rangle  \xrightarrow[]{\left[ x, \left[ H, x \right] \right] = \hbar^{2}/m} \\
+&= \dfrac{\hbar^{2}}{2m}
+\end{align*}
+
+** SOLVED Part III
+CLOSED: [2022-11-21 Mon 01:11]
+*Show that the above sum rule is satisfied for all the eigenstates of* \(H\) *for the case* \(V=(1 / 2) m \omega^{2} x^{2}\).
+
+With \(V=(1 / 2) m \omega^{2} x^{2}\), the Hamiltonian is that of the quantum harmonic oscillator. Recall that for the oscillator,
+
+\begin{align*}
+x = \left( \dfrac{\hbar}{2 \omega m} \right)^{1/2} \left( a + a^{\dagger} \right).
+\end{align*}
+
+Substituting in the sum immediately furnishes a direct evaluation:
+
+\begin{align*}
+S &= \sum_{n^{\prime}} \left( E_{n^{\prime}} - E_{n} \right) \left \lvert \left \langle n^{\prime} \left \lvert x \right \rvert n \right \rangle  \right \rvert^{2} \\
+&= \sum_{n^{\prime}} \left( E_{n^{\prime}} - E_{n} \right) \left \lvert \left \langle n^{\prime} \left \lvert \left( \dfrac{\hbar}{2 \omega m} \right)^{1/2} \left( a + a^{\dagger} \right) \right \rvert n \right \rangle  \right \rvert^{2} \\
+&= \sum_{n^{\prime}} \hbar \omega \left(n^{\prime} - n \right) \left \lvert \left \langle n^{\prime} \left \lvert \left( \dfrac{\hbar}{2 \omega m} \right)^{1/2} \left( a + a^{\dagger} \right) \right \rvert n \right \rangle  \right \rvert^{2} \\
+&= \sum_{n^{\prime}} \dfrac{\hbar^{2}}{2m} \left(n^{\prime} - n \right) \left \lvert \left \langle n^{\prime} \left \lvert \left( a + a^{\dagger} \right) \right \rvert n \right \rangle  \right \rvert^{2} \xrightarrow[]{a \vert n \rangle = n^{1/2} \vert n-1 \rangle, \thinspace a^{\dagger} \vert n \rangle = \left( n + 1 \right)^{1/2} \vert n + 1 \rangle} \\
+&= \sum_{n^{\prime}} \dfrac{\hbar^{2}}{2m} \left(n^{\prime} - n \right) \left[ \delta_{n,n^{\prime} + 1}n + \delta_{n,n^{\prime}-1} \left( n + 1 \right) \right] \\
+&= \dfrac{\hbar^{2}}{2m}.
+\end{align*}
+
+* TOSOLVE Problem 61
+*A particle with mass \(m\) and charge \(q\) is placed in one-dimensional simple harmonic potential with frequency \(\omega\) and uniform electric field \(A\) which is applied along the \(+\hat{x}\) direction. Find the exact ground state energy \(E_{0}\) and wave function. Hence find the induced dipole moment defined as \(\frac{dE_{0}}{dA}\), and explain its value using the form of the wave function. Also find the electric polarisability defined as \(-\frac{d^{2} E_{0}}{d A^{2}}\).*
+* Notes
+:PROPERTIES:
+:NAME: Quantum Mechanics I
+:LECTURER: Diptiman Sen
+:DEPARTMENT: Physics
+:WEBSITE: http://chep.iisc.ac.in/Personnel/pages/diptiman/index.html
+:VENUE: Physical Sciences Auditorium
+:FIRST-MEET: [2022-08-01 Mon 11:00-12:00]
+:TIME: MWF 11:00-12:00
+:END:
+#+begin_comment
+Clocked time that wasn't registered with a problem at the time are included in a logbook under this heading.
+#+end_comment
+:LOGBOOK:
+CLOCK: [2022-09-22 Thu 19:03]--[2022-09-22 Thu 19:38] =>  0:35
+CLOCK: [2022-09-22 Thu 04:14]--[2022-09-22 Thu 06:21] =>  2:07
+CLOCK: [2022-09-21 Thu 21:11]--[2022-09-22 Thu 03:13] =>  6:02
+CLOCK: [2022-09-21 Wed 17:25]--[2022-09-21 Wed 19:39] =>  2:14
+CLOCK: [2022-09-21 Wed 14:17]--[2022-09-21 Wed 17:17] =>  3:00
+:END:
+** PH202 Syllabus
+- Revise your notes for node =1= of /Principles of Quantum Mechanics/.
+- Re-read node =2= of /Principles of Quantum Mechanics/ and revise your solutions to the problems.
+- Re-read node =4= of /Principles of Quantum Mechanics/.
+- Solve all problems from node =5=, =7=, =9=, =11=, =12=, =13=, =14=, =15=, =17= of /Principles of Quantum Mechanics/.
+- Read and solve all problems from node =14= of /Quantum Mechanics/.
+- Solve all =Homework= problems.
+- Historical foundations
+- Wave function for a single particle Hamiltonian.
+- Schrodinger equation.
+- Probability current.
+- Wave packets.
+- One-dimensional problems.
+- Particle in a box.
+- Particle on a circle.
+- Step, barrier, and delta-function potentials.
+- Energy bands in periodic potentials.
+- Scattering and bound states. Tunnelling.
+- Simple harmonic oscillator, operator approach.
+- Ehrenfest's theorem.
+- Particle in an electromagnetic field. Aharonov-Bohm effect.
+- Uncertainty relations.
+- Momentum representation.
+- Hermitian and unitary operators. Orthonormal basis.
+- Postulates of quantum mechanics
+- Matrix formulation of quantum mechanics.
+- Three-dimensional problems.
+- Rotations, angular momentum operators, commutation relations.
+- Spherical harmonics.
+- Hydrogen atom, it's spectrum and wave functions.
+- Spin angular momentum. Spin-1/2 and two-level systems.
+- Addition of angular momentum.
+- Spin-orbit and hyperfine interactions.
+- Time-independent perturbation theory.
+- Stark and Zeeman effects.
