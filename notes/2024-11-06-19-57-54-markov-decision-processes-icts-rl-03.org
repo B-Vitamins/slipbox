@@ -1,0 +1,113 @@
+:PROPERTIES:
+:ID:       cc1859e1-a924-4dbb-84ff-d081ad0d80f9
+:END:
+#+TITLE: Markov decision processes (ICTS-RL 03)
+#+FILETAGS: :fleeting:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+- *Environment State*: \( S_{t} \in S \) for \( t = 0,1, \ldots \)
+  - Information provided by the system to support decision-making.
+
+- *Agent State*: \( A_{t} \in A(s) \) for \( t = 0,1, \ldots \)
+  - Controls actions or decisions.
+  - State space can depend on the current state.
+  - Simplification: \( A(s) = A \quad \forall s \).
+
+- *Reward*: \( R_{t} \in \mathbb{R} \)
+  - Feedback from the environment, indicating the quality of actions.
+  - Sometimes expressed as \( r(s, a, s') \).
+  - Random variable correlated with states and actions.
+
+*Transition Probability (Dynamics)*:
+\[
+p(s', r \mid s, a) = P(S_{t+1} = s', R_{t+1} = r \mid S_{t} = s, A_{t} = a)
+\]
+  - Assumed homogeneous (time-independent, stationary).
+
+- *Example*:
+  - Two deterministic actions: left (\( a=0 \)) and right (\( a=1 \)).
+  - Deterministic reward based on state and action.
+  - Transition probability:
+    \[
+    p(s' \mid s, a) = \sum_{r} p(s', r \mid s, a)
+    \]
+
+*Reward Probability*:
+\[
+p(r \mid s, a) = \sum_{s'} p(s', r \mid s, a)
+\]
+
+*Expected Reward*: \( \rho(s, a) = E[R_{t+1} \mid S_{t} = s, A_{t} = a] \)
+\[
+\rho(s, a) = \sum_{r} r p(r \mid s, a) = \sum_{r, s'} r p(s', r \mid s, a)
+\]
+
+*Policy*:
+- *Policy Transition Probability*:
+  \[
+  \pi(a \mid s) = P(A_{t} = a \mid S_{t} = s)
+  \]
+  - Maps each state to an action.
+  - **Deterministic Policy**: \( \pi(s) = a \), one action per state.
+
+- *System Transition Probability under Policy*:
+  \[
+  P_{\pi}(s' \mid s) = \sum_{a} p(s' \mid s, a) \pi(a \mid s) = \sum_{a, r} p(s', r \mid s, a) \pi(a \mid s)
+  \]
+
+- *Effective Dynamics under Policy \( \pi \)*:
+  - Transition matrix \( P_{\pi} \), with elements \( (P_{\pi})_{ij} = p_{\pi}(j \mid i) \).
+
+- *Comparison*:
+  - *No Control*: \( S_{0} \xrightarrow{P} S_{1} \xrightarrow{P} S_{2} \rightarrow \cdots \)
+  - *Open-loop Control*: \( S_{0} \xrightarrow{A_{0}} S_{1} \rightarrow S_{2} \rightarrow \cdots \)
+  - *Closed-loop Control*: \( S_{0} \rightarrow S_{1} \rightarrow P_{p} S_{2} \rightarrow \cdots \)
+
+*Expected Reward under Policy \( \pi \)*:
+\[
+\rho_{\pi}(s) = E_{\pi}[R_{t+1} \mid S_{t} = s] = \sum_{a} \rho(s, a) \pi(a \mid s)
+\]
+
+*Value Functions*:
+  - *State Value Function*: \( v_{\pi}(s) = E_{\pi}[G_{t} \mid S_{t} = s] \)
+  - *State-Action Value Function*: \( q_{\pi}(s, a) = E_{\pi}[G_{t} \mid S_{t} = s, A_{t} = a] \)
+
+  - *Connection*:
+    \[
+    V_{\pi}(s) = E_{\pi}[q_{\pi}(s, A_{t}) \mid S_{t} = s] = \sum_{a} q_{\pi}(s, a) \pi(a \mid s)
+    \]
+
+*Bellman Equations*:
+- *Return*: \( G_{t} = R_{t+1} + \gamma R_{t+2} + \gamma^2 R_{t+3} + \cdots = R_{t+1} + \gamma G_{t+1} \)
+  - Bellman equation for the value function:
+    \[
+    V_{\pi}(s) = E_{\pi}[R_{t+1} + \gamma V_{\pi}(S_{t+1}) \mid S_{t} = s]
+    \]
+
+- *Bellman Equation for Action-Value Function*:
+  \[
+  q_{\pi}(s, a) = E_{\pi}[R_{t+1} + \gamma q_{\pi}(S_{t+1}, A_{t+1}) \mid S_{t} = s, A_{t} = a]
+  \]
+
+*Optimal Policies*:
+- *Goal*: Maximize the expected return by finding an optimal policy.
+- *Optimal Value Function*:
+  \[
+  V_{*}(s) = \max_{\pi} V_{\pi}(s)
+  \]
+
+- *Bellman Optimality Equation*:
+  \[
+  V_{*}(s) = \max_{a} E[R_{t+1} + \gamma V_{*}(S_{t+1}) \mid S_{t} = s, A_{t} = a]
+  \]
+
+  - For action-value function:
+    \[
+    q_{*}(s, a) = E[R_{t+1} + \gamma \max_{a'} q_{*}(S_{t+1}, a') \mid S_{t} = s, A_{t} = a]
+    \]
+    - Bellman's principle of optimality: an optimal policy ensures that each step is optimal given the future state.
+
+*Example*:
+- Two actions per state lead to \( 2^7 \) possible policies.
+  - When \( \gamma \approx 0 \), better to choose immediate reward.
+  - When \( \gamma \approx 1 \), consider long-term reward maximization.
