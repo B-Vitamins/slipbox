@@ -1,0 +1,80 @@
+:PROPERTIES:
+:ID:       fb798f16-9517-417d-8212-86a0ce2de1f2
+:END:
+#+TITLE: Markov processes (ICTS-RL 01)
+#+FILETAGS: :fleeting:icts:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+- *State*: \( S_{t} \in S \), where \( t = 0,1,2, \ldots \)
+
+*Markov Evolution*:
+\[
+P\left(S_{t+1} = s' \mid S_{t} = s, S_{t-1}, S_{t-2}, \ldots, S_{0}\right) = P\left(S_{t+1} = s' \mid S_{t} = s\right)
+\]
+  - Future independent of past given present
+  - *Markov Chain*: \( S_{0} \rightarrow S_{1} \rightarrow S_{2} \rightarrow \cdots \)
+
+*Transition Probability*:
+\[
+p(s' \mid s) = P\left(S_{t+1} = s' \mid S_{t} = s\right)
+\]
+  - Assumed homogeneous (stationary, time-independent)
+  - *Normalization*:
+    \[
+    \sum_{s'} p(s' \mid s) = 1 \quad \forall s
+    \]
+
+*Transition Matrix*: \( P_{ij} = p(j \mid i) = P(i \rightarrow j) \)
+  - Dimensions: \( |S| \times |S| \)
+  - Properties:
+    - \( \sum_{j} P_{ij} = 1 \quad \forall i \) (each row sums to 1)
+    - \( 0 \leq P_{ij} \leq 1 \) (stochastic matrix)
+
+- *Probability Distribution*: \( P_{t}(s) = P(S_{t} = s) \)
+- *Probability Vector*: \( P_{t, i} = P_{t}(i) \)
+- *Vector Dimension*: \( |S| \)-dimensional, often a row vector
+
+*Evolution Equation*:
+\[
+P_{t+1}(s') = \sum_{s} P(s' \mid s) P_{t}(s)
+\]
+  - *Matrix Notation*: \( p_{t+1} = p_{t} P \)
+    \[
+    (p_{t+1})_{j} = \sum_{i} (p_{t})_{i} P_{ij}
+    \]
+
+*Expectations*:
+\[
+E\left[f(S_{t+1}) \mid S_{t} = s\right] = \sum_{s'} f(s') p(s' \mid s)
+\]
+
+*Matrix Notation for Expectations*:
+\[
+F_{i} = E\left[f(S_{t+1}) \mid S_{t} = i\right] = \sum_{j} f(j) p(j \mid i)
+\]
+  - Can also be written as \( F = P f \) (left product)
+
+*Marginalization*:
+\[
+p(x) = \sum_{y} p(x, y)
+\]
+\[
+p(x \mid z) = \sum_{y} p(x, y \mid z)
+\]
+
+*Chain Rule*:
+\[
+p(x, y) = p(x \mid y) p(y) = p(y \mid x) p(x)
+\]
+\[
+p(x, y \mid z) = p(x \mid y, z) p(y \mid z)
+\]
+
+*Deterministic Transition*:
+\[
+p(s' \mid s) = \delta_{s', s^*}
+\]
+where
+\[
+p(s' \mid s) = \begin{cases} 1 & \text{if } s' = s^{*} \\ 0 & \text{otherwise} \end{cases}
+\]
