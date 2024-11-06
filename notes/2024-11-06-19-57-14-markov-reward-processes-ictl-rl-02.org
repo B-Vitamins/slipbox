@@ -1,0 +1,97 @@
+:PROPERTIES:
+:ID:       e8edb5ee-d7f7-4f0f-a772-65871ccf46f1
+:END:
+#+TITLE: Markov reward processes (ICTL-RL 02)
+#+FILETAGS: :fleeting:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+- *State*: \( S_{t} \), where \( t = 0,1, \ldots \)
+
+- *Reward*: \( R_{t} \in \mathbb{R} \), for \( t = 0,1, \ldots \)
+  - Represents cost/utility at time \( t \)
+  - Random variable correlated with transition \( S_{t} \rightarrow S_{t+1} \)
+  - Sometimes expressed as a function of \( s, s' \): \( r(s, s') \)
+
+*Transition Probability (Dynamics)*:
+\[
+p(s', r \mid s) = P(S_{t+1} = s', R_{t+1} = r \mid S_{t} = s)
+\]
+  - Reward depends on \( S \) and \( S' \)
+  - Assumed homogeneous (time-independent, stationary); no action involved (dynamics + rewards only)
+  - *Reward Probability*: \( p(r \mid s) = \sum_{s'} p(s', r \mid s) \)
+
+- *Transition Probability*: \( P(s' \mid s) = \sum_{r} p(s', r \mid s) \)
+- *Expected State Reward*: 
+\[
+p(s) = E[R_{t+1} \mid S_{t} = s] = \sum_{r} r p(r \mid s)
+\]
+  - Represents a one-time reward from state \( s \)
+
+*Return*:
+\[
+G_{t} = R_{t+1} + R_{t+2} + \cdots + R_{T}
+\]
+  - Total reward/cost from time \( t \) onwards
+  - *Episodic Processes*: finite \( T \), process terminates
+    \[
+    \Rightarrow G_{T} = 0, \quad G_{T-1} = R_{T}, \quad G_{T-2} = R_{T-1} + R_{T}, \ldots
+    \]
+
+  - *Continuing Processes*: \( T = \infty \), process goes indefinitely
+    - Example: \( 0 \rightarrow 1 \rightarrow z \rightarrow z \rightarrow 2 \rightarrow \cdots \) (Continuing)
+
+  - *Discounted Return*:
+    \[
+    G_{t} = R_{t+1} + \gamma R_{t+2} + \gamma^2 R_{t+3} + \cdots = \sum_{k=0}^{\infty} \gamma^{k} R_{t+1+k}
+    \]
+      - \( G_{t} < \infty \) for \( \gamma \in [0,1) \)
+      - *Myopic*: \( \gamma \approx 0 \Rightarrow G_{t} = R_{t+1} \) (immediate return)
+      - *Far-sighted*: \( \gamma \approx 1 \)
+      - Recursive form: \( G_{t} = R_{t+1} + \gamma G_{t+1} \)
+
+*Value Function*: \( V(s) = E[G_{t} \mid S_{t} = s] \)
+  - Represents the expected return or cost-to-go from state \( s \)
+  - Does not depend on time \( t \) (stationary MP)
+  - For continuing processes, infinite return
+  - When \( \gamma = 0 \): \( v(s) = \rho(s) \) (cost when leaving \( s \))
+
+*Bellman Equation*:
+\[
+v(s) = E[R_{t+1} + \gamma G_{t+1} \mid S_{t} = s] = E[R_{t+1} + \gamma v(S_{t+1}) \mid S_{t} = s]
+\]
+
+*Explicit Expectation*:
+\begin{aligned}
+V(s) &= \sum_{r} r p(r \mid s) + \gamma \sum_{s'} V(s') p(s' \mid s) \\
+&= \sum_{r, s'} r p(s', r \mid s) + \gamma \sum_{s', r} V(s') p(s', r \mid s) \\
+&= \rho(s) + \gamma (p V)(s)
+\end{aligned}
+
+*Matrix Notation*: \( v = \rho + \gamma P v \)
+  - Where \( V_{i} = V(i) \), \( \rho_{i} = \rho(i) \), and \( \gamma \) is a scalar
+  - Transition matrix \( P_{ij} = p(j \mid i) \) (dimensions \( |S| \times |S| \))
+
+  - *Solution*: \( V = (I - \gamma P)^{-1} \rho \)
+      - Solution exists for \( \gamma \in [0,1) \) and is unique
+
+*Bellman Operator*: \( T(V) = \rho + \gamma P V \)
+  \[
+  v = T(v)
+  \]
+
+*Example*: Linear model example for numerical solution:
+  - Set up as \( 7 \times 1 \) vector \( p \), \( 7 \times 7 \) matrix \( P \)
+  - Can be solved numerically
+
+- *Two Ways to Define MRPs*:
+  \[
+  p(s', r \mid s) \quad \text{or} \quad p(r \mid s)
+  \]
+  - *Expected Reward*: \( \rho(s) = E[R_{t+1} \mid S_{t} = s] \)
+  - Transition probability \( p(s' \mid s) \)
+
+- *Bellman Expectation Equation for Value Function*:
+  \[
+  v(s) = E[R_{t+1} + \gamma v(S_{t+1}) \mid S_{t} = s]
+  \]
+  - This yields the recursive form \( v = \rho + \gamma P v \)
