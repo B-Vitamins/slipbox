@@ -1,0 +1,93 @@
+:PROPERTIES:
+:ID:       0633be44-3e52-42b4-a061-4ae5adfa6993
+:END:
+#+TITLE: Temporal difference methods (ICTS-RL 05)
+#+FILETAGS: :fleeting:icts:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+*Planning*
+- MDP model is known/given.
+  - Solve to obtain \( V_{*} \), \( Q_{*} \), and \( \pi_{*} \).
+  - Use Bellman optimality equations.
+  - Apply methods like policy iteration and value iteration.
+
+*Prediction*
+- Predict the effects of a policy.
+  - Policy evaluation computes \( V_{\pi} \).
+
+*Learning*
+- MDP model is unknown.
+  - Estimate \( V_{t} \), \( Q_{t} \), and \( \pi_{t} \).
+  - Use sampling and exploration.
+  - Key concept of TD methods: iteratively update values based on observed state transitions.
+
+*Control*
+- Goal: Find an optimal policy.
+  - Compute \( V_{t} \) and \( Q_{t} \) as needed for learning.
+  - Observed/visited states are used to iteratively estimate \( V(s) \).
+  - Sampling and exploration inform the estimation process, with updates based on observed rewards and state transitions.
+  - Stochastic approximation:
+    \[
+    X_{n+1} = (1 - a_{n}) X_{n} + a_{n} T(X_{n}), \quad \sum a_{n} = \infty, \quad \sum a_{n}^{2} < \infty
+    \]
+
+* TD(0)
+- *Policy Evaluation*: Prediction, not control.
+- *Bellman Equation*:
+  \[
+  V_{\pi}(s) = E_{\pi}\left[R_{t+1} + \gamma V_{\pi}(S_{t+1}) \mid S_{t} = s\right]
+  \]
+  - Can be written as \( V_{\pi} = \rho_{\pi} + \gamma P_{\pi} V_{\pi} = T(V_{\pi}) \).
+
+- *TD(0) Update Rule*:
+  \[
+  V_{k+1}(S_{t}) = V_{k}(S_{t}) + \alpha_{k}\left[R_{t+1} + \gamma V_{k}(S_{t+1}) - V_{k}(S_{t})\right]
+  \]
+  - TD(0) approximates value iteration with each update using the Bellman expectation operator.
+  - Learning rate \( \alpha_{k} \): Typically annealed (decreasing over time) for convergence.
+
+* SARSA
+- *On-Policy Control*: Estimate \( Q_{\pi} \) based on the current policy.
+- *Bellman Optimality Equation*:
+  \[
+  q_{\pi}(s, a) = E\left[R_{t+1} + \gamma \max_{a'} q_{\pi}(S_{t+1}, a') \mid S_{t} = s, A_{t} = a\right]
+  \]
+
+- *SARSA Update Rule*:
+  \[
+  Q_{k+1}(S_{t}, A_{t}) = Q_{k}(S_{t}, A_{t}) + \alpha_{k}\left[R_{t+1} + \gamma Q_{k}(S_{t+1}, A_{t+1}) - Q_{k}(S_{t}, A_{t})\right]
+  \]
+  - Updates \( Q \)-values based on the current policy, with exploration via \(\varepsilon\)-greedy action selection.
+
+* Q-Learning
+- *Off-Policy Control*: Estimates \( Q_{*} \), independent of the policy generating actions.
+- *Q-Learning Update Rule*:
+  \[
+  Q_{k+1}(S_{t}, A_{t}) = Q_{k}(S_{t}, A_{t}) + \alpha_{k}\left[R_{t+1} + \gamma \max_{a} Q_{k}(S_{t+1}, a) - Q_{k}(S_{t}, A_{t})\right]
+  \]
+  - Selects actions greedily with respect to \( Q_{k} \) for optimal convergence, even though the exploration policy may vary (e.g., \(\varepsilon\)-greedy).
+
+* Maximization Bias
+- Tendency to overestimate \( Q \)-values:
+  \[
+  \max \hat{q} \neq \max E[q]
+  \]
+  - Using the maximum of estimates can lead to a bias where \( Q \) is consistently overestimated.
+
+*Extensions and Considerations*
+- Recurrent updates for \( V(s) \) and \( Q(s, a) \) with parameterization:
+  - Neural network representations: \( V(s; \theta) \) and \( Q(s, a; \theta) \).
+  - Update parameters \( \theta \) using TD(0), SARSA, or Q-learning.
+  - Longer history and eligibility traces with TD(λ) for more robust updates.
+
+- *Policy Approximation*: \( \pi(s) \approx \pi(s; \theta) \).
+  - Policy gradient methods like gradient ascent in \( \theta \)-space:
+    \[
+    \theta_{n+1} = \theta_{n} + \beta \nabla J(\theta)
+    \]
+    - Can use actor-critic methods for policy improvement and value estimation.
+
+*Advanced Topics*
+- Multi-agent systems, partially observed MDPs (POMDPs), and other areas where TD methods are extended.
+
+
