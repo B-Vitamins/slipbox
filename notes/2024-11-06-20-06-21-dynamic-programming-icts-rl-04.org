@@ -1,0 +1,86 @@
+:PROPERTIES:
+:ID:       ef0ed7fe-145a-4a4e-a6cd-bcf530725586
+:END:
+#+TITLE: Dynamic programming (ICTS-RL 04)
+#+FILETAGS: :fleeting:icts:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+* Policy Evaluation
+- *Goal*: Compute \( V_{\pi} \) for a given policy \( \pi \).
+- Direct method: Solve the linear equation
+  \[
+  v_{\pi} = \rho_{\pi} + \gamma P_{\pi} v_{\pi} \Rightarrow V_{\pi} = (I - \gamma P_{\pi})^{-1} \rho_{\pi}
+  \]
+  - *Complexity*: \( O(|S|^3) \)
+
+- *Iterative Method*: \( V_{0} \rightarrow V_{1} \rightarrow \cdots \rightarrow V_{\pi} \)
+  \[
+  V_{k+1}(s) = E_{\pi}\left[R_{t+1} + \gamma V_{k}(S_{t+1}) \mid S_{t} = s\right]
+  \]
+  - This can be expressed as \( V_{k+1} = \rho_{\pi} + \gamma P_{\pi} V_{k} \)
+  - Using the Bellman operator:
+    \[
+    T_{\pi}(v) = \rho_{\pi} + \gamma P_{\pi} v
+    \]
+  - Initial value \( V_{0} \) is arbitrary except \( V_{0} \) for terminal states is set to 0.
+  - *Convergence*: \( V_{k} \rightarrow V_{\pi} \) as \( k \rightarrow \infty \), since \( T_{\pi} \) is a contraction.
+
+* Policy Iteration
+- Consider deterministic policies \( \pi(s) \).
+- *Policy Improvement Theorem*: Let policies \( \pi \) and \( \pi' \) satisfy
+  \[
+  q_{\pi}(s, \pi'(s)) \geq q_{\pi}(s, \pi(s)) \quad \forall s \in S
+  \]
+  then \( \pi' \) is at least as good as \( \pi \), meaning
+  \[
+  V_{\pi'}(s) \geq V_{\pi}(s) \quad \forall s \in S
+  \]
+- *Greedy Policy Selection*:
+  \[
+  \pi'(s) = \arg \max_{a} q_{\pi}(s, a)
+  \]
+- Iteratively update until reaching a fixed point \( \pi_{\infty} \), yielding an optimal policy.
+
+- *E-greedy Policy Selection*:
+  \[
+  \pi'(s) = \begin{cases} \arg \max_{a} q_{\pi}(s, a) & \text{with probability } 1 - \varepsilon \\ \text{random action} & \text{with probability } \varepsilon \end{cases}
+  \]
+  - Useful for exploratory policy improvement.
+
+- *Policy Iteration Algorithm*:
+  - Convergence: \( \pi_{k} \rightarrow \pi_{*} \), and \( V_{k} \rightarrow V_{*} \) as \( k \rightarrow \infty \).
+
+* Value Iteration
+- *Bellman Optimality Equation*:
+  \[
+  V_{*}(s) = \max_{a} E\left[R_{t+1} + \gamma V_{*}(S_{t+1}) \mid S_{t} = s, A_{t} = a\right]
+  \]
+  or equivalently,
+  \[
+  V_{*}(s) = \max_{a} \left[ \rho(s, a) + \gamma (P_{a} V_{*})(s) \right]
+  \]
+
+- *Value Iteration Algorithm*:
+  \[
+  V_{k+1}(s) = \max_{a} \left[ \rho(s, a) + \gamma \sum_{s'} V_{k}(s') p(s' \mid s, a) \right]
+  \]
+  - Each step of value iteration approximates the optimal policy.
+  - Convergence: \( V_{k} \rightarrow V_{*} \) as \( k \rightarrow \infty \)
+
+* Action-Value Iteration
+- *Update Step for Action-Values*:
+  \[
+  q_{k+1}(s, a) = \rho(s, a) + \gamma \max_{a'} \sum_{s'} q_{k}(s', a') p(s' \mid s, a)
+  \]
+  - Defines policy improvement at stage \( k+1 \).
+  - Converges to \( q_{*} \), satisfying Bellman optimality.
+  - *Policy Improvement*:
+    \[
+    \pi_{k+1}(s) = \arg \max_{a} q_{k}(s, a)
+    \]
+
+- *Variant of Action-Value Iteration*:
+  \[
+  q_{k}(s, a) = \rho(s, a) + \gamma \sum_{s'} V_{k}(s') p(s' \mid s, a)
+  \]
+
