@@ -2,7 +2,7 @@
 :ID:       cc1859e1-a924-4dbb-84ff-d081ad0d80f9
 :END:
 #+TITLE: Markov decision processes (ICTS-RL 03)
-#+FILETAGS: :fleeting:
+#+FILETAGS: :fleeting:icts:
 #+SETUPFILE: ~/.config/emacs/setup/setupfile.org
 
 - *Environment State*: \( S_{t} \in S \) for \( t = 0,1, \ldots \)
