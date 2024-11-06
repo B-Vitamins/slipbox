@@ -1042,8 +1042,17 @@ Show that the renormalized input variables defined by (7.50), where \(\mu_{i}\) 
 *** Automatic Differentiation
 **** Forward-mode automatic differentiation
 **** Reverse-mode automatic differentiation
-** 8.1 Verifying Backpropagation Formula
-By making use of (8.5), (8.6), (8.8), and (8.12), verify the backpropagation formula (8.13) for evaluating the derivatives of an error function.
+** SOLVED 8.1 Backpropagation Formula
+CLOSED: [2024-11-05 Tue 23:30]
+:LOGBOOK:
+CLOCK: [2024-11-05 Tue 23:12]--[2024-11-05 Tue 23:29] =>  0:17
+:END:
+*By making use of (8.5), (8.6), (8.8), and (8.12), verify the backpropagation formula (8.13) for evaluating the derivatives of an error function.*
+Using (8.5), and (8.6), \( a_{k} = \sum_{j} w_{kj} z_{j} = \sum_{j} w_{kj} h(a_j)\) so that \( \partial_{a_{j}} a_{k} = w_{kj}  \, \mathrm{D} h \) Using (8.8), \( \partial_{a_{k}} E_{n} \equiv \delta_{k}\) by definition. Substituting \( \partial_{a_{j}} a_{k} = w_{kj}  \, \mathrm{D} h \) and \( \partial_{a_{k}} E_{n} \equiv \delta_{k}\) in (8.12) yields the backpropagation formula (8.13):
+
+\begin{align*}\label{backpropagation-formula}
+\boxed{\delta_{j} (a_{j}) = \mathrm{D} h (a_{j}) \cdot \sum_{k} w_{kj} \cdot \delta_{k} (a_{k}).}
+\end{align*}
 
 ** 8.2 Backpropagation Formula in Matrix Notation
 Consider a network that consists of layers and rewrite the backpropagation formula (8.13) in matrix notation by starting with the forward propagation equation (6.19). Note that the result involves multiplication by the transposes of the matrices.
