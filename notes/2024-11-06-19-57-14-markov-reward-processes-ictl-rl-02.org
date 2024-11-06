@@ -2,7 +2,7 @@
 :ID:       e8edb5ee-d7f7-4f0f-a772-65871ccf46f1
 :END:
 #+TITLE: Markov reward processes (ICTL-RL 02)
-#+FILETAGS: :fleeting:
+#+FILETAGS: :fleeting:icts:
 #+SETUPFILE: ~/.config/emacs/setup/setupfile.org
 
 - *State*: \( S_{t} \), where \( t = 0,1, \ldots \)
