@@ -1,0 +1,186 @@
+:PROPERTIES:
+:ID:       11485b28-3e45-4745-b9b8-16df5770eb1d
+:END:
+#+TITLE: PH313 Assignment 2
+#+AUTHOR: Ayan Das
+#+FILETAGS: :ph313:assignment:solutions
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+#+BEGIN: clocktable :maxlevel 2 :scope nil :emphasize nil
+#+CAPTION: Clock summary at [2024-11-07 Thu 15:10]
+| Headline                          | Time   |      |
+|-----------------------------------+--------+------|
+| *Total time*                      | *7:18* |      |
+|-----------------------------------+--------+------|
+| Problem 1: Edwards-Anderson model | 7:18   |      |
+| \_  Part (a)                      |        | 7:18 |
+#+END:
+* TOSOLVE Problem 1: Edwards-Anderson model
+*Consider the Edwards-Anderson model of spin glass for Ising spins on a simple cubic lattice, defined by the Hamiltonian*
+
+\begin{aligned}
+H=-\sum_{\langle i j \rangle} J_{i j} \sigma_i \sigma_{j}
+\end{aligned}
+
+*where the sum is over nearest-neighbor pairs of lattice sites and each* $J_{i j}$ *is an independent random variable distributed according to*
+
+\begin{aligned}
+P\left(J_{i j}\right)=\frac{1}{\sqrt{2 \pi} J} \exp \left(-J_{i j}^2 / 2 J^2\right)
+\end{aligned}
+
+** DONE Part (a)
+CLOSED: [2023-03-30 Thu 22:40]
+:LOGBOOK:
+CLOCK: [2023-03-30 Thu 15:22]--[2023-03-30 Thu 22:40] =>  7:18
+:END:
+*Use the replica method to obtain the effective Hamiltonian of the system in terms of the replicated Ising variables* $\left\{\sigma_i^\alpha\right\}, i=1, \ldots, N, \alpha=1, \ldots, n$, *where* $N$ *is the number of lattice sites and* $n$ *is the number of replicas.*
+
+According to the replica prescription
+
+\begin{aligned}
+{\left[Z^n\right]_D } & =\int\left(\prod_{\left \langle ij  \right \rangle} 
+\mathrm{~d} J_{i j} P\left(J_{i j}\right)\right) 
+\operatorname{Tr} \exp \left(\beta \sum_{ \left \langle ij  \right \rangle} J_{i j} \sum_{\alpha=1}^{n} \sigma_{i}^{\alpha} \sigma_{j}^{\alpha}\right) \\
+& =\operatorname{Tr} \int \prod_{\langle i j\rangle} d J_{i j} P\left(J_{i j}\right) \exp \left(-\beta J_{i j} \sum_\alpha \sigma_i^\alpha \sigma_j^\alpha\right) \\
+& =\operatorname{Tr} \prod_{\langle i j\rangle} \left[\int\mathrm{~d} J_{i j} \exp \left(- \frac{J_{i j}^2}{2J^2} + \beta J_{i j} \sum_{\alpha=1}^{n} \sigma_{i}^{\alpha} \sigma_{j}^{\alpha} \right)\right] \\
+& =\operatorname{Tr} \exp \left \lbrace \sum_{\left \langle ij  \right \rangle} \ln \left[ \int\mathrm{~d} J_{i j} \exp \left(- \frac{J_{i j}^2}{2J^2} + \beta J_{i j} \sum_{\alpha=1}^{n} \sigma_{i}^{\alpha} \sigma_{j}^{\alpha} \right) \right]  \right \rbrace \\
+&\equiv  \operatorname{Tr} \exp \left \lbrace - \beta H_{\text{eff}}  \right \rbrace
+\end{aligned}
+
+so that
+
+\begin{align*}
+- \beta H_{\text{eff}} = \sum_{\left \langle ij  \right \rangle} \ln \left[ \int\mathrm{~d} J_{i j} \exp \left(- \frac{J_{i j}^2}{2J^2} + \beta J_{i j} \sum_{\alpha=1}^{n} \sigma_{i}^{\alpha} \sigma_{j}^{\alpha} \right) \right].
+\end{align*}
+
+For a given bond $(ij)$, the integral over the disorder is
+
+\begin{aligned}
+&\int \mathrm{~d} J_{i j} \exp \left(- \frac{J_{i j}^2}{2J^2} + \beta J_{i j} \sum_{\alpha=1}^{n} \sigma_{i}^{\alpha} \sigma_{j}^{\alpha} \right).
+\end{aligned}
+
+From tables
+
+\begin{align*}
+&\int \mathrm{~d} J_{i j} \exp \left(- \frac{J_{i j}^2}{2J^2} + \beta J_{i j} \sum_{\alpha=1}^{n} \sigma_{i}^{\alpha} \sigma_{j}^{\alpha} \right)
+\approx
+\exp \left \lbrace \dfrac{\beta^{2} J^{2}}{2} \sum_{\alpha, \beta} \sigma_{i}^{\alpha} \sigma_{j}^{\alpha} \sigma_{i}^{\beta} \sigma_{j}^{\beta}  \right \rbrace
+\end{align*}
+
+Using this to rewrite $\left[Z^{n} \right]$
+
+\begin{aligned}
+\left[Z^{n}\right]_{\text{D}} = \operatorname{Tr} \exp \left\{\sum_{\left \langle ij  \right \rangle}\left(\frac{\beta^{2} J^{2}}{2} \sum_{\alpha, \beta} \sigma_{i}^{\alpha} \sigma_{j}^{\alpha} \sigma_{i}^{\beta} \sigma_{j}^{\beta}\right)\right\}.
+\end{aligned}
+
+It is clear by comparison to $\left[ Z^{n} \right]_{D} = \operatorname{Tr} \exp \left \lbrace - \beta H_{\text{eff}}  \right \rbrace$ that
+
+\begin{aligned}
+H_{\text{eff}} = - \beta \left(\dfrac{J^{2}}{2} \sum_{\left \langle ij  \right \rangle} \sum_{\alpha, \beta} \sigma_{i}^{\alpha} \sigma_{j}^{\alpha} \sigma_{i}^{\beta} \sigma_{j}^{\beta}\right).
+\end{aligned}
+
+** TOSOLVE Part (b)
+*The magnetization* $M$ *of the system as a function of the magnetic field* $h$ *can be written as*
+
+\begin{aligned}
+M=\chi_1 h+\frac{1}{6} \chi_3 h^3+\text { higher powers of } h .
+\end{aligned}
+
+*Derive expressions for the usual linear susceptibility* $\chi_1$ *and the nonlinear susceptibility* $\chi_3$ *in terms of correlation functions of (i) the original spin variables* $\left\{\sigma_i\right\}$; *and (ii) the replicated spin variables* $\left\{\sigma_i^\alpha\right\}$.
+* SOLVED Problem 2: Site percolation on a Bethe lattice
+CLOSED: [2023-04-05 Wed 12:49]
+*Consider an infinite Bethe lattice with coordination number* $z$ *in which each site is occupied with probability* $p$ *and vacant with probability* $(1-p)$. *Obtain explicit expressions for (a) the probability that a particular site is a member of a finite cluster; and (b) the mean cluster size, as functions of* $p$.
+
+Let $Q (p)$ be the probability that particular site is a member of a finite cluster. 
+
+For a site to be:
+1) occupied but /not/ be a member of an infinite cluster:
+   _each of its immediate neighbour must either be_
+   1) unoccupied
+   2) occupied but /not/ be a member of an infinite cluster.
+
+Its clear we need a recurrence
+
+\begin{align*}
+Q(p) = (1-p) + p Q^{z-1} (p).
+\end{align*}
+
+$Q(p)$ is raised to a power of $z-1$ on the right hand side because the neighbour has $z-1$ neighbours other than the site, and each of them must /not/ be a member of an infinite cluster.
+
+Let $S(p)$ be the mean cluster size and $T(p)$ be the size of the cluster of each branch.
+
+The mean cluster size is:
+1) the mean of the sum of the cluster size of each branch $T(p)$:
+   _each of the branch $T (p)$ must either be_
+   1) unoccupied, and thus not contribute to the sum
+   2) occupied so contribute unit size of $1$ to the sum /and/ the sum of the cluster size of each of /it's/ branch $T(p)$
+
+Once again we need a recurrence
+
+\begin{aligned}
+S(p) = 1 + z T(p) 
+\end{aligned}
+
+We can unroll $T(p)$ one more time:
+_each of /it's/ branch $T(p)$ must either be_
+1) unoccupied, and thus not contribute to the sum
+2) occupied so contribute unit size of $1$ to the sum /and/ the sum of the cluster size each of /it's/ branch $T(p)$
+
+\begin{aligned}
+T(p) &= 0 \times (1-p) + p \times 1 + p (z-1) \times T(p) \\
+&= p \left[ 1 + (z-1) T (p) \right].
+\end{aligned}
+
+It is trivial to solve for $T(p)$ here because the $z-1$ is multiplicative.
+
+\begin{align*}
+T(p) = \dfrac{p}{1 - p (z-1)}.
+\end{align*}
+
+On substituting into the expression for $S(p)$ we get
+
+\begin{aligned}
+S(p) &= 1 + \dfrac{p z}{1 - p (z - 1)} = \dfrac{2}{1 - p (z - 1)}.
+\end{aligned}
+
+* TOSOLVE Problem 3: Percolation of trees
+*Consider the* $q$ *state Potts model defined by the Hamiltonian*
+
+\begin{aligned}
+H=-J \sum_{\langle i j\rangle}\left(q \delta_{\sigma_i, \sigma_j}-1\right)-h \sum_i\left(q \delta_{\sigma_{t, 1}}-1\right),
+\end{aligned}
+
+*where* $\left \langle ij  \right \rangle$ *represents nearest-neighbor pairs of lattice sites and each* $\sigma_i$ *takes* $q$ *values,* $1,2, \ldots, q$. *Define the partition function* $Z$ *as*
+
+\begin{aligned}
+Z \equiv q^{-N} \operatorname{Tr}_\sigma \exp \left(-H / k_B T\right)
+\end{aligned}
+
+*where* $N$ *is the number of lattice sites. Also, define* $f$, *the free energy per site*
+
+\begin{aligned}
+f \equiv-k_B T \ln Z /[N(q-1)] \text {. }
+\end{aligned}
+
+*Use the results derived in class to show that in the* $q \rightarrow 0$ *limit,* $f$ *is the generating function of tree-like clusters (i.e., clusters without any closed loops) on the lattice. In particular, show that different moments of the size distribution function of such clusters may be generated by taking derivatives of* $f$ *with respect to* $h$ *and then setting* $h=0$.
+
+\begin{aligned}
+Z &\equiv q^{-N} \operatorname{Tr}\sigma \exp \left(-H / k_B T\right) \\
+&= q^{-N} \operatorname{Tr}\sigma \exp \left[\beta J \sum_{\langle i j\rangle}\left(q \delta_{\sigma_i, \sigma_j}-1\right) + \beta h \sum_i\left(q \delta_{\sigma_{t, 1}}-1\right)\right] \\
+&= \exp \left \lbrace - \beta J N (z + 1)  \right \rbrace q^{-N} \operatorname{Tr}_\sigma
+\exp \left[\beta J q \sum_{\langle i j\rangle} \delta_{\sigma_i, \sigma_j} \right] 
+\exp \left[ \beta h q \sum_i \delta_{\sigma_{t, 1}} \right] \\
+&= \dfrac{\exp \left \lbrace - \beta J N (z + 1)  \right \rbrace}{q^N} \operatorname{Tr}_\sigma 
+\prod_{\left \langle ij  \right \rangle} \left[ 1 + \delta_{\sigma_i, \sigma_j} \left(\exp \left \lbrace \beta J q \right \rbrace - 1 \right) \right] \\
+&\qquad \qquad \times \prod_{i} \left[ 1 + \delta_{\sigma_t, 1} \left(\exp \left \lbrace \beta h q \right \rbrace - 1 \right) \right]
+\end{aligned}
+
+where $\operatorname{Tr}_\sigma$ is the trace over all possible spin configurations $\sigma$, and $N$ is the total number of spins. In the third step, we have used the fact that the exponential of a sum is equal to the product of the exponentials. In the fourth step, we have used the definition of the trace and split the product over all spins into two products, one over the boundary spins and the other over the bulk spins.
+* TOSOLVE Problem 4: Real-space renormalization group calculation for site percolation
+*Consider the site percolation problem on a two-dimensional triangular lattice. Divide the sites of the original lattice* $L$ *into groups of three as shown below.*
+*The three sites in a group form an elementary triangle of the original lattice* $L$. *The centres of these triangles form another triangular lattice* $L^{\prime}$ *whose lattice constant is* $b=\sqrt{3}$ *times larger than the lattice constant of* $L$. *The site percolation problem with occupation probability* $p$ *on the original lattice* $L$ *can be mapped to one on* $L^{\prime}$ *by assuming that a site in* $L^{\prime}$ *is occupied if a majority of the sites of the corresponding triangle (i.e. at least two of the three sites) are occupied.*
+** TOSOLVE Problem (a)
+*Calculate the occupation probability* $p^{\prime}$ *of a site on* $L^{\prime}$ *as a function of* $p$. *The function* $p^{\prime}(p)$ *defines a renormalization group transformation* $R$ *in which the length scale changes by a factor* $b=\sqrt{3}$.
+** TOSOLVE Problem (b)
+*Show that the renormalized occupation probability flows to* $0(1)$ *under repeated applications of* $R$ *if* $p<p^*\left(p>p^*\right)$. Determine the value of $p^*$ and give a physical interpretation of this "special" value of $p$.
+** TOSOLVE Problem (c)
+*Define the correlation length for* $p<p^*\left(p>p^*\right)$ *as the length scale at which the renormalized occupation probability is* $0.01(0.99)$. *Show that the correlation length defined in this way diverges as* $p$ *approaches* $p^*$. *Calculate the value of the exponent* $\nu$ *that describes this divergence.*
