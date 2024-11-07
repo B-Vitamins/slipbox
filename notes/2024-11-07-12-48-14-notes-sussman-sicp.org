@@ -2,8 +2,8 @@
 :ID:       936dd23a-681a-44ad-8d56-30b462d79d22
 :END:
 #+TITLE: Notes on Structure and Interpretation of Computer Programs by Sussman, Sussman, and Abelson
-#+FILETAGS: :fleeting:mm:
-#+setupfile: ~/.config/emacs/setup/setupfile.org
+#+FILETAGS: :fleeting:scip:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
 #+BEGIN: clocktable :maxlevel 2 :scope nil :emphasize nil
 #+CAPTION: Clock summary at [2024-11-07 Thu 12:53]
 | Headline                                 |    Time |      |
