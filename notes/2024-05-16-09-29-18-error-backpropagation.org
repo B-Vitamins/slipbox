@@ -1,0 +1,271 @@
+:PROPERTIES:
+:ID:       7d137c10-ea41-4b90-8796-0f84cd37300b
+:END:
+#+TITLE: Error backpropagation
+#+FILETAGS: :literature:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+\subsection*{Error Backpropagation}
+Our goal in this section is to find an efficient technique for evaluating the gradient of an error function \(E(\mathbf{w})\) for a feed-forward neural network. We shall see that this can be achieved using a local message passing scheme in which information is sent alternately forwards and backwards through the network and is known as error backpropagation, or sometimes simply as backprop.
+
+It should be noted that the term backpropagation is used in the neural computing literature to mean a variety of different things. For instance, the multilayer perceptron architecture is sometimes called a backpropagation network. The term backpropagation is also used to describe the training of a multilayer perceptron using gradient descent applied to a sum-of-squares error function. In order to clarify the terminology, it is useful to consider the nature of the training process more carefully. Most training algorithms involve an iterative procedure for minimization of an error function, with adjustments to the weights being made in a sequence of steps. At each such step, we can distinguish between two distinct stages. In the first stage, the derivatives of the error function with respect to the weights must be evaluated. As we shall see, the important contribution of the backpropagation technique is in providing a computationally efficient method for evaluating such derivatives. Because it is at this stage that errors are propagated backwards through the network, we shall use the term backpropagation specifically to describe the evaluation of derivatives. In the second stage, the derivatives are then used to compute the adjustments to be made to the weights. The simplest such technique, and the one originally considered by Rumelhart et al. (1986), involves gradient descent. It is important to recognize that the two stages are distinct. Thus, the first stage, namely the propagation of errors backwards through the network in order to evaluate derivatives, can be applied to many other kinds of network and not just the multilayer perceptron. It can also be applied to error functions other that just the simple sum-of-squares, and to the eval- uation of other derivatives such as the Jacobian and Hessian matrices, as we shall see later in this chapter. Similarly, the second stage of weight adjustment using the calculated derivatives can be tackled using a variety of optimization schemes, many of which are substantially more powerful than simple gradient descent.
+
+\subsubsection*{Evaluation of error-function derivatives}
+We now derive the backpropagation algorithm for a general network having arbitrary feed-forward topology, arbitrary differentiable nonlinear activation functions, and a broad class of error function. The resulting formulae will then be illustrated using a simple layered network structure having a single layer of sigmoidal hidden units together with a sum-of-squares error.
+
+Many error functions of practical interest, for instance those defined by maximum likelihood for a set of i.i.d. data, comprise a sum of terms, one for each data point in the training set, so that
+
+\[
+E(\mathbf{w})=\sum_{n=1}^{N} E_{n}(\mathbf{w}) .
+\]
+
+Here we shall consider the problem of evaluating \(\nabla E_{n}(\mathbf{w})\) for one such term in the error function. This may be used directly for sequential optimization, or the results can be accumulated over the training set in the case of batch methods.
+
+Consider first a simple linear model in which the outputs \(y_{k}\) are linear combinations of the input variables \(x_{i}\) so that
+
+\[
+y_{k}=\sum_{i} w_{k i} x_{i}
+\]
+
+together with an error function that, for a particular input pattern \(n\), takes the form
+
+\[
+E_{n}=\frac{1}{2} \sum_{k}\left(y_{n k}-t_{n k}\right)^{2}
+\]
+
+where \(y_{n k}=y_{k}\left(\mathbf{x}_{n}, \mathbf{w}\right)\). The gradient of this error function with respect to a weight \(w_{j i}\) is given by
+
+\[
+\frac{\partial E_{n}}{\partial w_{j i}}=\left(y_{n j}-t_{n j}\right) x_{n i}
+\]
+
+which can be interpreted as a 'local' computation involving the product of an 'error signal' \(y_{n j}-t_{n j}\) associated with the output end of the link \(w_{j i}\) and the variable \(x_{n i}\) associated with the input end of the link. In Section 4.3.2, we saw how a similar formula arises with the logistic sigmoid activation function together with the cross entropy error function, and similarly for the softmax activation function together with its matching cross-entropy error function. We shall now see how this simple result extends to the more complex setting of multilayer feed-forward networks.
+
+In a general feed-forward network, each unit computes a weighted sum of its inputs of the form
+
+\[
+a_{j}=\sum_{i} w_{j i} z_{i}
+\]
+
+where \(z_{i}\) is the activation of a unit, or input, that sends a connection to unit \(j\), and \(w_{j i}\) is the weight associated with that connection. In Section 5.1, we saw that biases can be included in this sum by introducing an extra unit, or input, with activation fixed at +1 . We therefore do not need to deal with biases explicitly. The sum in (5.48) is transformed by a nonlinear activation function \(h(\cdot)\) to give the activation \(z_{j}\) of unit \(j\) in the form
+
+\[
+z_{j}=h\left(a_{j}\right) .
+\]
+
+Note that one or more of the variables \(z_{i}\) in the sum in (5.48) could be an input, and similarly, the unit \(j\) in (5.49) could be an output.
+
+For each pattern in the training set, we shall suppose that we have supplied the corresponding input vector to the network and calculated the activations of all of the hidden and output units in the network by successive application of (5.48) and (5.49). This process is often called forward propagation because it can be regarded as a forward flow of information through the network.
+
+Now consider the evaluation of the derivative of \(E_{n}\) with respect to a weight \(w_{j i}\). The outputs of the various units will depend on the particular input pattern \(n\). However, in order to keep the notation uncluttered, we shall omit the subscript \(n\) from the network variables. First we note that \(E_{n}\) depends on the weight \(w_{j i}\) only via the summed input \(a_{j}\) to unit \(j\). We can therefore apply the chain rule for partial derivatives to give
+
+\[
+\frac{\partial E_{n}}{\partial w_{j i}}=\frac{\partial E_{n}}{\partial a_{j}} \frac{\partial a_{j}}{\partial w_{j i}} .
+\]
+
+We now introduce a useful notation
+
+\[
+\delta_{j} \equiv \frac{\partial E_{n}}{\partial a_{j}}
+\]
+
+where the \(\delta\) 's are often referred to as errors for reasons we shall see shortly. Using (5.48), we can write
+
+\[
+\frac{\partial a_{j}}{\partial w_{j i}}=z_{i} .
+\]
+
+Substituting (5.51) and (5.52) into (5.50), we then obtain
+
+\[
+\frac{\partial E_{n}}{\partial w_{j i}}=\delta_{j} z_{i} .
+\]
+
+Equation (5.53) tells us that the required derivative is obtained simply by multiplying the value of \(\delta\) for the unit at the output end of the weight by the value of \(z\) for the unit at the input end of the weight (where \(z=1\) in the case of a bias). Note that this takes the same form as for the simple linear model considered at the start of this section. Thus, in order to evaluate the derivatives, we need only to calculate the value of \(\delta_{j}\) for each hidden and output unit in the network, and then apply (5.53).
+
+As we have seen already, for the output units, we have
+
+\[
+\delta_{k}=y_{k}-t_{k}
+\]
+
+Figure 5.7 Illustration of the calculation of \(\delta_{j}\) for hidden unit \(j\) by backpropagation of the \(\delta\) 's from those units \(k\) to which unit \(j\) sends connections. The blue arrow denotes the direction of information flow during forward propagation, and the red arrows indicate the backward propagation of error information.
+
+\begin{center}
+\includegraphics[max width=\textwidth]{2023_08_27_4c5a80c0a42382702197g-261}
+\end{center}
+
+provided we are using the canonical link as the output-unit activation function. To evaluate the \(\delta\) 's for hidden units, we again make use of the chain rule for partial derivatives,
+
+\[
+\delta_{j} \equiv \frac{\partial E_{n}}{\partial a_{j}}=\sum_{k} \frac{\partial E_{n}}{\partial a_{k}} \frac{\partial a_{k}}{\partial a_{j}}
+\]
+
+where the sum runs over all units \(k\) to which unit \(j\) sends connections. The arrangement of units and weights is illustrated in Figure 5.7. Note that the units labelled \(k\) could include other hidden units and/or output units. In writing down (5.55), we are making use of the fact that variations in \(a_{j}\) give rise to variations in the error function only through variations in the variables \(a_{k}\). If we now substitute the definition of \(\delta\) given by (5.51) into (5.55), and make use of (5.48) and (5.49), we obtain the following backpropagation formula
+
+\[
+\delta_{j}=h^{\prime}\left(a_{j}\right) \sum_{k} w_{k j} \delta_{k}
+\]
+
+which tells us that the value of \(\delta\) for a particular hidden unit can be obtained by propagating the \(\delta\) 's backwards from units higher up in the network, as illustrated in Figure 5.7. Note that the summation in (5.56) is taken over the first index on \(w_{k j}\) (corresponding to backward propagation of information through the network), whereas in the forward propagation equation (5.10) it is taken over the second index. Because we already know the values of the \(\delta\) 's for the output units, it follows that by recursively applying (5.56) we can evaluate the \(\delta\) 's for all of the hidden units in a feed-forward network, regardless of its topology.
+
+The backpropagation procedure can therefore be summarized as follows.
+
+\section*{Error Backpropagation}
+\begin{enumerate}
+  \item Apply an input vector \(\mathbf{x}_{n}\) to the network and forward propagate through the network using (5.48) and (5.49) to find the activations of all the hidden and output units.
+
+  \item Evaluate the \(\delta_{k}\) for all the output units using (5.54).
+
+  \item Backpropagate the \(\delta\) 's using (5.56) to obtain \(\delta_{j}\) for each hidden unit in the network.
+
+  \item Use (5.53) to evaluate the required derivatives. For batch methods, the derivative of the total error \(E\) can then be obtained by repeating the above steps for each pattern in the training set and then summing over all patterns:
+
+\end{enumerate}
+
+\[
+\frac{\partial E}{\partial w_{j i}}=\sum_{n} \frac{\partial E_{n}}{\partial w_{j i}} .
+\]
+
+In the above derivation we have implicitly assumed that each hidden or output unit in the network has the same activation function \(h(\cdot)\). The derivation is easily generalized, however, to allow different units to have individual activation functions, simply by keeping track of which form of \(h(\cdot)\) goes with which unit.
+
+\subsubsection*{A simple example}
+The above derivation of the backpropagation procedure allowed for general forms for the error function, the activation functions, and the network topology. In order to illustrate the application of this algorithm, we shall consider a particular example. This is chosen both for its simplicity and for its practical importance, because many applications of neural networks reported in the literature make use of this type of network. Specifically, we shall consider a two-layer network of the form illustrated in Figure 5.1, together with a sum-of-squares error, in which the output units have linear activation functions, so that \(y_{k}=a_{k}\), while the hidden units have logistic sigmoid activation functions given by
+
+\[
+h(a) \equiv \tanh (a)
+\]
+
+where
+
+\[
+\tanh (a)=\frac{e^{a}-e^{-a}}{e^{a}+e^{-a}} .
+\]
+
+A useful feature of this function is that its derivative can be expressed in a particularly simple form:
+
+\[
+h^{\prime}(a)=1-h(a)^{2} .
+\]
+
+We also consider a standard sum-of-squares error function, so that for pattern \(n\) the error is given by
+
+\[
+E_{n}=\frac{1}{2} \sum_{k=1}^{K}\left(y_{k}-t_{k}\right)^{2}
+\]
+
+where \(y_{k}\) is the activation of output unit \(k\), and \(t_{k}\) is the corresponding target, for a particular input pattern \(\mathbf{x}_{n}\). using
+
+For each pattern in the training set in turn, we first perform a forward propagation
+
+\begin{align*}
+a_{j} & =\sum_{i=0}^{D} w_{j i}^{(1)} x_{i} \\
+z_{j} & =\tanh \left(a_{j}\right) \\
+y_{k} & =\sum_{j=0}^{M} w_{k j}^{(2)} z_{j} .
+\end{align*}
+
+Next we compute the \(\delta\) 's for each output unit using
+
+\[
+\delta_{k}=y_{k}-t_{k} .
+\]
+
+Then we backpropagate these to obtain \(\delta\) s for the hidden units using
+
+\[
+\delta_{j}=\left(1-z_{j}^{2}\right) \sum_{k=1}^{K} w_{k j} \delta_{k} .
+\]
+
+Finally, the derivatives with respect to the first-layer and second-layer weights are given by
+
+\[
+\frac{\partial E_{n}}{\partial w_{j i}^{(1)}}=\delta_{j} x_{i}, \quad \frac{\partial E_{n}}{\partial w_{k j}^{(2)}}=\delta_{k} z_{j} .
+\]
+
+\subsubsection*{Efficiency of backpropagation}
+One of the most important aspects of backpropagation is its computational efficiency. To understand this, let us examine how the number of computer operations required to evaluate the derivatives of the error function scales with the total number \(W\) of weights and biases in the network. A single evaluation of the error function (for a given input pattern) would require \(O(W)\) operations, for sufficiently large \(W\). This follows from the fact that, except for a network with very sparse connections, the number of weights is typically much greater than the number of units, and so the bulk of the computational effort in forward propagation is concerned with evaluating the sums in (5.48), with the evaluation of the activation functions representing a small overhead. Each term in the sum in (5.48) requires one multiplication and one addition, leading to an overall computational cost that is \(O(W)\).
+
+An alternative approach to backpropagation for computing the derivatives of the error function is to use finite differences. This can be done by perturbing each weight in turn, and approximating the derivatives by the expression
+
+\[
+\frac{\partial E_{n}}{\partial w_{j i}}=\frac{E_{n}\left(w_{j i}+\epsilon\right)-E_{n}\left(w_{j i}\right)}{\epsilon}+O(\epsilon)
+\]
+
+where \(\epsilon \ll 1\). In a software simulation, the accuracy of the approximation to the derivatives can be improved by making \(\epsilon\) smaller, until numerical roundoff problems arise. The accuracy of the finite differences method can be improved significantly by using symmetrical central differences of the form
+
+\[
+\frac{\partial E_{n}}{\partial w_{j i}}=\frac{E_{n}\left(w_{j i}+\epsilon\right)-E_{n}\left(w_{j i}-\epsilon\right)}{2 \epsilon}+O\left(\epsilon^{2}\right) .
+\]
+
+Exercise 5.14 In this case, the \(O(\epsilon)\) corrections cancel, as can be verified by Taylor expansion on the right-hand side of (5.69), and so the residual corrections are \(O\left(\epsilon^{2}\right)\). The number of computational steps is, however, roughly doubled compared with (5.68).
+
+The main problem with numerical differentiation is that the highly desirable \(O(W)\) scaling has been lost. Each forward propagation requires \(O(W)\) steps, and Figure 5.8 Illustration of a modular pattern recognition system in which the Jacobian matrix can be used to backpropagate error signals from the outputs through to earlier modules in the system.
+
+\begin{center}
+\includegraphics[max width=\textwidth]{2023_08_27_4c5a80c0a42382702197g-264}
+\end{center}
+
+there are \(W\) weights in the network each of which must be perturbed individually, so that the overall scaling is \(O\left(W^{2}\right)\).
+
+However, numerical differentiation plays an important role in practice, because a comparison of the derivatives calculated by backpropagation with those obtained using central differences provides a powerful check on the correctness of any software implementation of the backpropagation algorithm. When training networks in practice, derivatives should be evaluated using backpropagation, because this gives the greatest accuracy and numerical efficiency. However, the results should be compared with numerical differentiation using (5.69) for some test cases in order to check the correctness of the implementation.
+
+\subsubsection*{The Jacobian matrix}
+We have seen how the derivatives of an error function with respect to the weights can be obtained by the propagation of errors backwards through the network. The technique of backpropagation can also be applied to the calculation of other derivatives. Here we consider the evaluation of the Jacobian matrix, whose elements are given by the derivatives of the network outputs with respect to the inputs
+
+\[
+J_{k i} \equiv \frac{\partial y_{k}}{\partial x_{i}}
+\]
+
+where each such derivative is evaluated with all other inputs held fixed. Jacobian matrices play a useful role in systems built from a number of distinct modules, as illustrated in Figure 5.8. Each module can comprise a fixed or adaptive function, which can be linear or nonlinear, so long as it is differentiable. Suppose we wish to minimize an error function \(E\) with respect to the parameter \(w\) in Figure 5.8. The derivative of the error function is given by
+
+\[
+\frac{\partial E}{\partial w}=\sum_{k, j} \frac{\partial E}{\partial y_{k}} \frac{\partial y_{k}}{\partial z_{j}} \frac{\partial z_{j}}{\partial w}
+\]
+
+in which the Jacobian matrix for the red module in Figure 5.8 appears in the middle term.
+
+Because the Jacobian matrix provides a measure of the local sensitivity of the outputs to changes in each of the input variables, it also allows any known errors \(\Delta x_{i}\) associated with the inputs to be propagated through the trained network in order to estimate their contribution \(\Delta y_{k}\) to the errors at the outputs, through the relation
+
+\[
+\Delta y_{k} \simeq \sum_{i} \frac{\partial y_{k}}{\partial x_{i}} \Delta x_{i}
+\]
+
+which is valid provided the \(\left|\Delta x_{i}\right|\) are small. In general, the network mapping represented by a trained neural network will be nonlinear, and so the elements of the Jacobian matrix will not be constants but will depend on the particular input vector used. Thus (5.72) is valid only for small perturbations of the inputs, and the Jacobian itself must be re-evaluated for each new input vector.
+
+The Jacobian matrix can be evaluated using a backpropagation procedure that is similar to the one derived earlier for evaluating the derivatives of an error function with respect to the weights. We start by writing the element \(J_{k i}\) in the form
+
+\begin{align*}
+J_{k i}=\frac{\partial y_{k}}{\partial x_{i}} & =\sum_{j} \frac{\partial y_{k}}{\partial a_{j}} \frac{\partial a_{j}}{\partial x_{i}} \\
+& =\sum_{j} w_{j i} \frac{\partial y_{k}}{\partial a_{j}}
+\end{align*}
+
+where we have made use of (5.48). The sum in (5.73) runs over all units \(j\) to which the input unit \(i\) sends connections (for example, over all units in the first hidden layer in the layered topology considered earlier). We now write down a recursive backpropagation formula to determine the derivatives \(\partial y_{k} / \partial a_{j}\)
+
+\begin{align*}
+\frac{\partial y_{k}}{\partial a_{j}} & =\sum_{l} \frac{\partial y_{k}}{\partial a_{l}} \frac{\partial a_{l}}{\partial a_{j}} \\
+& =h^{\prime}\left(a_{j}\right) \sum_{l} w_{l j} \frac{\partial y_{k}}{\partial a_{l}}
+\end{align*}
+
+where the sum runs over all units \(l\) to which unit \(j\) sends connections (corresponding to the first index of \(w_{l j}\) ). Again, we have made use of (5.48) and (5.49). This backpropagation starts at the output units for which the required derivatives can be found directly from the functional form of the output-unit activation function. For instance, if we have individual sigmoidal activation functions at each output unit, then
+
+\[
+\frac{\partial y_{k}}{\partial a_{j}}=\delta_{k j} \sigma^{\prime}\left(a_{j}\right)
+\]
+
+whereas for softmax outputs we have
+
+\[
+\frac{\partial y_{k}}{\partial a_{j}}=\delta_{k j} y_{k}-y_{k} y_{j}
+\]
+
+We can summarize the procedure for evaluating the Jacobian matrix as follows. Apply the input vector corresponding to the point in input space at which the Jacobian matrix is to be found, and forward propagate in the usual way to obtain the Exercise 5.15
+
+activations of all of the hidden and output units in the network. Next, for each row \(k\) of the Jacobian matrix, corresponding to the output unit \(k\), backpropagate using the recursive relation (5.74), starting with (5.75) or (5.76), for all of the hidden units in the network. Finally, use (5.73) to do the backpropagation to the inputs. The Jacobian can also be evaluated using an alternative forward propagation formalism, which can be derived in an analogous way to the backpropagation approach given here.
+
+Again, the implementation of such algorithms can be checked by using numerical differentiation in the form
+
+\[
+\frac{\partial y_{k}}{\partial x_{i}}=\frac{y_{k}\left(x_{i}+\epsilon\right)-y_{k}\left(x_{i}-\epsilon\right)}{2 \epsilon}+O\left(\epsilon^{2}\right)
+\]
+
+which involves \(2 D\) forward propagations for a network having \(D\) inputs.

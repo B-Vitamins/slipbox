@@ -1,0 +1,16 @@
+:PROPERTIES:
+:ID:       ce9ee432-4125-4406-9e58-fcd137f71abe
+:END:
+#+TITLE: Two-level systems
+#+FILETAGS: :literature:spop:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+Consider \(N\) impurity atoms trapped in a solid matrix. Each impurity can be in one of two states, with energies 0 and \(\epsilon\), respectively. This example is somewhat different from the situations considered so far, in that the allowed microstates are discrete. Liouville's theorem applies to Hamiltonian evolution in a continuous phase space. Although there is less ambiguity in enumeration of discrete states, the dynamics that ensures that all allowed microstates are equally accessed will remain unspecified for the moment. (An example from quantum mechanical evolution will be presented later on.)
+
+The microstates of the two-level system are specified by the set of occupation numbers \(\left\{n_{i}\right\}\), where \(n_{i}=0\) or 1 depending on whether the \(i\) th impurity is in its ground state or excited. The overall energy is
+
+\[
+\mathcal{H}\left(\left\{n_{i}\right\}\right)=\epsilon \sum_{i=1}^{N} n_{i} \equiv \epsilon N_{1}
+\]
+
+where \(N_{1}\) is the total number of excited impurities. The macrostate is specified by the total energy \(E\), and the number of impurities \(N\).[[id:19a7fdd8-961c-4f17-bd8a-dfbd7ac77a25][Two-level system (microcanonical ensemble)]]
