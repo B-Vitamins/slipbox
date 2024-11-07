@@ -1,0 +1,24 @@
+:PROPERTIES:
+:ID:       dd81489d-66b1-49f8-bbbf-f6404eeb890d
+:END:
+#+TITLE: The stability conditions from the fundamental postulate
+#+FILETAGS: :literature:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+We use the same setup with which we recovered [[id:2f55f143-4240-44a1-aa3c-3e6fa8a23dee][the zeroth law from the fundamental postulate]] and [[id:fc3c321a-dd87-45a8-a1cf-2d6ee1122e3a][the second law from the fundamental postulate]]: we bring together two [[id:170f5ef3-3995-4720-bbdb-c2ca704f0739][microcanonical systems]], and allow them to exchange energy, but not work.
+
+Since the point \(\left(E_{1}^{\ast}, E_{2}^{\ast}\right)\) is a maximum, the second derivative of \(S_{1}\left(E_{1}\right)+S_{2}\left(E_{2}\right)\) must be negative at this point, that is,
+
+\[
+(\partial_{E_{1}}^{2} S_{1})_{\mathbf{x}_{1}} + (\partial_{E_{2}}^{2} S_{2})_{\mathbf{x}_{2}} \leq 0
+\]
+
+Applying the above condition to two parts of the same system, the condition of thermal stability, \(C_{\mathbf{x}} \geq 0\), as obtained in [[id:ebd6f791-bade-4d8a-9e58-cf828c73f6fd][consequences of the stability condition]] is regained.
+
+In [[id:a38a6c58-9613-4692-9e9e-13511db0335d][the first law from the fundamental postulate]] we obtained the first-order change in [[id:b91504dd-9976-4ae9-bdfb-4f92903ee24c][entropy]] in an adiabatically isolated [[id:170f5ef3-3995-4720-bbdb-c2ca704f0739][microcanonical system]], on which we did work by changing the coordinates by \(\delta \mathbf{x}\) under a constant force \( \mathbf{J} \) via a [[id:a32a9269-5194-4356-887b-500f12b3f79d][reversible transformation]]:
+
+\[
+\delta S=S(E+\mathbf{J} \cdot \delta \mathbf{x}, \mathbf{x}+\delta \mathbf{x})-S(E, \mathbf{x})=\left[(\partial_E S)_{\mathbf{x}} \, \mathbf{J} + (\partial_{\mathbf{x}} S)_{E}\right] \cdot \delta \mathbf{x}
+\]
+
+The second-order changes in the above equation must be *negative*, requiring that the [[id:4982698a-3bff-4598-86ef-ffb1921fbc5f][Hessian matrix]] \((\partial_{x_{i}} \, \partial_{x_{j}} \, S)_{E}\) be *positive definite*, same as what was obtained in [[id:ebd6f791-bade-4d8a-9e58-cf828c73f6fd][consequences of the stability condition]].

@@ -1,0 +1,41 @@
+:PROPERTIES:
+:ID:       ae846d38-a6b5-45f1-bd56-e5ba39de309b
+:END:
+#+TITLE: The ideal gas (grand canonical ensemble)
+#+FILETAGS: :literature:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+We compute the properties of the [[id:fa8b449a-ff56-4218-a9e8-a1e88c607848][the ideal gas]] of non-interacting particles in the grand canonical ensemble. The macrostate is \(M \equiv\) \((T, \mu, V)\), and the corresponding microstates \(\left\{\vec{p}_{1}, \vec{q}_{1}, \vec{p}_{2}, \vec{q}_{2}, \cdots\right\}\) have indefinite particle number. The grand partition function is given by
+
+\begin{align*}
+Q(T, \mu, V) & =\sum_{N=0}^{\infty} \mathrm{e}^{\beta \mu N} \frac{1}{N !} \int\left(\prod_{i=1}^{N} \frac{\mathrm{d}^{3} \vec{q}_{i} \mathrm{~d}^{3} \vec{p}_{i}}{h^{3}}\right) \exp \left[-\beta \sum_{i} \frac{p_{i}^{2}}{2 m}\right] \\
+& =\sum_{N=0}^{\infty} \frac{\mathrm{e}^{\beta \mu N}}{N !}\left(\frac{V}{\lambda^{3}}\right)^{N} \quad\left(\text { with } \lambda=\frac{h}{\sqrt{2 \pi m k_{B} T}}\right) \\
+& =\exp \left[\mathrm{e}^{\beta \mu} \frac{V}{\lambda^{3}}\right],
+\end{align*}
+
+and the grand potential is
+
+\[
+\mathcal{G}(T, \mu, V)=-k_{B} T \ln Q=-k_{B} T \mathrm{e}^{\beta \mu} \frac{V}{\lambda^{3}} .
+\]
+
+But, since \(\mathcal{G}=E-T S-\mu N=-P V\), the gas pressure can be obtained directly as
+
+\[
+P=-\frac{\mathcal{G}}{V}=-\left.\frac{\partial \mathcal{G}}{\partial V}\right|_{\mu, T}=k_{B} T \frac{\mathrm{e}^{\beta \mu}}{\lambda^{3}} .
+\]
+
+The particle number and the chemical potential are related by
+
+\[
+N=-\left.\frac{\partial \mathcal{G}}{\partial \mu}\right|_{T, V}=\frac{\mathrm{e}^{\beta \mu} V}{\lambda^{3}}
+\]
+
+The equation of state is obtained by comparing Eqs. (4.110) and (4.111), as \(P=k_{B} T N / V\). Finally, the chemical potential is given by
+
+\[
+\mu=k_{B} T \ln \left(\lambda^{3} \frac{N}{V}\right)=k_{B} T \ln \left(\frac{P \lambda^{3}}{k_{B} T}\right)
+\]
+
+
+

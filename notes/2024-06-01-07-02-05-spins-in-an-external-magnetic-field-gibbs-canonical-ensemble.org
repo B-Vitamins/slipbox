@@ -1,0 +1,48 @@
+:PROPERTIES:
+:ID:       6e4cebdc-e987-4bb6-836a-b634663e7364
+:END:
+#+TITLE: Spins in an external magnetic field (Gibbs canonical ensemble)
+#+FILETAGS: :literature:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+Adding the work done against the magnetic field to the internal Hamiltonian \(\mathcal{H}\) results in the Gibbs partition function
+
+\[
+Z(N, T, B)=\operatorname{tr}[\exp (-\beta \mathcal{H}+\beta \vec{B} \cdot \vec{M})]
+\]
+
+where \(\vec{M}\) is the net magnetization. The symbol "tr" is used to indicate the sum over all spin degrees of freedom, which in a quantum mechanical formulation are restricted to discrete values. The simplest case is spin of \(1 / 2\), with two possible projections of the spin along the magnetic field. A microstate of \(N\) spins is now described by the set of Ising variables \(\left\{\sigma_{i}= \pm 1\right\}\). The corresponding magnetization along the field direction is given by \(M=\mu_{0} \sum_{i=1}^{N} \sigma_{i}\), where \(\mu_{0}\) is a microscopic magnetic moment. Assuming that there are no interactions between spins \((\mathcal{H}=0)\), the probability of a microstate is
+
+\[
+p\left(\left\{\sigma_{i}\right\}\right)=\frac{1}{Z} \exp \left[\beta B \mu_{0} \sum_{i=1}^{N} \sigma_{i}\right] .
+\]
+
+Clearly, this is closely related to the example of two-level systems discussed in the canonical ensemble, and we can easily obtain the Gibbs partition function
+
+\[
+\mathcal{Z}(N, T, B)=\left[2 \cosh \left(\beta \mu_{0} B\right)\right]^{N}
+\]
+
+and the Gibbs free energy
+
+\[
+G=-k_{B} T \ln Z=-N k_{B} T \ln \left[2 \cosh \left(\beta \mu_{0} B\right)\right] .
+\]
+
+The average magnetization is given by
+
+\[
+M=-\frac{\partial G}{\partial B}=N \mu_{0} \tanh \left(\beta \mu_{0} B\right) .
+\]
+
+Expanding Eq. (4.97) for small \(B\) results in the well-known Curie law for magnetic susceptibility of non-interacting spins,
+
+\[
+\chi(T)=\left.\frac{\partial M}{\partial B}\right|_{B=0}=\frac{N \mu_{0}^{2}}{k_{B} T}
+\]
+
+The enthalpy is simply \(H=\langle\mathcal{H}-B M\rangle=-B M\), and \(C_{B}=-B \partial M / \partial T\).
+
+
+
+

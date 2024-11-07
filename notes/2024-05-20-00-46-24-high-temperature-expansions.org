@@ -1,0 +1,59 @@
+:PROPERTIES:
+:ID:       b91748b2-bd41-472c-b948-1e621f8d5f04
+:END:
+#+TITLE: High-temperature expansions
+#+FILETAGS: :literature:spof:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+High-temperature expansions work equally well for discrete and continuous spin systems. The basic idea is to start with independent spins, and expand the partition function in powers of \(\beta=\left(k_{\mathrm{B}} T\right)^{-1}\), i.e.
+
+\[
+Z=\operatorname{tr}\left(\mathrm{e}^{-\beta \mathcal{H}}\right)=\operatorname{tr}\left[1-\beta \mathcal{H}+\frac{\beta^{2} \mathcal{H}^{2}}{2}-\cdots\right]
+\]
+
+and
+
+\[
+\frac{\ln Z}{N}=\frac{\ln Z_{0}}{N}-\beta \frac{\langle\mathcal{H}\rangle_{0}}{N}+\frac{\beta^{2}}{2} \frac{\left\langle\mathcal{H}^{2}\right\rangle_{0}-\langle\mathcal{H}\rangle_{0}^{2}}{N}-\cdots
+\]
+
+The averages \langle\rangle\(_{0}\) are calculated over non-interacting spins. For the Ising model, it is more convenient to organize the expansion in powers of \(\tanh K\) as follows. Since \(\left(\sigma_{i} \sigma_{j}\right)^{2}=1\), the Boltzmann factor for each bond can be written as
+
+\[
+\mathrm{e}^{K \sigma_{i} \sigma_{j}}=\frac{\mathrm{e}^{K}+\mathrm{e}^{-K}}{2}+\frac{\mathrm{e}^{K}-\mathrm{e}^{-K}}{2} \sigma_{i} \sigma_{j}=\cosh K\left(1+t \sigma_{i} \sigma_{j}\right),
+\]
+
+Fig. 7.2 A typical term obtained in the expansion of Eq. (7.11).
+
+Fig. 7.3 The first two terms in the expansion of Eq. (7.12) for a square lattice.
+
+[[https://cdn.mathpix.com/cropped/2023_04_12_9a2e38c5e6a19cb42832g-137.jpg?height=281&width=287&top_left_y=268&top_left_x=968]]
+
+where \(t \equiv \tanh K\) is a good high-temperature expansion parameter. Applying this transformation to each bond of the lattice results in
+
+\[
+Z=\sum_{\left\{\sigma_{i}\right\}} \mathrm{e}^{K \sum_{\langle i, j\rangle} \sigma_{i} \sigma_{j}}=(\cosh K)^{\text {number of bonds }} \sum_{\left\{\sigma_{i}\right\}\langle i, j\rangle} \prod_{1}\left(1+t \sigma_{i} \sigma_{j}\right)
+\]
+
+For \(N_{b}\) bonds on the lattice, the above product generates \(2^{N_{b}}\) terms, which can be represented diagrammatically by drawing a line connecting sites \(i\) and \(j\) for each factor of \(t \sigma_{i} \sigma_{j}\). Note that there can at most be one such line for each lattice bond, which is either empty or occupied. This is a major simplification, and a major advantage for the use of \(t\), rather than \(K\), as the expansion parameter. Each site now obtains a factor of \(\sigma_{i}^{p_{i}}\), where \(p_{i}\) is the number of occupied bonds emanating from \(i\). Summing over the two possible values \(\sigma_{i}= \pm 1\), gives a factor of 2 if \(p_{i}\) is even, and 0 if \(p_{i}\) is odd. Thus, the only graphs that survive the sum have an even number of lines passing through each site. The resulting graphs are collections of closed paths on the lattice, and
+
+\[
+Z=2^{N} \times(\cosh K)^{N_{b}} \sum_{\text {All closed graphs }} t^{\text {number of bondsin the graph }} .
+\]
+
+[[https://cdn.mathpix.com/cropped/2023_04_12_9a2e38c5e6a19cb42832g-137.jpg?height=276&width=615&top_left_y=1458&top_left_x=806]]
+
+For a \(d\)-dimensional hypercubic lattice, the smallest closed graph is a square of four bonds which has \(d(d-1) / 2\) possible orientations. As the next graph has six bonds,
+
+\[
+Z=2^{N}(\cosh K)^{d N}\left[1+\frac{d(d-1) N}{2} t^{4}+d(d-1)(2 d-3) t^{6}+\cdots\right],
+\]
+
+and
+
+\[
+\frac{\ln Z}{N}=\ln 2+d \ln \cosh K+\frac{d(d-1)}{2} t^{4}+\cdots
+\]
+
+In the following sections we shall employ high-temperature expansions not as a numerical tool, but to establish the following: (a) exact solution of the Ising model in \(d=1\); (b) the duality relating models at low and high temperatures; (c) the validity of the Gaussian model in high dimensions; (d) exact solution of the Ising model in \(d=2\).
+
+

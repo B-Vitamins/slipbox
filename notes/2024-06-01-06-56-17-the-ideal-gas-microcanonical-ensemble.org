@@ -1,0 +1,95 @@
+:PROPERTIES:
+:ID:       22cf2174-93e0-4fc6-8bcd-431b2324ed08
+:END:
+#+TITLE: The ideal gas (microcanonical ensemble)
+#+FILETAGS: :literature:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+A [[id:170f5ef3-3995-4720-bbdb-c2ca704f0739][microcanonical ensemble]] is specified by its energy, volume, and number of particles, \(M \equiv(E, V, N)\). The joint PDF for a microstate is
+
+\[
+p(\mu)=\frac{1}{\Omega(E, V, N)} \cdot\left\{\begin{array}{ll}
+1 & \text { for } \vec{q}_{i} \in \text { box, and } \sum_{i} \vec{p}_{i}{ }^{2} / 2 m=E \quad\left( \pm \Delta_{E}\right) \\
+0 & \text { otherwise }
+\end{array} .\right.
+\]
+
+In the allowed microstates, coordinates of the particles must be within the box, while the momenta are constrained to the surface of the (hyper-)sphere \(\sum_{i=1}^{N} \vec{p}_{i}^{2}=2 m E\). The allowed phase space is thus the product of a contribution \(V^{N}\) from the coordinates, with the surface area of a \(3 N\)-dimensional sphere of radius \(\sqrt{2 m E}\) from the momenta. (If the microstate energies are accepted in the energy interval \(E \pm \Delta_{E}\), the corresponding volume in momentum space is that of a (hyper-)spherical shell of thickness \(\Delta_{R}=\sqrt{2 m / E} \Delta E\).) The area of a \(d\)-dimensional sphere is \(\mathcal{A}_{d}=S_{d} R^{d-1}\), where \(S_{d}\) is the generalized solid angle.
+
+A simple way to calculate the \(d\)-dimensional solid angle is to consider the product of \(d\) Gaussian integrals,
+
+\[
+I_{d} \equiv\left(\int_{-\infty}^{\infty} \mathrm{d} x \mathrm{e}^{-x^{2}}\right)^{d}=\pi^{d / 2}
+\]
+
+Alternatively, we may consider \(I_{d}\) as an integral over the entire \(d\)-dimensional space, that is,
+
+\[
+I_{d}=\int \prod_{i=1}^{d} \mathrm{~d} x_{i} \exp \left(-x_{i}^{2}\right)
+\]
+
+The integrand is spherically symmetric, and we can change coordinates to \(R^{2}=\sum_{i} x_{i}^{2}\). Noting that the corresponding volume element in these coordinates is \(\mathrm{d} V_{d}=S_{d} R^{d-1} \mathrm{~d} R\)
+
+\[
+I_{d}=\int_{0}^{\infty} \mathrm{d} R S_{d} R^{d-1} \mathrm{e}^{-R^{2}}=\frac{S_{d}}{2} \int_{0}^{\infty} \mathrm{d} y y^{d / 2-1} \mathrm{e}^{-y}=\frac{S_{d}}{2}(d / 2-1) !
+\]
+
+where we have first made a change of variables to \(y=R^{2}\), and then used the integral representation of \(n\) ! in Eq. (2.63). Equating expressions (4.28) and (4.30) for \(I_{d}\) gives the final result for the solid angle,
+
+\[
+S_{d}=\frac{2 \pi^{d / 2}}{(d / 2-1) !}
+\]
+
+The volume of the available phase space is thus given by
+
+\[
+\Omega(E, V, N)=V^{N} \frac{2 \pi^{3 N / 2}}{(3 N / 2-1) !}(2 m E)^{(3 N-1) / 2} \Delta_{R}
+\]
+
+The entropy is obtained from the logarithm of the above expression. Using Stirling's formula, and neglecting terms of order of 1 or \(\ln E \sim \ln N\) in the large \(N\) limit, results in
+
+\begin{align*}
+S(E, V, N) & =k_{B}\left[N \ln V+\frac{3 N}{2} \ln (2 \pi m E)-\frac{3 N}{2} \ln \frac{3 N}{2}+\frac{3 N}{2}\right] \\
+& =N k_{B} \ln \left[V\left(\frac{4 \pi \mathrm{e} m E}{3 N}\right)^{3 / 2}\right]
+\end{align*}
+
+Properties of the ideal gas can now be recovered from \(T \mathrm{~d} S=\mathrm{d} E+P \mathrm{~d} V-\mu \mathrm{d} N\),
+
+\[
+\frac{1}{T}=\left.\frac{\partial S}{\partial E}\right|_{N, V}=\frac{3}{2} \frac{N k_{B}}{E} .
+\]
+
+The internal energy \(E=3 N k_{B} T / 2\) is only a function of \(T\), and the heat capacity \(C_{V}=3 N k_{B} / 2\) is a constant. The equation of state is obtained from
+
+\[
+\frac{P}{T}=\left.\frac{\partial S}{\partial V}\right|_{N, E}=\frac{N k_{B}}{V}, \quad \Longrightarrow \quad P V=N k_{B} T .
+\]
+
+The unconditional probability of finding a particle of momentum \(\vec{p}_{1}\) in the gas can be calculated from the joint PDF in Eq. (4.27), by integrating over all other variables,
+
+\begin{align*}
+p\left(\vec{p}_{1}\right) & =\int \mathrm{d}^{3} \vec{q}_{1} \prod_{i=2}^{N} \mathrm{~d}^{3} \vec{q}_{i} \mathrm{~d}^{3} \vec{p}_{i} p\left(\left\{\vec{q}_{i}, \vec{p}_{i}\right\}\right) \\
+& =\frac{V \Omega\left(E-\vec{p}_{1}^{2} / 2 m, V, N-1\right)}{\Omega(E, V, N)}
+\end{align*}
+
+The final expression indicates that once the kinetic energy of one particle is specified, the remaining energy must be shared amongst the other \(N-1\). Using Eq. (4.32)
+
+\begin{align*}
+p\left(\vec{p}_{1}\right) & =\frac{V^{N} \pi^{3(N-1) / 2}\left(2 m E-\vec{p}_{1}^{2}\right)^{(3 N-4) / 2}}{(3(N-1) / 2-1) !} \cdot \frac{(3 N / 2-1) !}{V^{N} \pi^{3 N / 2}(2 m E)^{(3 N-1) / 2}} \\
+& =\left(1-\frac{\vec{p}_{1}^{2}}{2 m E}\right)^{3 N / 2-2} \frac{1}{(2 \pi m E)^{3 / 2}} \frac{(3 N / 2-1) !}{(3(N-1) / 2-1) !} .
+\end{align*}
+
+From Stirling's formula, the ratio of \((3 N / 2-1)\) ! to \((3(N-1) / 2-1)\) ! is approximately \((3 N / 2)^{3 / 2}\), and in the large \(E\) limit,
+
+\[
+p\left(\vec{p}_{1}\right)=\left(\frac{3 N}{4 \pi m E}\right)^{3 / 2} \exp \left(-\frac{3 N}{2} \frac{\vec{p}_{1}^{2}}{2 m E}\right)
+\]
+
+This is a properly normalized Maxwell-Boltzmann distribution, which can be displayed in its more familiar form after the substitution \(E=3 N k_{B} T / 2\),
+
+\[
+p\left(\vec{p}_{1}\right)=\frac{1}{\left(2 \pi m k_{B} T\right)^{3 / 2}} \exp \left(-\frac{\vec{p}_{1}^{2}}{2 m k_{B} T}\right)
+\]
+
+
+
