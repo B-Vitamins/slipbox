@@ -1,0 +1,66 @@
+:PROPERTIES:
+:ID:       919e2b0d-a9de-409c-ba2c-86cd2ff1f3e2
+:END:
+#+TITLE: Sequential estimation (Gaussian distribution)
+#+FILETAGS: :literature:prml:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+Our discussion of the maximum likelihood solution for the parameters of a Gaussian distribution provides a convenient opportunity to give a more general discussion of the topic of sequential estimation for maximum likelihood. Sequential methods allow data points to be processed one at a time and then discarded and are important for on-line applications, and also where large data sets are involved so that batch processing of all data points at once is infeasible.
+
+Consider the result (2.121) for the maximum likelihood estimator of the mean \(\boldsymbol{\mu}_{\mathrm{ML}}\), which we will denote by \(\boldsymbol{\mu}_{\mathrm{ML}}^{(N)}\) when it is based on \(N\) observations. If we Figure 2.10 A schematic illustration of two correlated random variables \(z\) and \(\theta\), together with the regression function \(f(\theta)\) given by the conditional expectation \(\mathbb{E}[z \mid \theta]\). The RobbinsMonro algorithm provides a general sequential procedure for finding the root \(\theta^{\star}\) of such functions.
+
+dissect out the contribution from the final data point \(\mathbf{x}_{N}\), we obtain
+
+\[\begin{align*}
+\boldsymbol{\mu}_{\mathrm{ML}}^{(N)} & =\frac{1}{N} \sum_{n=1}^{N} \mathbf{x}_{n} \\
+& =\frac{1}{N} \mathbf{x}_{N}+\frac{1}{N} \sum_{n=1}^{N-1} \mathbf{x}_{n} \\
+& =\frac{1}{N} \mathbf{x}_{N}+\frac{N-1}{N} \boldsymbol{\mu}_{\mathrm{ML}}^{(N-1)} \\
+& =\boldsymbol{\mu}_{\mathrm{ML}}^{(N-1)}+\frac{1}{N}\left(\mathbf{x}_{N}-\boldsymbol{\mu}_{\mathrm{ML}}^{(N-1)}\right) .
+\end{align*}\]
+
+This result has a nice interpretation, as follows. After observing \(N-1\) data points we have estimated \(\boldsymbol{\mu}\) by \(\boldsymbol{\mu}_{\mathrm{ML}}^{(N-1)}\). We now observe data point \(\mathbf{x}_{N}\), and we obtain our revised estimate \(\boldsymbol{\mu}_{\mathrm{ML}}^{(N)}\) by moving the old estimate a small amount, proportional to \(1 / N\), in the direction of the 'error signal' \(\left(\mathbf{x}_{N}-\boldsymbol{\mu}_{\mathrm{ML}}^{(N-1)}\right)\). Note that, as \(N\) increases, so the contribution from successive data points gets smaller.
+
+The result (2.126) will clearly give the same answer as the batch result (2.121) because the two formulae are equivalent. However, we will not always be able to derive a sequential algorithm by this route, and so we seek a more general formulation of sequential learning, which leads us to the Robbins-Monro algorithm. Consider a pair of random variables \(\theta\) and \(z\) governed by a joint distribution \(p(z, \theta)\). The conditional expectation of \(z\) given \(\theta\) defines a deterministic function \(f(\theta)\) that is given by
+
+\[f(\theta) \equiv \mathbb{E}[z \mid \theta]=\int z p(z \mid \theta) \mathrm{d} z\]
+
+and is illustrated schematically in Figure 2.10. Functions defined in this way are called regression functions.
+
+Our goal is to find the root \(\theta^{\star}\) at which \(f\left(\theta^{\star}\right)=0\). If we had a large data set of observations of \(z\) and \(\theta\), then we could model the regression function directly and then obtain an estimate of its root. Suppose, however, that we observe values of \(z\) one at a time and we wish to find a corresponding sequential estimation scheme for \(\theta^{\star}\). The following general procedure for solving such problems was given by Robbins and Monro (1951). We shall assume that the conditional variance of \(z\) is finite so that
+
+\[\mathbb{E}\left[(z-f)^{2} \mid \theta\right]<\infty\]
+
+and we shall also, without loss of generality, consider the case where \(f(\theta)>0\) for \(\theta>\theta^{\star}\) and \(f(\theta)<0\) for \(\theta<\theta^{\star}\), as is the case in Figure 2.10. The Robbins-Monro procedure then defines a sequence of successive estimates of the root \(\theta^{\star}\) given by
+
+\[\theta^{(N)}=\theta^{(N-1)}+a_{N-1} z\left(\theta^{(N-1)}\right)\]
+
+where \(z\left(\theta^{(N)}\right)\) is an observed value of \(z\) when \(\theta\) takes the value \(\theta^{(N)}\). The coefficients \(\left\{a_{N}\right\}\) represent a sequence of positive numbers that satisfy the conditions
+
+\[\begin{align*}
+& \lim _{N \rightarrow \infty} a_{N}=0 \\
+& \sum_{N=1}^{\infty} a_{N}=\infty \\
+& \sum_{N=1}^{\infty} a_{N}^{2}<\infty .
+\end{align*}\]
+
+It can then be shown (Robbins and Monro, 1951; Fukunaga, 1990) that the sequence of estimates given by (2.129) does indeed converge to the root with probability one. Note that the first condition (2.130) ensures that the successive corrections decrease in magnitude so that the process can converge to a limiting value. The second condition (2.131) is required to ensure that the algorithm does not converge short of the root, and the third condition (2.132) is needed to ensure that the accumulated noise has finite variance and hence does not spoil convergence.
+
+Now let us consider how a general maximum likelihood problem can be solved sequentially using the Robbins-Monro algorithm. By definition, the maximum likelihood solution \(\theta_{\mathrm{ML}}\) is a stationary point of the log likelihood function and hence satisfies
+
+\[\left.\frac{\partial}{\partial \theta}\left\{\frac{1}{N} \sum_{n=1}^{N} \ln p\left(\mathbf{x}_{n} \mid \theta\right)\right\}\right|_{\theta_{\mathrm{ML}}}=0 .\]
+
+Exchanging the derivative and the summation, and taking the limit \(N \rightarrow \infty\) we have
+
+\[\lim _{N \rightarrow \infty} \frac{1}{N} \sum_{n=1}^{N} \frac{\partial}{\partial \theta} \ln p\left(x_{n} \mid \theta\right)=\mathbb{E}_{x}\left[\frac{\partial}{\partial \theta} \ln p(x \mid \theta)\right]\]
+
+and so we see that finding the maximum likelihood solution corresponds to finding the root of a regression function. We can therefore apply the Robbins-Monro procedure, which now takes the form
+
+\[\theta^{(N)}=\theta^{(N-1)}+a_{N-1} \frac{\partial}{\partial \theta^{(N-1)}} \ln p\left(x_{N} \mid \theta^{(N-1)}\right) .\]
+
+Figure 2.11 In the case of a Gaussian distribution, with \(\theta\) corresponding to the mean \(\mu\), the regression function illustrated in Figure 2.10 takes the form of a straight line, as shown in red. In this case, the random variable \(z\) corresponds to the derivative of the log likelihood function and is given by \(\left(x-\mu_{\mathrm{ML}}\right) / \sigma^{2}\), and its expectation that defines the regression function is a straight line given by \(\left(\mu-\mu_{\mathrm{ML}}\right) / \sigma^{2}\). The root of the regression function corresponds to the maximum likelihood estimator \(\mu_{\mathrm{ML}}\).
+
+As a specific example, we consider once again the sequential estimation of the mean of a Gaussian distribution, in which case the parameter \(\theta^{(N)}\) is the estimate \(\mu_{\mathrm{ML}}^{(N)}\) of the mean of the Gaussian, and the random variable \(z\) is given by
+
+\[z= \partial \mu_{\mathrm{ML}} \ln p (x \mid \mu_{\mathrm{ML}}, \sigma^{2})=\sigma^{-2}\left(x-\mu_{\mathrm{ML}}\right) .\]
+
+Thus the distribution of \(z\) is Gaussian with mean \(\mu-\mu_{\mathrm{ML}}\), as illustrated in Figure 2.11. Substituting (2.136) into (2.135), we obtain the univariate form of (2.126), provided we choose the coefficients \(a_{N}\) to have the form \(a_{N}=\sigma^{2} / N\). Note that although we have focussed on the case of a single variable, the same technique, together with the same restrictions (2.130)-(2.132) on the coefficients \(a_{N}\), apply equally to the multivariate case (Blum, 1965).
+

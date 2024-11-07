@@ -1,0 +1,60 @@
+:PROPERTIES:
+:ID:       b4c9c483-0471-449f-92b0-3492a45ba5fd
+:END:
+#+TITLE: Discriminant function for K classes
+#+FILETAGS: :literature:prml:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+* Use of one-versus-the-rest and one-versus-one classifiers for building discriminant function for K classes
+Consider the use of \(K-1\) classifiers each of which solves a two-class problem of separating points in a particular class \(\mathcal{C}_{k}\) from points not in that class. This is known as a *one-versus-the-rest classifier*. The figure below shows an example involving three classes where this approach leads to regions of input space that are ambiguously classified.
+
+#+ATTR_HTML: :width 300px
+[[file:~/.local/images/prml-4-2a.png]]
+
+
+An alternative is to introduce \(K(K-1) / 2\) binary discriminant functions, one for every possible pair of classes. This is known as a *one-versus-one classifier*. Each point is then classified according to a majority vote amongst the discriminant functions. However, this too runs into the problem of ambiguous regions, as illustrated in the figure below
+
+#+ATTR_HTML: :width 300px
+[[file:~/.local/images/prml-4-2b.png]]
+
+* Single K-class discriminant function
+We can avoid these difficulties by considering a single \(K\)-class discriminant comprising \(K\) linear functions of the form
+
+\begin{align*}
+y_{k}(\mathbf{x})=\mathbf{w}_{k}^{\mathrm{T}} \mathbf{x}+w_{k 0}
+\end{align*}
+
+and then assigning a point \(\mathbf{x}\) to class \(\mathcal{C}_{k}\) if \(y_{k}(\mathbf{x})>y_{j}(\mathbf{x})\) for all \(j \neq k\). The decision boundary between class \(\mathcal{C}_{k}\) and class \(\mathcal{C}_{j}\) is therefore given by \(y_{k}(\mathbf{x})=y_{j}(\mathbf{x})\) and hence corresponds to a \((D-1)\)-dimensional hyperplane defined by
+
+\begin{align*}
+\left(\mathbf{w}_{k}-\mathbf{w}_{j}\right)^{\mathrm{T}} \mathbf{x}+\left(w_{k 0}-w_{j 0}\right)=0
+\end{align*}
+
+This has the same form as the decision boundary for the two-class case (see [[id:175187dc-36b2-4092-a765-fbe6b8d3084a][Discriminant function for two classes]]). Analogous geometrical properties apply.
+
+#+NAME: Singly connected, convex decision boundaries
+#+begin_lemma latex
+The decision regions of such a discriminant are always singly connected and convex.
+#+end_lemma
+
+#+begin_proof latex
+Consider two points \(\mathbf{x}_{\mathrm{A}}\) and \(\mathbf{x}_{\mathrm{B}}\) both of which lie inside decision region \(\mathcal{R}_{k}\), as illustrated in the figure below
+
+#+ATTR_HTML: :width 300px
+[[file:~/.local/images/prml-4-3.png]]
+
+Any point \(\widehat{\mathbf{x}}\) that lies on the line connecting \(\mathrm{x}_{\mathrm{A}}\) and \(\mathrm{x}_{\mathrm{B}}\) can be expressed in the form
+
+\begin{align*}
+\widehat{\mathbf{x}}=\lambda \mathbf{x}_{\mathrm{A}}+(1-\lambda) \mathbf{x}_{\mathrm{B}}
+\end{align*}
+
+where \(0 \leqslant \lambda \leqslant 1\). From the linearity of the discriminant functions, it follows that
+
+\begin{align*}
+y_{k}(\widehat{\mathbf{x}})=\lambda y_{k}\left(\mathbf{x}_{\mathrm{A}}\right)+(1-\lambda) y_{k}\left(\mathbf{x}_{\mathrm{B}}\right)
+\end{align*}
+
+Because both \(\mathbf{x}_{\mathrm{A}}\) and \(\mathbf{x}_{\mathrm{B}}\) lie inside \(\mathcal{R}_{k}\), it follows that \(y_{k}\left(\mathbf{x}_{\mathrm{A}}\right)>y_{j}\left(\mathbf{x}_{\mathrm{A}}\right)\), and \(y_{k}\left(\mathbf{x}_{\mathrm{B}}\right)>y_{j}\left(\mathbf{x}_{\mathrm{B}}\right)\), for all \(j \neq k\). Therefore, \(y_{k}(\widehat{\mathbf{x}})>y_{j}(\widehat{\mathbf{x}})\). It immediately follows that \(\widehat{\mathbf{x}}\) also lies inside \(\mathcal{R}_{k}\). Thus \(\mathcal{R}_{k}\) is singly connected and convex.
+#+end_proof
+
