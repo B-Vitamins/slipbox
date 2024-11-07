@@ -1,0 +1,1088 @@
+:PROPERTIES:
+:ID:       213482ae-a10c-4265-bc03-30df1cfc2521
+:END:
+#+TITLE: Statistical mechanics of the deep Boltzmann machine
+#+AUTHOR:
+#+STARTUP: overview hideblocks hidestars indent latexpreview
+#+OPTIONS: toc:nil todo:nil ^:{}
+#+FILETAGS: notes
+#+LATEX_HEADER: \usepackage{tgpagella}
+#+LATEX_HEADER: \usepackage{mathpazo}
+#+begin_abstract
+We model Deep Boltzmann Machines (DBMs) as disordered system of Ising spins on a multi-layered, bipartite lattice. Our aim is to contrast /deep and narrow/ architectures—comprising many layers with fewer nodes each—with /shallow and wide/ architectures that have fewer layers but more nodes in each. The criterion for comparison is the *complexity* which we define as the (normalized) logarithm of the expected number of local minima in the DBM's energy function. This serves as a proxy for the architecture's *representational capacity*. The question we ask is: *Does a deep and narrow architecture (with \(N_1\) total units across \(L_1\) layers) achieve a representational capacity at par or better in comparison to a shallow and wide architecture (with \(N_2\) total units in \(L_2\) layers) so that \(L_1 > L_2\) but \(N_{1} \ll N_{2}\).*
+#+end_abstract
+* Definitions
+SCHEDULED: <2023-07-07 Fri>
+A Hamiltonian inspired by the deep Boltzmann machine (DBM) with \(L\) hidden layers and periodic boundary conditions \(l \equiv (l + L + 1) \mod (L+1)\) is
+
+\begin{equation*}
+H_{\boldsymbol{J}, \boldsymbol{N}} (\boldsymbol{\sigma}) = - \sum_{l=0}^{L} \sum_{i=1}^{N_l}
+\sum_{j=1}^{N_{l+1}} \sigma_{il} J_{ijl} \sigma_{j(l+1)}.
+\end{equation*}
+
+We /assume/ that coefficients for the exchange interactions between the spins of layer \(l\) and \(l+1\) are   distributed according to the density function
+
+\begin{equation*}
+P(J_{ijl}) \equiv \sqrt{\dfrac{\widehat{N}_{l}}{2 \pi J^2}} \exp \left \lbrace - \dfrac{\widehat{N}_{l}}{2 J^2} \left( J_{ijl} - \dfrac{J_0}{\widehat{N}_{l}} \right)^{2} \right \rbrace
+\end{equation*}
+
+where \(\widehat{N}_{l} \equiv \sqrt{N_l N_{l+1}\).We will denote cumulants of some quantity with respect to this distribution with \([\cdots]\).
+
+For later use, we introduce a number of geometric parameters - the /total spin number/, the /layer density/ and two-way /inter-layer ratios/
+
+\begin{equation*}
+N \equiv \sum_{l=0}^{L} N_l,
+\qquad
+\alpha_l \equiv \frac{N_l}{N},
+\qquad
+\gamma_{l}^{2} \equiv \dfrac{N_{l+1}}{N_{l}},
+\qquad
+\nu_{l}^{2} \equiv \dfrac{N_{l-1}}{N_{l}},
+\end{equation*}
+
+which yield trivial identities
+
+\begin{align*}
+\sum_{l=0}^{L} \alpha_l = 1,
+\qquad
+\frac{\gamma_{l}}{\nu_{l}} = \sqrt{\frac{\alpha_{l+1}}{\alpha_{l-1}}}
+\qquad
+\widehat{N}_{l} = N \sqrt{\alpha_l \alpha_{(l+1)}}.
+\end{align*}
+* Quenched replicated partition function
+The quenched average of the replicated partition function \([ \mathcal{Z}^{n} ]_{\beta}\)
+
+\begin{align*}
+[\mathcal{Z}^{n}]_{\beta} = \int \left(\prod_{l} \prod_{ij} dJ_{ijl} P (J_{ijl}) \right) \operatorname{Tr}_{\boldsymbol{\sigma}}^{n} \exp 
+\left( \beta \sum_{l} \sum_{ij} J_{ijl} \sum_{a} \sigma_{il}^{a} \sigma_{j(l+1)}^{a} \right)
+\end{align*}
+
+upon evaluation yields
+
+\begin{align*}
+[ \mathcal{Z}^{n} ]_{\beta} = C \operatorname{Tr}
+\exp \left\{\dfrac{1}{N} 
+\sum_{l= 0}^{L} \dfrac{1}{\sqrt{\alpha_l \alpha_{l+1}}}
+\left[ 
+\frac{\beta^2 J^2}{2} \sum_{a \neq b} \sum_{ij} \sigma_{il}^{a} \sigma_{il}^{b} 
+\sigma_{j(l+1)}^{a}  \sigma_{j(l+1)}^{b} + 
+\beta J_{0} \sum_{a} \sum_{ij} \sigma_{il}^{a} \sigma_{j(l+1)}^{a} 
+\right]
+\right\}
+\end{align*}
+
+where \(\operatorname{Tr}\) is notation for \(\sum_{\boldsymbol{\sigma^{a}}}\) and \(C = \exp \left \lbrace \sum_{l=0}^{L} \frac{\widehat{N} \beta^2 J^2 n}{2}  \right \rbrace\).
+\begin{align*}
+
+\end{align*}
+#+NAME: quenched average of the replicated partition function
+#+begin_steps
+1) Start with the quenched average of the replicated partition function:
+
+\[
+[\mathcal{Z}^{n}]_{\beta} = \int \left(\prod_{l} \prod_{ij} dJ_{ijl} P (J_{ijl}) \right) \operatorname{Tr} \exp 
+\left( \beta \sum_{l} \sum_{ij} J_{ijl} \sum_{a} \sigma_{il}^{a} \sigma_{j(l+1)}^{a} \right)
+\]
+
+2) Introduce the integral over the disorder variables \(J_{ijl}\) as \(\mathcal{J}_{ijl}\)
+
+\[
+\mathcal{J}_{ijl} \equiv \left(\frac{\widehat{N}_{l}^{a}}{2 \pi J^2} \right)^{n/2} \int_{-\infty}^{\infty} \mathrm{d} J_{ijl} \exp \left \lbrace - \dfrac{\widehat{N}_{l}}{2 J^2} \left( J_{ijl} - \dfrac{J_0}{\widehat{N}_{l}} \right)^{2} + J_{ijl} \beta \sum_{a} \sigma_{il}^{a} \sigma_{j(l+1)}^{a}\right \rbrace.
+\]
+
+3) Re-center the Gaussian and adjust the measure to get
+
+\[
+\mathcal{J}_{ijl} = \left(\frac{\widehat{N}_{l}}{2 \pi J^2} \right)^{1/2} \exp \left(\dfrac{\beta}{\widehat{N}_l}\sum_{a} J_{0} \sigma_{il}^{a} \sigma_{j(l+1)}^{a} \right) \int dy_{ijl} \exp \left( - \dfrac{\widehat{N}_{l}}{2 J^2} \thinspace y_{ijl}^{2} + y_{ijl} \beta \sum_{a} \sigma_{il}^{a} \sigma_{j(l+1)}^{a} \right).
+\]
+
+4) Utilize the definite integral of a exponential function result
+
+
+\[
+\int_{-\infty}^{\infty} \exp \left(-\frac{1}{2} a x^2+ b x\right) d x=\left(\frac{2 \pi}{a}\right)^{\frac{1}{2}} \exp \left(\frac{b^2}{2 a}\right)
+\]
+
+with 
+
+\[
+a = \widehat{N}_{l}/ J^2, \qquad b = \beta \sum_{a} \sigma_{il}^{a} \sigma_{j(l+1)}^{a}
+\]
+
+to integrate over \(dy_{ijl}\)
+
+\[
+\mathcal{J}_{ijl} = \exp \left\{ \dfrac{1}{\widehat{N}_l} \left( \frac{\beta^2 J^2}{2} \sum_{a b} \sigma_{il}^{a} \sigma_{j(l+1)}^{a} \sigma_{il}^{b} \sigma_{j(l+1)}^{b} + \beta J_{0} \sum_{a} \sigma_{il}^{a} \sigma_{j(l+1)}^{a} \right) \right\}.
+\]
+
+5) The case \(a = b\) yields a factor
+
+\begin{align*}
+\exp \left \lbrace \sum_{l=0}^{L} \dfrac{\widehat{N} \beta^2 J^2 n}{2}  \right \rbrace.
+\end{align*}
+
+6) Assemble the expression for \([ \mathcal{Z}^{n} ]_{\beta} = \operatorname{Tr} \prod_{l} \prod_{ij} \prod_{a \neq b} \mathcal{J}_{ijl}\)
+
+\[
+[ \mathcal{Z}^{n} ]_{\beta} = \operatorname{Tr}
+\exp \left\{\dfrac{1}{N} 
+\left(
+\sum_{l} \dfrac{1}{\sqrt{\alpha_l \alpha_{l+1}}} 
+\left[ 
+\frac{\beta^2 J^2}{2} \sum_{a \neq b} \sum_{ij} \sigma_{il}^{a} \sigma_{j(l+1)}^{a} \sigma_{il}^{b} \sigma_{j(l+1)}^{b} + \beta J_{0} \sum_{a} \sum_{ij} \sigma_{il}^{a} \sigma_{j(l+1)}^{a} 
+\right]
+\right)
+\right\}
+\]
+
+using \(\widehat{N}_{l} = N \sqrt{\alpha_{l} \alpha_{l+1}}\).
+#+end_steps
+* Quenched free energy
+:LOGBOOK:
+CLOCK: [2023-07-15 Sat 20:08]--[2023-07-16 Sun 01:22] =>  5:14
+:END:
+We introduce auxiliary variables \((q^{(l)})_{l=0}^{L}\) and  \((m^{(l)})_{l=0}^{L}\) and invoke a HS transform to get
+
+\begin{align*}
+\left[\mathcal{Z}^n\right]_{\beta} = &\exp \left( \sum_{l=0}^{L} \dfrac{\widehat{N} \beta^2 J^2 n}{2} \right)\int \prod_{a \neq b} \prod_{l=0}^L \mathcal{D} (q_{ab}^{(l)}) \mathcal{D} (m_{a}^{(l)}) \thinspace
+\exp \left(
+N \sum_{l=0}^L \alpha_{l} \ln \operatorname{Tr} \exp (\mathcal{L}_{l})
+\right) \\
+&\quad 
+\times \exp \left\{ - N \sum_{l=0}^L \sqrt{\alpha_l \alpha_{l+1}} \left[\frac{\beta^2 J^2}{2} \sum_{a \neq b} q_{a b}^{(l)} q_{a b}^{(l+1)} + \frac{\beta J_0}{2} \sum_a m_a^{(l)} m_a^{(l+1)} \right] \right\},
+\end{align*}
+where
+
+\begin{align*}
+\mathcal{L}_l &\equiv \frac{\beta^2 J^2}{2} \sum_{a \neq b} \bigg( \sum_{\left | k - l  \right | = 1} q_{ab}^{(k)} \bigg) \thinspace \sigma_{l}^a \sigma_{l}^b + \frac{\beta J_0}{2} \sum_a \bigg( \sum_{\left | k - l  \right | = 1} m_a^{(k)} \bigg) \thinspace \sigma_{l}^a,
+\end{align*}
+
+The equality is up to a overall \(\mathcal{O} (N^2)\) multiplicative factor on the right hand side whose contribution to the (intensive) free energy vanishes in the thermodynamic limit. The quenched free energy is then obtained via the method of steepest descent
+
+\begin{align*}
+- \beta [f] \approx & \max_{\{\boldsymbol{q}, \boldsymbol{m}\}} \bigg\{ \lim_{{n \to 0}} \sum_{{l}} \bigg[ - \frac{\beta^2 J^2}{2n} \sum_{|k - l| = 1} \sqrt{\alpha_l \alpha_{k}} \bigg(\sum_{{a \neq b}} q_{ab}^{(l)} q_{ab}^{(k)} - n \bigg) \\
+&\qquad \qquad - \frac{{\beta J_0}}{2n} \sum_{|k - l| = 1} \sqrt{\alpha_l \alpha_{k}} \bigg(\sum_{a} m_{a}^{(l)} m_{a}^{(k)} \bigg) + \frac{{\alpha_l \ln \operatorname{Tr} \exp (\mathcal{L}_{l})}}{n} \bigg] \bigg\},
+\end{align*}
+
+the saddle-point equation for the variables \((q^{(l)})_{l=0}^{L}\) and \((m^{(l)})_{l=0}^{L}\) being
+
+\begin{align*}
+\gamma_l q_{ab}^{(l+1)} + \nu_{l} q_{ab}^{(l-1)} = \sum_{{\lvert k - l  \rvert = 1}} \langle \sigma_{k}^{a} \sigma_{k}^{b} \rangle_{\mathcal{L}_l},
+\end{align*}
+
+\begin{align*}
+\gamma_l m_{a}^{(l+1)} + \nu_{l} m_{a}^{(l-1)} = \sum_{{\lvert k - l  \rvert = 1}} \langle \sigma_{k}^{a}\rangle_{\mathcal{L}_l},
+\end{align*}
+
+where for arbitrary observable \(\mathcal{O}\) we have defined \(\langle \mathcal{O} \rangle_{\mathcal{L}_l} \equiv (\operatorname{Tr}_{\mathcal{O}}^n \exp \left(\mathcal{L}_l\right))^{-1} \operatorname{Tr}_{\mathcal{O}}^n \mathcal{O} \exp \left(\mathcal{L}_l\right)\).
+#+NAME: HS transform
+#+begin_steps
+Let
+
+\begin{align*}
+c_{1}^{\mathrm{T}} \equiv \frac{\beta^2 J^2}{2} \sum_i \sigma_{il}^{a} \sigma_{il}^{b}, 
+\quad 
+\varphi_{1}^{T} \equiv q_{ab}^{(l+1)}, 
+\quad 
+c_{2}^{\mathrm{T}} \equiv \frac{\beta^2 J^2}{2} \sum_{j} \sigma_{j (l+1)}^{a} \sigma_{j (l+1)}^{b},
+\quad 
+\varphi_{2}^{T} \equiv q_{ab}^{(l)},
+\end{align*}
+
+\begin{align*}
+\quad
+A^{-1} \equiv
+\begin{pmatrix}
+0 & 2 \widehat{N}_l^{-1}(\beta J)^{-2} \\
+2 \widehat{N}_l^{-1}(\beta J)^{-2} & 0 \\
+\end{pmatrix}
+\Rightarrow
+A =
+\begin{pmatrix}
+0 & 2^{-1} \widehat{N}_l \beta^2 J^2\\
+2^{-1} \widehat{N}_l \beta^2 J^2 & 0 \\
+\end{pmatrix}.
+\end{align*}
+
+Let
+\begin{align*}
+\mathcal{Q} \equiv \exp \left \lbrace \frac{\beta^2 J^2}{2 \widehat{N}_l} \left(\sum_i \sigma_{il}^{a} \sigma_{il}^{b} \right) \left(\sum_{j} \sigma_{j (l+1)}^{a} \sigma_{j (l+1)}^{b} \right)  \right \rbrace = \exp \left(\frac{1}{2} c^{\mathrm{T}} A^{-1} c\right).
+\end{align*}
+
+We will now use Theorem A.3 from Appendix A.2 (Wick's theorem for real Bosons) of [cite:@caracciolo2011cayley]. Let \(A=\left(a_{i j}\right)_{i, j=1}^n\) be a real symmetric positive-definite \(n \times n\) matrix. Let \(\varphi=\left(\varphi_i\right)_{i=1}^n\) be real variables. We introduce notation
+
+\begin{align*}
+\mathcal{D} (\varphi) =\prod_{i=1}^n \frac{d \varphi_i}{\sqrt{2 \pi}}.
+\end{align*}
+
+For any vector \(c=\left(c_i\right)_{i=1}^n\) in \(\mathbb{R}^n\), we have
+
+$$
+\int \mathcal{D} \varphi \exp \left(-\frac{1}{2} \varphi^{\mathrm{T}} A \varphi+c^{\mathrm{T}} \varphi\right)=(\operatorname{det} A)^{-1 / 2} \exp \left(\frac{1}{2} c^{\mathrm{T}} A^{-1} c\right).
+$$
+
+Using this result
+
+\begin{align*}
+&\mathcal{Q} = \frac{\widehat{N}_l \beta^2 J^2}{2}
+\int \mathcal{D} ( q_{ab}^{(l)}) \\
+&\qquad \times 
+\exp \left \lbrace 
+- \frac{\beta^2 J^2}{2} \left(
+\widehat{N}_l q_{ab}^{(l)} q_{ab}^{(l+1)} -
+q_{ab}^{(l)} \sum_i \sigma_{il}^{a} \sigma_{il}^{b} - 
+q_{ab}^{(l+1)} \sum_{j} \sigma_{j (l+1)}^{a} \sigma_{j (l+1)}^{b} 
+\right)
+\right \rbrace
+\end{align*}
+
+Likewise, let
+
+\begin{align*}
+&\mathcal{M} \equiv \exp \left \lbrace 
+\frac{\beta J_0}{\widehat{N}_l} \left( \sum_{i} \sigma_{il}^{a} \right) \left( \sum_{j} \sigma_{j(l+1)}^{b} \right)
+\right \rbrace = \exp \left(\frac{1}{2} b^{\mathrm{T}} A^{-1} b\right)
+\end{align*}
+
+\begin{align*}
+b_{2}^{\mathrm{T}} \equiv \beta J_{0} \sum_i \sigma_{il}^{a} \sigma_{il}^{b}, 
+\quad 
+\varphi_{1}^{T} \equiv m_{ab}^{(l+1)}, 
+\quad 
+b_{1}^{\mathrm{T}} \equiv \beta J_{0} \sum_{j} \sigma_{j (l+1)}^{a} \sigma_{j (l+1)}^{b},
+\quad 
+\varphi_{2}^{T} \equiv m_{ab}^{(l)},
+\end{align*}
+
+\begin{align*}
+\quad
+A^{-1} \equiv
+\begin{pmatrix}
+2 \widehat{N}_l^{-1}(\beta J_0)^{-1} & 0\\
+0 & 2 \widehat{N}_l^{-1}(\beta J_0)^{-1} \\
+\end{pmatrix}
+\Rightarrow
+A =
+\begin{pmatrix}
+0 & 2^{-1} \widehat{N}_l \beta J_{0} \\
+2^{-1} \widehat{N}_l \beta J_{0} & 0\\
+\end{pmatrix}.
+\end{align*}
+
+On evaluation
+
+\begin{align*}
+&\mathcal{M} = \frac{\widehat{N}_l \beta J_0}{2}
+\int \mathcal{D} ( m_{a}^{(l)} ) \\
+&\qquad \qquad \times \exp \left \lbrace 
+- \frac{\beta J_0}{2} \left(
+\widehat{N}_l m_{a}^{(l)} m_{a}^{(l+1)}
+- m_{a}^{(l+1)} \sum_{i} \sigma_{il}^{a}
+- m_{a}^{(l)} \sum_{j} \sigma_{j(l+1)}^{b}
+\right)
+\right \rbrace
+\end{align*}
+
+Combining \(\mathcal{Q}\) and \(\mathcal{M}\) we get the stated result. The \(\left(\det A \right)^{1/2}\) prefactors, being \(\mathcal{O}(N)\) will yield additive constants to the free energy that vanish in the thermodynamic limit. We have dropped them in obtaining
+
+\begin{align*}
+\left[\mathcal{Z}^n\right]_\beta & = \exp \left( \sum_{l=0}^{L} \dfrac{\widehat{N} \beta^2 J^2 n}{2}  \right)
+\int \prod_{a \neq b} \prod_{l=0} \mathcal{D} (q_{ab}^{(l)}) \mathcal{D} (m_{a}^{(l)}) \\
+&\exp \left\{-\sum_{l} \widehat{N}_l\left(\frac{\beta^2 J^2}{2} \sum_{a \neq b} q_{a b}^{(l)} q_{a b}^{(l+1)} +\frac{\beta J_0}{2} \sum_a m_a^{(l)} m_a^{(l+1)} \right)\right\} \\
+&\quad \qquad \times \operatorname{Tr} \left[ \exp \left\{ \frac{\beta^2 J^2}{2} \sum_{l} \sum_{a \neq b} q_{a b}^{(l+1)} \sum_i \sigma_{i l}^a \sigma_{i l}^b 
++ \frac{\beta J_0}{2} \sum_{l} \sum_a m_a^{(l+1)} \sum_i \sigma_{i l}^a \right\} \right. \\
+&\qquad \qquad \left. \times \exp \left\{\frac{\beta^2 J^2}{2}\sum_{l} \sum_{a \neq b} q_{a b}^{(l)} \sum_j \sigma_{j (l+1)}^a \sigma_{j (l+1)}^b + \frac{\beta J_0}{2}\sum_{l} \sum_a m_a^{(l)} \sum_j \sigma_{j (l+1)}^a \right\} \right].
+\end{align*}
+
+Next, we define
+
+\begin{align*}
+\mathcal{T} \equiv & \operatorname{Tr} \left[ \exp \left\{ \frac{\beta^2 J^2}{2} \sum_{l} \sum_{a \neq b} q_{a b}^{(l+1)} \sum_i \sigma_{i l}^a \sigma_{i l}^b 
++ \frac{\beta J_0}{2} \sum_{l} \sum_a m_a^{(l+1)} \sum_i \sigma_{i l}^a \right\} \right. \\
+&\qquad \qquad \left. \times \exp \left\{\frac{\beta^2 J^2}{2}\sum_{l} \sum_{a \neq b} q_{a b}^{(l)} \sum_j \sigma_{j (l+1)}^a \sigma_{j (l+1)}^b + \frac{\beta J_0}{2}\sum_{l} \sum_a m_a^{(l)} \sum_j \sigma_{j (l+1)}^a \right\} \right],
+\end{align*}
+
+and relabel indices \(l+1 \to l \) in the second term (note that \(\sum_{l} \to \sum_{l-1} \equiv \sum_{l}\) because of periodic boundary conditions) we get
+
+\begin{align*}
+\mathcal{T} \equiv &\operatorname{Tr} \exp \left\{ \frac{\beta^2 J^2}{2}\sum_{l} \sum_{a \neq b} \left( q_{a b}^{(l+1)} + q_{a b}^{(l-1)} \right) \sum_j \sigma_{j l}^a \sigma_{j l}^b + \frac{\beta J_0}{2}\sum_{l} \sum_a \left(m_a^{(l-1)} + m_a^{(l+1)} \right) \sum_j \sigma_{j l}^a  \right\}
+\end{align*}
+
+The sum over the layers and the sum over the replicas factorizes over the spins, i.e., the site index of the spin has no bearing on its participation in sums over the layers or the replicas. Therefore, we do away with the site indices for the spins \(\sigma_{il}^{a} \to \sigma_{l}^{a}\), redefine \(\operatorname{Tr}\) to mean \(\sum_{\sigma^{a}}\) henceforth, and write
+
+\begin{align*}
+& \mathcal{T} =
+\prod_{l} \left[
+\operatorname{Tr} \exp \left\{ \frac{\beta^2 J^2}{2} \sum_{a \neq b} \left( \sum_{\left \lvert k - l  \right \rvert = 1} q_{ab}^{(k)} \right) \sigma_{l}^a \sigma_{l}^b 
++ \frac{\beta J_0}{2} \sum_a \left( \sum_{\left \lvert k - l  \right \rvert = 1} m_{a}^{(k)} \right) \sigma_{l}^a \right\}
+\right]^{N_{l}}.
+\end{align*}
+
+With
+
+\begin{align*}
+\mathcal{L}_l \equiv \frac{\beta^2 J^2}{2} \sum_{a \neq b} \left( \sum_{\left \lvert k - l  \right \rvert = 1} q_{ab}^{(k)} \right) \sigma_{l}^a \sigma_{l}^b 
++ \frac{\beta J_0}{2} \sum_a \left( \sum_{\left \lvert k - l  \right \rvert = 1} m_{a}^{(k)} \right) \sigma_{l}^a,
+\end{align*}
+
+we finally have
+
+\begin{align*}
+\mathcal{T} = \exp \left(N \sum_{l=0}^L \alpha_{l} \ln \operatorname{Tr} \exp (\mathcal{L}_{l}) \right).
+\end{align*}
+
+In the final step we have used \(x \equiv \exp (\ln x)\) for \(x > 0\). Substituting in the expression for \(\left[\mathcal{Z}^n\right]_\beta\) we get the stated result.
+#+end_steps
+#+NAME: Quenched free energy
+#+begin_steps
+In the thermodynamic limit \(N \to \infty\), we can approximate \(\left[\mathcal{Z}^n\right]_\beta\) using the method of steepest descent
+
+\begin{align*}
+&\left[\mathcal{Z}^n\right]_{\beta} \approx \\
+&\quad
+\exp \left( - N \sum_{l=0}^L \sqrt{\alpha_l \alpha_{l+1}} \left[\frac{\beta^2 J^2}{2} \sum_{a \neq b} q_{a b}^{(l)} q_{a b}^{(l+1)} + \frac{\beta J_0}{2} \sum_a m_a^{(l)} m_a^{(l+1)} - \frac{\beta^2 J^2 n}{2} - \frac{\ln \operatorname{Tr} \exp (\mathcal{L}_{l})}{\gamma_l} \right] \right) \\
+\end{align*}
+
+Expanding in Taylor series in \(nN\) in the limit \(n \to 0\) and \(N\) large but finite and invoking \(\ln x = \lim_{n \to 0}n^{-1} (x^n - 1)\) we get the stated result.
+#+end_steps
+* Replica symmetric solution
+Under the assumption of replica symmetry
+
+\begin{align*}
+- \beta [f] \approx & \max_{\{\boldsymbol{q}, \boldsymbol{m}\}} \bigg\{\frac{\beta^2 J^2}{2} \sum_{{l}} \bigg[
+\alpha_l \big(\gamma_{l} - q_{k} \big) \big(1 - \gamma_l q_{l} \big) + \alpha_l \big(\nu_{l} - q_{k} \big) \big(1 - \nu_l q_{l} \big)
+\bigg] \\
+&\qquad - \frac{{\beta J_0}}{2} \sum_{l} \sum_{|k - l| = 1} \sqrt{\alpha_l \alpha_{k}} \bigg(\sum_{a} m^{(l)} m^{(k)} \bigg) + \sum_{l} \alpha_l \int \mathrm{D}z \ln 2 \cosh \beta h_{\mathrm{eff}}^{(l)} \bigg\},
+\end{align*}
+
+where
+
+\begin{align*}
+h_{\mathrm{eff}}^{(l)} (z) \equiv \beta^2 J^2 \bigg(\sum_{\left \lvert k - l  \right \rvert = 1} q^{(k)} \bigg)^{1/2} z  + \frac{\beta J_0}{2} \bigg( \sum_{\left \lvert k - l  \right \rvert = 1} m^{(k)} \bigg),
+\qquad
+\mathrm{D} z = \mathrm{d} z \exp \big(-z^2/2\big)/\sqrt{2\pi}.
+\end{align*}
+
+The equations of state are
+
+\begin{align*}
+\bigg(\gamma_{l} m^{(l+1)} + \nu_{l} m^{(l-1)}\bigg)
+= \int \mathrm{D}z \tanh \beta h_{\mathrm{eff}}^{(l)} (z),
+\end{align*}
+
+\begin{align*}
+\bigg( \gamma_{l} \big[q^{(l+1)} - \gamma_{l}\big] + \nu_{l} \big[q^{(l-1)} - \nu_{l} \big] \bigg) 
+= \int \mathrm{D}z \tanh^{2} \beta h_{\mathrm{eff}}^{(l)} (z).
+\end{align*}
+#+NAME: RS free energy
+#+begin_steps
+We start with
+
+\begin{align*}
+\mathcal{L}_l &\equiv \beta^2 J^2 \sum_{a < b} \bigg( \sum_{\left | k - l  \right | = 1} q_{ab}^{(k)} \bigg) \thinspace \sigma_{l}^a \sigma_{l}^b + \frac{\beta J_0}{2} \sum_a \bigg( \sum_{\left | k - l  \right | = 1} m_a^{(k)} \bigg) \thinspace \sigma_{l}^a, \\
+\end{align*}
+
+\begin{align*}
+&\ln \operatorname{Tr} \exp(\mathcal{L}_l) = \ln \operatorname{Tr} \bigg( \frac{\beta^2 J^2 \sum_{\left \lvert k - l  \right \rvert = 1} q^{(k)}}{2\pi} \bigg)^{1/2} \int \mathrm{d}z \exp \left(
+- \dfrac{n}{2} \beta^2 J^2 \bigg(\sum_{\left \lvert k - l  \right \rvert = 1} q^{(k)} \bigg) \right) \\
+&\quad \times \exp \left\{ -\frac{\beta^2 J^2}{2} \bigg(\sum_{\left \lvert k - l  \right \rvert = 1} q^{(k)} \bigg) z^2 + \bigg[ \beta^2 J^2 z \bigg(\sum_{\left \lvert k - l  \right \rvert = 1} q^{(k)} \bigg)^{1/2} + \frac{\beta J_0}{2} \bigg( \sum_{\left \lvert k - l  \right \rvert = 1} m^{(k)} \bigg) \bigg] \sum_a \sigma_{l}^a \right\} \\
+&\qquad \qquad = 
+\ln \int \mathrm{D}z \exp \Big( n \ln 2 \cosh \beta h_{\mathrm{eff}}^{(l)} - \frac{n}{2} \beta^2 J^2 \big[\sum_{|k - l| = 1} q^{(k)} \big] \Big) \\
+&\qquad \qquad = \ln \bigg(1 + n \int \mathrm{D}z \ln 2 \cosh \beta h_{\mathrm{eff}}^{(l)} - \frac{n}{2} \beta^2 J^2 \big[\sum_{|k - l| = 1} q^{(k)} \big] + \mathcal{O} (n^2) \bigg).
+\end{align*}
+
+where \(h_{\mathrm{eff}}^{(l)}\) and \(\mathrm{D}z\) are as defined above. In the limit \(n \to 0\) we have
+
+\begin{align*}
+\lim_{n \to 0} \bigg( \frac{\alpha_l \ln \operatorname{Tr} \exp(\mathcal{L}_l)}{n} \bigg) = \alpha_{l} \left[ \int \mathrm{D}z \ln 2 \cosh \beta h_{\mathrm{eff}}^{(l)} - \frac{\beta^2 J^2}{2} \bigg(\sum_{|k - l| = 1} q^{(k)} \bigg) \right]
+\end{align*}
+
+#+end_steps
+* The energy landscape of DBM
+We can place bounds on the Hamiltonian
+
+\begin{align*}
+- J_0 \sum_{l=0}^{L} \sqrt{N_l N_{l+1}} - k J \left( \sum_{l=0}^{L} \sqrt{N_l N_{l+1}} \right)^{1/2} 
+\leq H \leq
+J_0 \sum_{l=0}^{L} \sqrt{N_l N_{l+1}} + k J \left( \sum_{l=0}^{L} \sqrt{N_l N_{l+1}} \right)^{1/2}
+\end{align*}
+
+#+NAME: Bounds on the DBM Hamiltonian
+#+begin_src python :results output
+  import numpy as np
+  def calculate_bounds(J_0, J, N, k=10):
+      L = len(N)
+      sum_of_gmeans = sum(np.sqrt(N[l] * (N[(l+1) % L])) for l in range(L))
+      # Calculate the lower bound
+      lower_bound = -J_0 * sum_of_gmeans - k * J * np.sqrt(sum_of_gmeans)
+
+      # Calculate the upper bound
+      upper_bound = J_0 * sum_of_gmeans + k * J * np.sqrt(sum_of_gmeans)
+      return lower_bound, upper_bound
+
+  bounds = calculate_bounds(0.0, 1.0, [200, 200], k=10)
+  print(bounds)
+#+end_src
+
+Next, we will /assume a fixed inter-layer ratio \(\gamma\)/, i.e.,  \(N_l = \lfloor N_0 \gamma^{2l} \rfloor\). If \(L\) is allowed to vary but \(N\) and \(N_0\) are fixed, such a network can always be constructed for \(\gamma > 1\). For \(\gamma < 1\), a construction is only possible for a /sufficiently slow/ shrinking:
+
+\begin{align*}
+\alpha_{0} \gtrapprox 1-\gamma^2
+\end{align*}
+
+#+NAME: Realizable network for γ < 1
+#+begin_steps
+We make the approximation \(N_l = \lfloor N_0 \gamma^{2l} \rfloor \approx N_0 \gamma^{2l}\). The condition for a realizable construction is
+
+\begin{align*}
+\sum_{l=0}^{L} N_0 \gamma^{2l} = N_0 \left( \frac{1-\gamma^{2(L+1)}}{1-\gamma^2} \right) \geq N
+\end{align*}
+
+On solving for \(L\)
+
+\[
+1 + L = \frac{\ln\left(1 - [1 - \gamma^2] N/N_0\right)}{\ln(\gamma^2)}.
+\]
+
+We will need
+
+\begin{align*}
+1 - (1 - \gamma^2) \frac{N}{N_0} > 0
+\end{align*}
+
+which simplifies to
+
+\begin{align*}
+\alpha_{0} > 1-\gamma^2.
+\end{align*}
+
+On restoring \(\approx\) (to indicate the approximate nature of the inequality) under the \(>\) sign yields the stated result.
+#+end_steps
+
+For our experiments, we will fix \(N_0 = 1025\). We will also "fix" \(N \equiv N_{\mathrm{tot}} = 2000\) in the sense the errors introduced by treating \(N_l\) as real-numbers instead of integers will result in \(\sum_l N_l > N_{\mathrm{tot}}\). Furthermore, the error \(\Delta N \equiv \sum_l N_l - N_{\mathrm{tot}} > 0\) is is positive and an increasing function of \(\gamma\). Since we are interested in the answering whether /lean/ networks have at par or better /representational capacity/ than /fat/ ones, we will view this slippage of control favorably because it only makes an affirmative to our question bolder - /lean/ networks have at par or better /representational capacity/ than /fat/ ones with lesser number of units. \(\gamma\) will take values from \(0.5\) to \(1.5\) in increments of \(0.1\). We will study the cases \((J_0,J) = (0.0,1.0)\),  \((J_0,J) = (1.0,1.0)\) and  \((J_0,J) = (1.0,5.0)\). Leniently, we set \(k=10\) in determining the bounds for the Hamiltonian - the probability of encountering a value outside this range is one in a hundred. The \(11\) DBM architectures and the associated bounds on \(H\) are:
+
+#+NAME: Experiment schedule (J₀,J) = (1,5)
+|  γ² |   N₀ |    N | {Nₗ}                               |    Hₘᵢₙ |   Hₘₐₓ |
+|-----+------+------+------------------------------------+---------+--------|
+| 0.5 | 1025 | 2041 | 1025, 512, 256, 128, 64, 32, 16, 8 | -390.86 | 390.86 |
+| 0.6 | 1025 | 2009 | 1025, 615, 369                     |  -434.2 |  434.2 |
+| 0.7 | 1025 | 2243 | 1025, 717, 501                     | -466.18 | 466.18 |
+| 0.8 | 1025 | 2499 | 1025, 819, 655                     | -496.79 | 496.79 |
+| 0.9 | 1025 | 2776 | 1025, 922, 829                     | -526.14 | 526.14 |
+| 1.0 | 1025 | 2050 | 1025, 1025                         | -452.77 | 452.77 |
+| 1.1 | 1025 | 2152 | 1025, 1127                         | -463.64 | 463.64 |
+| 1.2 | 1025 | 2254 | 1025, 1229                         | -473.79 | 473.79 |
+| 1.3 | 1025 | 2357 | 1025, 1332                         | -483.42 | 483.42 |
+| 1.4 | 1025 | 2460 | 1025, 1435                         |  -492.5 |  492.5 |
+| 1.5 | 1025 | 2562 | 1025, 1537                         | -501.03 | 501.03 |
+
+#+NAME: Experiment schedule (J₀,J) = (1,1)
+|  γ² |   N₀ |    N | {Nₗ}                               |     Hₘᵢₙ |    Hₘₐₓ |
+|-----+------+------+------------------------------------+----------+---------|
+| 0.5 | 1025 | 2041 | 1025, 512, 256, 128, 64, 32, 16, 8 | -1918.61 | 1918.61 |
+| 0.6 | 1025 | 2009 | 1025, 615, 369                     | -2319.54 | 2319.54 |
+| 0.7 | 1025 | 2243 | 1025, 717, 501                     | -2639.41 | 2639.41 |
+| 0.8 | 1025 | 2499 | 1025, 819, 655                     | -2964.82 | 2964.82 |
+| 0.9 | 1025 | 2776 | 1025, 922, 829                     | -3294.34 | 3294.34 |
+| 1.0 | 1025 | 2050 | 1025, 1025                         | -2502.77 | 2502.77 |
+| 1.1 | 1025 | 2152 | 1025, 1127                         | -2613.22 | 2613.22 |
+| 1.2 | 1025 | 2254 | 1025, 1229                         | -2718.54 | 2718.54 |
+| 1.3 | 1025 | 2357 | 1025, 1332                         | -2820.34 | 2820.34 |
+| 1.4 | 1025 | 2460 | 1025, 1435                         |  -2918.1 |  2918.1 |
+| 1.5 | 1025 | 2562 | 1025, 1537                         | -3011.35 | 3011.35 |
+
+#+NAME: Experiment schedule (J₀,J) = (1,5)
+|  γ² |   N₀ |    N | {Nₗ}                               |     Hₘᵢₙ |    Hₘₐₓ |
+|-----+------+------+------------------------------------+----------+---------|
+| 0.5 | 1025 | 2041 | 1025, 512, 256, 128, 64, 32, 16, 8 | -3482.07 | 3482.07 |
+| 0.6 | 1025 | 2009 | 1025, 615, 369                     | -4056.36 | 4056.36 |
+| 0.7 | 1025 | 2243 | 1025, 717, 501                     | -4504.13 | 4504.13 |
+| 0.8 | 1025 | 2499 | 1025, 819, 655                     | -4951.99 | 4951.99 |
+| 0.9 | 1025 | 2776 | 1025, 922, 829                     | -5398.89 | 5398.89 |
+| 1.0 | 1025 | 2050 | 1025, 1025                         | -4313.85 | 4313.85 |
+| 1.1 | 1025 | 2152 | 1025, 1127                         | -4467.76 | 4467.76 |
+| 1.2 | 1025 | 2254 | 1025, 1229                         | -4613.69 | 4613.69 |
+| 1.3 | 1025 | 2357 | 1025, 1332                         | -4754.01 | 4754.01 |
+| 1.4 | 1025 | 2460 | 1025, 1435                         | -4888.11 | 4888.11 |
+| 1.5 | 1025 | 2562 | 1025, 1537                         | -5015.47 | 5015.47 |
+
+#+begin_src python :results output
+  import math
+  import numpy as np
+
+  def calculate_bounds(J_0, J, N, k=10):
+      L = len(N)
+      sum_of_gmeans = sum(np.sqrt(N[l] * (N[(l+1) % L])) for l in range(L))
+      # Calculate the lower bound
+      lower_bound = -J_0 * sum_of_gmeans - k * J * np.sqrt(sum_of_gmeans)
+
+      # Calculate the upper bound
+      upper_bound = J_0 * sum_of_gmeans + k * J * np.sqrt(sum_of_gmeans)
+      return lower_bound, upper_bound
+
+  def L(gamma, N0, N):
+      return (math.log(1 - (1 - gamma ** 2) * (N / N0)) / math.log(gamma)) - 1
+
+  gammas = np.sqrt([0.5, 0.6, 0.7, 0.8, 0.9, 1.00001, 1.1, 1.2, 1.3, 1.4, 1.5])
+  N_tot = 2000.0
+  num_visible = 1025.0
+  for gamma in gammas:
+      layers = L(gamma, num_visible, N_tot)
+      layers = int(np.floor(layers))
+      N = [num_visible]
+      for i in range(layers-1):
+          spins = np.floor((gamma**2) * N[i])
+          N.append(spins)
+      N = np.array(N)
+      total = np.sum(N)
+      if total > N_tot:
+          if np.sum(N[:-1]) > N_tot:
+              N = N[:-1]
+      bounds = np.around(calculate_bounds(0.0, 1.0, N), 2)
+      print(f"\n-------γ²={np.around(gamma**2,2)}, N = {sum(N)}---------")
+      print(f"\n{bounds[0]} < H < {bounds[1]}")
+      print(f"\n{[int(N_l) for N_l in N]}")
+#+end_src
+
+#+RESULTS:
+#+begin_example
+
+-------γ²=0.5, N = 2041.0---------
+
+-390.86 < H < 390.86
+
+[1025, 512, 256, 128, 64, 32, 16, 8]
+
+-------γ²=0.6, N = 2009.0---------
+
+-434.2 < H < 434.2
+
+[1025, 615, 369]
+
+-------γ²=0.7, N = 2243.0---------
+
+-466.18 < H < 466.18
+
+[1025, 717, 501]
+
+-------γ²=0.8, N = 2499.0---------
+
+-496.79 < H < 496.79
+
+[1025, 819, 655]
+
+-------γ²=0.9, N = 2776.0---------
+
+-526.14 < H < 526.14
+
+[1025, 922, 829]
+
+-------γ²=1.0, N = 2050.0---------
+
+-452.77 < H < 452.77
+
+[1025, 1025]
+
+-------γ²=1.1, N = 2152.0---------
+
+-463.64 < H < 463.64
+
+[1025, 1127]
+
+-------γ²=1.2, N = 2254.0---------
+
+-473.79 < H < 473.79
+
+[1025, 1229]
+
+-------γ²=1.3, N = 2357.0---------
+
+-483.42 < H < 483.42
+
+[1025, 1332]
+
+-------γ²=1.4, N = 2460.0---------
+
+-492.5 < H < 492.5
+
+[1025, 1435]
+
+-------γ²=1.5, N = 2562.0---------
+
+-501.03 < H < 501.03
+
+[1025, 1537]
+#+end_example
+* TAP equations
+** Thouless-Anderson-Palmer equations for SK model
+*** Thouless-Anderson-Palmer equations for the SK model
++ Thouless, Anderson, and Palmer (TAP) wrote down a set of equations for the (intensive) /site magnetization/ of the SK model for a given  $\boldsymbol{J}$, i.e., without the configuration average
+
+  \begin{align*}
+  \boxed{
+  m_{i } (\beta, \boldsymbol{h}, \boldsymbol{J}, \boldsymbol{m}) = \tanh \beta\left(\sum_{j} J_{i j} m_{j}+h_{i}- m_i \sum_{j} J_{i j}^{2}\left(1-m_{j}^{2}\right) \right)
+  }
+  \end{align*}
+
++ The TAP equations are obtained as an extremization of the free energy functional
+
+  \begin{align*}
+  -\beta f_{\mathrm{TAP}} (\beta, \boldsymbol{h}, \boldsymbol{J}, \boldsymbol{m}) =
+  &  - \frac{1}{2} \sum_{i}\left[\left(1+m_{i}\right) \log \frac{1+m_{i}}{2}+\left(1-m_{i}\right) \log \frac{1-m_{i}}{2}\right] \\
+  &  + \frac{\beta}{2} \left( \sum_{i \neq j} J_{i j} m_{i} m_{j}-\sum_{i} h_{i} m_{i} \right)\\
+  &  + \frac{\beta^2}{4} \sum_{i \neq j} J_{i j}^{2}\left(1-m_{i}^{2}\right)\left(1-m_{j}^{2}\right).
+  \end{align*}
+
+*** TAP equations for the SK model: Plefka's expansion
+
++ Turn off the external field. To obtain $f_{\mathrm{TAP}} (\beta, \boldsymbol{J}, \boldsymbol{m})$, we will use the original *Plefka's expansion* with the *free energy functional*
+
+  \begin{align*}
+  -\beta G (\beta, \boldsymbol{J}, \boldsymbol{m}, \alpha) =\ln \operatorname{Tr} \exp \left \lbrace - \beta H (\boldsymbol{S}, \boldsymbol{J}, \alpha, \boldsymbol{h}) \right \rbrace - \beta \sum_{i} h_{i} (\beta, \boldsymbol{J}, \boldsymbol{m}, \alpha) \thinspace m_{i},
+  \end{align*}
+ where
+
+  \begin{align*}
+  H (\boldsymbol{S}, \boldsymbol{J}, \alpha, \boldsymbol{h}) = \alpha \sum_{i < j} J_{ij} S_i S_j - \sum_{i} h_{i} (\beta, \boldsymbol{J}, \boldsymbol{m}, \alpha) S_{i}.
+  \end{align*}
+
++ $h_{i}(\beta, \boldsymbol{J}, \boldsymbol{m}, \alpha)$ is a *Lagrange multiplier* to enforce the constraint $m_{i}=\left\langle S_{i}\right\rangle_{\alpha}$.
+
++ $\sum_{i} h_{i}(\beta, \boldsymbol{J}, \boldsymbol{m}, \alpha) \thinspace m_{i}$ effects a *Legendre transform* from $\boldsymbol{h} (\beta, \boldsymbol{J}, \boldsymbol{m}, \alpha)$ to *conjugate variable* $\boldsymbol{m} (\beta, \boldsymbol{J}, \boldsymbol{m}, \alpha)$.
+
++ $G (\beta, \boldsymbol{J}, \boldsymbol{m}, \alpha)$ will be expanded in a power series in $\alpha$ about $\alpha = 0$ to second order for a specific $\boldsymbol{m}$ and $\boldsymbol{J}$. The TAP free energy will be recovered by evaluating the terms at $\alpha = 1$. The claim is thus
+
+  \begin{align*}
+  f_{\text{TAP}} = G (\beta, \boldsymbol{J}, \boldsymbol{m}, 0)
+  + \partial_{\alpha} G (\beta, \boldsymbol{J}, \boldsymbol{m}, 0)
+  + \partial_{\alpha}^2 G (\beta, \boldsymbol{J}, \boldsymbol{m}, 0).
+  \end{align*}
+
+*** TAP equations for the SK model: Plefka's expansion
+
++ The first term is
+
+  \begin{align*}
+  G (\beta, \boldsymbol{J}, \boldsymbol{m}, 0) & =T \sum_{i}\left(\frac{1+m_{i}}{2} \log \frac{1+m_{i}}{2}+\frac{1-m_{i}}{2} \log \frac{1-m_{i}}{2}\right) \\
+  \end{align*}
+
++ The second term (recall $H_S$ is the /internal Hamiltonian/) is
+
+  \begin{align*}
+  \partial_{\alpha} G (\beta, \boldsymbol{J}, \boldsymbol{m}, 0) = \left \langle H_S  \right \rangle_{\alpha} = - \dfrac{1}{2} \sum_{i \neq j} J_{ij} m_i m_j
+  \end{align*}
+
++ Using the Maxwell relation 
+
+  \begin{align*}
+  \partial_{\alpha} h_{i} (\beta, \boldsymbol{J}, \boldsymbol{m}, \alpha) = \partial_{\alpha} \partial_{m_i} G (\beta, \boldsymbol{J}, \boldsymbol{m}, \alpha) = -\sum_{j}^{\prime} J_{i j} m_{j}
+  \end{align*}
+
+  where the sum is restricted so that $j \neq i$, the third term is
+
+  \begin{align*}
+   \partial_{\alpha}^2 G (\beta, \boldsymbol{J}, \boldsymbol{m}, 0) &= - \beta \left \langle H_S \left( H_S - \left \langle H_S  \right \rangle_{\alpha} - \sum_i \partial_{\alpha} h_i (S_i - m_i) \right) \right \rangle_{\alpha} \\
+   &= -\frac{\beta}{2} \sum_{i \neq j} J_{i j}^{2}\left(1-m_{i}^{2}\right)\left(1-m_{j}^{2}\right).
+  \end{align*}
+** BM Enumeration
+Despite substantial effort during the past five years, a satisfactory mean field theory of spin glasses has not yet appeared. The replica method (Edwards and Anderson 1975, Sherrington and Kirkpatrick 1975 (SK)) requires, for an adequate description of the low-temperature phase, a breaking of the replica symmetry (de Almeida and Thouless 1978, Blandin 1978, Bray and Moore 1978, Parisi 1979). An alternative approach is provided by the mean field equations of Thouless, Anderson and Palmer (1977, referred to as TAP), which are exact for the long-range interactions of the SK model. In this Letter we show that there are a large number of solutions (of order $\exp (\alpha N)$, where $N$ is the number of Ising spins in the system) of the TAP equations below $T_{c}$. One is interested in the distribution of solutions over free energy, and averages of observables over solutions or over solutions of given free energy. Since the solutions possess a range of free energies, all but those with the lowest free energy correspond to metastable states. We shall find that solutions with free energies exceeding a (temperature-dependent) critical value are uncorrelated, and their distribution over free energy is calculated exactly. Solutions of lower free energy are correlated, with the Edwards-Anderson order parameter (here called $\hat{q}$ ) as a measure of the correlation. Our approach is generalisable (at least for $T=0$ ) to two- and three-dimensional systems with realistic interactions. The numerical work of Morgenstern and Binder (1980) suggests that for such systems the critical energy might coincide with the ground state energy.
+
+We start from the set of $N$ TAP equations for the magnetisation $m_{i}$ of the $i$ th spin:
+
+\begin{align*}
+G_{i} \equiv \tanh ^{-1} m_{i} & +\beta^{2} J^{2}(1-q) m_{i}-\beta \sum_{j} J_{i j} m_{j}=0 \\
+& \equiv g\left(m_{i}\right)-\beta \sum_{j} J_{i j} m_{j}
+\end{align*}
+
+with their associated free energy (divided by $N k_{\mathrm{B}} T$ )
+
+\begin{align*}
+f=-(\beta / N) & \sum_{(i j)} J_{i j} m_{i} m_{j}-\frac{1}{4} \beta^{2} J^{2}(1-q)^{2} \\
+& +(1 / 2 N) \sum_{i}\left\{\left(1+m_{i}\right) \ln \left[\frac{1}{2}\left(1+m_{i}\right)\right]+\left(1-m_{i}\right) \ln \left[\frac{1}{2}\left(1-m_{i}\right)\right]\right\}
+\end{align*}
+
+where $\sum_{(i j)}$ means a sum over distinct pairs, $q=N^{-1} \sum_{i} m_{i}^{2}$ and $J_{i j}$ is a random exchange interaction with probability distribution
+
+$$
+P\left(J_{i j}\right)=\left(N / 2 \pi J^{2}\right)^{1 / 2} \exp \left(-N J_{i j}^{2} / 2 J^{2}\right) .
+$$
+
+Substituting for $\sum_{j} J_{i j} m_{j}$ in equation (2) from equation (1), we express $f$ as a sum of single-site terms:
+
+\begin{gathered}
+f=N^{-1} \sum_{i} f\left(m_{i}\right)=N^{-1} \sum_{i}\left[-\ln 2-\frac{1}{4} \beta^{2} J^{2}\left(1-q^{2}\right)\right. \\
+\left.+\frac{1}{2} m_{i} \tanh ^{-1} m_{i}+\frac{1}{2} \ln \left(1-m_{i}^{2}\right)\right] .
+\end{gathered}
+
+The density of solutions associated with a particular free energy $f$ is therefore
+
+\begin{array}{rl}
+N_{\mathrm{s}}(f)=N^{2} \int_{0}^{1} \mathrm{~d} q \int_{-1}^{1} \prod_{i}\left(\mathrm{~d} m_{i}\right) \delta\left(N q-\sum_{i} m_{i}^{2}\right) \delta\left(N f-\sum_{i} f\left(m_{i}\right)\right) \prod_{i} \delta\left(G_{i}\right) \lvert \operatorname{det} \mathbf{A} \rvert
+\end{array}
+
+where $|\operatorname{det} A|$ is the Jacobian normalising the delta functions:
+
+$A_{i j}=\partial G_{i} / \partial m_{j}=\left[\left(1-m_{i}^{2}\right)^{-1}+\beta^{2} J^{2}(1-q)\right] \delta_{i j}-\beta J_{i j} \equiv a_{i} \delta_{i j}-\beta J_{i j}$
+
+(A term $-2 \beta^{2} J^{2} m_{i} m_{j} / N$, which comes from differentiating $q$ in equation (1), is negligible as $N \rightarrow \infty$ and has been dropped from equation (5)). Since we will find that the determinant is always positive, we will drop the modulus signs henceforth. Introducing integral representations for the delta functions gives
+
+\begin{align*}
+& N_{\mathrm{s}}(f)=N^{2} \int_{0}^{1} \mathrm{~d} q \int_{-\mathrm{i} \infty}^{\mathrm{i} \infty} \frac{\mathrm{d} \lambda}{2 \pi \mathrm{i}} \int_{-\mathrm{i} \infty}^{\mathrm{i} \infty} \frac{\mathrm{d} u}{2 \pi \mathrm{i}} \int_{-\mathrm{i} \infty}^{\mathrm{i} \infty} \prod_{i}\left(\frac{\mathrm{d} x_{i}}{2 \pi \mathrm{i}}\right) \int_{-1}^{1} \prod_{i}\left(\mathrm{~d} m_{i}\right) \exp \{-N(\lambda q+u f) \\
+&\left.+\lambda \sum_{i} m_{i}^{2}+u \sum_{i} f\left(m_{i}\right)+\sum_{i} x_{i} g\left(m_{i}\right)-\beta \sum_{(i j)} J_{i j}\left(x_{i} m_{j}+x_{j} m_{i}\right)\right\} \\
+& \times \operatorname{det} \mathbf{A}\left\{J_{i j}\right\} .
+\end{align*}
+
+We wish now to average over the bond distribution. Since we anticipate that $N_{\mathrm{s}}(f) \sim \exp (\alpha N)$, we should strictly average the extensive quantity $\ln N_{\mathrm{s}}(f)$. This can be done by introducing replicas (see later). However, for the region (of free energies) in which the solutions are uncorrelated, the two types of averaging lead to the same final result. Therefore we construct the 'direct average'
+
+$$
+\left\langle N_{\mathrm{s}}(f)\right\rangle_{J}=\int \prod_{(i j)}\left(\mathrm{d} J_{i j} P\left(J_{i j}\right)\right) N_{\mathrm{s}}(f)
+$$
+
+Terms involving $J_{i j}$ are of the form
+
+\begin{align*}
+& \int_{-\infty}^{\infty} \prod_{(i j)}\left[\mathrm{d} J_{i j}\left(N / 2 \pi J^{2}\right)^{1 / 2}\right] \exp \left[-N \sum_{(i j)} J_{i j}^{2} / 2 J^{2}-\beta \sum_{(i j)} J_{i j}\left(x_{i} m_{j}+x_{j} m_{i}\right)\right] \operatorname{det} \mathbf{A}\left\{J_{i j}\right\} \\
+&= \exp \left[\left(\beta^{2} J^{2} / 2 N\right) \sum_{(i j)}\left(x_{i} m_{j}+x_{j} m_{i}\right)^{2}\right]\left\langle\operatorname { d e t } \mathbf { A } \left\{ J_{i j}-\left(\beta J^{2} / N\right)\right.\right. \\
+&\left.\left.\times\left(x_{i} m_{j}+x_{j} m_{i}\right)\right\}\right\rangle_{J}
+\end{align*}
+
+where the second line follows from the first by a simple translation of each integration variable. This translation is irrelevant as far as the final average in equation (8) is concerned, since it introduces a term of order $N^{-1}$ into the matrix element $A_{i j}$ (such terms are negligible and were already dropped from equation (5)). Thus equation (8) may be rewritten
+
+$$
+\exp \left[\frac{1}{2} \beta^{2} J^{2} q \sum_{i} x_{i}^{2}+\left(\beta^{2} J^{2} / 2 N\right)\left(\sum_{i} x_{i} m_{i}\right)^{2}\right]\left\langle\operatorname{det} \mathbf{A}\left\{J_{i j}\right\}\right\rangle_{J} .
+$$
+
+To compute the average of the determinant one can introduce replicas and use the representation
+
+$$
+\operatorname{det} \mathbf{A}=\int_{-\infty}^{\infty} \prod_{i, \alpha}\left[\frac{\mathrm{d} \xi_{i z}}{(2 \pi)^{1 / 2}}\right] \exp \left(-\frac{1}{2} \sum_{i, j, \alpha} \xi_{i \alpha} A_{i j} \xi_{j \alpha}\right)
+$$
+
+where the replica labels $\alpha$ run from 1 to $m$, and analytic continuation to $m=-2$ is required at the end of the calculation. The $J_{i j}$ integrals are gaussian and give
+
+\begin{align*}
+\langle\operatorname{det} \mathbf{A}\rangle_{J} & =\int_{-\infty}^{\infty} \prod_{i, \alpha}\left[\frac{\mathrm{d} \xi_{i \alpha}}{(2 \pi)^{1 / 2}}\right] \exp \left[-\frac{1}{2} \sum_{i, \alpha} a_{i} \xi_{i \alpha}^{2}+\frac{\beta^{2} J^{2}}{4 N} \sum_{\alpha}\left(\sum_{i} \xi_{i \alpha}^{2}\right)^{2}\right. \\
+& \left.+\frac{\beta^{2} J^{2}}{2 N} \sum_{\alpha<\beta}\left(\sum_{i} \xi_{i \alpha} \xi_{i \beta}\right)^{2}\right]
+\end{align*}
+
+The squared terms are simplified by the Hubbard-Stratonovich identity
+
+\begin{align*}
+\exp \left(a^{2} / 2\right)= & \int_{-\infty}^{\infty}(\mathrm{d} x / \sqrt{2} \pi) \exp \left(-x^{2} / 2+a x\right) . \\
+\langle\operatorname{det} \mathbf{A}\rangle_{J}= & \int_{-\infty}^{\infty} \prod_{\alpha}\left[\left(\frac{N}{\pi}\right)^{1 / 2} \mathrm{~d} R_{\alpha}\right] \int_{-\infty}^{\infty} \prod_{\alpha<\beta}\left[\left(\frac{N}{2 \pi}\right)^{1 / 2} \mathrm{~d} T_{\alpha \beta}\right] \int_{-\infty}^{\infty} \prod_{i, \alpha}\left(\frac{\mathrm{d} \xi_{i \alpha}}{\sqrt{2 \pi}}\right) \\
+& \times \exp \left\{-\frac{1}{2} \sum_{i, \alpha} a_{i} \xi_{i \alpha}^{2}-N \sum_{\alpha} R_{\alpha}^{2}-\frac{N}{2} \sum_{\alpha<\beta} T_{\alpha \beta}^{2}+\beta J \sum_{i, \alpha} R_{\alpha} \xi_{i \alpha}^{2}\right. \\
+& \left.+\beta J \sum_{i, \alpha<\beta} T_{\alpha \beta} \xi_{i \alpha} \xi_{i \beta}\right\} .
+\end{align*}
+
+The integrals over $\left\{R_{\alpha}\right\}$ and $\left\{T_{\alpha \beta}\right\}$ are eventually performed by steepest descents. We adopt the solution $R_{\alpha}=R$ (for all $\alpha$ ), $T_{\alpha \beta}=0$ (for all $(\alpha, \beta)$ ). One can show (details will be presented elsewhere) that this is the stable stationary point. With this choice the integrals over the $\xi_{i \alpha}$ are trivial and yield, after setting $m=-2$ and dropping multiplicative prefactors,
+
+$$
+\langle\operatorname{det} \mathbf{A}\rangle_{J}=\prod_{i}\left(a_{i}-2 \beta J R\right) \exp \left(2 N R^{2}\right)
+$$
+
+with $R$ to be determined variationally.
+
+Assembling the various terms, using a further Hubbard-Stratonovich identity to simplify the term in $\left(\sum_{i} x_{i} m_{i}\right)^{2}$ in equation (9), and dropping multiplicative prefactors, yields
+
+\begin{align*}
+\left\langle N_{s}(f)\right\rangle_{J}= & \max \int_{-1}^{1} \prod_{i}\left(\mathrm{~d} m_{i}\right) \int_{-\mathrm{i} \infty}^{\mathrm{i} \infty} \prod_{i}\left(\frac{\mathrm{d} x_{i}}{2 \pi \mathrm{i}}\right) \exp \left\{N\left(-\lambda q-u f-\frac{1}{2} V^{2}+2 R^{2}\right)\right. \\
+& \left.+\frac{1}{2} \beta^{2} J^{2} q \sum_{i} x_{i}^{2}+\sum_{i} x_{i} \tilde{g}\left(m_{i}\right)+\lambda \sum_{i} m_{i}^{2}+u \sum_{i} f\left(m_{i}\right)\right\} \prod_{i}\left(a_{i}-2 \beta J R\right)
+\end{align*}
+
+where $\tilde{g}\left(m_{i}\right)=g\left(m_{i}\right)+\beta J V m_{i}$ and max indicates the maximum over the variables $q, \lambda, u, V, R$. Finally we set $V=-\beta J(1-q)-\Delta / \beta J$ and $2 R=\beta J(1-q)-B / \beta J$, and integrate over the $x_{i}$ to obtain the final result
+
+\begin{align*}
+\left\langle N_{s}(f)\right\rangle_{J}= & \max \exp \{N[-\lambda q-u f-(B+\Delta)(1-q) \\
+& \left.\left.+\left(B^{2}-\Delta^{2}\right) / 2 \beta^{2} J^{2}+\ln I\right]\right\}
+\end{align*}
+
+where
+
+\begin{align*}
+& I=\int_{-1}^{1} \frac{\mathrm{d} m}{(2 \pi)^{1 / 2} \beta J q^{1 / 2}}\left(\frac{1}{1-m^{2}}+B\right) \exp \left[-\frac{\left(\tanh ^{-1} m-\Delta m\right)^{2}}{2 \beta^{2} J^{2} q}\right. \\
+&\left.+\lambda m^{2}+u f(m)\right]
+\end{align*}
+
+and the maximum is taken over the five variables $q, \lambda, u, \Delta, B$. The use of steepest descents is justified, in the limit $N \rightarrow \infty$, by the factor $N$ inside the exponent in equation $(15)$. The five stationarity equations become, after some manipulation,
+
+\begin{align*}
+& q=\left\langle m^{2}\right\rangle, \quad f=\langle f(m)\rangle \\
+& 0=B\left\{1-\beta^{2} J^{2}\left\langle\left(1-m^{2}\right)^{2} /\left[1+B\left(1-m^{2}\right)\right]\right\rangle\right\} \\
+& \Delta=-\frac{1}{2} \beta^{2} J^{2}(1-q)+\left\langle m \tanh ^{-1} m\right\rangle / 2 q \\
+& \lambda=B+\Delta-\left[1-\left\langle\left(\tanh ^{-1} m-\Delta m\right)^{2}\right\rangle / \beta^{2} J^{2} q\right] / 2 q
+\end{align*}
+
+where angular brackets mean an average over a probability distribution for $m$ given by the integrand of equation (16) divided by $I$. The solutions of Sherrington and Kirkpatrick (1975) and of Sommers (1978) correspond to $B=\Delta=0=u=\lambda$ and to $B+\Delta=0=u=\lambda$ respectively. For both solutions, equation (14) gives $\left\langle N_{\mathrm{s}}(f)\right\rangle_{J}=1$. Both solutions are known to be unstable (de Almeida and Thouless 1978, Bray and Moore 1980, de Dominicis and Garel 1979).
+
+Before proceeding further we observe that the third of equations (17) admits the \(B=0\) as solution. This is the solution we adopt since it may be shown (details to be presented elsewhere) that the other choice leads to an unstable stationary point. For $B=0$, our expression for the determinant, equation (13), becomes
+
+$$
+\langle\operatorname{det} \mathbf{A}\rangle_{J}=\prod_{i}\left(1-m_{i}^{2}\right)^{-1} \exp \left(\frac{1}{2} N \beta^{2} J^{2}(1-q)^{2}\right)
+$$
+
+a positive quantity. This justifies a posteriori our earlier assumption that the modulus signs on the Jacobian can be dropped. The positivity of $\operatorname{det} \mathbf{A}$ suggests that nearly all solutions of the TAP equations are minima of the TAP free energy. This lends credence to our identification of TAP solutions as metastable states. At $T=0$ the TAP equations reduce to $m_{i}=\operatorname{sgn}\left(\sum_{j} J_{i j} m_{j}\right)$, and the identification is unambiguous in the sense that all solutions are stable against single spin-flips.
+
+For the case $B=0$, we have solved equations (17) numerically over the entire temperature range $0 \leqslant T \leqslant T_{\mathrm{c}}$. The total number of solutions $N_{\mathrm{s}}$ is obtained by setting $u=0$ (this removes the constraint imposed by the second delta function in equation (4)). The result is plotted in the form $N^{-1}\left\langle\ln N_{\mathrm{s}}\right\rangle_{J}$ against $T / T_{\mathrm{c}}$ in figure 1 (the justification for placing the average outside the logarithm is given later). The variables $q, \lambda, \Delta, f$ thus obtained from equations (17) are appropriate to averages over all the TAP solutions. Close to $T_{\mathfrak{c}}$, analytic solutions may be obtained:
+
+\begin{align*}
+N^{-1}\left\langle\ln N_{\mathrm{s}}\right\rangle_{J} & =(8 / 81) t^{6}+\mathrm{O}\left(t^{7}\right) \\
+q & =t+t^{2}-\frac{5}{9} t^{3}+\mathrm{O}\left(t^{4}\right) \\
+\Delta & =\frac{2}{3} t^{2}+\frac{10}{9} t^{3}+\mathrm{O}\left(t^{4}\right) \\
+\lambda & =\frac{2}{3} t^{2}+\frac{8}{9} t^{3}+\mathrm{O}\left(t^{4}\right) \\
+f & =-\ln 2-\frac{1}{4} \beta^{2} J^{2}+\frac{1}{6} t^{3}+\frac{11}{24} t^{4}+(79 / 90) t^{5}+\mathrm{O}\left(t^{6}\right)
+\end{align*}
+
+where $t=1-T / T_{\mathrm{c}}$. These values are, in fact, characteristic of the overwhelming majority of all TAP solutions, since the integral for the total number
+
+\[
+N_{\mathrm{s}}=\int \mathrm{d} f N_{\mathrm{s}}(f)=\int \mathrm{d} f \exp \left\{N\left(N^{-1} \ln N_{\mathrm{s}}(f)\right)\right\}
+\]
+
+is dominated by a single value of $f$. (The equilibrium free energy, on the other hand, the lowest free energy for which TAP solutions exist, is determined from $\left\langle\ln N_{s}(f)\right\rangle_{J}=0$ and cannot be calculated with the present methods.)
+
+At $T=0$, the number of metastable states may be obtained as the zero-temperature limit of the present theory, or by working directly with the equations $m_{i}=\operatorname{sgn}\left(\sum_{j} J_{i j} m_{j}\right)$. Either method gives $N^{-1}\left\langle\ln N_{\mathrm{s}}\right\rangle_{J}=0 \cdot 1992$ at $T=0$, a result obtained independently by Tanaka and Edwards (1980) and by de Dominicis et al (1980), who have also obtained some of equations (18).
+
+Consider now the effect of taking 'logarithmic' rather than 'direct' averages-in principle we should calculate $\left\langle\ln N_{\mathrm{s}}(f)\right\rangle_{J}$ rather than $\ln \left\langle N_{\mathrm{s}}(f)\right\rangle_{J}$, since $\ln N_{\mathrm{s}}(f)$ is proportional to the size $N$ of the system. The calculation utilises the standard replica trick, $\ln N_{\mathrm{s}}=\lim _{n \rightarrow 0}\left(N_{\mathrm{s}}^{n}-1\right) / n$, and $\left\langle N_{\mathrm{s}}^{n}(f)\right\rangle_{J}$ is calculated via simple generalisation of equation (4). Assuming no replica symmetry-breaking, one needs to introduce three new order parameters $\hat{q}, \eta, \rho$ which couple to quantities which are off-diagonal in the replica space. Details of the calculation will be presented elsewhere. The final result is (setting $B=0$ as before)
+
+\begin{align*}
+N^{-1}\left\langle\ln N_{s}(f)\right\rangle_{J} & =\max \left\{-\Delta(1-q)-\Delta^{2} / 2 \beta^{2} J^{2}+\rho[\beta J(1-q)+\Delta / \beta J]\right. \\
+& \left.-\lambda q-u f-\frac{1}{2} \eta(q-\hat{q})+\iint_{-\infty}^{\infty} \frac{\mathrm{d} x \mathrm{~d} y}{2 \pi} \exp \left[-\frac{1}{2}\left(x^{2}+y^{2}\right)\right] \ln I\right\}
+\end{align*}
+
+where
+
+\begin{gathered}
+I=\int_{-1}^{1} \frac{\mathrm{d} m}{(2 \pi)^{1 / 2} \beta J(q-\hat{q})^{1 / 2}} \frac{1}{1-m^{2}} \exp \left\{-\frac{\left(\tanh ^{-1} m-\Delta m+\beta J \hat{q}^{1 / 2} x\right)^{2}}{2 \beta^{2} J^{2}(q-\hat{q})}\right. \\
+\left.+\lambda m^{2}+u f(m)+\frac{m}{(\widehat{q})^{1 / 2}}\left[\rho x+\left(\eta \hat{q}-\rho^{2}\right)^{1 / 2} y\right]\right\} .
+\end{gathered}
+
+This reduces to our previous result, equations (15) and (16), with $B=0$, when $\eta, \rho, \hat{q}$ are set zero (in that order). The order parameters $q$ and $\hat{q}$ have the physical significance
+
+\[
+q=\left\langle\left\langle m_{i}^{2}\right\rangle_{\mathrm{s}}\right\rangle_{J}, \quad \hat{q}=\left\langle\left\langle m_{i}\right\rangle_{\mathrm{s}}^{2}\right\rangle_{J}
+\]
+
+where $\langle\rangle_{s}$ means an average over solutions with the given free energy $f$. Thus it is $\hat{q}$, rather than q, which should be regarded as the Edwards-Anderson order parameter $\left.\left\langle S_{i}\right\rangle^{2}\right\rangle_{J}$ for this problem.
+
+Setting to zero the derivatives of $N^{-1}\left\langle\ln N_{\mathrm{s}}(f)\right\rangle_{J}$ with respect to $q, \Delta, \lambda, u, \hat{q}, \eta, \rho$ determines these parameters as a function of $f$. There are trivial solutions with $\hat{q}=q$ corresponding once more to the solutions of Sherrington and Kirkpatrick and of Sommers, although the interpretation is now different (for example, evaluation of $N^{-1}\left\langle\ln N_{\mathrm{s}}\right\rangle_{J}$ for the Sommers solution now gives a negative result). Solution of the seven coupled equations for the non-trivial solutions is a formidable task, even numerically. We believe, however, that replica symmetry breaking will be required as soon as the off-diagonal order parameters $\hat{q}, \eta, \rho$ become non-zero.
+
+The free energy below which off-diagonal order develops can be determined by analysing the stability of equations (17) against off-diagonal fluctuations. Choosing $u$ (instead of $f$ ) as independent variable for convenience we find (details elsewhere) that, provided $u$ exceeds a critical value $u_{\mathrm{c}}=-\frac{5}{6} t+\mathrm{O}\left(t^{2}\right)$, or equivalently that $f$ satisfies
+
+\[
+f \geqslant f_{\mathrm{c}}=-\ln 2-\frac{1}{4} \beta^{2} J^{2}+\frac{1}{6} t^{3}+\frac{11}{24} t^{4}+(133 / 180) t^{5}+\mathrm{O}\left(t^{6}\right)
+\]
+
+there is no off-diagonal ordering. This justifies our previous analysis of the case $u=0$ (and that of Tanaka and Edwards 1980). The vanishing of the off-diagonal order parameters has the implication, via equation (20), that the TAP solutions for $f \geqslant f_{\mathrm{c}}$ are uncorrelated. For $f<f_{\mathfrak{c}}$, the off-diagonal order parameters become non-zero and correlations develop between solutions. Close to $T_{\mathrm{c}}$ one finds, for $u \geqslant u_{\mathrm{c}}$,
+
+\begin{align*}
+N^{-1}\left\langle\ln N_{\mathrm{s}}(f)\right\rangle_{J} & =\frac{8}{81} t^{6}-\frac{1}{12} u^{2} t^{4} \\
+q & =t+t^{2}-\frac{5}{9} t^{3}+\frac{1}{3} u t^{2} \\
+f & =-\ln 2-\frac{1}{4} \beta^{2} J^{2}+\frac{1}{6} t^{3}+\frac{11}{24} t^{4}+(79 / 90) t^{5}+\frac{1}{6} u t^{4} .
+\end{align*}
+
+If one assumes that there is no breaking of the replica symmetry, one can solve equations (19) and (20) for $u\left\langle u_{\mathrm{c}}\right$ and choose $u$ such that $\left\langle\ln N_{\mathrm{s}}(f)\right\rangle_{J}=0$, corresponding to the lowest free energy consistent with the existence of TAP solutions. One then finds $q=t+\mathrm{O}\left(t^{2}\right)$ and $\hat{q}=0.3471 t+\mathrm{O}\left(t^{2}\right)$, whereas intuitively one expects $\hat{q}=q$ for this lowest free energy. This is the origin of our belief that replica symmetry breaking is needed in this region, although a detailed stability analysis is needed to verify this.
+
+For $T=0$, we have calculated $\left\langle N_{\mathrm{s}}(E)\right\rangle_{J}$, where $N_{\mathrm{c}}(E)$ is the density of metastable states with energy $N E$, by averaging over solutions of the equations $m_{i}=\operatorname{sgn}\left(\sum_{j} J_{i j} m_{j}\right)$.
+
+A stability analysis shows that off-diagonal order parameters vanish (i.e. the metastable states are uncorrelated) for $E \geqslant E_{\mathrm{c}}=-0.672 J$, and $N^{-1}\left\langle\ln N_{\mathrm{s}}\left(E_{\mathrm{c}}\right)\right\rangle_{J}=0.1254$. The energy for which the density of metastable states is maximal is $E_{m}=-0.506 \mathrm{~J}$, and $N^{-1}\left\langle\ln N_{\mathrm{s}}\left(E_{m}\right)\right\rangle_{J}=0.1992$. The maximum energy of metastable states is $E_{u}=-0.286 J$. The complete function $N^{-1}\left\langle\ln N_{\mathrm{s}}(E)\right\rangle_{\mathrm{J}}$ is given in figure 2. If the theory without offdiagonal order parameters is continued into the unstable region (broken curve in figure 2) one finds that $N^{-1} \ln \left\langle N_{\mathrm{s}}(E)\right\rangle_{J}$ vanishes at $E_{l}=-0.791 \mathrm{~J}$.
+** TAP equations for the DBM
+We start with the Hamiltonian
+
+\begin{align*}
+H_{\boldsymbol{\theta}} (\boldsymbol{S}) = 
+- \frac{1}{2} \sum_{l=0}^{L} \sum_{i=1}^{M_i} S_{il} \left[ \sum_{j=1}^{M_{l+1}} J_{ijl (l+1)} S_{j (l+1)} (1-\delta_{lL}) + \sum_{j=1}^{M_{l-1}} J_{ijl (l-1)} S_{j (l-1)} (1-\delta_{l0}) \right]
+\end{align*}
+
+The *TAP* equation is
+
+\begin{align*}
+&G_{il} \equiv \tanh^{-1} m_{il} +\beta^2 J_l^2 \left( \left[ 1 - q_{(l+1)} \right] + \left[ 1 - q_{(l-1)} \right] \right) m_{il} - \beta \sum_{j} J_{ij l (l+1)} m_{j (l+1)} - \beta \sum_{j} J_{ij l (l-1)} m_{j (l-1)} \\
+&\qquad \qquad \equiv g(m_{il}) - \beta \sum_{j} J_{ij l (l+1)} m_{j (l+1)} - \beta \sum_{j} J_{ij l (l-1)} m_{j (l-1)} = 0
+\end{align*}
+
+obtained by extremizing the free energy
+
+\begin{align*}
+-\beta G_\beta(\mathbf{m})= & -\sum_l \sum_i\left(\frac{1+m_{il}}{2} \ln \frac{1+m_{il}}{2}+\frac{1-m_{il}}{2} \ln \frac{1-m_{il}}{2}\right) \\
+&- \frac{\beta}{2} \sum_{l} \sum_{i} m_{il} \left[ \sum_{j} J_{ij l (l+1)} m_{j (l+1)} + \sum_{k} J_{ik l (l-1)} m_{k (l-1)} \right] \\
+&+\frac{\beta^2}{4} \sum_{l} \sum_{i} \left( 1 - m_{il}^2 \right) \left[ \sum_{j} J_l^2 \left( 1 - m_{j (l+1)}^2 \right) + \sum_j J_l^2 \left( 1 - m_{j (l-1)}^2 \right) \right]
+\end{align*}
+
+We can write the free energy as a sum over single-sites:
+
+ \begin{align*}
+&f_\beta(\mathbf{m}) = N^{-1} \left(\sum_{l=0}^{L} \alpha_l \right)^{-1} \sum_l \sum_i f (m_{il}) = \\
+&\quad \sum_{l=0}^{L} \sum_{i=1}^{\alpha_l N} \Bigg ( - \ln 2 + \frac{1}{2} m_{il} \tanh^{-1} m_{il} - \frac{\beta^2 J_l^2}{4} \left( 1 - q_l q_{(l+1)} \right) - \frac{\beta^2 J_l^2}{4} \left( 1 - q_l q_{(l-1)} \right) + \frac{1}{2} \ln \left( 1 - m_{il}^2 \right) \Bigg )
+\end{align*}   
+
+
+\begin{align*}
+&N_{\mathrm{s}}(f) = N^2 \left(\sum_{l=1}^{L} \alpha_l \right)^2 \prod_l \prod_i \delta\left(G_{il} \right) \left \vert \operatorname{det} \boldsymbol{A} \right \rvert \int_0^1 \prod_l \mathrm{~d} q_{l} \int_{-1}^1 \prod_{l} \prod_{i} \mathrm{~d} m_{il} \\ 
+&\qquad \qquad \times
+\delta\left(\left[\sum_{l=0}^{L} \alpha_l \right] N q_l -\sum_l \sum_{i=1}^{\alpha_l N} m_{il}^2\right)
+\delta\left(\left[\sum_{l=0}^{L} \alpha_l \right] N f- \sum_l \sum_{i=1}^{\alpha_l N} f\left(m_{il} \right)\right) 
+\end{align*}
+
+where \(\left \lvert \operatorname{det} \boldsymbol{A} \right \rvert\) normalizes the delta functions. The matrix elements of \(\boldsymbol{A}\) are given by
+
+\begin{align*}
+A_{ijll^{\prime}} = \frac{\partial G_{i l}}{\partial m_{j l^{\prime}}} = &\left[\left(1 - m_{il}^2\right)^{-1} + \beta^2 J_l^2 \left( \left[ 1 - q_{(l+1)} \right] + \left[ 1 - q_{(l-1)} \right] \right) \right] \delta_{ij} \delta_{ll'} \\
+&- \beta J_{ij}^{l(l+1)} \delta_{l(l'+1)} - \beta J_{ij}^{l(l-1)} \delta_{l(l'-1)} \equiv a_{il} \delta_{ij} \delta_{l l^{\prime}} - \beta J_{ij}^{l(l+1)} \delta_{l(l'+1)} - \beta J_{ij}^{l(l-1)} \delta_{l(l'-1)}
+\end{align*}
+
+Using the integral representation of the delta function
+
+\begin{align*}
+&\left \langle N_{\mathrm{s}}(f) \right \rangle_{J} = 
+N^2
+\vert \operatorname{det} \mathbf{A} \vert 
+\left( \sum_{l=0}^{L} \alpha_l \right)^2
+\int_{-\mathrm{i}\infty}^{\mathrm{i}\infty} \prod_{l} \frac{\mathrm{d}\lambda_l}{2\pi\mathrm{i}} \int_{-\mathrm{i}\infty}^{\mathrm{i}\infty} \prod_{l} \frac{\mathrm{d}u_l}{2\pi\mathrm{i}} 
+\int_0^1 \prod_l \mathrm{~d} q_{l} 
+\int_{-1}^1 \prod_{l} \prod_{i=1}^{\alpha_l N} \mathrm{~d} m_{il}  \\
+&\qquad \qquad \qquad \times 
+\int_{-\mathrm{i}\infty}^{\mathrm{i}\infty} \prod_{l} \prod_{i=1}^{\alpha_l N} \frac{\mathrm{d}x_{il}}{2\pi\mathrm{i}} 
+\int_{-\infty}^{\infty} \prod_l \left(\frac{\alpha_l N}{2 \pi J_l^2}\right) \prod_{ij} \mathrm{d} J_{ijl(l+1)} \prod_{ij} \mathrm{d} J_{ijl(l-1)} P \left( J_{ijl l^{\prime}} \right)\\
+&\qquad \qquad \qquad \qquad \times 
+\exp \Bigg \{ - N \left[ \sum_l \alpha_l \left(\lambda_l q_l + u_l f\right) + \sum_l \Bigg [ 
+\lambda_l \sum_{i=1}^{\alpha_l N} m_{il}^2 + u_l \sum_{i=1}^{\alpha_l N} f\left(m_{il}\right) \Bigg ] \\
+&\qquad \qquad \qquad \qquad +
+\sum_{i=1}^{\alpha_l N} x_{il} g(m_{il}) - \beta \sum_{ij} J_{ijl(l+1)} x_{il} m_{j(l+1)} - \beta \sum_{ij} J_{ijl(l-1)} x_{il} m_{j(l-1)} \Bigg ] \Bigg \}
+\end{align*}
+
+Deal with the \(\left \lvert \operatorname{det} \boldsymbol{A} \right \rvert\) by first arguing that the validity of everything we're doing is in a region of phase space where the minima dominate and thus the Hessian is /assumed/ to be positive definite. This gets rid of the modulus. Then use the identity \(\ln \operatorname{det} \hat{A} = \operatorname{tr} \ln \hat{A}\), valid for arbitrary non-singular operators \(\hat{A}\) to write
+
+\begin{align*}
+&\left \langle N_{\mathrm{s}}(f) \right \rangle_{J} = 
+N^2
+\left( \sum_{l=0}^{L} \alpha_l \right)^2
+\int_{-\mathrm{i}\infty}^{\mathrm{i}\infty} \prod_{l} \frac{\mathrm{d}\lambda_l}{2\pi\mathrm{i}} \int_{-\mathrm{i}\infty}^{\mathrm{i}\infty} \prod_{l} \frac{\mathrm{d}u_l}{2\pi\mathrm{i}} 
+\int_0^1 \prod_l \mathrm{~d} q_{l} 
+\int_{-1}^1 \prod_{l} \prod_{i=1}^{\alpha_l N} \mathrm{~d} m_{il}  \\
+&\qquad \times 
+\int_{-\mathrm{i}\infty}^{\mathrm{i}\infty} \prod_{l} \prod_{i=1}^{\alpha_l N} \frac{\mathrm{d}x_{il}}{2\pi\mathrm{i}} 
+\int_{-\infty}^{\infty} \prod_l \left(\frac{\alpha_l N}{2 \pi J_l^2}\right) \prod_{ij} \mathrm{d} J_{ijl(l+1)} \prod_{ij} \mathrm{d} J_{ijl(l-1)} P \left( J_{ijl l^{\prime}} \right)\\
+&\qquad \qquad \times 
+\exp \Bigg \{ - N \sum_l \alpha_l \left(\lambda_l q_l + u_l f\right) + \sum_l \Bigg [ 
+\lambda_l \sum_{i=1}^{\alpha_l N} m_{il}^2 + u_l \sum_{i=1}^{\alpha_l N} f\left(m_{il}\right) \Bigg ] \\
+&\qquad \qquad \qquad +
+\sum_{i=1}^{\alpha_l N} x_{il} g(m_{il}) - \beta \sum_{ij} J_{ijl(l+1)} x_{il} m_{j(l+1)} 
+-\beta \sum_{ij} J_{ijl(l-1)} x_{il} m_{j(l-1)} \\
+&\qquad \qquad \qquad +
+\sum_l \sum_{ij} \ln \left[\left(1 - m_{il}^2\right)^{-1} + \beta^2 J_l^2 \left( \left[ 1 - q_{(l+1)} \right] + \left[ 1 - q_{(l-1)} \right] \right) - \beta J_{ij}^{l (l+1)} - \beta J_{ij}^{l (l-1)} \right] \Bigg ] \Bigg \}
+\end{align*}
+
+\begin{align*}
+&\mathcal{J} (q, \thinspace m, \thinspace x) \equiv \\
+&\quad \int_{-\infty}^{\infty} \prod_l \left(\frac{\alpha_l N}{2 \pi J_l^2}\right) \prod_{ij} \mathrm{d} J_{ij}^{l(l+1)} \prod_{ij} \mathrm{d} J_{ij}^{l(l-1)} P \left( J_{ijl l^{\prime}} \right)\\
+&\times 
+\exp \left \lbrace - 
+\sum_l \left[ \sum_{ij} \ln \left( \left[1 - m_{il}^2\right]^{-1} + \beta^2 J_l^2 \left[1 - q_{(l+1)} - q_{(l-1)}\right] - \beta J_{ij}^{l (l+1)} - \beta J_{ij}^{l (l-1)} \right) \right] \Bigg \} \\
+&\qquad \qquad \times 
+\exp \left \lbrace - 
+\sum_l \left[
+\sum_{ij} \frac{J_{ijl (l+1)}^2}{2 J_l^2} + \beta \sum_{ij} J_{ijl(l+1)} x_{il} m_{j(l+1)} \right]
+\right \rbrace \\
+&\quad \qquad \qquad \times 
+\exp \left \lbrace - 
+\sum_l \left[
+\sum_{ij} \frac{J_{ijl (l-1)}^2}{2 J_l^2} + \beta \sum_{ij} J_{ij l(l-1)} x_{il} m_{j(l-1)} \right] 
+\right \rbrace \\
+&\qquad =
+\left[ \left( 1 - m_{il}^2 \right)^{-1} + \beta^2 J_l^2 \left[1 - q_{(l+1)} - q_{(l-1)}\right] \right] \exp \left \lbrace \sum_l \dfrac{\beta^2 J_l^2}{4} \left[ q_{(l+1)} + q_{(l-1)} \right] \sum_{i} x_{il}^2 \right \rbrace
+\end{align*}
+
+\begin{align*}
+&\mathcal{X} \left( q, \thinspace m \right) \equiv \int_{-\mathrm{i}\infty}^{\mathrm{i}\infty} \prod_{l} \prod_{i=1}^{\alpha_l N} \frac{\mathrm{d}x_{il}}{2\pi\mathrm{i}} \times \mathcal{J} (x_{il}) \times 
+\exp \left \lbrace - 
+\sum_l \left[ 
+\sum_i^{\alpha_l N} x_{il} g (m_{il}) \right \rbrace \\
+&\qquad \qquad
+= \prod_{l} \prod_{i=1}^{\alpha_l N} 
+\left[ \left( 1 - m_{il}^2 \right)^{-1} + \beta^2 J_l^2 \left(1 - q_{(l+1)} - q_{(l-1)}\right) \right] \\
+&\qquad \qquad \qquad \qquad
+\times \left( \frac{2\pi}{\beta^2 J_l^2 [q_{(l+1)} + q_{(l-1)}]} \right)^{1/2} 
+\exp \left \lbrace \frac{g^2(m_{il})}{\beta^2 J_l^2 [q_{(l+1)} + q_{(l-1)}]} \right \rbrace.
+\end{align*}
+
+
+\begin{align*}
+&\mathcal{M} \left( q \right) = N^2 \left( \sum_{l=0}^{L} \alpha_l \right)^2
+\int_{-\mathrm{i}\infty}^{\mathrm{i}\infty} \prod_{l} \frac{\mathrm{d}\lambda_l}{2\pi\mathrm{i}} \int_{-\mathrm{i}\infty}^{\mathrm{i}\infty} \prod_{l} \frac{\mathrm{d}u_l}{2\pi\mathrm{i}} 
+\int_0^1 \prod_l \mathrm{~d} q_{l} \\
+&\qquad \qquad \qquad \times
+\prod_l \int_{-1}^1 \frac{\mathrm{~d} m_l}{\sqrt{2 \pi}} \times \mathcal{X} (m_l) \times \exp \left( \sum_l \left[ \lambda_l m_l^2 + u_l f \left(m_l\right) \right] \right) 
+\end{align*}
+
+\begin{align*}
+\left \langle N_{\mathrm{s}}(f) \right \rangle_{J} &= 
+\int_{-\mathrm{i}\infty}^{\mathrm{i}\infty} \prod_{l} \frac{\mathrm{d}\lambda_l}{2\pi\mathrm{i}} \int_{-\mathrm{i}\infty}^{\mathrm{i}\infty} \prod_{l} \frac{\mathrm{d}u_l}{2\pi\mathrm{i}} 
+\int_0^1 \prod_l \mathrm{~d} q_{l} \times \mathcal{M} (q) \times \exp \left( - N \sum_l \alpha_l \left(\lambda_l q_l + u_l f \right) \right) \\
+\end{align*}
+
+Evaluation is via steepest descent
+
+\begin{align*}
+&\left \langle N_{\mathrm{s}}(f) \right \rangle_{J} \approx \thinspace \exp \left \lbrace N \sum_l \alpha_l \left( - \lambda_l q_l - u_l f - (B_l + \Delta_l) [1 - q_{(l+1)} - q_{(l-1)}] + \dfrac{B_l^2 - \Delta_l^2}{2 \beta^2 J_l^2} + \ln I_l \right) \right \rbrace
+\end{align*}
+
+where
+
+\begin{align*}
+I_l &= \int_{-1}^1 \frac{\mathrm{~d} m_l}{\beta J_l \sqrt{2 \pi \left[ q_{(l+1)} + q_{(l-1)} \right]}} 
+\left( \dfrac{1}{1-m_l^2} + B_l \right) \\
+&\qquad \qquad \qquad 
+\exp \left( \sum_l \left[ \lambda_l m_l^2 + u_l f \left(m_l\right) - \frac{\left(\tanh^{-1} m_l - m_l \Delta_l\right)^2}{2 \beta^2 J^2 \left[ q_{(l-1)} + q_{(l+1)} \right]} \right] \right) 
+\end{align*}
+
+The extremum is over \(q_{(l-1)}, q_{(l+1)}, \lambda_l, u_l, B_l, \Delta_l\) /for each layer/. So if the \(L\) is the number of hidden layers, then locating the saddle point is an extremization over \(6L\) parameters.
+
+* Complexity
+A Hamiltonian inspired by the deep Boltzmann machine (DBM) with \(L\) hidden layers and periodic boundary conditions \(l \equiv (l + L + 1) \mod (L+1)\) is
+
+\begin{equation*}
+H_{\boldsymbol{J}, \boldsymbol{N}} (\boldsymbol{\sigma}) = - \sum_{l=0}^{L} \sum_{\lvert l - k \rvert = 1} \sum_{i=1}^{N_k}
+\sum_{j=1}^{N_k} \sigma_{ik} J_{ijkl} \sigma_{jl}.
+\end{equation*}
+
+We /assume/ that coefficients for the exchange interactions between the spins of layer \(l\) and \(l+1\) are   distributed according to the density function
+
+\begin{equation*}
+P(J_{ijl}) \equiv \sqrt{\dfrac{\widehat{N}_{l}}{2 \pi J^2}} \exp \left \lbrace - \dfrac{\widehat{N}_{l}}{2 J^2} \left( J_{ijl} - \dfrac{J_0}{\widehat{N}_{l}} \right)^{2} \right \rbrace
+\end{equation*}
+
+where \(\widehat{N}_{l} \equiv \sqrt{N_l N_{l+1}\).We will denote cumulants of some quantity with respect to this distribution with \([\cdots]\).
+
+For later use, we introduce a number of geometric parameters - the /total spin number/, the /layer density/ and two-way /inter-layer ratios/
+
+\begin{equation*}
+N \equiv \sum_{l=0}^{L} N_l,
+\qquad
+\alpha_l \equiv \frac{N_l}{N},
+\qquad
+\gamma_{l}^{2} \equiv \dfrac{N_{l+1}}{N_{l}},
+\qquad
+\nu_{l}^{2} \equiv \dfrac{N_{l-1}}{N_{l}},
+\end{equation*}
+
+which yield trivial identities
+
+\begin{align*}
+\sum_{l=0}^{L} \alpha_l = 1,
+\qquad
+\frac{\gamma_{l}}{\nu_{l}} = \sqrt{\frac{\alpha_{l+1}}{\alpha_{l-1}}}
+\qquad
+\widehat{N}_{l} = N \sqrt{\alpha_l \alpha_{(l+1)}}.
+\end{align*}
+
+With this construction, the inherent structures (IS) of the DBM are defined as the configurations $\{\boldsymbol{\sigma}\}_{\text {IS }}$ for which
+$$
+0>\epsilon_{i k}=-\sigma_{i k} \left( \sum_{\lvert l - k \rvert = 1} \sum_{j=1}^{N_{l}} J_{ijkl} \sigma_{j l}\right)
+$$
+
+for all possible values of $i$ and $k$, i.e., the configurations that are stable under a single spin-flip. A construction for the number of inherent structures is
+
+\[
+\mathcal{N}(\boldsymbol{J}, \boldsymbol{N})=\operatorname{Tr} \int_0^{\infty} \prod_{k=0}^L \prod_{i=1}^{N_k} \mathrm{~d} \epsilon_{ik} \prod_{k=0}^L \prod_{i=1}^{N_k} \delta\left(\epsilon_{ik}- \sum_{\lvert l - k \rvert = 1} \sum_{j=1}^{N_{l}} \sigma_{i k} J_{ijkl} \sigma_{j l}\right)
+\]
+
