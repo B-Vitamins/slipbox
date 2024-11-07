@@ -3,7 +3,7 @@
 :END:
 #+TITLE: OpenAlex Topic Classification Whitepaper
 #+AUTHOR: OpenAlex
-#+FILETAGS: :fleeting:
+#+FILETAGS: :fleeting:openalex:
 #+SETUPFILE: ~/.config/emacs/setup/setupfile.org
 
 This article describes the process that OpenAlex uses to assign topics to works in our database. This system was built on top of the recently released classifications from CWTS ([[https://www.leidenmadtrics.nl/articles/an-open-approach-for-classifying-research-publications][An open approach for classifying research publications]]) which provided an excellent labeled dataset [cite:@VanEck2024] that could be used for training a model. OpenAlex fine-tuned the multilingual BERT model and integrated that into a larger deep learning model that makes use of additional information such as the journal name and citation graph features. The end result is a model that can accurately predict topics using title, abstract, citations, and journal name.
