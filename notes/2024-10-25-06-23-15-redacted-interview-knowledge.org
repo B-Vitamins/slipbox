@@ -91,7 +91,73 @@ Examples of bad transcodes:
 * Torrenting
 BitTorrent is a system that allows users to share data with each other. Information about the data you want to download is held in a *.torrent* file, and other people who have added the same .torrent file in their torrent client are called peers. When you download a file, you are *leeching* from other peers who already have the data. When you finish downloading the file and make yourself available to upload, you are *seeding* the data to other peers. Although you may have many files seeding, you will not receive upload credit until another peer leeches from you. In other words, you will not gain upload credit for just seeding torrents, though your required ratio will be lower than if you were not seeding torrents. It is possible to seed and leech at the same time because BitTorrent clients download chunks of data, and as soon as your BitTorrent client downloads one chunk of data it may be seeded to other peers. BitTorrent uses a specific protocol based on upload speeds and the number of other peers in order to choose which pieces of the torrent to download from which peer.
 ** Clients
-A *BitTorrent client* is a program that allows you to connect to the BitTorrent system. Think of BitTorrent like the internet and BitTorrent clients as internet browsers. There are multiple different internet browsers with different features, but they connect to the same internet. Click [[id:whitelist][here]] for the BitTorrent clients that are on the *whitelist*, or allowed on RED. You will not be able to connect to peers from RED (and thus download data) if your BitTorrent client is not on the whitelist. If there is an "x" behind a decimal, that means that any number can be substituted for the x. For example: qBittorrent 4.1.x means that qBittorrent 4.1.0 4.1.1, 4.1.2, 4.1.3, etc. are all on the whitelist.
+A *BitTorrent client* is a program that allows you to connect to the BitTorrent system. Think of BitTorrent like the internet and BitTorrent clients as internet browsers. There are multiple different internet browsers with different features, but they connect to the same internet. Here is a list of the BitTorrent clients that are on the *whitelist*, or allowed on RED:
+#+begin_comment
+This list is not updated as often as the official one and is most likely outdated. If you have a newer version (eg. qBittorrent), don't assume it's not allowed.
+#+end_comment
+#+begin_verse
+The following BitTorrent Clients are on the RED whitelist:
+- BitTorrent 7.9.x
+- BitTorrent 7.10.x
+- btpd 0.16
+- Deluge 1.3.x
+- Deluge 2.x
+- Halite 0.4.0.4
+- KTorrent 21.x
+- KTorrent 22.x
+- KTorrent 23.x
+- KTorrent 24.x
+- KTorrent 5.1.x
+- Leechcraft 0.6.x
+- libtorrent/1.1.x
+- qBittorrent 3.0.9
+- qBittorrent 3.3.x
+- qBittorrent 4.0.x
+- qBittorrent 4.1.x
+- qBittorrent 4.2.0
+- qBittorrent 4.2.1
+- qBittorrent 4.2.2
+- qBittorrent 4.2.3
+- qBittorrent 4.2.4
+- qBittorrent 4.2.5
+- qBittorrent 4.3.x
+- qBittorrent 4.4.0
+- qBittorrent 4.4.1
+- qBittorrent 4.4.2
+- qBittorrent 4.4.3
+- qBittorrent 4.4.3.1
+- qBittorrent 4.4.4
+- qBittorrent 4.4.5
+- qBittorrent 4.5.2
+- qBittorrent 4.5.3
+- qBittorrent 4.5.4
+- qBittorrent 4.5.5
+- qBittorrent 4.6.0
+- qBittorrent 4.6.1
+- qBittorrent 4.6.2
+- qBittorrent 4.6.3
+- qBittorrent 4.6.4
+- qBittorrent 4.6.5
+- qBittorrent 4.6.6
+- rTorrent 0.9.x / libtorrent 0.13.x
+- Transmission 2.xx
+- Transmission 3.0.0
+- Transmission 4.0.0
+- Transmission 4.0.1
+- Transmission 4.0.2
+- Transmission 4.0.3
+- Transmission 4.0.4
+- Transmission 4.0.5
+- Transmission 4.0.6
+- uTorrent 1.8.x
+- uTorrent 2.0.4
+- uTorrent 2.2.x
+- uTorrent 3.5.3
+- uTorrent 3.5.4
+- uTorrent 3.5.5
+- uTorrent Mac 1.8x
+#+end_verse
+You will not be able to connect to peers from RED (and thus download data) if your BitTorrent client is not on the whitelist. If there is an "x" behind a decimal, that means that any number can be substituted for the x. For example: qBittorrent 4.1.x means that qBittorrent 4.1.0 4.1.1, 4.1.2, 4.1.3, etc. are all on the whitelist.
 ** Ratio
 A *ratio* is a comparison between your downloaded and uploaded data (this is also known as a fraction). Dividing the amount of data you have uploaded by the amount of data you have downloaded gives you your ratio. A ratio of 1.0 is healthy because it means you have downloaded as much data as you have uploaded. Ratios significantly under 1.0 are unhealthy because it means that you are not contributing as much to the community as you are taking from it. If you have a ratio significantly above 1.0 consider adding bounty's on requests or participating in some of the snatching forum threads. We realize that it may be difficult to maintain a ratio on RED, so we have a ratio system to help out our users. Your *required ratio* is the ratio you must maintain in order to be able to keep downloading torrents. The required ratio is calculated based on how many torrents you are seeding and how much data you have downloaded. After a torrent has been added to the client and data has actually been transferred to other peers, the client reports the data statistics to the site. If you add a torrent to the client and no data is transferred, your statistics will not change. If you download a torrent twice, the data counts twice.
 | Amount downloaded | Required ratio (0% seeded) | Required ratio (100% seeded) |
@@ -152,126 +218,7 @@ Although you should use spectral analysis to determine whether a file is a trans
 * CD Ripping and Burning
 CD ripping is a way to extract the music files from a CD. CD burning is a way to make a CD from music files.
 ** Log Files
-A log file is a text file with the file extension ".log". Like its name suggests, it acts as a log of the entire ripping process and it records any errors that may have occurred. You may not, for any reason, modify a log file. It is strictly against the rules and will result in warnings/loss of upload privilege/account disabling. Click [[id:log-file][here]] to see an example of a log file.
-** Cue Files
-A cue file is a text file with the file extension ".cue". Cue files act as a catalog or a table of contents of a CD and allow you to burn a CD identical to an original CD. Click [[id:cue-file][here]] to see an example of a cue file.
-** Suggested CD Ripping Programs
-RED suggests using [[https://exactaudiocopy.de/][Exact Audio Copy (EAC)]] on Windows or Linux (with Wine), and [[https://tmkk.undo.jp/xld/index_e.html][X Lossless Decoder (XLD)]] on macOS. Both EAC and XLD produce high quality rips with sufficient logs to prove that the files are up to standard.
-These programs must be setup according to the guides available on our wiki to ensure quality rips that meet the sites standards.
-* Golden Rules
-The Golden Rules on RED are as follows:
-+ *Do not create more than one account.*
-  Users are allowed one account per lifetime. Do not create additional accounts under any circumstance. If your account is disabled, contact staff in #red-disabled on IRC.
-
-+ *Do not trade, sell, give away, or offer accounts.*
-  If you no longer wish to use your account, send a Staff PM and request that your account be disabled. Note, we do not delete accounts.
-
-+ *Do not share accounts.*
-  Accounts are for personal use only. Granting access to your account in any way (e.g., shared login details, external programs) is prohibited. Invite friends and family if they wish to use the site.
-
-+ *Do not invite bad users.*
-  You are responsible for your invitees. You will not be punished if your invitees fail to maintain required share ratios, but invitees who break golden rules or invite rules will place your invite privileges and account at risk.
-
-+ *Do not trade, sell, publicly give away, or publicly offer invites.*
-  Only invite people you know and trust. Only Staff and designated recruiters may publicly offer invites on other private trackers. Do not offer invites on public websites or any private sites that exist solely for the purpose of invite giveaways, trading, and/or selling. Do not publicly offer invites on IRC channels or other social chat clients. Offering an invite in a private message to a person you do not know or trust is considered a giveaway and against the rules. Responding to public invite requests is prohibited.
-
-+ *Do not request invites or accounts.*
-  Requesting invites to—or accounts on—Redacted or other trackers is prohibited. Invites may be offered, but not requested, in the site's Invites forum (restricted to the Power User class and above). You may request invites by messaging users only when they have offered them in the Invites Forum. Unsolicited invite requests, even by private message, are prohibited.
-
-+ *Do not engage in ratio manipulation.*
-  Transferring buffer—or increasing your buffer—through unintended uses of the BitTorrent protocol or site features (e.g., request abuse) constitutes ratio manipulation. When in doubt, send a Staff PM asking for more information.
-
-+ *Do not report incorrect data to the tracker (i.e., cheating).*
-  Reporting incorrect data to the tracker constitutes cheating, whether it is accomplished through the use of a modified "cheat client" or through manipulation of an approved client.
-
-+ *Do not use unapproved clients.*
-  Your client must be found on the Client Whitelist. You must not use clients that have been modified in any way. Developers interested in testing unstable clients must first receive staff approval.
-
-+ *Do not modify Redacted .torrent files.*
-  Embedding non-Redacted announce URLs in Redacted .torrents is prohibited. Doing so causes false data to be reported and will be interpreted as cheating. This applies to standalone .torrent files and .torrent files that have been loaded into a client.
-
-+ *Do not share .torrent files or your passkey.*
-  Embedded in each Redacted .torrent file is an announce URL containing your personal passkey. Passkeys enable users to report stats to the tracker.
-
-+ *Do not blackmail, threaten, or expose fellow users.*
-  Exposing or threatening to expose private information about users for any reason is prohibited. Private information includes but is not limited to personally identifying information (e.g., names, records, biographical details, photos). Information that hasn't been openly volunteered by a user should not be discussed or shared without permission. This includes private information collected via investigations into openly volunteered information (e.g., Google search results).
-
-+ *Do not scam or defraud.*
-  Scams (e.g., phishing) of any kind are prohibited.
-
-+ *Do not disrespect staff decisions.*
-  Disagreements must be discussed privately with the deciding moderator. If the moderator has retired or is unavailable, you may send a Staff PM. Do not contact multiple moderators hoping to find one amenable to your cause; however, you may contact a site administrator if you require a second opinion. Options for contacting staff include private message, Staff PM, and #red-disabled on IRC.
-
-+ *Do not impersonate staff.*
-  Impersonating staff or official service accounts (e.g., Drone) on-site, off-site, or on IRC is prohibited. This includes impersonating staff of other trackers. Deceptively misrepresenting staff decisions is also prohibited.
-
-+ *Do not backseat moderate.*
-  "Backseat moderation" occurs when users police other users. Confronting, provoking, or chastising users suspected of violating rules—or users suspected of submitting reports—is prohibited. Submit a report if you see a rule violation.
-
-+ *Do not request special events.*
-  Special events (e.g., freeleech, neutral leech, picks) are launched at the discretion of the staff. They do not adhere to a fixed schedule, and may not be requested by users.
-
-+ *Do not harvest user-identifying information.*
-  Using Redacted's services to harvest user-identifying information of any kind (e.g., IP addresses, personal links) through the use of scripts, exploits, or other techniques is prohibited.
-
-+ *Do not use Redacted's services (including the tracker, website, and IRC network) for commercial gain.*
-  Commercializing services provided by or code maintained by Redacted (e.g., Gazelle, Ocelot) is prohibited. Commercializing content provided by Redacted users via the aforementioned services (e.g., user torrent data) is prohibited. Referral schemes, financial solicitations, and money offers are also prohibited.
-
-+ *Do not browse Redacted using Tor.*
-  Browsing or torrenting using Tor is strictly forbidden. Note that certain VPN providers may route your connection via Tor, and this too is forbidden. It is your responsibility to know whether your connection is traveling via Tor. You may browse the site through non-Tor VPNs, private and shared seedboxes, private servers and proxies. However, before doing so, you must either enable 2FA, or whitelist the associated IP(s), limited to 3 per user. See our Proxy/VPN Tips and Multiple IPs articles for more information.
-
-+ *Do not abuse automated site access.*
-  All automated site access must be done through the API. API use is limited to 5 requests within any 10-second window. Scripts and other automated processes must not scrape the site's HTML pages.
-
-+ *Do not autosnatch freeleech torrents.*
-  The automatic snatching of freeleech torrents using any method involving little or no user-input (e.g., API-based scripts, log or site scraping, etc.) is prohibited. See Redacted's Freeleech Autosnatching Policy article for more information.
-
-+ *Do not seek or exploit live bugs for any reason.*
-  Seeking or exploiting bugs in the live site (as opposed to a local development environment) is prohibited. If you discover a critical bug or security vulnerability, immediately report it in accordance with Redacted's Responsible Disclosure Policy. Non-critical bugs can be reported in the Bugs Forum.
-
-+ *Do not publish exploits.*
-  The publication, organization, dissemination, sharing, technical discussion, or technical facilitation of exploits is prohibited at staff discretion. Exploits are defined as unanticipated or unaccepted uses of internal, external, non-profit, or for-profit services. See Redacted's Exploit Policy article for more information. Exploits are subject to reclassification at any time.
-** Dupes
-A *dupe* is a torrent that is a duplicate of another torrent that already exists on the site. RED allows many different pressings of the same CD to coexist, as long the the CDs have different content. For example, International Versions (especially Japanese releases) often have bonus tracks that are not present in the original release or the US release. Uploading a release with bonus tracks when the original release has already been uploaded is not considered a dupe because there is different content on both CDs.
-
-+ Torrents that have the same bitrates, formats, and comparable or identical sampling rates for the same music release are duplicates. If a torrent is already present on the site in the format and bitrate you wanted to upload, you are not allowed to upload it.
-+ Scene and non-scene torrents for the same release, in the same bitrate and format, are dupes.
-+ Rip log information (table of contents, peak levels, and pre-gaps), tracklist, and running order determine distinct editions, not catalog information. Merely having different catalog numbers or CD packaging is not enough to justify a new, distinct edition, though differences in year and label (imprint) do determine distinct releases.
-+ Torrents that have been inactive (not seeded) for two weeks may be trumped by the identical torrent (reseeded) or by a brand new rip or encode of the album. If you have the original torrent files for the inactive torrent, you should reseed those original files instead of uploading a new torrent.
-** Trumps
-The process of replacing a torrent that does not follow the rules with a torrent that does follow the rules is called *trumping*. The most common trumps are format trumps, tag trumps, and folder trumps.
-** Format Trumps
-The following chart shows the hierarchy of format trumps.
-[[file:~/pictures/.images/trumpchart.png][Hierarchy of Format Trumps]]
-At the top of each column but the one on the left are formats that can never be trumped. We recommend that you only upload in these formats in order to prevent your torrents from being trumped by other users. If you have the release in lossless/FLAC, we recommend uploading only FLAC, 320 and V0, as these formats will never be trumped by "better" formats. If you only have the release in some other lossy format/bitrate, e.g. MP3 CBR 224 or AAC 256, then feel free to upload it as long as no "better" formats already exist on the site, but understand that your upload may be trumped in the future. *Never* transcode your lossy files to FLAC, 320 or V0 to prevent them from being format trumped, as the consequences for uploading transcodes are much, much worse.
-*** Lossy Format Trump Rules
-+ If there is no existing torrent of the album in the allowed format you've chosen, you may upload it in any bitrate that averages at least 192 kbps. (This does not apply to V0 - V2 releases)
-+ You may always upload MP3 V0 or MP3 320kbps (CBR) as long as another rip with the same bitrate and format doesn't already exist.
-+ Higher bitrate CBR (Constant Bitrate) and ABR (Average Bitrate) torrents replace lower ones. Once a CBR rip has been uploaded, no CBR rips of that bitrate or lower can be uploaded. In the same manner, once an ABR rip has been uploaded, no ABR rips of that bitrate or lower can be uploaded.
-+ AAC encodes can be trumped by any allowed MP3 format of the same edition and media. (This does not apply to AAC torrents with files bought from the iTunes Store that contain iTunes Exclusive tracks.)
-+ Lossy format torrents with .log files, .cue files, .m3u files, and album artwork do not replace equivalent existing torrents.
-*** Lossless Format Trump Rules
-+ Rips must be taken from commercially pressed or official (artist- or label-approved) CD sources. They may not come from CD-R copies of the same pressed CDs (unless the release was only distributed on CD-R by the artist or label).
-+ A FLAC torrent without a log (or with a log from a non-EAC or non-XLD ripping tool like dBpoweramp or Rubyripper) may be trumped by a FLAC torrent with a log from an approved ripping tool with any score.
-+ A FLAC upload with an EAC or XLD log that scores 100% on the log checker replaces one with a lower score. However, no log scoring less than 100% can trump an already existing one that scores under 100% (for example, a rip with a 99% log cannot replace a rip with an 80% log).
-+ A 100% log rip without a cue sheet can be replaced by a 100% log rip with a noncompliant cue sheet ONLY when the included cue sheet is materially different from "a cue generated from the ripping log." Examples of a material difference include additional or correct indices, properly detected pre-gap lengths, and pre-emphasis flags.
-** Tag Trumps
-*Tag trumps* happen when the original torrent either doesn't have the required tag fields or the information in one of the tag fields is completely wrong or misspelled. In the case of misspelled words, the spelling must be entirely off in order for the tag trump to be considered (for example, missing articles like "the" or "a", or a couple letters being in the wrong order like "lvoe" instead of "love" is not enough for a tag trump).
-+ The required tag fields are: title, album, artist, track number.
-+ Torrent album titles must accurately reflect the actual album titles. Use proper capitalization when naming your albums. Typing the album titles in all lowercase letters or all capital letters is unacceptable and makes the torrent trumpable.
-+ Newly re-tagged torrents trumping badly tagged torrents must reflect a substantial improvement over the previous tags. Small changes that include replacing ASCII characters with proper foreign language characters with diacritical marks (á, é, í, ó, ú, etc.), fixing slight misspellings, or missing an alternate spelling of an artist (excluding "The" before a band name) are not enough for replacing other torrents.
-** Folder Trumps
-*Folder trumps* happen when the original torrent's folder is not named like it should be. Folders should at the very least include the album name, but should hopefully also include the year released and music format. Nested folders are also not allowed.
-+ Music releases must be in a directory that contains the music. This includes single track releases, which must be enclosed in a torrent folder even if there is only one file in the torrent. No music may be compressed in an archive (.rar, .zip, .tar, .iso).
-+ Name your directories with meaningful titles, such as "Artist - Album (Year) - Format." The minimum acceptable is "Album" although you should include more information.
-+ Avoid creating unnecessary nested folders (such as an extra folder for the actual album) inside your properly named directory.
-+ File names must accurately reflect the song titles. You may not have file names like 01track.mp3, 02track.mp3, etc. Torrents containing files that are named with incorrect song titles can be trumped by properly labeled torrents.
-+ Multiple-disc torrents cannot have tracks with the same numbers in one directory. You may place all the tracks for Disc One in one directory and all the tracks for Disc Two in another directory or prepend your file names with disc numbers, e.g. 1-01 - first track title.mp3, etc. if you put all the files in a single folder.
-* Extras
-** Sample Log File
-:PROPERTIES:
-:ID: log-file
-:END:
+A log file is a text file with the file extension ".log". Like its name suggests, it acts as a log of the entire ripping process and it records any errors that may have occurred. You may not, for any reason, modify a log file. It is strictly against the rules and will result in warnings/loss of upload privilege/account disabling. Here is an example of a log file:
 #+NAME: Sample Log File
 #+begin_example
 Exact Audio Copy V1.0 beta 3 from 29. August 2011
@@ -528,10 +475,8 @@ End of status report
 
 ==== Log checksum 763F2940331FFA47700C10A3703F9BB3EB07ED2BCE6F0C66C4A18BAA4D4886E8 ====
 #+end_example
-** Sample Cue File
-:PROPERTIES:
-:ID: cue-file
-:END:
+** Cue Files
+A cue file is a text file with the file extension ".cue". Cue files act as a catalog or a table of contents of a CD and allow you to burn a CD identical to an original CD. Here is an example of a cue file:
 #+NAME: Sample Cue File
 #+begin_example
 REM GENRE Classical
@@ -665,73 +610,115 @@ FILE "17 Danse Macabre, Op. 40.wav" WAVE
     INDEX 00 07:41:43
     INDEX 01 00:00:00
 #+end_example
-** BitTorrent Client Whitelist
-:PROPERTIES:
-:ID: whitelist
-:END:
-#+begin_comment
-This list is not updated as often as the official one and is most likely outdated. If you have a newer version (eg. qBittorrent), don't assume it's not allowed.
-#+end_comment
-The following BitTorrent Clients are on the RED whitelist:
-- BitTorrent 7.9.x
-- BitTorrent 7.10.x
-- btpd 0.16
-- Deluge 1.3.x
-- Deluge 2.x
-- Halite 0.4.0.4
-- KTorrent 21.x
-- KTorrent 22.x
-- KTorrent 23.x
-- KTorrent 24.x
-- KTorrent 5.1.x
-- Leechcraft 0.6.x
-- libtorrent/1.1.x
-- qBittorrent 3.0.9
-- qBittorrent 3.3.x
-- qBittorrent 4.0.x
-- qBittorrent 4.1.x
-- qBittorrent 4.2.0
-- qBittorrent 4.2.1
-- qBittorrent 4.2.2
-- qBittorrent 4.2.3
-- qBittorrent 4.2.4
-- qBittorrent 4.2.5
-- qBittorrent 4.3.x
-- qBittorrent 4.4.0
-- qBittorrent 4.4.1
-- qBittorrent 4.4.2
-- qBittorrent 4.4.3
-- qBittorrent 4.4.3.1
-- qBittorrent 4.4.4
-- qBittorrent 4.4.5
-- qBittorrent 4.5.2
-- qBittorrent 4.5.3
-- qBittorrent 4.5.4
-- qBittorrent 4.5.5
-- qBittorrent 4.6.0
-- qBittorrent 4.6.1
-- qBittorrent 4.6.2
-- qBittorrent 4.6.3
-- qBittorrent 4.6.4
-- qBittorrent 4.6.5
-- qBittorrent 4.6.6
-- rTorrent 0.9.x / libtorrent 0.13.x
-- Transmission 2.xx
-- Transmission 3.0.0
-- Transmission 4.0.0
-- Transmission 4.0.1
-- Transmission 4.0.2
-- Transmission 4.0.3
-- Transmission 4.0.4
-- Transmission 4.0.5
-- Transmission 4.0.6
-- uTorrent 1.8.x
-- uTorrent 2.0.4
-- uTorrent 2.2.x
-- uTorrent 3.5.3
-- uTorrent 3.5.4
-- uTorrent 3.5.5
-- uTorrent Mac 1.8x
+** Suggested CD Ripping Programs
+RED suggests using [[https://exactaudiocopy.de/][Exact Audio Copy (EAC)]] on Windows or Linux (with Wine), and [[https://tmkk.undo.jp/xld/index_e.html][X Lossless Decoder (XLD)]] on macOS. Both EAC and XLD produce high quality rips with sufficient logs to prove that the files are up to standard.
+These programs must be setup according to the guides available on our wiki to ensure quality rips that meet the sites standards.
+* Golden Rules
+The Golden Rules on RED are as follows:
++ *Do not create more than one account.*
+  Users are allowed one account per lifetime. Do not create additional accounts under any circumstance. If your account is disabled, contact staff in #red-disabled on IRC.
 
++ *Do not trade, sell, give away, or offer accounts.*
+  If you no longer wish to use your account, send a Staff PM and request that your account be disabled. Note, we do not delete accounts.
 
++ *Do not share accounts.*
+  Accounts are for personal use only. Granting access to your account in any way (e.g., shared login details, external programs) is prohibited. Invite friends and family if they wish to use the site.
 
++ *Do not invite bad users.*
+  You are responsible for your invitees. You will not be punished if your invitees fail to maintain required share ratios, but invitees who break golden rules or invite rules will place your invite privileges and account at risk.
+
++ *Do not trade, sell, publicly give away, or publicly offer invites.*
+  Only invite people you know and trust. Only Staff and designated recruiters may publicly offer invites on other private trackers. Do not offer invites on public websites or any private sites that exist solely for the purpose of invite giveaways, trading, and/or selling. Do not publicly offer invites on IRC channels or other social chat clients. Offering an invite in a private message to a person you do not know or trust is considered a giveaway and against the rules. Responding to public invite requests is prohibited.
+
++ *Do not request invites or accounts.*
+  Requesting invites to—or accounts on—Redacted or other trackers is prohibited. Invites may be offered, but not requested, in the site's Invites forum (restricted to the Power User class and above). You may request invites by messaging users only when they have offered them in the Invites Forum. Unsolicited invite requests, even by private message, are prohibited.
+
++ *Do not engage in ratio manipulation.*
+  Transferring buffer—or increasing your buffer—through unintended uses of the BitTorrent protocol or site features (e.g., request abuse) constitutes ratio manipulation. When in doubt, send a Staff PM asking for more information.
+
++ *Do not report incorrect data to the tracker (i.e., cheating).*
+  Reporting incorrect data to the tracker constitutes cheating, whether it is accomplished through the use of a modified "cheat client" or through manipulation of an approved client.
+
++ *Do not use unapproved clients.*
+  Your client must be found on the Client Whitelist. You must not use clients that have been modified in any way. Developers interested in testing unstable clients must first receive staff approval.
+
++ *Do not modify Redacted .torrent files.*
+  Embedding non-Redacted announce URLs in Redacted .torrents is prohibited. Doing so causes false data to be reported and will be interpreted as cheating. This applies to standalone .torrent files and .torrent files that have been loaded into a client.
+
++ *Do not share .torrent files or your passkey.*
+  Embedded in each Redacted .torrent file is an announce URL containing your personal passkey. Passkeys enable users to report stats to the tracker.
+
++ *Do not blackmail, threaten, or expose fellow users.*
+  Exposing or threatening to expose private information about users for any reason is prohibited. Private information includes but is not limited to personally identifying information (e.g., names, records, biographical details, photos). Information that hasn't been openly volunteered by a user should not be discussed or shared without permission. This includes private information collected via investigations into openly volunteered information (e.g., Google search results).
+
++ *Do not scam or defraud.*
+  Scams (e.g., phishing) of any kind are prohibited.
+
++ *Do not disrespect staff decisions.*
+  Disagreements must be discussed privately with the deciding moderator. If the moderator has retired or is unavailable, you may send a Staff PM. Do not contact multiple moderators hoping to find one amenable to your cause; however, you may contact a site administrator if you require a second opinion. Options for contacting staff include private message, Staff PM, and #red-disabled on IRC.
+
++ *Do not impersonate staff.*
+  Impersonating staff or official service accounts (e.g., Drone) on-site, off-site, or on IRC is prohibited. This includes impersonating staff of other trackers. Deceptively misrepresenting staff decisions is also prohibited.
+
++ *Do not backseat moderate.*
+  "Backseat moderation" occurs when users police other users. Confronting, provoking, or chastising users suspected of violating rules—or users suspected of submitting reports—is prohibited. Submit a report if you see a rule violation.
+
++ *Do not request special events.*
+  Special events (e.g., freeleech, neutral leech, picks) are launched at the discretion of the staff. They do not adhere to a fixed schedule, and may not be requested by users.
+
++ *Do not harvest user-identifying information.*
+  Using Redacted's services to harvest user-identifying information of any kind (e.g., IP addresses, personal links) through the use of scripts, exploits, or other techniques is prohibited.
+
++ *Do not use Redacted's services (including the tracker, website, and IRC network) for commercial gain.*
+  Commercializing services provided by or code maintained by Redacted (e.g., Gazelle, Ocelot) is prohibited. Commercializing content provided by Redacted users via the aforementioned services (e.g., user torrent data) is prohibited. Referral schemes, financial solicitations, and money offers are also prohibited.
+
++ *Do not browse Redacted using Tor.*
+  Browsing or torrenting using Tor is strictly forbidden. Note that certain VPN providers may route your connection via Tor, and this too is forbidden. It is your responsibility to know whether your connection is traveling via Tor. You may browse the site through non-Tor VPNs, private and shared seedboxes, private servers and proxies. However, before doing so, you must either enable 2FA, or whitelist the associated IP(s), limited to 3 per user. See our Proxy/VPN Tips and Multiple IPs articles for more information.
+
++ *Do not abuse automated site access.*
+  All automated site access must be done through the API. API use is limited to 5 requests within any 10-second window. Scripts and other automated processes must not scrape the site's HTML pages.
+
++ *Do not autosnatch freeleech torrents.*
+  The automatic snatching of freeleech torrents using any method involving little or no user-input (e.g., API-based scripts, log or site scraping, etc.) is prohibited. See Redacted's Freeleech Autosnatching Policy article for more information.
+
++ *Do not seek or exploit live bugs for any reason.*
+  Seeking or exploiting bugs in the live site (as opposed to a local development environment) is prohibited. If you discover a critical bug or security vulnerability, immediately report it in accordance with Redacted's Responsible Disclosure Policy. Non-critical bugs can be reported in the Bugs Forum.
+
++ *Do not publish exploits.*
+  The publication, organization, dissemination, sharing, technical discussion, or technical facilitation of exploits is prohibited at staff discretion. Exploits are defined as unanticipated or unaccepted uses of internal, external, non-profit, or for-profit services. See Redacted's Exploit Policy article for more information. Exploits are subject to reclassification at any time.
+** Dupes
+A *dupe* is a torrent that is a duplicate of another torrent that already exists on the site. RED allows many different pressings of the same CD to coexist, as long the the CDs have different content. For example, International Versions (especially Japanese releases) often have bonus tracks that are not present in the original release or the US release. Uploading a release with bonus tracks when the original release has already been uploaded is not considered a dupe because there is different content on both CDs.
+
++ Torrents that have the same bitrates, formats, and comparable or identical sampling rates for the same music release are duplicates. If a torrent is already present on the site in the format and bitrate you wanted to upload, you are not allowed to upload it.
++ Scene and non-scene torrents for the same release, in the same bitrate and format, are dupes.
++ Rip log information (table of contents, peak levels, and pre-gaps), tracklist, and running order determine distinct editions, not catalog information. Merely having different catalog numbers or CD packaging is not enough to justify a new, distinct edition, though differences in year and label (imprint) do determine distinct releases.
++ Torrents that have been inactive (not seeded) for two weeks may be trumped by the identical torrent (reseeded) or by a brand new rip or encode of the album. If you have the original torrent files for the inactive torrent, you should reseed those original files instead of uploading a new torrent.
+** Trumps
+The process of replacing a torrent that does not follow the rules with a torrent that does follow the rules is called *trumping*. The most common trumps are format trumps, tag trumps, and folder trumps.
+** Format Trumps
+The following chart shows the hierarchy of format trumps.
+[[file:~/pictures/.images/trumpchart.png][Hierarchy of Format Trumps]]
+At the top of each column but the one on the left are formats that can never be trumped. We recommend that you only upload in these formats in order to prevent your torrents from being trumped by other users. If you have the release in lossless/FLAC, we recommend uploading only FLAC, 320 and V0, as these formats will never be trumped by "better" formats. If you only have the release in some other lossy format/bitrate, e.g. MP3 CBR 224 or AAC 256, then feel free to upload it as long as no "better" formats already exist on the site, but understand that your upload may be trumped in the future. *Never* transcode your lossy files to FLAC, 320 or V0 to prevent them from being format trumped, as the consequences for uploading transcodes are much, much worse.
+*** Lossy Format Trump Rules
++ If there is no existing torrent of the album in the allowed format you've chosen, you may upload it in any bitrate that averages at least 192 kbps. (This does not apply to V0 - V2 releases)
++ You may always upload MP3 V0 or MP3 320kbps (CBR) as long as another rip with the same bitrate and format doesn't already exist.
++ Higher bitrate CBR (Constant Bitrate) and ABR (Average Bitrate) torrents replace lower ones. Once a CBR rip has been uploaded, no CBR rips of that bitrate or lower can be uploaded. In the same manner, once an ABR rip has been uploaded, no ABR rips of that bitrate or lower can be uploaded.
++ AAC encodes can be trumped by any allowed MP3 format of the same edition and media. (This does not apply to AAC torrents with files bought from the iTunes Store that contain iTunes Exclusive tracks.)
++ Lossy format torrents with .log files, .cue files, .m3u files, and album artwork do not replace equivalent existing torrents.
+*** Lossless Format Trump Rules
++ Rips must be taken from commercially pressed or official (artist- or label-approved) CD sources. They may not come from CD-R copies of the same pressed CDs (unless the release was only distributed on CD-R by the artist or label).
++ A FLAC torrent without a log (or with a log from a non-EAC or non-XLD ripping tool like dBpoweramp or Rubyripper) may be trumped by a FLAC torrent with a log from an approved ripping tool with any score.
++ A FLAC upload with an EAC or XLD log that scores 100% on the log checker replaces one with a lower score. However, no log scoring less than 100% can trump an already existing one that scores under 100% (for example, a rip with a 99% log cannot replace a rip with an 80% log).
++ A 100% log rip without a cue sheet can be replaced by a 100% log rip with a noncompliant cue sheet ONLY when the included cue sheet is materially different from "a cue generated from the ripping log." Examples of a material difference include additional or correct indices, properly detected pre-gap lengths, and pre-emphasis flags.
+** Tag Trumps
+*Tag trumps* happen when the original torrent either doesn't have the required tag fields or the information in one of the tag fields is completely wrong or misspelled. In the case of misspelled words, the spelling must be entirely off in order for the tag trump to be considered (for example, missing articles like "the" or "a", or a couple letters being in the wrong order like "lvoe" instead of "love" is not enough for a tag trump).
++ The required tag fields are: title, album, artist, track number.
++ Torrent album titles must accurately reflect the actual album titles. Use proper capitalization when naming your albums. Typing the album titles in all lowercase letters or all capital letters is unacceptable and makes the torrent trumpable.
++ Newly re-tagged torrents trumping badly tagged torrents must reflect a substantial improvement over the previous tags. Small changes that include replacing ASCII characters with proper foreign language characters with diacritical marks (á, é, í, ó, ú, etc.), fixing slight misspellings, or missing an alternate spelling of an artist (excluding "The" before a band name) are not enough for replacing other torrents.
+** Folder Trumps
+*Folder trumps* happen when the original torrent's folder is not named like it should be. Folders should at the very least include the album name, but should hopefully also include the year released and music format. Nested folders are also not allowed.
++ Music releases must be in a directory that contains the music. This includes single track releases, which must be enclosed in a torrent folder even if there is only one file in the torrent. No music may be compressed in an archive (.rar, .zip, .tar, .iso).
++ Name your directories with meaningful titles, such as "Artist - Album (Year) - Format." The minimum acceptable is "Album" although you should include more information.
++ Avoid creating unnecessary nested folders (such as an extra folder for the actual album) inside your properly named directory.
++ File names must accurately reflect the song titles. You may not have file names like 01track.mp3, 02track.mp3, etc. Torrents containing files that are named with incorrect song titles can be trumped by properly labeled torrents.
++ Multiple-disc torrents cannot have tracks with the same numbers in one directory. You may place all the tracks for Disc One in one directory and all the tracks for Disc Two in another directory or prepend your file names with disc numbers, e.g. 1-01 - first track title.mp3, etc. if you put all the files in a single folder.
