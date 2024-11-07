@@ -1,0 +1,48 @@
+:PROPERTIES:
+:ID:       c2bdb493-6fac-427f-8785-3847acc43c10
+:END:
+#+TITLE: Orthogonal matrix
+#+FILETAGS: :concept:linalg:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+The definition of an *orthogonal matrix* depends on the notion of a [[id:f86c8666-247e-450b-8185-efd62e16e303][square matrix]], [[id:0d47e29b-541c-437b-a4d6-3d7e7d6a9e16][identity matrix]], and [[id:425bdbda-99c8-4f18-8284-8ea844eed0aa][transpose]].
+
+#+NAME: Orthogonal matrix
+#+begin_definition latex
+An orthogonal matrix is a real square matrix that satisfies
+
+\begin{align*}
+Q^{\mathrm{T}} Q=Q Q^{\mathrm{T}}=I.
+\end{align*}
+
+where \(Q^{\mathrm{T}}\) is the transpose of \(Q\) and \(I\) is the identity matrix.
+#+end_definition
+
+The following corollary depends on the notion of [[id:6764a03f-7428-4357-a45c-57d203fd69f8][orthogonality]] and follows from the definition of an orthogonal matrix.
+
+#+NAME: Orthogonality of columns and rows of a orthogonal matrix
+#+begin_corollary latex
+The columns and rows of an orthogonal matrix are orthogonal vectors.
+#+end_corollary
+
+The following corollary depends on the notion of [[id:54ccf4e4-b753-4557-8510-ffdebea983f6][invertible matrix]] and follows from the definition of an orthogonal matrix.
+
+#+NAME: Inverse of orthogonal matrix
+#+begin_corollary latex
+An orthogonal matrix \(Q\) is necessarily invertible. The inverse \( Q^{-1} \) of \( Q \) is given by its transpose
+\[Q^{-1} = Q^{\top}.\]
+#+end_corollary
+
+The following corollary depends on the notion of the [[id:af5f27b4-3003-45ce-9956-2dd5fc4483c0][determinant]] of a matrix.
+
+#+NAME: Determinant of orthogonal matrix
+#+begin_corollary latex
+The determinant of any orthogonal matrix \( Q \) is either \( + 1 \) or \( -1 \).
+#+end_corollary
+
+#+NAME: Determinant of orthogonal matrix
+#+begin_proof latex
+We have \( Q^{\top} Q = I \). Therefore \( \det (Q^{\top} Q) = \det I = 1 = \det(Q^{\top}) \det(Q) = \det(Q)^2 \). It follows that \( \det (Q) = \pm 1 \). Note that we have used the following properties of the determinant:
+1) \( \det (M N) = \det (M) \det (N) \),
+2) \( \det (M) = \det (M^{\top}) \).
+#+end_proof

@@ -1,0 +1,17 @@
+:PROPERTIES:
+:ID:       43aa39fd-b16a-429b-b59a-408240ae3523
+:END:
+#+TITLE: Discriminant functions
+#+FILETAGS: :literature:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+Seefor a definition.
+
+A *discriminant function* is a function that takes an input vector \(\mathbf{x}\) and assigns it to one of \(K\) classes, denoted \(\mathcal{C}_{k}\).
+
+See [[id:175187dc-36b2-4092-a765-fbe6b8d3084a][discriminant function for two classes]] and [[id:b4c9c483-0471-449f-92b0-3492a45ba5fd][discriminant function for K classes]] for discriminant functions for  for [[id:28d575a5-08f9-4f78-bb0b-b7fedcbb24d3][classification]] problems involving 2 and \( K \) classes respectively.
+
+Also see [[id:2cc0a8c0-b7ce-4329-b79f-8342f3e62373][inference and decision]] and [[id:748061c5-f975-4773-90e4-3a5b35ceb8cd][linear models for classification]].
+
+[[id:431eb2f9-8640-4533-a5f2-a4f5b4d621d0][Least squares for classification]], [[id:1afd1933-4e08-4615-9185-094e1ac3b6ab][Fisher's linear discriminant]] (see also [[id:a315eb27-3cf0-4313-aedc-6d18df3148f3][Fisher's linear discriminant for multiple classes]]), and [[id:124bf23e-b47c-4acb-98f0-5b5fb9f8c85a][perceptron algorithm]] are three approaches for learning the parameters of linear discriminant functions. For the relationship between Fisher's linear discriminant and least squares for classification, see [[id:930b94ff-bdf8-4f69-bb5e-f46387532616][Relation between Fischer's linear discriminant and least squares for classification]].
+

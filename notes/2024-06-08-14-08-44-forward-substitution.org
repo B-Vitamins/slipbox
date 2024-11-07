@@ -1,0 +1,74 @@
+:PROPERTIES:
+:ID:       75018899-025e-4900-a9f7-72bd3135b65b
+:END:
+#+TITLE: Forward substitution
+#+FILETAGS: :concept:linalg:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+For a [[id:fb073a10-364f-4177-bf8e-b5069e95a528][lower triangular matrix]] \( L \), the matrix equation \( L \mathbf{x} = \mathbf{b} \) can be solved using *forward substitution*.
+
+#+NAME: Forward substitution
+#+begin_definition latex
+Let \( L \) be a lower triangular matrix of the form
+
+\begin{align*}
+L=\left[\begin{array}{ccccc}
+\ell_{1,1} & & & & 0 \\
+\ell_{2,1} & \ell_{2,2} & & & \\
+\ell_{3,1} & \ell_{3,2} & \ddots & & \\
+\vdots & \vdots & \ddots & \ddots & \\
+\ell_{n, 1} & \ell_{n, 2} & \ldots & \ell_{n, n-1} & \ell_{n, n}
+\end{array}\right].
+\end{align*}
+
+Consider the matrix equation \( L \mathbf{x} = \mathbf{b} \). The associated system of equations are
+
+\begin{align*}
+\ell_{1,1} x_1 &= b_1, \\
+\ell_{2,1} x_1 + \ell_{2,2} x_2 &= b_2, \\
+& \vdots \\
+\ell_{m,1} x_1 + \ell_{m,2} x_2 + \cdots + \ell_{m,m} x_m &= b_m.
+\end{align*}
+
+The solution for each variable \( x_k \) can be computed sequentially, starting from the first equation:
+
+\begin{align*}
+x_1 &= \frac{b_1}{\ell_{1,1}}, \\
+x_2 &= \frac{b_2 - \ell_{2,1} x_1}{\ell_{2,2}}, \\
+& \vdots \\
+x_m &= \frac{b_m - \sum_{i=1}^{m-1} \ell_{m, i} x_i}{\ell_{m, m}}.
+\end{align*}
+
+This iterative process of solving the system \( L \mathbf{x} = \mathbf{b} \) is referred to as the method of forward substitution.
+#+end_definition
+
+#+BEGIN_COMMENT
+Notice that forward substitution does not require inverting the matrix.
+#+END_COMMENT
+
+A matrix equation in the form \(L \mathbf{x}=\mathbf{b}\) or \(U \mathbf{x}=\mathbf{b}\) is very easy to solve by an iterative process called forward substitution for lower triangular matrices and analogously back substitution for upper triangular matrices. The process is so called because for lower triangular matrices, one first computes \(x_1\), then substitutes that forward into the next equation to solve for \(x_2\), and repeats through to \(x_n\). In an upper triangular matrix, one works backwards, first computing \(x_n\), then substituting that back into the previous equation to solve for \(x_{n-1}\), and repeating through \(x_1\).
+
+
+Forward substitution \([\) edit]
+The matrix equation \(L \mathbf{x}=\mathbf{b}\) can be written as a system of linear equations
+\begin{align*}
+\begin{aligned}
+& \ell_{1,1} x_1=b_1 \\
+& \ell_{2,1} x_1+\ell_{2,2} x_2=b_2 \\
+& \vdots \vdots \\
+& \ell_{m, 1} x_1+\ell_{m, 2} x_2+\cdots+\ell_{m, m} x_m=b_m \\
+&
+\end{aligned}
+\end{align*}
+
+Observe that the first equation \(\left(\ell_{1,1} x_1=b_1\right)\) only involves \(x_1\), and thus one can solve for \(x_1\) directly. The second equation only involves \(x_1\) and \(x_2\), and thus can be solved once one substitutes in the already solved value for \(x_1\). Continuing in this way, the \(k\)-th equation only involves \(x_1, \ldots, x_k\), and one can solve for \(x_k\) using the previously solved values for \(x_1, \ldots, x_{k-1}\). The resulting formulas are:
+\begin{align*}
+\begin{aligned}
+x_1 & =\frac{b_1}{\ell_{1,1}} \\
+x_2 & =\frac{b_2-\ell_{2,1} x_1}{\ell_{2,2}}, \\
+& \vdots \\
+x_m & =\frac{b_m-\sum_{i=1}^{m-1} \ell_{m, i} x_i}{\ell_{m, m}} .
+\end{aligned}
+\end{align*}
+
+A matrix equation with an upper triangular matrix \(U\) can be solved in an analogous way, only working backwards.

@@ -1,0 +1,32 @@
+:PROPERTIES:
+:ID:       af5f27b4-3003-45ce-9956-2dd5fc4483c0
+:END:
+#+TITLE: Properties of the Determinant
+#+FILETAGS: :concept:linalg:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+#+NAME: Determinant of product of square matrices
+#+begin_theorem latex
+Let \( M \) and \( N \) be two \( n \times n \) square matrices. The determinant of the product \( M N \) is equal to the product of the determinants of \( M \) and \( N \), i.e.,
+
+\[\det (MN) = \det (M) \det (N).\]
+#+end_theorem
+
+#+NAME: Determinant of transpose of square matrices
+#+begin_theorem latex
+Let \( M \) be a \( n \times n \) square matrices. The determinant of the transpose \( M^{\top} \) of \( M \) is equal to the determinant of \( M \), i.e.,
+
+\[\det (M^{\top}) = \det (M).\]
+#+end_theorem
+
+#+begin_theorem latex
+Let \( M \) be a \( n \times n \) square matrices. Let \( M_{\text{ex}} \) be a matrix obtained by exchanging any two rows or any two columns of \( M \). The determinant of \( M_{\text{ex}} \) is given by
+
+\[\det (M_{\text{ex}}) = -\det (M).\]
+#+end_theorem
+
+#+begin_theorem latex
+Let \( M \) be a \( n \times n \) square matrices. Let \( M_{\text{a}} \) be a matrix obtained by rescaling one of the rows or columns of \( M \). The determinant of \( M_{\text{a}} \) is given by
+
+\[\det (M_{\text{a}}) = a \det (M).\]
+#+end_theorem

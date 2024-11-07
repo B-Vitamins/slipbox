@@ -1,0 +1,16 @@
+:PROPERTIES:
+:ID:       5cfee3e7-d2da-4284-a982-f8a31c925a00
+:END:
+#+TITLE: Random (measurement) error
+#+FILETAGS: :concept:measurement:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+*Random error* are errors in [[id:c86a0c88-e04a-4c94-9edb-2b61337411c0][measurement]] that lead to [[id:0e8d8303-1f24-4a88-b550-1da444245036][measurement values]] being inconsistent when repeated measurements of a constant attribute or quantity are taken. It is a type of [[id:0c716c57-42ac-44ea-a464-15bc0bf0aeb1][measurement error]], the other being [[id:ce016961-7839-453f-a0d6-a8181ba9b03c][systematic (measurement) error]].
+
+/Random errors affect the results of an experiment in a unpredictable direction/.
+
+/Random error are universal to an act of measurement./ They are due to factors that cannot or will not be controlled such as the inherently unpredictable fluctuations in the readings of a measurement apparatus or in the experimenter's interpretation of the instrumental reading. Random errors show up as different results for ostensibly the same repeated measurement.
+
+/Random errors can be eliminated (from the [[id:0e8d8303-1f24-4a88-b550-1da444245036][measurement value]], by estimating it)/. Estimation of random errors is done via multiple measurements; it is eliminated by averaging multiple measurements.
+
+Random errors are sometimes called *statistical variability*. Random error often occurs when instruments are pushed to the extremes of their operating limits. For example, it is common for digital balances to exhibit random error in their least significant digit. Three measurements of a single object might read something like 0.9111g, 0.9110g, and 0.9112g.

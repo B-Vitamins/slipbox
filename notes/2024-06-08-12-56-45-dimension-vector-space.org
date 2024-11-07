@@ -1,0 +1,21 @@
+:PROPERTIES:
+:ID:       c423152a-4947-456d-b05e-fae7f6823bbd
+:END:
+#+TITLE: Dimension (vector space)
+#+FILETAGS: :concept:linalg:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+The definition of *dimension* depends on the notion of a [[id:9c711ea1-c9de-4e90-96cf-e7710bd11aeb][vector space]].
+
+#+NAME: Dimension of a vector space
+#+ATTR_LATEX: :environment definition
+#+begin_definition latex
+A vector space has dimensions \(n\) if it can accomodate a maximum of \(n\) linearly independent vectors. When such a vector space is defined over the field of real numbers it is denoted by \(\mathbb{V}^n(R)\). When it is defined over the field of complex numbers it is denoted by \(\mathbb{V}^{n}(C)\).
+#+end_definition
+
+The following theorem about the *dimension* of a vector space depends on the notion of [[id:6764a03f-7428-4357-a45c-57d203fd69f8][orthogonality]].
+
+#+NAME: Dimensionality
+#+begin_theorem latex
+The dimensional of a vector space equals \(n\), the maximum number of mutually orthogonal vectors in it.
+#+end_theorem

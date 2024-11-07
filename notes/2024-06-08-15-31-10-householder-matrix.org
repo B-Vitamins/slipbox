@@ -1,0 +1,60 @@
+:PROPERTIES:
+:ID:       8445d1e2-fb0e-4a11-9c2d-f95e441cb77e
+:END:
+#+TITLE: Householder matrix
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+* Definition
+The definition of the *Householder matrix* depends on the notion of a [[id:30d7411c-87ab-4015-a5b5-5654719f050e][Householder transformation]].
+
+#+NAME: Householder matrix
+#+begin_definition latex
+The Householder transformation defines the Householder matrix which is defined in terms of the outer product of the normal vector of the reflection hyperplane with its adjoint.
+\[H \equiv I - 2 \vert w_{\bot} \rangle \langle w_{\bot} \vert.\]
+#+end_definition
+
+* Properties
+
+#+NAME: The Householder matrix is Hermitian
+#+begin_theorem latex
+The Householder matrix \( H \) is Hermitian, i.e.,
+\[H = H^{\dagger}.\]
+#+end_theorem
+
+#+NAME: The Householder matrix is unitary
+#+begin_theorem latex
+The Householder matrix \( H \) is unitary, i.e.,
+\[H^{\dagger} H = H H^{\dagger} = I.\]
+It follows that \(H^{-1}=H^{\dagger}\).
+#+end_theorem
+
+#+NAME: The Householder matrix is involutory
+#+begin_theorem latex
+The Householder matrix \( H \) is involutory, i.e.,
+\[H H = I.\]
+It follows that \( H = H^{-1} \).
+#+end_theorem
+
+#+NAME: Eigenvalues of Householder matrix
+#+begin_theorem latex
+A Householder matrix has eigenvalues \(\pm 1\).
+#+end_theorem
+
+#+NAME: Eigenvalues of Householder matrix
+#+begin_proof latex
+To see this, notice that if \(\vert v \rangle\) is orthogonal to the vector \(\vert w_{\bot} \rangle\) which was used to create the reflector, then \(H \vert v \rangle = \vert v \rangle\), i.e., 1 is an eigenvalue of multiplicity \(n-1\), since there are \(n-1\) independent vectors orthogonal to \(\vert v \rangle\). Also, notice \(H \vert w_{\bot} \rangle=- \vert w_{\bot} \rangle\), and so -1 is an eigenvalue with multiplicity 1.
+#+end_proof
+
+#+NAME: Determinant of Householder matrix
+#+begin_theorem latex
+\[\det (H) = - 1.\]
+#+end_theorem
+
+#+NAME: Eigenvalues of Householder matrix
+#+begin_proof latex
+The determinant of a matrix is the product of its eigenvalues. Since the eigenvalues of the Householder matrix are \( -1 \) and \( 1 \), it immediately follows that \( \det (H) = - 1 \).
+#+end_proof
+
+
+
