@@ -1,0 +1,1401 @@
+:PROPERTIES:
+:ID:       4cdcba11-cecb-455d-a2c4-3cd13a2a01ab
+:END:
+#+TITLE: Awesome Privacy
+#+FILETAGS: :fleeting:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+Anonymity, Privacy, and Security are often used interchangeably, but they actually represent distinct concepts. It is important to understand the differences between them. [[#privacy-vs-security-vs-anonymity][Read more in this section below]].
+
+The primary focus of this list is to provide alternatives that prioritize privacy. These alternatives give you control over your data and do not collect or sell it.
+
+* 2FA
+:PROPERTIES:
+:CUSTOM_ID: fa
+:END:
+Avoid using apps that won't let you export your keys *easily*. - Authy - Google Authenticator [[https://tosdr.org/en/service/217][[[https://shields.tosdr.org/en_217.svg]]]]
+
+Instead use - [[https://getaegis.app/][Aegis]] - A free, secure and open source app for Android to manage your 2-step verification tokens. Supports variety of imports from other apps (Google Authenticator, Authy etc.), vault encryption and exporting keys (plaintext or encrypted). - [[https://ente.io/auth][ente Auth]] - A free, cross platform, end-to-end encrypted and open source app for managing your 2-step verification tokens. From the makers of [[https://ente.io][ente Photos]], and uses the same battle tested infrastructure. Needs an ente.io account. - [[https://github.com/charlietango/owky][Owky]] - Free and Open Source Two-Factor Authenticator for IOS users. - [[https://github.com/helloworld1/FreeOTPPlus][FreeOTPPlus]] - Enhanced fork of FreeOTP-Android providing a feature-rich 2FA authenticator. - [[https://github.com/jamie-mh/AuthenticatorPro][Authenticator Pro]] - Two-Factor Authentication (2FA) client for Android + Wear OS.
+
+* Analytics
+:PROPERTIES:
+:CUSTOM_ID: analytics
+:END:
+Avoid any analytics service that comes from Google, Facebook, Microsoft or any private service. These kind of analytics hurt user privacy.
+
+*Instead use* - [[https://ackee.electerious.com/][Ackee]] - Self-hosted website analytics. - [[https://aptabase.com][Aptabase]] - Open-source, privacy-first and simple analytics for mobile and desktop apps. - [[https://withcabin.com][Cabin]] - Privacy-first, carbon conscious web analytics. - [[https://www.goatcounter.com/][GoatCounter]] - Privacy aware, lightweight and open-source analytics platform. - [[https://matomo.org/][Matomo]] - Google Analytics alternative that protects your data and your customers' privacy. - [[https://nullitics.com/][Nullitics]] - Zero-effort open-source cheap analytics. - [[https://pirsch.io/][Pirsch]] - Pirsch is a simple, privacy-friendly, open-source alternative to Google Analytics --- lightweight, cookie-free and easily integrated into any website or backend. - [[https://plausible.io/][Plausible]] - Simple and privacy-friendly alternative to Google Analytics. - [[https://github.com/milesmcc/shynet][Shynet]] - Modern, privacy-friendly, and detailed web analytics that works without cookies or JS. - [[https://swetrix.com][Swetrix]] - Privacy-focused, fully cookieless and opensource (and selfhostable) web-analytics service. - [[https://umami.is/][Umami]] - A simple, fast, website analytics alternative to Google Analytics. - [[https://unidentifiedanalytics.web.app/][Unidentified Analytics]] - Naive ip-based tracking that works everywhere (web, command-line, email, etc). No account required. Developer friendly.
+
+** Android
+:PROPERTIES:
+:CUSTOM_ID: android
+:END:
+*** Android App Store
+:PROPERTIES:
+:CUSTOM_ID: android-app-store
+:END:
+*Avoid* - Google Play Store [[https://tosdr.org/en/service/217][[[https://shields.tosdr.org/en_217.svg]]]]
+
+*Instead use* - [[https://f-droid.org/][F-Droid]] - F-Droid is an installable catalogue of FOSS (Free and Open Source Software) applications for the Android platform. - [[https://github.com/Iamlooker/Droid-ify][Droid-ify]] - Lightweight F-Droid client with Material UI. - [[https://auroraoss.com/download/#aurora-droid][Aurora Droid]] - Aurora Droid is a modern FOSS client for F-Droid. - [[https://github.com/kitsunyan/foxy-droid][Foxy Droid]] - Unofficial F-Droid client in the style of the classic one. - [[https://fossdroid.com/][FossDroid]] - Fossdroid's aim is to promote free and open source apps on the Android platform: newest, trendiest and the most popular ones. - [[https://skydroid.app/][SkyDroid]] - Decentralized App Store for Android - [[https://github.com/ImranR98/Obtainium][Obtainium]] - Get app updates directly from the source. - [[https://github.com/accrescent/accrescent][Accrescent]] - A novel Android app store focused on security, privacy, and usability.
+
+*** Alternative Google Play Store clients
+:PROPERTIES:
+:CUSTOM_ID: alternative-google-play-store-clients
+:END:
+- [[https://auroraoss.com/download/#aurora-store][Aurora Store]] - Aurora Store is an open-source alternative Google Play Store frontend client with privacy and modern design in mind.
+
+*** Android Dialer
+:PROPERTIES:
+:CUSTOM_ID: android-dialer
+:END:
+*Avoid*
+
+Third-party dialers found on the play store. They may contain ads/trackers and may ask for unnecessary permissions.
+
+*Instead use* - [[https://github.com/Chooloo/koler][Koler]] - Uniquely stylized phone app with customizable features.
+
+*** Android File Manager
+:PROPERTIES:
+:CUSTOM_ID: android-file-manager
+:END:
+*Avoid*
+
+Preinstalled file managers and third-party file manager apps found on the play store. They may contain ads/trackers and may ask for unnecessary permissions.
+
+*Instead use*
+
+- [[https://github.com/TeamAmaze/AmazeFileManager][Amaze File Manager]] - Simple and attractive Material Design file manager for Android.
+- [[https://github.com/zhanghai/MaterialFiles][Material Files]] - An open source Material Design file manager, for Android 5.0+.
+- [[https://f-droid.org/packages/com.ghostsq.commander/][Ghost Commander]] - Dual-panel file manager.
+
+*** Android Keyboard
+:PROPERTIES:
+:CUSTOM_ID: android-keyboard
+:END:
+*Avoid* - GBoard (Google) [[https://tosdr.org/en/service/217][[[https://shields.tosdr.org/en_217.svg]]]] - SwiftKey [[https://tosdr.org/en/service/244][[[https://shields.tosdr.org/en_244.svg]]]]
+
+*Instead use* - [[https://anysoftkeyboard.github.io/][AnySoftKeyboard]] - The only Android keyboard you'll ever need. Free as in speech and Free as in beer. - [[https://github.com/florisboard/florisboard][FlorisBoard]] - FlorisBoard is a free and open-source keyboard for Android 6.0+ devices. It aims at being modern, user-friendly and customizable while fully respecting your privacy. Currently in early-beta state. - [[https://keyboard.futo.org/][Futo Keyboard]] - A modern keyboard that respects your privacy and security, with features such as offline voice input, swipe typing and smart autocorrect. - [[https://github.com/Helium314/HeliBoard][Heliboard]] - A privacy-conscious and customizable open-source keyboard, based on AOSP / OpenBoard with many additional features and improvements, including support for custom dictionaries, themes, and glide typing. - [[https://gitlab.com/indicproject/indic-keyboard][Indic Keyboard]] - Indic Keyboard is a versatile keyboard for Android users who wish to use Indic and Indian languages to type messages, compose emails and generally prefer to use them in addition to English on their phone. - [[https://github.com/openboard-team/openboard][OpenBoard]] - OpenBoard is a 100% foss keyboard based on AOSP, with no dependency on Google binaries, that respects your privacy. It is no longer updated, but still works. - [[https://github.com/rkkr/simple-keyboard][Simple Keyboard]] - Simply keyboard and nothing more.
+
+*** Android Gallery
+:PROPERTIES:
+:CUSTOM_ID: android-gallery
+:END:
+Your phone gallery is a deeply personal aspect of your life, it may contain images and videos that capture intimate moments, locations, and people important to you. Protecting its privacy is essential to prevent misuse of this information, not only for you, but it also ensures the privacy of friends and family captured in these photos, who may not consent to having their images shared.
+
+#+begin_quote
+[!NOTE] For a private way to store and backup your photos see [[#photo-storage][Photo Storage]] section.
+
+#+end_quote
+
+*Avoid* - *Google Photos* has privacy issues. They collect a lot of data about you, which you can see in their [[https://policies.google.com/privacy?hl=en-US#infocollect][privacy policy]]. Google can scan your photos and might flag them for different reasons, as shown in this [[https://petapixel.com/2022/08/22/google-flags-photos-of-fathers-sick-son-as-child-abuse-informs-police/][incident]]. They also use your photos to improve their AI technology. - *Amazon Photos* also has similar privacy problems. Like Google Photos, it gathers a lot of information from your photo gallery. You can see a bit of what kind of data they collect in their [[https://www.amazon.com/gp/help/customer/display.html?nodeId=468496&ref_=footer_privacy#GUID-8966E75F-9B92-4A2B-BFD5-967D57513A40__SECTION_87C837F9CCD84769B4AE2BEB14AF4F01][*examples* list]]. - *Samsung, Huawei, Xiaomi, etc.* Gallery
+
+*Instead use* - [[https://github.com/deckerst/aves][Aves]] - Beautiful gallery and metadata explorer app, built for Android with Flutter. - [[https://github.com/FossifyOrg/Gallery][Fossify Gallery]] - Fork of Simple Gallery. Browse your memories without any interruptions with this photo and video gallery.
+
+*** Android Launcher
+:PROPERTIES:
+:CUSTOM_ID: android-launcher
+:END:
+*Avoid*
+
+Third-party launchers found on the play store. They may contain ads/trackers and may ask for unnecessary permissions.
+
+*Instead use* - [[https://lawnchair.app/][Lawnchair]] - No clever tagline needed. - [[https://github.com/OpenLauncherTeam/openlauncher][OpenLauncher]] - Customizable and Open Source Launcher for Android. - [[https://kisslauncher.com/][KISS]] - Lightning fast, open-source, < 200kb Android launcher. - [[https://github.com/tanujnotes/Olauncher][Olauncher]] - Minimal AF (ad-free) launcher app for Android. - [[https://posidon.io/launcher][Posidon Launcher]] - Posidon launcher is a minimal, one page homescreen with a vertical scrolling feed. - [[https://github.com/markusfisch/PieLauncher][Pie Launcher]] - Android home screen launcher that uses a dynamic pie menu instead of fixed positioned icons. - [[https://github.com/amirzaidi/Launcher3][Rootless Pixel Launcher]] - The Launcher3 fork known as "Rootless Pixel Launcher". - [[https://f-droid.org/en/packages/foundation.e.blisslauncher/][Bliss Launcher]] - The default launcher of the /e/ Android-based OS. It allows users to easily create and browse group of apps and it displays notification badges on app icons.
+
+** Artificial Intelligence
+:PROPERTIES:
+:CUSTOM_ID: artificial-intelligence
+:END:
+When using cloud-based AI services, the data you input is often collected and stored by the service provider. This may include not only the content of your requests but also metadata, such as timestamps or IP addresses. Third-party servers may grant access to your data to their employees, partners, or even other users, depending on their privacy policies. Data may be used for various purposes, including model training, research, or even marketing activities. Your requests to a third-party AI service may be tied to your user information and payment details, linking your data to your identity.
+
+**** ChatGPT
+:PROPERTIES:
+:CUSTOM_ID: chatgpt
+:END:
+- [[https://github.com/ggerganov/llama.cpp][llama.cpp]] - Inference of Facebook's LLaMA model in pure C/C++ so it can run locally on a CPU.
+- [[https://github.com/janhq/jan][Jan]] - Jan is an open source alternative to ChatGPT that runs 100% offline on your computer.
+- [[https://github.com/go-skynet/LocalAI][LocalAI]] - Self-hosted, community-driven simple local OpenAI-compatible API written in go. Can be used as a drop-in replacement for OpenAI, running on CPU with consumer-grade hardware.
+- [[https://github.com/jmorganca/ollama][ollama]] - Get up and running with Llama 2 and other large language models locally.
+
+**** Copilot
+:PROPERTIES:
+:CUSTOM_ID: copilot
+:END:
+- [[https://github.com/continuedev/continue][Continue]] - Open-source autopilot for VS Code and JetBrains---the easiest way to code with any LLM
+- [[https://github.com/fauxpilot/fauxpilot][Fauxpilot]] - an open-source,local alternative to GitHub Copilot server
+  - [[https://github.com/Venthe/vscode-fauxpilot][vscode-fauxpilot]] - vscode extension for fauxpilot. *reminder*: use [[https://vscodium.com/][vscodium]] instead!
+- [[https://github.com/danielgross/localpilot][Localpilot]] - Use GitHub Copilot locally on your Macbook with one-click.
+- [[https://github.com/ravenscroftj/turbopilot][Turbopilot]] - [Archived] Turbopilot is an open source large-language-model based code completion engine that runs locally on CPU.
+
+**** ElevenLabs Text To Speech
+:PROPERTIES:
+:CUSTOM_ID: elevenlabs-text-to-speech
+:END:
+Go to the [[#text-to-speech][Text To Speech]] section.
+
+**** Midjourney
+:PROPERTIES:
+:CUSTOM_ID: midjourney
+:END:
+- [[https://github.com/Stability-AI/stablediffusion][Stable Diffusion]] - High-Resolution Image Synthesis with Latent Diffusion Models.
+  - [[https://github.com/AUTOMATIC1111/stable-diffusion-webui][Stable Diffusion Web UI]] - A browser interface for Stable Diffusion.
+
+** Bookmarking
+:PROPERTIES:
+:CUSTOM_ID: bookmarking
+:END:
+*Avoid* - Pocket (Formerly Read It Later) - [[https://tosdr.org/en/service/384][Bad privacy policy]]. [[https://reports.exodus-privacy.eu.org/en/reports/com.ideashower.readitlater.pro/latest/][Apps have trackers]] and requires many permissions. - Evernote Web Clipper - [[https://tosdr.org/en/service/207][Bad privacy policy]]. [[https://reports.exodus-privacy.eu.org/en/reports/com.evernote/latest/][Apps have many trackers]] and require too many permissions.
+
+*Instead use* - [[https://github.com/goniszewski/grimoire][Grimorie]] - Modern, open source, self-hosted bookmark manager. - [[https://github.com/Kovah/LinkAce][LinkAce]] - [[https://github.com/sissbruecker/linkding][LinkDing]] - [[https://github.com/go-shiori/shiori][Shiori]] - [[https://wallabag.org/][Wallabag]] - Open-source, optionally self-hosted, read it later server. Provides paid hosted service with privacy in mind.
+
+*** Book and web annotations/highlights management
+:PROPERTIES:
+:CUSTOM_ID: book-and-web-annotationshighlights-management
+:END:
+- [[https://github.com/hypothesis/h/][Hypothesis]] - Annotate the web, with anyone, anywhere.
+- [[https://github.com/karlicoss/kobuddy][Kobuddy]] - Get your Kobo e-reader device bookmarks and annotations in a .txt file.
+
+** Captchas
+:PROPERTIES:
+:CUSTOM_ID: captchas
+:END:
+*Avoid*
+
+Google captchas use cookies to track users and rank their IPs.
+
+- Google reCAPTCHA [[https://tosdr.org/en/service/217][[[https://shields.tosdr.org/en_217.svg]]]]
+- hCaptcha [[https://tosdr.org/en/service/2207][[[https://shields.tosdr.org/en_2207.svg]]]]
+
+*Instead use* - [[https://altcha.org][Altcha.org]] - Free, open-source and self-hosted CAPTCHA alternative using proof-of-work mechanism. - [[http://mcaptcha.org/][mCaptcha]] ([[https://github.com/mCaptcha/mCaptcha][repo]]) - An open-source CAPTCHA system with seamless UX. mCaptcha uses SHA256 based proof-of-work (PoW) to rate limit users.
+
+** Commenting Engines
+:PROPERTIES:
+:CUSTOM_ID: commenting-engines
+:END:
+*Avoid*
+
+- *Disqus* - Many trackers are in their sites. Disqus collects (as per their Privacy Policy): IP address, unique Cookie ID, Device ID, your login data, browser type and version, time zone setting and location, browser plug-in types and versions, operating system and platform and other technology on the devices you use to access the Service.
+
+*Instead use*
+
+- [[https://commento.io/][Commento]] - Commento is a fast, privacy-focused commenting platform. Can be selfhosted or use their SaaS.
+- [[https://github.com/djyde/cusdis][Cusdis]] - Lightweight, privacy-friendly alternative to Disqus.
+- [[https://github.com/carlitoplatanito/disgus][Disgus]] - Embeddable comments for your website, backed by Nostr. Like Disqus but Nostr.
+- [[https://github.com/posativ/isso][Isso]] - A lightweight, self hosted, commenting server written in Python and JavaScript. It aims to be a drop-in replacement for Disqus.
+- [[https://remark42.com][Remark42]] - Self-hosted, lightweight, and simple (yet functional) comment engine, which doesn't spy on users.
+
+** Cloaking
+:PROPERTIES:
+:CUSTOM_ID: cloaking
+:END:
+*** Images
+:PROPERTIES:
+:CUSTOM_ID: images
+:END:
+- [[https://github.com/Shawn-Shan/fawkes][Fawkes]] - privacy preserving tool against facial recognition systems.
+  - [[https://github.com/pluja/CloakMe][CloakMe]] - Web interface for Fawkes algorithm.
+- [[https://github.com/everestpipkin/image-scrubber][ImageScrubber]] - A friendly browser-based tool for anonymizing photographs taken at protests ([[https://everestpipkin.github.io/image-scrubber/][hosted version provided by everestpipkin]]).
+
+*** Text
+:PROPERTIES:
+:CUSTOM_ID: text
+:END:
+- [[https://stegcloak.surge.sh/][Stegcloak]] - Hide secrets with invisible characters in plain text securely using passwords ([[https://github.com/kurolabs/stegcloak][repo]]).
+
+** Cloud Storage
+:PROPERTIES:
+:CUSTOM_ID: cloud-storage
+:END:
+*Avoid* - *Google Drive* - Google owned, so privacy policy is [[https://tosdr.org/en/service/217][very bad]]. The data is stored in their remote servers where you lose control of it. They use trackers. No encryption available. - *DropBox* - [[https://tosdr.org/en/service/270][Bad privacy policy]]. The app has [[https://reports.exodus-privacy.eu.org/en/reports/com.dropbox.android/latest/][various trackers]] and requires many permissions. - *OneDrive* - Microsoft owned, privacy policy is [[https://tosdr.org/en/service/244][very bad]]. The data is stored in their remote servers where you lose control of it. They use trackers. No encryption available.
+
+*Instead use* - [[https://nextcloud.com/][Nextcloud]] - The open source self-hosted productivity platform that keeps you in control. - [[https://www.seafile.com/en/home/][Seafile]] - High performance file syncing and sharing. It includes a Wiki, WYSIWYG editing and other knowledge management features. - [[https://peergos.org/][Peergos]] - Secure and private space online where you can store, share and view your photos, videos, music and documents. Also includes a calendar, news feed, task lists, chat and email client. Open source and self-hostable. - [[https://proton.me/drive][Proton Drive]] - End-to-end encrypted Swiss vault for your files that protects your data. [[https://protonmail.com/blog/climate-activist-arrest/][Read this article over Climate activist arrest]]. - [[https://private.storage/][PrivateStorage]] - Accountless, privacy-focused cloud storage and folder synchronization with client-side encryption.
+
+*Other useful tools* - [[https://cryptomator.org][Cryptomator]] - Cryptomator encrypts your data quickly and easily. Afterwards you upload them protected to your favorite cloud service - [[https://syncthing.net/][Syncthing]] - Continuous file synchronization program. It synchronizes files between two or more computers in real time, safely protected from prying eyes. - [[https://rclone.org/][Rclone]] - Rclone is a command line program to manage files on cloud storage. It is a feature rich alternative to cloud vendors' web storage interfaces and like the tools listed above enables encryption for encrypting files in the cloud. - [[https://restic.net/][Restic]] - Restic is also command line program to manage files on various cloud storage providers. Restic uses encryption by default. Few noteworthy features of restic include browsing through storage as git like snapshots at no extra storage cost, deduplication and significant savings through compression.
+
+** Creator Tools
+:PROPERTIES:
+:CUSTOM_ID: creator-tools
+:END:
+Opt for open-source and P2P alternatives that prioritize data privacy, eliminate third-party interference, and offer transparent, community-backed functionalities over mainstream tools like Riverside.fm, Restream and Camtasia.
+
+- [[https://vdo.ninja/][vdo.ninja]] - Powerful tool that lets you bring remote video feeds into OBS or other studio software via WebRTC.
+  - [[https://github.com/steveseguin/social_stream#readme][socialstream.ninja]] - Consolidate your live social messaging streams and much more.
+- [[https://obsproject.com/][OBS Studio]] - Free and open source software for video recording and live streaming.
+
+** Databases
+:PROPERTIES:
+:CUSTOM_ID: databases
+:END:
+[[https://tosdr.org/en/service/217][[[https://shields.tosdr.org/en_217.svg]]]] Avoid using privative databases which you don't control such as Google Firebase.
+
+Instead use - [[https://appwrite.io/][Appwrite]] - Secure open-source backend server for web, mobile & Flutter developers. - [[https://supabase.io/][Supabase]] - Open source Firebase alternative ([[https://github.com/supabase/supabase/issues/4934][Limited]] [[https://github.com/supabase/supabase/issues/4440#issuecomment-992108832][self-hosting]]) - [[https://pocketbase.io/][Pocketbase]] - Open Source backend in 1 file written in Go. - [[https://github.com/CondensationDB/Condensation][CondensationDB]] [Inactive] - Condensation is an open-source zero trust, distributed database enabling to build modern applications while ensuring data ownership and security.
+
+** Developer Tools
+:PROPERTIES:
+:CUSTOM_ID: developer-tools
+:END:
+- [[https://www.beekeeperstudio.io][Beekeeper Studio]] - Open Source SQL Editor and Database Manager with a privacy commitment in their mission statement.
+
+*** IDEs
+:PROPERTIES:
+:CUSTOM_ID: ides
+:END:
+Avoid using privative IDEs that are full of trackers and telemetry.
+
+Instead use - [[https://neovim.io/][Neovim]] - Hyperextensible Vim-based text editor. - [[https://vscodium.com/][VSCodium]] - Free/Libre Open Source Software Binaries of VSCode. Vscode source code is open source (MIT-licensed), but the product available for download (Visual Studio Code) is licensed under [[https://code.visualstudio.com/license][this not-FLOSS license]] and contains telemetry/tracking.
+
+** Dating Apps
+:PROPERTIES:
+:CUSTOM_ID: dating-apps
+:END:
+Apps such as Tinder collect and sell your personal intimate information. Tinder in particular has been found to [[https://foundation.mozilla.org/en/blog/new-research-tinders-opaque-unfair-pricing-algorithm-can-charge-users-up-to-five-times-more-for-same-service/][charge users up to five times more for same service]], [[https://libreddit.kavin.rocks/r/privacy/comments/k7x4s7/tinder_extrapolates_estimations_on_your/][extrapolate estimations on your intelligence and other psychometrics and sell it to third-parties]], [[https://www.theguardian.com/technology/2017/sep/26/tinder-personal-data-dating-app-messages-hacked-sold][it may know more about you than yourself]], and many more bad things you can find on the internet.
+
+*Avoid* - [[https://tosdr.org/en/service/462][[[https://shields.tosdr.org/en_462.svg]]]] - Grindr - Badoo - Lovoo
+
+*Instead use* - [[https://alovoa.com/][Alovoa]] - Free and open-source dating platform that respects your privacy.
+
+** Design Tools
+:PROPERTIES:
+:CUSTOM_ID: design-tools
+:END:
+*Adobe*'s dominance in design tools restricts designers' choices and compromises their privacy. Its [[https://helpx.adobe.com/in/download-install/kb/operating-system-guidelines.html][lack of Linux support]], confines designers to Windows or macOS. Plus, Adobe's [[https://tosdr.org/en/service/417][data collection via Creative Cloud]] and [[https://reports.exodus-privacy.eu.org/en/reports/com.adobe.psmobile/latest/][trackers]] further amplifies privacy concerns. They also may be [[https://mastodon.art/@Krita/109632425661190494][using users' work to train their AIs]], potentially causing intellectual property problems. For these reasons, designers can consider using open-source, privacy-respecting alternatives, bypassing most of these issues.
+
+*** InDesign
+:PROPERTIES:
+:CUSTOM_ID: indesign
+:END:
+*Instead use* - [[https://www.scribus.net/][Scribus]] - a free and open-source desktop publishing (DTP) software available for most desktop operating systems. It is designed for layout, typesetting, and preparation of files for professional-quality image-setting equipment. Scribus can also create animated and interactive PDF presentations and forms.
+
+*** Photoshop / Illustrator
+:PROPERTIES:
+:CUSTOM_ID: photoshop-illustrator
+:END:
+*Instead use* - [[https://www.gimp.org/][GIMP]] - A free and open-source raster graphics editor used for image manipulation (retouching) and image editing, free-form drawing, transcoding between different image file formats, and more specialized tasks. It is not designed to be used for drawing, though some artists and creators have used it in this way. - [[https://inkscape.org/][Inkscape]] - A free and open-source vector graphics editor for GNU/Linux, Windows and macOS. It offers a rich set of features and is widely used for both artistic and technical illustrations such as cartoons, clip art, logos, typography, diagramming and flowcharting. - [[https://krita.org/][Krita]] - A free and open-source raster graphics editor designed primarily for digital art and 2D animation. - [[https://github.com/excalidraw/excalidraw][Excalidraw]] - Virtual whiteboard for sketching hand-drawn like diagrams.
+
+*** Figma
+:PROPERTIES:
+:CUSTOM_ID: figma
+:END:
+*Instead use* - [[https://penpot.app/][Penpot]] - Penpot is an Open Source design and prototyping platform for product teams.
+
+** Domain Registrar
+:PROPERTIES:
+:CUSTOM_ID: domain-registrar
+:END:
+Avoid using domain registrars who are privacy invasive.
+
+Instead use - [[https://www.orangewebsite.com/][OrangeWebsite]] - [[https://www.1984hosting.com/][1984 Hosting]]
+
+** Download Manager
+:PROPERTIES:
+:CUSTOM_ID: download-manager
+:END:
+- [[https://github.com/persepolisdm/persepolis][Persepolis Download Manager]] - Persepolis is a download manager & a GUI for Aria2. It's written in Python. Persepolis is a sample of free and open source software. It's developed for GNU/Linux distributions, BSDs, MacOS, and Microsoft Windows.
+- [[https://ugetdm.com/][uGet Download Manager]] - uGet is a lightweight yet powerful Open Source download manager for GNU/Linux developed with GTK+, which also comes packaged as a portable Windows app. It is also available for Android.
+- [[https://github.com/agalwood/Motrix][Motrix]] - A full-featured download manager.
+- [[https://github.com/subhra74/xdm][Xtreme Download Manager]] - Xtreme Download Manager (XDM) is a powerful tool to increase download speeds up to 500%, save streaming videos from YouTube, DailyMotion, Facebook, Vimeo, Google Video and 1000+ other websites, resume broken/dead downloads, schedule and convert downloads.
+- [[https://github.com/axel-download-accelerator/axel][axel]] - Lightweight CLI download accelerator. It supports HTTP, HTTPS, FTP and FTPS protocols.
+
+** Encryption
+:PROPERTIES:
+:CUSTOM_ID: encryption
+:END:
+Remember: Without strong encryption, you will be spied on systematically by lots of people.
+
+- [[https://www.veracrypt.fr/en/Home.html][Veracrypt]] - VeraCrypt is a free open source disk encryption software for Windows, macOS and Linux.
+- [[https://shufflecake.net/index.html][Shufflecake]] - Free open source, plausible deniability for multiple hidden filesystems on Linux
+- [[https://hat.sh/][Hat.sh]] - A Free, Fast, Secure and Serverless File Encryption.
+- [[https://cryptomator.org/][Cryptomator]] - Cryptomator encrypts your data quickly and easily. Afterwards you upload them protected to your favorite cloud service.
+- [[https://stegcloak.surge.sh/][Stegcloak]] - Hide secrets with invisible characters in plain text securely using passwords.
+- [[https://github.com/HACKERALERT/Picocrypt/][Picocrypt]] - A very small (hence "Pico"), very simple, yet very secure file encryption tool.
+- [[https://github.com/leonlatsch/Photok][Photok]] - Photok is a free Photo-Safe. It stores your photos encrypted on your device and hides them from others.
+
+*** OS Encryption
+:PROPERTIES:
+:CUSTOM_ID: os-encryption
+:END:
+- [[https://gitlab.com/cryptsetup/cryptsetup][Cryptsetup]] - Full disk encryption for Linux. Cryptsetup is a utility used to conveniently set up disk encryption based on the DMCrypt kernel module.
+
+** File Management and Sharing
+:PROPERTIES:
+:CUSTOM_ID: file-management-and-sharing
+:END:
+*Avoid* - *WeTransfer* - [[https://tosdr.org/en/service/214][Bad privacy policy]]. Files are not e2e encrypted. Website has many analytics and trackers. - *SendAnywhere* - No e2e encryption. Website has loads of analytics and trackers from Facebook, Google, Cloudflare...
+
+*Instead use* - [[https://blaze.now.sh/][Blaze]] - A fast, p2p and radically different way to transfer files. - [[https://github.com/blindnet-io/blindsend][Blindsend]] - Open source tool for private, end-to-end encrypted file exchange. - [[https://github.com/schollz/croc][Croc]] - Easily and securely send things from one computer to another. - [[https://github.com/tom-james-watson/dat-cp][Dat-cp]] - Copy files between hosts on a network using the peer-to-peer Dat network. - [[https://leastauthority.com/community-matters/destiny/][Destiny]] - Send files directly to the receiver in real-time. Developed for and with HROs as a free Privacy Enhancing Technology alternative. - [[https://framagit.org/fiat-tux/hat-softwares/lufi][Lufi]] - Let's Upload that FIle --- File sharing software. - [[https://localsend.org/][Localsend]] - Share files to nearby devices. Free, open source, cross-platform. - [[https://github.com/magic-wormhole/magic-wormhole][Magic Wormhole]] - Get things from one computer to another, safely. - [[https://github.com/micahflee/onionshare][OnionShare]] - An open source tool that lets you securely and anonymously share files, host websites, and chat with friends using the Tor network. - [[https://github.com/the-paperless-project/paperless][Paperless]] - [Now archived] Scan, index, and archive all of your paper documents. - [[https://github.com/jonaswinkler/paperless-ng][Paperless-ng]] - [inactive] A supercharged version of paperless: scan, index and archive all your physical documents. - [[https://github.com/paperless-ngx/paperless-ngx][Paperless-ngx]] - A community-supported supercharged version of paperless based on paperless-ng - [[https://github.com/schlagmichdoch/PairDrop][PairDrop]] - An improved version of Snapdrop that also allows you to pair devices and share files outside your network. - [[https://github.com/SpatiumPortae/portal][Portal]] - A command-line file transfer utility for sending encrypted files from any computer to another. - [[https://github.com/claudiodangelis/qrcp][QRcp]] - Transfer files over wifi from your computer to your mobile device by scanning a QR code without leaving the terminal. - [[https://gitlab.com/timvisee/send][Send]] - Simple, private file sharing. (Mozilla Send Fork) - [[https://github.com/marchellodev/sharik][Sharik]] - Sharik works with Wi-Fi connection or Tethering (Wi-Fi Hotspot). No internet connection needed. Available for Android, iOS, Linux, MacOS & Windows. - [[https://github.com/RobinLinus/snapdrop][Snapdrop]] - A Progressive Web App for local file sharing inspired by Apple's Airdrop. - [[https://winden.app/][Winden]] - A convenient version of Magic Wormhole you can use from within your browser. No need to install an app. - [[https://github.com/jhaals/yopass][Yopass]] - Secure sharing of secrets, passwords and files.
+
+** Fitness and Health
+:PROPERTIES:
+:CUSTOM_ID: fitness-and-health
+:END:
+Your health is a *very* important piece of your *private data* and you should care *a lot* about it. Also, health related data is among the most coveted. Please don't use apps from Google, Fitbit, Huawei, Xiaomi or any company that seeks the gathering of your personal data.
+
+If you need an app for *menstrual cycle tracking* please don't use any apps like Clue, Period Tracker, etc. Those cute pink apps are greedy for your menstrual cycle and intimate life data and will sell it for sure, protect your private life. Check the list below and you will find nice alternatives.
+
+*Instead use*
+
+*** Fitness trackers
+:PROPERTIES:
+:CUSTOM_ID: fitness-trackers
+:END:
+-  [[https://codeberg.org/jannis/FitoTrack][Fitotrack]] - A privacy oriented fitness tracker for Android.
+-  [[https://github.com/OpenTracksApp/OpenTracks][OpenTracks]] - OpenTracks is a sport tracking application that completely respects your privacy.
+-  [[https://codeberg.org/Freeyourgadget/Gadgetbridge][Gadgetbridge]] - A free and cloudless replacement for your gadget vendors' closed source Android applications.
+
+*** Workout planners
+:PROPERTIES:
+:CUSTOM_ID: workout-planners
+:END:
+- [[https://wger.de/en/software/features][wger]] - A free, open source, self-hosted web application that manages your exercises, workouts and nutrition.
+- [[https://github.com/Vincenius/workout-lol][workout.lol]] - A small web application to create workouts based on your available equipment and the muscles you want to train that you can selfhost.
+
+*** Food
+:PROPERTIES:
+:CUSTOM_ID: food
+:END:
+- [[https://world.openfoodfacts.org/][OpenFoodFacts]] - Open Food Facts is a food products database made by everyone, for everyone. You can use it to make better food choices.
+  - [[https://world.openfoodfacts.org/open-food-facts-mobile-app][OFF Apps]]
+
+*** Menstrual cycle trackers
+:PROPERTIES:
+:CUSTOM_ID: menstrual-cycle-trackers
+:END:
+-  [[https://gitlab.com/ngrob/bluemoon-android][Bluemoon]] - Open source, privacy friendly menstruation tracking app. Your period, your data!
+-  [[https://dripapp.org/][Drip]] - Menstrual cycle and fertility tracking. Everything you enter stays on your device.
+- [[https://eukiapp.org/][Euki]] - The period tracker that doesn't track you.
+-  [[https://github.com/wildeyedskies/log28][log28]] - a (very) simple no-frills period tracker for Android.
+-  [[https://github.com/arnowelzel/periodical][Periodical]] - A calendar to track your menstruation and calculate possible fertile days
+
+*** Medical health
+:PROPERTIES:
+:CUSTOM_ID: medical-health
+:END:
+- [[https://github.com/fastenhealth/fasten-onprem][Fasten]] - Fasten is an open-source, self-hosted, personal/family electronic medical record aggregator, designed to integrate with 1000's of insurances/hospitals/clinics.
+
+** Fonts
+:PROPERTIES:
+:CUSTOM_ID: fonts
+:END:
+*Avoid* - Google Fonts (no selfhosted) [[https://tosdr.org/en/service/217][[[https://shields.tosdr.org/en_217.svg]]]]
+
+*Instead use* ### Google Fonts Replacements - [[https://fonts.coollabs.io/][coolLabs Fonts]] - A privacy-friendly drop-in replacement for Google Fonts.
+
+*** Foundries
+:PROPERTIES:
+:CUSTOM_ID: foundries
+:END:
+- [[https://www.velvetyne.fr/][Velvetyne]]
+- [[https://open-foundry.com/][OpenFoundry]]
+
+** Forms
+:PROPERTIES:
+:CUSTOM_ID: forms
+:END:
+*Avoid* - Google Forms [[https://tosdr.org/en/service/217][[[https://shields.tosdr.org/en_217.svg]]]]
+
+*Instead use* - [[https://typebot.io][TypeBot]] - Open-source conversational forms. - [[https://cryptpad.fr/form/][CryptPad Forms]] - Part of the Cryptpad end-to-end encrypted and open-source collaboration suite. - [[https://framaforms.org/][FramaForms]] - Design your online surveys easily while respecting your audience.
+
+** Games
+:PROPERTIES:
+:CUSTOM_ID: games
+:END:
+*** Mario Kart
+:PROPERTIES:
+:CUSTOM_ID: mario-kart
+:END:
+Nintendo [[https://libreddit.kavin.rocks/r/privacy/comments/qtj9xt/til_nintendo_collects_data_from_switch_owners/][collects user data]], and if you disable it, they can [[https://www.altchar.com/game-news/the-latest-nintendo-switch-update-secretly-turns-on-user-data-sharing-adSyV7t35NPg][turn it back on]]. Also, it has a paid plan that is not accessible to everyone economically.
+
+*Instead use*
+
+- [[https://supertuxkart.net/Main_Page][SuperTuxKart]] - A 3D open-source arcade racer with a variety characters, tracks, and modes to play.
+- [[https://mb.srb2.org/addons/srb2kart.2435/][Sonic Robo Blast 2 Kart]] - SRB2Kart is a classic styled kart racer, complete with beautiful courses, and wacky items.
+
+*** Minecraft
+:PROPERTIES:
+:CUSTOM_ID: minecraft
+:END:
+[[https://tosdr.org/en/service/244][[[https://shields.tosdr.org/en_244.svg]]]]
+
+The game is owned by Microsoft. If this is not enough, you need a Microsoft account to play Minecraft since March 11th, 2022. Microsoft locks accounts some time not long after account creation and [[https://github.com/MultiMC/Launcher/issues/4093][forces the user]] [[https://libreddit.kavin.rocks/r/privacy/comments/e6x27o/microsoft_forcing_me_to_give_then_my_phone_number/][to provide]] a *phone number*. See: [[https://help.minecraft.net/hc/en-us/articles/360050865492-Minecraft-Java-Edition-Account-Migration-FAQ][Minecraft FAQ]], [[https://libreddit.kavin.rocks/r/Minecraft/comments/sl8pkv/how_can_my_friend_migrate_her_account_to/hvq2sv6/][1]], [[https://libreddit.kavin.rocks/r/privacy/comments/spcuj4/microsoft_is_going_to_attempt_to_move_everyone_on/][2]]
+
+The game has [[https://bugs.mojang.com/browse/MC-237493][telemetry embeded in it since v21w38a which you can't opt-out]]. Also, [[https://www.minecraft.net/en-us/terms][it is tied]] to the [[https://privacy.microsoft.com/en-us/privacystatement][Microsoft privacy terms]] which are a privacy nightmare.
+
+*Instead use* - [[https://www.minetest.net/][Minetest]] - An open source voxel game engine with many features. - [[https://content.minetest.net/packages/ryvnf/mineclonia/][Mineclonia]] - Survival sandbox game inspired by Minecraft. Fork of MineClone2 with focus on stability, multiplayer performance and features.
+
+**** Plugins for Minecraft
+:PROPERTIES:
+:CUSTOM_ID: plugins-for-minecraft
+:END:
+If you still want to play Minecraft, you can add some plugins that can help you preserve a bit your privacy. But still consider that you are supporting Microsoft this way.
+
+*Instead use* - [[https://github.com/Aizistral-Studios/No-Chat-Reports][No-Chat-Reports]] - A spigot plugin strips cryptographic signatures from player messages, but it breaks any chat plugin by design. - [[https://github.com/e-im/FreedomChat][FreedomChat]] - A great alternative to No-Chat-Reports, since it does not break any chat plugin by design. - [[https://github.com/kb-1000/no-telemetry][No-Telemetry]] - Mod that disables the usage data collection, aka telemetry, introduced in Minecraft 1.18 (snapshot 21w38a).
+
+*** Pokemon
+:PROPERTIES:
+:CUSTOM_ID: pokemon
+:END:
+Nintendo [[https://libreddit.kavin.rocks/r/privacy/comments/qtj9xt/til_nintendo_collects_data_from_switch_owners/][collects user data]], and if you disable it, they can [[https://www.altchar.com/game-news/the-latest-nintendo-switch-update-secretly-turns-on-user-data-sharing-adSyV7t35NPg][turn it back on]]. Also, it has a paid plan that is not accessible to everyone economically.
+
+*Instead use*
+
+- [[https://github.com/lxgr-linux/pokete][Pokete]] - A small terminal based game in the style of a very popular and old game by Gamefreak.
+
+*** Sonic the Hedgehog
+:PROPERTIES:
+:CUSTOM_ID: sonic-the-hedgehog
+:END:
+- [[https://www.srb2.org/][Sonic Robo Blast 2]] - Sonic Robo Blast 2 is a 3D open-source Sonic the Hedgehog fangame built using a modified version of the Doom Legacy port of Doom.
+
+** Home Assistants
+:PROPERTIES:
+:CUSTOM_ID: home-assistants
+:END:
+Don't use Google Home or Alexa. Please don't. Don't gift them to anyone. They open the homes doors to surveillance. They can turn these auto-updating devices into surveillance devices at will.
+
+Interesting articles: [[https://www.theguardian.com/technology/2019/oct/09/alexa-are-you-invading-my-privacy-the-dark-side-of-our-voice-assistants][1]], [[https://www.theregister.com/2020/08/08/ai_in_brief/][2]], [[https://www.networkworld.com/article/3190176/virtual-assistants-hear-everything-so-watch-what-you-say-i-m-not-kidding.html][3]], [[https://www.democracynow.org/2017/1/4/privacy_advocates_warn_of_potential_surveillance][4]], [[https://www.mirror.co.uk/news/weird-news/woman-finds-amazon-thousands-recordings-25240984][5]], [[https://www.seattletimes.com/business/locked-down-lawyers-warned-alexa-is-hearing-confidential-calls/][6]], [[https://hide.me/en/blog/assistant-devices-are-a-privacy-nightmare/][7]].
+
+- Google Home [[https://tosdr.org/en/service/217][[[https://shields.tosdr.org/en_217.svg]]]]
+- Alexa [[https://tosdr.org/en/service/190][[[https://shields.tosdr.org/en_190.svg]]]]
+- Cortana [[https://tosdr.org/en/service/244][[[https://shields.tosdr.org/en_244.svg]]]]
+- Siri [[https://tosdr.org/en/service/158][[[https://shields.tosdr.org/en_158.svg]]]]
+
+*Instead use* - [[https://mycroft.ai/][Mycroft]] - The Private and Open Voice Assistant. - [[https://www.home-assistant.io/][Home Assistant]] - Open source home automation that puts local control and privacy first.
+
+** Instant Messaging
+:PROPERTIES:
+:CUSTOM_ID: instant-messaging
+:END:
+**Check out [[https://www.securemessagingapps.com/][this site]] for comparisons*.
+
+*Avoid* - WhatsApp | [[https://tosdr.org/en/service/198][[[https://shields.tosdr.org/en_198.svg]]]] - Instagram DM | [[https://tosdr.org/en/service/219][[[https://shields.tosdr.org/en_219.svg]]]] - Facebook Messenger | [[https://tosdr.org/en/service/182][[[https://shields.tosdr.org/en_182.svg]]]] - Skype | [[https://tosdr.org/en/service/244][[[https://shields.tosdr.org/en_244.svg]]]] - Zoom | [[https://tosdr.org/en/service/2198][[[https://shields.tosdr.org/en_2198.svg]]]] - Google Hangouts / Chat | [[https://tosdr.org/en/service/217][[[https://shields.tosdr.org/en_217.svg]]]]
+
+*Instead use*
+
+*** Decentralized
+:PROPERTIES:
+:CUSTOM_ID: decentralized
+:END:
+No single point of control or failure. A decentralized network operated by different servers from different volunteers around the globe. You choose where your data stays or you can self-host your own server. Somewhat more complex protocols (because of federation between servers) and some extra metadata is added to the messages (without compromising privacy).
+
+- [[https://matrix.org/][Matrix (Protocol)]] - An open network for secure, decentralized communication.
+  - [[https://element.io/][Element]] - All-in-one secure chat app for teams, friends and organisations. Keeps conversations in your control, safe from data-mining and ads. End-to-end encryption.
+  - [[https://cinny.in/][Cinny]] - A Matrix client focusing primarily on simple, elegant and secure interface.
+- [[https://xmpp.org/][Jabber / XMPP (Protocol)]] - The universal and open messaging standard. Tried and tested. Independent. Privacy-focused. E2E encrypted.
+  -  [[https://conversations.im/][Conversations]] - Jabber/XMPP client for Android 4.0+ smartphones that has been optimized to provide a unique mobile experience.
+  - [[https://astrachat.com/][AstraChat]] - Another XMPP client.
+- [[https://delta.chat/][DeltaChat]] - Chat over encrypted e-mail.
+- [[https://getsession.org/][Session]] - Extreme focus on privacy and anonymity. Blockchain technology.
+- [[https://simplex.chat/][SimpleX Chat]] - The first chat platform that is 100% private by design - it has no access to your connection graph
+- [[https://status.im/][Status]] - Status is a secure messaging app, crypto wallet, and Web3 browser built with state of the art technology.
+
+*** Centralized
+:PROPERTIES:
+:CUSTOM_ID: centralized
+:END:
+The service is in charge of running the servers that allow users to communicate. Single point of failure and control, but still 100% safe and trustworthy if the protocols and code are open and audited.
+
+- [[https://threema.ch/en][Threema]] - The messenger that puts security and privacy first. Pay once, chat forever. No collection of user data. Open Source client.
+- [[https://signal.org/][Signal]] - Extreme focus on privacy, combined with all of the features you expect. Strong encryption by design. 100% Open Source.
+  -  [[https://github.com/mollyim/mollyim-android][Molly]] - Signal-compatible fork client with some security enhancements.
+
+*** P2P
+:PROPERTIES:
+:CUSTOM_ID: p2p
+:END:
+No servers involved. Everything goes directly from one peer to the other peer. No point of failure or control. The features are reduced because of the lack of server, messaging can be slower. Best option for critical chats.
+
+- [[https://tox.chat/][Tox]] - Tox is easy-to-use software that connects you with friends and family without anyone else listening in.
+- [[https://briarproject.org/][Briar]] - Peer-to-peer encrypted messaging and forums.
+- [[https://github.com/maqp/tfc][Tinfoil Chat]] - Onion-routed, endpoint secure messaging system.
+- [[https://berty.tech/][Berty]] - The privacy-first messaging app that works with or without internet access, cellular data or trust in the network.
+
+** Link in Bio Tools
+:PROPERTIES:
+:CUSTOM_ID: link-in-bio-tools
+:END:
+- [[https://keyoxide.org/][Keyoxide]] - A modern, secure and privacy-friendly platform to establish your decentralized online identity.
+- [[https://github.com/EddieHubCommunity/BioDrop][BioDrop]] - Connect to your audience with a single link. Showcase the content you create and your projects in one place. Make it easier for people to find, follow and subscribe.
+- [[https://linkstack.org/][LinkStack]] - Self-hosted open-source Linktree alternative.
+
+** Link Shorteners
+:PROPERTIES:
+:CUSTOM_ID: link-shorteners
+:END:
+*Avoid*
+
+- Bit.ly
+
+*Instead use*
+
+- [[https://maglit.me][MagLit]] - An encrypted and privacy respecting Link Shortener service that also supports Magnet Links.
+
+** Location tracking
+:PROPERTIES:
+:CUSTOM_ID: location-tracking
+:END:
+*Avoid*
+
+- Google location history [[https://tosdr.org/en/service/217][[[https://shields.tosdr.org/en_217.svg]]]]
+- Google FindMyDevice [[https://tosdr.org/en/service/217][[[https://shields.tosdr.org/en_217.svg]]]]
+
+*Instead use*
+
+*** Tracking
+:PROPERTIES:
+:CUSTOM_ID: tracking
+:END:
+- [[https://apps.nextcloud.com/apps/phonetrack][Nextcloud Phonetrack]] - Nextcloud app to track location history with an [[https://gitlab.com/eneiluj/phonetrack-android][Android app]] ([[https://gitlab.com/eneiluj/phonetrack-oc/-/wikis/userdoc#logging-methods][other apps also supported]]). Supports caching positions offline and sending them to the server in batches. The first-party app has good battery saving options.
+- [[https://owntracks.org/][OwnTracks]] - Location tracking for displaying the current location only (limited location history functionality).
+- [[https://www.traccar.org/][Traccar]] - Location tracking software made for dedicated GPS logging devices.
+- [[https://github.com/Freika/dawarich][Dawarich]] - Self-hosted alternative to Google Location History.
+
+*** Find My Device
+:PROPERTIES:
+:CUSTOM_ID: find-my-device
+:END:
+- [[https://gitlab.com/Nulide/findmydevice][Find My Device]] - Find your Android Device via SMS.
+- [[https://github.com/mendhak/gpslogger][GPSlogger]] - Lightweight GPS Logging Application For Android. No servers, no internet. Saved to a simple file to local storage.
+
+** Mail Services
+:PROPERTIES:
+:CUSTOM_ID: mail-services
+:END:
+*Avoid* - Gmail - Outlook - Yandex Mail - Yahoo! Mail
+
+*Instead use*
+
+*** Third-Party owned
+:PROPERTIES:
+:CUSTOM_ID: third-party-owned
+:END:
+- [[https://forwardemail.net][Forward Email]] - the 100% open-source and privacy-focused email service.
+- [[https://protonmail.com/][ProtonMail]] - Secure Email. Based in Switzerland. [[https://protonmail.com/blog/climate-activist-arrest/][Read this article over Climate activist arrest]].
+- [[https://tuta.com/][Tuta]] - Secure email for everybody. Open Source.
+- [[https://riseup.net/en/about-us][Riseup]] - Online communication tools for people and groups working on liberatory social change.
+- [[https://mailfence.com][Mailfence]] - Secure and private email.
+
+*** Self-Hosted
+:PROPERTIES:
+:CUSTOM_ID: self-hosted
+:END:
+- [[https://github.com/docker-mailserver/docker-mailserver][Docker mail server]] - A fullstack but simple mail server (SMTP, IMAP, LDAP, Antispam, Antivirus, etc.) using Docker.
+- [[https://github.com/mailcow/mailcow-dockerized][Mailcow: dockerized]] - The mailserver suite with the 'moo'.
+- [[https://github.com/mail-in-a-box/mailinabox][Mail-in-a-box]] - Mail-in-a-Box helps individuals take back control of their email by defining a one-click, easy-to-deploy SMTP+everything else server: a mail server in a box.
+- [[https://github.com/mjl-/mox][Mox]] - Modern full-featured open source secure mail server for low-maintenance self-hosted email.
+
+*** Clients
+:PROPERTIES:
+:CUSTOM_ID: clients
+:END:
+**** Android / iOS
+:PROPERTIES:
+:CUSTOM_ID: android-ios
+:END:
+-  [[https://github.com/M66B/FairEmail][FairEmail]] - Fully featured, open source, privacy friendly email app for Android.
+-  [[https://k9mail.app/][K9]] - Open Source Email App for Android.
+
+**** Desktop
+:PROPERTIES:
+:CUSTOM_ID: desktop
+:END:
+- [[https://www.thunderbird.net][Thunderbird]] - A free customizable open source email client.
+
+*** Email Alias Services (Anonymous Forwarding)
+:PROPERTIES:
+:CUSTOM_ID: email-alias-services-anonymous-forwarding
+:END:
+With email aliases, you can finally create a different identity for each website. Defend against spams, phishing and data breach. You can choose self-hosting any of the following options or you can also use their own platform as a service.
+
+- [[https://github.com/simple-login/app][SimpleLogin]]
+- [[https://github.com/anonaddy/anonaddy][AnonAddy]]
+
+** Maps and Navigation
+:PROPERTIES:
+:CUSTOM_ID: maps-and-navigation
+:END:
+*Avoid* - Google Maps - Apple Maps - Yandex Maps - Bing Maps - Waze - Sygic - HERE WeGo - Petal Maps
+
+*Instead use* - [[https://www.openstreetmap.org/][Open Street Map (OSM)]] - OpenStreetMap is built by a community of mappers that contribute and maintain data about roads, trails, cafés, railway stations, and much more, all over the world. - [[https://osmand.net/][OSMAnd]] - Android/iOS Navigation app using OSM. It is a feature-rich app with all you expect. - [[https://map.qwant.com/][Qwant Maps]] - An OpenStreetMap-based private Google Maps alternative. - [[https://organicmaps.app/][Organic Maps]] - Great offline maps for hikers and cyclists.
+
+** Media Streaming Platforms
+:PROPERTIES:
+:CUSTOM_ID: media-streaming-platforms
+:END:
+*Avoid* - *Amazon Prime* - [[https://tosdr.org/en/service/2444][Bad privacy policy]]. Apps have [[https://reports.exodus-privacy.eu.org/en/reports/com.amazon.amazonvideo.livingroom/latest/][Google trackers]]. Many permissions are required for a streaming app. - *Netflix* - [[https://tosdr.org/en/service/185][Bad privacy policy]]. Apps have [[https://reports.exodus-privacy.eu.org/en/reports/com.amazon.amazonvideo.livingroom/latest/][Google trackers]]. Many permissions are required for a streaming app. - *Disney Plus* - [[https://tosdr.org/en/service/2745][Very bad privacy policy]]. Apps have [[https://reports.exodus-privacy.eu.org/en/reports/com.amazon.amazonvideo.livingroom/latest/][various trackers]]. Many permissions are required for a streaming app. - *Plex* - [[https://tosdr.org/en/service/1567][Dubitous privacy policy]]. Apps have [[https://reports.exodus-privacy.eu.org/en/reports/com.plexapp.android/latest/][many trackers]]. Way too many permissions are required for a streaming app. - *Spotify* - [[https://tosdr.org/en/service/225][Very bad privacy policy]]. Apps have [[https://reports.exodus-privacy.eu.org/en/reports/com.spotify.music/latest/][many trackers]]. Way too many permissions are required for a streaming app. - *Deezer* - [[https://tosdr.org/en/service/2516][Bad privacy policy]]. Apps have [[https://reports.exodus-privacy.eu.org/en/reports/deezer.android.tv/latest/][many trackers]]. Way too many permissions are required for a streaming app. - *SoundCloud* - [[https://tosdr.org/en/service/276][Dubitous priavcy policy]]. Apps have [[https://reports.exodus-privacy.eu.org/en/reports/com.soundcloud.android/latest/][many trackers]]. Way too many permissions are required for a streaming app.
+
+*Instead use* #### Video and Audio - [[https://jellyfin.org/][Jellyfin]] - Jellyfin is the volunteer-built media solution that puts you in control of your media. Stream to any device from your own server, with no strings attached. - [[https://github.com/Dusk-Labs/dim][Dim]] - Dim is a self-hosted media manager. With minimal setup, Dim will organize and beautify your media collections, letting you access and play them anytime from anywhere. - [[https://www.stremio.com/][Stremio]] - Stremio is a modern media center that's a one-stop solution for your video entertainment.
+
+**** Audio
+:PROPERTIES:
+:CUSTOM_ID: audio
+:END:
+- [[https://funkwhale.audio/][Funkwhale]] - A social platform to enjoy and share music (SoundCloud alternative).
+- [[https://www.subsonic.org/pages/index.jsp][Subsonic]] - Your complete, personal music streamer.
+- [[https://ampache.org/][Ampache]] - A web based audio/video streaming application and file manager.
+- [[https://koel.dev/][Koel]] - a personal music streaming server that works.
+- [[https://nuclear.js.org/][Nuclear]] - Modern music player focused on streaming from free sources.
+- [[https://navidrome.org/][Navidrome]] - Lightweight, fast and self-contained personal music streamer.
+-  [[https://github.com/moritz-weber/mucke][mucke]] - A music player for local files with unique custom playback options.
+
+*Spotify alternative clients* > These clients, although will have less tracking, still DO NOT protect your privacy at all as you will still be streaming from Spotify servers from you own *premium (paid, identified)* account.
+
+* Premium required.
+
+- [[https://github.com/iTaysonLab/jetispot][Jetispot]] - Experimental UNOFFICIAL Spotify client for Android built on librespot-java + Jetpack Compose
+- [[https://github.com/KRTirtho/spotube][Spotube]] - A lightweight free Spotify crossplatform-client.
+- [[https://github.com/xou816/spot][Spot*]] - Native Spotify client built in GTK and Rust.
+- [[https://github.com/jpochyla/psst][psst*]] - Fast and multi-platform Spotify client with native GUI.
+- [[https://github.com/hrkfdn/ncspot][ncspot*]] - Cross-platform ncurses Spotify client written in Rust, inspired by ncmpc and the likes.ç
+
+* No premium required.
+
+-  [[https://github.com/vhaudiquet/BladePlayer][Blade Player]] - Open source Spotify client, works without premium.
+
+*Youtube Music alternative clients* - [[https://github.com/snuffyDev/Beatbump][Beatbump]] - Alternative frontend for YouTube Music; no ads and custom API wrapper. - [[https://github.com/vfsfitvnm/ViMusic][ViMusic]] - [Unmantained] A Jetpack Compose Android application for streaming music from YouTube Music. - [[https://github.com/fast4x/RiMusic][RiMusic]] - A ViMusic maintained fork.
+
+*Deezer alternative clients* - [[https://github.com/yne/dzr][dzr]] - Command line Deezer player for Linux, BSD, Android+Termux
+
+**** Podcasts
+:PROPERTIES:
+:CUSTOM_ID: podcasts
+:END:
+*Avoid*
+
+- *Spotify* - [[https://tosdr.org/en/service/225][Very bad]] privacy policy. They collect tons of data about you: mood, free time, likes, dislikes, friends... Also, their apps have [[https://reports.exodus-privacy.eu.org/en/reports/com.spotify.music/latest/][way too many trackers]].
+- *iVoox* - Their apps are [[https://reports.exodus-privacy.eu.org/en/reports/com.ivoox.app/latest/][filled with trackers]]. Their website has trackers.
+- *Audible* - [[https://tosdr.org/en/service/190][Very bad]] privacy policy. Their app has [[https://reports.exodus-privacy.eu.org/en/reports/com.audible.application/latest/][many trackers]].
+- *Deezer* - [[https://tosdr.org/en/service/2516][Bad privacy policy]]. Apps have [[https://reports.exodus-privacy.eu.org/en/reports/deezer.android.tv/latest/][many trackers]]. Way too many permissions are required for a streaming app.
+
+*Instead use*
+
+- [[https://antennapod.org][Antennapod]] - A podcast player that is completely open. Subscribe to any RSS feed.
+- [[https://castopod.org][Castopod]] - Self-host your podcasts with ease, keep control over what you create and talk to your audience without any middleman. Your podcast and your audience belong to you and you only.
+- [[https://funkwhale.audio/][Funkwhale]] - A social platform to enjoy and share audio.
+
+** Notes and Tasks
+:PROPERTIES:
+:CUSTOM_ID: notes-and-tasks
+:END:
+*Avoid*
+
+These providers offer apps and services filled with data trackers. Also, most of them store your notes on their servers and do not offer any kind of encryption.
+
+- Google Keep
+  - [[https://github.com/vHanda/google-keep-exporter][Google Keep Exporter]] - Convert your Google Keep notes into a standard markdown + YAML header format.
+- Evernote
+- Squid
+- Notion
+- OneNote
+
+*Instead use*
+
+- [[https://www.anytype.io/][Anytype]] - An open-source Notion alternative. E2EE, cloud and local network sync, can be self-hosted.
+- [[https://www.appflowy.io/][AppFlowy]] - Open Source Notion Alternative. You are in charge of your data and customizations.
+- [[https://hedgedoc.org/][HedgeDoc]] - Formerly CodiMD (community). An awesome platform to write and share markdown.
+- [[https://github.com/laurent22/joplin][Joplin]] - Note taking and to-do application with synchronisation and encryption capabilities.
+- [[https://logseq.com/][Logseq]] - A privacy-first alternative to WorkFlowy.
+- [[https://github.com/usememos/memos][Memos]] - An open-source, self-hosted memo hub with knowledge management and socialization.
+- [[https://github.com/nextcloud/notes/][Nextcloud Notes]] - The Notes app is a distraction free notes taking app for Nextcloud.
+  - [[https://github.com/stefan-niedermann/nextcloud-notes][Nextcloud Notes app]] - An android client for Nextcloud Notes.
+- [[https://github.com/OmGodse/Notally][Notally]] - A beautiful notes app (local only, no sync).
+- [[https://notesnook.com/][Notesnook]] - Open source zero knowledge private note taking.
+- [[https://obsidian.md][Obsidian]] - Obsidian is the private and flexible note‑taking app. Closed source but has no trackers (website / apps) and E2EE sync.
+- [[https://quillpad.github.io/][Quillpad]] - Take beautiful markdown notes and stay organized with task lists. Fork of Quillnote.
+- [[https://github.com/siyuan-note/siyuan][SiYuan]] - A local-first personal knowledge management system.
+- [[https://standardnotes.org/][Standard Notes]] - A free, open-source, and completely encrypted notes app.
+- [[https://tinylist.app/][TinyList]] - Create and share notes and checklists, without sacrificing your privacy.
+- [[https://github.com/zadam/trilium][Trilium Notes]] - Build your personal knowledge base with Trilium Notes
+- [[https://vikunja.io][Vikunja]] - The open-source to-do app to organize your life.
+- [[https://github.com/purocean/yn][YankNote]] - A Hackable Markdown Note Application for Programmers.
+
+** Music Recognition
+:PROPERTIES:
+:CUSTOM_ID: music-recognition
+:END:
+*Avoid*
+
+- Shazam - It's under [[https://tosdr.org/en/service/158][Apple's privacy policy]]. The android app [[https://reports.exodus-privacy.eu.org/en/reports/com.shazam.android/latest/][has a few Google trackers]].
+- SoundHound - Has way too many [[https://reports.exodus-privacy.eu.org/en/reports/com.melodis.midomiMusicIdentifier.freemium/latest/][trackers]] for a music recognition app.
+- Musicxmatch - The app [[https://reports.exodus-privacy.eu.org/en/reports/com.musixmatch.android.lyrify/latest/][has trackers]] and requires a dangerous amount of permissions.
+
+*Instead use*
+
+*Shazam alternative clients*
+
+- [[https://github.com/marin-m/SongRec][SongRec]] - An open-source Shazam client for Linux, written in Rust.
+- [[https://github.com/smcclennon/SongID][SongID Telegram Bot]] - A Telegram bot that can identify music in audio/video files you send it.
+
+** Office
+:PROPERTIES:
+:CUSTOM_ID: office
+:END:
+*Avoid* - Microsoft Office [[https://tosdr.org/en/service/244][[[https://shields.tosdr.org/en_244.svg]]]] - Google Docs [[https://tosdr.org/en/service/217][[[https://shields.tosdr.org/en_217.svg]]]]
+
+*Instead use* - [[https://www.libreoffice.org/][LibreOffice]] - Free and open source offline office. - [[https://www.onlyoffice.com/][OnlyOffice]] - Free and open source online office for collaboration. - [[https://cryptpad.fr/][Cryptpad]] - Collaboration suite, encrypted and open-source. - [[https://etherpad.org/][Etherpad]] - Highly customizable open source online editor providing collaborative editing in really real-time.
+
+** Online Phone Providers
+:PROPERTIES:
+:CUSTOM_ID: online-phone-providers
+:END:
+Many websites require phone number verification. These services offer a way to receive (and sometimes send) SMS messages in a privacy-focused manner.
+
+*** No email verification, accepting monero
+:PROPERTIES:
+:CUSTOM_ID: no-email-verification-accepting-monero
+:END:
+- [[https://crypton.sh/][Crypton]] - Secure SMS Sim Card in the cloud. (Based in Iceland)
+- [[https://virtualsim.net/][Virtualsim]] - Virtualsim provides physical SIM cards leasing for SMS verifications. (Based in Ukraine)
+- [[https://monerosms.com/][MoneroSMS]] - Virtual numbers for SMS/MMS messaging and verifications. CLI and web app. (Based in United States)
+
+*** Email verification required, accepting monero
+:PROPERTIES:
+:CUSTOM_ID: email-verification-required-accepting-monero
+:END:
+- [[https://onlinesim.ru/][Onlinesim]] - Receive SMS online to virtual phone number. (Based in Russia)
+
+*** Email verification required, accepting crypto
+:PROPERTIES:
+:CUSTOM_ID: email-verification-required-accepting-crypto
+:END:
+- [[https://smspva.com/][SmsPVA]] - SmsPVA is a service providing a phone number you can send any SMS on and get a text of it. (Based in France)
+
+** Operating Systems
+:PROPERTIES:
+:CUSTOM_ID: operating-systems
+:END:
+*** Android
+:PROPERTIES:
+:CUSTOM_ID: android-1
+:END:
+Try to avoid using Google Android or any Android that has been modified and tuned by any manufacturer such as Xiaomi, Huawei, Samsung, etc. Android is an Open Source project - [[][AOSP - Android Open Source Project]] - and it has many versions that will respect the user privacy and data and won't share it with private servers from manufacturers or service providers.
+
+*Instead use*
+
+#+begin_quote
+[!NOTE] *Android app compatibility*: Although all of these Operating Systems are Android, app compatibility may not be perfect due to a lack of GMS (Google Mobile Services) which some apps require. You can check how well apps work with microg (a free and open source alternative to GMS) or no GMS at all with [[https://plexus.techlore.tech/][Plexus]] where the community can report how well android apps perform in those environments.
+
+#+end_quote
+
+#+begin_quote
+[!NOTE] *Android security*: Custom ROMs can improve your privacy the same as they can decrease the Android security, always use ROMs that support verified boot and encryption and *DO NOT* have root enabled by default. If possible, don't use userdebug builds. If your threat model requires security, buy a Google Pixel and install GrapheneOS on it. [[https://www.privacyguides.org/android/overview][Read more on PrivacyGuides]].
+
+#+end_quote
+
+**** Android-Based
+:PROPERTIES:
+:CUSTOM_ID: android-based
+:END:
+*GrapheneOS* has a strong focus on security and privacy. It deploys technologies to mitigate many vulnerabilities and makes exploiting of vulnerabilities substantially more difficult. It improves the security of both the OS and the apps running on it.
+
+- [[https://grapheneos.org/][GrapheneOS]] - GrapheneOS is an open source privacy and security focused mobile OS with Android app compatibility. Only *Google Pixel* phones are supported.
+
+These ROMs also offer good priavcy and/or extended support for a wider range of devices. Note that these may also reduce security, increasing the attack surface of the operating system.
+
+- [[https://calyxos.org/][CalyxOS]] - Privacy by Design ROM. Offers better security than LineageOS or Replicant.
+- [[https://lineageos.org/][LineageOS]] - A free and open-source operating system for various devices, based on the Android mobile platform.
+  - [[https://divestos.org][DivestOS]] - LineageOS fork with increased security and privacy.
+- [[https://www.replicant.us/][Replicant]] - Replicant is a fully free Android distribution running on several devices.
+
+**** Based on Linux
+:PROPERTIES:
+:CUSTOM_ID: based-on-linux
+:END:
+- [[https://www.ubports.com/][UBPorts]] - Ubuntu Touch is the touch-friendly mobile version of Ubuntu.
+- [[https://postmarketos.org/][postmarketOS]] - Touch optimised and pre-configured version of Alpine Linux.
+- [[https://www.pureos.net/][PureOS]] - Operating system developed by purism for the Librem 5.
+- [[https://www.plasma-mobile.org/][Plasma Mobile]] - Plasma, in your pocket. Privacy-respecting, open source and secure phone ecosystem.
+- [[https://mobian-project.org/][mobian]] - Debian for mobile. ### Smart TV Don't use Google's Android TV, LG WebOS or any other privacy-invasive common TV OS that comes preinstalled with your TV.
+
+*Instead use*
+
+Currently I am not aware of any privacy-respecting smartTV software. If you are aware of any, please open a Pull Request or an issue.
+
+The following software is not an *Operating System* but comprises apps that can be used on almost any OS. These apps respect your privacy and offer features similar to those of a Smart TV. A recommended setup involves connecting a [[https://www.raspberrypi.com/products/raspberry-pi-4-model-b/][Raspberry Pi 4]] running a GNU/Linux operating system to your TV, installing tools like [[https://kdeconnect.kde.org/][KDE Connect]] to control media from your phone, and then adding the apps listed below:
+
+- [[https://kodi.tv/][Kodi]] - It is an entertainment hub that brings all your digital media together into a beautiful and user friendly package. It is 100% free and open source, very customisable and runs on a wide variety of devices.
+- [[https://osmc.tv/][OSMC]] - OSMC is a free and open source media center built for the people, by the people.
+
+You can also check out [[https://github.com/pluja/awesome-privacy#media-streaming-platforms][Media Streaming Platforms]] section.
+
+*** PC / MacOS
+:PROPERTIES:
+:CUSTOM_ID: pc-macos
+:END:
+*Avoid* - MS Windows - Owned by Microsoft it is known for collecting many user data and tricking users to own a Microsoft account. If you still want and happen to use Windows 10, you can use [[https://github.com/builtbybel/privatezilla][this tool]], or [[https://www.w10privacy.de/english-home/][this other tool]] to see and disable the tons of privacy-invasive settings of MS Windows. - MacOS.
+
+*Instead use* #### [[https://www.linux.com/what-is-linux/][GNU/Linux]]
+
+GNU/Linux is a family of free (as in freedom and as in free beer) and open source Operating Systems mostly developed by the community. If you don't know where to start these are good options for begginers:
+
+- [[https://getfedora.org/][Fedora]]
+- [[https://linuxmint.com/edition.php?id=305][Mint (Cinnamon)]] is a beginner friendly distribution.
+- [[https://qubes-os.org/][Qubes OS]] is a security-oriented operating system that isolates various workspaces into separate virtual machines to enhance privacy and security.
+- [[https://tails.net/][Tails]] is a portable operating system that protects against surveillance and censorship. It always starts from the same clean state and everything you do disappears automatically when you shut down Tails.
+
+#+begin_quote
+[!TIP] If you want to try it out without installing it to your computer, you can use a [[https://www.fosslinux.com/274/how-to-create-linux-mint-live-usb-drive-on-windows.htm][Live USB Stick]]. You can also investigate [[https://www.ventoy.net][Ventoy]] to easily download and test linux distros with a USB stick.
+
+#+end_quote
+
+#+begin_quote
+[!TIP] If you want to install Linux but keep your current operating System, you can set up [[https://averagelinuxuser.com/dualboot-linux-windows/][dual boot]].
+
+#+end_quote
+
+#+begin_quote
+[!NOTE] Not all Linux distributions are free (as in freedom), free (as in free beer) or respect user privacy. There are tons of GNU/Linux distributions and you should investigate a bit before jumping into one of them!
+
+#+end_quote
+
+**** Other OS:
+:PROPERTIES:
+:CUSTOM_ID: other-os
+:END:
+- [[https://atlasos.net/][AtlasOS]] - An open-source modification of Windows 10, designed to optimize performance, and latency. Atlas removes all types of tracking embedded within Windows and implements numerous group policies to minimize data collection.
+- [[https://reactos.org/][ReactOS]] - ReactOS is an operating system able to run Windows software, Windows drivers that looks-like Windows and is free and open source.
+- [[https://www.redox-os.org/][RedoxOS]] - A WIP project aiming to provide a Unix-like Operating System written in Rust.
+
+** Password Managers
+:PROPERTIES:
+:CUSTOM_ID: password-managers
+:END:
+*Avoid* - LastPass - Dashlane
+
+*Instead use* - [[https://bitwarden.com][Bitwarden]] - An open source cloud based password manager. - [[https://github.com/dani-garcia/vaultwarden/][vaultwarden]] - Unofficial Bitwarden compatible self-hosted server, formerly known as bitwarden_rs. - [[https://keepassxc.org/][KeepassXC]] - Securely store passwords using industry standard encryption, no sync just storage. - [[https://www.keepassdx.com/][KeepassDX]] for Android. - [[https://strongboxsafe.com/][Strongbox]] for iOS. - [[https://keeweb.info/][KeeWeb]] for Web and other platforms. - [[https://www.lesspass.com][LessPass]] - Stateless password manager. Remember one master password to access your passwords. No sync needed. - [[https://padloc.app/][Padloc]] - The last password manager you'll ever want to use. - [[https://www.passbolt.com][Passbolt]] - An open source password manager designed for team collaboration. - [[https://passky.org][Passky]] - Simple, modern, lightweight, open-source and secure password manager. - [[https://proton.me/pass][Proton Pass]] - Open-source and encrypted password manager by Proton.
+
+** Pastebin and Secret Sharing
+:PROPERTIES:
+:CUSTOM_ID: pastebin-and-secret-sharing
+:END:
+These tools are useful when sharing secrets, code snippets or any other kind of text with others in a private way.
+
+- [[https://github.com/bokub/nopaste][NoPaste]] - Open Source pastebin alternative that works with no database, and no back-end code. Instead, the data is compressed and stored entirely in the link that you share, nowhere else.
+- [[https://github.com/PrivateBin/PrivateBin][PrivateBin]] - A minimalist, open source online pastebin where the server has zero knowledge of pasted data. Data is encrypted/decrypted in the browser using 256 bits AES.
+- [[https://github.com/jhaals/yopass][Yopass]] - Secure sharing of secrets, passwords and files.
+
+** Payments
+:PROPERTIES:
+:CUSTOM_ID: payments
+:END:
+*Avoid* - Visa / Mastercard - [[https://tosdr.org/en/service/230][[[https://shields.tosdr.org/en_230.svg]]]] - WeChat - _insertBigTechHere_Pay - Bank payments (wire, SEPA, etc)
+
+*Instead use* - [[https://www.getmonero.org/][Monero]] - Monero is cash for a connected world. It's fast, private, untraceable and secure. - Cash - Use person-to-person payments using physical notes and coins.
+
+#+begin_quote
+[!WARNING] [[https://bitcoin.org][Bitcoin]] is not anonymous nor private. Bitcoin is traceable, transparent and pseudonymous. For a basic introduction, [[https://yewtu.be/watch?v=JN1Bowgcle8][see aantonop's video]]. More advanced users can watch this [[https://yewtu.be/watch?v=QEnL5k0R08w][Bitcoin privacy series]].
+
+#+end_quote
+
+- [[https://www.sparrowwallet.com/][Sparrow Wallet]] - An open source, cross-platform desktop wallet that gives you many privacy-preserving spending tools.
+- [[https://www.wasabiwallet.io/][Wasabi Wallet]] - An open source, non-custodial, privacy-focused Bitcoin wallet available on Desktop.
+
+** Personal Finances
+:PROPERTIES:
+:CUSTOM_ID: personal-finances
+:END:
+*** FIAT
+:PROPERTIES:
+:CUSTOM_ID: fiat
+:END:
+- [[https://budgetzen.net][Budget Zen]] - Simple and Encrypted Budget Management.
+- [[https://github.com/Marmo/debitum][Debitum]] - With Debitum you can track all kinds of IOUs, be it money or lent items.
+- [[https://gnucash.org/][GnuCash]] - GnuCash is personal and small-business financial-accounting software, freely licensed under the GNU GPL and available for GNU/Linux, BSD, Solaris, Mac OS X and Microsoft Windows.
+- [[https://ihatemoney.org/][IHateMoney]] - Manage your shared expenses, easily.
+  - [[https://gitlab.com/eneiluj/moneybuster/][MoneyBuster]] - Android client for Nextcloud Cospend and [[https://ihatemoney.org/][IHateMoney]] servers.
+- [[https://github.com/mtotschnig/MyExpenses][My Expenses]] - Featureful GPL licenced Android Expense Tracking App.
+- [[https://apps.nextcloud.com/apps/cospend][Nextcloud Cospend]] - A group/shared budget manager inspired by the great IHateMoney.
+  - [[https://gitlab.com/eneiluj/moneybuster/][MoneyBuster]] - Android client for Nextcloud Cospend and [[https://ihatemoney.org/][IHateMoney]] servers.
+- [[https://github.com/arduia/ProExpense/][ProExpense]] - A simple free finance note to safely record daily expenses.
+
+*** CRYPTO
+:PROPERTIES:
+:CUSTOM_ID: crypto
+:END:
+Avoid using any exchange portfolio tracking or any app like Blockfolio as they *do not* respect your privacy in any way.
+
+Instead use Rotki, an awesome, feature-rich and open source app: - [[https://github.com/rotki/rotki][Rotki]] - An awesome portfolio tracking, analytics, accounting and tax reporting application that protects your privacy.
+
+** Photo Editing and Management
+:PROPERTIES:
+:CUSTOM_ID: photo-editing-and-management
+:END:
+*Avoid* - [[https://tosdr.org/en/service/417][[[https://shields.tosdr.org/en_417.svg]]]] - VSCO
+
+*Instead use* #### Web - [[https://github.com/viliusle/miniPaint][miniPaint]] - Open Source alternative to Photopea. miniPaint operates directly in the browser. Nothing will be sent to any server. Everything stays in your browser.
+
+**** Desktop
+:PROPERTIES:
+:CUSTOM_ID: desktop-1
+:END:
+- [[https://www.gimp.org/][GIMP]] - The Free & Open Source Image Editor.
+- [[https://github.com/KDE/krita][Krita]] - Krita is a free and open source digital painting application
+- [[https://github.com/qarmin/czkawka][Czkawka]] - Multi functional app to find duplicates and similar images etc.
+- [[https://www.digikam.org/][DigiKam]] - Awesome Professional Photo Management with the Power of Open Source.
+- [[https://inkscape.org/][Inkscape]] - Inkscape is a free and open-source vector graphics editor used to create vector images.
+- [[https://imageglass.org/][ImageGlass]] - ImageGlass is a lightweight software application whose purpose is to help you view images in a clean and intuitive working environment.
+- [[https://www.darktable.org/][darktable]] - darktable is an open source photography workflow application and raw developer
+
+**** Android
+:PROPERTIES:
+:CUSTOM_ID: android-2
+:END:
+- [[https://github.com/Catrobat/Paintroid][Pocket Paint]] - The standard image manipulation app for Catroid.
+- [[https://gitlab.com/juanitobananas/scrambled-exif][Scrambled Exif]] - Remove Exif data from pictures before sharing them.
+- [[https://codeberg.org/Starfish/Imagepipe][ImagePipe]] - Reduces image size and removes exif-tags when sharing images on android devices.
+
+** Photo Storage
+:PROPERTIES:
+:CUSTOM_ID: photo-storage
+:END:
+*Avoid* - Google Photos [[https://tosdr.org/en/service/217][[[https://shields.tosdr.org/en_217.svg]]]] - [[https://github.com/TheLastGimbus/GooglePhotosTakeoutHelper][Google Photos Takeout Helper]] - Script that organizes the Google Takeout messy archive into one big chronological folder. Use this script to get out of Google Photos :). - Amazon Photos
+
+*Instead use*
+
+*** Self-hosted
+:PROPERTIES:
+:CUSTOM_ID: self-hosted-1
+:END:
+- [[https://github.com/alextran1502/immich][Immich (WIP)]] - Self-hosted photo and video backup solution directly from your mobile phone.
+- [[https://github.com/LibrePhotos/librephotos][LibrePhotos]] - Active [[https://github.com/hooram/ownphotos][OwnPhotos]] fork. Self hosted alternative to Google Photos.
+- [[https://nextcloud.com/][Nextcloud]] - The open source self-hosted productivity platform that keeps you in control. It has a [[https://github.com/nextcloud/photos][/Photos/]] plugin to help you organize and visualize your photos.
+- [[https://photoprism.app][Photoprism]] - Feature rich server-based application for browsing, organizing and sharing your personal photo collection. The most similar to Google Photos.
+- [[http://bpatrik.github.io/pigallery2/][Pigallery2]] - A self-hosted directory-first photo gallery website.
+- [[https://photoview.github.io/][Photoview]] - Photo gallery for self-hosted personal servers with Facial Recognition.
+- [[https://photostructure.com/][Photostructure]] - Self-hosted photo library that makes browsing and sharing a lifetime of memories delightful.
+- [[https://stingle.org/][Stingle Photos]] - Open source solution that provides strong security, privacy and encryption to backup your photos.
+
+*** Third-party
+:PROPERTIES:
+:CUSTOM_ID: third-party
+:END:
+- [[https://crypt.ee/][Crypt.ee]] - A private and encrypted place for all your photos, documents, notes and more.
+- [[https://ente.io/][Ente]] - End-to-end encrypted storage for photos and videos. Open source, [[https://ente.io/blog/cryptography-audit/][audited]] independently.
+
+*** Local
+:PROPERTIES:
+:CUSTOM_ID: local
+:END:
+- [[https://www.digikam.org/][DigiKam]] - Awesome Professional Photo Management with the Power of Open Source.
+- [[https://github.com/leonlatsch/Photok][Photok]] - Photok is a free Photo-Safe. It stores your photos encrypted on your device and hides them from others.
+- [[https://imageglass.org/][ImageGlass]] - ImageGlass is a lightweight software application whose purpose is to help you view images in a clean and intuitive working environment.
+
+** Privacy Tools
+:PROPERTIES:
+:CUSTOM_ID: privacy-tools
+:END:
+This section is dedicated to some tools that may help users analyze the privacy status on their devices.
+
+*** Desktop
+:PROPERTIES:
+:CUSTOM_ID: desktop-2
+:END:
+- [[https://github.com/owerdogan/whoami-project][Whoami Project]] - Whoami provides enhanced privacy, anonymity for Debian and Arch based linux distributions.
+- [[https://www.buskill.in/][BusKill]] - BusKill is a Dead Man Switch triggered when a magnetic breakaway is tripped, severing a USB connection.
+
+*** Android
+:PROPERTIES:
+:CUSTOM_ID: android-3
+:END:
+- [[https://reports.exodus-privacy.eu.org/en/][εxodus]] - The privacy audit platform for Android applications. Find how many trackers your apps have.
+  - [[https://f-droid.org/en/packages/com.oF2pks.classyshark3xodus/][ClassyShark3xodus]] - Checks apk(s) for known trackers (provided by Exodus) +other warnings and specs.
+- [[https://plexus.techlore.tech/][Plexus]] - Remove the fear of Android app compatibility on de-Googled devices. Find if an app will work on a De-Googled device.
+- [[https://netguard.me/][Netguard]] - A simple way to block access to the internet per application.
+- [[https://github.com/celzero/rethink-app][RethinkDNS + Firewall]] - An open-source, no-root firewall and DNS changer, with anti-censorship capabilities for Android 6+.
+
+** Remote Access and Control
+:PROPERTIES:
+:CUSTOM_ID: remote-access-and-control
+:END:
+*Avoid* - TeamViewer - AnyDesk
+
+*Instead use* - [[https://rustdesk.com/][RustDesk]] - Open-source remote desktop client software, written in Rust. Works out of the box, full control of your data, with no concerns about security. - [[https://screego.net/][screego]] - Screen sharing for developers. - [[https://remmina.org/][Remmina]] - Remote access screen and file sharing to your desktop (RDP). - [[https://www.uvnc.com/][UltraVNC]] - UltraVNC is a powerful, easy to use and free - remote pc access softwares - that can display the screen of another computer (via internet or network) on your own screen. - [[https://meshcentral.com/][MeshCentral]] - The open source, multi-platform, self-hosted, feature packed web site for remote device management.
+
+** Search Engines
+:PROPERTIES:
+:CUSTOM_ID: search-engines
+:END:
+*Avoid* - [[https://tosdr.org/en/service/217][[[https://shields.tosdr.org/en_217.svg]]]] - [[https://tosdr.org/en/service/309][[[https://shields.tosdr.org/en_309.svg]]]] - Bing - [[https://tosdr.org/en/service/860][[[https://shields.tosdr.org/en_860.svg]]]] - [[https://tosdr.org/en/service/591][[[https://shields.tosdr.org/en_591.svg]]]]
+
+*Instead use* - [[https://github.com/benbusby/whoogle-search][Whoogle Search]] - A self-hosted, ad-free, privacy-respecting Google metasearch engine. - [[https://github.com/liameno/librengine][librengine]] - Privacy Web Search Engine - [[https://searx.me/][SearX]] - Privacy-respecting metasearch engine. - [[https://github.com/searxng/searxng][SearxNG]] - Free internet metasearch engine which aggregates results from various search services and databases.\\
+- [[https://duckduckgo.com][DuckDuckGo]] - A privacy respecting search engine. - [[https://search.brave.com][Brave Search]] - A privacy respecting search engine with [[https://brave.com/search-independence/][its own independent index]]. - [[https://www.qwant.com/][Qwant]] - A zero tracking search engine made and hosted in France, EU.
+
+** Social Networks and Platforms
+:PROPERTIES:
+:CUSTOM_ID: social-networks-and-platforms
+:END:
+
+#+begin_quote
+[!NOTE] *The fediverse*
+
+The fediverse is a "*fed*erated" "un*iverse*" of social network platforms that are able to talk to one another through a standard and open protocol. This means that you can consume content on any network from any of these networks. You are not locked to a single provider, you are free to choose. Please [[https://framatube.org/w/9dRFC6Ya11NCVeYKn8ZhiD?start=8s][watch this video]] by FramaSoft that illustrates the concept very good.
+
+Ideally, we should all move to the fediverse and abandon the centralized and monopolized social networks that are now the most popular (Twitter, Reddit, Instagram...).
+
+All the apps compatible with the Fediverse (ActivityPub) are marked with a 🧩
+
+#+end_quote
+
+#+begin_quote
+[!NOTE] *Alternative frontends and clients*
+
+Alternative frontends are good to protect your individual privacy. You can still consume the contents of privative and privacy-harmful services with protection over your privacy and some anonymity. Even using most these alternative frontends, still, the privative services will receive requests about the content you are consuming (even not knowing it is you). This sitll harms the collective privacy and adds data to their algorithms in some ways. Only the alternative frontends (or clients) that act as a proxy will hide your real IP from the content provider.
+
+You can use these browser extensions and apps to automatically redirect any links to privacy-respecting alternative frontends: - [[https://github.com/benbusby/farside][Farside]] - A smart redirecting gateway for various frontend services. - [[https://github.com/libredirect/libredirect#get][LibRedirect]] - A web extension that redirects YouTube, Twitter... requests to alternative privacy friendly frontends and backends. - [[https://www.f-droid.org/en/packages/app.fedilab.nitterizeme/][UntrackMe]] - Transform Youtube, Twitter & other links to their free and open source alternatives.
+
+#+end_quote
+
+*** Blogging platforms (Medium)
+:PROPERTIES:
+:CUSTOM_ID: blogging-platforms-medium
+:END:
+*Avoid*: - *Medium* - website has Google trackers and ads. - *Blogger* - Google owned, has google trackers and ads.
+
+*Alternatives:* - [[https://github.com/Plume-org/Plume][Plume]] 🧩 - Federated blogging application, thanks to ActivityPub. - [[https://writefreely.org/][WriteFreely]] 🧩 - An open source platform for building a writing space on the web.
+
+*Alternative Medium frontends:* - [[https://git.sr.ht/~edwardloveall/scribe/][Scribe]] - Medium alternative forntend inspired by Invidious.
+
+*** Instagram
+:PROPERTIES:
+:CUSTOM_ID: instagram
+:END:
+[[https://tosdr.org/en/service/219][[[https://shields.tosdr.org/en_219.svg]]]]
+
+Don't use Instagram (or at least the official client). Instagram is a very privacy-invasive app with biased results and feeds based on user profiles, it is also used as a manipulation tool and has a lot of censorship going against free speech. Lastly, it has an addictive and toxic UI design.
+
+*Instead use*
+
+*Alternatives to Instagram* - [[https://pixelfed.org/][Pixelfed]] 🧩 - Decentralized, federated and Open Source alternative to Instagram with posts, videos, stories, tags, etc.
+
+*** LBRY and Odysee
+:PROPERTIES:
+:CUSTOM_ID: lbry-and-odysee
+:END:
+[[https://shields.tosdr.org/en_2391.svg]]
+
+Odysee website contains some trackers and is a heavy site. You can use these alternatives to avoid trackers and have a more minimalistic and lightweight UI:
+
+- [[https://codeberg.org/librarian/librarian][Librarian]] - An alternative frontend for LBRY/Odysee. Inspired by Invidious and Libreddit.
+
+*** Quora
+:PROPERTIES:
+:CUSTOM_ID: quora
+:END:
+Quora's website has ads and trackers that are used to get your data which is then sold/shared to third parties. Their [[https://tosdr.org/en/service/314][privacy policy]] is bad.
+
+*Quora alternative frontends (web-based):* - [[https://github.com/zyachel/quetre][Quetre]] - Quetre is an alternative front-end to Quora. It enables you to see answers without ads, trackers, and other such bloat.
+
+*** YouTube
+:PROPERTIES:
+:CUSTOM_ID: youtube
+:END:
+[[https://tosdr.org/en/service/274][[[https://shields.tosdr.org/en_274.svg]]]]
+
+Don't use YouTube (or at least the official client). YouTube is very privacy invasive, it generates a very accurate profile based on your interests. Also it is a [[https://www.pcmag.com/news/does-youtubes-algorithm-lead-to-radicalization][radicalization tool]] which shows [[https://arxiv.org/pdf/1908.08313.pdf][biased content to users]] in order to get more engagement and to get them to watch more and more content creating an [[https://medium.com/dataseries/how-youtube-is-addictive-259d5c575883][addiction]]. It never shows you [[https://arxiv.org/pdf/1908.08313.pdf][alternative opinions]] to your ideology/bias. YouTube censors a lot. YouTube collects a LOT of your data: interests, free time, ideology, likes, dislikes, music taste, etc.
+
+*Instead use* - [[https://joinpeertube.org/en/][Peertube]] 🧩 - A free, open and decentralized alternative to video platforms. - [[https://simpleertube.metalune.xyz/][SimpleerTube]] - A simple frontend for PeerTube with SepiaSearch [[https://git.sr.ht/~metalune/simpleweb_peertube][Source]]. - [[https://odysee.com/][Odysee]] - Odysee is a video platform backed by the creators of lbry and uses the lbry blockchain protocol. - [[https://github.com/dtube/dtube][DTube]] - A full-featured video sharing website, decentralized.
+
+*YouTube alternative frontends (web-based):* - [[https://github.com/iv-org/invidious][Invidious]] - Alternative and privacy respecting YouTube frontend. - [[https://github.com/TeamPiped/Piped][Piped]] - An alternative privacy-friendly YouTube frontend which is efficient by design. - [[https://github.com/viewtube/viewtube-vue][ViewTube]] - ViewTube is an alternative privacy-friendly YouTube frontend written in Vue.js - [[https://github.com/user234683/youtube-local][Youtube-Local]] - browser-based client for watching Youtube anonymously and with greater page performance.
+
+*YouTube alternative clients (apps):* - [[https://newpipe.net/][NewPipe]] - Alternative Android YouTube app. No account needed, privacy respecting, no ads. - [[https://github.com/polymorphicshade/NewPipe][NewPipe x Sponsorblock]] - NewPipe fork that incorporates Sponsorblock. - [[https://github.com/SkyTubeTeam/SkyTube][SkyTube]] - Alternative Android YouTube app. No account needed, privacy respecting, no ads. - [[https://github.com/FreeTubeApp/FreeTube][FreeTube]] - FreeTube is an open source desktop YouTube player built with privacy in mind. (Uses Local RSS API or Invidious for backend). - [[https://github.com/Libre-tube/LibreTube][LibreTube]] - An alternative frontend for YouTube, for Android using Piped. - [[https://github.com/yattee/yattee][Yattee]] - Alternative YouTube frontend for iOS, tvOS and macOS built with Invidious and Piped. - [[https://github.com/lamarios/clipious][Clipious]] Invidious client for android
+
+*** TikTok
+:PROPERTIES:
+:CUSTOM_ID: tiktok
+:END:
+[[https://tosdr.org/en/service/1448][[[https://shields.tosdr.org/en_1448.svg]]]]
+
+Avoid using TikTok, it is a toxic-designed application that harms not only the user privacy but also user integrity. You can take a read on [[https://libreddit.kavin.rocks/r/privacy/search?q=tiktok&restrict_sr=on&sort=top&t=all][these several posts]].
+
+*TikTok alternative frontends (web-based):* - [[https://github.com/pablouser1/ProxiTok][ProxiTok]] - Open source alternative frontend for TikTok
+
+*** Twitter
+:PROPERTIES:
+:CUSTOM_ID: twitter
+:END:
+[[https://tosdr.org/en/service/195][[[https://shields.tosdr.org/en_195.svg]]]]
+
+Avoid using Twitter official app / website. It tracks users and creates user profiles based on what they follow, retweet and like. Twitter harms and violates user privacy with their policies [[https://www.eff.org/deeplinks/2017/05/how-opt-out-twitters-new-privacy-settings][by default]].
+
+**** Self-hosted
+:PROPERTIES:
+:CUSTOM_ID: self-hosted-2
+:END:
+- [[https://github.com/usememos/memos][Memos]] - An open-source, self-hosted memo hub with knowledge management and socialization.
+
+**** Decentralized
+:PROPERTIES:
+:CUSTOM_ID: decentralized-1
+:END:
+- [[https://github.com/nostr-protocol/nostr][Nostr]] - Open protocol that is able to create a censorship-resistant global "social" network. It doesn't rely on any trusted central server, hence it is resilient; it is based on cryptographic keys and signatures, so it is tamperproof; it does not rely on P2P techniques, therefore it works. *Note*: Nostr is a protocol, so it is capable of offering much more than a Twitter alternative.
+
+#+begin_quote
+[!NOTE] *Federated social networks*: A federated social network isn't a single website like Twitter or Facebook, it's a network of thousands of communities operated by different organizations and individuals that provide a seamless social media experience.
+
+#+end_quote
+
+- [[https://joinmastodon.org/][Mastodon]] 🧩 - Free, federated microblogging social network built on open protocols.
+  - [[https://joinmastodon.org/apps][Mastodon Apps]] - List of Mastodon apps for Android, iOS, Web and Desktop.
+- [[https://pleroma.social/][Pleroma]] 🧩 - Pleroma is a free, federated social networking server built on open protocols.
+  - [[https://gitlab.com/soapbox-pub/soapbox-fe][Soapbox]] - A frontend for Pleroma with a focus on custom branding and ease of use.
+  -  [[https://git.sr.ht/~captainepoch/husky][Husky]] - Android client for Pleroma and Mastodon.
+
+**** Alternative Frontends
+:PROPERTIES:
+:CUSTOM_ID: alternative-frontends
+:END:
+- [[https://github.com/zedeus/nitter/wiki/Instances][Nitter]] - Nitter is a free and open source alternative Twitter front-end focused on privacy.
+  - [[https://github.com/jonjomckay/fritter/][Fritter]] - A free, open-source Nitter client for Android (feed no longer available).
+    - 
+      - [[https://github.com/j-fbriere/squawker][Squawker]] - An active fork of Fritter that fixes the feed.
+- [[https://codeberg.org/pluja/Feetter][Feetter]] - Create, sync and manage Nitter feeds without registration from any device.
+
+*** Reddit
+:PROPERTIES:
+:CUSTOM_ID: reddit
+:END:
+[[https://tosdr.org/en/service/194][[[https://shields.tosdr.org/en_194.svg]]]]
+
+Try to avoid using Reddit or at least avoid their official clients as they are plenty of trackers, ads and share unnecessary user data with their servers.
+
+*Reddit alternatives:* - [[https://getaether.net/][Aether]] - Peer-to-peer ephemeral public communities. - [[https://github.com/ernestwisniewski/kbin][Kbin]] 🧩 - A reddit-like content aggregator and micro-blogging platform for the fediverse. - [[https://join.lemmy.ml/][Lemmy]] 🧩 - A federated and open alternative to Reddit in Rust. - [[https://saidit.net/][SaidIt]] - Open source Reddit clone.
+
+*Privacy respecting Reddit clients:* - [[https://github.com/libreddit/libreddit][Libreddit]] - ~Private Reddit front-end written in Rust~ [[https://github.com/libreddit/libreddit/issues/840][No longer working - Read here]] - [[https://github.com/redlib-org/redlib][Redlib]] - An alternative private front-end to Reddit, with its origins in Libreddit.
+
+*** Streaming Platforms (Twitch)
+:PROPERTIES:
+:CUSTOM_ID: streaming-platforms-twitch
+:END:
+[[https://tosdr.org/en/service/200][[[https://shields.tosdr.org/en_200.svg]]]]
+
+Avoid using platforms as Twitch, Patreon, YouTube as they are very privacy-invasive with your viewers (and you!). Instead, you can try using some self-hosted platforms that do take care of everyone's privacy.
+
+*Alternatives:* - [[https://github.com/owncast/owncast][Owncast]] - Take control over your live stream video by running it yourself. Streaming + chat out of the box. - [[https://github.com/gwuhaolin/livego][livego]] - Live video streaming server in golang.
+
+*** Wikipedia
+:PROPERTIES:
+:CUSTOM_ID: wikipedia
+:END:
+[[https://tosdr.org/en/service/265][[[https://shields.tosdr.org/en_265.svg]]]]
+
+Read more about the issue with Wikipedia on the [[https://github.com/Metastem/wikiless#why-i-should-use-wikiless-instead-of-wikipedia][Wikiless manifesto]].
+
+*Alternatives:* - [[https://wikiless.whateveritworks.org/][Wikiless]] - A maintained fork of the free open source alternative Wikipedia front-end focused on privacy [[https://github.com/Metastem/wikiless][Source Code]]. (Original instance: [[https://wikiless.org/][wikiless.org]], Wikiless repository has been removed by Codeberg, [[https://orenom.fi/][follow news here]])
+
+*** Imgur
+:PROPERTIES:
+:CUSTOM_ID: imgur
+:END:
+[[https://tosdr.org/en/service/325][[[https://shields.tosdr.org/en_325.svg]]]]
+
+Imgur website is plenty of bloat, gifs, cookies, javascript and trackers.
+
+*Alternatives:* - [[https://git.voidnet.tech/kev/imgin][Imgin]] - A minimalist, tor-friendly, read-only Imgur proxy insipired by software like Invidious, Nitter, and Bibliogram. - [[https://codeberg.org/video-prize-ranch/rimgo#instances][rimgo]] - An alternative frontend for Imgur. Read-only, no-js, Based on rimgu and rewritten in Go.
+
+** Teamworking Tools
+:PROPERTIES:
+:CUSTOM_ID: teamworking-tools
+:END:
+*Avoid* - [[https://tosdr.org/en/service/206][[[https://shields.tosdr.org/en_206.svg]]]] - Google Meet [[https://tosdr.org/en/service/217][[[https://shields.tosdr.org/en_217.svg]]]] - Microsoft Teams [[https://tosdr.org/en/service/244][[[https://shields.tosdr.org/en_244.svg]]]] - [[https://tosdr.org/en/service/536][[[https://shields.tosdr.org/en_536.svg]]]]
+
+*Instead use* - [[https://zulip.com/][Zulip]] - Chat for distributed teams. - [[https://revolt.chat/][Revolt]] - User-first chat platform built with modern web technologies. - [[https://twake.app/][Twake]] - Work in a team faster. Twake covers all of your organizational needs through a single platform. - [[https://rocket.chat/][RocketChat]] - Control your communication, manage your data, and have your own collaboration platform to improve team productivity. - [[https://nextcloud.com/talk/][Nextcloud Talk]] - Keep conversations private with Nextcloud Talk. - [[https://mattermost.com/][Mattermost]] - Open-source Slack alternative.
+
+#+begin_quote
+[!WARNING] *Alternative clients/modifications of Discord:* Your IP and messages will still be shared and belong to Discord and they are not encrypted.\\
+Also using any of these modifications/clients [[https://nitter.net/discord/status/1006178587731550208#m][violates]] the [[https://discord.com/terms][Discord ToS]] so, we are not responsible of any suspension or termination of your account *but*, this should [[https://github.com/GooseMod/GooseMod/wiki/FAQ#is-goosemod-against-discord-tos][not happen *yet*]].
+
+#+end_quote
+
+- [[https://github.com/pluja/awesome-privacy/blob/main/README.md#alternative-clientsmodifications-of-discord][See this section for Discord mods and alternative clients]]
+
+** Speech to Text
+:PROPERTIES:
+:CUSTOM_ID: speech-to-text
+:END:
+- [[https://github.com/openai/whisper][OpenAI Whisper]] - Whisper is a general-purpose speech recognition model that can be run locally offline. It can transcribe audio from and to multiple languages.
+  - [[https://github.com/ggerganov/whisper.cpp][whisper.cpp]] - High-performance inference of OpenAI's Whisper automatic speech recognition (ASR) model.
+
+** Text to Speech
+:PROPERTIES:
+:CUSTOM_ID: text-to-speech
+:END:
+*Avoid* using tools that run on a 3rd party cloud. Generally you are sending your text and voice data to a 3rd party to process them, which could lead to leaking biometric data such as your voice, or sharing private and / or unnecessary text with the 3rd party.
+
+*Instead use* - [[https://github.com/suno-ai/bark][Bark]] - Bark can be run 100% locally and can generate highly realistic, multilingual speech as well as other audio - including music, background noise and simple sound effects. - [[https://github.com/rhasspy/piper][Piper]] - A fast, local neural text to speech system that sounds great and is optimized for the Raspberry Pi 4. - [[https://github.com/espeak-ng/espeak-ng][Espeak]] - eSpeak NG is an open source speech synthesizer that supports more than hundred languages and accents. Voices will sound rather robotic.
+
+** Translation
+:PROPERTIES:
+:CUSTOM_ID: translation
+:END:
+*Avoid* - Google Translate [[https://tosdr.org/en/service/217][[[https://shields.tosdr.org/en_217.svg]]]] - DeepL - Bing Translator [[https://tosdr.org/en/service/244][[[https://shields.tosdr.org/en_244.svg]]]]
+
+*Text translation* - [[https://mozilla.github.io/translate/][Mozilla Translate]] - Open Source, runs model locally in your browser. - [[https://libretranslate.com/][Libretranslate]] - Open Source Machine Translation - 100% Self-Hosted. No Limits. No Ties to Proprietary Services. - [[https://apertium.org/][Apertium]] - A free/open-source machine translation platform, runs offline on your computer - [[https://www.softcatala.org/traductor/][Softcatala]] - Open Source Translation tool - Only Catalan/Spanish/English/French (uses apertium) - [[https://translatelocally.com/][TranslateLocally]] -- Free/open-source neural MT, runs offline on your computer
+
+*Alternative Google Translate frontends* - [[https://github.com/TheDavidDelta/lingva-translate][Lingva]] - Alternative front-end for Google Translate. [[https://lingva.ml/][Demo]]. - [[https://codeberg.org/ManeraKai/simplytranslate][Simplytranslate]] - Alternative front-end for Google Translate and LibreTranslate. [[https://simplytranslate.org/][Demo]]
+
+** Uncategorized
+:PROPERTIES:
+:CUSTOM_ID: uncategorized
+:END:
+- [[https://skymaponline.net/][Skymap]] - Open online planetarium program.
+- [[https://github.com/crowdsecurity/crowdsec][CrowdSec]] - An open-source, modernized and collaborative fail2ban.
+- [[https://github.com/dstotijn/hetty][Hetty]] - Hetty is an HTTP toolkit for security research. It aims to be an open-source alternative to Burp Suite Pro.
+- [[https://github.com/yuis-ice/visited][Visited]] - Locally collect browsing history over browsers.
+
+** Utilities
+:PROPERTIES:
+:CUSTOM_ID: utilities
+:END:
+- [[https://github.com/pavlobu/deskreen][Deskreen]] - Turn any device into a secondary screen for your computer.
+- [[https://loggit.net][Loggit]] - Simple and Encrypted Life Tracking & Logging.
+
+** Version Control
+:PROPERTIES:
+:CUSTOM_ID: version-control
+:END:
+*Avoid*
+
+- *Github* - [[https://tosdr.org/en/service/297][[[https://shields.tosdr.org/en_297.svg]]]], although the privacy policy is not very bad, it is owned by Microsoft, and it's common knowledge that it uses the code it hosts to train AI models.
+
+*Instead use* - [[https://codeberg.org/][Codeberg]] - Codeberg is a collaboration platform providing Git hosting and services for free and open source software, content and projects. - [[https://forgejo.org/][Forgejo]] - Forgejo is a self-hosted lightweight software forge. - [[https://about.gitlab.com/][GitLab]] - GitLab a DevOps software package that can develop, secure, and operate software. - [[https://radicle.xyz/][Radicle]] - An open source, peer-to-peer code collaboration stack built on Git. Unlike centralized code hosting platforms, there is no single entity controlling the network. Repositories are replicated across peers in a decentralized manner, and users are in full control of their data and workflow.
+
+** Video and Audio Conferencing
+:PROPERTIES:
+:CUSTOM_ID: video-and-audio-conferencing
+:END:
+*Avoid*
+
+- *Zoom* - [[https://tosdr.org/en/service/2198][Very bad privacy policy]]. Apps have [[https://reports.exodus-privacy.eu.org/en/reports/us.zoom.videomeetings/latest/][Google trackers]]. Many permissions required.
+- *Skype* - [[https://tosdr.org/en/service/244][Very bad privacy policy]]. Apps have [[https://reports.exodus-privacy.eu.org/en/reports/com.skype.insiders/latest/][Google and Microsoft trackers]]. Way too many permissions required.
+- *Google Meet* - [[https://tosdr.org/en/service/217][Very bad privacy policy]]. Apps have [[https://reports.exodus-privacy.eu.org/en/reports/com.google.android.apps.tachyon/latest/][Google trackers]] embeded (as it is a Google app). Way too many permissions required.
+- *Whatsapp* - [[https://tosdr.org/en/service/198][Bad privacy policy]]. Apps have [[https://reports.exodus-privacy.eu.org/en/reports/com.whatsapp/latest/][Google trackers]] and most probably Facebook trackers embeded (as it is a Facebook app). Way too many permissions required.
+- *Instagram* - [[https://tosdr.org/en/service/219][Very bad privacy policy]]. Apps have [[https://reports.exodus-privacy.eu.org/en/reports/com.instagram.android/latest/][Facebook trackers]]. Way too many permissions required.
+- *Discord* - [[https://tosdr.org/en/service/536][Very bad privacy policy.]]. Apps have [[https://reports.exodus-privacy.eu.org/en/reports/com.discord/latest/][various trackers]]. Many permissions required.
+- Clubhouse
+
+*Instead use* - [[https://bigbluebutton.org/][BigBlueButton]] - BigBlueButton is a web conferencing system designed for online learning. - [[https://chitchatter.im/][Chitchatter]] - Secure P2P chat that is serverless, decentralized, and ephemeral. Supports text, audio, video, screen, and file sharing. - [[https://github.com/jam-systems/jam][Jam]] - Jam is your own open source Clubhouse for mini conferences, friends, communities. - [[https://jami.net/][Jami]] - P2P audio and video conferences. - [[https://meet.jit.si/][Jitsi Meet]] - More secure, more flexible, and completely free video conferencing. *No account needed, no installation needed*. - [[https://p2p.mirotalk.com/][Mirotalk P2P]] - Free WebRTC - P2P - Simple, Secure, Fast Real-Time Video Conferences Up to 4k and 60fps, compatible with all browsers and platforms. - [[https://www.mumble.info/][Mumble]] - Mumble is an open source voice communication application with advanced features. - [[https://peercalls.com/][PeerCalls]] - Group peer to peer video calls for everyone written in Go and TypeScript.
+
+***** Alternative clients/modifications of Discord:
+:PROPERTIES:
+:CUSTOM_ID: alternative-clientsmodifications-of-discord
+:END:
+
+#+begin_quote
+[!WARNING] Your IP and messages will still be shared and belong to Discord and they are not encrypted.\\
+Also using any of these modifications/clients [[https://nitter.net/discord/status/1006178587731550208#m][violates]] the [[https://discord.com/terms][Discord ToS]] so, we are not responsible of any suspension or termination of your account *but*, this should [[https://github.com/GooseMod/GooseMod/wiki/FAQ#is-goosemod-against-discord-tos][not happen *yet*]]. - [[https://openasar.dev/][OpenAsar]] - An open-source alternative of Discord desktop's app.asar that comes with a [[https://github.com/GooseMod/OpenAsar/blob/main/src/noTrack.js][No Track]] function. - [[https://github.com/Vendicated/Vencord][Vencord]] - A Discord client mod that does things differently. - [[https://betterdiscord.app/][BetterDiscord]] - A client modification for Discord, also you need to install a [[https://betterdiscord.app/plugin/DoNotTrack][DoNotTrack]] plugin to block trackers. - [[https://github.com/kernel-mod/electron][Kernel]] - A super small and fast Electron client mod with the most capability, also you need to install a [[https://github.com/slow/discord-utilities][Discord Utilities]] package to block trackers. - [[https://replugged.dev/][Replugged]] - A continuation of the deprecated client mod [[https://powercord.dev][Powercord]]. - [[https://github.com/SpacingBat3/WebCord][WebCord]] - A Discord and Fosscord API-less client made with the Electron. - [[https://github.com/Aliucord/Aliucord][Aliucord]] - A modification for the Android Discord app that fully [[https://github.com/Aliucord/Aliucord/blob/main/Aliucord/src/main/java/com/aliucord/coreplugins/NoTrack.java][disables the Discord Tracking]].
+
+#+end_quote
+
+** Video Editing
+:PROPERTIES:
+:CUSTOM_ID: video-editing
+:END:
+*Avoid* - [[https://tosdr.org/en/service/417][[[https://shields.tosdr.org/en_417.svg]]]] - Sony Vegas - DaVinci Resolve
+
+Such programs come filled with trackers and telemetry. You can get a full list of reasons of why you should *not* use Adobe [[https://www.gnu.org/proprietary/malware-adobe.html][here]]. Almost the same apply for many privative editors.
+
+*Instead use* - [[https://kdenlive.org/][kdenlive]] - Open source video editor. Free and easy to use for any purpose, forever. - [[https://github.com/mifi/lossless-cut][LosslessCut]] - LosslessCut aims to be the ultimate cross platform FFmpeg GUI for extremely fast and lossless operations on video, audio, subtitle and other related media files. - [[https://olivevideoeditor.org/][Olive Video Editor]] - Free open-source advanced non-linear video editor currently in Alpha state. - [[https://www.shotcut.org/][Shotcut]] - Shotcut is a free, open source and simple cross-platform video editor.
+
+** VPNs
+:PROPERTIES:
+:CUSTOM_ID: vpns
+:END:
+*Avoid*
+
+- [[https://techcrunch.com/2020/09/24/free-vpn-bad-for-privacy/][Free VPNs]] from Google Play or any appstore. These services are not free as they will suck your connections' data, keep logs and profile you to [[https://thenextweb.com/news/be-cautious-free-vpns-are-selling-your-data-to-3rd-parties][sell your data to advertisers]]. If a government wants to track someone, such apps will be the first ones to fall.
+
+- Closed source VPN apps such as Surfshark or NordVPN may be less trustworthy as nobody can be sure how they handle your data. Also, paying with Credit Card will get you identified on the payment. Furthermore, if you need to give your email it will also identify you if this same email has been used in other services.
+
+*Instead use*
+
+Here are some open source and truly private (no personal data and/or credit card needed) options:
+
+- [[https://www.azirevpn.com/][Azire]]
+- [[https://ivpn.net][IVPN]]
+- [[https://mullvad.net][Mullvad VPN]]
+- [[https://protonvpn.com][Proton VPN]]
+- [[https://safing.io/][SPN]]
+
+** Web Browser
+:PROPERTIES:
+:CUSTOM_ID: web-browser
+:END:
+*Avoid*
+
+- *Google Chrome* - Owned by google and built upon the open-source Chromium project (also Google-owned). It comes with many privacy-invasive features, it is connected to your Google account most times. It is under [[https://tosdr.org/en/service/217][Google's privacy policy]] which is known to be very bad. Google is willing to enforce the [[https://www.eff.org/deeplinks/2021/12/chrome-users-beware-manifest-v3-deceitful-and-threatening][Manifest v3]] which is outright harmful to privacy efforts.
+- *Microsoft Edge* - It's a Microsoft-themed version of Chromium with Microsoft trackers instead of Google ones. Under [[https://tosdr.org/en/service/244][Microsoft's privacy policy]], which is also very bad. If you still want to use it, you can [[https://anonymousplanet.org/guide.html#edge-19][follow this guide]] to harden it a bit.
+- *Opera* - Opera was [[https://en.wikipedia.org/wiki/Opera_(web_browser)#Acquisition_by_Chinese_consortium][acquired by a consortium of Chinese investors]]. The app has [[https://reports.exodus-privacy.eu.org/de/reports/com.opera.browser/latest/][many trackers]].
+
+*Instead use*
+
+**** Android / iOS
+:PROPERTIES:
+:CUSTOM_ID: android-ios-1
+:END:
+- [[https://brave.com/][Brave]] - Android/iOS. Brave offers a pretty good out-of-the-box set of privacy and tracker protections.
+- [[https://www.mozilla.org/en-US/firefox/mobile/][Firefox]] - Android/iOS
+  -  [[https://f-droid.org/en/packages/us.spotco.fennec_dos/][Mull]] - Privacy hardened fork of Firefox for Android, with proprietary blobs removed.
+-  [[https://vanadium.app/][Vanadium]] - Privacy and security enhanced releases of Chromium by GrapheneOS.
+-  [[https://www.stoutner.com/privacy-browser/][Privacy Browser]]
+- [[https://www.torproject.org/][Tor Browser]] - iOS/Android. Defend yourself against tracking and surveillance and circumvent censorship.
+- [[https://www.cromite.org/][Cromite]] - Cromite is a Chromium fork based on Bromite with built-in support for ad blocking and an eye for privacy.
+
+**** Desktop
+:PROPERTIES:
+:CUSTOM_ID: desktop-3
+:END:
+- [[https://github.com/ungoogled-software/ungoogled-chromium][Ungoogled Chromium]] - A lightweight approach to removing Google web service dependency. Ungoogled-chromium is Google Chromium, sans dependency on Google web services.
+- [[https://brave.com/][Brave]] - Brave offers a pretty good out-of-the-box set of privacy and tracker protections.
+- [[https://www.mozilla.org/en-US/firefox/new/][Firefox]] - Open Source, independent browser. It needs some [[https://anonymousplanet.org/guide.html#firefox-1][hardening and tweaking]] to achieve great privacy.
+  - [[https://librewolf.net/][LibreWolf]] - Privacy-focused Firefox fork.
+- [[https://www.torproject.org/][Tor Browser]]
+- [[https://mullvad.net/en/browser/][Mullvad Browser]] - Browser with the privacy and security implications of the Tor Browser, without the use of the Tor network.
+
+#+begin_quote
+[!TIP] It may be interesting to learn what you can do to harden your browser. You can follow this [[https://anonymousplanet.org/guide.html#appendix-v1-hardening-your-browsers][Hitchhiker's Guide to Online Anonymity]] section to do it. Please, if you don't understand what you are doing, don't do it as you may be causing more harm than good to your privacy.
+
+#+end_quote
+
+*** Browser Addons
+:PROPERTIES:
+:CUSTOM_ID: browser-addons
+:END:
+**** Anti-tracking
+:PROPERTIES:
+:CUSTOM_ID: anti-tracking
+:END:
+Please read about what the addon does before installing. If you don't understand what you are doing you could end up damaging your privacy. Also, too many addons can slow down your browsing experience.
+
+- [[https://ublockorigin.com/][uBlock Origin]] - Free, open-source ad content blocker. Easy on CPU and memory.
+  - [[https://github.com/gorhill/uBlock/wiki/Blocking-mode][Read the extension docs]] and pick one of the recommended modes to increase your privacy.
+  - Go to settings > filters list > annoyances, turn on easylist-cookies. This will avoid you the annoying Cookie popups.
+- [[https://github.com/libredirect/libredirect][LibRedirect]] - A simple web extension that redirects Twitter, YouTube, Google Maps and many more requests to privacy friendly alternatives. Former Privacy Redirect is no longer maintained, LibRedirect is a maintained fork.
+
+**** Useful Tools
+:PROPERTIES:
+:CUSTOM_ID: useful-tools
+:END:
+- [[https://github.com/gildas-lormeau/SingleFile][Single File]] - Save a faithful copy of an entire web page in a single HTML file so you can use it offline.
+
+*** Browser Sync
+:PROPERTIES:
+:CUSTOM_ID: browser-sync
+:END:
+- [[https://www.xbrowsersync.org/][xBrowserSync]] - Browser syncing as it should be: secure, anonymous and free!
+
+** Privacy vs Security vs Anonymity
+:PROPERTIES:
+:CUSTOM_ID: privacy-vs-security-vs-anonymity
+:END:
+Anonymity, Privacy, and Security are often used interchangeably, but they actually represent distinct concepts. It is important to understand the differences between them.
+
+- Privacy is about regulating who has access to your personal information, being aware of the data that is being collected about you, and having the ability to decide who can access it and how. In short, privacy involves controlling your personal information.
+
+- Security refers to safeguarding your personal information from unauthorized access or theft. It involves ensuring that your data is protected and stored in a secure manner, making it difficult for malicious actors to access it.
+
+- Anonymity is about ensuring that your actions cannot be traced back to you. This means that even if someone discovers what you are doing, they will not be able to identify you as the source.
+
+It is important to note that privacy and security are not necessarily interdependent. For instance, Google systems are secure and unlikely to be hacked, but Google still has access to your personal data and makes use of it.
+
+Privacy and anonymity are also not necessarily linked, services like Signal offer high levels of privacy since they do not collect any data about what you say, who you talk to or how you use the app, but they may not be anonymous since you still need to register using your phone number (which is in many cases linked to your identity).
+
+Finally, there are services that may offer all three: anonymity, privacy, and security. The primary focus of this list is to provide alternatives that prioritize privacy. These alternatives give you control over your data and do not collect or sell it.
+
+[[#contents][Back to top 🔝]]
+
