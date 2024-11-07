@@ -1,0 +1,27 @@
+:PROPERTIES:
+:ID:       dc489324-6342-434b-b9f4-82d70c993c2f
+:END:
+#+TITLE: Linear operator
+#+FILETAGS: :concept:linalg:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+#+NAME: Linear Operator
+#+begin_definition latex
+An linear operator is a function from one vector space to another; a mapping between vectors.
+\(\Omega : \mathbb{V} \rightarrow \mathbb{W}, \quad \Omega | V \rangle = | W \rangle\).
+#+end_definition
+
+#+begin_theorem latex
+Let \( \Omega \) be a linear operator satisfying closure, i.e.,
+
+\[\Omega : \mathbb{V} \rightarrow \mathbb{V}, \quad \Omega| V \rangle=\left|V^{\prime}\right\rangle.\]
+
+\( \Omega \) satisfies the following identities:
+
+1) \(\Omega \alpha\left|V_i\right\rangle=\alpha \Omega\left|V_i\right\rangle\),
+2) \(\Omega\left(\alpha\left|V_i\right\rangle+\beta\left|V_j\right\rangle\right)=\alpha \Omega\left|V_i\right\rangle+\beta \Omega\left|V_j\right\rangle\),
+3) \(\left\langle V_i\right| \alpha \Omega=\left\langle V_i\right| \Omega \alpha\),
+4) \(\left(\left\langle V_i\right| \alpha+\left\langle V_j\right| \beta\right) \Omega=\alpha\left\langle V_i\right| \Omega+\beta\left\langle V_j\right| \Omega\),
+5) \(\Omega|V\rangle=\Omega\left(\sum_i v_i|i\rangle\right)=\sum_i v_i \Omega|i\rangle=\sum_i v_i\left|i^{\prime}\right\rangle\).
+#+end_theorem
+

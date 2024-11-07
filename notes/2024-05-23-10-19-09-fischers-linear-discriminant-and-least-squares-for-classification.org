@@ -1,0 +1,74 @@
+:PROPERTIES:
+:ID:       930b94ff-bdf8-4f69-bb5e-f46387532616
+:END:
+#+TITLE: Fischer's linear discriminant and least squares for classification
+#+FILETAGS: :literature:prml:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+The least-squares approach to the determination of a linear discriminant was based on the goal of making the model predictions as close as possible to a set of target values. By contrast, the Fisher criterion was derived by requiring maximum class separation in the output space. It is interesting to see the relationship between these two approaches. In particular, we shall show that, for the two-class problem, the Fisher criterion can be obtained as a special case of least squares.
+
+So far we have considered 1 -of- \(K\) coding for the target values. If, however, we adopt a slightly different target coding scheme, then the least-squares solution for
+the weights becomes equivalent to the Fisher solution (Duda and Hart, 1973). In particular, we shall take the targets for class \(\mathcal{C}_{1}\) to be \(N / N_{1}\), where \(N_{1}\) is the number of patterns in class \(\mathcal{C}_{1}\), and \(N\) is the total number of patterns. This target value approximates the reciprocal of the prior probability for class \(\mathcal{C}_{1}\). For class \(\mathcal{C}_{2}\), we shall take the targets to be \(-N / N_{2}\), where \(N_{2}\) is the number of patterns in class \(\mathcal{C}_{2}\).
+
+The sum-of-squares error function can be written
+
+\[
+\begin{align*}
+E=\frac{1}{2} \sum_{n=1}^{N}\left(\mathbf{w}^{\mathrm{T}} \mathbf{x}_{n}+w_{0}-t_{n}\right)^{2} \tag{4.31}
+\end{align*}
+\]
+
+Setting the derivatives of \(E\) with respect to \(w_{0}\) and \(\mathbf{w}\) to zero, we obtain respectively
+
+\[
+\begin{align*}
+\begin{align*}
+\sum_{n=1}^{N}\left(\mathbf{w}^{\mathrm{T}} \mathbf{x}_{n}+w_{0}-t_{n}\right) & =0  \tag{4.32}\\
+\sum_{n=1}^{N}\left(\mathbf{w}^{\mathrm{T}} \mathbf{x}_{n}+w_{0}-t_{n}\right) \mathbf{x}_{n} & =0
+\end{align*} \tag{4.33}
+\end{align*}
+\]
+
+From (4.32), and making use of our choice of target coding scheme for the \(t_{n}\), we obtain an expression for the bias in the form
+
+\[
+\begin{align*}
+w_{0}=-\mathbf{w}^{\mathrm{T}} \mathbf{m} \tag{4.34}
+\end{align*}
+\]
+
+where we have used
+
+\[
+\begin{align*}
+\sum_{n=1}^{N} t_{n}=N_{1} \frac{N}{N_{1}}-N_{2} \frac{N}{N_{2}}=0 \tag{4.35}
+\end{align*}
+\]
+
+and where \(\mathbf{m}\) is the mean of the total data set and is given by
+
+\[
+\begin{align*}
+\mathbf{m}=\frac{1}{N} \sum_{n=1}^{N} \mathbf{x}_{n}=\frac{1}{N}\left(N_{1} \mathbf{m}_{1}+N_{2} \mathbf{m}_{2}\right) \tag{4.36}
+\end{align*}
+\]
+
+After some straightforward algebra, and again making use of the choice of \(t_{n}\), the second equation (4.33) becomes
+
+\[
+\begin{align*}
+\left(\mathbf{S}_{\mathrm{W}}+\frac{N_{1} N_{2}}{N} \mathbf{S}_{\mathrm{B}}\right) \mathbf{w}=N\left(\mathbf{m}_{1}-\mathbf{m}_{2}\right) \tag{4.37}
+\end{align*}
+\]
+
+where \(\mathbf{S}_{\mathrm{W}}\) is defined by (4.28), \(\mathbf{S}_{\mathrm{B}}\) is defined by (4.27), and we have substituted for the bias using (4.34). Using (4.27), we note that \(\mathbf{S}_{\mathrm{B}} \mathbf{w}\) is always in the direction of \(\left(\mathbf{m}_{2}-\mathbf{m}_{1}\right)\). Thus we can write
+
+\[
+\begin{align*}
+\mathbf{w} \propto \mathbf{S}_{\mathrm{W}}^{-1}\left(\mathbf{m}_{2}-\mathbf{m}_{1}\right) \tag{4.38}
+\end{align*}
+\]
+
+where we have ignored irrelevant scale factors. Thus the weight vector coincides with that found from the Fisher criterion. In addition, we have also found an expression for the bias value \(w_{0}\) given by (4.34). This tells us that a new vector \(\mathrm{x}\) should be classified as belonging to class \(\mathcal{C}_{1}\) if \(y(\mathbf{x})=\mathbf{w}^{\mathrm{T}}(\mathbf{x}-\mathbf{m})>0\) and class \(\mathcal{C}_{2}\) otherwise.
+
+

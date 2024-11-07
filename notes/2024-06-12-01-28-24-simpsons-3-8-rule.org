@@ -1,0 +1,97 @@
+:PROPERTIES:
+:ID:       eeeefa6e-c5f3-4fbe-8395-12d5def3f70f
+:END:
+#+TITLE: Simpson's 3/8 rule
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+The *Simpson's 3/8 rule* is a method for [[id:916e7c98-ca7a-4286-b0ee-c22370f18eb9][numerical integration]].
+
+#+NAME: Simpson's 3/8 rule
+#+begin_definition latex
+Let \(f(x)\) be a continuous function defined for \(a \leq x \leq b\). The Simpson's 3/8 rule approximates the definite integral \( I(a,\,b)=\int_{a}^{b} f(x) \mathrm{d} x \). Let \(h=(b-a) / N\) for \( 0 < N < \infty \). An approximation for \(I(a,\,b)\) is given by the Simpson's 3/8 rule
+\begin{align*}
+I(a, b) &\simeq \frac{3h}{8} \bigg[f(x_0)+3 \sum_{k \mod 3 \neq 0}^{N-1} f(x_k) + 2 \sum_{k=1}^{N / 3-1} f(x_{3k})+f(x_n)\bigg].
+\end{align*}
+Note that the total number of slices must be a multiple of \( 3 \).
+#+end_definition
+
+* Derivation
+Let \(f(x)\) be a continuous function defined for \(a \leq x \leq b\). The Simpson's 3/8 rule approximates the definite integral \( I(a,\,b)=\int_{a}^{b} f(x) \mathrm{d} x \). Let \(h=(b-a) / N\) for \( 0 < N < \infty \). Without loss of generality assume \( a \leq - h \). To evaluate \(I(-3h/2,\,3h/2)\), suppose we fit a cubic \(A x^{3}+B x^2 + C x + D\) through the four points \( - 3h/2 \), \( - h/2 \), \( h/2 \), and \( 3h/2 \).
+
+By definition
+
+\begin{align*}
+& f(-3h/2) = A(-3h/2)^3 + B(-3h/2)^2 + C(-3h/2) + D, \\
+& f(-h/2) = A(-h/2)^3 + B(-h/2)^2 + C(-h/2) + D, \\
+& f(h/2) = A(h/2)^3 + B(h/2)^2 + C(h/2) + D, \\
+& f(3h/2) = A(3h/2)^3 + B(3h/2)^2 + C(3h/2) + D.
+\end{align*}
+
+#+begin_src python :results output
+from sympy import symbols, Eq, solve, latex, init_printing
+
+# Initialize pretty printing for LaTeX output
+init_printing(use_latex=True)
+
+# Define symbols for coefficients and points
+A, B, C, D = symbols('A B C D')
+h, f_m3h2, f_3h2, f_mh2, f_h2 = symbols('h f(-3h/2) f(3h/2) f(-h/2) f(h/2)')
+
+# Equations based on the cubic polynomial values at points ±3h/2 and ±h/2
+eq1 = Eq(A*(-3*h/2)**3 + B*(-3*h/2)**2 + C*(-3*h/2) + D, f_m3h2)
+eq2 = Eq(A*(-h/2)**3 + B*(-h/2)**2 + C*(-h/2) + D, f_mh2)
+eq3 = Eq(A*(h/2)**3 + B*(h/2)**2 + C*(h/2) + D, f_h2)
+eq4 = Eq(A*(3*h/2)**3 + B*(3*h/2)**2 + C*(3*h/2) + D, f_3h2)
+
+# Solve the system of equations for A, B, C, and D
+solutions_abcd = solve((eq1, eq2, eq3, eq4), (A, B, C, D))
+
+# Print each solution in LaTeX format
+for var in solutions_abcd:
+    print(latex(Eq(var, solutions_abcd[var])))
+#+end_src
+
+#+RESULTS:
+: A = \frac{- f(-3h/2) + 3 f(-h/2) + f(3h/2) - 3 f(h/2)}{6 h^{3}}
+: B = \frac{f(-3h/2) - f(-h/2) + f(3h/2) - f(h/2)}{4 h^{2}}
+: C = \frac{f(-3h/2) - 27 f(-h/2) - f(3h/2) + 27 f(h/2)}{24 h}
+: D = - \frac{f(-3h/2)}{16} + \frac{9 f(-h/2)}{16} - \frac{f(3h/2)}{16} + \frac{9 f(h/2)}{16}
+
+Solving these equations simultaneously for \(A\), \(B\), \( C \) and \(D\) yields
+
+\begin{align*}
+&A=\frac{f(3 h / 2)-3 f(h / 2)-f(-3 h / 2)+3 f(-h / 2)}{6 h^3} \\
+&B=\frac{f(3 h / 2)-f(h / 2)+f(-3 h / 2)-f(-h / 2)}{4 h^2} \\
+&C=\frac{-f(3 h / 2)+27 f(h / 2)+f(-3 h / 2)-27 f(-h / 2)}{24 h} \\
+&D=\frac{-f(3 h / 2)+9 f(h / 2)-f(-3 h / 2)+9 f(-h / 2)}{16}
+\end{align*}
+
+and the area under the curve of \(f(x)\) from \(-3h/2\) to \(3h/2\) is given approximately by the area under the cubic:
+
+\[
+\int_{-3h/2}^{3h/2} (Ax^3 + Bx^2 + Cx + D)\, \mathrm{d} x = \frac{3}{8} h[f(-3h/2)+3 f(-h/2)+3 f(h/2)+f(3h/2)].
+\]
+
+If we are integrating from \(x=a\) to \(x=b\) in slices of width \(h\) then the four points bounding the first pair of slices fall at \(x=a\), \(x = a+h\), \( x = a + 2h \), and \(x = a+3 h\), those bounding the second pair at \(x = a+3 h\), \(x = a+4 h\), \(x=a+5 h\), and \( x = a + 6h \) and so forth. Then the approximate value of the entire integral is given by
+
+\begin{align*}
+\int_a^b f(x) \, \mathrm{d} x &\approx \frac{3}{8} h \sum_{i=1}^{n / 3}\left[f\left(x_{3 i-3}\right)+3 f\left(x_{3 i-2}\right)+3 f\left(x_{3 i-1}\right)+f\left(x_{3 i}\right)\right] \\
+& =\frac{3}{8} h\left[f\left(x_0\right)+3 f\left(x_1\right)+3 f\left(x_2\right)+2 f\left(x_3\right)+3 f\left(x_4\right)+3 f\left(x_5\right)+2 f\left(x_6\right)+\cdots+2 f\left(x_{n-3}\right)+3 f\left(x_{n-2}\right)+3 f\left(x_{n-1}\right)+f\left(x_n\right)\right] \\
+& =\frac{3}{8} h\left\lceil f\left(x_0\right)+3 \sum^{n-1} f\left(x_i\right)+2 \sum^{n / 3-1} f\left(x_{3 i}\right)+f\left(x_n\right)\right\rceil.
+\end{align*}
+
+\begin{align*}
+I(a, b) \simeq \frac{3}{8} h & {[f(a)+3 f(a+h) + 3 f(a + 2h) + f(a+3h)] } \\
+& +\frac{3}{8} h[f(a+ 3h)+ 3 f(a+4h) + 3 f(a + 5h) + f(a+6h)]+\ldots \\
+& +\frac{3}{8} h[f(a+(N-3) h) +3 f(a+(N-2) h) + 3 f(a+(N-1) h) + f(b)]
+\end{align*}
+
+Note that the total number of slices must be a multiple of \( 3 \) for this to work. Collecting terms together, we now have
+
+\begin{align*}
+I(a, b) & \simeq \frac{3}{8} h[f(a)+3 f(a+h)+3 f(a+2 h)+ 2f(a+3 h)+\ldots+f(b)] \\
+& =\frac{3}{8} h\bigg[f(a)+f(b) + 3 \sum_{k \mod 3 = 2}^{N-1} f(a+k h) + 3 \sum_{k \mod 3 = 1}^{N-2} f(a+k h) + 2 \sum_{k \mod 3 = 0}^{N-3} f(a+k h) \bigg].
+\end{align*}
+
+This is the Simpson's 3/8 rule.

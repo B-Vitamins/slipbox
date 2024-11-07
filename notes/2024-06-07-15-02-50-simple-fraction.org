@@ -1,0 +1,21 @@
+:PROPERTIES:
+:ID:       395e698e-8cb5-4553-8fa8-a9442deb2166
+:END:
+#+TITLE: Simple fraction
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+A *simple fraction* consists of two [[id:aa19fdce-a3c0-44c7-a6a8-34c10ce9012d][integer]] one of which must be nonzero. The nonzero integer is usually called the /denominator/. The other integer is called the /numerator/.
+
+The numerator is displayed above a line and the denominator is displayed below the line. For example \( \frac{1}{2} \). The numerator may also be displayed before a forward slash and the denominator after the forward slash. For example \( 1/2 \).
+
+Thus a simple fraction is represented as
+
+\[
+\frac{a}{b}, \quad b \neq 0
+\]
+
+where \( a \) and \( b \) are integers. 
+
+If \( a,\,b > 0 \), then the numerator represents a number of equal parts, and the denominator indicates how many of those parts make up a unit or a whole. For example, in the fraction \(\frac{3}{4}\), the numerator 3 indicates that the fraction represents 3 equal parts, and the denominator 4 indicates that 4 parts make up a whole.
+

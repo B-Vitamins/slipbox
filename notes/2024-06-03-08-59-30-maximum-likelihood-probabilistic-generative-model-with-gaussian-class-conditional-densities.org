@@ -1,0 +1,101 @@
+:PROPERTIES:
+:ID:       6dcec9e4-4eb4-45cb-88f3-e3008a0e0c2a
+:END:
+#+TITLE: Maximum likelihood (probabilistic generative model with Gaussian class-conditional densities)
+#+FILETAGS: :literature:prml:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+In this node we consider a type of [[id:623b54a5-2318-4774-922b-b0e5e42959da][probabilistic generative model]] and assume that the class-conditional densities are [[id:cf4dedf6-1073-4cae-ae41-998e1cde5b4a][multi-variate Gaussian distributions]]. Once we have specified a parametric functional form for the class-[[id:391465bc-1399-40f0-b049-738c1a64d6fb][conditional densities]] \(p\left(\mathbf{x} \mid \mathcal{C}_k\right)\), we can then determine the values of the parameters, together with the [[id:e166b400-40c8-410b-bb5b-0e0decca5f4c][prior]] class probabilities \(p\left(\mathcal{C}_k\right)\), using [[id:adca5f2b-1056-4cb6-b5d4-02be3ccc6e54][maximum likelihood estimation]]. This requires a data set comprising observations of \(\mathbf{x}\) along with their corresponding class labels.
+
+We consider the case of \( K = 2 \) classes; the extension to \( K > 2 \) is straightforward. Suppose that each of the class-conditional densities are [[id:cf4dedf6-1073-4cae-ae41-998e1cde5b4a][multi-variate Gaussian distributions]] with a shared [[id:ae278539-8b4f-4793-9c4c-09b4c6be922a][covariance matrix]]. Further suppose we have a data set \(\left\{\mathbf{x}_n, t_n\right\}\) where \(n=1, \ldots, N\). Here \(t_n=1\) denotes class \(\mathcal{C}_1\) and \(t_n=0\) denotes class \(\mathcal{C}_2\). We denote the prior class probability \(p\left(\mathcal{C}_1\right)=\pi\), so that \(p\left(\mathcal{C}_2\right)=1-\pi\).
+
+* Likelihood function
+For a data point \(\mathbf{x}_n\) from class \(\mathcal{C}_1\), we have \(t_n=1\) and hence
+
+\begin{align*}
+p\left(\mathbf{x}_n, \mathcal{C}_1\right)=p\left(\mathcal{C}_1\right) p\left(\mathbf{x}_n \mid \mathcal{C}_1\right)=\pi \mathcal{N}\left(\mathbf{x}_n \mid \boldsymbol{\mu}_1, \mathbf{\Sigma}\right)
+\end{align*}
+
+Similarly for class \(\mathcal{C}_2\), we have \(t_n=0\) and hence
+
+\begin{align*}
+p\left(\mathbf{x}_n, \mathcal{C}_2\right)=p\left(\mathcal{C}_2\right) p\left(\mathbf{x}_n \mid \mathcal{C}_2\right)=(1-\pi) \mathcal{N}\left(\mathbf{x}_n \mid \boldsymbol{\mu}_2, \mathbf{\Sigma}\right)
+\end{align*}
+
+Thus the [[id:82831310-4909-4f8b-8db0-ff0d8bef8b0b][likelihood function]] is given by
+
+\begin{align*}
+p\left(\mathbf{t} \mid \pi, \boldsymbol{\mu}_1, \boldsymbol{\mu}_2, \boldsymbol{\Sigma}\right)=\prod_{n=1}^N\left[\pi \mathcal{N}\left(\mathbf{x}_n \mid \boldsymbol{\mu}_1, \boldsymbol{\Sigma}\right)\right]^{t_n}\left[(1-\pi) \mathcal{N}\left(\mathbf{x}_n \mid \boldsymbol{\mu}_2, \boldsymbol{\Sigma}\right)\right]^{1-t_n}
+\end{align*}
+
+where \(\mathbf{t}=\left(t_1, \ldots, t_N\right)^{\mathrm{T}}\).
+
+As usual, it is convenient to maximize the \(\log\) of the likelihood function.
+
+* Maximization with respect to* \(\pi\).
+
+The terms in the \(\log\) likelihood function that depend on \(\pi\) are
+
+\begin{align*}
+\sum_{n=1}^N\left\{t_n \ln \pi+\left(1-t_n\right) \ln (1-\pi)\right\} .
+\end{align*}
+
+Setting the derivative with respect to \(\pi\) equal to zero and rearranging, we obtain
+
+\begin{align*}
+\pi=\frac{1}{N} \sum_{n=1}^N t_n=\frac{N_1}{N}=\frac{N_1}{N_1+N_2}
+\end{align*}
+
+where \(N_1\) denotes the total number of data points in class \(\mathcal{C}_1\), and \(N_2\) denotes the total number of data points in class \(\mathcal{C}_2\). Thus the maximum likelihood estimate for \(\pi\) is simply the fraction of points in class \(\mathcal{C}_1\) as expected. This result is easily generalized to the multiclass case where again the maximum likelihood estimate of the prior probability associated with class \(\mathcal{C}_k\) is given by the fraction of the training set points assigned to that class.
+
+* Maximization with respect to* \(\boldsymbol{\mu}_1\).
+
+Again we can pick out of the log likelihood function those terms that depend on \(\mu_1\) giving
+
+\begin{align*}
+\sum_{n=1}^N t_n \ln \mathcal{N}\left(\mathbf{x}_n \mid \boldsymbol{\mu}_1, \mathbf{\Sigma}\right)=-\frac{1}{2} \sum_{n=1}^N t_n\left(\mathbf{x}_n-\boldsymbol{\mu}_1\right)^{\mathrm{T}} \boldsymbol{\Sigma}^{-1}\left(\mathbf{x}_n-\boldsymbol{\mu}_1\right)+\text { const }
+\end{align*}
+
+Setting the derivative with respect to \(\mu_1\) to zero and rearranging, we obtain
+
+\begin{align*}
+\boldsymbol{\mu}_1=\frac{1}{N_1} \sum_{n=1}^N t_n \mathbf{x}_n
+\end{align*}
+
+which is simply the mean of all the input vectors \(\mathbf{x}_n\) assigned to class \(\mathcal{C}_1\).
+
+* Maximization with respect to* \(\boldsymbol{\mu}_2\).
+
+By a similar argument, the corresponding result for \(\mu_2\) is given by
+
+\begin{align*}
+\boldsymbol{\mu}_2=\frac{1}{N_2} \sum_{n=1}^N\left(1-t_n\right) \mathbf{x}_n
+\end{align*}
+
+which again is the mean of all the input vectors \(\mathbf{x}_n\) assigned to class \(\mathcal{C}_2\).
+
+* Maximization with respect to* \(\boldsymbol{\Sigma}\).
+
+Picking out the terms in the \(\log\) likelihood function that depend on \(\boldsymbol{\Sigma}\), we have
+
+\begin{align*}
+& -\frac{1}{2} \sum_{n=1}^N t_n \ln |\boldsymbol{\Sigma}|-\frac{1}{2} \sum_{n=1}^N t_n\left(\mathbf{x}_n-\boldsymbol{\mu}_1\right)^{\mathrm{T}} \boldsymbol{\Sigma}^{-1}\left(\mathbf{x}_n-\boldsymbol{\mu}_1\right) \\
+& -\frac{1}{2} \sum_{n=1}^N\left(1-t_n\right) \ln |\boldsymbol{\Sigma}|-\frac{1}{2} \sum_{n=1}^N\left(1-t_n\right)\left(\mathbf{x}_n-\boldsymbol{\mu}_2\right)^{\mathrm{T}} \boldsymbol{\Sigma}^{-1}\left(\mathbf{x}_n-\boldsymbol{\mu}_2\right) \\
+& =-\frac{N}{2} \ln |\boldsymbol{\Sigma}|-\frac{N}{2} \operatorname{Tr}\left\{\boldsymbol{\Sigma}^{-1} \mathbf{S}\right\}
+\end{align*}
+
+\[
+\mathbf{S} & =\frac{N_1}{N} \mathbf{S}_1+\frac{N_2}{N} \mathbf{S}_2,
+\]
+
+\[
+\mathbf{S}_1 & =\frac{1}{N_1} \sum_{n \in \mathcal{C}_1}\left(\mathbf{x}_n-\boldsymbol{\mu}_1\right)\left(\mathbf{x}_n-\boldsymbol{\mu}_1\right)^{\mathrm{T}},
+\]
+
+and
+
+\[
+\mathbf{S}_2 & =\frac{1}{N_2} \sum_{n \in \mathcal{C}_2}\left(\mathbf{x}_n-\boldsymbol{\mu}_2\right)\left(\mathbf{x}_n-\boldsymbol{\mu}_2\right)^{\mathrm{T}}.
+\]
+
+Using the standard result for the [[id:e2ff8c45-3876-496b-a96e-422d62572678][maximum likelihood for the Gaussian]], we see that \(\boldsymbol{\Sigma}=\mathbf{S}\), which represents a weighted average of the covariance matrices associated with each of the two classes separately.

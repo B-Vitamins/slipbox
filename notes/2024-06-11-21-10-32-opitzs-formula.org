@@ -1,0 +1,49 @@
+:PROPERTIES:
+:ID:       39678729-989f-41fc-8a0e-d5aa475b51de
+:END:
+#+TITLE: Opitz's formula
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+The matrix
+\begin{align*}
+J=\left(\begin{array}{cccccc}
+x_0 & 1 & 0 & 0 & \cdots & 0 \\
+0 & x_1 & 1 & 0 & \cdots & 0 \\
+0 & 0 & x_2 & 1 & & 0 \\
+\vdots & \vdots & & \ddots & \ddots & \\
+0 & 0 & 0 & 0 & \ddots & 1 \\
+0 & 0 & 0 & 0 & & x_n
+\end{array}\right)
+\end{align*}
+
+contains the [[id:dce7ee7f-c4d4-4474-9001-c0d096a5cba3][divided differences]] scheme for the identity function with respect to the nodes \(x_0, \ldots, x_n\), thus \(J^m\) contains the divided differences for the power function with exponent \(m\). Consequently, you can obtain the divided differences for a polynomial function \(p\) by applying \(p\) to the matrix \(J\).
+
+
+If
+\begin{align*}
+p(\xi)=a_0+a_1 \cdot \xi+\cdots+a_m \cdot \xi^m
+\end{align*}
+and
+\begin{align*}
+p(J)=a_0+a_1 \cdot J+\cdots+a_m \cdot J^m
+\end{align*}
+then
+\begin{align*}
+T_p(x)=p(J) .
+\end{align*}
+
+This is known as Opitz' formula. \({ }^{[2][3]}\)
+Now consider increasing the degree of \(p\) to infinity, i.e. turn the Taylor polynomial into a Taylor series. Let \(f\) be a function which corresponds to a power series. You can compute the divided difference scheme for \(f\) by applying the corresponding matrix series to \(J\) : If
+\begin{align*}
+f(\xi)=\sum_{k=0}^{\infty} a_k \xi^k
+\end{align*}
+and
+\begin{align*}
+f(J)=\sum_{k=0}^{\infty} a_k J^k
+\end{align*}
+then
+\begin{align*}
+T_f(x)=f(J) .
+\end{align*}
+
