@@ -3,8 +3,20 @@
 :END:
 #+TITLE: Notes on Structure and Interpretation of Computer Programs by Sussman, Sussman, and Abelson
 #+FILETAGS: :fleeting:mm:
-#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+#+setupfile: ~/.config/emacs/setup/setupfile.org
 #+BEGIN: clocktable :maxlevel 2 :scope nil :emphasize nil
+#+CAPTION: Clock summary at [2024-11-07 Thu 12:53]
+| Headline                                 |    Time |      |
+|------------------------------------------+---------+------|
+| *Total time*                             | *16:05* |      |
+|------------------------------------------+---------+------|
+| Building Abstractions with Procedures    |   14:23 |      |
+| \_  The Elements of Programming          |         | 7:16 |
+| \_  Procedures and the Processes They... |         | 5:05 |
+| \_  Formulating Abstractions with...     |         | 1:35 |
+| Building Abstractions with Data          |    1:42 |      |
+| \_  Introduction to Data Abstraction     |         | 0:25 |
+| \_  Hierarchical Data and the Closure... |         | 1:01 |
 #+END:
 * Building Abstractions with Procedures
   :LOGBOOK:
@@ -432,4 +444,3 @@ for any sufficiently large value of $n$.
 * Modularity, Objects, and State
 * Metalinguistic Abstraction
 * Computing with Register Machines
-
