@@ -1,0 +1,295 @@
+:PROPERTIES:
+:ID:       d79c198f-ac03-48a3-95a3-ae41eeaac037
+:END:
+#+TITLE: Restricted Boltzmann machines
+#+FILETAGS: :fleeting:rbm:review:
+#+SETUPFILE: ~/.config/emacs/setup/rbm.org
+
+The /Hamiltonian/ for a *restricted Boltzmann machine* (RBM) $N$ *visible spins* $\mathbold{v}$ and $M$ *hidden spins* \(\mathbold{h}\) is \(\mathcal{H}\).
+
+\[
+\mathcal{H} \left(\mathbold{v}, \mathbold{h}, \mathbold{\theta} \right) = -\sum^M_{i=1} \sum^N_{j=1} \math{h}_i W_{i j} v_j-\sum^N_{j=1} b_j v_j-\sum^M_{i=1} c_i h_i.
+\]
+
+$\mathbold{W} \equiv \left \lbrace W_{ij}  \right \rbrace_{i=1 \cdots M, j=1 \cdots N}$ are the /coupling constants/. \(\mathbold{b} \equiv \left \lbrace b_j  \right \rbrace_{j = 1 \cdots N}\) is the /magnetic field strength over the visible spins/.
+$\mathbold{c} \equiv \left \lbrace c_i  \right \rbrace_{i = 1 \cdots M}$ is the /magnetic field strength over the hidden units/ $\mathbold{\theta} \equiv \left \lbrace \mathbold{W}, \mathbold{b}, \mathbold{c}  \right \rbrace$.
+
+\begin{figure}[h]
+\centering
+\begin{minipage}[b]{0.25\linewidth}
+   \includegraphics[width=\linewidth]{~/pictures/.images/figures/rbm1.png}
+\end{minipage}
+\hspace{0.05\linewidth}
+\begin{minipage}[b]{0.25\linewidth}
+   \includegraphics[width=\linewidth]{~/pictures/.images/figures/rbm2.png}
+\end{minipage}
+\hspace{0.05\linewidth}
+\begin{minipage}[b]{0.25\linewidth}
+   \includegraphics[width=\linewidth]{~/pictures/.images/figures/rbm3.png}
+\end{minipage}
+\caption{\textbf{Restricted Boltzmann machines}: All of these represent the same RBM. Interpretation of nodes of any one type (black or white) as \textit{visible} or \textit{hidden} is arbitrary. The key thing to notice is 1) a given visible (hidden) spin \textit{is not} coupled to \textit{any} other visible (hidden) spin; the lattice is \textbf{bipartite}, 2) a given visible (hidden) spin \textit{is} coupled to \textit{every} other hidden (visible) spin; the lattice is \textbf{fully-connected}.}
+\end{figure}
+
+* Joint, conditional, and marginal distributions
+** Joint probability distribution and expectations
++ The *joint probability distribution* over the /discrete/ visible spins $\mathbold{v}$ and hidden spins $\mathbold{h}$ is given by a /generalized Gibbs-Boltzmann distribution/
+
+  \begin{align*}
+  P (\mathbold{v}, \mathbold{h}) & \equiv
+  \dfrac{p_{\mathbold{v}} (\mathbold{v}) p_{\mathbold{h}} (\mathbold{h})  \exp \left \lbrace - \beta H(\mathbold{v}, \mathbold{h}, \mathbold{\theta})  \right \rbrace}{\sum_{\mathbold{v}, \mathbold{h}} p_{\mathbold{v}} (\mathbold{v}) p_{\mathbold{h}} (\mathbold{h})  \exp \left \lbrace - \beta H(\mathbold{v}, \mathbold{h}, \mathbold{\theta})  \right \rbrace} \\
+  & \equiv \dfrac{p_{\mathbold{v}} (\mathbold{v}) p_{\mathbold{h}} (\mathbold{h})  \exp \left \lbrace - \beta H(\mathbold{v}, \mathbold{h}, \mathbold{\theta})  \right \rbrace}{\mathcal{Z}}
+  \end{align*}
+
+  where $p_{\mathbold{v}} (\mathbold{v})$ and $p_{\mathbold{h}} (\mathbold{h})$ are *priors* over the visible and hidden spins and $\mathcal{Z}$ is the /partition function/
+
+  \begin{align*}
+  \mathcal{Z} \equiv \sum_{\mathbold{v}, \mathbold{h}} p_{\mathbold{v}} (\mathbold{v}) p_{\mathbold{h}} (\mathbold{h})  \exp \left \lbrace - \beta H(\mathbold{v}, \mathbold{h}, \mathbold{\theta}) \right \rbrace.
+  \end{align*}
+
++ The *expectation value* of an *observable* $\mathcal{O} \left( \mathbold{v}, \mathbold{h} \right)$ with respect to the joint distribution distribution is $P(\mathbold{v}, \mathbold{h})$
+
+  \begin{align*}
+  \left \langle \mathcal{O} \left( \mathbold{v}, \mathbold{h} \right)  \right \rangle &
+  \equiv \sum_{\mathbold{v}, \mathbold{h}} \thinspace P(\mathbold{v}, \mathbold{h}) \mathcal{O} \left( \mathbold{v}, \mathbold{h} \right).
+  \end{align*}
+
++ For /continuous/ $\mathbold{v}$ and $\mathbold{h}$, $\sum_{\mathbold{v}, \mathbold{h}}$ in $P(\mathbold{v}, \mathbold{h})$, $\mathcal{Z}$, and $\left \langle \mathcal{O} \left( \mathbold{v}, \mathbold{h} \right)  \right \rangle$  is replaced with $\int d \mathbold{v} \int d \mathbold{h}$. If $\mathbold{v}$ is /continuous/ while $\mathbold{h}$ is /discrete/, $\sum_{\mathbold{v}, \mathbold{h}}$ is replaced with $\sum_{h} \int d \mathbold{v}$. If $\mathbold{h}$ is /continuous/ while $\mathbold{v}$ is /discrete/, $\sum_{\mathbold{v}, \mathbold{h}}$ is replaced with $\sum_v_{} \int d \mathbold{h}$.
+** Conditional distributions
++ The *marginal distribution* for the discrete visible spins is
+
+  \begin{align*}
+  P(\mathbold{v})=\sum_{\mathbold{h}} p_{\mathbold{v}} (\mathbold{v}) p_{\mathbold{h}} (\mathbold{h})  \exp \left \lbrace - \beta H(\mathbold{v}, \mathbold{h}, \mathbold{\theta})  \right \rbrace/Z.
+  \end{align*}
+
++ The *conditional distributions* for discrete visible and hidden spins are respectively
+
+\begin{align*}
+P \left( \mathbold{v} \mid \mathbold{h} \right) \equiv
+\dfrac{P(\mathbold{v}, \mathbold{h})}{\sum_{\mathbold{v}} P(\mathbold{v}, \mathbold{h})}
+= \dfrac{p_{\mathbold{v}} (\mathbold{v}) \exp \left \lbrace - \beta H (\mathbold{v}, \mathbold{h}, \mathbold{\theta})  \right \rbrace}{\sum_{\mathbold{v}} p_{\mathbold{v}} (\mathbold{v}) \exp \left \lbrace - \beta H (\mathbold{v}, \mathbold{h}, \mathbold{\theta})  \right \rbrace}.
+\end{align*}
+
+\begin{align*}
+P \left( \mathbold{h} \mid \mathbold{v} \right) \equiv
+\dfrac{P(\mathbold{v}, \mathbold{h})}{\sum_{\mathbold{h}} P(\mathbold{v}, \mathbold{h})}
+= \dfrac{p_{\mathbold{h}} (\mathbold{h}) \exp \left \lbrace - \beta H (\mathbold{v}, \mathbold{h}, \mathbold{\theta})  \right \rbrace}{\sum_{\mathbold{h}} p_{\mathbold{h}} (\mathbold{h}) \exp \left \lbrace - \beta H (\mathbold{v}, \mathbold{h}, \mathbold{\theta})  \right \rbrace}.
+\end{align*}
+
++ For /continuous/ $\mathbold{h}$, $\sum_{\mathbold{h}}$ in $P(\mathbold{v})$ and $P \left( \mathbold{h} \mid \mathbold{v} \right)$ is replaced with $\int d \mathbold{h}$. For /continuous/ $\mathbold{v}$, $\sum_{\mathbold{v}}$ in $P \left( \mathbold{v} \mid \mathbold{h} \right)$ is replaced with $\int d \mathbold{v}$.
+* Learning in RBMs
+** Learning in RBMs: unsupervised learning
++ A *dataset* is a set of $L$ /visible spin configurations/
+
+  \begin{align*}
+  \mathcal{S} \equiv \left\{\mathbold{v}^1^{}, \ldots, \mathbold{v}^k^{}, \ldots, \mathbold{v}^L^{} \right\}.
+  \end{align*}
+
++ *Hypothesize* that the /elements/ of the dataset are /independent and identically distributed samples/ from the /marginal distribution/ $P (\mathbold{v})$ of a /Gibbs-Boltzmann distribution/ $P(\mathbold{v}, \mathbold{h})$ associated with an *unknown* /Hamiltonian/ $H \left(\mathbold{v}, \mathbold{h}, \mathbold{\theta}\right)$
+
+  \begin{align*}
+  P(\mathbold{v}, \mathbold{h}) \equiv \dfrac{p_{\mathbold{v}} (\mathbold{v}) p_{\mathbold{h}} (\mathbold{h})  \exp \left \lbrace - \mathscr{H}(\mathbold{v}, \mathbold{h}, \mathbold{\theta})  \right \rbrace}{\mathcal{Z}}.
+  \end{align*}
+
++  $\mathbold{v}$ and $\mathbold{h}$ are vectors from a *vector space* $\mathbb{V}$ and $\mathbb{H}$, and $\mathbold{\theta} \equiv \left \lbrace \mathbold{W}, \mathbold{b}, \mathbold{c}  \right \rbrace$ is the set of /couplings/ and /magnetic fields/. $\mathcal{Z}$ is the /partition function/
+
+\begin{align*}
+  \mathcal{Z} \equiv \operatorname{Tr}_{\mathbold{v}, \mathbold{h}} \left(p_{\mathbold{v}} (\mathbold{v}) p_{\mathbold{h}} (\mathbold{h})  \exp \left \lbrace - \mathscr{H} (\mathbold{v}, \mathbold{h}, \mathbold{\theta}) \right \rbrace\right).
+\end{align*}
+
++ For us, *unsupervised learning* of the marginal distribution $P(\mathbold{v})$ given a dataset $\mathcal{S}$ will mean finding a distribution $Q(\mathbold{v})$ that resembles $P(\mathbold{v})$ "as closely as possible".
+** Learning in RBMs: maximum likelihood estimation
++ One possible way of precisely defining /as closely as possible/ is to work under the framework of *maximum likelihood estimation* and write a /maximum likelihood estimator/ for $P(\mathbold{v})$.
+
++ The maximum likelihood estimation prescription is to *hypothesize* the existence a family of *trial distributions* $Q(\mathbold{v} \mid \mathbold{\theta})$ and a *likelihood function* $\mathcal{L}(\mathbold{\theta} \mid \mathcal{S})$. $\mathbold{\theta}$ is a *parameter vector* from a *parameter space* $\mathbold{\Theta}$ that parametrizes $Q$. $\mathcal{L}_Q: \Theta \rightarrow \mathbb{R}$ is a function which, given the dataset $\mathcal{S}$, maps parameters $\mathbold{\theta}$ to its /likelihood/
+
+  \begin{align*}
+  \mathcal{L}_Q \left( \mathbold{\theta} \mid \mathcal{S} = \left \lbrace \mathbold{v}^k  \right \rbrace \right) \equiv \prod_{\mathcal{S}}_{}^{} Q\left(\mathbold{v}^k^{} \mid \mathbold{\theta}\right)
+  \end{align*}
+
++ A *maximum likelihood estimator* (MLE) is a machine (function) $\mathbold{\hat{\theta}}: \mathbb{V}^L \to \mathbold{\Theta}$ that takes a dataset $\mathcal{S}$ and returns a parameter vector $\mathbold{\hat{\theta}}$ that /maximizes/ the likelihood function
+
+  \begin{align*}
+  \hat{\mathbold{\theta}}=\underset{\mathbold{\theta} \in \mathbold{\Theta}}{\arg \max } \thinspace \mathcal{L}_Q \left( \mathbold{\theta} \mid \mathcal{S}\right).
+  \end{align*}
+
++ Because $\mathbold{\theta} \equiv \left \lbrace \mathbold{W}, \mathbold{b}, \mathbold{c}  \right \rbrace$, the task is /effectively/ that of learning a /Hamiltonian/ function $H: \mathbb{V} \times \mathbb{H} \to \mathbb{R}$.
+
+** Learning in RBMs: Kullback-Leibler divergence $\mathrm{D_{KL}} (P \mid \mid Q)$
++ For a finite state space $\mathbb{V}$ of visible spins $\mathbold{v}$, the *Kullback-Leibler divergence* between distributions $P(\mathbold{v})$ and $Q(\mathbold{v})$ is given by
+
+\begin{align*}
+\mathrm{D_{KL}} (P \mid \mid Q) = \left \langle \ln \dfrac{P}{Q}  \right \rangle_P = \sum_{\mathbold{v}} \left[ P(\mathbold{v}) \ln P(\mathbold{v}) - P(\mathbold{v}) \ln Q(\mathbold{v}) \right].
+\end{align*}
+
++ In the maximum likelihood estimation setting previously described, maximizing the likelihood function is equivalent to minimizing the *Kullback-Leibler divergence* $\mathrm{D_{KL}} (P \mid \mid Q)$ between $P$ and $Q$.
+
+  \begin{align*}
+  \hat{\mathbold{\theta}} = \underset{\mathbold{\theta} \in \mathbold{\Theta}}{\arg \max } \thinspace \mathcal{L} \left(  \mathbold{\theta} \mid \mathcal{S}\right)
+  &= \underset{\mathbold{\theta} \in \mathbold{\Theta}}{\arg \max } \thinspace \prod_{\mathcal{S}}_{}^{} Q\left(\mathbold{v}^k^{} \mid \mathbold{\theta}\right)
+  = \underset{\mathbold{\theta} \in \mathbold{\Theta}}{\arg \min } \thinspace - \sum_{\mathcal{S}}_{}^{} \ln Q\left(\mathbold{v}^k^{} \mid \mathbold{\theta}\right) \\
+  &= \underset{\mathbold{\theta} \in \mathbold{\Theta}}{\arg \min } \thinspace \lim_{L \to \infty} \left( L^{-1} \sum_{\mathcal{S}} \left[ \ln P \left(\mathbold{v}^k^{} \right) - \ln Q \left(\mathbold{v}^k^{} \mid \mathbold{\theta}\right)  \right] \right) \\
+  &\equiv \left \langle \ln P - \ln Q  \right \rangle_P = \left \langle \ln \dfrac{P}{Q}  \right \rangle_P \equiv \mathrm{D_{KL}} (P \mid \mid Q).
+  \end{align*}
+
+** Learning in RBMs: log likelihood and its gradient
++ Substituting the Gibbs's Boltzmann distribution, the /log likelihood/ given $\mathcal{S}$
+
+  \begin{align*}
+  \ln \mathcal{L}(\mathbold{\theta} \mid \mathcal{S}) &=
+  \sum_{\mathcal{S}} \ln \operatorname{Tr}_{\mathbold{h}} \left( q_{\mathbold{v}} (\mathbold{v}^k^{}) q_{\mathbold{h}} (\mathbold{h})  \exp \left \lbrace  \mathbold{h}^{\mathbf{T}} \cdot \mathbold{W} \cdot \mathbold{v}^k^{} + \mathbold{b} \cdot \mathbold{v}^k + \mathbold{c} \cdot \mathbold{h} \right \rbrace \right) \\
+  & \qquad \qquad \qquad \qquad - L \ln \operatorname{Tr}_{\mathbold{h}, \mathbold{v}} \left(q_{\mathbold{v}} (\mathbold{v}) q_{\mathbold{h}} (\mathbold{h})  \exp \left \lbrace \mathbold{h}^{\mathbf{T}} \cdot \mathbold{W} \cdot \mathbold{v}^{} + \mathbold{b} \cdot \mathbold{v} + \mathbold{c} \cdot \mathbold{h} \right \rbrace \right)
+  \end{align*}
+
+
++ The gradient of the log likelihood with respect to the parameters $\mathbold{\theta}$ is
+
+\begin{align*}
+L^{-1} \partial_{\mathbold{\theta}} \ln \mathcal{L}(\mathbold{\theta} \mid \mathcal{S})
+&= L^{-1} \sum_{\mathcal{S}} \left( \frac{\operatorname{Tr}_{\mathbold{h}} q_{\mathbold{h}} (\mathbold{h}) \partial_{\mathbold{\theta}} \mathscr{H} (\mathbold{v}^k, \mathbold{h}, \mathbold{\theta}) \exp \left \lbrace - \mathscr{H} (\mathbold{v}^k, \mathbold{h}, \mathbold{\theta})  \right \rbrace}{\operatorname{Tr}_{\mathbold{h}} q_{\mathbold{h}} (\mathbold{h}) \exp \left \lbrace -\mathscr{H} (\mathbold{v}^k, \mathbold{h}, \mathbold{\theta})  \right \rbrace} \\
+&\qquad \qquad - \left( \frac{1}{\sum_{\mathbold{h}, \mathbold{v}} q_{\mathbold{h}} (\mathbold{h}) q_{\mathbold{v}} (\mathbold{v}) e^{-H(\mathbold{v}, \mathbold{h}, \mathbold{\theta})}} \sum_{\mathbold{h}, \mathbold{v}} q_{\mathbold{h}} (\mathbold{h}) q_{\mathbold{v}} (\mathbold{v}) e^{-H(\mathbold{v}, \mathbold{h}, \mathbold{\theta})} \frac{\partial H(\mathbold{v}, \mathbold{h}, \mathbold{\theta})}{\partial \mathbold{\theta}} \right) \\
+& \qquad \qquad \qquad \qquad= L^{-1} \sum_{\mathcal{S}} \sum_{\mathbold{h}} Q(\mathbold{h} \mid \mathbold{v}^k) \thinspace \partial_{\mathbold{\theta}} H(\mathbold{v}^k, \mathbold{h}, \mathbold{\theta}) - \sum_{\mathbold{v}, \mathbold{h}} Q(\mathbold{v}, \mathbold{h}) \thinspace \partial_{\mathbold{\theta}} H(\mathbold{v}, \mathbold{h}, \mathbold{\theta}).
+\end{align*}
+
+** Learning in RBMs: log likelihood and its gradient
+
++ If $L \to \infty$, then
+
+  \begin{align*}
+  L^{-1} \sum_{\mathcal{S}} \sum_{\mathbold{h}} Q(\mathbold{h} \mid \mathbold{v}^k) \partial_{\mathbold{\theta}} H(\mathbold{v}^k, \mathbold{h}, \mathbold{\theta}) \to \sum_{\mathbold{h}} Q(\mathbold{h} \mid \mathbold{v}^k) Q (\mathbold{v^k}) \partial_{\mathbold{\theta}} H(\mathbold{v}^k, \mathbold{h}, \mathbold{\theta})
+  \end{align*}
+
+  where $Q (\mathbold{v^k})$ is the trial distribution for the /dataset/.
+
++ With $\lim_{L \to \infty} L^{-1} \partial_{\mathbold{\theta}} \ln \mathcal{L}(\mathbold{\theta} \mid \mathcal{S}) \equiv \partial_{\mathbold{\theta}} \ln \mathit{l} (\mathbold{\theta} \mid \mathcal{S})$, the *log-likelihood per sample*
+
+  \begin{align*}
+  \boxed{
+  \partial_{\mathbold{\theta}} \ln \mathit{l} (\mathbold{\theta} \mid \mathcal{S}) =
+  \left \langle \partial_{\mathbold{\theta}} H(\mathbold{v}^k, \mathbold{h}, \mathbold{\theta})  \right \rangle_{Q(\mathbold{h} \mid \mathbold{v}^k) Q (\mathbold{v}^k)}
+  - \left \langle \partial_{\mathbold{\theta}} H(\mathbold{v}, \mathbold{h}, \mathbold{\theta}) \right \rangle_{Q(\mathbold{v}, \mathbold{h})}
+  }
+  \end{align*}
+
++ The first is called the *positive term*. The second is called the *negative term*. As it stands, the positive term - $\mathcal{O} (\dim \mathbb{H}^M)$ - is /no easier/ to evaluate than the negative term $\mathcal{O} (\dim \mathbb{V}^N \dim \mathbb{H}^M)$.
++ If
++ For Ising spins, the second term and third term being $\mathcal{O} (L \cdot 2^M)$ is *intractible*.
++ The third term is just $\ln \mathcal{Z}$; it is independent of the dataset $\mathcal{S}$. For Ising spins the sum is $\mathcal{O} (L \cdot 2^{N+M})$, hence *intractible*.
+
+** Learning in RBMs: gradients
+
+\begin{align*}
+\frac{\partial \ln \mathcal{L}(\mathbold{\theta} \mid \mathbold{v})}{\partial \mathbold{\theta}} &= \frac{\partial}{\partial \mathbold{\theta}}\left(\ln \sum_{\mathbold{h}} e^{-E(\mathbold{v}, \mathbold{h})}\right)-\frac{\partial}{\partial \mathbold{\theta}}\left(\ln \sum_{\mathbold{v}, \mathbold{h}} e^{-E(\mathbold{v}, \mathbold{h})}\right) \\
+&=-\frac{1}{\sum_{\mathbold{h}} e^{-E(\mathbold{v}, \mathbold{h})}} \sum_{\mathbold{h}} e^{-E(\mathbold{v}, \mathbold{h})} \frac{\partial E(\mathbold{v}, \mathbold{h})}{\partial \mathbold{\theta}}+\frac{1}{\sum_{\mathbold{v}, \mathbold{h}} e^{-E(\mathbold{v}, \mathbold{h})}} \sum_{\mathbold{v}, \mathbold{h}} e^{-E(\mathbold{v}, \mathbold{h})} \frac{\partial E(\mathbold{v}, \mathbold{h})}{\partial \mathbold{\theta}} \\
+&=-\sum_{\mathbold{h}} p(\mathbold{h} \mid \mathbold{v}) \frac{\partial E(\mathbold{v}, \mathbold{h})}{\partial \mathbold{\theta}}+\sum_{\mathbold{v}, \mathbold{h}} p(\mathbold{v}, \mathbold{h}) \frac{\partial E(\mathbold{v}, \mathbold{h})}{\partial \mathbold{\theta}}
+\end{align*}
+
+Here, $q/{\mathbold{v},\mathbold{h}}$ refers to the joint probability of $\mathbold{v}$ and $\mathbold{h}$, and $Z$ is the partition function that normalizes the joint probability.
+* Gaussian Gaussian RBM
+** Gaussian Gaussian RBM: priors
+
+\begin{align*}
+\boxed{
+q_{\mathbold{v}}(\mathbold{v}) = \prod_{i=1}^{N} \frac{1}{\sqrt{2\pi\sigma_{v}^2}} \exp\left(-\frac{v_i^2}{2\sigma_{v}^2}\right)
+\qquad
+q_{\mathbold{h}}(\mathbold{h}) = \prod_{j=1}^{M} \frac{1}{\sqrt{2\pi\sigma_{h}^2}} \exp\left(-\frac{h_j^2}{2\sigma_{h}^2}\right)
+}
+\end{align*}
+
+where $N$ and $M$ are the number of visible and hidden spins. $\sigma_{v}^{2}$ and $\sigma_{h}^2$ are the variance of a single visible spin $v$ or hidden spin $h$ respectively.
+
+** (Gaussian)^2 RBM: conditional for $\mathbold{h}$ is Gaussian centered $\sigma_h^2 \sum_i w_{i j} v_i$
++ Substitute the expression for $q_{\mathbold{h}}(\mathbold{h})$ and $H \left(\mathbold{v}, \mathbold{h}, \mathbold{\theta} \right)$ in $p(\mathbold{h} \mid \mathbold{v})$ to get
+
+  \begin{align*}
+  p(\mathbold{h} \mid \mathbold{v}) &= \dfrac{\prod_{j=1}^{M}
+  \exp\left(-\frac{h_j^2}{2\sigma_{h}^2} + \beta h_j \sum_{i=1}^N W_{i j} v_i + \sum_{i=1}^N b_i v_i + \beta c_j h_j\right)}{\sum_{\mathbold{h}}
+  \prod_{j=1}^{M} \exp\left(-\frac{h_j^2}{2\sigma_{h}^2} + \beta h_j \sum_{i=1}^N W_{i j} v_i + \sum_{i=1}^N b_i v_i + \beta c_j h_j\right)}.
+  \end{align*}
+
++ On writing the exponential of the sum as product of exponentials we get bystanders $\left(\prod_{j=1}^M \exp \left \lbrace \beta c_j h_j  \right \rbrace\right) \left(\prod_{i=1}^N \exp \left \lbrace \beta b_i v_i \right \rbrace \right)$ common in both the numerator and denominator. This is because the values of $\mathbold{h}$ and $\mathbold{v}$ are fixed. Cancelling them yields the simplication
+
+  \begin{align*}
+  p(\mathbold{h} \mid \mathbold{v}) \propto \prod_j
+  \exp \left(-\frac{h_j^2}{2 \sigma_h^2}+h_j \sum_i w_{i j} v_i\right)
+  \end{align*}
+
++ The elementary *completing the square* operation
+
+  \begin{align*}
+  \dfrac{x^2}{2 a^2} + x \thinspace b = \dfrac{(a^2 \thinspace b + x)^2}{2 a^2} - \dfrac{a^2 \thinspace b^2}{2}.
+  \end{align*}
+
+  immediately clarifies that the *activation function* $p(\mathbold{h} \mid \mathbold{v})$ *is Gaussian centered on* $\sigma_h^2 \sum_i w_{i j} v_i$.
+
+** (Gaussian)^2 RBM: marginal is a multivariate Gaussian
++ Compute the /marginal/ $p (\mathbold{v})$ as follows:
+
+  \begin{align*}
+  p(\mathbold{v}) &= \frac{1}{Z}
+  \prod_i \exp \left({-\frac{v_i^2}{2\sigma_v^2} + b_i v_i}\right)
+  \prod_j \left[\int d h_j \exp\left(-\frac{h_j^2}{2\sigma_h^2} + h_j \sum_i w_{i j} v_i\right) \right] \\
+  &= \frac{1}{\mathcal{Z}}
+  \prod_i \exp \left({-\frac{v_i^2}{2\sigma_v^2} + b_i v_i}\right)
+  \prod_j \exp\left(\frac{\sigma_h^2}{2} \sum_{ik} v_i w_{ij} w_{kj} v_k \right)\\
+  &= \frac{1}{\mathcal{Z}} \exp \left(-\mathbold{v}^T \left[\frac{\mathbold{I}}{2 \sigma_v^2} - \dfrac{\sigma_h^2}{2} \mathbold{w} \mathbold{w}^T\right] \mathbold{v} + \mathbold{v}^T \mathbold{b}\right) \\
+  & \equiv \dfrac{1}{\mathcal{Z}} \exp \left \lbrace - \mathbold{v}^T \mathbold{A} \mathbold{v} + \mathbold{v}^T \mathbold{b}  \right \rbrace.
+  \end{align*}
+
+  where $\mathcal{Z}$ is the normalization constant and $\mathbold{I}$ is the identity matrix.
+
++ $\mathbold{A}$ is called the *precision matrix*. It is *positive-definite*.
+
+  \begin{align*}
+  \boxed{
+  \mathbold{A} \equiv \frac{1}{2 \sigma_v^2} \mathbold{I} + \dfrac{\sigma_h^2}{2} \mathbold{w} \mathbold{w}^T
+  }
+  \end{align*}
+
++ The *marginal distribution over visible spins* $p (\mathbold{v})$ *reduces to a multivariate Gaussian.* The eigenvalue of $\mathbold{w} \mathbold{w}^T$ remains strictly below $1 /\left(\sigma_v^2 \sigma_h^2\right)$.
+* Gaussian spherical RBM
+** Gaussian spherical RBM: priors
+\begin{align*}
+\boxed{
+q_v(\mathbf{v}) = \prod_{i=1}^{N} \frac{1}{\sqrt{2\pi\sigma_{v}^2}} \exp\left(-\frac{v_i^2}{2\sigma_{v}^2}\right)
+\qquad
+q_h(\mathbf{h}) = \delta \left( \sum_{i} h_{i}^2 - \bar{\sigma} \sqrt{N M}  \right)
+}
+\end{align*}
+
+where $\bar{\sigma}$ parametrizes the spherical constraint on the hidden spins.
+* Gaussian softmax RBM
+** Gaussian softmax RBM: priors
+\begin{align*}
+\boxed{
+q_v(\mathbf{v}) = \prod_{i=1}^{N} \frac{1}{\sqrt{2\pi\sigma_{v}^2}} \exp\left(-\frac{v_i^2}{2\sigma_{v}^2}\right)
+\qquad
+q_h(\mathbf{h}) = \prod_{j=1}^{M} \left( \delta_{h_j, 0} + \delta_{h_j, 1} \right) \delta_{\sum_{k} h_k, 1}
+}
+\end{align*}
+* Bernoulli-Gaussian RBM
+** Bernoulli-Gaussian RBM: priors
+\begin{align*}
+\boxed{
+q_v(\mathbf{v}) = \dfrac{1}{2^{N}} \prod_{i=1}^N \left( \delta_{v_i,0} + \delta_{v_i, 1} \right)
+\qquad
+q_h(\mathbf{h}) = \prod_{j=1}^{M} \frac{1}{\sqrt{2\pi\sigma_{h}^2}} \exp\left(-\frac{h_j^2}{2\sigma_{h}^2}\right)
+}
+\end{align*}
+* Gaussian-Bernoulli RBM
+** Gaussian-Bernoulli RBM: priors
+\begin{align*}
+\boxed{
+q_v(\mathbf{v}) = \prod_{i=1}^{N} \frac{1}{\sqrt{2\pi\sigma_{v}^2}} \exp\left(-\frac{v_i^2}{2\sigma_{v}^2}\right)
+\qquad
+q_h(\mathbf{h}) = \dfrac{1}{2^{M}} \prod_{i=1}^M \left( \delta_{h_i,0} + \delta_{h_i, 1} \right)
+}
+\end{align*}
+* Bernoulli-Bernoulli RBM
+** Bernoulli-Bernoulli RBM: priors
+\begin{align*}
+\boxed{
+q_v(\mathbf{v}) = \dfrac{1}{2^{N}} \prod_{i=1}^N \left( \delta_{v_i,0} + \delta_{v_i, 1} \right)
+\qquad
+q_h(\mathbf{h}) = \dfrac{1}{2^{M}} \prod_{i=1}^M \left( \delta_{h_i,0} + \delta_{h_i, 1} \right)
+}
+\end{align*}
