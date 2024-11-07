@@ -1,0 +1,435 @@
+:PROPERTIES:
+:ID:       936dd23a-681a-44ad-8d56-30b462d79d22
+:END:
+#+TITLE: Notes on Structure and Interpretation of Computer Programs by Sussman, Sussman, and Abelson
+#+FILETAGS: :fleeting:mm:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+#+BEGIN: clocktable :maxlevel 2 :scope nil :emphasize nil
+#+END:
+* Building Abstractions with Procedures
+  :LOGBOOK:
+  CLOCK: [2021-11-07 Sun 00:54]--[2021-11-07 Sun 01:05] =>  0:11
+  CLOCK: [2021-07-13 Tue 16:29]--[2021-07-13 Tue 16:45] =>  0:16
+  :END:
+- computational process :: abstract beings that inhabit computers. As they evolve, processes manipulate other abstract things called /data/. The evolution of a process is directed by a pattern of rules called a /program/. They are carefully composed from symbolic expressions in arcane and esoteric /programming languages/ that prescribe the tasks we want our processes to perform.
+Master software engineers have the following traits:
+1. the ability to organize programs so that they can be reasonably sure that the resulting processes will perform the tasks intended.
+2. the ability to visualize the behaviour of their systems in advance; to structure programs so that unanticipated problems do not lead to catastrophic consequences, and when problems do arise, they can /debug/ their programs.
+- interpreter :: an /interpreter/ is a machine that carries out processes decribed in a programming language.
+** The Elements of Programming
+   :LOGBOOK:
+   CLOCK: [2021-11-09 Tue 11:43]--[2021-11-09 Tue 13:49] =>  2:06
+   CLOCK: [2021-11-07 Sun 12:34]--[2021-11-07 Sun 13:09] =>  0:35
+   CLOCK: [2021-07-13 Tue 17:41]--[2021-07-13 Tue 21:21] =>  3:40
+   CLOCK: [2021-07-13 Tue 16:46]--[2021-07-13 Tue 17:41] =>  0:55
+   :END:
+- A powerful programming language is more than just a means for the /prescription/ of computational processes. It is a framework within which we organize our ideas about computational processes.
+- Every powerful language provides three mechanisms to combine simple ideas to form more complex ideas:
+ - primitive expressions :: the simplest entities the language is concerned with
+ - means of combination :: compound elements are built from simpler ones
+ - means of abstraction :: compound elements can be named and manipulated as units
+- In programming, we deal with two kinds of elements: /*procedures*/ and /*data*/. Informally, data is "stuff" that we want to manipulate, and procedures are descriptions of the rules for manipulating the data. *Thus any powerful programming language should be able to describe /primitive data/ and /primitive procedures/ and should have methods for /combining/ and /abstracting/ procedures and data.*
+*** Expressions
+- /expressions/ are what you feed the /interpreter/. The /interpreter/ responds by displaying the result of its /evaluating/ that expression.
+- /Numbers/ (an expression composed from numerals that represent the number in base 10) are one kind of /primitive expression/. /Primitive procedures/ are another example of a /primitive expression/.
+- Expressions representing numbers may be combined with an expression representing a primitive procedure (such as /+/ or /*/) to form a compound expression that represents the application of the procedure to those numbers.
+#+BEGIN_SRC lisp
+(+ 137 349)
+#+END_SRC
+- Expressions such as these, formed by delimiting a list of expressions within parentheses in order to denote precedure application, are called /combinations/. The leftmost element in the list is called the /operator/, and the other elements are called /operands/. The value of a combination is obtained by applying the procedure specified by the operator to the /arguments/ that are the values of the operands.
+- The convention of placing the operator to the left of the operands is known as /prefix notation/. Prefix notation has several advantages:
+  - it can accomodate procedures that can take an arbitrary number of arguments
+  - it allows for /nesting/ of combinations - combinations whose elements are themselves combinations.
+#+BEGIN_SRC lisp
+(+ (* 3
+      (+ (* 2 4)
+         (+ 3 5)))
+   (+ (- 10 7)
+      6))
+#+END_SRC
+- The formatting convention above is called /pretty printing/.
+- The interpreter always operates in the same basic /read-eval-print loop/ - whether the expressions is primitive or complex.
+*** Naming and the Environment
+- a critical aspect of a programming language is the means it provides for using names to refer to computational objects. We say that the name identifies a /variable/ whose /value/ is the object.
+- In the the Scheme dialect of Lisp, we name things with ~define~ 
+#+BEGIN_SRC lisp
+(define size 2)
+#+END_SRC
+- once the name ~size~ has been associated with the number 2, we can refer to the value 2 by name.
+- ~define~ is Scheme's simplest means of abstraction, for it allows us to use simple names to refer to the results of compound operations.
+#+BEGIN_SRC lisp
+(define pi 3.14159)
+(define radius 10)
+(define area (* pi radius radius))
+(define circumference (* 2 pi radius))
+#+END_SRC
+- the possibility of associating values with symbols and later retrieving them means that the interpreter must maintain some sort of memory that keeps track of the name-object pairs. This memory is called the /environment/ (more precisely the /global environment/, since a computation may involve a number of different environments).
+*** Evaluating Combinations
+- in evaluating combinations, the interpreter is itself following a procedure:
+  1. Evaluate the subexpressions of the combination
+  2. Apply the procedure that is the value of the leftmost subexpression (the operator) to the arguments that are the values of the other subexpressions (the operands).
+- Evaluating a combination requires the evaluation of each element of the combination - the evaluation rule is /recursive/ in nature. It includes, as one of its steps, the need to invoke the rule itself [See Figure 1.1]. This form of evaluation rule is an example of a general kind of process known as /tree accumulation/.
+- Repeated application of the first step brings us to the point where we need to evaluate, not combinations, but primitive expressions such as numerals, built-in operators, or other names. The following rules take care of the primitive cases:
+  1. the values of numerals are the numbers that they name,
+  2. the values of built-in operators are the machine instruction sequences that carry out the corresponding operations, and
+  3. the values of other names are the objects associated with those names in the environment.
+- The second rule can be viewed as a special case of the third one by stipulating that symbols such as /+/ and /*/ are also included in the global environment, and are associated with the sequences of machine instructions that are their "values."
+- *The environment determines the meaning of symbols in expressions. It provides a context in which evaluation takes place.*
+- The evaluation rule given above does not handle definitions. Such exceptions to the general evaluation rule are called /special forms/. Each special form has its own evaluation rule.
+- The various kinds of expressions (each with its associated evaluation rule) constitute the syntax of the programming language.
+- Special syntactic forms that are simply convenient alternative surface structures for things that can be written in more uniform ways are sometimes called /syntactic sugar/.
+*** Compound Procedures
+- elements we have discussed so far that must appear in any powerful programming language:
+  1. Numbers and arithmetic operations are primitive data and procedures
+  2. Nesting of combinations provides a means of combining operations
+  3. Definitions that associate names with values provide a limited means of abstraction
+- We will now learn about /procedure definitions/, a much more powerful abstraction technique by which a compound operation (as opposed to the ~define~ which allows us to give a name to the /result/ of a compound operation) can be given a name.
+#+BEGIN_SRC lisp
+(define (square x) (* x x))
+#+END_SRC
+- We have here a /compound procedure/, which has been given the name ~square~. The procedure represents the operation of multiplying something by itself. The thing to be multiplied is given a local name, /x/, which plays the same role that a pronoun plays in natural language. Evaluating the definition creates this compound procedure and associates it with the name ~square~.
+- The general form of a procedure definition is:
+(~define~ (/<name>/ /<formal parameters>/) (/<body>/))
+- The /<name>/ is a symbol to be associated with the procedure definition in the environment.
+- The /<formal parameters>/ are the names used within the body of the procedure to refer to the corresponding arguments of the procedure.
+- The /<body>/ is an expression that will yield the value of the procedure application when the formal parameters are replaced by the actual arguments to which the procedure is applied.
+- The /<name>/ and the /<formal parameters>/ are grouped within parenthesis, just as they would be in an actual call to the procedure being defined.
+#+BEGIN_SRC lisp
+(square 21)
+#+END_SRC
+- /compound procedures/ can be used as building blocks in defining other procedures which in turn can be used in constructing further procedures.
+#+BEGIN_SRC lisp
+(define (sum-of-squares x y)
+(+ (square x) (square y)))
+#+END_SRC
+
+#+BEGIN_SRC lisp
+(define (f a)
+(sum-of-squares (+ a 1) (* a 2)))
+#+END_SRC
+- Compound procedures are used in exactly the same way as primitive procedures. Indeed, one could not tell by looking at the definition of ~sum-of-squares~ given above whether ~square~ was built into the interpreter, like /+/ and /*/, or defined as a compound procedure.
+*** The Substitution Model for Procedure Application
+- To evaluate a combination whose operator names a compound procedure, the interpreter follows much the same process as for combinations whose operators name primitive procedures - the interpreter evaluates the elements of the combination and applies the procedure (which is the value of the operator of the combination) to the arguments (which are the values of the operands of the combination).
+- We can assume that the mechanism for applying primitive procedures to arguments is built into the interpreter. For compound procedures, the application process is as follows:
+  1. To apply a compound procedure to arguments, evaluate the body of the procedure with each formal parameter replaced by the corresponding argument.
+#+BEGIN_SRC lisp
+(f 5)
+(sum-of-squares (+ a 1) (* a 2))
+(sum-of-squares (+ 5 1) (* 5 2))
+(+ (square 6) (square 10))
+(+ (* 6 6) (* 10 10))
+(+ 36 100)
+#+END_SRC
+- This process is called the /substitution model/ for procedure application.
+- It can be taken as a model that determines the "meaning" of procedure application, insofar as the procedures in this chapter are concerned.
+  1. The purpose of the substitution is to help us think about procedure application, not to provide a description of how the interpreter really works. Typical interpreters do not evaluate procedure applications by manipulating the text of a procedure to substitute values for the formal parameters. In practice, the "substitution" is accomplished by using a local environment for the formal parameters.
+  2. The substitution model is only the first in a sequence of increasingly elaborate models of how interpreters work - a way to get started thinking formally about the evaluation process. In general, when modelling phenomena in science and engineering, we begin with simplified, incomplete models. As we examine things in greater detail, these simple models become inadequate and must be replaced by more refined models. The substitution model is no exception. In particular, when we will address the use of procedures with "mutable data," we will see that the substitution model breaks down and must be replaced by a more complicated model of procedure application.
+- There is an alternative way of formulating evaluation within the substitution model.
+#+BEGIN_SRC lisp
+(sum-of-squares (+ 5 1) (* 5 2))
+(+ (square (+ 5 1)) (square (* 5 2)))
+(+ (* (+ 5 1) (+ 5 1)) (* (* 5 2) (* 5 2)))
+(+ (* 6 6) (* 10 10))
+(+ 36 100)
+#+END_SRC
+- This gives the same answer as our previous evaluation model, but the process is different. In particular, the evaluations of (+ 5 1) and (* 5 2) are each performed twice here, corresponding to the reduction of the expression ~(* x x)~ with ~x~ replaced respectively by ~(+ 5 1)~ and ~(* 5 2)~
+- This alternative "fully expand and then reduce" evaluation method is known as /normal-order evaluation/, in contrast to the "evaluate the arguments and then apply" method that the interpreter actually uses, which is called /applicative-order evaluation/.
+- It can be shown that, for procedure applications that can be modeled using substitution and that yield legitimate values, normal-order and applicative-order evaluation produce the same value.
+- Applicative-order evaluation is preferred over normal-order evaluation to i) avoid multiple evaluations of expressions such as those illustrated with ~(+ 5 1)~ and ~(* 5 2)~ above and, more significantly, ii) because normal-order evaluation becomes much more compllicated to deal with when we leave the realm of procedures that can be modeled by substitution.
+*** Conditional Expressions and Predicates
+- The expressive power of the class of procedures that we can define at this point is very limited, because we have no way to make tests and to perform different operations depending on the result of a test.
+- This construct is called a /case analysis/, and there is a special form in Lisp for notating such a case analysis. It is called ~cond~ (which stands for "conditional"), and it is used as follows:
+#+BEGIN_SRC lisp
+(define (abs x) 
+  (cond ((> x 0) x) 
+        ((= x 0) 0) 
+        ((< x 0) (-x))))
+#+END_SRC
+- The general form of a conditional expression is
+(cond (<p1> <e1>)
+      (<p2> <e2>)
+      ...
+      (<pn> <en>))
+- It consists of the symbol ~cond~ followed by parenthesized pairs of expressions (<p> <e>) called /clauses/. The first expression in each pair is a /predicate/ - that is, an expression whose value is interpreted as either true or false.
+- Conditional expressions are evaluated as follows: The predicate <p1> is evaluated first. If its value is false, then <p2> is evaluated. If <p2>'s value is also false, then <p3> is evaluated. This process continues until a predicate is found whose value is true, in which case the interpreter returns the value of the corresponding /consequent expression/ <e> of the clause as the value of the conditional expression. If none of the <p>'s is found to be true, the value of the ~cond~ is undefined.
+- The word /predicate/ is used for procedures that return true or false, as well as for expressions that evaluate to true or false. The absolute-value procedure ~abs~ makes use of the primitive predicates />/, /</, and /=/. These take two numbers as arguments and test whether the first number is, respectively, greater than, less than, or equal to the second number, returning true or false accordingly.
+- Another way to write the absolute-value procedure is
+#+BEGIN_SRC lisp
+(define (abs x)
+(cond ((< x 0) (- x))
+      (else x)))
+#+END_SRC
+- ~else~ is a special symbol that can be used in place of the <p> in the final clause of a cond. This causes the ~cond~ to return as its value the value of the corresponding <e> whenever all previous clauses have been bypassed. In fact, any expression that always evaluates to a true value could be used as the <p> here. Yet another way to write the absolute-value procedure:
+#+BEGIN_SRC lisp
+(define (abs x)
+(if (< x 0) 
+    (-x)
+    x))
+#+END_SRC
+- This uses the special form ~if~, a restricted type of conditional that can be used when there are precisely two cases in the case analysis. The general form of an ~if~ expression is
+(if <predicate> <consequent> <alternative>)
+- To evaluate an if expression, the interpreter starts by evaluating the <predicate> part of the expression. If the <predicate> evaluates to a true value, the interpreter then evaluates the <consequent> and returns its value. Otherwise it evaluates the <alternative> and returns its value.
+- In addition to /primitive predicates/ such as <, =, and >, there are logical composition operations, which enable us to construct /compound predicates/. The three most frequently used are these:
+  - (and <e1> ... <en>) :: the interpreter evaluates the expressions <e> one at a time, in left-to-right order. If any <e> evaluates to false, the value of the ~and~ expression is false, and the rest of the <e>'s are not evaluated. If all <e>'s evaluate to true values, the value of the ~and~ expression is the value of the last one.
+  - (or <e1> ... <en>) :: the interpreter evaluates the expressions <e> one at a time, in left-to-right order. If any <e> evaluates to a true value, that value is returned as the value of the ~or~ expression, and the rest of the <e>'s are not evaluated. If all <e>'s evaluate to false, the value of the ~or~ expression is false.
+  - (not <e>) :: the value of a ~not~ expression is true when the expression <e> evaluates to false, and false otherwise.
+- Notice that ~and~ and ~or~ are special forms, not procedures, because the subexpressions are not necessarily all evaluated. 
+#+BEGIN_SRC
+(define (>= x y)
+   (or (> x y) (= x y)))
+#+END_SRC
+
+#+BEGIN_SRC
+(define (>= x y)
+   (not (< x y)))
+#+END_SRC
+- ~not~ is an ordinary procedure.
+*** Example: Square Roots by Newton's Method
+- There is an important difference between mathematical functions and procedures. Procedures must be effective.
+- The distinction between a function and a procedure is a reflection of the general distinction between /declarative/ and /imperative knowledge/ - describing properties of things versus how to do things. "what is" vs. "how to." (see Footnote 20)
+- A declarative statement about square roots is - If $y>0$, and $y^2 = x$, then $y$ is the square root $\sqrt{x}$ of $x$.
+- An imperative statement about square roots is a way to find it; this is done by using Newton's method of successive approximations - whenever we have a guess $y$ for the square root of a number $x$, we can obtain a better guess (one closer to the square root) by averaging $y$ and $x/y$.
+- We recast the imperative statement as a recipe for a procedure as follows: We start with a value for the radicand (the number whose square root we are trying to find) and a value for the guess. If the guess is good enough for our purposes, we are done; else we must repeat the process (checking whether the guess is good enough) with an improved guess.
+#+BEGIN_SRC lisp
+(define (sqrt-iter guess x)
+(if (good-enough? guess)
+    guess
+    (sqrt-iter (improve guess x)
+               x)))
+#+END_SRC
+- To ~improve~ a guess, we average it with the quotient of the radicand and the old guess:
+#+BEGIN_SRC
+(define (improve guess x)
+(average guess (/ x guess)))
+
+(define (average x y)
+(/ (+ x y) 2))
+#+END_SRC
+- We also need to formalize ~good-enough?~: The idea is to improve the answer until it is close enough so that its square differs from the radicand by less than a predetermined tolerance (here 0.001).
+#+BEGIN_SRC
+(define (good-enough? guess x)
+(< (abs (- (square guess) x)) 0.001))
+#+END_SRC
+- To get things going, we start by guessing the square root of any number as $1$.
+#+BEGIN_SRC
+(define (sqrt x)
+(sqrt-iter 1.0 x))
+#+END_SRC
+- Note that we have not used any looping constructs. ~sqrt-iter~ shows how we can achieve iteration by simply calling a procedure - without the use of any special construct.
+- Notice that the definition of ~sqrt-iter~ is /recursive/; that is, the procedure is defined in terms of itself.
+*** Procedures as Black-Box Abstractions
+- The entire ~sqrt~ program can be viewed as a cluster of procedures that mirrors the decomposition of the problem into subproblems.[see Figure 1.2]
+- "The importance of this decomposition strategy is not simply that one is dividing the program into parts - the first ten lines, the next ten lines, the next ten lines, and so on. Rather, it is crucial that each procedure accomplishes an identifiable task that can be used as a module in defining other procedures."
+- When we were writing ~sqrt-iter~, we regarded the ~good-enough?~ and ~improve~ procedure as "black-boxes." We were not at that moment concerned with /how/ the procedure tests if the guess is good enough or how it improves the guess when it isn't good enough. The details of how these things are done can be suppressed, to be considered at a later time.
+- As far as ~sqrt-iter~ is concerned, ~good-enough?~ is not a procedure but rather an abstraction of a procedure, a so-called /procedural abstraction./ Similarly, as far as ~good-enough?~ is concerned, ~square~ is not a procedure but rather an abstraction of a procedure, a /procedural abstraction/ as well. At the level of ~sqrt-iter~, a procedure that checks whether the guess is ~good-enough?~ works equally well. Likewise, at the level of ~good-enough?~, any procedure that computes the ~square~ is equally good.
+#+BEGIN_SRC lisp
+(define (square x) (* x x))
+#+END_SRC
+
+#+BEGIN_SRC lisp
+(define (square x)
+(exp (double (log x))))
+
+(define (double x) (+ x x))
+#+END_SRC
+- A procedure definition should be able to supress details - a user should not need to know how the procedure is implemented in order to use it.
+**** Local names
+- The names of a procedure's formal parameters should be inconsequential to its user - the meaning of a procedure should be independent of the parameter names used by its authors.
+- The simplest consequences of this requirement is that the parameter names of a procedure must be local to the body of the procedure. If they weren't, we will have to look into the procedure's implementation and avoid using the same names in our program that uses this procedure - the procedure would no longer be a black box.
+- The formal parameter of a procedure is called a /bound variable/ - the procedure definition /binds/ its formal parameters. The meaning of a procedure definition is unchanged if a bound variable is consistently renamed throughout the definition.
+- If a variable is not bound, we say it is /free/.
+- The set of expressions for which a binding defines a name is called the /scope/ of that name.
+- *In a procedure definition, the bound variables declared as the formal parameters of the procedure have the body of the procedure as their scope.*
+- In the definition of ~good-enough?~ above, ~guess~ and ~x~ are the bound variables but ~<~, ~-~, ~abs~, and ~square~ are free.
+- *The meaning of a procedure is independent of the names of its bound variable (so long as we don't rename a formal parameter of the procedure as one of the free variables); they are not independent of the names of its free variables.* Changing the name of a free variable (say from ~abs~ to ~cos~) will change the meaning of the procedure.
+**** Internal definitions and block structure
+- Local names gives us one mechanism of name isolation: they apply to the formal parameters of procedures.
+- We can isolate names of procedures themselves by nesting of definitions. This is called /block structure/. It is illustrated for the ~sqrt~ program below:
+#+BEGIN_SRC lisp
+(define (sqrt x)
+((define (good-enough? guess x)
+   (< (abs (- (square guess) x)) 0.001))
+ (define (improve guess x)
+   (average guess (/ x guess)))
+ (define (sqrt-iter guess x)
+   (if (good-enough? guess x) 
+       guess 
+       (sqrt-iter (improve guess x) x)))
+ (sqrt-iter 1.0 x))
+#+END_SRC
+- /block structure/ is useful when the user is likely to use the names of the auxiliary procedures as part of another program that implements the procedure in a different way. "For example, in the construction of a large library of numerical procedures, many numerical functions are computed as successive approximations and thus might have procedures named ~good-enough?~ and improve as auxiliary procedures. We would like to localize the subprocedures, hiding them inside ~sqrt~ so that ~sqrt~ could coexist with other successive approximations, each having its own private ~good-enough?~ procedure. To make this possible, we allow a procedure to have internal definitions that are local to that procedure."
+- Internalizing the definitions of the auxiliary procedures inside the main program provides a scope to simplify them.
+- The formal parameters of the main program may bind several variables such that the internal definitions are now in its scope. It then becomes unnecessary to explicitly pass them to each of the auxiliary procedures. Instead, we allow the variable that are bound by the main program to exist as free variables inside the internal auxiliary procedures.
+- In this case, the free variables inside the auxiliary procedures gets its value from the argument with which the enclosing main program is called. This discipline is called /lexical scoping/ - it dictates that free variables in a procedure are taken to refer to bindings made by enclosing procedure definitions; that is, they are looked up in the environment in which the procedure was defined.
+- The improved version of ~sqrt~ that uses the knowledge of /lexical scoping/ to declutter the program is given below:
+#+BEGIN_SRC lisp
+(define (sqrt x)
+((define (good-enough? guess)
+   (< (abs (- (square guess) x)) 0.001))
+ (define (improve guess)
+   (average guess (/ x guess)))
+ (define (sqrt-iter guess)
+   (if (good-enough? guess) 
+       guess 
+       (sqrt-iter (improve guess))))
+ (sqrt-iter 1.0 x))
+#+END_SRC
+- The idea of block structure originated with the programming language Algol 60. It appears in most advanced programming languages and is an important tool for helping to organize the construction of large programs.
+- Embedded definitions must come first in a procedure body. The management is not responsible for the consequences of running programs that intertwine definition and use.
+** Procedures and the Processes They Generate
+   :LOGBOOK:
+   CLOCK: [2021-11-09 Tue 18:25]--[2021-11-09 Tue 19:39] =>  1:14
+   CLOCK: [2021-11-09 Tue 16:42]--[2021-11-09 Tue 17:54] =>  1:12
+   CLOCK: [2021-11-07 Sun 16:16]--[2021-11-07 Sun 17:19] =>  1:03
+   CLOCK: [2021-11-07 Sun 14:28]--[2021-11-07 Sun 16:04] =>  1:36
+   :END:
+- A procedure is a pattern for the /local evolution/ of a computational process. It specifies how each stage of the process is built upon the previous stage.
+- We would like to be able to make statements about the /global/ behaviour of the process whose local evolution has been specified by a procedure.
+*** Linear Recursion and Iteration
+- Consider the factorial function:
+\begin{equation}
+n! = n.(n-1).(n-2)...3.2.1
+\end{equation}
+
+- One way to compute factorials is to make use of the observation that $n!$ is equal to $n$ times $(n-1)!$ for any positive integer $n$:
+\begin{equation}
+n! = n.(n-1)!
+\end{equation}
+#+BEGIN_SRC lisp
+(define (factorial n) 
+ (if (= n 1) 
+  1 
+  (* n factorial(- n 1)))))
+#+END_SRC
+- The above is a /linear recursive process/ to compute the factorial of positive integers[See Figure 1.3].
+  - The substitution model reveals a shape of expansion followed by contraction.
+  - The expansion occurs as the process builds up a chain of /deferred operations/ (in this case, a chain of multiplications).
+  - The contraction occurs as the operations are actually performed.
+  - Carrying out this process requires that the interpreter keep track of the operations to be performed later.
+  - In the computation of $n!$, the length of the chain of deferred multiplications, and hence the amount of information needed to keep track of it, grows linearly with $n$, just like the number of steps. This is why the process is called a /linear/ recursive process.
+
+- Another way to compute factorials is to specify that we multiply 1 with 2, then multiply the result with 3, then by 4, and so on until we reach $n$. More formally, we maintain a running product along with a counter that counts from 1 upto $n$. We describe the computation by saying that the counter and the product simultaneously change from one step to the next according to the rule
+product <- product*counter
+counter <- counter + 1
+and stipulating that $n!$ is the value of the product when the counter exceeds $n$.
+#+BEGIN_SRC lisp
+(define (factorial n) 
+ (define (fact-iter counter product) 
+ (if (> counter n)
+     product 
+     (fact-iter (+ counter 1)
+                (* counter product))))
+(fact-iter 1 n))
+#+END_SRC
+- The above is a /linear iterative process/ to compute the factorial of positive integers.[See Figure 1.4]
+  - At each step, all we need to keep track of, for any $n$, are the current values of the variables ~product~ and ~counter~.
+  - In general, an iterative process is one whose state can be summarized by a fixed number of /state variables/, together with a fixed rule that describes how the state variables should be updated as the process moves from state to state and an (optional) end test that specifies conditions under which the process should terminate.
+  - In computing $n!$, the number of steps required grows linearly with $n$. This is why the process is called a /linear/ iterative process.
+
+- In the iterative case, the program variables provide a complete description of the state of the process at any point. In the recursive case, there is some additional "hidden" information maintained by the interpreter and not contained in the program variables, which indicates "where the process is" in negotiating the chain of deferred operations. The longer the chain, the more information must be maintained.
+- A /recursive process/ is not the same as a /recursive procedure/. The former is about the evolution of the computational process, the latter is about the syntax of how a procedure is written.
+  - One reason that the distinction between process and procedure may be confusing is that most implementations of common languages (including Ada, Pascal, and C) are designed in such a way that the interpretation of any recursive procedure consumes an amount of memory that grows with the number of procedure calls, even when the process described is, in principle, iterative. As a consequence, these languages can describe iterative processes only by resorting to special-purpose "looping constructs" such as ~do~, ~repeat~, ~until~, ~for~, and ~while~. This is a defect.
+  - Languages that don't share this defect will execute an iterative process in constant space, even if the iterative process is described by a recursive procedure. An implementation with this property is called /tail-recursive/.
+  - With a tail-recursive implementation, iteration can be expressed using the ordinary procedure call mechanism, so that special iteration constructs are useful only as syntactic sugar.
+*** Tree Recursion
+- Consider the definition of Fibonacci numbers:
+\begin{equation}
+Fib(n) = \begin{case}
+0 if n = 0 \\
+1 if n = 1 \\
+Fib(n-1) + Fib(n-2) otherwise
+\end{case}
+\end{equation}
+
+- A recursive procedure for find Fibonacci numbers is given below:
+#+BEGIN_SRC lisp
+(define (fib n) 
+ (cond ((= n 0) 0) 
+       ((= n 1) 1)
+       (else (+ (fib (- n 1)) 
+                (fib (- n 2))))))
+#+END_SRC
+- The above is a /tree recursive/ process to compute Fibonacci numbers[see Figure 1.5].
+- The above example is instructive in illustrating /tree recursion/ but it is a terrible way to compute Fibonacci numbers. The tree recursive process above will have $Fib(n+1)$ leaves in computing $Fib(n)$. This is pretty bad, because $Fib(n)$ grows exponentially with $n$. $Fib(n)$ is the closest integer to $\frac{\Phi^{n}}{sqrt{5}}$, where $\Phi = \frac{(1+\sqrt{5})}{2} \approx 1.6180$. $\Phi$ is called the /golden ratio/, which satisfies the equation
+\begin{equation}
+\Phi^{2} = \Phi + 1
+\end{equation}
+- This process uses a number of steps which grows exponentially with the input. The space required only grows linearly with the input $n$, because we need keep track only of which nodes are above us in the tree at any point in the computation.
+- *In general, the number of steps required by a tree-recursive process will be proportional to the number of nodes in the tree, while the space required will be proportional to the maximum depth of the tree.*
+- An iterative process to compute Fibonacci numbers can also be formulated. The idea is to use a pair of integers $a$ and $b$, initialized to $Fib(1) = 1$ and $Fib(0) = 0$, and to repeatedly apply the simultaneous transformations
+a <- a + b
+b <- a
+- After applying this transformation $n$ times, $a$ and $b$ will be equal, respectively, to $Fib(n+1)$ and $Fib(n)$.
+#+BEGIN_SRC lisp
+(define (fib n)
+ ((define (fib-iter a b count) 
+  (if (= count 0) 
+      b 
+      (fib-iter (+ a b) a (- count 1))))
+(fib-iter 1 0 n)))
+#+END_SRC
+- The above is a /linear iterative/ process to compute Fibonacci numbers.
+- The difference in the number of steps required by the two methods - one linear in $n$, one growing as fast as $Fib(n)$ itself - is enormous, even for small inputs.
+- /Tree-recursive/ processes do have their place however; they are a natural and powerful tool when we consider processes that operate on hierarchichally structured data rather than numbers.
+- The observation that a tree-recursive process may be highly inefficient but often easy to specify and understand has led people to propose that one could get the best of both worlds by designing a "smart compiler" that could transform tree-recursive procedures into more efficient procedures that compute the same result [see Footnote 34].
+*** Orders of Growth
+- Processes can differ considerably in the rates at which they consume computational resources.
+- The notion of /order of growth/ allows us to describe this difference.
+- It allows us to get a gross estimate of the resources required by a process as the input gets larger.
+- Let $n$ be a parameter that measures the size of the problem. Let $R(n)$ be the amount of resources the process requires for a problem of size $n$. We say that $R(n)$ has order of growth $\Theta(f(n)), written $R(n) = \Theta(f(n))$, if there are positive constants $k_{1}$ and $k_{2}$ independent of $n$ such that
+\begin{equation}
+k_{1}f(n) \leq R(n) \leq k_{2}f(n)
+\end{equation} 
+for any sufficiently large value of $n$.
+- In other words, for large $n$, the value $R(n)$ is sandwiched between $k_{1}f(n)$ and $k_{2}f(n)$.
+- Orders of growth only provides a crude description of the behaviour of a process. For a $\Theta (n)$ (linear) process, doubling the size of the problem will roughly double the amount of resources used.
+- For an exponential process, each increment in problem size will multiply the resource utilization by a constant factor. For a logarithmic process, doubling the problem size increases the resource requirement by a constant amount.
+- Linear recursive process for factorial - $\Theta(n)$ for space, $\Theta(n)$ for steps; Linear iterative process for factorial - $\Theta(1)$ for space, $\Theta(n)$ for steps; Tree-recursive process for Fibonacci numbers - $\Theta(n)$ for space, $\Theta(\Phi^{n})$ for steps, where $\Phi$ is the golden ratio.
+*** Exponentiation
+*** Greatest Common Divisors
+*** Example: Testing for Primality
+** Formulating Abstractions with Higher-Order Procedures
+   :LOGBOOK:
+   CLOCK: [2021-11-07 Sun 22:51]--[2021-11-08 Mon 00:26] =>  1:35
+   :END:
+*** Procedures as Arguments
+*** Constructing Procedures Using Lambda
+*** Procedures as General Methods
+*** Procedures as Returned Values
+* Building Abstractions with Data
+  :LOGBOOK:
+  CLOCK: [2021-11-08 Mon 00:45]--[2021-11-08 Mon 01:01] =>  0:16
+  :END:
+** Introduction to Data Abstraction
+   :LOGBOOK:
+   CLOCK: [2021-11-08 Mon 01:01]--[2021-11-08 Mon 01:26] =>  0:25
+   :END:
+*** Example: Arithmetic Operations for Rational Numbers
+*** Abstraction Barriers
+*** What Is Meant by Data?
+*** Extended Exercise: Interval Arithmetic
+** Hierarchical Data and the Closure Property
+   :LOGBOOK:
+   CLOCK: [2021-11-09 Tue 07:22]--[2021-11-09 Tue 08:23] =>  1:01
+   :END:
+*** Representing Sequences
+*** Hierarchical Structures
+*** Sequences as Conventional Interfaces
+*** Example: A Picture Language
+** Symbolic Data
+*** Quotation
+*** Example: Symbolic Differentiation
+*** Example: Representing Sets
+*** Example: Huffman Encoding Trees
+** Multiple Representations for Abstract Data
+*** Representations for Complex Numbers
+*** Tagged data
+*** Data-Directed Programming and Additivity
+** Systems with Generic Operations
+*** Generic Arithmetic Operations
+*** Combining Data of Different Types
+*** Example: Symbolic Algebra
+* Modularity, Objects, and State
+* Metalinguistic Abstraction
+* Computing with Register Machines
+
