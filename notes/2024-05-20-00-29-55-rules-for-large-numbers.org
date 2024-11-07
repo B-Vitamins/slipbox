@@ -1,0 +1,115 @@
+:PROPERTIES:
+:ID:       2baf3b2b-fd88-4b85-8485-8b944dcf2f4c
+:END:
+#+TITLE: Rules for large numbers
+#+FILETAGS: :literature:spop:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+To describe equilibrium properties of macroscopic bodies, statistical mechanics has to deal with the very large number \(N\) of microscopic degrees of freedom. Actually, taking the thermodynamic limit of \(N \rightarrow \infty\) leads to a number of simplifications, some of which are described in this section.
+
+There are typically three types of \(N\) dependence encountered in the thermodynamic limit:
+
+1) Intensive quantities, such as temperature \(T\), and generalized forces, for example, pressure \(P\), and magnetic field \(\vec{B}\), are independent of \(N\), that is, \(\mathcal{O}\left(N^{0}\right)\).
+
+2) Extensive quantities, such as energy \(E\), entropy \(S\), and generalized displacements, for example, volume \(V\), and magnetization \(\vec{M}\), are proportional to \(N\), that is, \(\mathcal{O}\left(N^{1}\right)\)
+
+3) Exponential dependence, that is, \(\mathcal{O}(\exp (N \phi))\), is encountered in enumerating discrete micro-states, or computing available volumes in phase space.
+
+Other asymptotic dependencies are certainly not ruled out a priori. For example, the Coulomb energy of \(N\) ions at fixed density scales as \(Q^{2} / R \sim N^{5 / 3}\). Such dependencies are rarely encountered in everyday physics. The Coulomb interaction of ions is quickly screened by counter-ions, resulting in an extensive overall energy. (This is not the case in astrophysical problems since the gravitational energy is not screened. For example, the entropy of a black hole is proportional to the square of its mass.) Fig. 2.7 A sum over \(\mathcal{N}\) exponentially large quantities is dominated by the largest term. In statistical mechanics we frequently encounter sums or integrals of exponential variables. Performing such sums in the thermodynamic limit is considerably simplified due to the following results.
+
+1) Summation of exponential quantities: consider the sum
+
+\[
+\mathcal{S}=\sum_{i=1}^{\mathcal{N}} \mathcal{E}_{i}
+\]
+
+where each term is positive, with an exponential dependence on \(N\), that is,
+
+\[
+0 \leq \mathcal{E}_{i} \sim \mathcal{O}\left(\exp \left(N \phi_{i}\right)\right)
+\]
+
+and the number of terms \(\mathcal{N}\) is proportional to some power of \(N\).
+
+[[https://cdn.mathpix.com/cropped/2023_04_12_f50e4de5413a5addf4cag-060.jpg?height=216&width=588&top_left_y=898&top_left_x=769]]
+
+Such a sum can be approximated by its largest term \(\mathcal{E}_{\max }\), in the following sense. Since for each term in the sum, \(0 \leq \mathcal{E}_{i} \leq \mathcal{E}_{\max }\)
+
+\[
+\mathcal{E}_{\max } \leq \mathcal{S} \leq \mathcal{N} \mathcal{E}_{\max }
+\]
+
+An intensive quantity can be constructed from \(\ln \mathcal{S} / N\), which is bounded by
+
+\[
+\frac{\ln \mathcal{E}_{\max }}{N} \leq \frac{\ln \mathcal{S}}{N} \leq \frac{\ln \mathcal{E}_{\max }}{N}+\frac{\ln \mathcal{N}}{N}
+\]
+
+For \(\mathcal{N} \propto N^{p}\), the ratio \(\ln \mathcal{N} / N\) vanishes in the large \(N\) limit, and
+
+\[
+\lim _{N \rightarrow \infty} \frac{\ln \mathcal{S}}{N}=\frac{\ln \mathcal{E}_{\max }}{N}=\phi_{\max }
+\]
+
+2) [@2] Saddle point integration: similarly, an integral of the form
+
+\[
+\mathcal{J}=\int \mathrm{d} x \exp (N \phi(x))
+\]
+
+can be approximated by the maximum value of the integrand, obtained at a point \(x_{\max }\) that maximizes the exponent \(\phi(x)\). Expanding the exponent around this point gives
+
+\[
+\mathcal{J}=\int \mathrm{d} x \exp \left\{N\left[\phi\left(x_{\max }\right)-\frac{1}{2}\left|\phi^{\prime \prime}\left(x_{\max }\right)\right|\left(x-x_{\max }\right)^{2}+\cdots\right]\right\}
+\]
+
+Note that at the maximum, the first derivative \(\phi^{\prime}\left(x_{\max }\right)\) is zero, while the second derivative \(\phi^{\prime \prime}\left(x_{\max }\right)\) is negative. Terminating the series at the quadratic order results in
+
+\[
+\mathcal{J} \approx \mathrm{e}^{N \phi\left(x_{\max }\right)} \int \mathrm{d} x \exp \left[-\frac{N}{2}\left|\phi^{\prime \prime}\left(x_{\max }\right)\right|\left(x-x_{\max }\right)^{2}\right] \approx \sqrt{\frac{2 \pi}{N\left|\phi^{\prime \prime}\left(x_{\max }\right)\right|}} \mathrm{e}^{N \phi\left(x_{\max }\right)},
+\]
+
+where the range of integration has been extended to \([-\infty, \infty]\). The latter is justified since the integrand is negligibly small outside the neighborhood of \(x_{\max }\)
+
+[[https://cdn.mathpix.com/cropped/2023_04_12_f50e4de5413a5addf4cag-061.jpg?height=380&width=723&top_left_y=719&top_left_x=325]]
+
+Fig. 2.8 Saddle point evaluation of an "exponential" integral.
+
+There are two types of correction to the above result. Firstly, there are higher-order terms in the expansion of \(\phi(x)\) around \(x_{\max }\). These corrections can be looked at perturbatively, and lead to a series in powers of \(1 / N\). Secondly, there may be additional local maxima for the function. A maximum at \(x_{\max }^{\prime}\) leads to a similar Gaussian integral that can be added to Eq. (2.60). Clearly such contributions are smaller by \(\mathcal{O}\left(\exp \left\{-N\left[\phi\left(x_{\max }\right)-\phi\left(x_{\max }^{\prime}\right)\right]\right\}\right)\). Since all these corrections vanish in the thermodynamic limit,
+
+\[
+\lim _{N \rightarrow \infty} \frac{\ln \mathcal{J}}{N}=\lim _{N \rightarrow \infty}\left[\phi\left(x_{\max }\right)-\frac{1}{2 N} \ln \left(\frac{N\left|\phi^{\prime \prime}\left(x_{\max }\right)\right|}{2 \pi}\right)+\mathcal{O}\left(\frac{1}{N^{2}}\right)\right]=\phi\left(x_{\max }\right) .
+\]
+
+The saddle point method for evaluating integrals is the extension of the above result to more general integrands, and integration paths in the complex plane. (The appropriate extremum in the complex plane is a saddle point.) The simplified version presented above is sufficient for our needs.
+
+Stirling's approximation for \(N\) ! at large \(N\) can be obtained by saddle point integration. In order to get an integral representation of \(N\) !, start with the result
+
+\[
+\int_{0}^{\infty} \mathrm{d} x \mathrm{e}^{-\alpha x}=\frac{1}{\alpha}
+\]
+
+Repeated differentiation of both sides of the above equation with respect to \(\alpha\) leads to
+
+\[
+\int_{0}^{\infty} \mathrm{d} x x^{N} \mathrm{e}^{-\alpha x}=\frac{N !}{\alpha^{N+1}} .
+\]
+
+Although the above derivation only applies to integer \(N\), it is possible to define by analytical continuation a function
+
+\[
+\Gamma(N+1) \equiv N !=\int_{0}^{\infty} \mathrm{d} x x^{N} \mathrm{e}^{-x}
+\]
+
+for all \(N\). While the integral in Eq. (2.64) is not exactly in the form of Eq. (2.58), it can still be evaluated by a similar method. The integrand can be written as \(\exp (N \phi(x))\), with \(\phi(x)=\ln x-x / N\). The exponent has a maximum at \(x_{\max }=N\), with \(\phi\left(x_{\max }\right)=\ln N-1\), and \(\phi^{\prime \prime}\left(x_{\max }\right)=-1 / N^{2}\). Expanding the integrand in Eq. (2.64) around this point yields
+
+\[
+N ! \approx \int \mathrm{d} x \exp \left[N \ln N-N-\frac{1}{2 N}(x-N)^{2}\right] \approx N^{N} \mathrm{e}^{-N} \sqrt{2 \pi N}
+\]
+
+where the integral is evaluated by extending its limits to \([-\infty, \infty]\). Stirling's formula is obtained by taking the logarithm of Eq. (2.65) as
+
+\[
+\ln N !=N \ln N-N+\frac{1}{2} \ln (2 \pi N)+\mathcal{O}\left(\frac{1}{N}\right)
+\]
+
+

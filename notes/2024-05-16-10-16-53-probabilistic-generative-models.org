@@ -1,0 +1,12 @@
+:PROPERTIES:
+:ID:       623b54a5-2318-4774-922b-b0e5e42959da
+:END:
+#+TITLE: Probabilistic generative models
+#+FILETAGS: :literature:prml:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+*Probabilistic generative models* model the class-[[id:391465bc-1399-40f0-b049-738c1a64d6fb][conditional densities]] \(p\left(\mathbf{x} \mid \mathcal{C}_{k}\right)\), as well as the class [[id:e166b400-40c8-410b-bb5b-0e0decca5f4c][priors]] \(p\left(\mathcal{C}_{k}\right)\), and then use these to compute [[id:e166b400-40c8-410b-bb5b-0e0decca5f4c][posterior probabilities]] \(p\left(\mathcal{C}_{k} \mid \mathbf{x}\right)\) using [[id:731eff69-04dd-45f2-b2a7-968e9c44dc3e][Bayes's theorem]].
+
+See [[id:e98cc41c-62c2-47da-859e-c4911657a621][probabilistic generative models for 2 classes]] and [[id:9732f44e-b8ff-4f20-8f6a-b19f94ae8253][probabilistic generative model for K classes]] for probabilistic generative models for [[id:28d575a5-08f9-4f78-bb0b-b7fedcbb24d3][classification]] problems involving 2 and \( K \) classes respectively.
+
+Also see [[id:2cc0a8c0-b7ce-4329-b79f-8342f3e62373][inference and decision]] and [[id:748061c5-f975-4773-90e4-3a5b35ceb8cd][linear models for classification]].

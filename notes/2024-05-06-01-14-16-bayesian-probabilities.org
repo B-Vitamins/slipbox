@@ -1,0 +1,52 @@
+:PROPERTIES:
+:ID:       399bcfbb-fda0-4a7d-98a4-acb3f02765cf
+:END:
+#+TITLE: Bayesian probabilities
+#+FILETAGS: :literature:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+This node gives an exposition of the [[id:29ccf6c7-4d4e-4c35-9bb8-9caf046ff573][Bayesian interpretation of probability]], which stands in contrast to the [[id:24494fdd-afe6-4d79-a86a-123202fad48a][Frequentist interpretation of probability]].
+
+Consider an uncertain event that cannot be repeated numerous times in order to define a notion of probability (examples abound). Nevertheless, we will generally have some idea of the /degree/ of uncertainty associated with the event. In such circumstances, we would like to be able to quantify our expression of uncertainty and make precise revisions of uncertainty in the light of new evidence, as well as subsequently to be able to take optimal actions or decisions as a consequence. This can all be achieved through the elegant, and very general, Bayesian interpretation of probability.
+
+The use of probability to represent uncertainty, however, is not an ad-hoc choice, but is inevitable if we are to respect common sense while making rational coherent inferences. For instance, Cox (1946) showed that if numerical values are used to represent degrees of belief, then a simple set of axioms encoding common sense properties of such beliefs leads uniquely to a set of rules for manipulating degrees of belief that are equivalent to the sum and product rules of probability. This provided the first rigorous proof that probability theory could be regarded as an extension of Boolean logic to situations involving uncertainty (Jaynes, 2003). Numerous other authors have proposed different sets of properties or axioms that such measures of uncertainty should satisfy (Ramsey, 1931; Good, 1950; Savage, 1961; deFinetti, 1970; Lindley, 1982). In each case, the resulting numerical quantities behave precisely according to the rules of probability. It is therefore natural to refer to these quantities as (Bayesian) probabilities.
+
+In the field of pattern recognition, too, it is helpful to have a more general notion of probability. Consider the example of [[id:be34bbdc-c85f-49cf-a457-48fe82abce89][Polynomial curve fitting]]. It seems reasonable to apply the frequentist notion of probability to the random values of the observed variables \(t_{n}\). However, we would like to address and quantify the uncertainty that surrounds the appropriate choice for the model parameters \(\mathbf{w}\). We shall see that, from a Bayesian perspective, we can use the machinery of probability theory to describe the uncertainty in model parameters such as \(\mathbf{w}\), or indeed in the choice of model itself.
+
+Bayes' theorem now acquires a new significance. Recall that in the boxes of fruit example, the observation of the identity of the fruit provided relevant information that altered the probability that the chosen box was the red one. In that example, Bayes' theorem was used to convert a prior probability into a posterior probability by incorporating the evidence provided by the observed data. As we shall see in detail later, we can adopt a similar approach when making inferences about quantities such as the parameters \(\mathbf{w}\) in the polynomial curve fitting example. We capture our assumptions about \(\mathbf{w}\), before observing the data, in the form of a prior probability distribution \(p(\mathbf{w})\). The effect of the observed data \(\mathcal{D}=\left\{t_{1}, \ldots, t_{N}\right\}\) is expressed through the conditional probability \(p(\mathcal{D} \mid \mathbf{w})\). Bayes' theorem, which takes the form
+
+\[
+p(\mathbf{w} \mid \mathcal{D})=\frac{p(\mathcal{D} \mid \mathbf{w}) p(\mathbf{w})}{p(\mathcal{D})} \tag{1.43}
+\]
+
+then allows us to evaluate the uncertainty in \(\mathrm{w}\) after we have observed \(\mathcal{D}\) in the form of the posterior probability \(p(\mathbf{w} \mid \mathcal{D})\).
+
+The quantity \(p(\mathcal{D} \mid \mathbf{w})\) on the right-hand side of Bayes' theorem is evaluated for the observed data set \(\mathcal{D}\) and can be viewed as a function of the parameter vector \(\mathbf{w}\), in which case it is called the likelihood function. It expresses how probable the observed data set is for different settings of the parameter vector \(w\). Note that the likelihood is not a probability distribution over \(\mathbf{w}\), and its integral with respect to \(\mathbf{w}\) does not (necessarily) equal one.
+
+Given this definition of likelihood, we can state Bayes' theorem in words
+
+\[
+\text { posterior } \propto \text { likelihood } \times \text { prior } \tag{1.44}
+\]
+
+where all of these quantities are viewed as functions of \(\mathbf{w}\). The denominator in (1.43) is the normalization constant, which ensures that the posterior distribution on the left-hand side is a valid probability density and integrates to one. Indeed, integrating both sides of (1.43) with respect to \(\mathbf{w}\), we can express the denominator in Bayes' theorem in terms of the prior distribution and the likelihood function
+
+\[
+p(\mathcal{D})=\int p(\mathcal{D} \mid \mathbf{w}) p(\mathbf{w}) \mathrm{d} \mathbf{w}. \tag{1.45}
+\]
+
+In both the Bayesian and frequentist paradigms, the likelihood function \(p(\mathcal{D} \mid \mathbf{w})\) plays a central role. However, the manner in which it is used is fundamentally different in the two approaches. In a frequentist setting, \(\mathbf{w}\) is considered to be a fixed parameter, whose value is determined by some form of 'estimator', and error bars on this estimate are obtained by considering the distribution of possible data sets \(\mathcal{D}\). By contrast, from the Bayesian viewpoint there is only a single data set \(\mathcal{D}\) (namely the one that is actually observed), and the uncertainty in the parameters is expressed through a probability distribution over \(\mathbf{w}\).
+
+A widely used frequentist estimator is maximum likelihood, in which \(\mathbf{w}\) is set to the value that maximizes the likelihood function \(p(\mathcal{D} \mid \mathbf{w})\). This corresponds to choosing the value of \(\mathbf{w}\) for which the probability of the observed data set is maximized. In the machine learning literature, the negative log of the likelihood function is called an error function. Because the negative logarithm is a monotonically decreasing function, maximizing the likelihood is equivalent to minimizing the error.
+
+One approach to determining frequentist error bars is the bootstrap (Efron, 1979; Hastie et al., 2001), in which multiple data sets are created as follows. Suppose our original data set consists of \(N\) data points \(\mathbf{X}=\left\{\mathbf{x}_{1}, \ldots, \mathbf{x}_{N}\right\}\). We can create a new data set \(\mathbf{X}_{\mathrm{B}}\) by drawing \(N\) points at random from \(\mathbf{X}\), with replacement, so that some points in \(\mathbf{X}\) may be replicated in \(\mathbf{X}_{\mathrm{B}}\), whereas other points in \(\mathbf{X}\) may be absent from \(\mathbf{X}_{\mathrm{B}}\). This process can be repeated \(L\) times to generate \(L\) data sets each of size \(N\) and each obtained by sampling from the original data set \(\mathbf{X}\). The statistical accuracy of parameter estimates can then be evaluated by looking at the variability of predictions between the different bootstrap data sets.
+
+One advantage of the Bayesian viewpoint is that the inclusion of prior knowledge arises naturally. Suppose, for instance, that a fair-looking coin is tossed three times and lands heads each time. A classical maximum likelihood estimate of the probability of landing heads would give 1, implying that all future tosses will land heads! By contrast, a Bayesian approach with any reasonable prior will lead to a much less extreme conclusion.
+
+There has been much controversy and debate associated with the relative merits of the frequentist and Bayesian paradigms, which have not been helped by the fact that there is no unique frequentist, or even Bayesian, viewpoint. For instance, one common criticism of the Bayesian approach is that the prior distribution is often selected on the basis of mathematical convenience rather than as a reflection of any prior beliefs. Even the subjective nature of the conclusions through their dependence on the choice of prior is seen by some as a source of difficulty. Reducing the dependence on the prior is one motivation for so-called non-informative priors. However, these lead to difficulties when comparing different models, and indeed Bayesian methods based on poor choices of prior can give poor results with high confidence. Frequentist evaluation methods offer some protection from such problems, and techniques such as cross-validation remain useful in areas such as model comparison.
+
+This book places a strong emphasis on the Bayesian viewpoint, reflecting the huge growth in the practical importance of Bayesian methods in the past few years, while also discussing useful frequentist concepts as required.
+
+Although the Bayesian framework has its origins in the \(18^{\text {th }}\) century, the practical application of Bayesian methods was for a long time severely limited by the difficulties in carrying through the full Bayesian procedure, particularly the need to marginalize (sum or integrate) over the whole of parameter space, which, as we shall see, is required in order to make predictions or to compare different models. The development of sampling methods, such as [[id:045e74eb-0528-4ea6-94d9-41c3aa7d8440][Markov chain Monte Carlo]] along with dramatic improvements in the speed and memory capacity of computers, opened the door to the practical use of Bayesian techniques in an impressive range of problem domains. Monte Carlo methods are very flexible and can be applied to a wide range of models. However, they are computationally intensive and have mainly been used for small-scale problems.
+
+More recently, highly efficient deterministic approximation schemes such as [[id:6560e4df-b6a3-45c5-9c7b-fb26a4ab6b75][Variational Bayes]] and [[id:f9d1cc72-c5f6-4634-bf7a-eab7287bbc5c][Expectation propagation]] have been developed. These offer a complementary alternative to sampling methods and have allowed Bayesian techniques to be used in large-scale applications (Blei et al., 2003).

@@ -1,0 +1,133 @@
+:PROPERTIES:
+:ID:       dc002bca-7a64-4714-bfae-d587793afde2
+:END:
+#+TITLE: Some important probability distributions
+#+FILETAGS: :literature:spop:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+The properties of three commonly encountered probability distributions are examined in this section.
+
+1) The normal (Gaussian) distribution describes a continuous real random variable \(x\), with
+
+\[
+p(x)=\frac{1}{\sqrt{2 \pi \sigma^{2}}} \exp \left[-\frac{(x-\lambda)^{2}}{2 \sigma^{2}}\right] \text {. }
+\]
+
+The corresponding characteristic function also has a Gaussian form,
+
+\[
+\tilde{p}(k)=\int_{-\infty}^{\infty} \mathrm{d} x \frac{1}{\sqrt{2 \pi \sigma^{2}}} \exp \left[-\frac{(x-\lambda)^{2}}{2 \sigma^{2}}-\mathrm{i} k x\right]=\exp \left[-\mathrm{i} k \lambda-\frac{k^{2} \sigma^{2}}{2}\right] .
+\]
+
+Cumulants of the distribution can be identified from \(\ln \tilde{p}(k)=-\mathrm{i} k \lambda-k^{2} \sigma^{2} / 2\), using Eq. (2.9), as
+
+\[
+\langle x\rangle_{c}=\lambda, \quad\left\langle x^{2}\right\rangle_{c}=\sigma^{2}, \quad\left\langle x^{3}\right\rangle_{c}=\left\langle x^{4}\right\rangle_{c}=\cdots=0
+\]
+
+The normal distribution is thus completely specified by its two first cumulants. This makes the computation of moments using the cluster expansion (Eqs. (2.12)) particularly simple, and
+
+\begin{align*}
+& \langle x\rangle=\lambda, \\
+& \left\langle x^{2}\right\rangle=\sigma^{2}+\lambda^{2}, \\
+& \left\langle x^{3}\right\rangle=3 \sigma^{2} \lambda+\lambda^{3}, \\
+& \left\langle x^{4}\right\rangle=3 \sigma^{4}+6 \sigma^{2} \lambda^{2}+\lambda^{4},
+\end{align*}
+
+The normal distribution serves as the starting point for most perturbative computations in field theory. The vanishing of higher cumulants implies that all graphical computations involve only products of one-point, and two-point (known as propagators), clusters.
+
+2) [@2] The binomial distribution: consider a random variable with two outcomes \(A\) and \(B\) (e.g., a coin toss) of relative probabilities \(p_{A}\) and \(p_{B}=1-p_{A}\). The probability that in \(N\) trials the event \(A\) occurs exactly \(N_{A}\) times (e.g., 5 heads in 12 coin tosses) is given by the binomial distribution
+
+\[
+p_{N}\left(N_{A}\right)=\left(\begin{array}{c}
+N \\
+N_{A}
+\end{array}\right) p_{A}^{N_{A}} p_{B}^{N-N_{A}}
+\]
+
+The prefactor,
+
+\[
+\left(\begin{array}{c}
+N \\
+N_{A}
+\end{array}\right)=\frac{N !}{N_{A} !\left(N-N_{A}\right) !}
+\]
+
+is just the coefficient obtained in the binomial expansion of \(\left(p_{A}+p_{B}\right)^{N}\), and gives the number of possible orderings of \(N_{A}\) events \(A\) and \(N_{B}=N-N_{A}\) events \(B\). The characteristic function for this discrete distribution is given by
+
+\[
+\tilde{p}_{N}(k)=\left\langle\mathrm{e}^{-\mathrm{i} k N_{A}}\right\rangle=\sum_{N_{A}=0}^{N} \frac{N !}{N_{A} !\left(N-N_{A}\right) !} p_{A}^{N_{A}} p_{B}^{N-N_{A}} \mathrm{e}^{-\mathrm{i} k N_{A}}=\left(p_{A} \mathrm{e}^{-\mathrm{i} k}+p_{B}\right)^{N} .
+\]
+
+The resulting cumulant generating function is
+
+\[
+\ln \tilde{p}_{N}(k)=N \ln \left(p_{A} \mathrm{e}^{-\mathrm{i} k}+p_{B}\right)=N \ln \tilde{p}_{1}(k)
+\]
+
+where \(\ln \tilde{p}_{1}(k)\) is the cumulant generating function for a single trial. Hence, the cumulants after \(N\) trials are simply \(N\) times the cumulants in a single trial. In each trial, the allowed values of \(N_{A}\) are 0 and 1 with respective probabilities \(p_{B}\) and \(p_{A}\), leading to \(\left\langle N_{A}^{\ell}\right\rangle=p_{A}\), for all \(\ell\). After \(N\) trials the first two cumulants are
+
+\[
+\left\langle N_{A}\right\rangle_{c}=N p_{A}, \quad\left\langle N_{A}^{2}\right\rangle_{c}=N\left(p_{A}-p_{A}^{2}\right)=N p_{A} p_{B}
+\]
+
+A measure of fluctuations around the mean is provided by the standard deviation, which is the square root of the variance. While the mean of the binomial distribution scales as \(N\), its standard deviation only grows as \(\sqrt{N}\). Hence, the relative uncertainty becomes smaller for large \(N\).
+
+The binomial distribution is straightforwardly generalized to a multinomial distribution, when the several outcomes \(\{A, B, \cdots, M\}\) occur with probabilities \(\left\{p_{A}, p_{B}, \cdots, p_{M}\right\}\). The probability of finding outcomes \(\left\{N_{A}, N_{B}, \cdots, N_{M}\right\}\) in a total of \(N=N_{A}+N_{B}+\cdots+N_{M}\) trials is
+
+\[
+p_{N}\left(\left\{N_{A}, N_{B}, \cdots, N_{M}\right\}\right)=\frac{N !}{N_{A} ! N_{B} ! \cdots N_{M} !} p_{A}^{N_{A}} p_{B}^{N_{B}} \cdots p_{M}^{N_{M}}
+\]
+
+Fig. 2.6 Subdividing the time interval into small segments of size \(\mathrm{d} t\). (3) The Poisson distribution: the classical example of a Poisson process is radioactive decay. Observing a piece of radioactive material over a time interval \(T\) shows that:
+
+1) The probability of one and only one event (decay) in the interval \([t, t+\mathrm{d} t]\) is proportional to \(\mathrm{d} t\) as \(\mathrm{d} t \rightarrow 0\).
+
+2) The probabilities of events at different intervals are independent of each other.
+
+[[https://cdn.mathpix.com/cropped/2023_04_12_f50e4de5413a5addf4cag-054.jpg?height=142&width=630&top_left_y=650&top_left_x=748]]
+
+The probability of observing exactly \(M\) decays in the interval \(T\) is given by the Poisson distribution. It is obtained as a limit of the binomial distribution by subdividing the interval into \(N=T / \mathrm{d} t \gg 1\) segments of size \(\mathrm{d} t\). In each segment, an event occurs with probability \(p=\alpha \mathrm{d} t\), and there is no event with probability \(q=1-\alpha \mathrm{d} t\). As the probability of more than one event in \(\mathrm{d} t\) is too small to consider, the process is equivalent to a binomial one. Using Eq. (2.21), the characteristic function is given by
+
+\[
+\tilde{p}(k)=\left(p \mathrm{e}^{-\mathrm{i} k}+q\right)^{n}=\lim _{\mathrm{d} t \rightarrow 0}\left[1+\alpha \mathrm{d} t\left(\mathrm{e}^{-\mathrm{i} k}-1\right)\right]^{T / \mathrm{d} t}=\exp \left[\alpha\left(\mathrm{e}^{-\mathrm{i} k}-1\right) T\right]
+\]
+
+The Poisson PDF is obtained from the inverse Fourier transform in Eq. (2.6) as
+
+\[
+p(x)=\int_{-\infty}^{\infty} \frac{\mathrm{d} k}{2 \pi} \exp \left[\alpha\left(\mathrm{e}^{-\mathrm{i} k}-1\right) T+\mathrm{i} k x\right]=\mathrm{e}^{-\alpha T} \int_{-\infty}^{\infty} \frac{\mathrm{d} k}{2 \pi} \mathrm{e}^{\mathrm{i} k x} \sum_{M=0}^{\infty} \frac{(\alpha T)^{M}}{M !} \mathrm{e}^{-\mathrm{i} k M},
+\]
+
+using the power series for the exponential. The integral over \(k\) is
+
+\[
+\int_{-\infty}^{\infty} \frac{\mathrm{d} k}{2 \pi} \mathrm{e}^{\mathrm{i} k(x-M)}=\delta(x-M)
+\]
+
+leading to
+
+\[
+p_{\alpha T}(x)=\sum_{M=0}^{\infty} \mathrm{e}^{-\alpha T} \frac{(\alpha T)^{M}}{M !} \delta(x-M)
+\]
+
+This answer clearly realizes that the only possible values of \(x\) are integers \(M\). The probability of \(M\) events is thus \(p_{\alpha T}(M)=\mathrm{e}^{-\alpha T}(\alpha T)^{M} / M\) !. The cumulants of the distribution are obtained from the expansion
+
+\[
+\ln \tilde{p}_{\alpha T}(k)=\alpha T\left(\mathrm{e}^{-\mathrm{i} k}-1\right)=\alpha T \sum_{n=1}^{\infty} \frac{(-\mathrm{i} k)^{n}}{n !}, \quad \Longrightarrow \quad\left\langle M^{n}\right\rangle_{c}=\alpha T
+\]
+
+All cumulants have the same value, and the moments are obtained from Eqs. (2.12) as
+
+\[
+\langle M\rangle=(\alpha T), \quad\left\langle M^{2}\right\rangle=(\alpha T)^{2}+(\alpha T), \quad\left\langle M^{3}\right\rangle=(\alpha T)^{3}+3(\alpha T)^{2}+(\alpha T)
+\]
+
+Example. Assuming that stars are randomly distributed in the Galaxy (clearly unjustified) with a density \(n\), what is the probability that the nearest star is at a distance \(R\) ? Since the probability of finding a star in a small volume \(\mathrm{d} V\) is \(n \mathrm{~d} V\), and they are assumed to be independent, the number of stars in a volume \(V\) is described by a Poisson process as in Eq. (2.28), with \(\alpha=n\). The probability \(p(R)\) of encountering the first star at a distance \(R\) is the product of the probabilities \(p_{n V}(0)\) of finding zero stars in the volume \(V=4 \pi R^{3} / 3\) around the origin, and \(p_{n \mathrm{~d} V}(1)\) of finding one star in the shell of volume \(\mathrm{d} V=4 \pi R^{2} \mathrm{~d} R\) at a distance \(R\). Both \(p_{n V}(0)\) and \(p_{n \mathrm{~d} V}(1)\) can be calculated from Eq. (2.28), and
+
+\begin{align*}
+& p(R) \mathrm{d} R= p_{n V}(0) p_{n \mathrm{~d} V}(1)=\mathrm{e}^{-4 \pi R^{3} n / 3} \mathrm{e}^{-4 \pi R^{2} n \mathrm{~d} R} 4 \pi R^{2} n \mathrm{~d} R, \\
+& \Longrightarrow \quad p(R)=4 \pi R^{2} n \exp \left(-\frac{4 \pi}{3} R^{3} n\right) .
+\end{align*}
+
+

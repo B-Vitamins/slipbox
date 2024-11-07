@@ -1,0 +1,39 @@
+:PROPERTIES:
+:ID:       f39a8683-abf8-4620-957d-b20795422d2d
+:END:
+#+TITLE: Probability distributions
+#+FILETAGS: :literature:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+* Continuous uniform distribution
+* Bernoulli distribution
+* Bernoulli sampling
+* Binomial distribution
+* Hypergeometric distribution
+* Poisson distribution
+* Geometric distribution
+* Logarithmic distribution
+* Negative binomial distribution
+* Beta distribution
+* Triangular distribution
+* Exponential distribution
+* Folded normal distribution
+* Half-normal distribution
+* Lévy distribution
+* Maxwell–Boltzmann distribution
+* Rayleigh distribution
+* Mittag-Leffler distribution
+* Weibull distribution
+* Cauchy distribution
+* Generalized normal distribution
+* Generalised hyperbolic distribution
+* Gumbel distribution
+* Landau distribution
+* Laplace distribution
+* Logistic distribution
+* Normal distribution
+* Multinomial distribution
+* Normal-inverse Gaussian distribution
+* Skew normal distribution
+* Student's t-distribution
+* Tracy-Widom distribution
+* Marchenko–Pastur distribution
