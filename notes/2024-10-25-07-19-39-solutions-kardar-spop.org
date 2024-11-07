@@ -39,6 +39,221 @@
 | \_  3.16 Electron emission               |         | 0:43 |
 #+END
 * 1 Thermodynamics
+** 1.2 Surfactants
+*Surfactant molecules such as those in soap or shampoo prefer to spread on the air-water surface rather than dissolve in water. To see this, float a hair on the surface of water and gently touch the water in its vicinity with a piece of soap. (This is also why a piece of soap can power a toy paper boat.)*
+
+\begin{align*}
+& \delta F=\left.\frac{\partial F_{\omega}}{\partial A_{\omega}}\right|_{T, N} A_{\omega}+\left.\frac{\partial F_{S}}{\partial A_{S}}\right|_{T, N} \delta A_{S} \Rightarrow S \Delta A=\left(S_{0} \frac{N K_{B} T}{A}\right) \Delta A \\
+& \Rightarrow \quad\left(S-S_{0}\right) \Delta A=-\frac{N K_{B} T}{A} \cdot \Delta A \\
+& \Rightarrow \quad S=S_{0}-\frac{N K_{B} T}{A}
+\end{align*}
+*** 1.2.1
+*** 1.2.2
+*Place a drop of water on a clean surface. Observe what happens to the air-water surface contact angle as you gently touch the droplet surface with a small piece of soap, and explain the observation.*
+
+#+begin_answer
+Addition of soap reduces \(S_{a w}\). The tug of \(S_{a s}\) grows relatively stronger. \(\theta\) decreases and the system is closer to getting wet.
+#+end_answer
+
+\begin{align*}
+& \left.\frac{\partial S}{\partial A}\right|_{T}=\frac{N K_{B} T}{(A-N b)^{2}}-\frac{2 a}{A}\left(\frac{N}{A}\right)^{2} \\
+\Rightarrow & \int_{S_{0}}^{S} d S=f(T)+\left[\left[\frac{N K_{B} T}{(A-N b)^{2}}-\frac{2 a}{A}\left(\frac{N}{A}\right)^{2}\right] d A\right. \\
+\Rightarrow & S(A, T)=f(T)-\frac{N K_{B} T}{A-N b}+a\left(\frac{N}{A}\right)^{2} \\
+& \left.\frac{\partial T}{\partial S}\right|_{A}=-\left.\frac{A-N b}{N K_{B}} \Rightarrow \frac{\partial S}{\partial T}\right|_{A}=\frac{-N K_{B}}{A-N b}
+\end{align*}
+\[
+\Rightarrow \int_{S_{0}}^{S} d S=f^{\prime}(A)-\int_{0}^{T} \frac{N K_{B}}{A-N b} d T \rightarrow S(A, T)=S_{0}+f^{\prime}(A)-\frac{N K_{B} T}{A-N b}
+\]
+
+comparing (1) and (2)
+
+\[
+S(A, T)=S_{0}-\frac{N K_{B} T}{A-N b}+a\left(\frac{N}{A}\right)^{2}
+\]
+
+Here \(S_{0}\) is the surface tension of water (absence of surfactants).
+
+Rearranging (3)
+
+\[
+\left[S_{0}-S(A, T)+a\left(\frac{N}{A}\right)^{2}\right](A-N b)=N K_{B} T
+\]
+
+- a is a correction for interaction between two surfactant molecules ( \(a>0\) if surfactants attract exch other, else \(a<0\) ).
+- b is a correction for non-zero spre-filling of a single surfactant molecule, which becomes important once the concentration escapes the dilute regime.
+
+\begin{align*}
+& \quad \Phi Q=\left.\frac{\partial E}{\partial A}\right|_{T} d A+\left.\frac{\partial E}{\partial T}\right|_{A} d T-S \cdot d A \\
+& \cdot 
+\end{align*}
+\begin{align*}
+\cdot C_{A}=\left.\frac{\delta Q}{\delta T}\right|_{A} & =\left.\frac{\partial E}{\partial T}\right|_{A},\left.\cdot C_{S} \equiv \frac{\delta Q}{\delta T}\right|_{S}=\left.\left.\frac{\partial E}{\partial A}\right|_{T} \frac{\partial A}{\partial T}\right|_{S}+\left.\frac{\partial E}{\partial T}\right|_{S} \\
+\cdot C_{S}-C_{A} & =\left.\left.\frac{\partial E}{\partial A}\right|_{T} \frac{\partial A}{\partial T}\right|_{S}-\left.S \frac{\partial A}{\partial T}\right|_{S}+\left.\frac{\partial E}{\partial T}\right|_{S}-\left.\frac{\partial E}{\partial T}\right|_{A}-\left.S \frac{\partial A}{\partial T}\right|_{S}\left(\left.\because \frac{\partial E}{\partial T}\right|_{A}\right. \\
+& =\left.\left.\frac{\partial E}{\partial A}\right|_{T} \frac{\partial A}{\partial T}\right|_{S}-\left.S \frac{\partial A}{\partial T}\right|_{S}
+\end{align*}
+\begin{align*}
+& \left.\left.\left.\quad \frac{\partial A}{\partial T}\right|_{S} \frac{\partial S}{\partial A}\right|_{T} \frac{\partial T}{\partial S}\right|_{A}=-\left.1 \Rightarrow \frac{\partial A}{\partial T}\right|_{S}=-1 /\left(\left.\left.\frac{\partial S}{\partial A}\right|_{T} \frac{\partial T}{\partial S}\right|_{A}\right) \\
+& \cdot C_{S}-C_{A}=\left(\left.\frac{\partial E}{\partial A}\right|_{T}-S\right) \cdot\left(\frac{-1}{\partial T /\left.\partial S\right|_{A} \cdot \partial S /\left.\partial A\right|_{T}}\right)
+\end{align*}
+
+** 1.6 Glass
+*Liquid quartz, if cooled slowly, crystallizes at a temperature* \(T_{m}\), *and releases latent heat* \(L\). *Under more rapid cooling conditions, the liquid is supercooled and becomes glassy.*
+*** 1.6.1
+*As both phases of quartz are almost incompressible, there is no work input, and changes in internal energy satisfy* \(\mathrm{d}E = T\mathrm{d}S + \mu\mathrm{d}N\). *Use the extensivity condition to obtain the expression for* \(\mu\) *in terms of* \(E, T, S\), *and* \(N\).
+
+\[
+\mu = \frac{E - TS}{N}
+\]
+This formula provides a direct link between the chemical potential \(\mu\) and the thermodynamic state variables, highlighting how \(\mu\) balances the internal energy with the entropic temperature contribution per particle.
+
+*** 1.6.2
+*The heat capacity of crystalline quartz is approximately* \(C_{X} = \alpha T^{3}\), *while that of glassy quartz is roughly* \(C_{G} = \beta T\), *where* \(\alpha\) *and* \(\beta\) *are constants.* *Assuming that the third law of thermodynamics applies to both crystalline and glass phases, calculate the entropies of the two phases at temperatures* \(T \leq T_{m}\).
+
+- For glassy quartz:
+
+\[
+S_{G}(T \leq T_{m}) = \int_{0}^{T} \frac{C_{G}(T')}{T'} \mathrm{d}T' = \beta T
+\]
+This linear relationship between entropy and temperature for glassy quartz reflects the constant heat capacity over temperature, indicating a simpler, less interactive system compared to crystalline forms.
+
+- For crystalline quartz:
+
+\[
+S_{X}(T \leq T_{m}) = \int_{0}^{T} \frac{C_{X}(T')}{T'} \mathrm{d}T' = \frac{\alpha T^4}{4}
+\]
+The \(T^4\) dependency in crystalline quartz entropy underscores the complex lattice interactions and the significant role of phonons at low temperatures.
+
+*** 1.6.3
+*At zero temperature the local bonding structure is similar in glass and crystalline quartz, so that they have approximately the same internal energy* \(E_{0}\). *Calculate the internal energies of both phases at temperatures* \(T \leq T_{m}\).
+
+- For glassy quartz:
+\[
+E_{G} = E_{0} + \int_{0}^{T} C_{G}(T') \mathrm{d}T' = E_{0} + \frac{\beta T^2}{2}
+\]
+This equation for glassy quartz highlights the direct impact of temperature on internal energy, reflecting a straightforward thermal behavior.
+
+- For crystalline quartz:
+\[
+E_{X} = E_{0} + \int_{0}^{T} C_{X}(T') \mathrm{d}T' = E_{0} + \frac{\alpha T^4}{4}
+\]
+The \(T^4\) term in the internal energy of crystalline quartz points to more complex temperature-dependent interactions within the crystalline structure, indicating a higher capacity for energy storage through phononic modes.
+
+*** 1.6.4
+*Use the condition of thermal equilibrium between two phases to compute the equilibrium melting temperature* \(T_{m}\) *in terms of* \(\alpha\) *and* \(\beta\).
+
+The correct approach to determine* \(T_{m}\) *involves the comparison of the free energies of the two phases, which is not directly solvable with the given information. Understanding thermal equilibrium requires accounting for both entropy and enthalpy contributions to the free energy, which are critical in determining the melting temperature through the minimization of the system's free energy.
+
+*** 1.6.5
+*Compute the latent heat* \(L\) *in terms of* \(\alpha\) *and* \(\beta\).
+
+The latent heat \(L\) should be calculated based on the enthalpy change during the phase transition, involving both \(\alpha\) and \(\beta\). This requires a deep understanding of the thermodynamic transitions between states, where \(L\) is fundamentally connected to the entropy and temperature changes at the phase transition, reflecting the energy required to overcome the structural differences between the glassy and crystalline phases.
+
+*** 1.6.6
+*Is the result in the previous part correct? If not, which of the steps leading to it is most likely to be incorrect?*
+
+The calculation of latent heat \(L\) and equilibrium temperature \(T_{m}\) requires careful thermodynamic analysis, particularly considering the enthalpy and entropy changes during the phase transition. The approach must correctly apply thermodynamic principles relevant to phase transitions, ensuring that the energy aspects of both enthalpy and entropy are properly considered to avoid unphysical results.
+** 1.8 Hard core gas
+*A gas obeys the equation of state* \(P(V-N b)=N k_{B} T\), *and has a heat capacity* \(C_{V}\) *independent of temperature. ( \(N\) is kept fixed in the following.)*
+
+*** 1.8.1
+*Find the Maxwell relation involving* \(\partial S /\left.\partial V\right|_{T, N}\).
+
+#+begin_answer
+\[
+\partial S /\left.\partial V\right|_{T, N}=+\partial P /\left.\partial T\right|_{V, N}
+\]
+This Maxwell relation reveals the direct relationship between the volume expansion of the gas and its temperature increase, reflecting the gas's response to thermal expansion under constant number of particles.
+#+end_answer
+
+*** 1.8.2
+*By calculating* \(\mathrm{d} E(T, V)\), *show that* \(E\) *is a function of* \(T\) *(and* \(N\)) *only.*
+
+\begin{align*}
+d E & =C_{V} d T
+\end{align*}
+
+This derivation shows that the change in internal energy \(dE\) depends only on changes in temperature \(dT\), with \(C_V\) being the heat capacity at constant volume. It implies that the internal energy \(E\) is a function of temperature \(T\) and number of particles \(N\), but not volume \(V\), since \(C_V\) is independent of \(T\).
+#+end_answer
+
+*** 1.8.3
+*Show that* \(\gamma \equiv C_{P} / C_{V}=1+N k_{B} / C_{V}\) *(independent of* \(T\) *and* \(V\)).
+
+\[
+\gamma = 1 + \frac{N k_{B}}{C_{V}}
+\]
+This formula for \(\gamma\), the heat capacity ratio, demonstrates that \(\gamma\) is independent of both temperature and volume. It directly relates the gas's molecular characteristics and its intrinsic heat capacity at constant volume, emphasizing that the adiabatic process's efficiency is determined by these fundamental properties.
+
+*** 1.8.4
+*By writing an expression for* \(E(P, V)\), *or otherwise, show that an adiabatic change satisfies the equation* \(P(V-N b)^{\gamma}=\) *constant.*
+
+\[
+\ln \left[P(V-N b)^{\gamma}\right]=\text { constant }
+\]
+
+This result confirms that during an adiabatic process, where no heat is exchanged with the surroundings, the product of pressure and volume raised to the power of \(\gamma\) remains constant. It's a fundamental relationship in thermodynamics, illustrating how pressure, volume, and temperature changes are interrelated in an adiabatic process for a gas following the given equation of state.
+
+*The analysis shows the interplay between thermodynamic properties and the specific equation of state for a hard core gas, highlighting how these relationships are crucial for understanding the gas's behavior under different conditions.*
+** 1.9 Superconducting transition
+
+*Many metals become superconductors at low temperatures \(T\), and magnetic fields \(B\). The heat capacities of the two phases at zero magnetic field are approximately given by*
+
+\[
+\left\{\begin{array}{lr}
+C_{s}(T)=V \alpha T^{3} & \text { in the superconducting phase } \\
+C_{n}(T)=V\left[\beta T^{3}+\gamma T\right] & \text { in the normal phase }
+\end{array}\right.
+\]
+
+*where \(V\) is the volume, and \(\{\alpha, \beta, \gamma\}\) are constants. (There is no appreciable change in volume at this transition, and mechanical work can be ignored throughout this problem.)*
+
+*** 1.9.1
+*Calculate the entropies \(S_{s}(T)\) and \(S_{n}(T)\) of the two phases at zero field, using the third law of thermodynamics.*
+
+\[
+S_{s}(T)=\frac{\alpha V T^{3}}{3}, \quad S_{n}(T)=V\left[\frac{\beta T^{3}}{3}+\gamma T\right]
+\]
+These entropy expressions are derived from integrating the respective heat capacities over temperature, starting from zero, in accordance with the third law of thermodynamics, which states that the entropy of a perfectly ordered crystal at absolute zero is zero.
+
+*** 1.9.2
+*Experiments indicate that there is no latent heat \(L=0\) for the transition between the normal and superconducting phases at zero field. Use this information to obtain the transition temperature \(T_{c}\), as a function of \(\alpha, \beta\), and \(\gamma\).*
+
+\[
+T_{c}=\sqrt{\frac{3 \gamma}{\alpha-\beta}}
+\]
+
+This formula for the critical temperature \(T_{c}\) where the transition occurs is found by equating the entropies of the two phases at \(T_{c}\) and solving for \(T_{c}\) in terms of the material constants \(\alpha, \beta\), and \(\gamma\), given that the latent heat \(L=0\) at the transition.
+
+*** 1.9.3
+*At zero temperature, the electrons in the superconductor form bound Cooper pairs. As a result, the internal energy of the superconductor is reduced by an amount \(V \Delta\), that is, \(E_{n}(T=0)=E_{0}\) and \(E_{s}(T=0)=E_{0}-V \Delta\) for the metal and superconductor, respectively. Calculate the internal energies of both phases at finite temperatures.*
+
+\[
+E_{s}(T)=E_{0}-V\Delta+\frac{V \alpha T^{4}}{4}, \quad E_{n}(T)=E_{0}+\frac{V \beta T^{4}}{4}+\frac{V \gamma T^{2}}{2}
+\]
+
+This shows how the internal energy of each phase evolves with temperature. The superconducting phase starts with a lower internal energy due to Cooper pair formation, while both phases' energies increase with temperature due to their heat capacities.
+
+*** 1.9.4
+By comparing the Gibbs free energies (or chemical potentials) in the two phases, obtain an expression for the energy gap \(\Delta\) in terms of \(\alpha, \beta\), and \(\gamma\).*
+
+\[
+\Delta=\frac{3 \gamma^{2}}{4(\alpha-\beta)}
+\]
+This equation for the energy gap \(\Delta\) is derived from setting the Gibbs free energies of the superconducting and normal phases equal at the transition temperature \(T_{c}\) and solving for \(\Delta\) using the previously found expressions for internal energies and entropies.
+
+*** 1.9.5
+*In the presence of a magnetic field \(B\), inclusion of magnetic work results in \(\mathrm{d} E= T \mathrm{~d} S+B \mathrm{~d} M+\mu \mathrm{d} N\), where \(M\) is the magnetization. The superconducting phase is a perfect diamagnet, expelling the magnetic field from its interior, such that \(M_{s}=-V B /(4 \pi)\) in appropriate units. The normal metal can be regarded as approximately non-magnetic, with \(M_{n}=0\). Use this information, in conjunction with previous results, to show that the superconducting phase becomes normal for magnetic fields larger than*
+
+\[
+B_{c}(T)=B_{0}\left(1-\frac{T^{2}}{T_{c}^{2}}\right)
+\]
+
+*giving an expression for* \(B_{0}\).
+
+\[
+B_{0}=\sqrt{\frac{2 \pi(\alpha-\beta) T_{c}^{4}}{3}}
+\]
+This expression for \(B_{0}\) comes from the condition that the Gibbs free energies of the superconducting and normal phases are equal at a critical magnetic field \(B_{c}(T)\), incorporating the magnetic work term in the Gibbs free energy of the superconducting phase and solving for \(B_{c}\) in terms of the transition temperature \(T_{c}\) and the constants \(\alpha, \beta\), and \(\gamma\).
+
 * 2 Probability
 ** 2.1 Characteristic functions
 :PROPERTIES:
@@ -2190,6 +2405,109 @@ f_{\uparrow}=N_{\uparrow} \exp \left(-\beta H_{\uparrow}\right), \quad f_{\downa
 m \propto n_{\uparrow}-n_{\downarrow}
 \end{align*}
 
+** 3.5 Two-dimensional electron gas in a magnetic field
+*** 3.5.1 
+*The Hamiltonian for non-interacting free electrons in a magnetic field has the form*
+
+\[
+\mathcal{H}=\sum_{i}\left[\frac{\left(\vec{p}_{i}-e \vec{A}\right)^{2}}{2 m} \pm \mu_{B}|\vec{B}|\right] .
+\]
+
+*(The two signs correspond to electron spins parallel or anti-parallel to the field.) The vector potential* \( \vec{A}=\vec{B} \times \vec{q} / 2 \) *describes a uniform magnetic field* \( \vec{B} \). *Obtain the classical equations of motion, and show that they describe rotation of electrons in cyclotron orbits in a plane orthogonal to* \( \vec{B} \).
+
+*** 3.5.2 
+*Write down heuristically (i.e., not through a step-by-step derivation) the Boltzmann equations for the densities* \( f_{\uparrow}(\vec{p}, \vec{q}, t) \) *and* \( f_{\downarrow}(\vec{p}, \vec{q}, t) \) *of electrons with up and down spins, in terms of the two cross-sections* \( \sigma \equiv \sigma_{\uparrow \uparrow}=\sigma_{\downarrow \downarrow} \) *, and* \( \sigma_{\times} \equiv \sigma_{\uparrow \downarrow} \) *, of spin conserving collisions.*
+
+*** 3.5.3 
+*Show that* \( \frac{\mathrm{dH}}{\mathrm{d} t} \leq 0 \) *, where* \( \mathrm{H}=\mathrm{H}_{\uparrow}+\mathrm{H}_{\downarrow} \) *is the sum of the corresponding* \( \mathrm{H} \)-*functions.*
+
+*** 3.5.4 
+*Show that* \( \frac{\mathrm{dH}}{\mathrm{d} t}=0 \) *for any* \( \ln f \) *that is, at each location, a linear combination of quantities conserved in the collisions.*
+
+*** 3.5.5 
+*Show that the streaming terms in the Boltzmann equation are zero for any function that depends only on the quantities conserved by the one-body Hamiltonians.*
+
+*** 3.5.6 
+*Show that angular momentum* \( \vec{L}=\vec{q} \times \vec{p} \) *is conserved during, and away from, collisions.*
+
+*** 3.5.7 
+*Write down the most general form for the equilibrium distribution functions for particles confined to a circularly symmetric potential.*
+
+*** 3.5.8 
+*How is the result in part (g) modified by including scattering from magnetic and non-magnetic impurities?*
+
+*** 3.5.9 
+*Do conservation of spin and angular momentum lead to new hydrodynamic equations?*
+** 3.6 The Lorentz gas
+*** 3.6.1
+*Show that the differential cross-section of a hard circle scattering through an angle* \( \theta \) *is*
+
+\[
+\mathrm{d} \sigma=\frac{a}{2} \sin \frac{\theta}{2} \mathrm{~d} \theta
+\]
+
+*and calculate the total cross-section.*
+
+*** 3.6.2
+*Write down the Boltzmann equation for the one-particle density* \( f(\vec{q}, \vec{p}, t) \) *of the Lorentz gas (including only collisions with the fixed impurities). (Ignore the electron spin.)*
+
+*** 3.6.3
+*Find the eigenfunctions and eigenvalues of the collision operator.*
+
+*** 3.6.4
+*Using the definitions* \( \vec{F} \equiv-\partial U / \partial \vec{q} \) *, and*
+
+\[
+n(\vec{q}, t)=\int \mathrm{d}^{2} \vec{p} f(\vec{q}, \vec{p}, t), \quad \text { and } \quad\langle g(\vec{q}, t)\rangle=\frac{1}{n(\vec{q}, t)} \int \mathrm{d}^{2} \vec{p} f(\vec{q}, \vec{p}, t) g(\vec{q}, t),
+\]
+
+*show that for any function* \( \chi(|\vec{p}|) \), *we have*
+
+\[
+\frac{\partial}{\partial t}(n\langle\chi\rangle)+\frac{\partial}{\partial \vec{q}} \cdot\left(n\left\langle\frac{\vec{p}}{m} \chi\right\rangle\right)=\vec{F} \cdot\left(n\left\langle\frac{\partial \chi}{\partial \vec{p}}\right\rangle\right) .
+\]
+
+*** 3.6.5
+*Derive the conservation equation for local density* \( \rho \equiv m n(\vec{q}, t) \), *in terms of the local velocity* \( \vec{u} \equiv\langle\vec{p} / m\rangle \).
+
+*** 3.6.6
+*Since the magnitude of particle momentum is unchanged by impurity scattering, the Lorentz gas has an infinity of conserved quantities* \( |\vec{p}|^{m} \). *This unrealistic feature is removed upon inclusion of particle-particle collisions. For the rest of this problem focus only on* \( p^{2} / 2 m \) *as a conserved quantity. Derive the conservation equation for the energy density*
+
+\[
+\epsilon(\vec{q}, t) \equiv \frac{\rho}{2}\left\langle c^{2}\right\rangle, \quad \text { where } \quad \vec{c} \equiv \frac{\vec{p}}{m}-\vec{u}
+\]
+
+*in terms of the energy flux* \( \vec{h} \equiv \rho\left\langle\vec{c} c^{2}\right\rangle / 2 \), *and the pressure tensor* \( P_{\alpha \beta} \equiv \rho\left\langle c_{\alpha} c_{\beta}\right\rangle \).
+
+*** 3.6.7
+*Starting with a one-particle density*
+
+\[
+f^{0}(\vec{p}, \vec{q}, t)=n(\vec{q}, t) \exp \left[-\frac{p^{2}}{2 m k_{B} T(\vec{q}, t)}\right] \frac{1}{2 \pi m k_{B} T(\vec{q}, t)}
+\]
+
+*reflecting local equilibrium conditions, calculate* \( \vec{u}, \vec{h} \), *and* \( P_{\alpha \beta} \). *Hence obtain the zeroth-order hydrodynamic equations.*
+
+*** 3.6.8
+*Show that in the single collision time approximation to the collision term in the Boltzmann equation, the first-order solution is*
+
+\[
+f^{1}(\vec{p}, \vec{q}, t)=f^{0}(\vec{p}, \vec{q}, t)\left[1-\tau \frac{\vec{p}}{m} \cdot\left(\frac{\partial \ln \rho}{\partial \vec{q}}-\frac{\partial \ln T}{\partial \vec{q}}+\frac{p^{2}}{2 m k_{B} T^{2}} \frac{\partial T}{\partial \vec{q}}-\frac{\vec{F}}{k_{B} T}\right)\right] .
+\]
+
+*** 3.6.9
+*Show that using the first-order expression for* \( f \), *we obtain*
+
+\[
+\rho \vec{u}=n \tau\left[\vec{F}-k_{B} T \nabla \ln (\rho T)\right]
+\]
+
+*** 3.6.10
+*From the above equation, calculate the velocity response function* \( \chi_{\alpha \beta}=\partial u_{\alpha} / \partial F_{\beta} \).
+
+*** 3.6.11
+*Calculate* \( P_{\alpha \beta} \), *and* \( \vec{h} \), *and hence write down the first-order hydrodynamic equations.*
+
 ** 3.7 Thermal conductivity
 :PROPERTIES:
 :ID:       11cf1e85-06e4-410b-b109-3e25465bcde1
@@ -2224,6 +2542,19 @@ m \propto n_{\uparrow}-n_{\downarrow}
 
 *** 3.7.5
 *What is the temperature profile,* \( T(y) \), *of the gas in steady state?*
+** 3.11 Equilibrium density
+:LOGBOOK:
+CLOCK: [2024-04-27 Sat 22:45]--[2024-04-27 Sat 22:57] =>  0:12
+:END:
+
+*Consider a gas of* \(N\) *particles of mass* \(m\), *in an external potential* \(U(\vec{q})\). *Assume that the one-body density* \(\rho_{1}(\vec{p},\,\vec{q},\,t)\) *satisfies the Boltzmann equation. For a stationary solution,* \(\partial \rho_{1} / \partial t=0\), *it is sufficient from Liouville's theorem for* \(\rho_{1}\) *to satisfy* \(\rho_{1} \propto \exp \left[-\beta\left(p^{2} / 2 m+U(\vec{q})\right)\right]\). *Prove that this condition is also necessary by using the* \(\mathrm{H}\)-*theorem as follows.*
+
+*** 3.11.1
+*Find* \(\rho_{1}(\vec{p}, \vec{q})\) *that minimizes* \(\mathrm{H}=N \int \mathrm{d}^{3} \vec{p} \mathrm{~d}^{3} \vec{q} \rho_{1}(\vec{p}, \vec{q}) \ln \rho_{1}(\vec{p}, \vec{q})\), *subject to the constraint that the total energy* \(E=\langle H \rangle\) *is constant. (Hint. Use the method of Lagrange multipliers to impose the constraint.)*
+
+*** 3.11.2
+*For a mixture of two gases (particles of masses* \(m_{a}\) *and* \(m_{b}\) *) find the distributions* \(\rho_{1}^{(a)}\) *and* \(\rho_{1}^{(b)}\) *that minimize* \(\mathrm{H}=\mathrm{H}^{(a)}+\mathrm{H}^{(b)}\) *subject to the constraint of constant total energy. Hence show that the kinetic energy per particle can serve as an empirical temperature.*
+
 ** 3.12 Moments of momentum
 :PROPERTIES:
 :ID:       6197ff71-afed-49c5-9796-8995cf7b66a7
