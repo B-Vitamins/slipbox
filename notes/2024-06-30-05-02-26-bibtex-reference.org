@@ -1,0 +1,491 @@
+:PROPERTIES:
+:ID:       0b36b643-a241-4dd5-a83b-b5597c5de824
+:END:
+#+TITLE: BibTeX Reference
+#+FILETAGS: :bibtex:latex:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+BibTex is a LaTeX-related tool to handle bibliography developed by Oren Patashnik around 1988. Bibliographic entries are stored in a separate file (with extension .bib) than the LaTeX source, which only reference them through keys with the \cite macro. The command line program bibtex uses this external file and the information output by previous latex invocations to produce LaTeX code than the next latex invocations will include in the document.
+
+If it were defined nowadays, the file format of the .bib files would certainly be XML-based and would be easily parsed. However, it is unfortunately not the case. And since BibTex is still widely used, we have to deal with that format. This document is a reference for the file format, that I compiled when I wrote a parser for the .bib files.
+
+This document would not have been possible without the excellent documents written by Nicolas Markey and available at http://www.lsv.ens-cachan.fr/~markey/bibla.php. You can also find some information from the LaTeX Book at http://bibliographic.openoffice.org/bibtex-defs.html.
+
+* Standard Entry Type and Fields vs. Valid BibTex Files
+
+An important thing to understand is that BibTex has two distinct parts. The first one is a statically defined parser that can read entries in a text file (your .bib file), and a programmable part that tells how to produce LaTeX code (the .bbl files) from those entries. The latter is defined by the infamous .bst style files such as alpha.bst that you rarely manipulate and that XdkBibtex (and in particular its Python binding) is meant to replace. The first part is just syntactical, and the second is semantical.
+
+Therefore, you can have a valid BibTex file that is correctly parsed but produce no output with the standard style files (e.g. alpha.bst) because this styles expects standard field names such as author, title for example. In that document, we only refer to the syntactical part of BibTeX.
+
+* The File Format
+
+A bibtex entry looks like this:
+
+@Article{py03,
+     author = {Xavier D\'ecoret},
+     title  = "PyBiTex",
+     year   = 2003
+}
+
+@Article(py03,
+     author = {Xavier D\'ecoret},
+     title  = "PyBiTex",
+     year   = 2003
+)
+
+where the delimiters can be either braces or parentheses, as shown in the two above examples (which are identical for BibTeX). An entry is made of:
+
+- An entry type, in our example it is Article
+- A key, in our example it is py03
+- Several fields which are made of
+  - a name, in our example author
+  - a value, in our example Xavier D\'ecoret
+- The structure of a field is name = value where value is either:
+  - an integer,
+  - everything in between braces,
+  - or everything between quotes.
+- We will see also later (string definition) that a single word can be valid if it has been defined as a string. There are several things to know about field values:
+  - Inside the braces, you can have arbitrarily nested pairs of braces.
+  - But braces must also be balanced inside quotes!
+  - Inside quotes, if you want to place the " character, it is not sufficient to simply escape with \". You must place the quotes inside braces.
+  - You can have a @ inside a quoted value but not inside a braced value.
+
+Here are some examples of valid and invalid field values:
+
+Not parsed by BibTex:
+
+@Article{key03,
+  title = "The lonely { brace",
+}
+
+Parsed by BibTex:
+
+@Article{key03,
+  title = "A {bunch {of} braces {in}} title"
+}
+
+@Article{key01,
+  author = "Simon \"the saint\" Templar", 
+}
+
+Parsed by BibTex:
+
+@Article{key01,
+  author = "Simon {"}the {saint"} Templar", 
+}
+
+@Article{key01,
+  title = { The history of @ sign } 
+}
+
+Parsed by BibTex:
+
+@Article{key01,
+  title = "The history of @ sign"
+}
+
+Finally, there are three last things to know about the syntax of the .bib file format:
+
+- Two fields must be separated by a comma, but the comma after the last field of an entry is optional.
+- In the type and fields' names, the case is not meaningful for BibTex. So @Article and @arTicLE will be considered equivalently. Same thing for author and Author.
+- When two or more entries have the same key, only the first is retained, the other ones are skipped. Same thing if there are several fields with the same name. In both situations, equality is case insensitive.
+
+* Comments
+
+Comments in BibTeX do not work the usual way, that is with a pair of comment delimiters such as /* and */ or // and \n (end of line) in C++. Instead, BibTeX splits the file into two areas: inside an entry and outside an entry, the delimitation being indicated by the presence of a @ sign. When this character is met, BibTex expects to find an entry as described above. Before that sign, and after an entry, everything is considered a comment! So the following file is correctly parsed:
+
+Some {{comments} with unbalanced braces
+....and a "commented" entry...
+
+Book{landru21,
+  author =	 {Landru, Henri D\'esir\'e},
+  title =	 {A hundred recipes for your wife},
+  publisher =	 {Culinary Expert Series},
+  year =	 1921
+}
+
+..some other comments..before a valid entry...
+
+@Book{steward03,
+  author =	 { Martha Steward },
+  title =	 {Cooking behind bars},
+  publisher =	 {Culinary Expert Series},
+  year =	 2003
+}
+
+The advantage of this definition of comment is that you can quickly "comment" an entry by simply removing the @ at the beginning. BibTeX actually offers another way to comment a part of the file. If the entry type is @Comment, it is not considered to be the start of an entry. (Actually, the rule is that everything from the @Comment and to the end of line is ignored. The remainder lines of the commented entry is ignored by the first comment mechanism we described; in particular, a @Comment does not need to be a valid entry, i.e., it can, for example, skip commas between two fields).
+
+...and finally an entry commented by the use of the special @Comment entry type:
+
+@Comment{steward03,
+  author =	 {Martha Steward},
+  title =	 {Cooking behind bars},
+  publisher =	 {Culinary Expert Series},
+  year =	 2003
+}
+
+A side effect of the very strong meaning of the @ sign in the file format is that when BibTex encounters an error in an entry (such as a missing comma between two fields, or an unbalanced braced expression), it is able to recover rather well by skipping everything until the next @ sign.
+
+The counterpart is that you cannot have a @ sign in your comment. You might wonder why does BibTex provide the special @Comment mechanism since it would be easy to comment an entry by just removing the @. The only answer I can come up with is that keeping an arroba allows grepping for entries' keys in the file. You can thus easily count/search/whatever the entries commented using the @Comment approach in a file, which would be more complicated using the "no arroba" approach. Note that Nicolas Markey offers another explanation which is that it allows quickly commenting a set of entries by surrounding them with @Comment{...} but I do not subscribe to that point of view since in the following .bib file, the steward03 is still taken into account by bibtex:
+
+@Comment{
+  @Book{steward03,
+    author =	 {Martha Steward},
+    title =	 {Cooking behind bars},
+    publisher =	 {Culinary Expert Series},
+    year =	 2003
+  }
+}
+
+* String Variables
+
+In order to get coherent notation among your entries, BibTeX provides a useful mechanism to define strings. The following lines will equivalently define a string constant (note again that, like for entries, you can use braces or parentheses as delimiters):
+
+@String(mar = "march")
+@String{mar = "march"}
+
+The placeholder (variable/string name) must start with a letter and can contain any character in [a-z, A-Z, _, 0-9]. The placeholder is case insensitive. If a placeholder is defined several times, the last one is kept. Once a placeholder is defined, you can use it for a field (e.g., the month one) value, as in the following example:
+
+What your file contains:
+
+@String(mar = "march")
+      
+@Book{sweig42,
+  Author =	 {Stefan Sweig},
+  title =	 {The impossible book},
+  publisher =	 {Dead Poet Society},
+  year =	 1942,
+  month =        mar
+}
+
+What BibTex sees:
+
+@Book{sweig42,
+  Author =	 {Stefan Sweig},
+  title =	 {The impossible book},
+  publisher =	 {Dead Poet Society},
+  year =	 1942,
+  month =        "march"
+}
+
+Be careful that if you place quotes or braces around the placeholder, the substitution is not made. But you can concatenate an explicit string of characters (with quotes or braces) with a string variable using the pound (#) sign as in the following example:
+
+What your file contains:
+
+@String(mar = "march")
+      
+@Book{sweig42,
+  ...
+  month =        "1~mar"
+}
+
+What BibTex sees:
+
+@Book{sweig42,
+  ...
+  month =        "1~mar"
+}
+
+@String(mar = "march")
+      
+@Book{sweig42,
+  ...
+  month =        "1~" # mar
+}
+
+What BibTex sees:
+
+@Book{sweig42,
+  ...
+  month =        "1~march"
+}
+
+This mechanism can be used itself in string definitions, so you can do:
+
+@String {firstname = "Xavier"}
+@String {lastname  = "Decoret"}
+@String {email      = firstname # "." # lastname # "@imag.fr"}
+
+Finally, note that, although it would have been a great feature that would have been coherent with the entry syntax, you cannot define several strings at once in a single @String command. You must issue two such commands as shown below:
+
+Not parsed by BibTex:
+
+@String(mar = "march",
+        apr = "april")
+
+Parsed by BibTex:
+
+@String(mar = "march")
+@String(apr = "april")
+
+* The @Preamble Declaration
+
+You can define some LaTeX commands that will be included in the .bbl file generated by BibTex using a declaration like this (note again that, like for entries, you can use braces or parentheses as delimiters):
+
+@preamble {"This bibliography was generated on \today"}
+@preamble ("This bibliography was generated on \today")
+
+Such declarations can be placed anywhere in the document outside entries. If several of them appear in different places, they are concatenated in the order of apparition.
+
+The string definition can be used within the preamble so you can have files such as:
+
+@String {maintainer = "Xavier D\'ecoret"}
+
+@preamble { "Maintained by " # maintainer }
+
+* Names Specifications
+
+Well, I said that I would describe only the syntactical part of BibTex, but it is not exactly true. BibTex defines a de facto standard for describing a person's name in a field value (typically for the author field). For it, a name is composed of four parts:
+
+- First
+- Last
+- von
+- jr
+
+When BibTex is given a string representing a name, it analyzes it to retrieve the four parts. The three possible recognized "structures" for the string are:
+
+- First von Last: First is the longest sequence of white-space separated words starting with an uppercase (see case determination) and that is not the whole string. von is the longest sequence of whitespace-separated words whose last word starts with a lowercase (note that because of First maximality, the first word also starts with a lowercase) and that is not the whole string. Then Last is everything else. These rules imply that the Last part cannot be empty.
+- von Last, First: von is the longest sequence of whitespace-separated words whose last word does not start with an uppercase (see case determination). Then Last is everything else before the comma, and First is everything after the comma. Here again, the Last part cannot be empty.
+- von Last, Jr, First: Same thing as above for von and Last. Jr is everything in between the two first commas, and First is everything after the second comma, no matter of the case of their first letters.
+
+Finally, to handle multiple authors, BibTeX splits the initial string based on the word and and applies the scheme we have just seen to each part to get each author. The and must not be in braces.
+
+** Case Determination
+
+The algorithm used by BibTex to determine if a word starts with a lowercase or not is pretty tricky. Thanks again to Nicolas Markey for writing this down properly in his great document "Tames the Beast". I am summarizing my understanding of it:
+
+- Words are made from pseudo-letters that are either a single letter or a well-balanced braced expression. Words are separated by white spaces.
+- The word is read pseudo-letter by pseudo-letter until a letter determines the case.
+- Pseudo-characters that are letters receive the case of this letter.
+- Pseudo-characters that are digits are considered lowercase.
+- Any other pseudo-characters (well-balanced braced expressions and non-letter/digit characters) are case-less.
+- If all pseudo-letters of a word are caseless, then the word goes with the neighbor group, primarily with First and then with Last.
+
+* Name Splitting Test Suite
+
+Here is the test suite I used to check the name decomposition in BibTeX. They should help you to be familiar with the tricks in name splitting. All those examples have been checked with bibtex using a special BST style file (names.bst) that display the parts of authors' names. You can use it with the following Python script (test_names.py) if you want (download it, run chmod a+x test_names.py to make it executable and then ./test_names.py afile.bib to display the names of authors found in the file afile.bib).
+
+** Test Suite for the First Name Specification Form (First von Last)
+
+| Tested Author's Value | First Part | von Part  | Last Part | Jr Part | Comment                                                        |
+|-----------------------+------------+-----------+-----------+---------+----------------------------------------------------------------|
+| AA BB                 | AA         |           | BB        |         | Testing simple case with no von.                               |
+| AA                    |            |           | AA        |         | Testing that Last cannot be empty.                             |
+| AA bb                 | AA         |           | bb        |         | Idem.                                                          |
+| aa                    |            |           | aa        |         | Idem.                                                          |
+| AA bb CC              | AA         | bb        | CC        |         | Testing simple von.                                            |
+| AA bb CC dd EE        | AA         | bb~CC~dd  | EE        |         | Testing simple von (with inner uppercase words).               |
+| AA 1B cc dd           | AA~1B      | cc        | dd        |         | Testing that digits are caseless (B fixes the case of 1B).     |
+| AA 1b cc dd           | AA         | 1b~cc     | dd        |         | Testing that digits are caseless (b fixes the case of 1b).     |
+| AA {b}B cc dd         | AA~{b}B    | cc        | dd        |         | Testing that pseudo-letters are caseless.                      |
+| AA {b}b cc dd         | AA         | {b}b~cc   | dd        |         | Idem.                                                          |
+| AA {B}b cc dd         | AA         | {B}b~cc   | dd        |         | Idem.                                                          |
+| AA {B}B cc dd         | AA~{B}B    | cc        | dd        |         | Idem.                                                          |
+| AA \BB{b} cc dd       | AA~\BB{b}  | cc        | dd        |         | Testing that non-letters are case-less (e.g., LaTeX commands). |
+| AA \bb{b} cc dd       | AA         | \bb{b}~cc | dd        |         | Idem.                                                          |
+| AA {bb} cc DD         | AA~{bb}    | cc        | DD        |         | Testing that caseless words are grouped with First, then Last. |
+| AA bb {cc} DD         | AA         | bb        | {cc}~DD   |         | Idem.                                                          |
+| AA {bb} CC            | AA~{bb}    |           | CC        |         | Idem.                                                          |
+
+** Test Suite for the Second/Third Specification Form (von Last, First / von Last, Jr, First)
+
+| Tested Author's Value | First Part | von Part | Last Part | Jr Part | Comment                                         |
+|-----------------------+------------+----------+-----------+---------+-------------------------------------------------|
+| bb CC, AA             | AA         | bb       | CC        |         | Simple case. Case does not matter for First.    |
+| bb CC, aa             | aa         | bb       | CC        |         | Idem.                                           |
+| bb CC dd EE, AA       | AA         | bb~CC~dd | EE        |         | Testing simple von (with inner uppercase).      |
+| bb, AA                | AA         |          | bb        |         | Testing that the Last part cannot be empty.     |
+| BB,                   |            |          | BB        |         | Testing that First can be empty after a comma.  |
+| bb CC,XX, AA          | AA         | bb       | CC        | XX      | Simple Jr. Case does not matter for it.         |
+| bb CC,xx, AA          | AA         | bb       | CC        | xx      | Idem.                                           |
+| BB,, AA               | AA         |          | BB        |         | Testing that Jr can be empty in between commas. |
+
+I used dummy names (AA, BB, etc.) for clarity. Note also that besides the name splitting, BibTeX also performs some modifications, like adding non-breakable spaces (~) between the words in the von part and some other ones that I don't list here as they do not concern the syntax anymore (see the format.name$ function of the BST language in Markey's "Tames the Beast").
+
+* Further Remarks
+
+I suggest you always use the second (or third if there is a Jr part) form as it will save you some easily arrived mistakes. Indeed, suppose your author is the famous French explorer Paul Émile Victor (note the accent) but you forgot the uppercase in the accented E and use the first form, it will be incorrectly split. But you won't have the problem with the second form. The table below summarizes what you get:
+
+| Using First Form      | First Part     | von Part  | Last Part | Jr Part |
+|-----------------------+----------------+-----------+-----------+---------|
+| Paul \'Emile Victor   | Paul \'Emile   |           | Victor    |         |
+| Paul {\'E}mile Victor | Paul {\'E}mile |           | Victor    |         |
+| Paul \'emile Victor   | Paul           | \'emile   | Victor    |         |
+| Paul {\'e}mile Victor | Paul           | {\'e}mile | Victor    |         |
+
+| Using Second/Third Form | First Part     | von Part | Last Part | Jr Part |
+|-------------------------+----------------+----------+-----------+---------|
+| Victor, Paul \'Emile    | Paul \'Emile   |          | Victor    |         |
+| Victor, Paul {\'E}mile  | Paul {\'E}mile |          | Victor    |         |
+| Victor, Paul \'emile    | Paul \'emile   |          | Victor    |         |
+| Victor, Paul {\'e}mile  | Paul {\'e}mile |          | Victor    |         |
+
+Actually, the second form can allow name description impossible with the first form. Take the French politician Dominique Galouzeau de Villepin. If you use the first form, the "de" will be interpreted as a von part and hence the First part will be "Dominique Galouzeau," which is incorrect.
+
+| Using First Form                  | First Part          | von Part       | Last Part | Jr Part |
+|-----------------------------------+---------------------+----------------+-----------+---------|
+| Dominique Galouzeau de Villepin   | Dominique Galouzeau | de             | Villepin  |         |
+| Dominique {G}alouzeau de Villepin | Dominique           | {G}alouzeau de | Villepin  |         |
+
+| Using Second/Third Form          | First Part | von Part | Last Part             | Jr Part |
+|----------------------------------+------------+----------+-----------------------+---------|
+| Galouzeau de Villepin, Dominique | Dominique  |          | Galouzeau de Villepin |         |
+* Available entry types and field values
+** Values
+- address :: Generally the city or complete address of the publisher.
+- author :: For author names. The input format is quite special, since BibTeX has to be able to distinguish between the first and last names. Section 11 and 18 are completely dedicated to this topic.
+- booktitle :: For the title of a book one part of which is cited.
+- chapter :: The number of the chapter (or any part) of a book being cited. If not a chapter, the type field might be used for precising the type of sectioning.
+- crossref :: This one is quite peculiar. It's used to cross-reference within the bibliography. For instance, you might cite a document, and a part of it. In that case, the second one can reference the first one, or at least inherit some of its fields from the first one. This deserves some more comments, see section 12.
+- edition :: The edition number. Or in fact its ordinal, for instance edition = "First". This might raise problems when trying to export a bibliography into another language.
+- editor :: The name of the editor(s) of the entry. The format is the same as for authors.
+- howpublished :: Only used in rare cases where the document being cited is not a classical type such as a @book, an @article or an @inproceedings publication.
+- institution :: For a technical report, the name of the institution that published it.
+- journal :: The name of the journal in which the cited article has been published.
+- key :: Used for defining the label, in case it cannot be computed by BibTeX. It does not force the label, but defines the label when BibTeX needs one but can’t compute it.
+- month :: Well... The month during which the document has been published. This also raises the problem of the translation of the bibliography: It's better having a numerical value, or an abbreviation, instead of the complete name of the month. Having the number would allow BibTeX to sort the entries more precisely (even though, as far as I know, no bibliography style does this at the present time).
+- note :: For any additional data you would want to add. Since classical styles were written in 1985, they don’t have a url field, and note is often used for this purpose, together with the url.sty package.
+- number :: A number... Not whichever, but the number of a report. For volume numbers, a special volume field exists.
+- organization :: The organizing institution of a conference.
+- pages :: The relevant pages of the document. Useful for the reader when you cite a huge book; Note that such a precision could be added through the optional argument of \cite (see page 6), in which case it would appear in the document but not in the bibliography.
+- publisher :: The institution that published the document.
+- school :: For theses, the name of the school the thesis has been prepared in.
+- series :: The name of a collection of series or books.
+- title :: The title of the document being cited. There are some rules to be observed when entering this field, see section 10.
+- type :: The type. Which type? It depends... The type of publication, if needed. For thesis, for instance, in order to distinguish between a masters thesis and a PhD. Or the type of section being cited (see chapter above).
+- volume :: The volume number in a series or collection of books.
+- year :: The publication year.
+** Entry
+| Entry type     | Mandatory fields                          | Optional fields                                                                        |
+|----------------+-------------------------------------------+----------------------------------------------------------------------------------------|
+| @article       | author, title, year, journal              | volume, number, pages, month, note                                                     |
+| @book          | author or editor, title, publisher, year  | volume or number, series, address, edition, month, note                                |
+| @booklet       |                                           | author, howpublished, address, address, month, year, note                              |
+| @conference    | author, title, booktitle, year            | editor, volume or number, series, pages, address, month, organization, publisher, note |
+| @inbook        | author or editor, title, chapter or pages | volume, number, series, type, address, edition, month, note                            |
+| @incollection  | author, title, booktitle, publisher, year | editor, volume or number, series, type, chapter, pages, address, edition, month, note  |
+| @inproceedings | Same as @conference                       | Same as @conference                                                                    |
+| @manual        | title                                     | author, organization, year, address, edition, month, note                              |
+| @mastersthesis | author, title, school, year               | type, address, month, note                                                             |
+| @misc          | at least one of the optional fields       | author, title, howpublished, year, month, note                                         |
+| @phdthesis     | author, title, school, year               | type, address, month, note                                                             |
+| @proceedings   | title, year                               | editor, volume or number, series, address, month, organization, publisher, note        |
+| @techreport    | author, title, institution, year          | type, address, number, month, note                                                     |
+| @unpublished   | author, title, note                       | month, year                                                                            |
+* Common Errors in Bibliographies by John Owens
+
+** Issues in Text: How to Cite Properly
+
+- **Citations as Words**: 
+  - Huge pet peeve: Using citations as words. van Leunen: “Brackets are not words. A bracketed number is just a pointer, not a word. Never, ever, use a bracketed number as if it were the name of an author or a work.” (p. 20). 
+  - Instead of “A similar strategy is described in [15].”), use “A similar strategy is discussed by AuthorOne et al. [15]”. 
+  - It looks really stupid to say “A similar strategy is discussed by 15.”
+
+- **Citing with LaTeX**: 
+  - When writing citations in LaTeX, do them in this form: `text text text~\cite{Foo:2000:BAR}`. 
+  - The `~` means non-breaking space (you don't want a linebreak between the text and the citation). 
+  - Also, do: `\cite{AuthorOne:2000:ABC,AuthorTwo:2002:DEF}` instead of `\cite{AuthorOne:2000:ABC}\cite{AuthorTwo:2002:DEF}`.
+  - Alphabetize grouped citations so they appear in numerical order (e.g., [6, 8, 10] instead of [8, 6, 10]). `\usepackage{cite}` puts them in proper order automatically and changes [1,2,3,4,6] to [1–4,6].
+
+- **Shortcite**: 
+  - Use `\shortcite` when appropriate, e.g., “AuthorOne discusses this point further in her dissertation [AuthorOne 2002].” 
+  - Use `\shortcite{AuthorOne:2002:AOT}`, making the sentence “AuthorOne discusses this point further in her dissertation [2002].”
+  - If your bib style doesn't support it, add this fix in your LaTeX preamble: `\providecommand{\shortcite}[1]{\cite{#1}}`.
+
+- **Sorting References**: 
+  - If possible, arrange your reference list in alphabetical order by author's last name. 
+  - Cited-order is less useful to readers except in survey articles.
+
+** Issues with Bibliographies (Your .bib File)
+
+- **Names**: 
+  - Make the names in the bibliography match what is printed on the paper.
+  - Use J. D. Owens instead of J.D. Owens to avoid misinterpretation by BibTeX.
+
+- **Capitalization in Titles**: 
+  - Capitalization in your bibtex file should match what's on the paper.
+  - Properly bracket `{}` words in titles that must be capitalized, e.g., GPU or PDE.
+
+- **Venues**: 
+  - IEEE and ACM often screw up venue names.
+  - Fix capitalization issues before submitting a paper.
+
+- **Months**: 
+  - Include the month of publication in your bibliographies.
+  - Use three-letter abbreviations without quotes for months (e.g., `month = mar`).
+
+- **Pages**: 
+  - Always include pages if available. Use the en-dash to separate them (e.g., 35--49).
+
+- **DOIs**: 
+  - Store DOIs as numbers only in your bibtex file.
+
+- **URLs**: 
+  - Wrap URLs in `\url{}` and add `\usepackage{url}` in your LaTeX preamble.
+
+** Examples of Corrections
+
+- **IEEE**:
+  - Original: `@INPROCEEDINGS{5940539, author={Glavtchev, V. and Muyan-Ozcelik, P. and Ota, J.M. and Owens, J.D.}, ...`
+  - Corrected: `@INPROCEEDINGS{5940539, author={Vladimir Glavtchev and P{\i}nar Muyan-{\"{O}}z{\c{c}}elik and Jeffery M. Ota and John D. Owens}, ...`
+
+- **ACM**:
+  - Original: `@inproceedings{Davidson:2011:RPC:1964179.1964185, author = {Davidson, Andrew and Owens, John D.}, ...`
+  - Corrected: `@inproceedings{Davidson:2011:RPC:1964179.1964185, author = {Davidson, Andrew and Owens, John D.}, title = {Register Packing for Cyclic Reduction: A Case Study}, ...`
+* A Public Service Rant: Please Fix Your Bibliography
+** February 25, 2011 by Dan Wallach
+
+Like many academics, I spend a lot of time reading and reviewing technical papers. I find myself continually surprised at the things that show up in the bibliography, so I thought it might be worth writing this down all in one place so that future conferences and whatnot might just hyperlink to this essay and say “Do That.”
+
+- **Do not use auto-generated BibTeX entries**: 
+  - Citeseer, DBLP, the ACM Digital Library, or other sources often contain errors.
+  - Example: Papers from the Symposium on Operating System Principles (SOSP) often cited as ACM Operating Systems Review.
+  - Addresses are often incorrect (ACM's headquarters are in New York, but most conferences are elsewhere).
+
+- **Leave out LNCS volume numbers**: 
+  - For conferences, it's sufficient to cite as "CRYPTO ’86" without LNCS volume details.
+
+- **Leave out editors and publishers for conference papers**: 
+  - Only include the author names and paper title. Publishers (e.g., Springer-Verlag, USENIX Association, ACM Press) are not needed.
+
+- **Consistency in citing conferences**: 
+  - Use consistent abbreviations (e.g., "SOSP ’03" vs. "Proceedings of the 19th ACM Symposium on Operating Systems Principles (SOSP ’03)").
+
+- **Author names and initials**: 
+  - Ensure correct initials with spaces (e.g., "D. S. Wallach" not "D.S. Wallach").
+  - Double-check for missing co-authors.
+
+- **Spelling out names vs. initials**: 
+  - Consistency is key. If using a style with whole names, ensure all names are complete.
+
+- **URLs for blogs, Wikipedia, and newspaper articles**: 
+  - Use the "note" field in BibTeX and wrap URLs in `\url{}`. Add `\usepackage{url}` and `\urlstyle{sf}` in your LaTeX header for compact URLs.
+
+- **Citing software projects**: 
+  - Use a footnote for crediting software rather than a citation. Cite related research papers or books if available.
+
+- **Long URLs in BibTeX**: 
+  - BibTeX may insert a `%`-character and newline in long URLs. Use a Perl script to post-process the `.bbl` file and fix this.
+
+- **Remove "to appear" from bibliographies**: 
+  - Future readers will find it confusing. Update entries as papers are published.
+
+- **Conference details**: 
+  - Include address, month, and year for conferences. Use three-letter codes for months (e.g., `jan, feb, mar`).
+
+- **Page numbers**: 
+  - It is now acceptable to leave out page numbers for conferences, given the shift to online proceedings.
+
+- **Accents and Unicode**: 
+  - Use LaTeX codes for accented characters. Ensure proper spelling of names (e.g., David Mazières).
+
+- **Capitalization in titles**: 
+  - Be consistent with capitalization. Use curly braces `{}` around words that need capitalization.
+
+- **Posting bib entries online**: 
+  - Provide a bib entry next to your papers online to encourage proper citation.
+
+- **Citations as parenthetical remarks**: 
+  - Citations are not nouns. Use author names or system names for proper grammar.
+
+Obligatory caveat: "A foolish consistency is the hobgoblin of little minds, adored by little statesmen and philosophers and divines." – Ralph Waldo Emerson
