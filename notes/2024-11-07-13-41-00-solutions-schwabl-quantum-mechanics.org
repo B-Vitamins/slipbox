@@ -1,0 +1,829 @@
+:PROPERTIES:
+:ID:       ab258349-a22d-46cc-b2f7-a11b895d393a
+:END:
+#+TITLE: Solutions to Quantum Mechanics by Franz Schwabl
+#+FILETAGS: :fleeting:problems:quantum:schwabl:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+#+BEGIN: clocktable :maxlevel 2 :scope nil :emphasize nil
+#+CAPTION: Clock summary at [2024-11-07 Thu 13:55]
+| Headline                                 |    Time |      |
+|------------------------------------------+---------+------|
+| *Total time*                             | *95:36* |      |
+|------------------------------------------+---------+------|
+| Historical and Experimental Foundations  |    3:07 |      |
+| The Wave Function and the Schrodinger... |   34:25 |      |
+| One-Dimensional Problems                 |   35:55 |      |
+| Angular Momentum                         |   15:06 |      |
+| \_  Problem 5.1                          |         | 0:29 |
+| \_  Problem 5.2                          |         | 3:13 |
+| \_  Problem 5.3                          |         | 2:59 |
+| \_  Problem 5.4                          |         | 1:04 |
+| \_  Problem 5.5                          |         | 3:13 |
+| Operators, Matrices, State Vectors       |    7:03 |      |
+| \_  Problem 8.1                          |         | 0:15 |
+| \_  Problem 8.2                          |         | 2:49 |
+#+END:
+* Historical and Experimental Foundations
+:LOGBOOK:
+CLOCK: [2022-08-22 Mon 21:40]--[2022-08-22 Mon 22:24] =>  0:44
+CLOCK: [2022-08-21 Sun 19:56]--[2022-08-21 Sun 20:30] =>  0:34
+CLOCK: [2022-08-06 Sat 17:21]--[2022-08-06 Sat 17:24] =>  0:03
+CLOCK: [2022-08-22 Mon 22:26]--[2022-08-22 Mon 22:40] =>  0:14
+CLOCK: [2022-08-22 Mon 23:06]--[2022-08-22 Mon 23:29] =>  0:23
+CLOCK: [2022-08-22 Mon 23:30]--[2022-08-22 Mon 23:53] =>  0:23
+CLOCK: [2022-08-22 Mon 23:59]--[2022-08-23 Tue 00:23] =>  0:24
+CLOCK: [2022-08-23 Tue 00:28]--[2022-08-23 Tue 00:43] =>  0:15
+CLOCK: [2022-08-23 Tue 00:44]--[2022-08-23 Tue 00:51] =>  0:07
+:END:
+* The Wave Function and the Schrodinger Equation
+:LOGBOOK:
+CLOCK: [2022-09-19 Mon 22:48]--[2022-09-19 Mon 23:06] =>  0:18
+CLOCK: [2022-08-23 Tue 22:54]--[2022-08-23 Tue 23:34] =>  0:40
+CLOCK: [2022-08-23 Tue 16:28]--[2022-08-23 Tue 16:50] =>  0:22
+CLOCK: [2022-08-06 Sat 18:37]--[2022-08-06 Sat 19:52] =>  1:15
+CLOCK: [2022-09-19 Mon 23:12]--[2022-09-20 Tue 03:16] =>  4:04
+CLOCK: [2022-08-23 Tue 23:35]--[2022-08-23 Tue 23:59] =>  0:24
+CLOCK: [2022-08-23 Tue 16:50]--[2022-08-23 Tue 17:24] =>  0:34
+CLOCK: [2022-08-06 Sat 19:52]--[2022-08-06 Sat 20:19] =>  0:27
+CLOCK: [2022-09-20 Tue 03:19]--[2022-09-20 Tue 03:19] =>  0:00
+CLOCK: [2022-08-24 Wed 14:11]--[2022-08-24 Wed 15:19] =>  1:08
+CLOCK: [2022-08-24 Wed 13:01]--[2022-08-24 Wed 14:04] =>  1:03
+CLOCK: [2022-08-24 Wed 00:52]--[2022-08-24 Wed 01:35] =>  0:43
+CLOCK: [2022-08-23 Tue 23:59]--[2022-08-24 Wed 00:45] =>  0:46
+CLOCK: [2022-08-23 Tue 17:25]--[2022-08-23 Tue 17:55] =>  0:30
+CLOCK: [2022-09-20 Tue 16:58]--[2022-09-20 Tue 18:43] =>  1:45
+CLOCK: [2022-09-20 Tue 16:21]--[2022-09-20 Tue 16:34] =>  0:13
+CLOCK: [2022-09-20 Tue 13:56]--[2022-09-20 Tue 16:13] =>  2:17
+CLOCK: [2022-09-20 Tue 04:33]--[2022-09-20 Tue 04:59] =>  0:26
+CLOCK: [2022-09-20 Tue 03:17]--[2022-09-20 Tue 03:39] =>  0:22
+CLOCK: [2022-08-24 Wed 17:41]--[2022-08-24 Wed 18:48] =>  1:07
+CLOCK: [2022-08-24 Wed 15:29]--[2022-08-24 Wed 17:27] =>  1:58
+CLOCK: [2022-08-23 Tue 19:59]--[2022-08-23 Tue 20:40] =>  0:41
+CLOCK: [2022-08-23 Tue 17:58]--[2022-08-23 Tue 18:32] =>  0:34
+CLOCK: [2022-08-26 Fri 14:03]--[2022-08-26 Fri 14:12] =>  0:09
+CLOCK: [2022-08-26 Fri 14:15]--[2022-08-26 Fri 14:34] =>  0:19
+CLOCK: [2022-08-26 Fri 14:34]--[2022-08-26 Fri 15:06] =>  0:32
+CLOCK: [2022-09-20 Tue 19:24]--[2022-09-20 Tue 20:36] =>  1:12
+CLOCK: [2022-09-20 Tue 18:52]--[2022-09-20 Tue 19:20] =>  0:28
+CLOCK: [2022-08-26 Fri 18:19]--[2022-08-26 Fri 18:59] =>  0:40
+CLOCK: [2022-08-26 Fri 19:00]--[2022-08-26 Fri 19:14] =>  0:14
+CLOCK: [2022-08-29 Mon 14:42]--[2022-08-29 Mon 15:36] =>  0:54
+CLOCK: [2022-08-29 Mon 12:51]--[2022-08-29 Mon 14:24] =>  1:33
+CLOCK: [2022-08-27 Sat 18:53]--[2022-08-27 Sat 19:50] =>  0:57
+CLOCK: [2022-08-29 Mon 15:50]--[2022-08-29 Mon 16:12] =>  0:22
+CLOCK: [2022-09-20 Tue 23:13]--[2022-09-21 Wed 02:54] =>  3:41
+CLOCK: [2022-08-29 Mon 21:17]--[2022-08-29 Mon 21:45] =>  0:28
+CLOCK: [2022-08-29 Mon 20:16]--[2022-08-29 Mon 20:38] =>  0:22
+CLOCK: [2022-08-29 Mon 16:12]--[2022-08-29 Mon 16:26] =>  0:14
+CLOCK: [2022-08-29 Mon 21:47]--[2022-08-29 Mon 21:55] =>  0:08
+CLOCK: [2022-09-20 Tue 20:36]--[2022-09-20 Tue 21:11] =>  0:35
+:END:
+* One-Dimensional Problems
+:LOGBOOK:
+CLOCK: [2022-09-12 Mon 20:30]--[2022-09-12 Mon 20:48] =>  0:18
+CLOCK: [2022-09-12 Mon 19:51]--[2022-09-12 Mon 20:03] =>  0:12
+CLOCK: [2022-09-12 Mon 19:32]--[2022-09-12 Mon 19:43] =>  0:11
+CLOCK: [2022-09-12 Mon 11:06]--[2022-09-12 Mon 11:36] =>  0:30
+CLOCK: [2022-09-12 Mon 07:08]--[2022-09-12 Mon 07:37] =>  0:29
+CLOCK: [2022-09-12 Mon 05:54]--[2022-09-12 Mon 06:35] =>  0:41
+CLOCK: [2022-09-12 Mon 04:46]--[2022-09-12 Mon 05:49] =>  1:03
+CLOCK: [2022-09-15 Thu 03:26]--[2022-09-15 Thu 03:55] =>  0:29
+CLOCK: [2022-09-15 Thu 01:07]--[2022-09-15 Thu 02:30] =>  1:23
+CLOCK: [2022-09-14 Wed 23:17]--[2022-09-15 Thu 00:19] =>  1:02
+CLOCK: [2022-09-14 Wed 14:06]--[2022-09-14 Wed 17:25] =>  3:19
+CLOCK: [2022-09-14 Wed 14:04]--[2022-09-14 Wed 14:06] =>  0:02
+CLOCK: [2022-09-14 Wed 13:22]--[2022-09-14 Wed 14:04] =>  0:42
+CLOCK: [2022-09-14 Wed 00:03]--[2022-09-14 Wed 05:47] =>  5:44
+CLOCK: [2022-09-13 Tue 13:17]--[2022-09-13 Tue 14:13] =>  0:56
+CLOCK: [2022-09-13 Tue 12:58]--[2022-09-13 Tue 13:09] =>  0:11
+CLOCK: [2022-09-13 Tue 12:34]--[2022-09-13 Tue 12:36] =>  0:02
+CLOCK: [2022-08-26 Fri 02:33]--[2022-08-26 Fri 03:41] =>  1:08
+CLOCK: [2022-08-26 Fri 00:14]--[2022-08-26 Fri 01:30] =>  1:16
+CLOCK: [2022-09-15 Thu 04:00]--[2022-09-15 Thu 06:33] =>  2:33
+CLOCK: [2022-09-15 Thu 14:17]--[2022-09-15 Thu 19:16] =>  4:59
+CLOCK: [2022-09-15 Thu 06:35]--[2022-09-15 Thu 07:41] =>  1:06
+CLOCK: [2022-09-15 Thu 21:28]--[2022-09-16 Fri 04:57] =>  7:29
+CLOCK: [2022-09-15 Thu 19:17]--[2022-09-15 Thu 19:27] =>  0:10
+:END:
+* The Uncertainty Relation
+* Angular Momentum
+:LOGBOOK:
+CLOCK: [2022-10-13 Thu 15:50]--[2022-10-13 Thu 17:52] =>  2:02
+CLOCK: [2022-10-14 Fri 21:16]--[2022-10-14 Fri 22:21] =>  1:05
+CLOCK: [2022-10-14 Fri 19:46]--[2022-10-14 Fri 20:47] =>  1:01
+:END:
+** TOSOLVE Problem 5.1
+:LOGBOOK:
+CLOCK: [2022-10-16 Sun 01:28]--[2022-10-16 Sun 01:57] =>  0:29
+:END:
+*(a)* *Show that for the eigenstates of \(L_{z}\) the expectation values of \(L_{+}\), \(L_{-}\), \(L_{x}\), and \(L_{y}\) vanish.*
+
+Let \(\psi_{l_{z}}\) be the eigenstate of \(L_{z}\) with eigenvalue \(l_{z}\). The expectation value \(\left \langle L_{x} \right \rangle_{\psi_{l_{z}}}\) is
+
+\begin{equation*}
+\left \langle L_{x}  \right \rangle_{\psi_{l_{z}}} \equiv \left( \psi_{l_{z}}, L_{x} \psi_{l_{z}} \right),
+\end{equation*}
+
+where \((\cdot, \cdot)\) is the scalar product. Solving the commutator relation \([L_{z}, L_{y}] = i \hbar L_{x}\) for \(L_{x}\) and substituting in the definition for \(\left \langle  L_{x} \right \rangle_{\psi_{l_{z}}}\)
+
+\begin{align*}
+\left \langle L_{x}  \right \rangle_{\psi_{l_{z}}}
+&= \dfrac{1}{i \hbar} \left( \psi_{l_{z}}, \left[ L_{z}, L_{y} \right] \psi_{l_{z}} \right) \\
+&= \dfrac{1}{i \hbar} \left( \psi_{l_{z}}, \left( L_{z} L_{y} - L_{y} L_{z} \right) \psi_{l_{z}} \right) \\
+&= \dfrac{1}{i \hbar} \left( \psi_{l_{z}}, L_{z} L_{y} \psi_{l_{z}} \right) - \dfrac{1}{i \hbar} \left( \psi_{l_{z}}, L_{y} L_{z} \psi_{l_{z}} \right) \\
+&= \dfrac{1}{i \hbar} \left( L_{z} \psi_{l_{z}}, L_{y} \psi_{l_{z}} \right) - \dfrac{1}{i \hbar} \left( \psi_{l_{z}}, L_{y} L_{z} \psi_{l_{z}} \right) \\
+&= \dfrac{l_{z}}{i \hbar} \left( \psi_{l_{z}}, L_{y} \psi_{l_{z}} \right) - \dfrac{l_{z}}{i \hbar} \left( \psi_{l_{z}}, L_{y} \psi_{l_{z}} \right) = 0.
+\end{align*}
+
+The expectation value \(\left \langle L_{y} \right \rangle_{\psi_{l_{z}}}\) is
+
+\begin{equation*}
+\left \langle L_{y}  \right \rangle_{\psi_{l_{z}}} \equiv \left( \psi_{l_{z}}, L_{y} \psi_{l_{z}} \right).
+\end{equation*}
+
+Solving the commutator relation \([L_{z}, L_{x}] = i \hbar L_{y}\) for \(L_{x}\) and substituting in the definition for \(\left \langle  L_{y} \right \rangle_{\psi_{l_{z}}}\)
+
+\begin{align*}
+\left \langle L_{y}  \right \rangle_{\psi_{l_{z}}}
+&= \dfrac{1}{i \hbar} \left( \psi_{l_{z}}, \left[ L_{z}, L_{x} \right] \psi_{l_{z}} \right) \\
+&= \dfrac{1}{i \hbar} \left( \psi_{l_{z}}, \left( L_{z} L_{x} - L_{x} L_{z} \right) \psi_{l_{z}} \right) \\
+&= \dfrac{1}{i \hbar} \left( \psi_{l_{z}}, L_{z} L_{x} \psi_{l_{z}} \right) - \dfrac{1}{i \hbar} \left( \psi_{l_{z}}, L_{x} L_{z} \psi_{l_{z}} \right) \\
+&= \dfrac{1}{i \hbar} \left( L_{z} \psi_{l_{z}}, L_{x} \psi_{l_{z}} \right) - \dfrac{1}{i \hbar} \left( \psi_{l_{z}}, L_{x} L_{z} \psi_{l_{z}} \right) \\
+&= \dfrac{l_{z}}{i \hbar} \left( \psi_{l_{z}}, L_{x} \psi_{l_{z}} \right) - \dfrac{l_{z}}{i \hbar} \left( \psi_{l_{z}}, L_{x} \psi_{l_{z}} \right) = 0.
+\end{align*}
+
+In writing \((\psi_{l_{z}}, L_{z} L_{i} \psi_{l_{z}})\) as \((L_{z}\psi_{l_{z}}, L_{i} \psi_{l_{z}})\) with \(i = x, y\), we have invoked the /Hermiticity of \(L_{z}\)/.
+
+Because \(L_{\pm} \equiv L_{x} \pm i L_{y}\), \(\left \langle L_{\pm}  \right \rangle_{\psi_{l_{z}}} = \left \langle L_x  \right \rangle_{\psi_{l_{z}}} \pm i \left \langle L_{y}  \right \rangle_{\psi_{l_{z}}}\).
+
+Because \(\left \langle L_x  \right \rangle_{\psi_{l_{z}}} = \left \langle L_y  \right \rangle_{\psi_{l_{z}}} = 0\), \(\left \langle L_{\pm}  \right \rangle = 0\).
+
+*(b)* *Determine the average square deviation \(\left(\Delta L_{i}\right)^{2}\) for the components of the angular momentum operator in the states \(Y_{ll}\) and check the uncertainty relation.*
+
+
+
+*(c)* *Show that for the eigenstates of \(L^{2}\) and \(L_{z}\) the expression \(\left(\Delta L_{x}\right)^{2} + \left(\Delta L_{y}\right)^{2}\) is minimal if \(m = \pm l\).*
+** TOSOLVE Problem 5.2
+:LOGBOOK:
+CLOCK: [2022-10-16 Sun 13:25]--[2022-10-16 Sun 15:14] =>  1:49
+CLOCK: [2022-10-16 Sun 12:10]--[2022-10-16 Sun 12:55] =>  0:45
+CLOCK: [2022-10-16 Sun 02:00]--[2022-10-16 Sun 02:39] =>  0:39
+:END:
+*Show that the spherical harmonics satisfy the completeness relation*
+
+\begin{equation*}
+\int_{0}^{\pi} d \vartheta \thinspace \sin \vartheta \int_{0}^{2 \pi} d \varphi \thinspace Y_{lm} \left( \vartheta, \varphi \right)^{*} Y_{l^{\prime} m^{\prime}} \left( \vartheta, \varphi \right) = \delta_{ll^{\prime}} \delta_{mm^{\prime}}.
+\end{equation*}
+
+*Use the addition theorem and the generating function for the Legendre polynomials*
+
+\begin{equation*}
+\dfrac{1}{\sqrt{1 - 2u \cos \vartheta + u^{2}}} = \sum_{l=0}^{\infty} u^{l} P_{l} \left( \cos \vartheta \right)
+\end{equation*}
+
+*and prove that your result has the defining properties of the \(\delta^{(2)}\) -function.*
+
+The /spherical harmonics/ emerge as the solution of the differential equation
+
+\begin{equation*}
+\left[ \dfrac{1}{\sin \vartheta} \dfrac{\partial}{\partial \vartheta} \left( \sin \vartheta \dfrac{\partial}{\partial \vartheta}  \right) - \dfrac{m^{2}}{\sin^{2} \vartheta} +  l \left( l + 1 \right)  \right] \Theta \left( \vartheta \right) = 0,
+\end{equation*}
+
+and are of the form
+
+\begin{equation*}
+Y_{lm} \left( \vartheta, \varphi \right) = \left( -1 \right)^{\left( m + \left \lvert m  \right \rvert \right)/2} \left[ \dfrac{2l + 1}{2 \pi} \dfrac{\left( l - \left \lvert m  \right \rvert \right)!}{\left( l + \left \lvert m  \right \rvert \right)!} \right]^{1/2}  P_{l \left \lvert m  \right \rvert} \left( \cos \vartheta \right) \exp \left \lbrace i m \varphi  \right \rbrace,
+\end{equation*}
+
+where for \(m \geq 0\) and \(\xi = \cos \vartheta\)
+
+\begin{equation*}
+P_{lm} \left( \xi \right) = \left( 1 - \xi^{2} \right)^{m/2} \dfrac{d^{m}}{d \xi^{m}} P_{l} \left( \xi \right) = \dfrac{\left( -1 \right)^{l}}{2^{l} l!} \sin^{m} \vartheta \dfrac{d^{l+m \left( \sin^{2l} \vartheta \right)}}{d \cos^{l + m} \vartheta}
+\end{equation*}
+
+are the /Legendre functions/ and
+
+\begin{equation*}
+P_{l} \left( \xi \right) = \dfrac{1}{2^{l} l!} \dfrac{d^{l}}{d \xi^{l}} \left( \xi^{2} - 1 \right)^{l} = \dfrac{\left( -1 \right)^{l}}{2^{l} l!} \dfrac{d^{l} \sin^{2l} \vartheta}{d \cos^{l} \vartheta}
+\end{equation*}
+
+are the /Legendre polynomials/. The \(P_{l} \left( \xi \right)\) are \(l\)-th order polynomials in \(\xi\), and the \(P_{lm} \left(\xi\right)\) are thus \(\left( l - m \right)\)-th order polynomials in \(\xi\), multplied by \(\left(\sin \vartheta \right)^m\). They have \(l-m\) nodes in the interval \(-1 < \xi < 1\).
+
+The Legendre functions satisfy the differential equation
+
+\begin{equation*}
+\left[ \left( 1 - \xi^{2} \right) \dfrac{d^{2}}{d \xi^{2}} - 2 \xi \dfrac{d}{d \xi} + l \left( l + 1 \right) - \dfrac{m^{2}}{1 - \xi^{2}}  \right] P_{lm} \left( \xi \right) = 0,
+\end{equation*}
+
+and have the properties
+
+\begin{equation*}
+P_{lm} \left( - \xi \right) = \left( -1 \right)^{l+m} P_{lm} \left( \xi \right),
+\end{equation*}
+
+and for \(m \geq 0\)
+
+\begin{equation*}
+\int_{-1}^{+1} d \xi P_{lm} \left( \xi \right) P_{l^{\prime} m} \left( \xi \right) = \dfrac{2}{2l + 1} \dfrac{\left( l + m \right)!}{\left( l - m \right)!} \delta_{l l^{\prime}}.
+\end{equation*}
+
+The Legendre polynomials fulfil the following recursion relations:
+
+\begin{equation*}
+\left( l + 1 \right) P_{l+1} = \left( 2l + 1 \right) \xi P_{l} - l P_{l-1},
+\end{equation*}
+
+\begin{equation*}
+\left( 1 - \xi^{2} \right) \dfrac{d P_{l}}{d \xi} = l \left( P_{l-1} - \xi P_{l} \right).
+\end{equation*}
+
+In particular,
+
+\begin{equation*}
+P_{0}  = 1, \quad P_{1} = \xi, \quad P_{2} = \dfrac{1}{2} \left( 3 \xi^{2} - 1 \right), \quad P_{3} = \dfrac{1}{2} \left( 5 \xi^3 - 3 \xi\right), \quad \dotso,
+\end{equation*}
+
+and
+
+\begin{equation*}
+P_{l0} \left( \xi \right) = P_{l} \left( \xi \right), \quad P_{ll} \left( \xi \right) = \left( 2l - 1 \right)!! \left( 1 - \xi^{2} \right)^{l/2}.
+\end{equation*}
+
+\(\left( 2l - 1 \right)!! \equiv \left( 2l - 1 \right) \left( 2l -3 \right) \dotso 1\).
+
+\begin{align*}
+&\int_{0}^{\pi} \sin \vartheta \int_{0}^{2 \pi} d \varphi Y_{lm}^{\ast} \left( \vartheta, \varphi \right) Y_{l^{\prime}m^{\prime}} \left( \vartheta, \varphi \right) \\
+&= \int_{0}^{\pi} d \vartheta \sin \vartheta
+\int_{0}^{2 \pi} d \varphi
+\left[ \left( -1 \right)^{\left( m + \left \lvert m  \right \rvert \right)/2} \left[ \dfrac{2l + 1}{2 \pi} \dfrac{\left( l - \left \lvert m  \right \rvert \right)!}{\left( l + \left \lvert m  \right \rvert \right)!} \right]^{1/2}  P_{l \left \lvert m  \right \rvert} \left( \cos \vartheta \right) \exp \left \lbrace - i m \varphi  \right \rbrace \right] \\
+&\times \left[ \left( -1 \right)^{\left( m^{\prime} + \left \lvert m^{\prime}  \right \rvert \right)/2} \left[ \dfrac{2l^{\prime} + 1}{2 \pi} \dfrac{\left( l^{\prime} - \left \lvert m^{\prime}  \right \rvert \right)!}{\left( l^{\prime} + \left \lvert m^{\prime}  \right \rvert \right)!} \right]^{1/2}  P_{l^{\prime} \left \lvert m^{\prime}  \right \rvert} \left( \cos \vartheta \right) \exp \left \lbrace i m^{\prime} \varphi  \right \rbrace \right] \\
+&= \left( -1 \right)^{(m + m^{\prime} + \left \lvert m  \right \rvert + \left \lvert m^{\prime}  \right \rvert)/2}
+\left \lbrace
+\left[ \dfrac{2l + 1}{2 \pi} \dfrac{\left(l - \left \lvert m  \right \rvert\right)!}{\left(l + \left \lvert m  \right \rvert\right)!} \right]^{1/2}
+\left[ \dfrac{2l^{\prime} + 1}{2 \pi} \dfrac{\left(l^{\prime} - \left \lvert m^{\prime}  \right \rvert\right)!}{\left(l^{\prime} + \left \lvert m^{\prime}  \right \rvert\right)!} \right]^{1/2}
+\right \rbrace \\
+&\times \int_{0}^{\pi} d \vartheta \sin \vartheta P_{l \left \lvert m  \right \rvert} \left( \cos \vartheta \right) P_{l^{\prime} \left \lvert m^{\prime}  \right \rvert} \left( \cos \vartheta \right)
+\int_{0}^{2 \pi} d\varphi \exp \left \lbrace i \left( m^{\prime} - m \right) \varphi  \right \rbrace.
+\end{align*}
+
+Focus on the integral \(\int_{0}^{2 \pi} d\varphi \exp \left \lbrace i \left( m^{\prime} - m \right) \varphi  \right \rbrace\). When \(m \neq  m^{\prime}\) it vanishes. When \(m = m^{\prime}\) it evaluates to \(2 \pi\). Thus we may write
+
+\begin{equation*}
+\int_{0}^{2 \pi} d\varphi \exp \left \lbrace i \left( m^{\prime} - m \right) \varphi  \right \rbrace = 2 \pi \delta_{m m^{\prime}}.
+\end{equation*}
+
+We need only concern ourselves with the case \(m = m^{\prime}\) since for \(m \neq m^{\prime}\) the integral vanishes anyway. With the subsitution \(\xi = \cos \vartheta\), and for \(m = m^{\prime}\), \(\int_{0}^{\pi} \sin \vartheta \int_{0}^{2 \pi} d \varphi Y_{lm}^{\ast} \left( \vartheta, \varphi \right) Y_{l^{\prime}m^{\prime}} \left( \vartheta, \varphi \right)\) reduces to
+
+\begin{align*}
+& \int_{0}^{\pi} \sin \vartheta \int_{0}^{2 \pi} d \varphi Y_{lm}^{\ast} \left( \vartheta, \varphi \right) Y_{l^{\prime}m^{\prime}} \left( \vartheta, \varphi \right) \\
+&=
+\left \lbrace
+\left[ \left( 2l + 1 \right) \dfrac{\left(l - \left \lvert m  \right \rvert\right)!}{\left(l + \left \lvert m  \right \rvert\right)!} \right]^{1/2}
+\left[ \left( 2l^{\prime} + 1 \right) \dfrac{\left(l^{\prime} - \left \lvert m  \right \rvert\right)!}{\left(l^{\prime} + \left \lvert m \right \rvert\right)!} \right]^{1/2}
+\right \rbrace \int_{0}^{1} d \xi P_{l \left \lvert m  \right \rvert} \left( \xi \right) P_{l^{\prime} \left \lvert m  \right \rvert} \left( \xi \right)
+\end{align*}
+
+Focus now on the integral \(\int_{0}^{1} d \xi P_{l \left \lvert m  \right \rvert} \left( \xi \right) P_{l^{\prime} \left \lvert m^{\prime}  \right \rvert} \left( \xi \right)\).  Notice that \(P_{lm} \left( \xi \right)\) and \(P_{l} \left( \xi \right)\) are even functions of \(\xi\). Thus
+
+\begin{equation*}
+\int_{0}^{1} d \xi P_{l \left \lvert m  \right \rvert} \left( \xi \right) P_{l^{\prime} \left \lvert m  \right \rvert} \left( \xi \right) =
+\dfrac{1}{2} \int_{-1}^{1} d \xi P_{l \left \lvert m  \right \rvert} \left( \xi \right) P_{l^{\prime} \left \lvert m  \right \rvert} \left( \xi \right).
+\end{equation*}
+
+Because, for \(m \geq 0\),
+
+\begin{equation*}
+\int_{-1}^{+1} d \xi P_{lm} \left( \xi \right) P_{l^{\prime} m} \left( \xi \right) = \dfrac{2}{2l + 1} \dfrac{\left( l + m \right)!}{\left( l - m \right)!} \delta_{l l^{\prime}},
+\end{equation*}
+
+we may write
+
+\begin{equation*}
+\int_{0}^{1} d \xi P_{l \left \lvert m  \right \rvert} \left( \xi \right) P_{l^{\prime} \left \lvert m  \right \rvert} \left( \xi \right) =
+\dfrac{1}{2} \int_{-1}^{1} d \xi P_{l \left \lvert m  \right \rvert} \left( \xi \right) P_{l^{\prime} \left \lvert m  \right \rvert} \left( \xi \right) = \dfrac{1}{2l + 1} \dfrac{\left( l + \left \lvert m  \right \rvert \right)!}{\left( l - \left \lvert m  \right \rvert \right)!} \delta_{l l^{\prime}}.
+\end{equation*}
+
+Once again, we need only concern ourselves with the case \(l = l^{\prime}\) since for \(l \neq l^{\prime}\) the integral vanishes anyway. For \(m = m^{\prime}\) and \(l = l^{\prime}\),
+
+\begin{align*}
+& \int_{0}^{\pi} \sin \vartheta \int_{0}^{2 \pi} d \varphi Y_{lm}^{\ast} \left( \vartheta, \varphi \right) Y_{l^{\prime}m^{\prime}} \left( \vartheta, \varphi \right) \\
+&=
+\left[ \left( 2l + 1 \right) \dfrac{\left(l - \left \lvert m  \right \rvert\right)!}{\left(l + \left \lvert m  \right \rvert\right)!} \right]
+\left[ \dfrac{1}{2l + 1} \dfrac{\left( l + \left \lvert m  \right \rvert \right)!}{\left( l - \left \lvert m  \right \rvert \right)!}
+ \right] = 1.
+\end{align*}
+
+Combining these results we write
+
+\begin{equation*}
+\int_{0}^{\pi} d \vartheta \thinspace \sin \vartheta \int_{0}^{2 \pi} d \varphi \thinspace Y_{lm} \left( \vartheta, \varphi \right)^{*} Y_{l^{\prime} m^{\prime}} \left( \vartheta, \varphi \right) = \delta_{ll^{\prime}} \delta_{mm^{\prime}},
+\end{equation*}
+
+which should satisfy the ask. Moving on now to the second ask, the /addition theorem/ of spherical harmonics states
+
+\begin{equation*}
+\sum_{m = - l}^{l} Y_{lm} \left( \vartheta, \varphi \right) Y_{lm}^{\ast} \left( \vartheta^{\prime}, \varphi^{\prime} \right) = \dfrac{2l + 1}{4 \pi} P_{l} \left( \cos \Theta \right),
+\end{equation*}
+
+where \(\cos \Theta = \cos \vartheta \cos \vartheta^{\prime} + \sin \vartheta \sin \vartheta^{\prime} \cos \left( \varphi - \varphi^{\prime} \right)\), and the generating function for the /Legendre polynomials/ is
+
+\begin{equation*}
+\dfrac{1}{\sqrt{1 - 2u \cos \vartheta + u^{2}}} = \sum_{l=0}^{\infty} u^{l} P_{l} \left( \cos \vartheta \right).
+\end{equation*}
+** SOLVED Problem 5.3
+CLOSED: [2022-10-17 Mon 13:57]
+#+begin_comment
+Thanks to Prof. Diptiman for help with this question.
+#+end_comment
+:LOGBOOK:
+CLOCK: [2022-10-17 Mon 13:26]--[2022-10-17 Mon 13:56] =>  0:30
+CLOCK: [2022-10-16 Sun 15:21]--[2022-10-16 Sun 17:50] =>  2:29
+:END:
+*Show that \((\psi, \mathbf{L}^{2} \psi) = 0\) also implies \(\left( \psi, L_{k} \psi \right)\) = 0.*
+
+Start with a rewrite that has \(\mathbf{L}^2 = \mathbf{L}_{x}^{2} + \mathbf{L}_{y}^{2} + \mathbf{L}_{z}^{2}\)
+
+\begin{align*}
+(\psi, \mathbf{L}^{2} \psi) = 0 &= (\psi, \mathbf{L}_{x}^{2} + \mathbf{L}_{y}^{2} + \mathbf{L}_{z}^{2} \psi) \\
+&= \left( \psi, \mathbf{L}_{x}^{2} \psi \right) + \left( \psi, \mathbf{L}_{y}^{2} \psi \right) + \left( \psi, \mathbf{L}_{z}^{2} \psi \right).
+\end{align*}
+
+Invoke Hermiticity of \(\mathbf{L}_{x}\), \(\mathbf{L}_{y}\), and \(\mathbf{L}_{z}\) to rewrite
+
+\begin{align*}
+(\psi, \mathbf{L}^{2} \psi) = 0 &= \left( \psi, \mathbf{L}_{x}^{2} \psi \right) + \left( \psi, \mathbf{L}_{y}^{2} \psi \right) + \left( \psi, \mathbf{L}_{z}^{2} \psi \right) \\
+&= \left( \mathbf{L}_{x} \psi, \mathbf{L}_{x} \psi \right) + \left( \mathbf{L}_{y} \psi, \mathbf{L}_{y} \psi \right) + \left( \mathbf{L}_{z} \psi, \mathbf{L}_{z} \psi \right) \\
+&\equiv \int d^{3} x \left \lvert \mathbf{L}_{x} \psi \left( \mathbf{x} \right)  \right \rvert^{2} + \int d^{3} x \left \lvert \mathbf{L}_{y} \psi \left( \mathbf{x} \right)  \right \rvert^{2} + \int d^{3} x \left \lvert \mathbf{L}_{z} \psi \left( \mathbf{x} \right)  \right \rvert^{2}.
+\end{align*}
+
+
+Because \(\left \lvert \mathbf{L}_{x} \psi \left( \mathbf{x} \right)  \right \rvert^{2} \geq 0\),  \(\int d^{3} x \left \lvert L_{k} \psi \left( \mathbf{x} \right)  \right \rvert^{2} \geq 0\). It must thus be the case that 
+
+\begin{equation*}
+\mathbf{L}_{x} \psi = \mathbf{L}_{y} \psi = \mathbf{L}_{z} \psi = \mathbf{0},
+\end{equation*}
+
+for \(\left( \psi, \mathbf{L}^{2} \psi \right) = 0\) to hold true and therefore necessarily
+
+\begin{equation*}
+\left( \psi, \mathbf{L}_{x} \psi \right) = \left( \psi, \mathbf{L}_{y} \psi \right) = \left( \psi, \mathbf{L}_{z} \psi \right) = 0,
+\end{equation*}
+
+which should satisfy the ask.
+** SOLVED Problem 5.4
+CLOSED: [2022-10-16 Sun 18:55]
+:LOGBOOK:
+CLOCK: [2022-10-16 Sun 17:50]--[2022-10-16 Sun 18:54] =>  1:04
+:END:
+*Show that the relation \(\left[ \mathbf{a} \cdot \mathbf{L}, \mathbf{b} \cdot \mathbf{L} \right] = i \hbar \left( \mathbf{a} \times \mathbf{b} \cdot \mathbf{L} \right)\) holds under the assumption that \(\mathbf{a}\) and \(\mathbf{b}\) commute with each other and with \(L\).*
+
+Turn on /Einstein summation convention/ and assume
+
+\begin{equation*}
+\left[ \mathbf{a}, \mathbf{b} \right] = 0, \quad \left[ \mathbf{a}, L \right] = 0, \quad \left[ \mathbf{b}, L \right] = 0,
+\end{equation*}
+
+i.e.,
+
+\begin{equation*}
+a_{i} b_{j} = b_{j} a_{i}, \quad a_{i} L_{j} = L_{j} a_{i}, \quad b_{i} L_{j} = L_{j} b_{i}.
+\end{equation*}
+
+
+\begin{align*}
+\left[ \mathbf{a} \cdot \mathbf{L}, \mathbf{b} \cdot \mathbf{L} \right] &= \left[ a_{i} L_{i}, b_{j} L_{j} \right] \\
+&= \left[ a_{i} L_{i}, b_{j} \right] L_{j} + b_{j} \left[ a_{i} L_{i}, L_{j} \right] \\
+&= a_{i} \left[ L_{i}, b_{j} \right] L_{j} + \left[ a_{i}, b_{j} \right] L_{i} L_{j} \\
+&+ b_{j} a_{i} \left[ L_{i}, L_{j} \right] + b_{j} \left[ a_{i}, L_{j} \right] L_{i} \\
+&= a_{i} L_{i} b_{j} L_{j} - a_{i} b_{j} L_{i} L_{j} + a_{i} b_{j} L_{i} L_{j} - b_{j} a_{i} L_{i} L_{j} \\
+&+ b_{j} a_{i} L_{i} L_{j} - b_{j} a_{i} L_{j} L_{i} + b_{j} a_{i} L_{j} L_{i} - b_{j} L_{j} a_{i} L_{i}.
+\end{align*}
+
+Use the assumed commutator relations and rewrite
+
+\begin{align*}
+\left[ \mathbf{a} \cdot \mathbf{L}, \mathbf{b} \cdot \mathbf{L} \right] 
+&= (a_{i}  b_{j} L_{i} L_{j} - a_{i} b_{j} L_{i} L_{j}) + (a_{i} b_{j} L_{i} L_{j} - a_{i} b_{j} L_{i} L_{j}) \\
+&+ ( a_{i} b_{j} L_{i} L_{j} - a_{i} b_{j} L_{j} L_{i}) + ( b_{j} a_{i} L_{j} L_{i} - b_{j} a_{i} L_{j} L_{i} ).
+\end{align*}
+
+All but the third term \(a_{i} b_{j} L_{i} L_{j} - a_{i} b_{j} L_{j} L_{i} = a_{i} b_{j} \left[ L_{i}, L_{j} \right]\) vanish. Use the commutator relation \([L_{i}, L_{j}] = i \hbar \epsilon_{ijk} L_{k}\) and rewrite
+
+\begin{align*}
+\left[ \mathbf{a} \cdot \mathbf{L}, \mathbf{b} \cdot \mathbf{L} \right] 
+&= a_{i} b_{j} [L_{i}, L_{j}] = i \hbar \epsilon_{ijk} a_{i} b_{j} L_{k}.
+\end{align*}
+
+Use the property \(\epsilon_{ijk} = - \epsilon_{ikj} = - \left( - \epsilon_{kij} \right) = \epsilon_{kij}\) of the Levi-Civita tensor and rewrite
+
+\begin{align*}
+\left[ \mathbf{a} \cdot \mathbf{L}, \mathbf{b} \cdot \mathbf{L} \right] 
+&= i \hbar \epsilon_{kij} a_{i} b_{j} L_{k}.
+\end{align*}
+
+Identify \(\epsilon_{kij} a_{i} b_{j} = \left(\mathbf{a} \times \mathbf{b} \right)_{k}\) and \(\left( \mathbf{a} \times \mathbf{b} \right)_{k} L_{k} = \left( \mathbf{a} \times \mathbf{b} \right)\cdot \mathbf{L}\) to finally obtain the rewrite
+
+\begin{align*}
+\left[ \mathbf{a} \cdot \mathbf{L}, \mathbf{b} \cdot \mathbf{L} \right] = i \hbar \left( \mathbf{a} \times \mathbf{b} \right)\cdot \mathbf{L},
+\end{align*}
+
+which should satisfy the ask.
+** SOLVED Problem 5.5
+CLOSED: [2022-10-16 Sun 22:16]
+:LOGBOOK:
+CLOCK: [2022-10-16 Sun 18:59]--[2022-10-16 Sun 22:12] =>  3:13
+:END:
+*Show the following:*
+*** (a)
+
+*For a vector operator* \(V \left( \mathbf{x}, \mathbf{p} \right)\),
+
+\begin{equation*}
+\left[ \mathbf{L}^{2}, \mathbf{V} \right] = 2 i \hbar \left( \mathbf{V} \times \mathbf{L} - i \hbar \mathbf{V} \right).
+\end{equation*}
+
+______________________________________________________________________
+
+Turn on /Einstein summation convention/ and start with a rewrite of the ask
+
+\begin{equation*}
+\left[ L_{k} L_{k}, V_{i} \right] = 2 i \hbar \left( \epsilon_{ijk} V_{j} L_{k} - i \hbar V_{i} \right),
+\end{equation*}
+
+to which we will try and arrive. Begin with
+
+\begin{equation*}
+\left[ L_{k}L_{k}, V_{i} \right] = L_{k} \left[ L_{k}, V_{i} \right] + \left[ L_{k}, V_{i} \right] L_{k}.
+\end{equation*}
+
+Because \(\mathbf{V}\) is a vector operator we have \([L_{k}, V_{i}] = i \hbar \epsilon_{kij} V_{j}\). Substitute in the previous expression and rewrite
+
+\begin{equation*}
+\left[ L_{k}L_{k}, V_{i} \right] = i \hbar \epsilon_{kij} L_{k} V_{j} + i \hbar \epsilon_{kij} V_{j} L_{k}.
+\end{equation*}
+
+Add and subtract \(i \hbar \epsilon_{kij} L_{k} V_{j}\) to rewrite
+
+\begin{align*}
+\left[ L_{k}L_{k}, V_{i} \right] &=
+i \hbar \epsilon_{kij} V_{j} L_{k} + i \hbar \epsilon_{kij} L_{k} V_{j} \\
+&= i \hbar \epsilon_{kij} \left[ L_{k}, V_{j} \right] + 2 i \hbar \epsilon_{kij} V_{j} L_{k} \\
+&= 2 i \hbar \epsilon_{ijk} V_{j} L_{k} + i \hbar \epsilon_{ijk} \left[ L_{k}, V_{j} \right].
+\end{align*}
+
+Substitute \([L_{k}, V_{j}] = i \hbar \epsilon_{kjl} V_{l}\) and rewrite
+
+\begin{align*}
+\left[ L_{k}L_{k}, V_{i} \right] &=
+2 i \hbar \epsilon_{ijk} V_{j} L_{k} + i^{2} \hbar^{2} \epsilon_{ijk} \epsilon_{kjl} V_{l} \\
+&= 2 i \hbar \epsilon_{ijk} V_{j} L_{k} - i^{2} \hbar^{2} \epsilon_{kji} \epsilon_{kjl} V_{l}.
+\end{align*}
+
+Use \(\epsilon_{kji} \epsilon_{jkl} = 2 \delta_{il}\) to rewrite
+
+\begin{align*}
+\left[ L_{k}L_{k}, V_{i} \right] &=
+2 i \hbar \epsilon_{ijk} V_{j} L_{k} - 2 i^{2} \hbar^{2} \delta_{il} V_{l}.
+\end{align*}
+
+Fire the Kronecker and factorize and rewrite
+
+\begin{equation*}
+\left[ L_{k}L_{k}, V_{i} \right] = 2 i \hbar \left( \epsilon_{ijk} V_{j} L_{k} - i \hbar V_{i} \right).
+\end{equation*}
+
+This should satisfy the ask.
+
+*** (b)
+
+*\([L_{i}, p_{j}] = i \hbar \epsilon_{ijk} p_{k}\).*
+
+______________________________________________________________________
+
+#+begin_comment
+I have done this already in HW4 of PH202. Copying it here.
+#+end_comment
+
+\begin{align*}
+[L_{i}, p_{j}] = [\left( \vec{r} \times \vec{p} \right)_{i}, p_{j}] \\
+&= [\epsilon_{ilk}r_{l}p_{k}, p_{j} ] \\
+&= \epsilon_{ilk} \left[ r_{l} p_{k}, p_{j} \right] \\
+&= \epsilon_{ilk} r_{l} \left[p_{k}, p_{j} \right] + \epsilon_{ilk} \left[ r_{l}, p_{j} \right] p_{k} \\
+&= \epsilon_{ijk} \left[ r_{j}, p_{j} \right] p_{k} \\
+&= i \hbar \epsilon_{ijk} p_{k}.
+\end{align*}
+** TOSOLVE Problem 5.6
+*** (a)
+
+*Find the eigenfunction \(\psi\) of \(\mathbf{L}^2\) and \(L_{x}\) with eigenvalues \(2 \hbar^{2}\) and \(\hbar\), respectively.* *(Hint: Represent the eigenfunctions of \(\mathbf{L}^{2}\) and \(L_{z}\) of interest in terms of Cartesian coordinates, and determine \(\psi\) by a rotation through \(\pi/2\).)*
+
+*** (b)
+
+*Express \(\psi\) as a linear combination of eigenfunctions of \(\mathbf{L}^{2}\) and \(L_{z}\).*
+** TOSOLVE Problem 5.7
+*Show that the eigenvalues \(l\) of the orbital angular momentum are non-negative integers by showing that the eigenvalues of \(L_{z}\) are integers.*
+*Hint: Express by means of the transformation*
+
+\begin{equation*}
+x_{i} = \sqrt{\dfrac{\hbar}{2 m \omega}} \left( a_{i} + a_{i}^{\dagger} \right),
+\end{equation*}
+
+\begin{equation*}
+p_{i} = - i \sqrt{\dfrac{\hbar m \omega}{2}} \left( a_{i} - a_{i}^{\dagger} \right)
+\end{equation*}
+
+*(with arbitrary \(m\) and \(\omega\)) the operator \(L_{z}\) in terms of creation and annihilation operators. Bring \(L_{z}\) by means of a linear transformation to new annihilation operators \(b_{1}\) and \(b_{2}\) into the form*
+
+\begin{equation*}
+L_{z} = \hbar \left( b_{2}^{\dagger} b_{2} - b_{1}^{\dagger} b_{1} \right).
+\end{equation*}
+
+*(See also Appendix C.)*
+* The Central Potential I
+* Motion in an Electromagnetic Field
+* Operators, Matrices, State Vectors
+:LOGBOOK:
+CLOCK: [2022-10-11 Tue 22:52]--[2022-10-12 Wed 01:25] =>  2:33
+CLOCK: [2022-10-12 Wed 03:13]--[2022-10-12 Wed 04:39] =>  1:26
+:END:
+** SOLVED Problem 8.1
+CLOSED: [2022-10-12 Wed 17:07]
+:LOGBOOK:
+CLOCK: [2022-10-12 Wed 16:52]--[2022-10-12 Wed 17:07] =>  0:15
+:END:
+
+*For Schrodinger operators A, B, and C, let [A,B] = C. What is the commutation relation for the corresponding operators in the Heisenberg representation?*
+
+By definition of the Heisenberg representation of operators:
+
+\begin{equation*}
+A_{H} = \exp \left \lbrace i H t / \hbar  \right \rbrace A \exp \left \lbrace - i H t / \hbar  \right \rbrace, \quad B_{H} = \exp \left \lbrace i H t / \hbar  \right \rbrace B \exp \left \lbrace - i H t / \hbar  \right \rbrace, \quad C_{H} = \exp \left \lbrace i H t / \hbar  \right \rbrace C \exp \left \lbrace - i H t / \hbar  \right \rbrace.
+\end{equation*}
+
+The corresponding commutation relation is
+
+\begin{align*}
+\left[ A_{H}, B_{H} \right] &\equiv A_{H} B_{H} - B_{H} A_{H} \\
+&= \exp \left \lbrace i H t / \hbar  \right \rbrace A \left(   \exp \left \lbrace - i H t / \hbar  \right \rbrace \exp \left \lbrace i H t / \hbar  \right \rbrace \right) B \exp \left \lbrace - i H t / \hbar  \right \rbrace \\
+&- \exp \left \lbrace i H t / \hbar  \right \rbrace B \left(   \exp \left \lbrace - i H t / \hbar  \right \rbrace \exp \left \lbrace i H t / \hbar  \right \rbrace \right) C \exp \left \lbrace - i H t / \hbar  \right \rbrace \\
+&= \exp \left \lbrace i H t / \hbar  \right \rbrace A B \exp \left \lbrace - i H t / \hbar  \right \rbrace - \exp \left \lbrace i H t / \hbar  \right \rbrace B A \exp \left \lbrace - i H t / \hbar  \right \rbrace \\
+&= \exp \left \lbrace i H t / \hbar  \right \rbrace \left(AB - BA\right) \exp \left \lbrace - i H t / \hbar  \right \rbrace = \exp \left \lbrace i H t / \hbar  \right \rbrace C \exp \left \lbrace - i H t / \hbar  \right \rbrace = C_{H}.
+\end{align*}
+** SOLVED Problem 8.2
+CLOSED: [2022-10-12 Wed 20:23]
+:LOGBOOK:
+CLOCK: [2022-10-12 Wed 19:02]--[2022-10-12 Wed 20:23] =>  1:21
+CLOCK: [2022-10-12 Wed 17:07]--[2022-10-12 Wed 18:35] =>  1:28
+:END:
+*Derive the Heisenberg equations of motion for the one-dimensional harmonic oscillator*
+
+\begin{equation*}
+H = \dfrac{1}{2m} p^2 + \dfrac{1}{2} m \omega^2 x^{2}
+\end{equation*}
+
+*Compare with the classical equations of motion. Calculate the time dependence of the operators \(a_H\), \(a^{\dagger}_{H}\), \(p_{H}\), \(x_{H}\). Determine \(a_{H}(t)\) from the equation of motion and directly by use of the Baker-Hausdorff formula.*
+
+The Heisenberg equation of motion for an operator \(A_{H}\) is
+
+\begin{equation*}
+\dfrac{d}{dt} A_{H} = \dfrac{i}{\hbar} \left[ H, A_{H} \right] + \dfrac{\partial}{\partial t} A_{H}.
+\end{equation*}
+
+With \(A_{H} \to x_{H}\),
+
+\begin{equation*}
+\dfrac{d}{dt} x_{H} = \dfrac{i}{\hbar} \left[ H, x_{H} \right]
+\end{equation*}
+
+Because commutator relations are invariant under a change of representation (Problem 8.1), we may write
+
+\begin{equation*}
+\left[ H, x_{H} \right] =  - \dfrac{i \hbar p_{H}}{m}.
+\end{equation*}
+
+Substitute in \(dx_{H}/dt = (i/\hbar) \left[ H, x_{H} \right]\) to obtain
+
+\begin{equation*}
+\dfrac{d}{dt} x_{H} = \dfrac{p_{H}}{m}.
+\end{equation*}
+
+With \(A_{H} \to p_{H}\),
+
+\begin{equation*}
+\dfrac{d}{dt} p_{H} = \dfrac{i}{\hbar} \left[ H, p_{H} \right]
+\end{equation*}
+
+Using the commutator relations
+
+\([H,p_{H}] = i \hbar \dfrac{\partial}{\partial x} V_{H} = i \hbar \dfrac{\partial}{\partial x} \left( \dfrac{1}{2} m \omega^{2} x_{H}^{2} \right) = i \hbar m \omega^{2} x_{H}\),
+
+\begin{equation*}
+\dfrac{d}{dt} p_{H} = - m \omega^{2} x_{H}.
+\end{equation*}
+
+The equations of motion reduce to the classical equations of motion with \(p_{H} \to p\) and \(x_{H} \to x\). Therefore, equations of motions are form invariant under a change of representation for the harmonic oscillator.
+
+Differentiate both equations with respect to time to obtain
+
+\begin{equation*}
+\ddot{x_{H}} = \dot{p_{H}}/m, \quad \ddot{p_{H}} = - m \omega^{2} \dot{x_{H}}.
+\end{equation*}
+
+Substitute \(\dot{p_{H}} = - m \omega^{2} x_{H}\) and \(\dot{x_{H}} = \dfrac{p_{H}}{m}\), to obtain
+
+\begin{equation*}
+\ddot{x_{H}} = - \omega^{2} x_{H},
+\end{equation*}
+
+\begin{equation*}
+\ddot{p_{H}} = - \omega^{2} p_{H}.
+\end{equation*}
+
+The general solutions are of the form
+
+\begin{equation*}
+x_{H} = A \exp \left \lbrace i \omega t  \right \rbrace + B \exp \left \lbrace - i \omega t  \right \rbrace,
+\end{equation*}
+
+\begin{equation*}
+p_{H} = C \exp \left \lbrace i \omega t  \right \rbrace + D \exp \left \lbrace - i \omega t  \right \rbrace.
+\end{equation*}
+
+Demanding \(\dot{p_{H}} = - m \omega^{2} x_{H}\), \(C = i m \omega A\), and \(\quad D = - i m \omega B\). Subtituting in the previous equations
+
+\begin{equation*}
+x_{H}(t) = A \exp \left \lbrace i \omega t  \right \rbrace + B \exp \left \lbrace - i \omega t  \right \rbrace,
+\end{equation*}
+
+\begin{equation*}
+p_{H}(t) = i m \omega A \exp \left \lbrace i \omega t  \right \rbrace - i m \omega B \exp \left \lbrace - i \omega t  \right \rbrace.
+\end{equation*}
+
+Further,
+
+\begin{equation*}
+x_{H}(t=0) = A + B,
+\end{equation*}
+
+\begin{equation*}
+p_{H}(t=0) = i m \omega \left( A - B \right).
+\end{equation*}
+
+Solving for \(A\) and \(B\)
+
+\begin{equation*}
+A = \dfrac{1}{2} \left(x_{H}(0) + \dfrac{p_{H}(0)}{i m \omega}\right), \quad B = \dfrac{1}{2} \left(x_{H}(0) - \dfrac{p_{H}(0)}{i m \omega}\right).
+\end{equation*}
+
+Upon substitution and simplification (by use of Euler's formula), the position and momentum operators for the harmonic oscillator in the Heisenberg picture become
+
+\begin{equation*}
+x_{H}(t) = x_{H}(0) \cos \left( \omega t \right) + \dfrac{p_{H}(0)}{m \omega} \sin \left( \omega t \right),
+\end{equation*}
+
+\begin{equation*}
+p_{H}(t) = p_{H}(0) \cos \left( \omega t \right) - m \omega x_{H}(0) \sin \left( \omega t \right).
+\end{equation*}
+
+We have
+
+\begin{equation*}
+a \equiv \dfrac{m \omega x + i p}{\sqrt{2 m \omega \hbar}}, \quad a \equiv \dfrac{m \omega x - i p}{\sqrt{2 m \omega \hbar}}.
+\end{equation*}
+
+Using
+
+\begin{align*}
+[H,a_{H}] &= [ \hbar \omega \left( a^{\dagger}_{H} a_{H} + 1/2 \right), a_{H}] \\
+&= \hbar \omega [a^{\dagger}_{H} a_{H}, a_{H}] \\
+&= \hbar \omega \left( a^{\dagger} \left[ a_{H}, a_{H} \right] + \left[ a^{\dagger}_{H}, a_{H} \right] a_{H} \right) \\
+&= \hbar \omega \left( \left[ a^{\dagger}_{H}, a_{H} \right] a_{H} \right) = - \hbar \omega a_{H},
+\end{align*}
+
+in the Heisenberg equation
+
+\begin{equation*}
+\dot{a_{H}} = \dfrac{i}{\hbar} \left[ H, a_{H} \right],
+\end{equation*}
+
+\begin{equation*}
+\dot{a_{H}} = -i \omega a_{H}.
+\end{equation*}
+
+We have used the creation/annihilation operator representation of the Hamiltonian operator \(H = \hbar \omega \left( a a^{\dagger} + 1/2  \right) = \hbar \omega \left( a_{H} a_{H}^{\dagger} + 1/2  \right)\) in the second step and the commutator relation \([a_{H}, a_{H}^{\dagger}] = \exp \left \lbrace i H t / \hbar  \right \rbrace [a, a^{\dagger}] \exp \left \lbrace - i H t / \hbar  \right \rbrace= 1\) in the pen-ultimate step.
+
+In an analogous manner we may write
+
+\begin{equation*}
+\dot{a_{H}^{\dagger}} = i \omega a_{H}^{\dagger}.
+\end{equation*}
+
+The time-dependence of \(a_{H}\) and \(a_{H}^{\dagger}\) is given by the solutions of these equations which are:
+
+\begin{equation*}
+a_{H}(t) = a_{H}(0)\exp \left \lbrace -i \omega t  \right \rbrace,
+\end{equation*}
+
+\begin{equation*}
+a_{H}^{\dagger}(t) = a_{H}^{\dagger}(0)\exp \left \lbrace i \omega t  \right \rbrace.
+\end{equation*}
+
+Alternatively, we may arrive at this result by using the Baker-Hausdorff Identity,
+
+\begin{equation*}
+\exp \left \lbrace A  \right \rbrace B \exp \left \lbrace -A  \right \rbrace = B + [A, B] + \dfrac{1}{2!} \left[ A , \left[ A, B \right] \right] + \dotso .
+\end{equation*}
+
+With \(A \to i H t / \hbar\) and \(B \to a\),
+
+\begin{align*}
+a_{H}(t) &\equiv \exp \left \lbrace -i H t / \hbar  \right \rbrace a \exp \left \lbrace - i H t / \hbar  \right \rbrace \\
+&= a + \dfrac{it}{\hbar} [H, a] + \left(\dfrac{it}{\hbar}\right)^{2} \dfrac{1}{2!} \left[ H, \left[ H, a \right] \right] + \dotso 
+\end{align*}
+
+Using \([H,a] = - \hbar \omega a\),
+
+\begin{align*}
+a_{H} &= a - it \omega a + \dfrac{\left( i t \omega \right)^{2}}{2!} a + \dotso \\
+&= a \left( 1 + (- it \omega) + \dfrac{\left(- i t \omega \right)^{2}}{2!} \right) + \dotso = a \exp \left \lbrace - i \omega t  \right \rbrace \\
+&= a_{H}(0) \exp \left \lbrace - i \omega t  \right \rbrace.
+\end{align*}
+
+Similarly,
+
+\begin{align*}
+a_{H}^{\dagger}(t) &\equiv \exp \left \lbrace -i H t / \hbar  \right \rbrace a^{\dagger} \exp \left \lbrace - i H t / \hbar  \right \rbrace \\
+&= a^{\dagger} + \dfrac{it}{\hbar} [H, a^{\dagger}] + \left(\dfrac{it}{\hbar}\right)^{2} \dfrac{1}{2!} \left[ H, \left[ H, a^{\dagger} \right] \right] + \dotso 
+\end{align*}
+
+Using \([H,a^{\dagger}] = \hbar \omega a^{\dagger}\),
+
+\begin{align*}
+a_{H}^{\dagger} &= a^{\dagger} + it \omega a + \dfrac{\left( i t \omega \right)^{2}}{2!} a + \dotso \\
+&= a^{\dagger} \left( 1 + (it \omega) + \dfrac{\left(i t \omega \right)^{2}}{2!} \right) + \dotso = a^{\dagger} \exp \left \lbrace  i \omega t  \right \rbrace \\
+&= a_{H}^{\dagger}(0) \exp \left \lbrace i \omega t  \right \rbrace.
+\end{align*}
+** TOSOLVE Problem 8.3
+*A charged particle moves in a homogeneous electric field described by the potential \(\varphi(x) = - F x\). Determine the wave function for energy \(E\) in the momentum representation. The transformation to coordinate space yields the integral representation of the Airy functions.*
+** TOSOLVE Problem 8.4
+
+*Calculate the matrix representation of the angular momentum operators \(L_{x}\), \(L_{y}\), \(L_{z}\), and \(L^{2}\) for the values \(l=1/2, \thinspace 1, \thinspace 3/2, \thinspace \quad \text{and} \quad  2\) by using the formulae*
+
+\begin{equation*}
+\left \langle l^{\prime}, m^{\prime} \vert L^{2} \vert l, m  \right \rangle = \hbar^{2} \delta_{ll^{\prime} \delta_{mm^{\prime}}} l(l+1) \thinspace ,
+\end{equation*}
+
+\begin{equation*}
+\left \langle l^{\prime}, m^{\prime} \vert L_{z} \vert l, m \right \rangle = \hbar \delta_{ll^{\prime}} \delta_{mm^{\prime}} m \thinspace,
+\end{equation*}
+
+\begin{equation*}
+\left \langle l^{\prime}, m^{\prime} \vert L_{-} \vert l, m  \right \rangle = \hbar \sqrt{\left( l-m+1 \right) \left( l + m \right)} \delta_{ll^{\prime}} \delta_{m-1, m^{\prime}} \thinspace,
+\end{equation*}
+
+\begin{equation*}
+\left \langle l^{\prime}, m^{\prime} \vert L_{+} \vert l, m  \right \rangle = \hbar \sqrt{\left( l + m + 1 \right) \left( l - m \right)} \delta_{ll^{\prime}} \delta_{m+1,m^{\prime}} \thinspace ,
+\end{equation*}
+
+\begin{equation*}
+-l \leq m \leq l.
+\end{equation*}
+** TOSOLVE Problem 8.5
+
+*Show* \([H, L] = 0\),  \([H,P] = 0\), *where*
+
+\begin{equation*}
+H = \sum_{n=1}^{N} \dfrac{p_{n}^{2}}{2 m_{n}} + \dfrac{1}{2} \sum_{n,n^{\prime}} V(\left \lvert x_{n} - x_{n^{\prime}} \right \rvert), \mathbf{L} = \sum_{n=1}^{N} x_{n} \times p_{n}, \thinspace \mathbf{P} = \sum_{n=1}^{N} p_{n} \thinspace,
+\end{equation*}
+
+*(a) by evaluating the commutators.*
+*(b) by using that \(L\) and \(P\) generate rotations and translations respectively.*
+* Spin
+* Addition of Angular Momenta
+* Approximation Methods for Stationary States
+* Relativistic Corrections
+* Several-Electron Atoms
+* The Zeeman Effect and the Stark Effect
+* Molecules
+* Time Dependent Phenomena
+* The Central Potential II
+* Scattering Theory
+* Supersymmetric Quantum Theory
+* State and Measurement in Quantum Mechanics
+* Second Quantization
+* Spin-1/2 Fermions
+* Bosons
+* Correlation Functions, Scattering, and Response
+* Relativistic Wave Equations and their Derivation
+* Lorentz Transformations and Covariance of the Dirac Equation
+* Orbital Angular Momentum and Spin
+* The Coulomb Potential
+* The Foldy-Wouthuysen Transformation and Relativistic Corrections
+* Physical Interpretation of the Solutions to the Dirac Equation
+* Symmetries and Further Properties of the Dirac Equation
+* Quantization of Relativistic Fields
+* Free Fields
+* Quantization of the Radiation Field
+* Interacting Fields, Quantum Electrodynamics
+
+
