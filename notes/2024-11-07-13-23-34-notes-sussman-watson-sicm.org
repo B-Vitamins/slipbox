@@ -1,0 +1,788 @@
+:PROPERTIES:
+:ID:       9ef66780-b928-4e3c-8ce0-00bc23d01cef
+:END:
+#+TITLE: Notes on Structure and Interpretation of Classical Mechanics by Sussman and Watson
+#+FILETAGS: :fleeting:mechanics:sussman:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+#+BEGIN: clocktable :maxlevel 2 :scope nil :emphasize nil
+#+CAPTION: Clock summary at [2024-11-07 Thu 13:26]
+| Headline                         |    Time |      |
+|----------------------------------+---------+------|
+| *Total time*                     | *14:22* |      |
+|----------------------------------+---------+------|
+| Lagrangian Mechanics             |    7:58 |      |
+| \_  The Euler-Lagrange Equations |         | 0:39 |
+| Rigid Bodies                     |    5:41 |      |
+| \_  Problems                     |         | 2:08 |
+| Hamiltonian Mechanics            |    0:43 |      |
+| \_  Hamilton's Equations         |         | 0:43 |
+#+END:
+* Lagrangian Mechanics
+:LOGBOOK:
+CLOCK: [2022-10-29 Sat 04:08]--[2022-10-29 Sat 06:20] =>  2:12
+CLOCK: [2022-10-28 Fri 21:02]--[2022-10-29 Sat 00:50] =>  3:48
+CLOCK: [2022-10-29 Sat 02:39]--[2022-10-29 Sat 03:58] =>  1:19
+:END:
+** Configuration Spaces
+Specifying the position of all the constituent particles of a system specifies the /configuration/ of the system. The set of all configurations of the system that can be assumed is called the /configuration space/ of the system. The /dimension/ of the configuration space is the smallest number of parameters that have to be given to completely specify a configuration. For systems with integrable constraints, the dimension of the configuration space is also called the /degrees of freedom/ of the system.
+** Generalized Coordinates
+The parameters used to specify the configuration of the system are called the /generalized coordinates/. In general, the configurations form a space $M$ of some dimension $n$. The $n$-dimensional configuration space can be parameterized by choosing a coordinate function $\chi$ that maps elements of the configuration space to $n$-tuples of real numbers. If there is more than one dimension, the function $\chi$ is a tuple of $n$ independent coordinate functions $\chi^{i}$, $i = 0, \thinspace, \dotso, n-1$, where each $\chi^{i}$ is a real-valued function defined on some region of the configuration space. For a given configuration $m$ in the configuration space $M$ the values $\chi^{i}(m)$ of the coordinate functions are the generalized coordinates of the configuration.
+
+The motion of the system can be described by a /configuration path/ $\gamma$ mapping time to configuration-space points. Corresponding to the configuration path is a /coordinate path/ $q = \chi \circ \gamma$ mapping time to tuples of generalized coordinates. If there is more are more than one degrees of freedom $q$ is a tuple of component coordinate path functions $q^{i} = \chi^{i} \circ \gamma$.
+
+The derivative $Dq$ of the coordinate path is a function that gives the rate of change of the configuration coordinates at a given time: $D q(t) = \left( D q^{0} (t), \dotso, D q^{n-1} (t) \right)$. The rate of change of a generalized coordinate is called a /generalized velocity/.
+** The Principle of Stationary Action
+Let $q = \chi \circ \gamma$ be a coordinate path in the configuration space; $q(t)$ are the coordinates of the configuration at time $t$. Then the action of a segment of the path in the time interval from $t_{1}$ to $t_{2}$ is
+
+\begin{equation*}
+S \left[ q \right](t_{1}, t_{2}) = \int_{t_{1}}^{t_{2}} F \left[ q \right],
+\end{equation*}
+
+where $F \left[ q \right]$ is a function of time that measures some local property of the path (its value and as many of its derivatives as necessary).
+
+$F \left[ q \right]$ may be written as a composition of two functions
+
+\begin{equation*}
+F \left[ q \right] = L \circ \Gamma \left[ q \right],
+\end{equation*}
+
+where $\Gamma$ takes the coordinate path and produces a function of time whose value is an ordered tuple containing the time, the coordinates at that time, the rate of change of the coordinates at that time, and the values of higher derivatives of the coordinates evaluated at that time. For the path $q$ and time $t$:
+
+\begin{equation*}
+\Gamma \left[ q \right] (t) = \left( t, q(t), D q(t), \dotso \right).
+\end{equation*}
+
+The function $L$ takes the tuple produced by $\Gamma$ and computes a real-valued local property of the path: it dependsd on a finite number of components of the local tuple. It is called the /Lagrangian/ for the system. The resulting action
+
+\begin{equation*}
+S \left[ q \right](t_{1}, t_{2}) = \int_{t_{1}}^{t_{2}} L \circ \Gamma \left[ q \right],
+\end{equation*}
+
+is called the /Lagrangian action/.
+
+$\Gamma$ extracts a local description of the path from the path function. $L$ measures some property of a local description.
+
+The /principle of stationary action/ asserts that for each dynamical system there exists a Lagrangian such that a realizable path connecting the configurations at two times $t_{1}$ and $t_{2}$ is distinguished from all conceivable paths by the fact that the action $S \left[ q \right] (t_{1}, t_{2})$ is stationary with respect to variations of the path. For Lagrangians that depend only on the configuration and rate of change of configuration, the variations are restricted to those that preserve the configurations at $t_{1}$ and $t_{2}$.
+** Computing Actions
+Euler and Lagrange discovered that for a free particle the time integral of the kinetic energy over the particle's actual path is smaller than the same integral along any alternative path between the same points: a free particle moves according to the principle of stationary action, provided we take the Lagrangian to be the kinetic energy. The kinetic energy for a particle of mass $m$ and velocity $\vec{v}$ is $\frac{1}{2} m v^{2}$, where $v$ is the magnitude of $\vec{v}$. The generalized coordinates are chosen as a rectangular coordinate system. Following Euler and Lagrange, the Lagrangian for the free particle is
+
+\begin{equation*}
+L \left( t, x, v \right) = \dfrac{1}{2} m \left( v \cdot v \right),
+\end{equation*}
+
+where the formal parameter $x$ names a tuple of components of the position with respect to a given rectangular coordinate system, and the formal parameter $v$ names a tuple of velocity components.
+
+#+NAME: Free particle Lagrangian
+#+begin_src scheme
+  (define ((L-free-particle mass) local)
+    (let ((v (velocity local)))
+      (* 1/2 mass (dot-product v v))))
+#+end_src
+
+Let $q$ denote a coordinate path function that maps time to position components:
+
+\begin{equation*}
+q(t) = \left( x \left( t \right), y \left( t \right), z \left( t \right) \right).
+\end{equation*}
+
+#+NAME: Coordinate path function
+#+begin_src scheme
+  (define q
+    (up (literal-function 'x)
+        (literal-function 'y)
+        (literal-function 'z)))
+#+end_src
+
+~literal-function~ makes a procedure that represents a function of one argument that has no known properties other than the given symbolic name.
+
+#+NAME: q
+#+begin_src scheme
+  (q 't)
+  (up (x t) (y t) (z t))
+#+end_src
+
+Let $Dq$ denote the derivative of the coordinate path - a function that maps time to velocity components:
+
+\begin{equation*}
+D q(t) = \left( D x \left( t \right), D y \left( t \right), D z \left( t \right) \right).
+\end{equation*}
+
+#+NAME: Dq
+#+begin_src scheme
+  ((D q) 't)
+  (up ((D x) t) ((D y) t) ((D z) t))
+#+end_src
+
+Let $\Gamma$ denote a function that takes a coordinate path and returns a function of time that gives the local tuple $(t, q(t), Dq(t), \dotso)$. ~Gamma~ implements $\Gamma$.
+
+#+NAME: Gamma
+#+begin_src scheme
+  ((Gamma q) 't)
+  (up t
+      (up (x t) (y t) (z t))
+      (up ((D x) t) ((D y) t) ((D z) t)))
+#+end_src
+
+The composition $L \circ \Gamma$ is a function of time that returns the value of the Lagrangian for this point on the path:
+
+#+NAME: Lagrangian composed with Gamma
+#+begin_src scheme
+  ((compose (L-free-particle 'm) (Gamma q)) 't)
+  (+ (* 1/2 m (expt ((D x) t) 2))
+     (* 1/2 m (expt ((D y) t) 2))
+     (* 1/2 m (expt ((D z) t) 2)))
+#+end_src
+
+We can compute the Lagrangian action from time $t_{1}$ to time $t_{2}$ by implementing:
+
+\begin{equation*}
+S \left[ q \right](t_{1}, t_{2}) = \int_{t_{1}}^{t_{2}} L \circ \Gamma \left[ q \right].
+\end{equation*}
+
+#+NAME: Lagrangian action
+#+begin_src scheme
+  (define (Lagrangian-action L q t1 t2)
+    (definite-integral (compose L (Gamma q)) t1 t2))
+#+end_src
+
+Notice that the definition of ~Lagrangian-action~ does not depend on any particular set of coordinates or even the dimension of the configuration space. The method of computing the action from the coordinate representation of a Lagrangian and a coordinate path does not depend on the coordinate system.
+
+As an example, consider a particle moving at uniform speed along a straight line $t \mapsto \left( 4t + 7, 3t + 5, 2t + 1\right)$. This path may be represented as a procedure:
+
+#+NAME: An example path
+#+begin_src scheme
+  (define (test-path t)
+    (up (+ (* 4 t) 7)
+        (+ (* 3 t) 5)
+        (+ (* 2 t) 1)))
+#+end_src
+
+For a particle of mass $3$, we obtain the action between $t = 0$ and $t = 10$ as:
+
+#+NAME: Computing the Lagrangian
+#+begin_src scheme
+(Lagrangian-action (L-free-particle 3.0) test-path 0.0 10.0)
+#+end_src
+*** Paths of minimum action
+Let $q$ be a straight-line test path with action $S \left[ q \right](t_{1}, t_{2})$. Let $q + \epsilon \eta$ be a nearby path, obtained from $q$ by adding a path variation $\eta$ scaled by the real parameter $\epsilon$. The action on the varied path is $S \left[ q + \epsilon \eta \right](t_{1}, t_{2})$. Euler and Lagrange found that $S \left[ q + \epsilon \eta \right](t_{1}, t_{2}) > S \left[ q \right](t_{1}, t_{2})$ for any $\eta$ that is zero at the endpoints and for any small nonzero $\epsilon$. To make a function $\eta$ that is zero at the endpoints, given a sufficiently well-behaved function $\nu$, we can use $\eta(t) = (t-t_{1})(t-t_{2})\nu(t)$.
+
+#+NAME: Path variation
+#+begin_src scheme
+  (define ((make-eta nu t1 t2) t)
+    (* (-t t1) (-t t2) (nu t)))
+#+end_src
+
+#+NAME: Action over a path variation
+#+begin_src scheme
+  (define ((varied-free-particle-action mass q nu t1 t2) eps)
+    (let ((eta (make-eta nu t1 t2)))
+      (Lagrangian-action (L-free-particle mass)
+                         (+ q (* eps eta))
+                         t1
+                         t2)))
+#+end_src
+
+As an example, consider $\nu(t) = (\sin t, \cos t, t^{2})$ and $\epsilon = 0.001$. We compute the action over this path variation as:
+
+#+NAME: Example of computing action over a path variation
+#+begin_src scheme
+  ((varied-free-particle-action 3.0 test-path
+                                (up sin cos square)
+                                0.0 10.0)
+   0.001)
+#+end_src
+
+We can compute the value of $\epsilon$ for which the action is minimized. We search between say $-2$ and $-1$:
+
+#+NAME: Computing the parameter governing the path variation
+#+begin_src scheme
+  (minimize
+   (varied-free-particle-action 3.0 test-path
+                                (up sin cos square)
+                                0.0 10.0)
+   -2.0 1.0)
+#+end_src
+
+*** Finding trajectories that minimize the action
+** The Euler-Lagrange Equations
+*** Lagrange equations
+If $L$ is a Lagrangian for a system that depends on time, coordinates, and velocities, and if $q$ is a coordinate path for which the action $S \left[ q \right](t_{1}, t_{2})$ is stationary (with respect to any variation in the path that keeps the endpoints of the path fixed), then
+
+\begin{equation*}
+D \left( \partial_{2} L \circ \Gamma \left[ q \right] \right) - \partial_{1} L \circ \Gamma \left[ q \right] = 0.
+\end{equation*}
+
+The function $\partial_{2} L$ maps a local tuple to a structure whose components are the derivatives of $L$ with respect to each component of the generalized velocity. The function $\Gamma \left[ q \right]$ maps time to the local tuple: $\Gamma \left[ q \right](t) = \left( t, q(t), D q(t), \dotso \right)$. The compositions $\partial_{1} \circ \Gamma \left[ q \right](t)$ and $\partial_{2} L \circ \Gamma \left[ q \right]$ are functions of one argument, time. Given a Lagrangian, the Lagrange equations form a system of ordinary differential equations that must be satisfied by realizable paths.
+*** Derivation of the Lagrange Equations
+The /variation/ $\delta_{\eta} f \left[ q \right]$ of the function $f$ on the path $q$ is defined by
+
+\begin{equation*}
+\delta_{\eta} f \left[ q \right] = \lim_{\epsilon \to 0} \left( \dfrac{f \left[ q + \epsilon \eta \right] - f \left[ q \right]}{\epsilon} \right).
+\end{equation*}
+
+We wish to show
+
+\begin{equation*}
+\delta_{\eta} S \left[ q \right] \left( t_{1}, t_{2} \right) = 0 \Longrightarrow D \left( \partial_{2} L \circ \Gamma \left[ q \right] \right) - \partial_{1} L \circ \Gamma \left[ q \right] = 0.
+\end{equation*}
+
+**** A Direct Derivation
+**** The Variation Operator
+**** A Derivation with the Variation Operator
+**** Harmonic oscillator
+:LOGBOOK:
+CLOCK: [2022-10-29 Sat 13:32]--[2022-10-29 Sat 13:49] =>  0:17
+:END:
+A Lagrangian for the harmonic oscillator is
+
+\begin{equation*}
+L \left( t, x, v \right) = \frac{1}{2} m v^{2} - \dfrac{1}{2} k x^{2}.
+\end{equation*}
+
+\begin{equation*}
+\partial_{1} L \left( t, x, v \right) = - k x \quad \text{and} \quad \partial_{2} L \left( t, x, v \right) = m v.
+\end{equation*}
+
+For a configuration path $y$
+
+\begin{equation*}
+\Gamma \left[ y \right](t) = \left( t, y(t), D y (t) \right).
+\end{equation*}
+
+Therefore terms of the Lagrange equation
+
+\begin{equation*}
+\left(\partial_{1} L \circ \Gamma \left[ y \right]\right)(t) = - k y (t),
+\end{equation*}
+
+\begin{equation*}
+\left( \partial_{2} L \circ \Gamma \left[ y \right] \right)(t) = m D y (t),
+\end{equation*}
+
+\begin{equation*}
+D \left( \partial_{2} L \circ \Gamma \left[ y \right] \right)(t) = m D^{2} y(t),
+\end{equation*}
+
+combine to yield the equation of motion of the harmonic oscillator.
+
+\begin{equation*}
+m D^{2} y(t) + k y(t) = 0.
+\end{equation*}
+
+**** Orbital motion
+:LOGBOOK:
+CLOCK: [2022-10-29 Sat 13:49]--[2022-10-29 Sat 14:11] =>  0:22
+:END:
+The /Kepler problem/ refers to the two-dimensional motion of a particle of mass $m$ orbiting a fixed center of attraction, with gravitational potential energy $-\mu/r$, where $r$ is the distance to the center of attraction. A Lagrangian is
+
+\begin{equation*}
+L \left( t; \xi, \eta; v_{\xi}, v_{\eta} \right) = \dfrac{1}{2} m \left( v_{\xi}^{2} + v_{\eta}^{2} \right) + \dfrac{\mu}{\sqrt{\xi^{2} + \eta^{2}}},
+\end{equation*}
+
+where $\xi$ and $\eta$ are formal parameters for rectangular coordinates of the particle, and $v_{\xi}$ and $v_{\eta}$ are formal parameters for corresponding rectangular velocity components. Then
+
+\begin{align*}
+\partial_{1} L \left( t; \xi, \eta; v_{\xi}, v_{\eta} \right) &= \left[ \partial_{1,0} L \left( t; \xi, \eta; v_{\xi}, v_{\eta} \right), \partial_{1,1} L \left( t; \xi, \eta; v_{\xi}, v_{\eta} \right) \right] \\
+&= \left[ \dfrac{- \mu \xi}{\left( \xi^{2} + \eta^{2} \right)^{3/2}}, \thinspace \dfrac{- \mu \eta}{\left( \xi^{2} + \eta^{2} \right)^{3/2}} \right].
+\end{align*}
+
+Similarly
+
+\begin{equation*}
+\partial_{2} L \left( t; \xi, \eta; v_{\xi}, v_{\eta} \right) = \left[ m v_{\xi}, m v_{\eta} \right].
+\end{equation*}
+
+Now suppose we have a configuration path $q = \left( x, y \right)$ so that the coordinate tuple at time $t$ is $q(t) = \left( x(t), y(t) \right)$. The initial segment of the local tuple at time $t$ is
+
+\begin{equation*}
+\Gamma \left[ q \right](t) = \left( t; x(t), y(t); D x(t), D y(t) \right).
+\end{equation*}
+
+So
+
+\begin{equation*}
+\left( \partial_{1} L \circ \Gamma \left[ q \right] \right)(t) = \left[ \dfrac{- \mu x(t)}{\left( \left( x(t) \right)^{2} + \left( y(t) \right)^{2} \right)^{3/2}}, \dfrac{- \mu y (t)}{\left( \left( x(t) \right)^{3/2} + \left( y(t) \right)^{2} \right)^{3/2}} \right],
+\end{equation*}
+
+\begin{equation*}
+\left( \partial_{2} L \circ \Gamma \left[ q \right] \right)(t) = \left[ m D x(t), m D y(t) \right],
+\end{equation*}
+
+and
+
+\begin{equation*}
+D \left( \partial_{2} L \circ \Gamma \left[ q \right] \right)(t) = \left[ m D^{2} x (t), m D^{2} y(t) \right].
+\end{equation*}
+
+The component Lagrange equations at time $t$ are
+
+\begin{equation*}
+m D^{2} x(t) + \dfrac{\mu x(t)}{\left( \left( x(t) \right)^{2} + \left( y(t) \right)^{2} \right)^{3/2}} = 0,
+\end{equation*}
+
+\begin{equation*}
+m D^{2} y(t) + \dfrac{\mu x(t)}{\left( \left( x(t) \right)^{2} + \left( y(t) \right)^{2} \right)^{3/2}} = 0.
+\end{equation*}
+
+*** Computing Lagrange's Equations
+**** The free particle
+**** The harmonic oscillator
+** How to Find Lagrangians
+*** Hamilton's principle
+*** Constant acceleration
+*** Coordinate Transformations
+**** Coriolis and centrifugal forces
+*** Systems with Rigid Constraints
+**** Lagrangians for rigidly constrained systems
+**** Why it works
+*** Constraints as Coordinate Transformations
+*** The Lagrangian Is Not Unique
+**** Total time derivatives
+**** Adding total time derivatives to Lagrangians
+**** Properties of total time derivatives
+** Evolution of Dynamical State
+*** Numerical integration
+** Conserved Quantities
+*** Conserved Momenta
+**** Examples of conserved momenta
+**** Energy conservation
+*** Energy Conservation
+**** Energy in terms of kinetic and potential energies
+*** Central Forces in Three Dimensions
+*** The Restricted Three-Body Problem
+*** Noether's Theorem
+**** Illustration: motion in a central potential
+** Abstraction of Path Functions
+*** Lagrange equations at a moment
+** Constrained Motion
+*** Coordinate Constraints
+**** Now watch this
+**** Alternatively
+**** The pendulum using constraints
+**** Building systems from parts
+*** Derivative Constraints
+**** Goldstein's hoop
+*** Nonholonomic Systems
+* Rigid Bodies
+:LOGBOOK:
+CLOCK: [2022-10-28 Fri 02:43]--[2022-10-28 Fri 06:16] =>  3:33
+:END:
+** Rotational Kinetic Energy
+A rigid body is made up of a large number of constituent particles with mass $m_{\alpha}$, position $\vec{x_{a}}$, and velocities $\dot{\vec{x_{a}}}$, with rigid positional constraints among them.
+
+The kinetic energy is
+
+\begin{equation*}
+\sum_{\alpha} \frac{1}{2} m_{\alpha} \dot{\vec{x_{a}}} \cdot \dot{\vec{x_{a}}}.
+\end{equation*}
+
+Let $\vec{X}$ be a vector to some reference position in the body and $\vec{\xi_{\alpha}}$ be a vector from the reference position to the constituent particle indexed by $\alpha$. Along paths, the velocities are related by
+
+\begin{equation*}
+\dot{\vec{x_{\alpha}}} = \dot{\vec{X}} + \dot{\vec{\xi_{\alpha}}},
+\end{equation*}
+
+so that the kinetic energy is
+
+\begin{equation*}
+\sum_{\alpha} \dfrac{1}{2} m_{\alpha} \left( \dot{\vec{X}} \cdot \dot{\vec{X}} + 2 \dot{\vec{X}} \cdot \dot{\vec{\xi_{\alpha}}} + \dot{\vec{\xi_{\alpha}}} \cdot \dot{\vec{\xi_{\alpha}}} \right).
+\end{equation*}
+
+If $\vec{X}$ is chosen as the center of mass
+
+\begin{equation*}
+\sum_{\alpha} m_{\alpha} \dot{\vec{\xi_{\alpha}}} = 0,
+\end{equation*}
+
+so the kinetic energy reduces to
+
+\begin{equation*}
+\sum_{\alpha} \dfrac{1}{2} m_{\alpha} \dot{\vec{X}} \cdot \dot{\vec{X}}
++
+\sum_{\alpha} \dfrac{1}{2} m_{\alpha} \dot{\vec{\xi_{\alpha}}} \cdot \dot{\vec{\xi_{\alpha}}} \right).
+\end{equation*}
+
+** Kinematics of Rotation
+*"We can specify the orientation of a body by specifying the rotation that takes the body to its /actual orientation/ from some /reference orientation/. As the body moves, the rotation that does this changes."*
+
++ Let $q$ be the coordinate path that describes the motion of the body.
++ Let $\mathsf{M}(q(t))$ be the rotation that takes the body from the reference orientation to the orientation specified by $q(t)$.
++ Let $\vec{\xi_{\alpha}}(t)$ be the vector to some constituent particle with the body in the orientation specified by $q(t)$.
++ Let $\vec{\xi^{\prime}_{\alpha}}$ be the vector to the same constituent with the body in the reference orientation.
++ Let $M = \mathsf{M} \circ q$.
+
+\begin{equation*}
+\vec{\xi_{\alpha}}(t) = \mathsf{M}(q(t)) \vec{\xi_{\alpha}^{\prime}} = M(t) \vec{\xi_{\alpha}^{\prime}},
+\end{equation*}
+
+\begin{equation*}
+D \vec{\xi_{\alpha}}(t) = D M(t) \vec{\xi_{\alpha}^{\prime}},
+\end{equation*}
+
+\begin{equation*}
+D \vec{\xi_{\alpha}}(t) = D M(t) \left( M \left( t \right) \right)^{-1} \vec{\xi_{\alpha}}(t).
+\end{equation*}
+
+Because $M(t)$ is a rotation its matrix representation is an /orthogonal matrix/ $\mathbf{M}(t)$, with the property $\left( \mathbf{M}(t) \right)^{-1} = \left( \mathbf{M}(t) \right)^{T}$.
+
+\begin{align*}
+\mathbf{0} &= D \mathbf{I} = D \left( \mathbf{M} \mathbf{M}^{T} \right) = D \mathbf{M} \mathbf{M}^{T} + \mathbf{M} D \mathbf{M}^{T} \\ &\Longrightarrow D \mathbf{M} \mathbf{M}^{T} = - \left( D \mathbf{M} \mathbf{M}^{T} \right)^{T}.
+\end{align*}
+
+If $\mathbf{B}^{T} = - \mathbf{B}$, then $\mathbf{B}$ is /antisymmetric/.
+
++ Let $\mathbf{u}$ have components $(x, y, z)$. Every $3 \times 3$ antisymmetric matrix is of the form:
+
+\begin{equation*}
+\mathsf{A}(\mathbf{u}) =
+\begin{pmatrix}
+0 & -z & y \\
+z & 0 & -x \\
+-y & x & 0
+\end{pmatrix}.
+\end{equation*}
+
+ *Multiplication by this matrix can be interpreted as the operation of /cross product/ with the vector $\vec{u}$. The vector $\vec{u}$ has a matrix representation $\mathbf{u}$.*
+
+The multiplication with $D \mathbf{M} \mathbf{M}^{T}$ can be interpreted as a cross product with a vector $\vec{\omega}$, the /angular velocity vector/ with components $\omega$.
+
+The inverse of the function $\mathsf{A}$ can be applied to any /skew-symmetric matrix/: $\mathsf{A}^{-1}$ may be used to extract the components of $\mathbf{u}$.
+
+So we can write
+
+\begin{equation*}
+\omega = \mathsf{A}^{-1} \left( D \mathbf{M} \mathbf{M}^{T} \right).
+\end{equation*}
+
+A rewrite of $D \vec{\xi_{\alpha}}(t) = D M(t) \left( M \left( t \right) \right)^{-1} \vec{\xi_{\alpha}}(t)$ in terms of the angular velocity vector is
+
+\begin{equation*}
+D \vec{\xi_{\alpha}} (t) = \vec{\omega}(t) \times \vec{\xi_{\alpha}} (t).
+\end{equation*}
+
+*"If the angular velocity vector for a body is $\vec{\omega}$ then the velocities of the constituent particles are perpendicular to the vectors to the constituent particles and proportional to the rate of rotation of the body and the distance of the constituent particle from the instantaneous rotation axis:"*
+
+\begin{equation*}
+\dot{\vec{\xi_{\alpha}}} = \vec{\omega} \times \vec{\xi_{\alpha}}.
+\end{equation*}
+
+The components $\omega^{\prime}$ of the angular velocity vector on the body axes are $\omega^{\prime} = \mathbf{M}^{T} \omega$, so
+
+\begin{equation*}
+\omega^{\prime} = \mathbf{M}^{T} \mathsf{A}^{-1} \left( D \mathbf{M} \mathbf{M}^{T} \right).
+\end{equation*}
+
+#+NAME: Implementation of angular velocity functions
+#+begin_src scheme
+  (define (((M-of-q->omega-of-t M-of-q) q) t)
+    (define M-on-path (compose M-of-q q))
+    (define (omega-cross t)
+      (* ((D M-on-path) t)
+         (transpose (M-on-path t))))
+    (antisymmetric->column-matrix (omega-cross t)))
+  (define (((M-of-q->omega-body-of-t M-of-q) q) t)
+    (* (transpose (M-of-q (q t)))
+       (((M-of-q->omega-of-t M-of-q) q) t)))
+  (define (M->omega M-of-q)
+    (Gamma-bar
+     (M-of-q-> omega-of-t M-of-q)))
+
+  (define (M->omega-body M-of-q)
+    (Gamma-bar
+     (M-of-q->omega-body-of-t M-of-q)))
+#+end_src
+** Moments of Inertia
+Substituting $\dot{\vec{\xi_{\alpha}}} = \vec{\omega} \times \vec{\xi_{\alpha}}$ in the expression for rotational kinetic energy
+
+\begin{equation*}
+\sum_{\alpha} \dfrac{1}{2} m_{\alpha} \dot{\vec{\xi_{\alpha}}} \cdot \dot{\vec{\xi_{\alpha}}} = \sum_{\alpha} \dfrac{1}{2} m_{\alpha} \left( \vec{\omega} \times \vec{\xi_{\alpha}} \right) \cdot \left( \vec{\omega} \times \vec{\xi_{\alpha}} \right).
+\end{equation*}
+
++ Let $\hat{e_{0}}, \thinspace \hat{e_{1}}, \thinspace \hat{e_{2}}$ be the basis vectors of a spatially fixed rectangular coordinate system with origin at the center of rotation.
++ Suppose that the following holds: $\hat{e_{0}} \times \hat{e_{1}} = \hat{e_{2}}$.
++ The components of $\vec{\omega}$ on this coordinate system are $\omega^{0}, \thinspace \omega^{1}, \thinspace \omega^{2}$.
+
+Substitute $\vec{\omega} = \sum_{i} \hat{e_{i}} \omega^{i}$ in the expresion for the rotational kinetic energy so that
+
+\begin{align*}
+\sum_{\alpha} &= \dfrac{1}{2} m_{\alpha} \left( \left( \sum_{i} \hat{e_{i}} \omega^{i} \right) \times \vec{\xi_{\alpha}} \right) \cdot \left( \left( \sum_{j} \hat{e_{j}} \omega^{j}  \right) \times \vec{\xi_{\alpha}} \right) \\
+&= \dfrac{1}{2} \sum_{ij} \omega^{i} \omega^{j} \sum_{\alpha} m_{\alpha} \left( \hat{e_{i}} \times \vec{\xi_{\alpha}} \right) \cdot \left( \hat{e_{j}} \times \vec{\xi_{\alpha}} \right) \\
+&= \dfrac{1}{2} \sum_{ij} \omega^{i} \omega^{j} I_{ij},
+\end{align*}
+
+with
+
+\begin{equation*}
+I_{ij} = \sum_{\alpha} m_{\alpha} \left( \hat{e_{i}} \times \vec{\xi_{\alpha}} \right) \cdot \left( \hat{e_{j}} \times \vec{\xi_{\alpha}} \right).
+\end{equation*}
+
+These are the components of the /inertia tensor/ with respect to the chosen coordinate system. The components of the inertia tensor can be arranged to form the /inertia matrix/:
+
+\begin{equation*}
+\mathbf{I}
+= \begin{pmatrix}
+I_{00} & I_{01} & I_{02} \\
+I_{10} & I_{11} & I_{12} \\
+I_{20} & I_{21} & I_{22}
+\end{pmatrix}.
+\end{equation*}
+
+Substitute $\vec{\xi_{\alpha}} = \sum_{k} \hat{e_{k}} \xi_{\alpha}^{k}$ in the expression for $I_{ij}$ to obtain
+
+\begin{align*}
+I_{ij} &= \sum_{\alpha} m_{\alpha} \left( \hat{e_{i}} \times \left( \sum_{k} \hat{e_{k}} \xi_{\alpha}^{k} \right) \right) \cdot \left( \hat{e_{j}} \times \left( \sum_{k} \hat{e_{k}} \xi_{\alpha}^{k}  \right) \right) \\
+&= \sum_{\alpha} m_{\alpha} \left( \xi_{\alpha}^{k} \sum_{k} \hat{e_{i}} \times \hat{e_{k}} \right) \cdot \left( \xi_{\alpha}^{k} \sum_{k} \hat{e_{j}} \times \hat{e_{k}} \right) \\
+\end{align*}
+
+Using elementary vector algebra
+
+\begin{equation*}
+I_{00} = \sum_{\alpha} m_{\alpha} \left( \left( \xi_{\alpha}^{1} \right)^{2} + \left( \xi_{\alpha}^{2} \right)^{2} \right)
+\end{equation*}
+
+\begin{equation*}
+I_{11} = \sum_{\alpha} m_{\alpha} \left( \left( \xi_{\alpha}^{2} \right)^{2} + \left( \xi_{\alpha}^{0} \right)^{2} \right)
+\end{equation*}
+
+\begin{equation*}
+I_{22} = \sum_{\alpha} m_{\alpha} \left( \left( \xi_{\alpha}^{0} \right)^{2} + \left( \xi_{\alpha}^{1} \right)^{2} \right)
+\end{equation*}
+
+\begin{align*}
+I_{ij} &= - \sum_{\alpha} m_{\alpha} \xi_{\alpha}^{i} \xi_{\alpha}^{j}, \quad i \neq j.
+\end{align*}
+
+Because $I_{jk} = I_{kj}$ the inertia tensor has real components and is symmetric. The inertia tensor involves only second-order moments of the mass distribution with respect to the center of mass. Therefore, as far as the kinetic energy is concerned, the second order moments are all that matter. In general, the potential energy of an extended body depends on all moments of the mass distribution.
+
+The /moment of inertia/ about a line, by definition, is
+
+\begin{equation*}
+\sum_{\alpha} m_{\alpha} \left( \xi_{\alpha}^{\bot} \right)^{2},
+\end{equation*}
+
+where $\xi_{\alpha}^{\bot}$ is the perpendicular distance from the line to the constituent with index $\alpha$.
+
+The diagonal components of the inertia tensor $I_{ii}$ are recognized as the moments of inertia about the lines coinciding with the coordinate axes $\hat{e}_{i}$. The off-diagonal components of the inertia tensor are called /products of inertia/.
+** Inertia Tensor
+** Principal Moments of Inertia
+** Vector Angular Momentum
+** Euler Angles
+** Motion of a Free Rigid Body
+*** Computing the Motion of Free Rigid Bodies
+*** Qualitative Features
+** Euler's Equations
+** Axisymmetric Tops
+** Spin-Orbit Coupling
+*** Development of the Potential Energy
+*** Rotation of the Moon and Hyperion
+*** Spin-Orbit Resonances
+** Nonsingular Coordinates and Quaternions
+*** Motion in Terms of Quaternions
+* Hamiltonian Mechanics
+** Hamilton's Equations
+:LOGBOOK:
+CLOCK: [2022-12-03 Sat 12:57]--[2022-12-03 Sat 13:04] =>  0:07
+CLOCK: [2022-12-03 Sat 12:14]--[2022-12-03 Sat 12:50] =>  0:36
+:END:
+Lagrange's equations give us the time derivative of the momentum $p$ on a path $q$:
+
+\begin{align*}
+D p(t) = \partial_{1} L \left( t, q \left( t \right), D q \left( t \right) \right),
+\end{align*}
+
+where
+
+\begin{align*}
+p(t) = \partial_{2} L \left( t, q \left( t \right), D q(t) \right).
+\end{align*}
+
+Let $\mathcal{V}$ be the function that gives the velocities in terms of the time, coordinates, and momenta.
+
+\begin{align*}
+D q (t) = \mathcal{V} \left( t, q(t), p(t) \right).
+\end{align*}
+
+\begin{align*}
+D p(t) = \partial_{1} L \left( t, q(t), \mathcal{V} \left( t, q(t), p(t) \right) \right).
+\end{align*}
+
+Suppose that
+
+\begin{align*}
+a = \partial_{2} L \left( b, c, d \right).
+\end{align*}
+
+Then $\mathcal{V}$ satisfies
+
+\begin{align*}
+d = \mathcal{V} \left( b,c,a \right),
+\end{align*}
+
+so $\mathcal{V}$ and $\partial_{2}L$ are inverses on the third argument position:
+
+\begin{align*}
+d = \mathcal{V} \left( b, c, \partial_{2} L \left( b, c, d \right) \right)
+\end{align*}
+
+\begin{align*}
+a = \partial_{2} L \left( b, c, \mathcal{V} \left( b,c,a \right) \right).
+\end{align*}
+
+Define
+
+\begin{align*}
+\tilde{L} \left( t, q, p \right) = L \left( t, q, \mathcal{V} \left( t, q, p \right) \right).
+\end{align*}
+
+/First/
+
+\begin{align*}
+\partial_{1} \tilde{L} \left( t, q, p \right) &= \partial_{1} L \left( t, q, \mathcal{V} \left( t,q,p \right) \right) + \partial_{2} L \left( t, q, \mathcal{V} \left( t,q,p \right) \right) \partial_{1} \mathcal{V} \left( t,q,p \right) \\
+&= \partial_{1} L \left( t, q, \mathcal{V} \left( t, q, p \right) \right) + p \partial_{1} \mathcal{V} \left( t,q,p \right).
+\end{align*}
+
+In the first step, we have used the chain rule. In the second step we have used the inverse property of $\mathcal{V}$. Introducing the momentum selector $P (t, q, p) = p$, and using the property $\partial_{1} P = 0$, we have:
+
+\begin{align*}
+\partial_{1} L \left( t, q, \mathcal{V} \left( t, q, p \right) \right) &= \partial_{1} \tilde{L} \left( t,q,p \right) - P \left( t,q,p \right) \partial_{1} \mathcal{V} \left( t,q,p \right) \\
+&= \partial_{1} \left( \tilde{L} - P \mathcal{V} \right) \left( t, q, p \right) \\
+&= - \partial_{1} H \left( t,q,p \right)
+\end{align*}
+
+where the /Hamiltonian/ is defined by
+
+\begin{align*}
+H = P \mathcal{V} - \tilde{L}.
+\end{align*}
+
+
+$D p(t) = \partial_{1} L \left( t, q(t), \mathcal{V} \left( t, q(t), p(t) \right) \right)$ becomes
+
+\begin{align*}
+D p \left( t \right) = - \partial_{1} H \left( t, q(t), p(t) \right).
+\end{align*}
+
+/Second/
+
+\begin{align*}
+\partial_{2} \tilde{L} \left( t, q, p \right) &= \partial_{2} L \left( t, q, \mathcal{V} \left( t, q, p \right) \right) \partial_{2} \mathcal{V} \left( t, q, p \right) = p \partial_{2} \mathcal{V} \left( t, q, p \right).
+\end{align*}
+
+Once again, we have used the inverse property of $\mathcal{V}$.
+
+Now consider
+
+\begin{align*}
+\partial_{2} H \left( t, q, p \right) &= \partial_{2} \left( P \mathcal{V} - \tilde{L} \right) \left( t,q,p \right) \\
+&= \mathcal{V} \left( t, q, p \right) + p \partial_{2} \mathcal{V} \left( t, q, p \right) - \partial_{2} \tilde{L} \left( t, q, p \right) \\
+&= \mathcal{V} \left( t, q, p \right) + p \partial_{2} \mathcal{V} \left( t, q, p \right) - p \partial_{2} \mathcal{V} \left( t, q, p \right) \\
+&= \mathcal{V} \left( t, q, p \right).
+\end{align*}
+
+$D q \left( t \right) = \mathcal{V} \left( t, q(t), p (t) \right)$ becomes
+
+\begin{align*}
+D q \left( t \right) = \partial_{2} H \left( t, q \left( t \right), p \left( t \right) \right).
+\end{align*}
+
+We have converged on /Hamilton's equations/:
+
+\begin{align*}
+D \thinspace q \left( t \right) = \partial_{2} H \left( t, q \left( t \right), p \left( t \right) \right)
+\end{align*}
+
+\begin{align*}
+D \thinspace p \left( t \right) = - \partial_{1} H \left( t, q \left( t \right), p \left( t \right) \right).
+\end{align*}
+
+These give the derivatives of the coordinate and momentum path functions at each time in terms of the time, and the coordinates and momenta at that time. The Hamiltonian function is
+
+\begin{align*}
+H \left( t, q, p \right) = p \mathcal{V} \left( t, q, p \right) - L \left( t, q, \mathcal{V} \left( t, q, p \right) \right).
+\end{align*}
+
+The first equation holds for /any/ path. The second hold only for /realizable/ paths.
+
+The Hamiltonian has the same value as the energy function $\mathcal{E}$, except that the velocities are expressed in terms of time, coordinates, and momenta by $\mathcal{V}$:
+
+\begin{align*}
+H \left( t, q, p \right) = \mathcal{E} \left( t, q, \mathcal{V} \left( t, q, p \right) \right).
+\end{align*}
+
+Hamilton's equations are a set of first-order differential equations in explicit form. For a system with $n$ degrees of freedom, they describe the dynamics of a point in a $2n$ - dimensional space whose elements are labelled by the $n$ generalized coordinates $q^{i}$ and the $n$ generalized momenta $p_{i}$. This space is called the /phase space/.
+
+The dynamical state of the system is completely specified by the phase-space state tuple $(t, q, p)$ given a Lagrangian or Hamiltonian to provide the map between velocities and momenta.
+*** The Legendre Transformation
+
+*** Hamilton's Equations from the Action Principle
+*** A Wiring Diagram
+** Poisson Brackets
+** One Degree of Freedom
+** Phase Space Reduction
+*** Lagrangian Reduction
+** Phase Space Evolution
+*** Phase-Space Description Is Not Unique
+** Surfaces of Section
+*** Periodically Driven Systems
+*** Computing Stroboscopic Surfaces of Section
+*** Autonomous Systems
+*** Computing Henon-Heiles Surfaces of Section
+*** Non-Axisymmetric Top
+** Exponential Divergence
+** Liouville's Theorem
+** Standard Map
+* Phase Space Structure
+** Emergence of the Divided Phase Space
+** Linear Stability
+*** Equilibria of Differential Equations
+*** Fixed Points of Maps
+*** Relations Among Exponents
+** Homoclinic Tangle
+*** Computation of Stable and Unstable Manifolds
+** Integrable Systems
+** Poincare-Birkhoff Theorem
+*** Computing the Poincare-Birkhoff Construction
+** Invariant Curves
+*** Finding Invariant Curves
+*** Dissolution of Invariant Curves
+* Canonical Transformations
+** Point Transformations
+** General Canonical Transformations
+*** Time-Dependent Transformations
+*** Abstracting the Canonical Condition
+** Invariants of Canonical Transformations
+** Generating Functions
+*** $F_{1}$ Generates Canonical Transformations
+*** Generating Functions and Integral Invariants
+*** Types of Generating Functions
+*** Point Transformations
+*** Total Time Derivatives
+** Extended Phase Space
+*** Poincare-Cartan Integral Invariant
+** Reduced Phase Space
+* Canonical Evolution
+** Hamilton-Jacobi Equation
+*** Harmonic Oscillator
+*** Hamilton-Jacobi Solution of the Kepler Problem
+*** $F_{2}$ and the Lagrangian
+*** The Action Generates Time Evolution
+** Time Evolution is Canonical
+*** Another View of Time Evolution
+*** Yet Another View of Time Evolution
+** Lie Transforms
+** Lie Series
+** Exponential Identities
+* Canonical Perturbation Theory
+** Perturbation Theory with Lie Series
+** Pendulum as a Perturbed Rotor
+*** Higher Order
+*** Eliminating Secular Terms
+** Many Degrees of Freedom
+*** Driven Pendulum as a Perturbed Rotor
+** Nonlinear Resonance
+*** Pendulum Approximation
+*** Reading the Hamiltonian
+*** Resonance-Overlap Criterion
+*** Higher-Order Perturbation Theory
+*** Stability of the Inverted Vertical Equilibrium
+*

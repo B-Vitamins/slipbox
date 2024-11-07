@@ -1,0 +1,149 @@
+:PROPERTIES:
+:ID:       00af19a7-a705-4a05-8294-ab3544576336
+:END:
+#+TITLE: Notes on Mechanics by Landau and Lifshitz
+#+FILETAGS: :fleeting:landau:mechanics:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+#+BEGIN: clocktable :maxlevel 2 :scope nil :emphasize nil
+#+CAPTION: Clock summary at [2024-11-07 Thu 13:18]
+| Headline                        |    Time |      |
+|---------------------------------+---------+------|
+| *Total time*                    | *23:08* |      |
+|---------------------------------+---------+------|
+| The equation of motion          |   12:53 |      |
+| \_  Generalized co-ordinates    |         | 1:06 |
+| \_  Problems                    |         | 0:47 |
+| Collisions between particles    |    9:43 |      |
+| \_  Disintegration of particles |         | 3:35 |
+| \_  Elastic collisions          |         | 6:08 |
+| The canonical equations         |    0:32 |      |
+| \_  Hamilton's equations        |         | 0:32 |
+#+END:
+* The equation of motion
+:LOGBOOK:
+CLOCK: [2021-01-01 Tue 00:00]--[2021-01-01 Tue 11:00] => 11:00
+:END:
+#+begin_comment
+For some reason, the logbook drawer of individual subtrees has vanished. The ~11h~ clock time from [2021-01-01 Fri] is for that. Unfortunately, most of the associated notes have as well, apart from some stuff that I had copied into =roam= nodes. It's not a lot, thankfully. VC with backup MF, VC with backup. 
+#+end_comment
+** Generalized co-ordinates
+:LOGBOOK:
+CLOCK: [2022-09-01 Thu 08:10]--[2022-09-01 Thu 09:16] =>  1:06
+:END:
+** Problems
+:LOGBOOK:
+CLOCK: [2022-08-19 Fri 05:16]--[2022-08-19 Fri 06:03] =>  0:47
+:END:
+* Collisions between particles
+** Disintegration of particles
+:LOGBOOK:
+CLOCK: [2022-09-27 Tue 06:24]--[2022-09-27 Tue 07:04] =>  0:40
+CLOCK: [2022-09-27 Tue 03:32]--[2022-09-27 Tue 05:37] =>  2:05
+CLOCK: [2022-09-27 Tue 02:34]--[2022-09-27 Tue 03:16] =>  0:42
+CLOCK: [2022-09-27 Tue 01:54]--[2022-09-27 Tue 02:02] =>  0:08
+:END:
++ $L$ :: laboratory frame of reference
++ $C$ :: center of mass frame of reference
++ $E_{i}$ :: internal energy of the particle that disintegrates
++ $M$ :: mass of the particle that disintegrates
++ $V$ :: magnitude of the velocity of the particle that disintegrates in frame $L$
++ $E_{1i}$ :: internal energy of the first particle formed due to disintegration
++ $m_{1}$ :: mass of first particle formed due to disintegration
++ $E_{2i}$ :: internal energy of the second particle formed due to disintegration
++ $m_{2}$ :: mass of second particle formed due to disintegration
++ $m$ :: reduced mass of the two particles
++ $\epsilon$:: disintegration energy
++ $p_{0}$ :: magnitude of the momentum of the first particle formed due to disintegration in $C$
++ n$v_{0}$ :: magnitude of the velocity of the first particle formed due to disintegration in $C$
++ $v$ :: magnitude of the velocity of the first particle formed due to disintegration in $L$
++ $\theta$ :: angle between vectors $\mathbf{v}$ and $\mathbf{V}$
++ $\theta_{0}$ :: angle between $\mathbf{v_{0}}$ and $\mathbf{V}$
++ $P(d\Omega)$ :: fraction of particles entering the differential solid angle $d\Omega$
+  
+#+NAME: Disintegration Energy
+\begin{equation*}
+\epsilon = E_{i} - E_{1i} -  E_{2i} = \dfrac{p_{0}^{2}}{2} \left( \dfrac{1}{m_{1}} + \dfrac{1}{m_{2}} \right) = \dfrac{p_{0}^2}{2m} \quad \text{in} \quad C
+\end{equation*}
+
+#+NAME: 
+\begin{equation*}
+v^{2} + V^{2} - 2 \thinspace V \thinspace v \thinspace \cos \theta = v_{0}^{2}
+\end{equation*}
+
+
+\begin{align*}
+\theta &\in [0, \theta_{\text{max}}] &\text{if} \quad V > v_{0}, \\
+\theta &\in [0, 2 \pi] &\text{if} \quad V < v_{0}.
+\end{align*}
+
+\begin{equation*}
+\sin \theta_{\text{max}} = \dfrac{v_{0}}{V}
+\end{equation*}
+
+\begin{equation*}
+\tan \theta = v_{0} \dfrac{v_{0} \sin \theta_{0}}{V + v_{0} \cos \theta_{0}}
+\end{equation*}
+
+\begin{equation*}
+\cos \theta_{0} =
+\begin{cases}
+-\dfrac{V}{v_{0}} \sin^2 \theta \pm \cos \theta \sqrt{1 - \dfrac{V^{2}}{v_{0}^{2}} \sin^{2} \theta} \quad \text{if} \quad V > v_{0} \\
+-\dfrac{V}{v_{0}} \sin^2 \theta + \cos \theta \sqrt{1 - \dfrac{V^{2}}{v_{0}^{2}} \sin^{2} \theta} \quad \text{if} \quad V < v_{0}
+\end{cases}
+\end{equation*}
+
+\begin{equation*}
+P(d\Omega) \propto d\Omega \equiv \frac{dA}{4 \pi} = \frac{1}{2} \sin \theta_{0} d \theta_{0} \quad \text{in} \quad C 
+\end{equation*}
+
+** Elastic collisions
+:LOGBOOK:
+CLOCK: [2022-09-27 Tue 21:49]--[2022-09-27 Tue 23:59] =>  2:10
+CLOCK: [2022-09-27 Tue 18:17]--[2022-09-27 Tue 21:17] =>  3:00
+CLOCK: [2022-09-27 Tue 17:33]--[2022-09-27 Tue 18:31] =>  0:58
+:END:
+
+[[id:04939ef5-447f-4805-b72f-8192f60179ed][Elastic Collisions]]+ The definition of an *elastic collision*.
+
+
++ The velocities of the particles with mass $m_{1}$ and $m_{2}$ in the $C$ /before the collision/.
++ The velocities of the particles with mass $m_{1}$ and $m_{2}$ in the $C$ /after the collision/.
++ The velocities of the particles with mass $m_{1}$ and $m_{2}$ in the $L$ /after the collision/.
++ The momenta of the particles with mass $m_{1}$ and $m_{2}$ in the $L$ /after the collision/.
+
+Specialize to the case when the particle with mass $m_{2}$ is at rest before the collision in the $L$. Elaborate on the setup.
+
++ An equation that relates the angles $\theta_{1}$, $\theta_{2}$ and $\xi$, where:
+  + $\theta_{1}$ and $\theta_{2}$ are the angles made by the velocities of the particles with mass $m_{1}$ and $m_{2}$ respectively with the /direction of impact/ i.e the direction the velocity $\mathbf{v_{1}}$ of the particle with mass $m_{1}$ in the $L$,
+  + $\xi$ is the angle made by the unit vector $\mathbf{n_{0}}$, pointed in the /direction of motion/ of the particle with mass $m_{1}$ after the collision in $C$, with the direction of impact.
++ The magnitude velocities of the particles of mass $m_{1}$ and $m_{2}$ after the collision in terms of $\xi$ in $L$.
++ Elaborate on the cases $m_{1} < m_{2}$ and $m_{1} > m_{2}$ .
+   
+Specialize to the case when $\mathbf{v_{1}^{\prime}} \times \mathbf{v_{2}^{\prime}} = 0$ or $\xi = \pi$, called a *head-on elastic collision*.
+
++ The velocities of the particles with mass $m_{1}$ and $m_{2}$ in the $L$ /after the collision/.
++ The maximum energy that can be acquired by a particle at rest after it collides head-on with another particle in $L$.
++ Elaborate on the cases $m_{1} < m_{2}$ and $m_{1} > m_{2}$ for a *head-on elasitc collision* of a particle with $m_{2}$ at rest in $L$.
+
+ Specialize to the case of a *head-on elasitc collision* of a particle with $m_{2}$ at rest in $L$ with a particle of mass $m_{1}$ such that $m_{1} = m_{2}$.
+
+  + An equation that relates the angles $\theta_{1}$, $\theta_{2}$ and $\xi$, $\theta_{1}$, $\theta_{2}$ and $\xi$ are as previously defined.
+  + The velocities of the particles after the collision in $L$ in terms of $\xi$.
+  
+* The canonical equations
+** Hamilton's equations
+:LOGBOOK:
+CLOCK: [2022-12-02 Fri 22:52]--[2022-12-02 Fri 23:24] =>  0:32
+:END:
+
+Turn on /Einstein summation convention/.
+
+The total differential of the Lagrangian is:
+
+\begin{align*}
+d L &= \partial_{D_{t}q} L \left( D_{t} q \right) + \partial_{q} L d q \\
+&= \left( D_{t} p \right) d q_{i} + p_{i} d \left( D_{t} q_{i} \right) \\
+&= \left( D_{t} p \right) d q_{i} + d \left( p_{i} D_{t} q_{i} \right) - d p_{i} D_{t} q_{i} \\
+&\Longrightarrow d \left( p_{i} D_{t} q_{i} - L \right) = - (D_{t} p_{i}) d q_{i} + (D_{t} q_{i}) d p_{i}
+\end{align*}
+ 

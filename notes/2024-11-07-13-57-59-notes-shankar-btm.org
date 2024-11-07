@@ -1,0 +1,508 @@
+:PROPERTIES:
+:ID:       1bff7105-da34-4262-b996-e111306de04a
+:END:
+#+TITLE: Notes on Basic Training in Mathematics by Ramamurthy Shankar
+#+FILETAGS: :fleeting:problem:btm:shankar:math:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+#+BEGIN: clocktable :maxlevel 1 :scope nil :emphasize nil
+#+CAPTION: Clock summary at [2024-11-07 Thu 14:02]
+| Headline     | Time   |
+|--------------+--------|
+| *Total time* | *0:00* |
+#+END:
+* Calculus of Single Variable
+* Integral Calculus
+* Calculus of Many Variables
+* Infinite Series
+* Complex Numbers
+* Functions of a Complex Variable
+** Analytic Functions
++ An *analytic function* is defined as:
+  Let $(x, y)$ be a *point on the complex plane* and $f(x,y)$ be a *function of a complex variable*. Let $u$ and $v$ represent the *real* and *imaginary* parts of the function $f$.
+  \begin{equation}
+    f(x,y) = u(x,y) + i v(x,y)
+  \end{equation}
+  _Assume that $u$ and $v$ have first order partial derivatives that are continuous._
+  
+  #+begin_comment
+  A function of two variables is continuous at a point if
+  1) The function approaches a definite limit as we approach the point from any direction.
+  2) The limit coincides with the value ascribed to that point in the definition of the function.
+  #+end_comment
+  
+  A given pair $(x,y)$ can be used to construct two different complex numbers. Let these complex numbers be $z$ and $z^*$. They are related to $(x,y)$ as
+
+  \begin{equation}
+  z = x + iy
+  \end{equation}
+
+  \begin{equation}
+    z^{*} = x - iy
+  \end{equation}
+  To uniquely define the function $f(x,y)$ for a given pair $(x,y)$, one must specify the value of $f$ for both the complex numbers $z$ and $z^*$ that may be constructed from the pair. The function $f(x,y)$, thus, is in general a function of /two complex variables/ $z$ and $z^*$. We say $f$ is an analytic function of $z$ if it does not depend on $z^*$
+
+  \begin{equation}
+    f(z,z^*) = f(z)
+  \end{equation}
+
+
+\begin{equation}
+  f(x,y) = f(x + i y)
+\end{equation}
+
++ The *Cauchy-Riemann Equations* (CRE) impose a /necessary condition/ that all analytic functions must satisfy. It is derived as:
+  #+begin_comment
+  The key idea from which the CRE follows is that the condition that $f$ depends on $(x, y)$ via the combination $x + i y$ implies a specific relationship between the partial derivatives of $f$ with respect to $x$ and $y$.
+  #+end_comment
+  Consider a function of two variables $f(x, y) = u(x, y) + i v(x, y)$. _Assume that $f(x, y)$ is analytic, i.e., $x$ and $y$ are arguments of the function $f$ only via the combination $z = x + i y$._
+  Keeping $y$ fixed, suppose that we change $x$ by $dx$. The change in the value of the function $df$ is
+
+  \begin{equation}
+    df = \frac{df}{dz} dz = \frac{df}{dz} \frac{\partial z}{\partial x} dx = \frac{df}{dz} dx
+  \end{equation}
+
+  \begin{equation}
+\frac{\partial f}{\partial x} = \frac{df}{dz}
+\end{equation} 
+
+Keeping $x$ fixed, suppose that we change $y$ by $dy$. The change in the value of the function $df$ is
+
+\begin{equation}
+  df = \frac{df}{dz} dz = \frac{df}{dz} \frac{\partial z}{\partial y} dy = \frac{df}{dz} i dy
+\end{equation}
+
+
+\begin{equation}
+  \frac{\partial f}{\partial y} = i \frac{df}{dz}
+\end{equation}
+
+The partial derivatives of $f$ with respect to $x$ and $y$ are thus related as
+
+\begin{equation}
+  f_{y} = i f_{x}
+\end{equation}
+
+Substitute /$f(x,y) = u + i v$ in $f_{y} = i f_{x}$
+
+\begin{equation}
+  u_{y} + i v_{y} = i (u_{x} + i v_{x})
+\end{equation}
+
+
+\begin{equation}
+  u_{y} + i v_{y} =  - v_{x} + i u_{x}
+\end{equation}
+
+These are the Cauchy-Riemann Equations for an /analytic function $f(x,y) = u(x, y) + i v(x, y)$/.
+
+\begin{equation}
+  u_{x} =   v_{y}
+  u_{y} = - v_{x}
+\end{equation}
+
++ A function may obey the CRE for:
+  1) the entire complex plane,
+  2) a part of the complex plane or several disconnected parts of the complex plane,
+     #+begin_comment
+     We say a function $f = u + iv$ is *analytic in a domain $\mathbf{D}$* if the first partial derivatives of $u$ and $v$ /exist/, are /continuous/, and /obey the CRE everywhere inside it/.
+     #+end_comment
+  3) at a single point or a set of isolated points on the complex plane.
+     #+begin_comment
+     We say a function $f = u + iv$ is *analytic at $z_{0}$* if the first partial derivatives of $u$ and $v$ /exist/, are /continuous/, and /obey the CRE in its *$\epsilon$-neighbourhood* - the set of all points within a disc of radius $\epsilon>0$ centered at \z_{0}\.
+     #+end_comment
+
+*** Singularities of analytic functions
++ An analytic function over some domain in the complex plane may have /isolated points/ where it /violates the CRE/. Such points are called *singularities* of the function.
+  #+begin_comment
+  A condition cannot be satisfied by something that does not exist. Thus, non-existence of the first partial derivatives with respect to $x$ and $y$ of the function is a violation of the CRE. 
+  #+end_comment
++ Some common types of /singularities/ are:
+  + n-th order pole :: An analytic function $f$ has a *pole of order $n$* at $z_{0}$ if $n$ is the smallest positive integer for which $(z-z_{0})^{n} f(z)$ is analytic at $z_{0}$.
+    #+begin_example latex
+    \begin{equation}
+    f(z) = \frac{1}{z^{n}}
+    \end{equation}
+    \text{The function $f(z)$ has an /n-th order pole/ at the origin.}
+    #+end_example
+  + Simple pole :: A pole of order $1$ is called a *simple pole*.
+    #+begin_example latex
+    \begin{equation}
+    f(z) = \frac{1}{z}
+    \end{equation}
+    \text{The function $f(z)$ has a /simple pole/ at the origin.}
+    #+end_example
+  + Essential singularity :: A function has an *essential singularity* at a point $z_{0}$ if it has poles of arbitrarily high order which cannot be eliminated on multiplication by $(z-z_{0})^{n}$ for any finite choice of $n$.
+    #+begin_example latex
+    \begin{equation}
+    f(z) = \sum_{n=0}^{\infty} \frac{1}{z^{n} n!}
+    \end{equation}
+    \text{The function $f(z)$ has an /essential singularity/ at the origin.}
+    #+end_example
+  + Branch point :: A function has a *branch point* at $z_{0}$ if, upon encircling $z_{0}$ and returning to the starting point, the function does not return to the starting value. Thus the function is *multiple valued*.
+    #+begin_example latex
+    \begin{equation}
+    f(z) = z^{\frac{1}{2}} = r^{\frac{1}{2}} \exp{i \frac{\theta}{2}}
+    \end{equation}
+    \text{The function $f(z)$ has a /branch point/ at the origin.}
+    #+end_example
+#+begin_comment
+The only analytic function with no singularities anywhere on the complex plane is a constant function.
+#+end_comment
++ A function $f(z)$ is *meromorphic* if its only singularities /for finite $z$/ are /poles/.
+*** Derivatives of analytic functions
++ When $u$ and $v$ possess /continuous partial derivatives that obey the CRE/, we may define the z-derivative of $f = u + i v$.
+  + If $f$ is expressed in terms of $z$
+    #+begin_src latex
+      \begin{equation}
+        \frac{df}{dz} = \lim{\Delta z \to 0} \frac{f(z+\Delta z) - f(z)}{\Delta z}
+      \end{equation}.
+    #+end_src
+  + If $f$ is expressed in terms of $x$ and $y$,
+    the first order variation of $f$ is
+    #+begin_src latex
+      \begin{equation}
+        df = \frac{\partial f}{\partial x} dx + \frac{\partial f}{\partial y} dy
+      \end{equation}.
+    #+end_src
+    We substitute $f = u + i v$ and evaluate the partial derivatives to obtain
+    #+begin_src latex
+      \begin{equation}
+        df = (u_{x} + i v_{x}) dx + (u_{y} + i v_{y}) dy
+      \end{equation}.
+    #+end_src
+    Multiplying and dividing the final term with $i$ and simplifying we obtain
+    #+begin_src latex
+      \begin{equation}
+        df = (u_{x} + i v_{x}) dx + i (- i u_{y} + v_{y}) dy
+      \end{equation}.
+    #+end_src
+    Invoking the CRE, it follows that the terms inside the parenthesis are equal, i.e.,
+    #+begin_src latex
+      \begin{equation}
+        u_{x} + i v_{x} = - i u_{y} + v_{y}
+      \end{equation}.
+    #+end_src
+    Therefore
+    #+begin_src latex
+      \begin{equation}
+        df \propto dx + i dy = dz
+      \end{equation}.
+    #+end_src
+    We may therefore write the first order variation of $f$ in two equivalent ways
+    #+begin_src latex
+      \begin{equation}
+        df = (u_{x} + i v_{x}) (dx + i dy) = (u_{x} + i v_{x}) dz
+      \end{equation},
+    #+end_src
+    #+begin_src latex
+      \begin{equation}
+        df = (- i u_{y} + v_{y}) (dx + i dy) = (- i u_{y} + v_{y}) dz
+      \end{equation}.
+    #+end_src
+    The $z$ derivative of $f$ becomes
+    #+begin_src latex
+      \begin{equation}
+        \frac{df}{dz} = (u_{x} + i v_{x}) = (- i u_{y} + v_{y})
+      \end{equation}.
+    #+end_src
+    Because $(u_{x} + i v_{x}) = \frac{\partial f}{\partial x}$ and $(- i u_{y} + v_{y}) = \frac{1}{i} \frac{\partial f}{\partial y}$,
+    #+begin_src latex
+      \begin{equation}
+        \frac{df}{dz} = \frac{\partial f}{\partial x} = \frac{1}{i} \frac{\partial f}{\partial y}
+      \end{equation}.
+    #+end_src
++ If $f$ is analytic at a point, $\frac{df}{dz}$ exists in a neighbourhood of that point.
+#+begin_quote
+Notice that the z-derivative of an analytic function is independent of the direction in which we make the infinitesimal displacement that enters the definition of the derivative. You can choose $dz = dx$ or $dz = i dy$ or in the general case $dz = dx + i dy$ and get the same answer.
+#+end_quote
++ If $f(z)$ has a first derivative in a domain, it has all higher derivatives in that domain.
+
+Next we derive the *Laplace's equation*. The CRE for an analytic function $f(x,y) = u + i v$ are
+
+\begin{align*}
+u_{x} &=   v_{y}\\
+u_{y} &= - v_{x}
+\end{align*}
+
+Keeping $y$ constant, take the partial derivatives of $u_{x}$ and $v_{y}$ with respect to $x$. Keeping $x$ constant, take the partial derivatives of $u_{y}$, $v_{x}$ with respect to $y$. The resulting equations are
+
+\begin{align*}
+u_{xx} &=   v_{yx}\\
+u_{yy} &= - v_{xy}
+\end{align*}
+
+Add $u_{xx}$ and $u_{yy}$ to obtain
+
+\[
+u_{xx} + u_{yy} =   v_{yx} - v_{xy}
+\]
+
+Assuming that the /mixed partial derivatives/ of the functions $v(x,y)$ are equal, it follows that $u(x,y)$ obeys the /partial differential equation/
+
+\[
+u_{xx} + u_{yy} = 0
+\]
+
+By an analogous argument, we may establish that
+
+\[
+v_{xx} + v_{yy} = 0
+\]
+
+This partial differential equation is called /Laplace's equation/. If $u$ and $v$ satisfy the CRE, they are solution of Laplace's equation and are said to form a *harmonic pair*.
+** Analytic Functions Defined by Power Series
+The =infinite series= $S = \sum_{0}^{\infty} a_{n}$ of =complex terms= $a_{n}$ is said to =converge= if its real and imaginary parts, i.e., the series that sum the real and imaginary parts of $a_{n}$, converge. The infinite series $S = \sum_{0}^{\infty} a_{n}$ of /complex terms/ $a_{n}$ is said to =converge absolutely= if $S = \sum_{0}^{\infty} |a_{n}|$ converges, i.e.,
+\begin{equation*}
+r = \lim{n \to \infty} \frac{a_{n+1}}{a_{n}} < 1
+\end{equation*}
+The real and imaginary part of a complex number is bounded in magnitude by its absolute value - both the real and imaginary sums are dominated by the series with absolute values. Therefore, a series which converges absolutely, converges as well.
+The =power series= $S = \sum_{0}^{\infty} a_{n} (z - z_{0})^{n}$ _defines an analytic function_ /as long as the series converges/. The power series $S = \sum_{0}^{\infty} a_{n} (z - z_{0})^{n}$ converges absolutely if
+\begin{equation*}
+|z - z_{0}| < R = \lim{n \to \infty} \frac{a_{n}}{a_{n + 1}}
+\end{equation*}
+*** The exponential function
+The $\exp$ function for /finite/ complex argument $z$ is defined by
+#
+\begin{equation*}
+\exp{z} = \sum_{0}^{\infty} \frac{z^{n}}{n!}
+\end{equation*}.
+
+The $\exp$ function for /finite/ complex argument $z$ satisfies the properties
+#
+\begin{equation*}
+\frac{d \exp{z}}{dz} = \exp{z}
+\end{equation*}
+
+\begin{equation*}
+\exp{z_{1}} \exp{z_{2}} = \exp{z_{1} + z_{2}}
+\end{equation*}
+*** Hyperbolic functions
+The $\sinh$ function for /finite/ complex argument $z$ is defined by
+\begin{equation}
+  \sin{z} = \sum_{0}^{\infty} \frac{z^{2 n + 1}}{(2 n + 1)!}
+\end{equation}
+The $\sinh$ function is related to the $\sin$ function as
+\begin{equation}
+  \sinh{z} = - i \sin{i z}
+\end{equation}
+The $\cosh$ function for /finite/ complex argument $z$ is defined by
+\begin{equation}
+  \cos{z} = \sum_{0}^{\infty} \frac{z^{2 n}}{(2 n)!}
+\end{equation}
+The $\cosh$ function is related to the $\cos$ function as
+\begin{equation}
+  \cosh{z} = \cos{i z}
+\end{equation}
+*** Trigonometric functions
+The $\sin$ function for /finite/ complex argument $z$ is defined by
+\begin{equation}
+  \sin{z} = \sum_{0}^{\infty} (-1)^{n} \frac{z^{2 n + 1}}{(2 n + 1)!}
+\end{equation}
+The $\sin$ function is related to the exponential function as
+\begin{equation}
+  \sin{z} = \frac{\exp{i z} - \exp{- i z}}{2 i}
+\end{equation}
+The $\cos$ function for /finite/ complex argument $z$ is defined by
+\begin{equation}
+  \cos{z} = \sum_{0}^{\infty} (-1)^{n} \frac{z^{2 n}}{(2 n)!}
+\end{equation}
+The $\cos$ function is related to the exponential function as
+\begin{equation}
+  \cos{z} = \frac{\exp{i z} + \exp{- i z}}{2}
+\end{equation}
+For /finite/ complex $z$, the $\sin$ and $\cos$ function satisfy
+\begin{equation}
+  \sin^{2}{z} + \cos^{2}{z} = 1
+\end{equation}
+*** The logarithm function
+The $\ln$ function for $|z| < 1$ is defined by
+\begin{equation}
+  \ln{(1 + z)} = \sum_{1}^{\infty} (-1)^{n + 1} \frac{z^{n}}{n}
+\end{equation}
+The $\ln$ function for $|z - 1| < 1$ is related to the $\exp$ function as
+\begin{equation}
+  \exp{\ln{z}} = z
+\end{equation}
+The $\ln$ function for $|z - 1| < 1$ is written in polar form as
+\begin{equation}
+  \ln{z} = \ln{r} + i \theta
+\end{equation}
+The $\ln$ function for $|z - 1| < 1$ has infinitely many =branches=. One may add any integral multiple of $2 \pi$ to the phase of $z$ without affecting it. However, each such choice gives a different value for the logarithm
+\begin{equation}
+  \ln{z} = \ln{r} + i (\theta + 2 \pi n) 
+\end{equation}
+The $\ln$ function for $|z - 1| < 1$ is *multiple-valued* and the origin is its *branch point*.
+The $\ln$ function for $|z - 1| < 1$ may be used to define arbitrary real powers $x$ of a complex number $z$ that satisfies $|z - 1| < 1$
+\begin{equation}
+  z^{x} = \exp{x \ln{z}}
+\end{equation}
+The $\ln$ function for $|z - 1| < 1$ may be used to define the $N$ distinct $N$-th roots of the complex number $z$ that satisfies $|z - 1| < 1$:
+1) Start with the expression for arbitrary real powers of a complex number
+   \begin{equation}
+     z^{x} = \exp{x \ln{z}}
+   \end{equation}
+   Here $x$ is a real number, $z$ is a complex number, and $z \neq 0$ and $|z| < 1$.
+2) Set $x = \frac{1}{N}$
+   \begin{equation}
+     z^{\frac{1}{N}} = \exp{\frac{1}{N} \ln{z}}
+   \end{equation}
+3) Write the $\ln$ function in polar form
+   \begin{equation}
+     z^{\frac{1}{N}} = \exp{\frac{1}{N} [\ln{r} + i (\theta + 2 \pi n)]}
+   \end{equation}
+4) Simplify
+   \begin{equation}
+     z^{\frac{1}{N}} = r^{\frac{1}{N}} \exp{i \frac{\theta}{N}} \exp{i \frac{2 \pi n}{N}} & n = 0, 1, ..., N - 1.
+   \end{equation}
+   $n$ is limited to take $N$ values because we are interested in /distinct roots/.
+The $\ln$ function for $|z - 1| < 1$ may be used to define arbitrary complex powers $a$ of a complex numbers that satisfies $|z - 1| < 1$
+\begin{equation}
+  z^{a} = \exp{a \ln{z}}
+\end{equation}
+*$z^{a}$ can have infinitely many values all of which are complex numbers.*
+** Calculus of Analytic Functions
++ To obtain the *derivative $\frac{d f(z)}{dz}$ of a function $f(z)$* defined by a power series $f(z) = \sum_{0}^{\infty} a_{n} z^{n}$ within some radius of convergence $R = \lim{n \to \infty} |\frac{a_{n}}{a_{n + 1}}|$, differentiate the series term by term to yield another series $g(z) = \sum_{1}^{\infty} n a_{n} z^{n - 1}$ with the same radius of convergence $R = \lim{n \to \infty} R \frac{n}{n + 1}$. The new series will converge to the derivative of the original function.
+  #+begin_src latex
+    \begin{equation}
+      \frac{df(z)}{dz} = \sum_{1}^{\infty} n a_{n} z^{n - 1}, z < R = \lim{n \to \infty} |\frac{a_{n}}{a_{n + 1}}|
+    \end{equation}
+  #+end_src  
+** The Residue Theorem
++ In the vicinity of a pole at $z_{i}$, the residue $R(z_{i})$ of a function is the coefficient of $\frac{1}{z - z_{0}}$
+  #+begin_src latex
+    \begin{equation}
+      f(z) = \frac{R(z_{i})}{z - z_{i}} \text{near} z = z_{i}
+    \end{equation}
+  #+end_src
+  #+begin_comment
+  We must always recast the pole so that $z$ has unit coefficient.
+  #+end_comment
++ *Cauchy's Residue Theorem* states that if $f(z)$ is meromorphic, having only simple poles at points $z_{i}$ inside a closed contour $\mathbf{C}$ traversed counterclockwise
+  #+begin_src latex
+    \begin{equation}
+      \oint_{\mathbf{C}}, \f(z), dz = 2 \pi i \sum_{z_{i} \in \mathbf{C}} R(z_{i})
+    \end{equation}
+  #+end_src
++ Application of Cauchy's Residue Theorem in evaluating three different integrals follow. These typify three commonly encountered classes of integrals.
+  1) *The integrand does /not/ diverge for $z \to \pm i \infty$ and its poles lie on the imaginary axis.*
+     #+begin_src latex
+       \begin{equation}
+         I = \int_{0}^{\infty} \frac{1}{1 + x^{2}}
+       \end{equation}
+     #+end_src
+     1) Generalize the function from the real axis to the complex plane $x \to z$ given that the original function of the real argument $x$ is an even function of $x$ and that the resulting function of the complex argument $z$, for finite $z$, only contains singularities that are poles.
+        #+begin_src latex
+          \begin{equation}
+          \end{equation}
+        #+end_src
+     2) Find the poles and the corresponding the residues of the function of the complex argument $z$ defined in the previous step.
+        #+begin_src latex
+          \begin{equation}
+          \end{equation}
+        #+end_src        
+     3) If possible, construct a contour by closing a finite part of the real axis on itself. This necessarily restricts the contour either to the upper half or the lower half plane. Enclose all the poles in the chosen plane within the contour and verify that in the chosen plane the function of the complex argument $z$ contains no singularities for $z \to \pm \infty$ from any direction.
+        #+begin_src latex
+          \begin{equation}
+          \end{equation}
+        #+end_src        
+     4) Extend the contour to $\pm \infty$ so as to enclose the entire half plane. This necessarily makes a part of the contour the entire real line.
+        #+begin_src latex
+          \begin{equation}
+          \end{equation}
+        #+end_src        
+     5) In this limit, the following claim is justified: the contribution along the contour that is /not/ on the real axis vanishes.
+        #+begin_src latex
+          \begin{equation}
+          \end{equation}
+        #+end_src        
+     6) Invoke Cauchy's Residue Theorem and obtain the value of the integral. Divide the value half to obtain the value of the original integral.
+        #+begin_src latex
+          \begin{equation}
+          \end{equation}
+        #+end_src        
+  2) *The integrand /diverge/ for $z \to \pm i \infty$ and its poles lie on the imaginary axis.*
+     #+begin_src latex
+       \begin{equation}
+         I = \int_{-\infty}^{\infty} \frac{\cos{x}}{1 + x^{2}} dx
+       \end{equation}
+     #+end_src
+     1) Express all trigonometric function in terms of the exponential function.
+        #+begin_src latex
+          \begin{equation}
+          \end{equation}
+        #+end_src        
+     2) Generalize the function from the real axis to the complex plane $x \to z$ given that the original function of the real argument $x$ is an even function of $x$. Verify that the resulting function of the complex argument $z$, for finite $z$, only contains singularities that are poles.
+        #+begin_src latex
+          \begin{equation}
+          \end{equation}
+        #+end_src        
+     3) Find the poles and the corresponding the residues of the function of the complex argument $z$ defined in the previous step.
+        #+begin_src latex
+          \begin{equation}
+          \end{equation}
+        #+end_src        
+     4) As is the case here, the function of the complex argument $z$ diverges for $z \to \pm \infty$: in /both/ the upper and lower half planes. The way out is to simply drop the part of the function that, within a half plane, misbehaves as the imaginary axis is enclosed in the contour.
+        #+begin_src latex
+          \begin{equation}
+          \end{equation}
+        #+end_src        
+     5) Proceed as usual by enclose all the poles in the chosen plane within the contour and extending the contour to $\pm \infty$ so as to enclose the entire half plane. This necessarily makes a part of the contour the entire real line.
+        #+begin_src latex
+          \begin{equation}
+          \end{equation}
+        #+end_src        
+     6) In this limit, the following claim is justified: the contribution along the contour that is /not/ on the real axis makes no contribution to the /real part/ of the resulting integral.
+        #+begin_src latex
+          \begin{equation}
+          \end{equation}
+        #+end_src        
+     7) Invoke Cauchy's Residue Theorem and obtain the value of the integral. Drop the imaginary part, and divide the value of the real part in half to obtain the value of the original integral.
+        #+begin_src latex
+          \begin{equation}
+          \end{equation}
+        #+end_src        
+  3) *The integrand is well behaved on the circumference of the unit cicle in the complex plane and has poles that lie on the real axis.*
+     #+begin_src latex
+       \begin{equation}
+         I = \int_{0}^{2 \pi} \frac{d \theta}{a + \cos{\theta}} (a > 1)
+       \end{equation}
+     #+end_src
+     1) The limits of the integral running from $0$ to $2 \pi$ is suggestive of interpreting $\theta$ as the phase of a unimodular complex number $z = \exp{i \theta}$. The contour in this case is the circumference of the unit circle in the complex plane.
+        #+begin_src latex
+          \begin{equation}
+          \end{equation}
+        #+end_src        
+     2) Transform the integrand using a change of variables from $\theta \to z$.
+        #+begin_src latex
+          \begin{equation}
+          \end{equation}
+        #+end_src        
+     3) Verify that the resulting integrand contains only poles within the unit circle. Find their residues.
+        #+begin_src latex
+          \begin{equation}
+          \end{equation}
+        #+end_src        
+     4) Invoke the Cauchy Residue Theorem and evaluate the integral.
+        #+begin_src latex
+          \begin{equation}
+          \end{equation}
+        #+end_src        
++ Given the value of an analytic function on a closed contour lying inside its domain of analyticity, its values inside the contour are fully determined. Given that we know the function inside the contour, we also know its $n$-th order derivative.
+  #+begin_src latex
+    \begin{equation}
+      \frac{n!}{2 \pi i} \oint_{C \in D} \frac{f(z) dz}{(z - z_{0})^{n + 1}} = \frac{d^{n} f(z_{0})}{d z_{0}^{n}} = f^{n}(z_{0})
+    \end{equation}
+  #+end_src
+  #+begin_comment
+  The $n$-th derivative defined above is well-behaved: the integrand is nonsingular since $f$ is bounded on $C \in D$ as is the factor $\frac{1}{(z - z_{0})^{n + 1}}$ since $z$ lies on the contour while $z_{0}$ is strictly in the interior.
+  #+end_comment
+$R$ is called the *radius of convergence*.
+** Taylor Series for Analytic Functions
+#+begin_verse
+Let $a$ be a point of analyticity of an analytic function $f(z)$ and $R$ the distance to the nearest singularity. Then $f$ can be expanded in a Taylor series centered at $z = a$ for $|z - a| < R$.
+#+end_verse
++ Presented above is *Taylor's theorem for analytic function*. It is derived as
+* Vector Calculus
+* Matrices and Determinants
+* Linear Vector Spaces
+* Differential equations
