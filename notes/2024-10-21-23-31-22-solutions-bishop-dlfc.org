@@ -1,9 +1,8 @@
 :PROPERTIES:
 :ID:       5da04b9e-8e39-49cb-97a8-0acbdcb5af38
 :END:
-#+TITLE: Solutions to Bishop's Deep Learning
+#+TITLE: Solutions to Deep Learning by Christopher M. Bishop
 #+FILETAGS: :problem:
-#+TEXTBOOK: Deep Learning: Foundations and Concepts
 #+SETUPFILE: ~/.config/emacs/setup/setupfile.org
 #+BEGIN: clocktable :maxlevel 2 :scope nil :emphasize nil
 #+CAPTION: Clock summary at [2024-10-21 Mon 23:35]
