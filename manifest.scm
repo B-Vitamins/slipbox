@@ -1,4 +1,5 @@
-;; -*- mode: scheme; -*-
+(use-modules (guix ci))
+
 (specifications->manifest
   '("python"
     "python-requests"
