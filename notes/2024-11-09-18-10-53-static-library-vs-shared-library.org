@@ -1,0 +1,43 @@
+:PROPERTIES:
+:ID:       8a77ddbf-bb81-4dfe-98ba-fadd5d284425
+:END:
+#+TITLE: Static library vs. shared library
+#+FILETAGS: :concept:programming:c:cpp:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+In C and C++ programming, libraries are collections of precompiled code that developers can reuse to build modular, efficient, and maintainable software. Two primary types of libraries are used for linking code: *static libraries* and *shared (dynamic) libraries*. Each serves distinct purposes in terms of compilation, linking, memory efficiency, and runtime behavior. Understanding the differences is essential for optimizing build processes and application performance.
+
+* Static Libraries
+A *static library* is an archive of object files (typically compiled `.o` files) bundled into a single file with an `.a` extension on Unix-like systems (e.g., Linux) or a `.lib` extension on Windows. When a program links against a static library, the necessary parts of the library are copied directly into the final executable file at *compile time*. This process is known as *static linking*.
+
+   - Creation :: Static libraries are created using tools like `ar` (archiver) in Unix-based systems. For example, `ar rcs libexample.a file1.o file2.o` would create a static library `libexample.a` containing `file1.o` and `file2.o`.
+   - File Size Impact :: Since library code is directly embedded in the executable, the executable size increases with each linked library, as each binary includes its own copy of the code.
+   - Memory Use :: Every program linked against a static library has its own copy of the library code, potentially leading to higher overall memory use when multiple programs use the same library.
+   - Execution Performance :: Static libraries generally load faster because all required code is already part of the executable, eliminating runtime dependency loading. However, in memory-intensive applications, the duplication of code across processes may reduce efficiency.
+   - Updating :: When the library code is modified, every executable that uses it must be recompiled and relinked to incorporate the changes. This lack of modularity makes maintenance challenging for larger systems with frequent updates.
+   
+* Shared (Dynamic) Libraries
+A *shared library*, also known as a *dynamic library*, is a library of code compiled to be linked at runtime, rather than embedded into the executable. Shared libraries are commonly used to promote modularity, memory efficiency, and reduced storage space. Shared libraries have the `.so` (shared object) extension on Linux or `.dll` (dynamic link library) extension on Windows.
+
+   - Creation :: Shared libraries are created with compiler flags that enable position-independent code (PIC), allowing the library to be loaded at any memory address. For instance, =gcc -shared -fPIC -o libexample.so file1.o file2.o= creates a shared library =libexample.so=.
+   - Runtime Linking :: When a program is compiled with a shared library, only references to the library functions are stored in the executable, rather than the code itself. The library code remains separate and is linked at runtime. The operating system’s dynamic linker resolves these references to load the shared library into memory only when the program runs.
+   - Memory Efficiency :: Shared libraries allow multiple running programs to share a single copy of the library code, significantly reducing memory usage across applications. This is a common strategy in larger applications and operating systems to manage libraries that many programs utilize.
+   - Updating and Modularity :: Since the shared library is not embedded into the executable, it can be modified independently of the programs that depend on it. When a library is updated, it can be replaced without recompiling dependent programs, as long as the new library maintains a compatible Application Binary Interface (ABI). This flexibility is beneficial for maintaining systems with many dependencies.
+   - Drawbacks :: Dependency on shared libraries means that an executable will fail to run if the required library version is missing or incompatible on the host system. Additionally, loading a shared library at runtime can introduce a minor performance overhead.
+
+* Technical Comparison
+
+| Feature                 | Static Library (.a, .lib)                                  | Shared Library (.so, .dll)                                   |
+|-------------------------+------------------------------------------------------------+--------------------------------------------------------------|
+| **Linking Time**        | Compile time                                               | Runtime                                                      |
+| **File Composition**    | Code is copied into the executable                         | Code remains separate and is loaded at runtime               |
+| **Executable Size**     | Larger; includes necessary library code                    | Smaller; only references library code                        |
+| **Memory Usage**        | Each program includes its own copy of library code         | Code is shared across processes                              |
+| **Runtime Performance** | Generally faster as all code is preloaded                  | Slightly slower due to runtime loading overhead              |
+| **Maintenance**         | Requires recompilation of executables when library changes | Library can be updated independently, as long as ABI remains |
+| **Compatibility**       | Platform-specific `.a`/`.lib` format                       | Requires compatible `.so`/`.dll` library for the OS          |
+
+* Practical Use Cases
++ Static Libraries :: Typically used in systems where independent, standalone binaries are desirable, such as embedded systems or portable command-line tools. Static linking avoids runtime dependency issues, ensuring the program can run without external libraries.
+
++ Shared Libraries :: Ideal for larger applications with multiple dependencies and for environments where modularity and memory efficiency are prioritized. Shared libraries are common in operating systems and applications that undergo frequent updates, as they enable versioned, independent updates.
