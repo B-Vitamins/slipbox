@@ -1,0 +1,445 @@
+:PROPERTIES:
+:ID:       2a02575b-c81b-40de-8ce4-84eef857080c
+:END:
+#+TITLE: How to Learn Math and Physics
+#+AUTHOR: John Baez
+#+DATE: <2024-10-14 Mon>
+#+FILETAGS: :fleeting:recommendations:books:physics:maths:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+books
+
+- [[#introduction][Introduction]]
+- [[#physics][How to Learn Physics]]
+- [[#math][How to Learn Math]]
+- [[#advanced][More Advanced Math]]
+
+*** Introduction
+"How to learn math and physics" --- the title is deliberately provocative. Everyone has to learn their own way. I don't know how /you/ should learn math and physics. But presumably you came here looking for advice, so I'll give you some.
+
+My advice is aimed at people who are interested in fundamental theoretical physics and the math that goes along with that. (By "fundamental" physics I mean the search for the basic laws concerning matter and the forces of nature.) If you want to do experiments instead of theory, or other of kinds physics like condensed matter physics and astrophysics, or math that has nothing to do with physics, my advice will be of limited use. You should still learn the /basics/ I mention here, but after that you'll have to look elsewhere for suggestions.
+
+Learning math and physics takes a whole lifetime. Luckily, it's a lot of fun... /if/ you have a reasonably patient attitude. A lot of people read pop books about quantum mechanics, black holes, or Gödel's theorem, and immediately want to study those subjects. Without the necessary background, they soon become frustrated --- or worse, flaky.
+
+It can be even more dangerous if you want to plunge into grand unified theories, or superstrings, or M-theory. Nobody knows if these theories are true! And it's hard to evaluate their claims until you know what people /do/ know.
+
+So, especially when it comes to physics, I urge you to start with slightly less glamorous stuff that we /know to be true/ --- at least as a useful approximation, that is --- and then, with a solid background, gradually work your way up to the frontiers of knowledge. Even if you give up at some point, you'll have learned something worthwhile.
+
+This webpage doesn't have lots of links to websites. Websites just don't have the sort of in-depth material you need to learn technical subjects like advanced math and physics --- at least, not yet. To learn this stuff, you need to read lots of /books/. I will list some of my favorites below, and also some you can get free online.
+
+But, you can't learn math and physics just by reading books! You have to do lots of calculations yourself --- or experiments, if you want to do experimental physics. Textbooks are full of homework problems, and it's good to do these. It's also important to /make up your own research topics/ and work on those.
+
+If you can afford it, there's really nothing better than taking /courses/ in math and physics. The advantage of courses is that you get to hear lectures, meet students and professors, and do some things you otherwise wouldn't --- like work your butt off.
+
+It's also crucial to /ask people questions/ and /explain things to people/ --- both of these are great ways to learn stuff. Nothing beats sitting in a cafe with a friend, notebooks open, and working together on a regular basis. Two minds are /more/ than twice as good as one!
+
+But if you can't find a friend in your town, there are different ways to talk to people online. In all cases, it's good to spend some time quietly getting to know the local customs before plunging in and talking. For example, trying to start a rambling discussion on a question-and-answer website is no good. If you've got physics questions, try [[http://physics.stackexchange.com/][Physics Stack Exchange]]. For research-level questions, try [[http://physicsoverflow.org/][Physics Overflow]]. For questions about math, try [[http://math.stackexchange.com/][Math Stack Exchange]], or for research-level questions, [[http://mathoverflow.net/][Math Overflow]].
+
+For more free-wheeling discussions of math and physics, try [[http://www.physicsforums.com/][Physics Forums]].
+
+There are also lots of interesting blogs and [[http://www.math.gatech.edu/%7Ecain/textbooks/onlinebooks.html][free math books online]].
+
+Finally, it's crucial to /admit you're wrong when you screw up/. We all make tons of mistakes when we're learning stuff. If you don't admit this, you will gradually turn into a [[file:crackpot.html][crackpot]] who clutches on to a stupid theory even when everyone else in the world can see that it's wrong. It's a tragic fate, because you can't even see it's happening. Even bigshot professors at good universities can become crackpots once they stop admitting their mistakes.
+
+To avoid looking like a fool, it's really good to get into the habit of /making it clear whether you know something for sure, or are just guessing/. It's not so bad to be wrong if you said right from the start that you weren't sure. But if you act confident and turn out to be wrong, you look dumb.
+
+In short: stay humble, keep studying, and you'll keep making progress. Don't give up --- the fun is in the process.
+
+[[file:walk.gif]]
+
+<<physics>>
+
+*** How to Learn Physics
+There are 5 cornerstone topics that every physicist should learn:
+
+- Classical mechanics
+- Statistical mechanics
+- Electromagnetism
+- Special relativity
+- Quantum mechanics
+
+in roughly that order. Once you know these, you have the background to learn the two best theories we have:
+
+- General relativity (leading up to the Big Bang Model of cosmology)
+- Quantum field theory (leading up to the Standard Model of particle physics)
+
+And once you know /these/, you'll be ready to study current attempts to unify quantum field theory and general relativity.
+
+If this seems like a lot of work... well, it is! It's /a lot of fun/, too, but it's bound to be tiring at times. So, it's also good to read some histories of physics. They're a nice change of pace, they're inspiring, and they can show you the "big picture" that sometimes gets hidden behind the thicket of equations. These are some of my favorite histories:
+
+- Emilio Segre, /From Falling Bodies to Radio Waves: Classical Physicists and Their Discoveries/, W. H. Freeman, New York, 1981.
+- Emilio Segre, /From X-Rays to Quarks: Modern Physicists and Their Discoveries,/ W. H. Freeman, San Francisco, 1980.
+- Robert P. Crease and Charles C. Mann, /The Second Creation: Makers of the Revolution in Twentieth-Century Physics/, Rutgers University Press, New Brunswick, NJ, 1996.
+- Abraham Pais, /Inward Bound: of Matter and Forces in the Physical World, Clarendon Press/, New York, 1986. (More technical.)
+
+Next, here are some good books to learn "the real stuff". These aren't "easy" books, but they're my favorites.
+
+First, some very good /general/ textbooks:
+
+- M. S. Longair, /Theoretical Concepts in Physics/, Cambridge U. Press, Cambridge, 1986.
+- Richard Feynman, Robert B. Leighton and Matthew Sands, /The Feynman Lectures on Physics/, 3 volumes, Addison-Wesley, 1989. All three volumes are now [[http://feynmanlectures.caltech.edu][free online]].
+- Ian D. Lawrie, /A Unified Grand Tour of Theoretical Physics/, Adam Hilger, Bristol, 1990.
+
+Then, books that specialize on the 5 cornerstone topics I listed above:
+
+Classical mechanics:
+
+- Herbert Goldstein, Charles Poole, and John Safko, /Classical Mechanics/, Addison Wesley, San Francisco, 2002.
+
+Statistical mechanics:
+
+- F. Reif, /Fundamentals of Statistical and Thermal Physics/, McGraw Hill, New York, 1965.
+
+Electromagnetism:
+
+- John David Jackson, /Classical Electrodynamics/, Wiley, New York, 1975.
+
+Special relativity:
+
+- Edwin F. Taylor, John A. Wheeler, /Spacetime Physics: Introduction to Special Relativity/, W. H. Freeman Press, 1992.
+
+Quantum mechanics:
+
+- Anthony Sudbery, /Quantum Mechanics and the Particles of Nature: an Outline for Mathematicians/, Cambridge University Press, Cambridge, 1986. (Not just for mathematicians!)
+- Claude Cohen-Tannoudji, Bernard Diu und Franck Laloë, /Quantum Mechanics/ (2 volumes), Wiley-Interscience, 1992. (I haven't actually read this, but it's widely respected for its systematic approach.)
+
+These should be supplemented by the general textbooks above, which cover all these topics. In particular, Feynman's /Lectures on Physics/ are incredibly valuable.
+
+After you know this stuff well, you're ready for general relativity (which gets applied to cosmology) and quantum field theory (which gets applied to particle physics).
+
+General relativity --- to get intuition for the subject before tackling the details:
+
+- Kip S. Thorne, /Black Holes and Time Warps: Einstein's Outrageous Legacy/, W. W. Norton, New York, 1994.
+- Robert M. Wald, /Space, Time, and Gravity: the Theory of the Big Bang and Black Holes/, University of Chicago Press, Chicago, 1977.
+- Robert Geroch, /General Relativity from A to B/, University of Chicago Press, Chicago, 1978.
+
+General relativity --- for when you get serious:
+
+- R. A. D'Inverno, /Introducing Einstein's Relativity/, Oxford University Press, Oxford, 1992.
+- J. B. Hartle, /Gravity: An Introduction to Einstein's General Relativity/, Addison-Wesley, New York, 2002.
+- B. F. Schutz, /A First Course in General Relativity/, Cambridge University Press, Cambridge, 1985.
+
+General relativity --- for when you get /really/ serious:
+
+- Charles W. Misner, Kip S. Thorne and John Archibald Wheeler, /Gravitation/, W. H. Freeman Press, San Francisco, 1973.
+- Robert M. Wald, /General Relativity/, University of Chicago Press, Chicago, 1984.
+
+Cosmology:
+
+- Edward R. Harrison, /Cosmology, the Science of the Universe/, Cambridge University Press, Cambridge, 1981.
+- M. Berry, /Cosmology and Gravitation/, Adam Hilger, Bristol, 1986.
+- John A. Peacock, /Cosmological Physics/, Cambridge University Press, Cambridge, 1999. (More technical.)
+
+Quantum field theory --- to get intuition for the subject before tackling the details:
+
+- Richard Feynman, /QED: the Strange Theory of Light and Matter/, Princeton University Press, Princeton, 1985.
+
+Quantum field theory --- for when you get serious:
+
+- Michael E. Peskin and Daniel V. Schroeder, /An Introduction to Quantum Field Theory/, Addison-Wesley, New York, 1995. (The best modern textbook, in my opinion.)
+- A. Zee, /Quantum Field Theory in a Nutshell/, Princeton University Press, Princeton, 2003. (Packed with wisdom told in a charmingly informal manner; not the best way to learn how to calculate stuff.)
+- Warren Siegel, /Fields/, available for free [[http://arxiv.org/abs/hep-th/9912205][on the arXiv]].
+- Mark Srednicki, /Quantum Field Theory/, available free on [[http://www.physics.ucsb.edu/~mark/qft.html][his website]]. (It's good to snag free textbooks while you can, if they're not on the arXiv!)
+- Sidney Coleman, /Physics 253: Quantum Field Theory/, 1975-1976. (Not a book --- it's a class! You can download free [[https://www.physics.harvard.edu/events/videos/Phys253][videos]] of this course at Harvard, taught by a brash and witty young genius.)
+
+Quantum field theory --- two classic older texts that cover a lot of material not found in Peskin and Schroeder's streamlined modern presentation:
+
+- James D. Bjorken and Sidney D. Drell, /Relativistic Quantum Mechanics/, New York, McGraw-Hill, 1964.
+- James D. Bjorken and Sidney D. Drell, /Relativistic Quantum Fields/, New York, McGraw-Hill, 1965.
+
+Quantum field theory --- for when you get /really/ serious:
+
+- Sidney Coleman, /Aspects of Symmetry/, Cambridge U. Press, 1989. (A joy to read.)
+- Rudolf Haag, /Local Quantum Physics: Fields, Particles, Algebras/, Springer, 1992.
+
+Quantum field theory --- so even mathematicians can understand it:
+
+- Robin Ticciati, /Quantum Field Theory for Mathematicians/, Cambridge University Press, Cambridge, 1999.
+- Richard Borcherds and Alex Barnard, /[[http://arxiv.org/abs/math-ph/0204014][Lectures On Quantum Field Theory]]/.
+
+Particle physics:
+
+- Kerson Huang, /Quarks, Leptons & Gauge Fields/, World Scientific, Singapore, 1982.
+- L. B. Okun, /Leptons and Quarks/, translated from Russian by V. I. Kisin, North-Holland, 1982. (Huang's book is better on mathematical aspects of gauge theory and topology; Okun's book is better on what we actually observe particles to do.)
+- T. D. Lee, /Particle Physics and Introduction to Field Theory/, Harwood, 1981.
+- K. Grotz and H. V. Klapdor, /The Weak Interaction in Nuclear, Particle, and Astrophysics/, Hilger, Bristol, 1990.
+
+While studying general relativity and quantum field theory, you should take a break now and then and dip into this book: it's a wonderful guided tour of the world of math and physics:
+
+- Roger Penrose, /The Road to Reality: A Complete Guide to the Laws of the Universe/, Knopf, New York, 2005.
+
+And then, some books on more advanced topics...
+
+The interpretation of quantum mechanics:
+
+- Roland Omnes, /Interpretation of Quantum Mechanics/, Princeton U. Press, Princeton, 1994.
+
+This is a reasonable treatment of an important but incredibly controversial topic. /Warning/: there's no way to understand the interpretation of quantum mechanics without also being able to /solve quantum mechanics problems/ --- to understand the theory, you need to be able to use it (and vice versa). If you don't heed this advice, you'll fall prey to all sorts of nonsense that's floating around out there.
+
+The mathematical foundations of quantum physics:
+
+- Josef M. Jauch, /Foundations of Quantum Mechanics/, Addison-Wesley, 1968. (Very thoughtful and literate. Get a taste of quantum logic.)
+- George Mackey, /The Mathematical Foundations of Quantum Mechanics/, Dover, New York, 1963. (Especially good for mathematicians who only know a little physics.)
+
+Loop quantum gravity and spin foams:
+
+- Carlo Rovelli, /Quantum Gravity/, Cambridge University Press, Cambridge, 2004.
+
+String theory:
+
+- Barton Zwiebach, /A First Course in String Theory/, Cambridge U. Press, Cambridge, 2004. (The best easy introduction.)
+- Katrin Becker, Melanie Becker and John H. Schwartz, /String Theory and M-Theory: A Modern Introduction/, Cambridge U. Press, Cambridge, 2007. (A more detailed introduction.)
+- Michael B. Green, John H. Schwarz and Edward Witten, /Superstring Theory/ (2 volumes), Cambridge U. Press, Cambridge, 1987. (The old testament.)
+- Joseph Polchinski, /String Theory/ (2 volumes), Cambridge U. Press, Cambridge, 1998. (The new testament --- he's got branes.)
+
+<<math>>
+
+*** How to Learn Math
+Math is a much more diverse subject than physics, in a way: there are lots of branches you can learn without needing to know other branches first... though you only /deeply/ understand a subject after you see how it relates to all the others!
+
+After basic schooling, the customary track through math starts with a bit of:
+
+- [[#combinatorics][Finite mathematics (combinatorics)]]
+
+and
+
+- [[#probability][Probability theory]]
+
+To do physics you need calculus, multivariable calculus and linear algebra:
+
+- [[#calculus][Calculus]]
+
+- [[#multivariable_calculus][Multivariable calculus]]
+
+- [[#linear_algebra][Linear algebra]]
+
+To do physics you also need to know about ordinary differential equations, which rely on calculus:
+
+- [[#ODEs][Ordinary differential equations]]
+
+Most of the fundamental laws of physics are partial differential equations; these rely on multivariable calculus:
+
+- [[#PDEs][Partial differential equations]]
+
+Multivariable calculus is a prerequisite for complex analysis, which is like 'calculus using complex numbers':
+
+- [[#complex_analysis][Complex analysis]]
+
+Calculus is a prerequisite for real analysis, which you can think of as 'heavy-duty calculus':
+
+- [[#real_analysis][Real analysis]]
+
+To do topology, which is the study of general spaces, it's good to already know the concept of 'continuous function', which you may have seen in calculus.
+
+- [[#topology][Topology]]
+
+You can study set theory and logic without any of the previously listed subjects:
+
+- [[#set_theory_and_logic][Set theory and logic]]
+
+Linear algebra is a good warmup for abstract algebra, where you leave the real and complex numbers behind and consider more general number systems:
+
+- [[#abstract_algebra][Abstract algebra]]
+
+not necessarily in exactly this order. Proofs become very important at this stage. You need to know a little set theory and logic to really understand what a proof is, but you don't even need calculus to get started on number theory:
+
+- [[#number_theory][Number theory]]
+
+From then on, the study of math branches out into a dizzying variety of more advanced topics! It's hard to get the "big picture" of mathematics until you've gone fairly far into it; indeed, the more I learn, the more I laugh at my previous pathetically naive ideas of what math is "all about". But if you want a glimpse, try these books:
+
+- F. William Lawvere and Stephen H. Schanuel, /Conceptual Mathematics: a First Introduction to Categories/, Cambridge University Press, 1997. (A great place to start.)
+- Saunders Mac Lane, /Mathematics, Form and Function/, Springer, New York, 1986. (More advanced.)
+- Jean Dieudonne, /A Panorama of Pure Mathematics, as seen by N. Bourbaki/, translated by I.G. Macdonald, Academic Press, 1982. (Very advanced --- best if you know a lot of math already. Beware: many people disagree with Bourbaki's outlook.)
+
+I haven't decided on my favorite books on all the basic math topics, but here are a few. In this list I'm trying to pick the clearest books I know, not the deepest ones --- you'll want to dig deeper later:
+
+Finite mathematics (combinatorics):
+
+- Arthur T. Benjamin and Jennifer Quinn, /Proofs that Really Count: The Art of Combinatorial Proof/, The Mathematical Association of America, 2003.
+- Ronald L. Graham, Donald Knuth, and Oren Patashnik, /Concrete Mathematics/, Addison-Wesley, Reading, Massachusetts, 1994. (Too advanced for a first course in finite mathematics, but this book is /fun/ --- quirky, full of jokes, it'll teach you tricks for counting stuff that will blow your friends minds!)
+
+Probability theory:
+
+- Charles M. Grinstead and J. Laurie Snell, /Introduction to Probability/, American Mathematical Society, Providence, Rhode Island, 1997. Also available free online at [[https://math.dartmouth.edu/~prob/prob/prob.pdf]].
+
+Calculus:
+
+- Silvanus P. Thompson, /Calculus Made Easy/, St. Martin's Press, 1914. Also available free online at [[http://www.gutenberg.org/ebooks/33283]]. (Most college calculus texts weigh a ton; this one does not --- it just gets to the point. This is how I learned calculus: my uncle gave me a copy.)
+- Gilbert Strang, /Calculus/, Wellesley-Cambridge Press, Cambridge, 1991. Also available free online at [[https://ocw.mit.edu/courses/res-18-001-calculus-online-textbook-spring-2005/pages/textbook/]]. (Another classic, with lots of applications to real-world problems.)
+
+Multivariable calculus:
+
+- James Nearing, /Mathematical Tools for Physics/, available at [[http://www.physics.miami.edu/~nearing/mathmethods/]]. See especially the sections on [[http://www.physics.miami.edu/~nearing/mathmethods/multivariable_calculus.pdf][multvariable calculus]], [[http://www.physics.miami.edu/~nearing/mathmethods/vector_calculus-1.pdf][vector calculus 1]], and [[http://www.physics.miami.edu/~nearing/mathmethods/vector_calculus-2.pdf][vector calculus 2]]. (Very nice explanations!)
+- George Cain and James Herod, /Multivariable Calculus/. Available free online at [[http://www.math.gatech.edu/~cain/notes/calculus.html]]
+
+Linear algebra:
+
+This is a great linear algebra book if you want to understand the subject thoroughly:
+
+- Elizabeth S. Meckes and Mark Meckes, /Linear Algebra/, Cambridge U. Press, 2018.
+
+These books are probably easier, and they're free online:
+
+- Keith Matthews, /Elementary Linear Algebra/, available free online at [[http://www.numbertheory.org/book/]].
+- Jim Hefferon, /Linear Algebra/, available free online at [[http://joshua.smcvt.edu/linalg.html/]].
+- Robert A. Beezer, /A First Course in Linear Algebra/, available free online at [[http://linear.ups.edu/]].
+
+Ordinary differential equations --- some free online books:
+
+- Bob Terrell, /Notes on Differential Equations/, available free online at [[https://archive.org/details/Bob_Terrell__Notes_on_Differential_Equation]]. (Does both ordinary and partial differential equations.)
+- James Nearing, /Mathematical Tools for Physics/, available at [[http://www.physics.miami.edu/~nearing/mathmethods/]]. See especially the sections on [[http://www.physics.miami.edu/~nearing/mathmethods/ode.pdf][ordinary differential equations]] and [[http://www.physics.miami.edu/~nearing/mathmethods/fourier_series.pdf][Fourier series]] (which are good for solving such equations).
+
+Partial differential equations --- some free online books:
+
+- Bob Terrell, /Notes on Differential Equations/, available free online at [[http://www.math.cornell.edu/~bterrell/dn.pdf]]. (Does both ordinary and partial differential equations.)
+- James Nearing, /Mathematical Tools for Physics/, available at [[http://www.physics.miami.edu/~nearing/mathmethods/]]. See especially the section on [[http://www.physics.miami.edu/~nearing/mathmethods/pde.pdf][partial differential equations]].
+
+Set theory and logic:
+
+- Herbert B. Enderton, /Elements of Set Theory/, Academic Press, New York, 1977.
+- Herbert B. Enderton, /A Mathematical Introduction to Logic/, Academic Press, New York, 2000.
+- F. William Lawvere and Robert Rosebrugh, /Sets for Mathematics/, Cambridge U. Press, Cambridge, 2002. (An unorthodox choice, since this book takes an approach based on category theory instead of the old-fashioned Zermelo-Fraenkel axioms. But this is the wave of the future, so you might as well hop on now!)
+
+Complex analysis:
+
+- George Cain, /Complex Analysis/, available free online at [[http://www.math.gatech.edu/~cain/winter99/complex.html]]. (How can you not like /free online/?)
+- James Ward Brown and Ruel V. Churchill, /Complex Variables and Applications/, McGraw-Hill, New York, 2003. (A practical introduction to complex analysis.)
+- Serge Lang, /Complex Analysis/, Springer, Berlin, 1999. (More advanced.)
+
+Real analysis:
+
+- Richard R. Goldberg, /Methods of Real Analysis/, Wiley, New York, 1976. (A gentle introduction.)
+- Halsey L. Royden, /Real Analysis/, Prentice Hall, New York, 1988. (A bit more deep; here you get Lebesgue integration and measure spaces.)
+
+Topology:
+
+- James R. Munkres, /Topology/, James R. Munkres, Prentice Hall, New York, 1999.
+- Lynn Arthur Steen and J. Arthur Seebach, Jr., /Counterexamples in Topology/, Dover, New York, 1995. (It's fun to see how crazy topological spaces can get: also, counterexamples help you understand definitions and theorems. But, don't get fooled into thinking this stuff is the point of topology!)
+
+Abstract algebra:
+
+I didn't like abstract algebra as an undergrad. Now I love it! Textbooks that seem pleasant now seemed dry as dust back then. So, I'm not confident that I could recommend an all-around textbook on algebra that my earlier self would have enjoyed. But, I would have liked these:
+
+- Hermann Weyl, /Symmetry/, Princeton University Press, Princeton, New Jersey, 1983. (Before diving into group theory, find out why it's fun.)
+- Ian Stewart, /Galois Theory/, 3rd edition, Chapman and Hall, New York, 2004. (A fun-filled introduction to a wonderful application of group theory that's often explained very badly.)
+- Tom Leinster, /[[https://www.maths.ed.ac.uk/~tl/galois/][Galois Theory]]/, 2024. (Good to read after Stewart's book, and it comes with videos and many problems and multiple choice questions.)
+
+Number theory:
+
+These are elementary textbooks; for more advanced ones read on further.
+
+- George E. Andews, /Number Theory/, Dover, New York, 1994. (A good elementary introduction; don't buy the Kindle version of this edition since the equations are tiny.)
+- Joseph Silverman, /Friendly Introduction to Number Theory/, Pearson, 2017. (Doesn't require any advanced mathematics, not even calculus.)
+- Martin H. Weissman, /An Illustrated Theory of Numbers/, American Mathematical Society, Providence, Rhode Island, 2017. (This reveals the oft-hidden /visual/ side of number theory.)
+
+<<advanced>>
+
+*** More Advanced Math
+I'll start with some books on mathematical physics, because that's been one of my favorite subjects for a long time. Out of laziness, I'll assume you're already somewhat comfortable with the topics listed above --- yes, I know that requires about 4 years of full-time work! ---l and I'll pick up from there. Here's a good place to start:
+
+- Paul Bamberg and Shlomo Sternberg, /A Course of Mathematics for Students of Physics/, Cambridge University, Cambridge, 1982. (A good basic introduction to modern math, actually.)
+
+It's also good to get ahold of these books and keep referring to them as needed:
+
+- Robert Geroch, /Mathematical Physics/, University of Chicago Press, Chicago, 1985.
+- Yvonne Choquet-Bruhat, Cecile DeWitt-Morette, and Margaret Dillard-Bleick, /Analysis, Manifolds, and Physics/ (2 volumes), North-Holland, 1982 and 1989.
+
+Here's a free online reference book that's 787 pages long:
+
+- Jean Claude Dutailly, [[http://arxiv.org/abs/1209.5665][/Mathematics for Theoretical Physics/]], 2012.
+
+Here are my favorite books on various special topics:
+
+Group theory in physics:
+
+- Shlomo Sternberg, /Group Theory and Physics/, Cambridge University Press, 1994.
+- Robert Hermann, /Lie Groups for Physicists/, Benjamin-Cummings, 1966.
+- George Mackey, /Unitary Group Representations in Physics, Probability, and Number Theory/, Addison-Wesley, Redwood City, California, 1989.
+
+Lie groups, Lie algebras and their representations --- in rough order of increasing sophistication:
+
+- Brian Hall, /Lie Groups, Lie Algebras, and Representations/, Springer, Berlin, 2003.
+- William Fulton and Joe Harris, /Representation Theory --- a First Course/, Springer, Berlin, 1991. (A friendly introduction to finite groups, Lie groups, Lie algebras and their representations, including the classification of simple Lie algebras. One great thing is that it has many pictures of root systems, and works slowly up a ladder of examples of these before blasting the reader with abstract generalities.)
+- J. Frank Adams, /Lectures on Lie Groups/, University of Chicago Press, Chicago, 2004. (A very elegant introduction to the theory of semisimple Lie groups and their representations, without the morass of notation that tends to plague this subject. But it's a bit terse, so you may need to look at other books to see what's really going on in here!)
+- Daniel Bump, /Lie Groups/, Springer, Berlin, 2004. (A friendly tour of the vast and fascinating panorama of mathematics surrounding groups, starting from really basic stuff and working on up to advanced topics. The nice thing is that it explains stuff without feeling the need to prove every statement, so it can cover more territory.)
+
+Geometry and topology for physicists --- in rough order of increasing sophistication:
+
+- Gregory L. Naber, /Topology, Geometry and Gauge Fields: Foundations/, Springer, Berlin, 1997.
+- Chris Isham, /Modern Differential Geometry for Physicists/, World Scientific Press, Singapore, 1999. (Isham is an expert on general relativity so this is especially good if you want to study that.)
+- Harley Flanders, /Differential Forms with Applications to the Physical Sciences/, Dover, New York, 1989. (Everyone has to learn differential forms eventually, and this is a pretty good place to do it.)
+- Charles Nash and Siddhartha Sen, /Topology and Geometry for Physicists/, Academic Press, 1983. (This emphasizes the physics motivations... it's not quite as precise at points.)
+- Mikio Nakahara, /Geometry, Topology, and Physics/, A. Hilger, New York, 1990. (More advanced.)
+- Charles Nash, /Differential Topology and Quantum Field Theory/, Academic Press, 1991. (Still more advanced --- essential if you want to understand what Witten is up to.)
+
+Geometry and topology, straight up:
+
+- Victor Guillemin and Alan Pollack, /Differential Topology/, Prentice-Hall, Englewood Cliffs, 1974.
+- B. A. Dubrovin, A. T. Fomenko, and S. P. Novikov, /Modern Geometry --- Methods and Applications/, 3 volumes, Springer, Berlin, 1990. (Lots of examples, great for building intuition, some mistakes here and there. The third volume is an excellent course on algebraic topology from a geometrical viewpoint.)
+
+Algebraic topology:
+
+- Allen Hatcher, /Algebraic Topology/, Cambridge U. Press, Cambridge, 2002. Also available free at [[http://www.math.cornell.edu/~hatcher/AT/ATpage.html]]. (An excellent modern introduction.)
+- Peter May, /A Concise Course in Algebraic Topology/, U. of Chicago Press, Chicago, 1999. Also available free at [[http://www.math.uchicago.edu/~may/CONCISE/ConciseRevised.pdf]]. (More intense.)
+
+Geometrical aspects of classical mechanics:
+
+- Vladimir I. Arnol'd, /Mathematical Methods of Classical Mechanics/, translated by K. Vogtmann and A. Weinstein, 2nd edition, Springer, Berlin, 1989. (The appendices are somewhat more advanced and cover all sorts of nifty topics.)
+
+Analysis and its applications to quantum physics:
+
+- Michael Reed and Barry Simon, /Methods of Modern Mathematical Physics/ (4 volumes), Academic Press, 1980.
+
+And moving on to pure mathematics...
+
+Knot theory:
+
+- Louis Kauffman, /On Knots/, Princeton U. Press, Princeton, 1987.
+- Louis Kauffman, /Knots and Physics/, World Scientific, Singapore, 1991.
+- Dale Rolfsen, /Knots and Links/, Publish or Perish, Berkeley, 1976.
+
+Homological algebra:
+
+- Joseph Rotman, /An Introduction to Homological Algebra/, Academic Press, New York, 1979. (A good introduction to a branch of math that's fundamental to algebraic topology. Try to get the 1979 edition, since some newer ones are much fatter, packed with distracting stuff.)
+- Charles Weibel, /An Introduction to Homological Algebra/, Cambridge U. Press, Cambridge, 1994. (Despite having the same title as the previous book, this goes into many more advanced topics.)
+
+Ring theory:
+
+- Frank W. Anderson and Kent R. Fuller, /Rings and Categories of Modules/, Springer, 1992.
+
+Combinatorics:
+
+- Herbert Wilf, /Generatinfunctionology/, Academic Press, 1994. (Tons of fun and also available free online at [[https://www.math.upenn.edu/~wilf/DownldGF.html]]. It's good to read this after /Concrete Mathematics/ by Graham, Knuth and Pataschnik, listed above under [[file:books.html#combinatorics][combinatorics]].)
+- Richard P. Stanley, /Enumerative Combinatorics/, two volumes, Cambridge U. Press, 1997. (Packed with great exercises; volume one is also available free online at [[http://www-math.mit.edu/~rstan/ec/ec1.pdf]].)
+
+Algebraic geometry:
+
+I found Hartshorne's famous book quite off-putting the first ten times I tried to read it. I think it's better to start by getting to know some 'classical' algebraic geometry so you see why the subject is interesting and why it's called 'geometry' before moving on to delightful modern abstractions like schemes. So, start with this introduction:
+
+- Karen E. Smith, Lauri Kahanpää, Pekka Kekäläinen and William Traves, /An Invitation to Algebraic Geometry/, Springer, Berlin, 2004.
+
+Then try these:
+
+- Igor R. Shafarevich, /Basic Algebraic Geometry/, two volumes, third edition, Springer, 2013.
+- David Eisenbud and Joseph Harris, /The Geometry of Schemes/, Springer, 2006.
+- Phillip Griffiths and Joseph Harris, /Principles of Algebraic Geometry/, 1994. (Especially nice if you like complex analysis, differential geometry and de Rham theory.)
+
+Number theory:
+
+- Kenneth Ireland and Keith Rosen, /A Classical Introduction to Modern Number Theory/, second edition, Springer, 1998. (A good way to catch up on some classic results in number theory while getting a taste of modern methods.)
+- Yu. I. Manin and Alexei A. Panchishkin, /Introduction to Modern Number Theory: Fundamental Problems, Ideas and Theories/, Springer, 2007. (Much more hard-hitting, but a very useful overview of what modern number theory is like.)
+- Jürgen Neukirch, /Algebraic Number Theory/, Springer, 2010. (A friendly introduction to class field theory.)
+
+Category theory:
+
+- Eugenia Cheng, /The Joy of Abstraction: an Exploration of Math, Category Theory, and Life/, Cambridge University Press, 2022. (A very enjoyable and easy way to get started on category theory, leading up to the Yoneda Lemma.)
+- Brendan Fong and David Spivak, /Seven Sketches in Compositionality: An Invitation to Applied Category Theory/, Cambridge U. Press, 2019. (A good introduction to category theory through applications; available free [[https://arxiv.org/abs/1803.05316][on the arXiv]]. Also see their [[https://www.youtube.com/playlist?list=PLhgq-BqyZ7i5ZZd6wGv4WE9JNtAbUDNAp][videos]] and my [[file:act_course/][lectures]].)
+- Tom Leinster, /Basic Category Theory/, Cambridge Studies in Advanced Mathematics, Vol. 143, Cambridge U. Press, 2014. Also available for free [[https://arxiv.org/abs/1612.09375][on the arXiv]]. (An introduction for beginners that focuses on three key concepts and how they're related: adjoint functor, representable functors, and limits.)
+- Emily Riehl, /Category Theory in Context/, Dover, New York, 2016. Also available for free [[http://www.math.jhu.edu/~eriehl/context.pdf][on her website]]. (More advanced. As the title suggests, this gives many examples of how category theory is applied to other subjects in math.)
+
+--------------
+
+/I have always imagined that Paradise will be a kind of library./ - Jorge Luis Borges
+
+baez@math.removethis.ucr.andthis.edu\\
+© 2019 John Baez
+
