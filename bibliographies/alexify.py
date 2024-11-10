@@ -243,13 +243,6 @@ def format_authors_bibtex(authorships):
     return " and ".join(authors)
 
 
-def update_bib_entry_with_openalex_data(entry, work_full):
-    """Update BibTeX entry with OpenAlex data (title, authors)."""
-    entry["title"] = work_full.get("title", entry["title"])
-    authorships = work_full.get("authorships", [])
-    entry["author"] = format_authors_bibtex(authorships)
-
-
 def process_bib_entry(entry, bib_file_path, user_interaction):
     """Process a single BibTeX entry."""
     modified = False
@@ -318,7 +311,6 @@ def process_bib_entry(entry, bib_file_path, user_interaction):
             f'Matched "{title}" with OpenAlex ID {entry["openalex"]} (Title match: {best_match["title_match_score"]}%, Author match: {best_match["author_match_score"]}%)'
         )
         work_full = pyalex.Works()[entry["openalex"]]
-        update_bib_entry_with_openalex_data(entry, work_full)
         modified = True
         matched = True
     else:
@@ -335,7 +327,6 @@ def process_bib_entry(entry, bib_file_path, user_interaction):
                         f'User accepted match for "{title}" with OpenAlex ID {entry["openalex"]}'
                     )
                     work_full = pyalex.Works()[entry["openalex"]]
-                    update_bib_entry_with_openalex_data(entry, work_full)
                     modified = True
                     matched = True
                     break
