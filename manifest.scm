@@ -6,4 +6,5 @@
     "python-fuzzywuzzy"
     "python-pyalex"
     "python-bibtexparser-1"
-    "python-pylatexenc"))
+    "python-pylatexenc"
+    "python-grobid-client-python"))
