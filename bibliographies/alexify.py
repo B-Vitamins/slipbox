@@ -7,9 +7,9 @@ import unicodedata
 import string
 import pyalex
 import bibtexparser
+import requests
 from fuzzywuzzy import fuzz
 from requests.exceptions import HTTPError, RequestException
-from pylatexenc.latex2text import LatexNodes2Text
 
 # Configuration for pyalex
 pyalex.config.email = "ayand@iisc.ac.in"
@@ -20,7 +20,8 @@ pyalex.config.retry_http_codes = [429, 500, 503]
 # Constants
 TITLE_MATCH_THRESHOLD_HIGH = 90
 TITLE_MATCH_THRESHOLD_LOW = 50
-AUTHOR_MATCH_THRESHOLD = 80
+AUTHOR_MATCH_THRESHOLD = 70
+STOPWORDS = {"the", "of", "and", "a", "an", "in", "to", "on", "for", "with"}
 LOGGING_FORMAT = "%(asctime)s - %(message)s"
 
 # Logging configuration
@@ -32,7 +33,6 @@ bib_writer = bibtexparser.bwriter.BibTexWriter()
 bib_writer.indent = "  "
 bib_writer.order_entries_by = None
 openalex_cache = {}
-latex_converter = LatexNodes2Text()
 
 # Utility Functions
 
@@ -126,33 +126,49 @@ def clean_bibtex_entry(entry):
     """Cleans newlines, leading/trailing spaces, and converts LaTeX to Unicode in all fields."""
     for field in entry:
         if isinstance(entry[field], str):
-            # Convert LaTeX to Unicode
-            entry[field] = latex_converter.latex_to_text(entry[field])
             # Clean up any newlines and leading/trailing spaces
             entry[field] = " ".join(entry[field].splitlines()).strip()
     return entry
 
 
 def normalize_text(text):
-    """Normalize text by removing accents and converting to lowercase."""
+    """Normalize text by removing accents, stopwords, punctuation, and converting to lowercase."""
     text = unicodedata.normalize("NFKD", text)
     text = text.encode("ASCII", "ignore").decode()
-    text = re.sub(
-        r"\s+", " ", text
-    )  # Replace multiple spaces with single space
-    return text.lower().strip()
+
+    # Remove punctuation
+    text = text.translate(str.maketrans("", "", string.punctuation))
+
+    # Replace multiple spaces with a single space
+    text = re.sub(r"\s+", " ", text).strip().lower()
+
+    # Remove stopwords
+    words = text.split()
+    text = " ".join(word for word in words if word not in STOPWORDS)
+
+    return text
 
 
-def fuzzy_match_titles(title1, title2):
-    """Check if two titles match using fuzzy matching."""
+def fuzzy_match_titles(title1, title2, weight_token=0.7, weight_partial=0.3):
+    """Check if two titles match using a hybrid fuzzy matching approach."""
     try:
         # Handle NoneType cases by returning 0 for non-existent titles
         if not title1 or not title2:
             return 0
+
+        # Normalize titles
         title1_norm = normalize_text(title1)
         title2_norm = normalize_text(title2)
-        # Use token_set_ratio for better handling of word order
-        return fuzz.token_set_ratio(title1_norm, title2_norm)
+
+        # Calculate individual fuzzy matching scores
+        token_ratio = fuzz.token_set_ratio(title1_norm, title2_norm)
+        partial_ratio = fuzz.partial_ratio(title1_norm, title2_norm)
+
+        # Combine scores with weighted average
+        combined_score = (weight_token * token_ratio) + (
+            weight_partial * partial_ratio
+        )
+        return combined_score
     except Exception as e:
         logging.error(f"Error during title fuzzy matching: {e}")
         return 0
@@ -169,11 +185,66 @@ def normalize_name(name):
     return name.lower().strip()
 
 
+def split_name_components(name):
+    """Split the name into first, middle (optional), and last components after normalization."""
+    name_parts = normalize_name(name).split()
+    if len(name_parts) == 1:
+        return "", "", name_parts[0]  # Assuming only last name is provided
+    elif len(name_parts) == 2:
+        return name_parts[0], "", name_parts[1]  # First and last name only
+    else:
+        return (
+            name_parts[0],
+            " ".join(name_parts[1:-1]),
+            name_parts[-1],
+        )  # First, middle(s), last
+
+
+def match_name_parts(bib_author, openalex_author):
+    """
+    Match name parts with flexible criteria:
+    - Exact or partial match for first name, allowing initials.
+    - Partial or initial match for middle name(s).
+    - Exact match for last name.
+    """
+    bib_first, bib_middle, bib_last = split_name_components(bib_author)
+    oa_first, oa_middle, oa_last = split_name_components(openalex_author)
+
+    # Match last name strictly with a high threshold
+    last_name_score = fuzz.ratio(bib_last, oa_last)
+    if last_name_score < 90:  # Require last name to match closely
+        return 0
+
+    # Match first name with flexibility for initials and partials
+    first_name_score = max(
+        fuzz.ratio(bib_first, oa_first), fuzz.partial_ratio(bib_first, oa_first)
+    )
+
+    # Match middle name(s) if available, allowing initials and partials
+    middle_name_score = (
+        100
+        if not bib_middle or not oa_middle
+        else max(
+            fuzz.ratio(bib_middle, oa_middle),
+            fuzz.partial_ratio(bib_middle, oa_middle),
+        )
+    )
+
+    # Weighted match: prioritize last name, then first, then middle
+    total_score = (
+        (0.5 * last_name_score)
+        + (0.3 * first_name_score)
+        + (0.2 * middle_name_score)
+    )
+    return total_score
+
+
 def fuzzy_match_authors(bibtex_authors, openalex_authors):
     """Fuzzy match author names and return the percentage of matched authors."""
     try:
         if not bibtex_authors or not openalex_authors:
             return 0
+
         normalized_bibtex_authors = [
             normalize_name(name) for name in bibtex_authors
         ]
@@ -181,16 +252,16 @@ def fuzzy_match_authors(bibtex_authors, openalex_authors):
             normalize_name(name) for name in openalex_authors
         ]
         matches = 0
+
         for bib_author in normalized_bibtex_authors:
-            # Find the best match in openalex authors
+            # Find the best match in OpenAlex authors
             match_scores = [
-                fuzz.partial_ratio(bib_author, oa_author)
+                match_name_parts(bib_author, oa_author)
                 for oa_author in normalized_openalex_authors
             ]
             if match_scores and max(match_scores) >= AUTHOR_MATCH_THRESHOLD:
                 matches += 1
-        if len(normalized_bibtex_authors) == 0:
-            return 0
+
         return (matches / len(normalized_bibtex_authors)) * 100
     except Exception as e:
         logging.error(f"Error during author fuzzy matching: {e}")
@@ -203,12 +274,69 @@ def fetch_openalex_works(title):
         return openalex_cache[title]
     try:
         # Use search with per_page to get more results
-        results = pyalex.Works().search(title).get(per_page=25)
+        results = pyalex.Works().search(title).get(per_page=50)
         openalex_cache[title] = results
         return results
     except (HTTPError, RequestException) as e:
         logging.error(f"Error searching OpenAlex for title '{title}': {e}")
     return []
+
+
+# Define fetch_openalex_works_by_dois for batch DOI fetching.
+def fetch_openalex_works_by_dois(dois):
+    """
+    Fetch OpenAlex Work IDs for a list of DOIs in batches of 100.
+    """
+    openalex_work_ids = []
+    processed_dois = [
+        doi.lower()
+        if doi.startswith("https://doi.org/")
+        else f"https://doi.org/{doi}".lower()
+        for doi in dois
+    ]
+    batch_size = 50
+    with requests.Session() as session:
+        for i in range(0, len(processed_dois), batch_size):
+            batch = dois[i : i + batch_size]
+            pipe_separated_dois = "|".join(batch)
+            url = f"https://api.openalex.org/works?filter=doi:{pipe_separated_dois}&per-page={batch_size}"
+            try:
+                response = session.get(url)
+                response.raise_for_status()
+                results = response.json().get("results", [])
+                result_map = {
+                    work.get("doi").lower(): work.get("id").split("/")[-1]
+                    for work in results
+                    if work.get("doi")
+                }
+                openalex_work_ids.extend(
+                    [result_map.get(doi.lower(), None) for doi in batch]
+                )
+            except requests.exceptions.RequestException as e:
+                logging.error(
+                    f"Error fetching data for batch: {batch}. Error: {e}"
+                )
+                openalex_work_ids.extend([None] * len(batch))
+    return openalex_work_ids
+
+
+def process_bib_entries_by_dois(entries_with_dois):
+    """
+    Fetch OpenAlex IDs for entries with DOIs and update entries with the results.
+    """
+    dois = [entry["doi"] for entry in entries_with_dois if "doi" in entry]
+    fetched_work_ids = fetch_openalex_works_by_dois(dois)
+
+    modified_entries = 0
+    for entry, work_id in zip(entries_with_dois, fetched_work_ids):
+        if work_id:
+            entry["openalex"] = work_id
+            modified_entries += 1
+            logging.info(
+                f'Assigned OpenAlex ID {work_id} to entry with DOI {entry["doi"]}'
+            )
+
+    return modified_entries > 0
 
 
 def parse_bibtex_authors(bibtex_authors):
@@ -245,7 +373,7 @@ def format_authors_bibtex(authorships):
     return " and ".join(authors)
 
 
-def process_bib_entry(entry, bib_file_path, user_interaction):
+def process_bib_entry_by_title(entry, bib_file_path, user_interaction):
     """Process a single BibTeX entry."""
     modified = False
     matched = False
@@ -353,8 +481,9 @@ def show_low_confidence_match(entry, work, scores):
 
 
 def handle_process(bib_file, user_interaction, force):
-    """Handle processing of a single BibTeX file."""
-    # First, check if the '-oa.bib' file already exists
+    """
+    Handle processing of a single BibTeX file.
+    """
     new_bib_file = os.path.splitext(bib_file)[0] + "-oa.bib"
     if os.path.exists(new_bib_file) and not force:
         logging.info(
@@ -371,9 +500,23 @@ def handle_process(bib_file, user_interaction, force):
     successful_matches = 0
     skipped_entries = 0
 
-    for entry in bib_database.entries:
-        entry_modified, matched = process_bib_entry(
-            entry, bib_file, user_interaction
+    # Separate entries with DOIs and those needing title-based matching
+    entries_with_dois = [
+        entry for entry in bib_database.entries if "doi" in entry
+    ]
+    entries_without_dois = [
+        entry for entry in bib_database.entries if "doi" not in entry
+    ]
+
+    # Step 1: Process entries with DOIs in batch
+    doi_modified = process_bib_entries_by_dois(entries_with_dois)
+    modified |= doi_modified
+    successful_matches += len(entries_with_dois) if doi_modified else 0
+
+    # Step 2: Process remaining entries by title matching
+    for entry in entries_without_dois:
+        entry_modified, matched = process_bib_entry_by_title(
+            entry, bib_file_path=bib_file, user_interaction=user_interaction
         )
         modified |= entry_modified
         if matched:
@@ -381,8 +524,8 @@ def handle_process(bib_file, user_interaction, force):
         else:
             skipped_entries += 1
 
+    # Step 3: Save if any entries were modified
     if modified:
-        # Save to the '-oa.bib' file
         save_bib_file(new_bib_file, bib_database)
         logging.info(f"Saved updated BibTeX file to {new_bib_file}")
     else:

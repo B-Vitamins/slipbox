@@ -15,7 +15,7 @@ config.max_retries = 3
 config.retry_backoff_factor = 0.5
 config.retry_http_codes = [429, 500, 503]
 
-# Directory to store JSON and PDF files in the user's home directory
+# Cache directory setup
 CACHE_DIR = Path.home() / "documents/store"
 CACHE_DIR.mkdir(exist_ok=True)
 
@@ -25,185 +25,189 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-ARXIV_BASE_URL = "http://export.arxiv.org/api/query"
-ARXIV_RATE_LIMIT = 3  # seconds between arXiv API requests
+BATCH_SIZE = 50  # Max items per batch request to OpenAlex API
 
 
-def set_file_read_only(file_path):
-    """Set file permissions to read-only."""
-    try:
-        file_path.chmod(stat.S_IREAD | stat.S_IRGRP | stat.S_IROTH)
-        logger.debug(f"{file_path}: Set to read-only.")
-    except Exception as e:
-        logger.warning(f"{file_path}: {e}")
-
-
-def load_bib_file(file_path):
-    """Load and parse a .bib file."""
+def extract_openalex_ids_from_bib(file_path):
+    """Extract OpenAlex Work IDs from a .bib file."""
     try:
         with open(file_path, "r") as bib_file:
             bib_database = bibtexparser.load(bib_file)
-        return bib_database.entries
+        return list(
+            {
+                entry.get("openalex")
+                for entry in bib_database.entries
+                if entry.get("openalex")
+            }
+        )
     except Exception as e:
-        logger.error(f"{file_path}: {e}")
+        logger.error(f"Failed to extract OpenAlex IDs from {file_path}: {e}")
         return []
 
 
-def fetch_work_object(work_id, title):
-    """Fetch the Work object using PyAlex and cache it."""
-    try:
-        work_data = Works()[work_id]
+def fetch_work_objects_by_ids(work_ids):
+    """Fetch Work objects for a list of OpenAlex Work IDs in batches."""
+    work_objects = {}
+    for i in range(0, len(work_ids), BATCH_SIZE):
+        batch = work_ids[i : i + BATCH_SIZE]
+        pipe_separated_ids = "|".join(batch)
+        url = f"https://api.openalex.org/works?filter=openalex:{pipe_separated_ids}&per-page={BATCH_SIZE}"
+        try:
+            response = requests.get(url)
+            response.raise_for_status()
+            results = response.json().get("results", [])
+            for work in results:
+                work_id = work.get("id").split("/")[-1]
+                work_objects[work_id] = work
+        except requests.exceptions.RequestException as e:
+            logger.error(f"Error fetching data for batch: {batch}. Error: {e}")
+    return work_objects
+
+
+def populate_works(file_paths):
+    """Populate cache with Work JSON objects from OpenAlex for given .bib files."""
+    all_work_ids = set()
+    for file_path in file_paths:
+        all_work_ids.update(extract_openalex_ids_from_bib(file_path))
+
+    # Filter out Work IDs that are already cached
+    ids_needing_fetch = [
+        work_id
+        for work_id in all_work_ids
+        if not (CACHE_DIR / f"{work_id}.json").exists()
+    ]
+
+    # Batch fetch and save JSON data only for IDs not in cache
+    if ids_needing_fetch:
+        work_data_map = fetch_work_objects_by_ids(ids_needing_fetch)
+        for work_id, work_data in work_data_map.items():
+            json_path = CACHE_DIR / f"{work_id}.json"
+            if not json_path.exists():
+                with open(json_path, "w") as json_file:
+                    json.dump(work_data, json_file)
+                logger.info(f"{work_id} (json): Saved to cache.")
+    else:
+        logger.info("All Work JSONs already cached.")
+
+
+def populate_pdfs(file_paths):
+    """Populate cache with PDFs by fetching missing JSON data and PDFs from available URLs."""
+    all_work_ids = set()
+    for file_path in file_paths:
+        all_work_ids.update(extract_openalex_ids_from_bib(file_path))
+
+    # Filter Work IDs to fetch only those missing PDFs in cache
+    ids_needing_pdfs = [
+        work_id
+        for work_id in all_work_ids
+        if not (CACHE_DIR / f"{work_id}.pdf").exists()
+    ]
+
+    # Batch-fetch JSON data for Work IDs missing PDFs, if absent in cache
+    work_data_map = {}
+    ids_needing_jsons = [
+        work_id
+        for work_id in ids_needing_pdfs
+        if not (CACHE_DIR / f"{work_id}.json").exists()
+    ]
+    if ids_needing_jsons:
+        work_data_map.update(fetch_work_objects_by_ids(ids_needing_jsons))
+        # Save fetched JSON to cache
+        for work_id, work_data in work_data_map.items():
+            json_path = CACHE_DIR / f"{work_id}.json"
+            if not json_path.exists():
+                with open(json_path, "w") as json_file:
+                    json.dump(work_data, json_file)
+                logger.info(f"{work_id} (json): Saved to cache.")
+
+    # Fetch PDFs based on available URLs in cached Work data
+    for work_id in ids_needing_pdfs:
+        pdf_path = CACHE_DIR / f"{work_id}.pdf"
+        if pdf_path.exists():
+            logger.info(f"{work_id} (pdf): Already cached.")
+            continue
+
+        # Load Work data from cache and get PDF URL
         json_path = CACHE_DIR / f"{work_id}.json"
-
-        # Write JSON data to file and set to read-only if it doesn’t already exist
-        if not json_path.exists():
-            with open(json_path, "w") as json_file:
-                json.dump(work_data, json_file)
-            set_file_read_only(json_path)
-            logger.info(f"{title} {work_id} (json): Downloaded.")
-        return work_data
-    except Exception as e:
-        logger.error(f"{title} {work_id} (json): {e}")
-        return None
-
-
-def download_from_arxiv(arxiv_id: str) -> str:
-    """Get the PDF URL for an arXiv article using the arXiv API."""
-    time.sleep(ARXIV_RATE_LIMIT)  # Respect rate limit
-    params = {"id_list": arxiv_id}
-    response = requests.get(ARXIV_BASE_URL, params=params)
-    response.raise_for_status()
-
-    # Construct the PDF URL
-    return f"https://arxiv.org/pdf/{arxiv_id}.pdf"
+        if json_path.exists():
+            with open(json_path, "r") as json_file:
+                work_data = json.load(json_file)
+            pdf_url = work_data.get("best_oa_location", {}).get("pdf_url")
+            if pdf_url:
+                download_pdf(pdf_url, work_id)
+        else:
+            logger.warning(
+                f"{work_id} (json): Missing. Cannot fetch PDF without JSON data."
+            )
 
 
-def download_pdf(pdf_url, work_id, title):
-    """Download PDF from the given URL, using eprint URL if necessary."""
+def download_pdf(pdf_url, work_id):
+    """Download PDF from the given URL and save to cache."""
     pdf_path = CACHE_DIR / f"{work_id}.pdf"
     try:
-        # Directly download the PDF
         response = requests.get(pdf_url, stream=True, timeout=10)
         response.raise_for_status()
         with open(pdf_path, "wb") as pdf_file:
             for chunk in response.iter_content(chunk_size=8192):
                 pdf_file.write(chunk)
-        set_file_read_only(pdf_path)
-        logger.info(f"{title} {work_id} (pdf): Downloaded from URL {pdf_url}")
-    except (requests.exceptions.RequestException, ValueError) as e:
-        logger.error(f"{title} {work_id} (pdf): {e}")
+        logger.info(f"{work_id} (pdf): Downloaded from URL {pdf_url}")
+    except requests.exceptions.RequestException as e:
+        logger.error(f"{work_id} (pdf): Failed to download. Error: {e}")
 
 
-def update_bib_file(entries, file_path):
-    """Update the .bib file with modified entries."""
-    bib_database = bibtexparser.bibdatabase.BibDatabase()
-    bib_database.entries = entries
-    with open(file_path, "w") as bib_file:
-        bibtexparser.dump(bib_database, bib_file)
-    logger.info(f"{file_path}: Updated with modified entries.")
+def main():
+    import argparse
 
-
-def process_bib_file(file_path):
-    """Process a .bib file, fetch Work objects, download PDFs if available, and update file fields."""
-    entries = load_bib_file(file_path)
-    if not entries:
-        logger.warning(f"No entries found in {file_path}")
-        return
-
-    modified = False  # Track if any modifications are made
-
-    for entry in entries:
-        work_id = entry.get("openalex")
-        title = entry.get("title", "Unnamed entry")
-        pdf_path = CACHE_DIR / f"{work_id}.pdf"
-
-        if not work_id:
-            logger.warning(f"{title}: OpenAlex ID unavailable.")
-            continue
-
-        json_path = CACHE_DIR / f"{work_id}.json"
-
-        # Load cached JSON if it exists, otherwise fetch from OpenAlex
-        if json_path.exists():
-            logger.info(f"{title} {work_id} (json): Cached.")
-            with open(json_path, "r") as json_file:
-                work_data = json.load(json_file)
-        else:
-            work_data = fetch_work_object(work_id, title)
-            if work_data is None:
-                logger.error(f"{title} {work_id} (json): Failed.")
-                continue
-
-        # PDF Handling
-        if pdf_path.exists():
-            # PDF is cached, add file field if not already present
-            entry_file_path = f":{pdf_path}:pdf"
-            if entry.get("file") != entry_file_path:
-                entry["file"] = entry_file_path
-                logger.info(
-                    f"{title} {work_id} (pdf): Cached and file field updated."
-                )
-                modified = True
-        else:
-            # Attempt to download from eprint URL if available, or best_oa_location if not
-            eprint_url = entry.get("eprint")
-            if eprint_url:
-                download_pdf(eprint_url, work_id, title)
-            else:
-                best_oa_location = work_data.get("best_oa_location", None)
-                if best_oa_location:
-                    pdf_url = best_oa_location.get("pdf_url", None)
-                    if pdf_url:
-                        download_pdf(pdf_url, work_id, title)
-
-            # Re-check if PDF was downloaded
-            if pdf_path.exists():
-                entry["file"] = f":{pdf_path}:pdf"
-                logger.info(
-                    f"{title} {work_id} (pdf): Downloaded and file field added."
-                )
-                modified = True
-            elif "file" in entry:
-                # PDF unavailable, remove file field if it exists
-                del entry["file"]
-                logger.info(
-                    f"{title} {work_id} (pdf): Not found, file field removed."
-                )
-                modified = True
-
-    # Update the .bib file with modified entries if there were any changes
-    if modified:
-        update_bib_file(entries, file_path)
-
-
-def main(inputs):
-    """Main function to process each file or directory input."""
-    for input_path in inputs:
-        path = Path(input_path)
-        if input_path.endswith("oa.bib") and path.is_file():
-            logger.info(f"Processing file: {path}")
-            process_bib_file(path)
-        elif path.is_dir():
-            logger.info(f"Processing directory: {path}")
-            for bib_file in path.rglob("*oa.bib"):
-                logger.info(f"Processing file: {bib_file}")
-                process_bib_file(bib_file)
-        else:
-            logger.warning(
-                f"Invalid input: {path}. Not a oa.bib file or directory."
-            )
-
-
-if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description="Fetch OpenAlex Work objects and PDFs from .bib files."
+        description="Populate OpenAlex Work objects and PDFs cache."
     )
-    parser.add_argument(
+    subparsers = parser.add_subparsers(dest="command", required=True)
+
+    # Populate works subcommand
+    works_parser = subparsers.add_parser(
+        "works", help="Populate cache with Work JSONs."
+    )
+    works_parser.add_argument(
         "inputs",
         metavar="INPUT",
         type=str,
         nargs="+",
-        help="Path(s) to oa.bib file(s) or directory(ies)",
+        help="Paths to .bib files or directories",
     )
+
+    # Populate pdfs subcommand
+    pdfs_parser = subparsers.add_parser(
+        "pdfs", help="Populate cache with PDFs."
+    )
+    pdfs_parser.add_argument(
+        "inputs",
+        metavar="INPUT",
+        type=str,
+        nargs="+",
+        help="Paths to .bib files or directories",
+    )
+
     args = parser.parse_args()
-    main(args.inputs)
+
+    # Resolve input paths for each subcommand
+    file_paths = []
+    for input_path in args.inputs:
+        path = Path(input_path)
+        if path.is_file() and path.suffix == ".bib":
+            file_paths.append(path)
+        elif path.is_dir():
+            file_paths.extend(path.rglob("*.bib"))
+        else:
+            logger.warning(
+                f"Invalid input: {input_path} is not a .bib file or directory."
+            )
+
+    # Execute the appropriate subcommand
+    if args.command == "works":
+        populate_works(file_paths)
+    elif args.command == "pdfs":
+        populate_pdfs(file_paths)
+
+
+if __name__ == "__main__":
+    main()
