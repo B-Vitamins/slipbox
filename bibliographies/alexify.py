@@ -121,6 +121,7 @@ def save_bib_file(bib_file_path, bib_database):
     except Exception as e:
         logging.error(f"Failed to save {bib_file_path}: {e}")
 
+
 def clean_bibtex_entry(entry):
     """Cleans newlines, leading/trailing spaces, and converts LaTeX to Unicode in all fields."""
     for field in entry:
@@ -130,6 +131,7 @@ def clean_bibtex_entry(entry):
             # Clean up any newlines and leading/trailing spaces
             entry[field] = " ".join(entry[field].splitlines()).strip()
     return entry
+
 
 def normalize_text(text):
     """Normalize text by removing accents and converting to lowercase."""
