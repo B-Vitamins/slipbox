@@ -5,13 +5,13 @@
 #+FILETAGS: :dlfc:literature:
 #+SETUPFILE: ~/.config/emacs/setup/setupfile.org
 #+BEGIN: clocktable :maxlevel 2 :scope nil :emphasize nil
-#+CAPTION: Clock summary at [2024-11-22 Fri 13:59]
+#+CAPTION: Clock summary at [2024-11-22 Fri 17:37]
 | Headline                                 | Time   |      |
 |------------------------------------------+--------+------|
-| *Total time*                             | *2:12* |      |
+| *Total time*                             | *6:34* |      |
 |------------------------------------------+--------+------|
-| Deep Neural Networks                     | 2:12   |      |
-| \_  Limitations of Fixed Basis Functions |        | 1:24 |
+| Deep Neural Networks                     | 6:34   |      |
+| \_  Limitations of Fixed Basis Functions |        | 5:46 |
 #+END
 * TOREAD The Deep Learning Revolution
 :PROPERTIES:
@@ -515,6 +515,26 @@ As \( D \) is increased, a classification model with a 'majority class' basis fu
 :PROPERTIES:
 :ID:       42625240-0cc2-425e-9c44-5892cea618dc
 :END:
+:LOGBOOK:
+CLOCK: [2024-11-22 Fri 03:24]--[2024-11-22 Fri 03:28] =>  0:04
+:END:
+What is the fraction of the volume of the hyper-sphere in a space of \(D\) dimensions that lies between radius \(r=1-\epsilon\) and \(r=1\)?
+The volume \(V_{D}(r)\) of a hyper-sphere of radius \(r\) in \(D\) dimensions must scale as \(r^{D}\)
+
+\begin{align*}
+V_{D} (r) = K_{D} r^{D}
+\tag{6.4}
+\end{align*}
+where the constant \(K_{D}\) depends only on \(D\). Thus, the required fraction is given by
+\begin{align*}
+\frac{V_{D}(1)-V_{D}(1-\epsilon)}{V_{D}(1)}=1-(1-\epsilon)^{D}.
+\tag{6.5}
+\end{align*}
+Clearly
+\begin{align*}
+\lim_{D \to \infty} \frac{V_{D}(1)-V_{D}(1-\epsilon)}{V_{D}(1)} = 1.
+\end{align*}
+/In spaces of high dimensionality, most of the volume of a hyper-sphere is concentrated in a thin shell near the surface./
 *** Data manifolds
 :PROPERTIES:
 :ID:       b158aab1-ff5c-42b8-88aa-37ecebb28608
