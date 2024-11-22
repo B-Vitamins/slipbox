@@ -4,14 +4,23 @@
 #+TITLE: Notes on Deep Learning by Christopher M. Bishop
 #+FILETAGS: :dlfc:literature:
 #+SETUPFILE: ~/.config/emacs/setup/setupfile.org
-#+BEGIN: clocktable :maxlevel 2 :scope nil :emphasize nil
-#+CAPTION: Clock summary at [2024-11-22 Fri 17:37]
-| Headline                                 | Time   |      |
-|------------------------------------------+--------+------|
-| *Total time*                             | *6:34* |      |
-|------------------------------------------+--------+------|
-| Deep Neural Networks                     | 6:34   |      |
-| \_  Limitations of Fixed Basis Functions |        | 5:46 |
+#+BEGIN: clocktable :maxlevel 3 :scope nil :emphasize nil
+#+CAPTION: Clock summary at [2024-11-22 Fri 17:43]
+| Headline                                 | Time    |      |      |
+|------------------------------------------+---------+------+------|
+| *Total time*                             | *10:39* |      |      |
+|------------------------------------------+---------+------+------|
+| Deep Neural Networks                     | 10:39   |      |      |
+| \_  Limitations of Fixed Basis Functions |         | 7:53 |      |
+| \_    The curse of dimensionality        |         |      | 4:22 |
+| \_    High-dimensional spaces            |         |      | 0:04 |
+| \_    Data manifolds                     |         |      | 0:38 |
+| \_    Data-dependent basis functions     |         |      | 1:25 |
+| \_  Multilayer Networks                  |         | 1:58 |      |
+| \_    Parameter matrices                 |         |      | 0:15 |
+| \_    Universal approximation            |         |      | 0:13 |
+| \_    Hidden unit activation functions   |         |      | 0:34 |
+| \_    Weight-space symmetries            |         |      | 0:27 |
 #+END
 * TOREAD The Deep Learning Revolution
 :PROPERTIES:
@@ -539,29 +548,51 @@ Clearly
 :PROPERTIES:
 :ID:       b158aab1-ff5c-42b8-88aa-37ecebb28608
 :END:
+:LOGBOOK:
+CLOCK: [2024-11-22 Fri 03:29]--[2024-11-22 Fri 04:07] =>  0:38
+:END:
 *** Data-dependent basis functions
 :PROPERTIES:
 :ID:       e09e5c24-6fea-446f-b803-47a2df53fac4
+:END:
+:LOGBOOK:
+CLOCK: [2024-11-22 Fri 04:09]--[2024-11-22 Fri 05:34] =>  1:25
 :END:
 ** Multilayer Networks
 :PROPERTIES:
 :ID:       1e4de40c-54ee-4ad4-a79f-e5c27e57cfab
 :END:
+:LOGBOOK:
+CLOCK: [2024-11-22 Fri 05:35]--[2024-11-22 Fri 06:04] =>  0:29
+:END:
 *** Parameter matrices
 :PROPERTIES:
 :ID:       fdb72b8d-858f-4f72-bce0-5903d1d7ed71
+:END:
+:LOGBOOK:
+CLOCK: [2024-11-22 Fri 06:05]--[2024-11-22 Fri 06:20] =>  0:15
 :END:
 *** Universal approximation
 :PROPERTIES:
 :ID:       132a491d-f730-4c44-8f17-2de6440fc2d7
 :END:
+:LOGBOOK:
+CLOCK: [2024-11-22 Fri 06:22]--[2024-11-22 Fri 06:35] =>  0:13
+:END:
 *** Hidden unit activation functions
 :PROPERTIES:
 :ID:       7e37a89a-a0d4-4d35-b3c0-d7a5f71145be
 :END:
+:LOGBOOK:
+CLOCK: [2024-11-22 Fri 06:35]--[2024-11-22 Fri 07:09] =>  0:34
+:END:
 *** Weight-space symmetries
 :PROPERTIES:
 :ID:       483b99de-3ae9-41b5-b505-5b03c54b4261
+:END:
+:LOGBOOK:
+CLOCK: [2024-11-22 Fri 07:14]--[2024-11-22 Fri 07:40] =>  0:26
+CLOCK: [2024-11-22 Fri 07:09]--[2024-11-22 Fri 07:10] =>  0:01
 :END:
 ** Deep Networks
 :PROPERTIES:
