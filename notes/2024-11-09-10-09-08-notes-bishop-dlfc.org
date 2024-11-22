@@ -5,10 +5,13 @@
 #+FILETAGS: :dlfc:literature:
 #+SETUPFILE: ~/.config/emacs/setup/setupfile.org
 #+BEGIN: clocktable :maxlevel 2 :scope nil :emphasize nil
-#+CAPTION: Clock summary at [2024-10-21 Mon 23:35]
-| Headline     | Time   |
-|--------------+--------|
-| *Total time* | *0:00* |
+#+CAPTION: Clock summary at [2024-11-22 Fri 13:59]
+| Headline                                 | Time   |      |
+|------------------------------------------+--------+------|
+| *Total time*                             | *2:12* |      |
+|------------------------------------------+--------+------|
+| Deep Neural Networks                     | 2:12   |      |
+| \_  Limitations of Fixed Basis Functions |        | 1:24 |
 #+END
 * TOREAD The Deep Learning Revolution
 :PROPERTIES:
@@ -441,14 +444,27 @@
 :LOGBOOK:
 CLOCK: [2024-11-22 Fri 01:08]--[2024-11-22 Fri 01:56] =>  0:48
 :END:
-[[id:19b3da06-0b11-45c5-a384-dceadc10d934][Regression models]] that comprise linear combinations of /fixed/ nonlinear [[id:3b151533-7492-4cef-a991-5d314c089f2f][basis functions]] can be expressed as neural networks having a single layer of weight and bias parameters. [[id:191cd138-08dc-44cd-9b73-ba29e4cda227][Classification models]] that comprise linear combinations of /fixed/ nonlinear basis functions can be expressed as neural networks having a single layer of weight and bias parameters.
+Regression models that comprise linear combinations of /fixed/ nonlinear basis functions can be expressed as neural networks having a single layer of weight and bias parameters.that comprise linear combinations of /fixed/ nonlinear basis functions can be expressed as neural networks having a single layer of weight and bias parameters.
 #+begin_verse
-Given a sufficient number of suitably chosen basis functions, such linear models can approximate any given nonlinear transformation from inputs to outputs to *any desired accuracy.
+Given a sufficient number of suitably chosen basis functions, such linear models can approximate any given nonlinear transformation from inputs to outputs to any desired accuracy.
 #+end_verse
 ** Limitations of Fixed Basis Functions
 :PROPERTIES:
 :ID:       710fb671-d355-493b-ac53-2a0932c09783
 :END:
+:LOGBOOK:
+CLOCK: [2024-11-22 Fri 13:03]--[2024-11-22 Fri 13:59] =>  0:56
+CLOCK: [2024-11-22 Fri 02:02]--[2024-11-22 Fri 02:30] =>  0:28
+:END:
+
+Consider a [[id:19b3da06-0b11-45c5-a384-dceadc10d934][regression model]] and a [[id:191cd138-08dc-44cd-9b73-ba29e4cda227][classification model]] based on linear combinations of a set of \( M + 1 \) arbitrary [[id:3b151533-7492-4cef-a991-5d314c089f2f][basis functions]] \((\phi_{j})_{j=0}^{M}\):
+
+\begin{align*}
+\underbrace{y(\mathbf{x}, \, \mathbf{w})= \sum_{j=0}^{M} w_{j} \cdot \phi_{j}(\mathbf{x})}_{\text{classification}}, \qquad \overbrace{y(\mathbf{x},\, \mathbf{w})=f\left(\sum_{j=0}^{M} w_{j} \cdot \phi_{j}(\mathbf{x})\right)}^{\text{regression}}.
+\end{align*}
+
+\(f(\cdot)\) is a nonlinear output activation function. \( \phi_{0} \equiv 1 \) for all \( \mathbf{x} \), is a trivial basis function, merely a preference in notation. It facilitates an interpretation of \( w_{0} \) as a bias parameter. Since \((\phi_{j})_{j=0}^{M}\) is arbitrary, it follows that such models can in principle provide a solution to any regression or classification problem in the trivial sense: we need simply define \(\phi_j \equiv y, \, w_{j} \equiv 1 \), \( (w_{k})_{k \neq j} \equiv 0 \), and define \(f\) to be identity. In other words, if \( y \) was known apriori for all possible values of \( \mathbf{x} \), the very need for basis functions \((\phi_{j})_{j=0}^{M}\) (and the weight vector \( \mathbf{w} \)) vanishes. Models of the form above are only useful in the non-trivial case: when \( y \) is known only for a subset of all possible \( \mathbf{x} \), say \( (\mathbf{x}_{n})_{n=1}^{D} \), called the /training data/. Notwithstanding the fact that given a sufficient number of suitably chosen basis functions, such linear models can approximate any given nonlinear transformation from inputs to outputs to any desired accuracy, the fact that \((\phi_{j})_{j=0}^{M}\) are not functions of \(  \)\( (\mathbf{x}_{n})_{n=1}^{D} \), i.e., they are independent of the training data, or /fixed/, places limitations on the efficiency with which they can represent input-output mappings. This section explores those limitations.
+
 *** The curse of dimensionality
 :PROPERTIES:
 :ID:       25857492-ad7a-4cfd-82af-04ccb6b82197
