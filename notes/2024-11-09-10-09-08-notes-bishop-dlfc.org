@@ -2,7 +2,7 @@
 :ID:       280bef8d-2781-426d-8cae-d29a3a74cacf
 :END:
 #+TITLE: Notes on Deep Learning by Christopher M. Bishop
-#+FILETAGS: :fleeting:notes:dlfc:
+#+FILETAGS: :dlfc:literature:
 #+SETUPFILE: ~/.config/emacs/setup/setupfile.org
 #+BEGIN: clocktable :maxlevel 2 :scope nil :emphasize nil
 #+CAPTION: Clock summary at [2024-10-21 Mon 23:35]
@@ -10,733 +10,1447 @@
 |--------------+--------|
 | *Total time* | *0:00* |
 #+END
-* The Deep Learning Revolution
+* TOREAD The Deep Learning Revolution
+:PROPERTIES:
+:ID:       46c279b8-47f3-4de2-afc1-1ad61b0e5b8d
+:END:
 ** The Impact of Deep Learning
+:PROPERTIES:
+:ID:       e286d9ee-c8ce-4eba-b144-868c380e4ed0
+:END:
 *** Medical diagnosis
+:PROPERTIES:
+:ID:       a91ec1fc-1775-4b6e-ab89-66fcc8904bd2
+:END:
 *** Protein structure
+:PROPERTIES:
+:ID:       d2342e97-9d48-46d8-8901-983a8b4dfd8c
+:END:
 *** Image synthesis
+:PROPERTIES:
+:ID:       7ace6d4e-c8ef-4251-8a59-c95a9676f86d
+:END:
 *** Large language models
+:PROPERTIES:
+:ID:       4ee89f74-c1db-41da-9483-a81ad3881c2c
+:END:
 ** A Tutorial Example
+:PROPERTIES:
+:ID:       ae2abeb7-39b9-4437-99ed-3143e7a378a4
+:END:
 *** Synthetic data
+:PROPERTIES:
+:ID:       5efde0e2-07a8-4f81-aeef-3933b99852f2
+:END:
 *** Linear models
+:PROPERTIES:
+:ID:       cd816768-200c-4030-871b-4edcd5cd75bc
+:END:
 *** Error function
+:PROPERTIES:
+:ID:       fd7b3d20-8861-4570-9d68-2b60789ff78d
+:END:
 *** Model complexity
+:PROPERTIES:
+:ID:       71a88c84-0337-443e-8104-b79285a326c8
+:END:
 *** Regularization
+:PROPERTIES:
+:ID:       6d9ddf27-70cf-42b3-af76-ee668c13ddc1
+:END:
 *** Model selection
+:PROPERTIES:
+:ID:       ee9bbf69-4575-4a47-a732-a5bcfd155e7b
+:END:
 ** A Brief History of Machine Learning
+:PROPERTIES:
+:ID:       82db55a7-59be-4d68-b484-371f6bfc0efc
+:END:
 *** Single-layer networks
+:PROPERTIES:
+:ID:       025e7c18-aebf-4567-953f-f920637289c9
+:END:
 *** Backpropagation
+:PROPERTIES:
+:ID:       84a43e63-18dd-40b4-8a69-cade7803a3af
+:END:
 *** Deep networks
-
-* Probabilities
-
-** 2.1. The Rules of Probability
-
-*** 2.1.1 A medical screening example
-
-*** 2.1.2 The sum and product rules
-
-*** 2.1.3 Bayes' theorem
-
-*** 2.1.4 Medical screening revisited
-
-*** 2.1.5 Prior and posterior probabilities
-
-*** 2.1.6 Independent variables
-
-** 2.2. Probability Densities
-
-*** 2.2.1 Example distributions
-
-*** 2.2.2 Expectations and covariances
-
-** 2.3. The Gaussian Distribution
-
-*** 2.3.1 Mean and variance
-
-*** 2.3.2 Likelihood function
-
-*** 2.3.3 Bias of maximum likelihood
-
-*** 2.3.4 Linear regression
-
-** 2.4. Transformation of Densities
-
-*** 2.4.1 Multivariate distributions
-
-** 2.5. Information Theory
-*** 2.5.1 Entropy
-
-*** 2.5.2 Physics perspective
-
-*** 2.5.3 Differential entropy
-
-*** 2.5.4 Maximum entropy
-
-*** 2.5.5 Kullback-Leibler divergence
-
-*** 2.5.6 Conditional entropy
-
-*** 2.5.7 Mutual information
-
-** 2.6. Bayesian Probabilities
-
-*** 2.6.1 Model parameters
-
-*** 2.6.2 Regularization
-
-*** 2.6.3 Bayesian machine learning
-
-* Standard Distributions
-
-** 3.1. Discrete Variables
-
-*** 3.1.1 Bernoulli distribution
-
-*** 3.1.2 Binomial distribution
-
-*** 3.1.3 Multinomial distribution
-
-** 3.2. The Multivariate Gaussian
-
-*** 3.2.1 Geometry of the Gaussian
-
-*** 3.2.2 Moments
-
-*** 3.2.3 Limitations
-
-*** 3.2.4 Conditional distribution
-
-*** 3.2.5 Marginal distribution
-
-*** 3.2.6 Bayes' theorem
-
-*** 3.2.7 Maximum likelihood
-
-*** 3.2.8 Sequential estimation
-
-*** 3.2.9 Mixtures of Gaussians
-
-** 3.3. Periodic Variables
-
-*** 3.3.1 Von Mises distribution
-
-** 3.4. The Exponential Family
-
-*** 3.4.1 Sufficient statistics
-
-** 3.5. Nonparametric Methods
-
-*** 3.5.1 Histograms
-
-*** 3.5.2 Kernel densities
-
-*** 3.5.3 Nearest-neighbours
-
-* Single-layer Networks: Regression
-
-** 4.1. Linear Regression
-
-*** 4.1.1 Basis functions
-
-*** 4.1.2 Likelihood function
-
-*** 4.1.3 Maximum likelihood
-
-*** 4.1.4 Geometry of least squares
-
-*** 4.1.5 Sequential learning
-
-*** 4.1.6 Regularized least squares
-
-*** 4.1.7 Multiple outputs
-
-** 4.2. Decision theory
-
-** 4.3. The Bias-Variance Trade-off
-
-* Single-layer Networks: Classification
-
-** 5.1. Discriminant Functions
-
-*** 5.1.1 Two classes
-
-*** 5.1.2 Multiple classes
-
-*** 5.1.3 1-of- \(K\) coding
-
-*** 5.1.4 Least squares for classification
-
-** 5.2. Decision Theory
-
-*** 5.2.1 Misclassification rate
-
-*** 5.2.2 Expected loss
-
-*** 5.2.3 The reject option
-
-*** 5.2.4 Inference and decision
-
-*** 5.2.5 Classifier accuracy
-
-*** 5.2.6 ROC curve
-
-** 5.3. Generative Classifiers
-
-*** 5.3.1 Continuous inputs
-
-*** 5.3.2 Maximum likelihood solution
-
-*** 5.3.3 Discrete features
-
-*** 5.3.4 Exponential family
-
-** 5.4. Discriminative Classifiers
-
-*** 5.4.1 Activation functions
-
-*** 5.4.2 Fixed basis functions
-
-*** 5.4.3 Logistic regression
-
-*** 5.4.4 Multi-class logistic regression
-
-*** 5.4.5 Probit regression
-
-*** 5.4.6 Canonical link functions
-
-* Deep Neural Networks
-
-** 6.1. Limitations of Fixed Basis Functions
-
-*** 6.1.1 The curse of dimensionality
-
-*** 6.1.2 High-dimensional spaces
-
-*** 6.1.3 Data manifolds
-
-*** 6.1.4 Data-dependent basis functions
-
-** 6.2. Multilayer Networks
-
-*** 6.2.1 Parameter matrices
-
-*** 6.2.2 Universal approximation
-
-*** 6.2.3 Hidden unit activation functions
-
-*** 6.2.4 Weight-space symmetries
-
-** 6.3. Deep Networks
-
-*** 6.3.1 Hierarchical representations
-
-*** 6.3.2 Distributed representations
-
-*** 6.3.3 Representation learning
-
-*** 6.3.4 Transfer learning
-
-*** 6.3.5 Contrastive learning
-
-*** 6.3.6 General network architectures
-
-*** 6.3.7 Tensors
-
-** 6.4. Error Functions
-
-*** 6.4.1 Regression
-
-*** 6.4.2 Binary classification
-
-*** 6.4.3 Multiclass classification
-
-** 6.5. Mixture Density Networks
-
-*** 6.5.1 Robot kinematics example
-
-*** 6.5.2 Conditional mixture distributions
-
-*** 6.5.3 Gradient optimization
-
-*** 6.5.4 Predictive distribution
-
-* Gradient Descent
-
-** 7.1. Error Surfaces
-
-*** 7.1.1 Local quadratic approximation
-
-** 7.2. Gradient Descent Optimization
-
-*** 7.2.1 Use of gradient information
-
-*** 7.2.2 Batch gradient descent
-
-*** 7.2.3 Stochastic gradient descent
-
-**** Algorithm 7.1: Stochastic gradient descent
-
-*** 7.2.4 Mini-batches
-
-*** 7.2.5 Parameter initialization
-
-**** Algorithm 7.2: Mini-batch stochastic gradient descent
-
-** 7.3. Convergence
-
-*** 7.3.1 Momentum
-
-**** Algorithm 7.3: Stochastic gradient descent with momentum
-
-*** 7.3.2 Learning rate schedule
-
-*** 7.3.3 RMSProp and Adam
-
-**** Algorithm 7.4: Adam optimization
-
-** 7.4. Normalization
-
-*** 7.4.1 Data normalization
-
-*** 7.4.2 Batch normalization
-
-*** 7.4.3 Layer normalization
-
-* Backpropagation
+:PROPERTIES:
+:ID:       171c216d-0ab4-400d-a24f-aaa7af06fd7c
+:END:
+* TOREAD Probabilities
+:PROPERTIES:
+:ID:       a37098c0-afa2-4feb-9283-33552c7b5ece
+:END:
+** The Rules of Probability
+:PROPERTIES:
+:ID:       97265842-89f6-42b4-855e-56ad61426639
+:END:
+*** A medical screening example
+:PROPERTIES:
+:ID:       ebe772e6-3856-4a0f-96bd-b684ff17f340
+:END:
+*** The sum and product rules
+:PROPERTIES:
+:ID:       513bd5c9-836e-4171-a0da-670ef8e4828c
+:END:
+*** Bayes' theorem
+:PROPERTIES:
+:ID:       3b3092e2-7a17-4077-a434-e4340a67f3ad
+:END:
+*** Medical screening revisited
+:PROPERTIES:
+:ID:       b6bdbd88-6e4e-4d9b-97ea-84aece9a8cfe
+:END:
+*** Prior and posterior probabilities
+:PROPERTIES:
+:ID:       4cf67d81-449a-4cda-8e8d-40a5d90a040d
+:END:
+*** Independent variables
+:PROPERTIES:
+:ID:       dbe7ec42-25ad-4476-b369-3fea82c333c3
+:END:
+** Probability Densities
+:PROPERTIES:
+:ID:       8751cdd2-abaf-4f42-b85f-6a0c2fb3da55
+:END:
+*** Example distributions
+:PROPERTIES:
+:ID:       6ad2d5a2-3663-4be5-8ec5-b5c1f628b22e
+:END:
+*** Expectations and covariances
+:PROPERTIES:
+:ID:       02af5af0-4a27-4c5b-825c-a207a00699da
+:END:
+** The Gaussian Distribution
+:PROPERTIES:
+:ID:       b59f019f-b9c0-4337-8389-661b1ff5bbbb
+:END:
+*** Mean and variance
+:PROPERTIES:
+:ID:       87a47893-f670-4ad2-80d3-5d1caf21e5e2
+:END:
+*** Likelihood function
+:PROPERTIES:
+:ID:       6f75721a-c868-414f-bd53-2c723a69eb6c
+:END:
+*** Bias of maximum likelihood
+:PROPERTIES:
+:ID:       b0f8f01f-767c-42dd-8ce1-f6ec2ef5507b
+:END:
+*** Linear regression
+:PROPERTIES:
+:ID:       c86acb54-7911-4ed4-aba3-a171f9b3dad0
+:END:
+** Transformation of Densities
+:PROPERTIES:
+:ID:       3b8fb64e-62ee-44aa-879c-93f67c781ef1
+:END:
+*** Multivariate distributions
+:PROPERTIES:
+:ID:       d5609e38-440f-44d6-a1a2-0311731e5a77
+:END:
+** Information Theory
+:PROPERTIES:
+:ID:       966704f1-ba7d-4bb8-876f-7574eb504ac5
+:END:
+*** Entropy
+:PROPERTIES:
+:ID:       089a201e-928a-40a6-81f1-73ff502a8e2e
+:END:
+*** Physics perspective
+:PROPERTIES:
+:ID:       8b8cacff-1083-4303-ac3d-4d168abc5b5f
+:END:
+*** Differential entropy
+:PROPERTIES:
+:ID:       9cfc7e47-45a6-476b-9ad2-72aacbe02409
+:END:
+*** Maximum entropy
+:PROPERTIES:
+:ID:       42065a14-0934-4cc7-a062-3630584e8572
+:END:
+*** Kullback-Leibler divergence
+:PROPERTIES:
+:ID:       1ac0e788-218b-46ff-acaa-bb8ccf55aaa2
+:END:
+*** Conditional entropy
+:PROPERTIES:
+:ID:       bcd5285f-cd2c-45a6-8576-9db88f1ab3d6
+:END:
+*** Mutual information
+:PROPERTIES:
+:ID:       f69ffcf8-1568-4e11-b6bf-765b0696fa82
+:END:
+** Bayesian Probabilities
+:PROPERTIES:
+:ID:       f436e154-f9bc-4c83-abf9-49e19a026d67
+:END:
+*** Model parameters
+:PROPERTIES:
+:ID:       83357272-4071-4db4-ae35-b267708c4c50
+:END:
+*** Regularization
+:PROPERTIES:
+:ID:       e55551ee-a4ce-482f-951b-875494ab62d5
+:END:
+*** Bayesian machine learning
+:PROPERTIES:
+:ID:       9029964e-a100-41ed-940e-23df8bebaf71
+:END:
+* TOREAD Standard Distributions
+:PROPERTIES:
+:ID:       dd049921-dc46-423f-985e-bba3de162ed3
+:END:
+** Discrete Variables
+:PROPERTIES:
+:ID:       a3efc57c-3eca-42c1-866a-6293a6ca18e1
+:END:
+*** Bernoulli distribution
+:PROPERTIES:
+:ID:       a36aac93-d6b2-455a-bede-95cb9da2b4d3
+:END:
+*** Binomial distribution
+:PROPERTIES:
+:ID:       be5daaa4-1e38-48fb-9586-739493325ff2
+:END:
+*** Multinomial distribution
+:PROPERTIES:
+:ID:       ff6730b3-cfa7-47a1-86c5-3898a406f83c
+:END:
+** The Multivariate Gaussian
+:PROPERTIES:
+:ID:       4180c49d-4c74-422c-a8bf-ec914b4b4927
+:END:
+*** Geometry of the Gaussian
+:PROPERTIES:
+:ID:       ce93af8b-a5ee-4fcc-9705-b9768ef027f2
+:END:
+*** Moments
+:PROPERTIES:
+:ID:       63af7fa1-c4b6-4bd8-948c-0ef6cbf83f4f
+:END:
+*** Limitations
+:PROPERTIES:
+:ID:       5c22745d-fe30-4e06-b6f5-458ec6d2fc62
+:END:
+*** Conditional distribution
+:PROPERTIES:
+:ID:       3cb8ad4b-7e9a-4b96-a99a-ad7e3fdf50f1
+:END:
+*** Marginal distribution
+:PROPERTIES:
+:ID:       44103e59-358a-4c10-9d83-b991f1a37cc2
+:END:
+*** Bayes' theorem
+:PROPERTIES:
+:ID:       d47ec766-2aaa-42f8-a36a-bffc740556ad
+:END:
+*** Maximum likelihood
+:PROPERTIES:
+:ID:       3a326ee8-834c-47e5-af77-76cd00886258
+:END:
+*** Sequential estimation
+:PROPERTIES:
+:ID:       25ae43f8-4d7a-4793-a346-cdf7233af8eb
+:END:
+*** Mixtures of Gaussians
+:PROPERTIES:
+:ID:       badcbb17-2b90-4b1c-9d5e-b1607222d83e
+:END:
+** Periodic Variables
+:PROPERTIES:
+:ID:       2a1e450a-ed1a-4e7f-93a3-bebff1a9e721
+:END:
+*** Von Mises distribution
+:PROPERTIES:
+:ID:       20b3c813-443a-4540-990a-5cbc2403d669
+:END:
+** The Exponential Family
+:PROPERTIES:
+:ID:       63ae5b2a-7a91-49bc-8d8d-7c0bd8bc731e
+:END:
+*** Sufficient statistics
+:PROPERTIES:
+:ID:       0d0ceafd-c8de-4b3c-9254-c1cfdb3cfcd4
+:END:
+** Nonparametric Methods
+:PROPERTIES:
+:ID:       f670bfb8-d42f-4558-8cc3-894b8335b4b0
+:END:
+*** Histograms
+:PROPERTIES:
+:ID:       88a59338-787d-4b04-97ae-65396ecdd895
+:END:
+*** Kernel densities
+:PROPERTIES:
+:ID:       ac799689-903c-4e36-8c26-3a1abfdba14e
+:END:
+*** Nearest-neighbours
+:PROPERTIES:
+:ID:       448228fa-e3b7-4e7c-8d91-c9079231ea07
+:END:
+* TOREAD Single-layer Networks: Regression
+:PROPERTIES:
+:ID:       19b3da06-0b11-45c5-a384-dceadc10d934
+:END:
+** Linear Regression
+:PROPERTIES:
+:ID:       e2bd548a-bc27-4078-8122-ff69f036e0c8
+:END:
+*** Basis functions
+:PROPERTIES:
+:ID:       d571b1e2-bdfd-49ce-bda9-dfe7f4d34be5
+:END:
+*** Likelihood function
+:PROPERTIES:
+:ID:       4c2770a9-6dfa-424d-9aaa-a15f2bdffe0a
+:END:
+*** Maximum likelihood
+:PROPERTIES:
+:ID:       54ca348f-7c04-4256-9476-62f23248d2d6
+:END:
+*** Geometry of least squares
+:PROPERTIES:
+:ID:       bb77e5a4-dc13-437a-a085-1a35b3084e85
+:END:
+*** Sequential learning
+:PROPERTIES:
+:ID:       138ccf7e-246f-40c6-a408-9c514d299b89
+:END:
+*** Regularized least squares
+:PROPERTIES:
+:ID:       f4b4e5ae-d5be-4581-a7b4-20d53bbeba91
+:END:
+*** Multiple outputs
+:PROPERTIES:
+:ID:       f1e091d9-5480-4c59-b106-7120de04260e
+:END:
+** Decision theory
+:PROPERTIES:
+:ID:       6940d050-3dc1-4805-86c3-6f97e2f93931
+:END:
+** The Bias-Variance Trade-off
+:PROPERTIES:
+:ID:       3b70c09e-846b-4025-ba1f-4e04c92d361a
+:END:
+* TOREAD Single-layer Networks: Classification
+:PROPERTIES:
+:ID:       191cd138-08dc-44cd-9b73-ba29e4cda227
+:END:
+** Discriminant Functions
+:PROPERTIES:
+:ID:       bad31bcb-245c-4223-bb19-6bf5cf308219
+:END:
+*** Two classes
+:PROPERTIES:
+:ID:       4f29b50d-bd28-41f0-833a-73607574a786
+:END:
+*** Multiple classes
+:PROPERTIES:
+:ID:       e84f01a0-3a82-4a4a-8d95-cb242318c71b
+:END:
+*** 1-of-\(K\) coding
+:PROPERTIES:
+:ID:       51fd1bb4-8cb9-4ef3-b944-823412225c71
+:END:
+*** Least squares for classification
+:PROPERTIES:
+:ID:       06093780-0d3a-4f6f-b06c-ec35a5e2ed2d
+:END:
+** Decision Theory
+:PROPERTIES:
+:ID:       adff5d37-9dfb-451a-8d4e-38f1297921ff
+:END:
+*** Misclassification rate
+:PROPERTIES:
+:ID:       99e12021-a1ba-44a3-91be-818dcd0641df
+:END:
+*** Expected loss
+:PROPERTIES:
+:ID:       a8358d0c-1add-4da8-80e3-6edb0c386c63
+:END:
+*** The reject option
+:PROPERTIES:
+:ID:       03cf453e-9970-4bc2-9211-7f161b012769
+:END:
+*** Inference and decision
+:PROPERTIES:
+:ID:       e5c83225-b11c-4396-9b16-d9e9786c5f0d
+:END:
+*** Classifier accuracy
+:PROPERTIES:
+:ID:       47640f15-fef1-4085-afad-73bb63e03a47
+:END:
+*** ROC curve
+:PROPERTIES:
+:ID:       18ddb62b-ea34-4f53-9b04-cfc70996490f
+:END:
+** Generative Classifiers
+:PROPERTIES:
+:ID:       808c66b0-eaf0-40d2-8564-6b9db74a686e
+:END:
+*** Continuous inputs
+:PROPERTIES:
+:ID:       a6907468-754c-4cf4-bc2b-dc6752ac43a7
+:END:
+*** Maximum likelihood solution
+:PROPERTIES:
+:ID:       17087d93-7560-473d-9e4f-f35f3fff3a87
+:END:
+*** Discrete features
+:PROPERTIES:
+:ID:       a8a86006-f9fb-44ac-b0c5-877054b010a2
+:END:
+*** Exponential family
+:PROPERTIES:
+:ID:       50d1cf8f-eb42-4c47-8427-b56fa9b6be9e
+:END:
+** Discriminative Classifiers
+:PROPERTIES:
+:ID:       8f572464-ec9b-491b-9806-6dfeb031b08e
+:END:
+*** Activation functions
+:PROPERTIES:
+:ID:       8e74fee2-7cb2-4ce4-a83a-578b5bbec251
+:END:
+*** Fixed basis functions
+:PROPERTIES:
+:ID:       1525e71d-ade0-4731-8ccd-74ed7ca15ad5
+:END:
+*** Logistic regression
+:PROPERTIES:
+:ID:       33d37fb8-babf-483c-9fde-9a07920a5529
+:END:
+*** Multi-class logistic regression
+:PROPERTIES:
+:ID:       9bc6c385-92da-4daf-ab37-70653b7364f9
+:END:
+*** Probit regression
+:PROPERTIES:
+:ID:       0a640820-07b9-4629-bd22-0db2d7e391ff
+:END:
+*** Canonical link functions
+:PROPERTIES:
+:ID:       9a05b798-55fa-403c-ac73-4e1ac1131484
+:END:
+* TOREAD Deep Neural Networks
+:PROPERTIES:
+:ID:       30bf5e8c-2037-462e-a6aa-c6fb7e158e95
+:END:
+** Limitations of Fixed Basis Functions
+:PROPERTIES:
+:ID:       710fb671-d355-493b-ac53-2a0932c09783
+:END:
+*** The curse of dimensionality
+:PROPERTIES:
+:ID:       25857492-ad7a-4cfd-82af-04ccb6b82197
+:END:
+*** High-dimensional spaces
+:PROPERTIES:
+:ID:       42625240-0cc2-425e-9c44-5892cea618dc
+:END:
+*** Data manifolds
+:PROPERTIES:
+:ID:       b158aab1-ff5c-42b8-88aa-37ecebb28608
+:END:
+*** Data-dependent basis functions
+:PROPERTIES:
+:ID:       e09e5c24-6fea-446f-b803-47a2df53fac4
+:END:
+** Multilayer Networks
+:PROPERTIES:
+:ID:       1e4de40c-54ee-4ad4-a79f-e5c27e57cfab
+:END:
+*** Parameter matrices
+:PROPERTIES:
+:ID:       fdb72b8d-858f-4f72-bce0-5903d1d7ed71
+:END:
+*** Universal approximation
+:PROPERTIES:
+:ID:       132a491d-f730-4c44-8f17-2de6440fc2d7
+:END:
+*** Hidden unit activation functions
+:PROPERTIES:
+:ID:       7e37a89a-a0d4-4d35-b3c0-d7a5f71145be
+:END:
+*** Weight-space symmetries
+:PROPERTIES:
+:ID:       483b99de-3ae9-41b5-b505-5b03c54b4261
+:END:
+** Deep Networks
+:PROPERTIES:
+:ID:       f6d74642-dae1-4b28-a3c5-f7fde0d72cce
+:END:
+*** Hierarchical representations
+:PROPERTIES:
+:ID:       1d52e00f-4e44-49b8-9e1a-7172b5614354
+:END:
+*** Distributed representations
+:PROPERTIES:
+:ID:       7d949eb3-6c2b-4e2a-b0f0-dfee2e8c74f9
+:END:
+*** Representation learning
+:PROPERTIES:
+:ID:       37a6709e-6d38-48fd-96d9-606d03bc3491
+:END:
+*** Transfer learning
+:PROPERTIES:
+:ID:       902c1148-728b-4a72-8259-c26c0fcf2e48
+:END:
+*** Contrastive learning
+:PROPERTIES:
+:ID:       d9ef9155-6a8c-42e8-98e0-013bd12f219b
+:END:
+*** General network architectures
+:PROPERTIES:
+:ID:       a9756bc1-be6e-40fb-9bd6-447ff9687303
+:END:
+*** Tensors
+:PROPERTIES:
+:ID:       f8794ff1-5dec-4085-baff-599efdd19d7d
+:END:
+** Error Functions
+:PROPERTIES:
+:ID:       0df23e1b-7d74-470f-94e0-7335cd822177
+:END:
+*** Regression
+:PROPERTIES:
+:ID:       1fa63cf6-4f4f-475c-a5d4-026c95bd7dee
+:END:
+*** Binary classification
+:PROPERTIES:
+:ID:       df6663b2-3ecd-4118-b614-09a99eb87adf
+:END:
+*** Multiclass classification
+:PROPERTIES:
+:ID:       dd72181a-87bb-4626-8774-f5d0570476be
+:END:
+** Mixture Density Networks
+:PROPERTIES:
+:ID:       eb6b4604-3219-4593-b927-e6b67f6e4bb5
+:END:
+*** Robot kinematics example
+:PROPERTIES:
+:ID:       f5918384-360d-4d31-aa87-481a80970f4a
+:END:
+*** Conditional mixture distributions
+:PROPERTIES:
+:ID:       a9d8967b-28fe-45cd-a95f-4a3925e43461
+:END:
+*** Gradient optimization
+:PROPERTIES:
+:ID:       3f97b39e-b9ed-4681-a5ac-2d62c4178a2c
+:END:
+*** Predictive distribution
+:PROPERTIES:
+:ID:       5c3051a8-db66-4d53-b66c-4a96a6a54439
+:END:
+* TOREAD Gradient Descent
+:PROPERTIES:
+:ID:       16e659e0-ee9a-498d-9819-d769f4a309a1
+:END:
+** Error Surfaces
+:PROPERTIES:
+:ID:       cd857823-0fc8-4340-aa1c-3100a645b747
+:END:
+*** Local quadratic approximation
+:PROPERTIES:
+:ID:       468c677d-f65e-4d40-b602-26b8d27361be
+:END:
+** Gr Descent Optimization
+:PROPERTIES:
+:ID:       25871829-5607-4dfd-aea4-b62db364af0c
+:END:
+*** Use of gradient information
+:PROPERTIES:
+:ID:       98b6c8cb-68c8-4922-a96e-71d9b52560c4
+:END:
+*** Batch gradient descent
+:PROPERTIES:
+:ID:       c42e543b-5b6b-4185-8351-701ace7ac1ee
+:END:
+*** Stochastic gradient descent
+:PROPERTIES:
+:ID:       0ec10966-c9a3-46e7-ac3a-9fd9bc54d379
+:END:
+**** Algorithm: Stochastic gradient descent
+*** Mini-batches
+:PROPERTIES:
+:ID:       456298e5-b07b-41c6-a3ee-7d729027a16e
+:END:
+*** Parameter initialization
+:PROPERTIES:
+:ID:       d515321c-8a3b-450f-a5ea-4262a6808a55
+:END:
+**** Algorithm: Mini-batch stochastic gradient descent
+** Convergence
+:PROPERTIES:
+:ID:       0f0a6de7-e843-4451-abb4-2b045f8aaa2f
+:END:
+*** Momentum
+:PROPERTIES:
+:ID:       4735857e-153a-45e8-b88c-16e86e656200
+:END:
+**** Algorithm: Stochastic gradient descent with momentum
+*** Learning rate schedule
+:PROPERTIES:
+:ID:       c749368a-a5ac-4523-a058-5af119ab2cd1
+:END:
+*** RMSProp and Adam
+:PROPERTIES:
+:ID:       3ffb23a9-d909-44ab-8171-e730503f195a
+:END:
+**** Algorithm: Adam optimization
+** Normalization
+:PROPERTIES:
+:ID:       6a7293c0-44b0-454c-a4e8-1d31af00d6a9
+:END:
+*** Data normalization
+:PROPERTIES:
+:ID:       50b3afb8-f0ca-4f1c-8fbc-74f16d8eb7c5
+:END:
+*** Batch normalization
+:PROPERTIES:
+:ID:       e0f8a93d-500b-40de-8efe-c22f6bb6d069
+:END:
+*** Layer normalization
+:PROPERTIES:
+:ID:       14eca336-97ab-4b78-8c9b-89a97aa801d0
+:END:
+* TOREAD Backpropagation
 :PROPERTIES:
 :ID:       7ed63989-709d-4f4b-ab12-33b5c79ba841
 :END:
-** Evaluation of Gradients :backpropagation:dlfc:
+** Evaluation of Gradients
 :PROPERTIES:
 :ID:       3b949160-76e2-4f9c-afee-f6065a7f0787
 :END:
-*** Single-layer networks :backpropagation:dlfc:
+*** Single-layer networks
 :PROPERTIES:
 :ID:       59cf499e-14ff-4c18-b01d-a83858e79c21
 :END:
-*** General feed-forward networks :backpropagation:dlfc:
+*** General feed-forward networks
 :PROPERTIES:
 :ID:       1ab042da-d99b-4428-a929-96fdeb0a4c91
 :END:
-**** Algorithm: Backpropagation :backpropagation:dlfc:
+**** Algorithm: Backpropagation
 :PROPERTIES:
 :ID:       4f729515-5224-4ae0-bcba-7d72361a0d06
 :END:
 *** A simple example
-*** Numerical differentiation :backpropagation:dlfc:
+:PROPERTIES:
+:ID:       98484c8a-fb89-47a3-aeda-5642f0126fcd
+:END:
+*** Numerical differentiation
 :PROPERTIES:
 :ID:       1a21b753-fc87-4997-ba72-cdb23297adc2
 :END:
-*** The Jacobian matrix :backpropagation:dlfc:
+*** The Jacobian matrix
 :PROPERTIES:
 :ID:       e861e66d-1515-446e-ba8d-ea2083db3bbb
 :END:
-*** The Hessian matrix :backpropagation:dlfc:
+*** The Hessian matrix
 :PROPERTIES:
 :ID:       bcf43a79-a1d7-4bab-895b-1b3d8ed58f44
 :END:
-** Automatic Differentiation :backpropagation:dlfc:
+** Automatic Differentiation
 :PROPERTIES:
 :ID:       841f20e2-d0c1-4d9b-8f80-211064aac2a5
 :END:
-*** Forward-mode automatic differentiation :backpropagation:dlfc:
+*** Forward-mode automatic differentiation
 :PROPERTIES:
 :ID:       414eb290-4d1f-494f-a80f-6602070c7e70
 :END:
-*** Reverse-mode automatic differentiation :backpropagation:dlfc:
+*** Reverse-mode automatic differentiation
 :PROPERTIES:
 :ID:       f23fd6a5-f6a3-4f0a-893d-eee17b4d50a3
 :END:
-* Regularization
-
-** 9.1. Inductive Bias
-
-*** 9.1.1 Inverse problems
-
-*** 9.1.2 No free lunch theorem
-
-*** 9.1.3 Symmetry and invariance
-
-*** 9.1.4 Equivariance
-
-** 9.2. Weight Decay
-
-*** 9.2.1 Consistent regularizers
-
-*** 9.2.2 Generalized weight decay
-
-** 9.3. Learning Curves
-
-*** 9.3.1 Early stopping
-
-*** 9.3.2 Double descent
-
-** 9.4. Parameter Sharing
-
-*** 9.4.1 Soft weight sharing
-
-** 9.5. Residual Connections
-
-** 9.6. Model Averaging
-
-*** 9.6.1 Dropout
-
-* Convolutional Neural Networks
-
-** 10.1. Computer Vision
-
-*** 10.1.1 Image data
-
-** 10.2. Convolutional Filters
-
-*** 10.2.1 Feature detectors
-
-*** 10.2.2 Translation equivariance
-
-*** 10.2.3 Padding
-
-*** 10.2.4 Strided convolutions
-
-*** 10.2.5 Multi-dimensional convolutions
-
-*** 10.2.6 Pooling
-
-*** 10.2.7 Multilayer convolutions
-
-*** 10.2.8 Example network architectures
-
-** 10.3. Visualizing Trained CNNs
-
-*** 10.3.1 Visual cortex
-
-*** 10.3.2 Visualizing trained filters
-
-*** 10.3.3 Saliency maps
-
-*** 10.3.4 Adversarial attacks
-
-*** 10.3.5 Synthetic images
-
-** 10.4. Object Detection
-
-*** 10.4.1 Bounding boxes
-
-*** 10.4.2 Intersection-over-union
-
-*** 10.4.3 Sliding windows
-
-*** 10.4.4 Detection across scales
-
-*** 10.4.5 Non-max suppression
-
-*** 10.4.6 Fast region CNNs
-
-** 10.5. Image Segmentation
-
-*** 10.5.1 Convolutional segmentation
-
-*** 10.5.2 Up-sampling
-
-*** 10.5.3 Fully convolutional networks
-
-*** 10.5.4 The U-net architecture
-
-** 10.6. Style Transfer
-
-* Structured Distributions
-
-** 11.1. Graphical Models
-
-*** 11.1.1 Directed graphs
-
-*** 11.1.2 Factorization
-
-*** 11.1.3 Discrete variables
-
-*** 11.1.4 Gaussian variables
-
-*** 11.1.5 Binary classifier
-
-*** 11.1.6 Parameters and observations
-
-*** 11.1.7 Bayes' theorem
-
-** 11.2. Conditional Independence
-
-*** 11.2.1 Three example graphs
-
-*** 11.2.2 Explaining away
-
-*** 11.2.3 D-separation
-
-*** 11.2.4 Naive Bayes
-
-*** 11.2.5 Generative models
-
-*** 11.2.6 Markov blanket
-
-*** 11.2.7 Graphs as filters
-
-** 11.3. Sequence Models
-
-*** 11.3.1 Hidden variables
-
-* Transformers
-* Graph Neural Networks
-
-** 13.1. Machine Learning on Graphs
-
-*** 13.1.1 Graph properties
-
-*** 13.1.2 Adjacency matrix
-
-*** 13.1.3 Permutation equivariance
-
-** 13.2. Neural Message-Passing
-
-*** 13.2.1 Convolutional filters
-
-*** 13.2.2 Graph convolutional networks
-
-**** Algorithm 13.1: Simple message-passing neural network
-
-*** 13.2.3 Aggregation operators
-
-*** 13.2.4 Update operators
-
-*** 13.2.5 Node classification
-
-*** 13.2.6 Edge classification
-
-*** 13.2.7 Graph classification
-
-** 13.3. General Graph Networks
-
-*** 13.3.1 Graph attention networks
-
-*** 13.3.2 Edge embeddings
-
-*** 13.3.3 Graph embeddings
-
-*** 13.3.4 Over-smoothing
-
-*** 13.3.5 Regularization
-
-*** 13.3.6 Geometric deep learning
-
-* Sampling
-
-** 14.1. Basic Sampling Algorithms
-
-*** 14.1.1 Expectations
-
-*** 14.1.2 Standard distributions
-
-*** 14.1.3 Rejection sampling
-
-*** 14.1.4 Adaptive rejection sampling
-
-*** 14.1.5 Importance sampling
-
-*** 14.1.6 Sampling-importance-resampling
-
-** 14.2. Markov Chain Monte Carlo
-
-*** 14.2.1 The Metropolis algorithm
-
-**** Algorithm 14.1: Metropolis sampling
-
-*** 14.2.2 Markov chains
-
-*** 14.2.3 The Metropolis-Hastings algorithm
-
-**** Algorithm 14.2: Metropolis-Hastings sampling
-
-*** 14.2.4 Gibbs sampling
-
-**** Algorithm 14.3: Gibbs sampling
-
-*** 14.2.5 Ancestral sampling
-
-** 14.3. Langevin Sampling
-
-*** 14.3.1 Energy-based models
-
-*** 14.3.2 Maximizing the likelihood
-
-*** 14.3.3 Langevin dynamics
-
-**** Algorithm 14.4: Langevin sampling
-
-* Discrete Latent Variables
-
-** 15.1. K-means Clustering
-
-**** Algorithm 15.1: K-means algorithm
-
-*** 15.1.1 Image segmentation
-
-** 15.2. Mixtures of Gaussians
-
-*** 15.2.1 Likelihood function
-
-*** 15.2.2 Maximum likelihood
-
-** 15.3. Expectation-Maximization Algorithm
-
-**** Algorithm 15.2: EM algorithm for a Gaussian mixture model
-
-**** Algorithm 15.3: General EM algorithm
-
-*** 15.3.1 Gaussian mixtures
-
-*** 15.3.2 Relation to K-means
-
-*** 15.3.3 Mixtures of Bernoulli distributions
-
-** 15.4. Evidence Lower Bound
-
-*** 15.4.1 EM revisited
-
-*** 15.4.2 Independent and identically distributed data
-
-*** 15.4.3 Parameter priors
-
-*** 15.4.4 Generalized EM
-
-*** 15.4.5 Sequential EM
-
-* Continuous Latent Variables
-
-** 16.1. Principal Component Analysis
-
-*** 16.1.1 Maximum variance formulation
-
-*** 16.1.2 Minimum-error formulation
-
-*** 16.1.3 Data compression
-
-*** 16.1.4 Data whitening
-
-*** 16.1.5 High-dimensional data
-
-** 16.2. Probabilistic Latent Variables
-
-*** 16.2.1 Generative model
-
-*** 16.2.2 Likelihood function
-
-*** 16.2.3 Maximum likelihood
-
-*** 16.2.4 Factor analysis
-
-*** 16.2.5 Independent component analysis
-
-*** 16.2.6 Kalman filters
-
-** 16.3. Evidence Lower Bound
-
-*** 16.3.1 Expectation maximization
-
-*** 16.3.2 EM for PCA
-
-*** 16.3.3 EM for factor analysis
-
-** 16.4. Nonlinear Latent Variable Models
-
-*** 16.4.1 Nonlinear manifolds
-
-*** 16.4.2 Likelihood function
-
-*** 16.4.3 Discrete data
-
-*** 16.4.4 Four approaches to generative modelling
-
-* Generative Adversarial Networks
-
-** 17.1. Adversarial Training
-
-*** 17.1.1 Loss function
-
-*** 17.1.2 GAN training in practice
-
-** 17.2. Image GANs
-
-*** 17.2.1 CycleGAN
-
-* Normalizing Flows
-
-** 18.1. Coupling Flows
-
-** 18.2. Autoregressive Flows
-
-** 18.3. Continuous Flows
-
-*** 18.3.1 Neural differential equations
-
-*** 18.3.2 Neural ODE backpropagation
-
-*** 18.3.3 Neural ODE flows
-
-* Autoencoders
-
-** 19.1. Deterministic Autoencoders
-
-*** 19.1.1 Linear autoencoders
-
-*** 19.1.2 Deep autoencoders
-
-*** 19.1.3 Sparse autoencoders
-
-*** 19.1.4 Denoising autoencoders
-
-*** 19.1.5 Masked autoencoders
-
-** 19.2. Variational Autoencoders
-
-*** 19.2.1 Amortized inference
-
-*** 19.2.2 The reparameterization trick
-
-**** Algorithm 19.1: Variational autoencoder training
-
-* Diffusion models
-
-** 20.1. Forward Encoder
-
-*** 20.1.1 Diffusion kernel
-
-*** 20.1.2 Conditional distribution
-
-** 20.2. Reverse Decoder
-
-*** 20.2.1 Training the decoder
-
-*** 20.2.2 Evidence lower bound
-
-*** 20.2.3 Rewriting the ELBO
-
-*** 20.2.4 Predicting the noise
-
-**** Algorithm 20.1: Training a denoising diffusion probabilistic model
-
-*** 20.2.5 Generating new samples
-
-**** Algorithm 20.2: Sampling from a denoising diffusion probabilistic model
-
-** 20.3. Score Matching
-
-*** 20.3.1 Score loss function
-
-*** 20.3.2 Modified score loss
-
-*** 20.3.3 Noise variance
-
-*** 20.3.4 Stochastic differential equations
-
-** 20.4. Guided Diffusion
-
-*** 20.4.1 Classifier guidance
-
-*** 20.4.2 Classifier-free guidance
+* TOREAD Regularization
+:PROPERTIES:
+:ID:       79199bec-7068-4b9e-9c50-665206ac2cee
+:END:
+** Inductive Bias
+:PROPERTIES:
+:ID:       0594f9a4-1f39-4a62-8692-078819c48127
+:END:
+*** Inverse problems
+:PROPERTIES:
+:ID:       ee34f84b-eaae-4c02-90ef-b34ec11c5087
+:END:
+*** No free lunch theorem
+:PROPERTIES:
+:ID:       216485e1-5286-4fd9-ab88-c2ba75faf9f0
+:END:
+*** Symmetry and invariance
+:PROPERTIES:
+:ID:       87175bb9-b3ae-4b22-b73b-99319451dfde
+:END:
+*** Equivariance
+:PROPERTIES:
+:ID:       f74432d7-5645-4c66-a23d-90fc8f87c341
+:END:
+** Weight Decay
+:PROPERTIES:
+:ID:       9aaa6879-2e98-4b92-b85f-b2fa71553d11
+:END:
+*** Consistent regularizers
+:PROPERTIES:
+:ID:       98bee534-1084-413f-a03a-4aa1a3b1af8b
+:END:
+*** Generalized weight decay
+:PROPERTIES:
+:ID:       9c7455ae-35b9-4406-af4a-c7ad0cc3ec60
+:END:
+** Learning Curves
+:PROPERTIES:
+:ID:       bf4d04bd-2502-4e64-91ea-01830e32a326
+:END:
+*** Early stopping
+:PROPERTIES:
+:ID:       b4fa6be6-2016-4706-aed8-b7036f64d301
+:END:
+*** Double descent
+:PROPERTIES:
+:ID:       4da6defc-9d21-43c3-8f1c-21cc9886af09
+:END:
+** Parameter Sharing
+:PROPERTIES:
+:ID:       c910649d-9e15-42c1-902f-a1f82d4147d2
+:END:
+*** Soft weight sharing
+:PROPERTIES:
+:ID:       130d2286-ca3b-4b4d-ab35-cdf810eb401d
+:END:
+** Residual Connections
+:PROPERTIES:
+:ID:       ff380691-52a5-4ca7-91af-c4594a8d109f
+:END:
+** Model Averaging
+:PROPERTIES:
+:ID:       747e2c65-08dc-4003-a98b-9ac8d1ad6c41
+:END:
+*** Dropout
+:PROPERTIES:
+:ID:       d11051b7-4d52-4d84-9162-b4d05410814c
+:END:
+* TOREAD Convolutional Neural Networks
+:PROPERTIES:
+:ID:       d5167a51-7193-46c4-92aa-c7ddda9e5fa9
+:END:
+** Computer Vision
+:PROPERTIES:
+:ID:       36a60b0f-9111-43e0-8a85-e54ceb9dbb00
+:END:
+*** Image data
+:PROPERTIES:
+:ID:       a7595ffb-fe47-4e03-a264-4cdd7cbcaf7c
+:END:
+** Convolutional Filters
+:PROPERTIES:
+:ID:       7886ad68-f398-4eeb-9ad9-f8e9e1a3dd1e
+:END:
+*** Feature detectors
+:PROPERTIES:
+:ID:       6156a75e-3b7f-4fae-adf6-cdc1aefdb388
+:END:
+*** Translation equivariance
+:PROPERTIES:
+:ID:       1c0c2ac6-2cba-4ce2-8d0d-067f77af584f
+:END:
+*** Padding
+:PROPERTIES:
+:ID:       a2a750c1-8252-48c1-a180-35f2acb54a7d
+:END:
+*** Strided convolutions
+:PROPERTIES:
+:ID:       3433827b-5b58-4368-a394-8580b2d6506f
+:END:
+*** Multi-dimensional convolutions
+:PROPERTIES:
+:ID:       881e27fb-4702-4df7-93da-214dda39da42
+:END:
+*** Pooling
+:PROPERTIES:
+:ID:       342b5f08-f3a2-43bc-8b21-c39bc17931a8
+:END:
+*** Multilayer convolutions
+:PROPERTIES:
+:ID:       de790e22-6c8b-4d0d-baa7-08a81b729294
+:END:
+*** Example network architectures
+:PROPERTIES:
+:ID:       baab03bb-f1a0-4188-a7d2-51927be1229a
+:END:
+** Visualizing Trained CNNs
+:PROPERTIES:
+:ID:       27cd8c73-212c-4ed1-9c86-d3cc2d1a44d1
+:END:
+*** Visual cortex
+:PROPERTIES:
+:ID:       e7df12ba-2bef-4f77-b032-a71d312e0192
+:END:
+*** Visualizing trained filters
+:PROPERTIES:
+:ID:       e2d6652f-4a47-49ac-9632-433395d8abc7
+:END:
+*** Saliency maps
+:PROPERTIES:
+:ID:       6d9fc700-cf08-45fa-817f-3fd9bbc3dd4d
+:END:
+*** Adversarial attacks
+:PROPERTIES:
+:ID:       3a2c4db5-2045-48bb-82ce-cc20f1d7a485
+:END:
+*** Synthetic images
+:PROPERTIES:
+:ID:       2aa5cd45-a242-441f-a9c0-c8dc706e5dd1
+:END:
+** Object Detection
+:PROPERTIES:
+:ID:       16dadfdf-980a-4c14-ace7-7f21537f8b75
+:END:
+*** Bounding boxes
+:PROPERTIES:
+:ID:       df735a96-b898-436c-a896-dad89a2949a8
+:END:
+*** Intersection-over-union
+:PROPERTIES:
+:ID:       ed67fa72-9a7b-4d32-b3d1-7d2c5efa1879
+:END:
+*** Sliding windows
+:PROPERTIES:
+:ID:       cd66651b-8369-44ad-a1f0-5c8a6cf9bc26
+:END:
+*** Detection across scales
+:PROPERTIES:
+:ID:       3e4c8f8b-9eac-45e3-8316-90c440e00f7c
+:END:
+*** Non-max suppression
+:PROPERTIES:
+:ID:       560c8ceb-0787-4316-8f87-e262aeef6952
+:END:
+*** Fast region CNNs
+:PROPERTIES:
+:ID:       71af6158-a561-4594-9d2b-947d2894ef9c
+:END:
+** Image Segmentation
+:PROPERTIES:
+:ID:       435dea9e-77be-431a-aa3a-da6c3e1a71d2
+:END:
+*** Convolutional segmentation
+:PROPERTIES:
+:ID:       a7515776-d1a2-436b-a175-fa0e0c89ede6
+:END:
+*** Up-sampling
+:PROPERTIES:
+:ID:       5aba631c-eaa1-465f-b26b-228a1981f7ce
+:END:
+*** Fully convolutional networks
+:PROPERTIES:
+:ID:       013a69e9-d50e-4a69-a63e-27236c1630d6
+:END:
+*** The U-net architecture
+:PROPERTIES:
+:ID:       c801165b-b6e5-48e4-9b93-c34a8a305526
+:END:
+** Style Transfer
+:PROPERTIES:
+:ID:       b0af3504-17b8-4846-b627-da00672a5ee6
+:END:
+* TOREAD Structured Distributions
+:PROPERTIES:
+:ID:       0571f8ef-e1af-405b-a33b-17858c31972a
+:END:
+** Graphical Models
+:PROPERTIES:
+:ID:       f0e73f8a-18e5-4702-91f3-09932acc4108
+:END:
+*** Directed graphs
+:PROPERTIES:
+:ID:       78e6b509-cc09-4591-ab45-71508359862e
+:END:
+*** Factorization
+:PROPERTIES:
+:ID:       7cf7752e-ade9-472e-ad60-2004ef867452
+:END:
+*** Discrete variables
+:PROPERTIES:
+:ID:       8b2ef401-7b9f-4f59-a87f-228e666335b0
+:END:
+*** Gaussian variables
+:PROPERTIES:
+:ID:       d00b8313-3c00-4fb5-b18c-915921990de9
+:END:
+*** Binary classifier
+:PROPERTIES:
+:ID:       9dfdb4bc-c096-4d69-bb46-6d7cebbbdf39
+:END:
+*** Parameters and observations
+:PROPERTIES:
+:ID:       6c78f26f-7e54-4842-9330-80e3bd1335d6
+:END:
+*** Bayes' theorem
+:PROPERTIES:
+:ID:       d683f6ee-f9a5-4aa9-9301-41fd6858cc3c
+:END:
+** Conditional Independence
+:PROPERTIES:
+:ID:       68a3ba17-3f8c-438a-93ca-fe7df32e336a
+:END:
+*** Three example graphs
+:PROPERTIES:
+:ID:       f6679cfe-a5db-40d6-8f0c-36aae86c335a
+:END:
+*** Explaining away
+:PROPERTIES:
+:ID:       59dba084-5162-4dd1-8503-6ce1104f469e
+:END:
+*** D-separation
+:PROPERTIES:
+:ID:       fd166be9-c1f1-4c25-acc6-83fbd2f8ff35
+:END:
+*** Naive Bayes
+:PROPERTIES:
+:ID:       52e46608-e7a0-4497-96e2-5492ba092f60
+:END:
+*** Generative models
+:PROPERTIES:
+:ID:       fd8831a1-2733-4378-820f-ee732a3229b9
+:END:
+*** Markov blanket
+:PROPERTIES:
+:ID:       3dcd34f6-1da3-476e-8544-3ded0f5c755f
+:END:
+*** Graphs as filters
+:PROPERTIES:
+:ID:       525761b7-dac5-44fd-98b9-97d410e7f830
+:END:
+** Sequence Models
+:PROPERTIES:
+:ID:       1db260a4-6a49-4917-8576-c0569967335f
+:END:
+*** Hidden variables
+:PROPERTIES:
+:ID:       7842c2c8-df48-47ba-9400-559847e86a6c
+:END:
+* TOREAD Transformers
+:PROPERTIES:
+:ID:       3e089770-cdbf-43e9-a2c7-2afc691a2fd9
+:END:
+* TOREAD Graph Neural Networks
+:PROPERTIES:
+:ID:       c2d23909-308c-463c-9170-f7b625007639
+:END:
+** Machine Learning on Graphs
+:PROPERTIES:
+:ID:       582d6a4d-ef3b-42ce-bac1-f4a6d9255211
+:END:
+*** Graph properties
+:PROPERTIES:
+:ID:       c9e59933-fc07-4e4a-aabc-2d14b2d3311f
+:END:
+*** Adjacency matrix
+:PROPERTIES:
+:ID:       7504eaf1-b48f-48b0-82b7-36a81798165d
+:END:
+*** Permutation equivariance
+:PROPERTIES:
+:ID:       d7c80e54-328d-420b-b538-d9b087160943
+:END:
+** Neural Message-Passing
+:PROPERTIES:
+:ID:       6a7799cc-180a-4e17-a978-7c0abf44a3b3
+:END:
+*** Convolutional filters
+:PROPERTIES:
+:ID:       ec65f11a-23ef-47d0-a1d1-b710f116460a
+:END:
+*** Graph convolutional networks
+:PROPERTIES:
+:ID:       21e218f0-5254-45bf-a563-6e1d670f3e7e
+:END:
+**** Algorithm: Simple message-passing neural network
+:PROPERTIES:
+:ID:       bfc2c103-cc2a-4179-b9fe-53cec4e511aa
+:END:
+*** Aggregation operators
+:PROPERTIES:
+:ID:       95fb1f48-151c-4568-8e7f-c066b98705b7
+:END:
+*** Update operators
+:PROPERTIES:
+:ID:       f2c76a08-0b41-4572-8b78-cc0d0afc4ea7
+:END:
+*** Node classification
+:PROPERTIES:
+:ID:       e39f4e28-d52b-4be0-9c68-390e29a92fda
+:END:
+*** Edge classification
+:PROPERTIES:
+:ID:       5bb936cc-bf5f-4357-8e0f-9acdc2ea84e9
+:END:
+*** Graph classification
+:PROPERTIES:
+:ID:       606cdb3b-1b6c-432b-a058-757c0f815c5c
+:END:
+** General Graph Networks
+:PROPERTIES:
+:ID:       6b3b5213-d857-430f-9ff0-52d81a9d33a7
+:END:
+*** Graph attention networks
+:PROPERTIES:
+:ID:       837261a8-b54c-4e8a-9c97-355f2f4b9f5f
+:END:
+*** Edge embeddings
+:PROPERTIES:
+:ID:       bbeaa1c3-d3e5-431c-852b-43a35f6184a7
+:END:
+*** Graph embeddings
+:PROPERTIES:
+:ID:       47f716e6-9851-41e3-8be9-5df0b3b5a0dd
+:END:
+*** Over-smoothing
+:PROPERTIES:
+:ID:       b8d0f7ea-aa49-41e3-99f6-02c330392912
+:END:
+*** Regularization
+:PROPERTIES:
+:ID:       983d1d0b-30c0-40ee-a4b1-0ad4646838d4
+:END:
+*** Geometric deep learning
+:PROPERTIES:
+:ID:       0eb6cfd2-477f-44fe-ba9f-2a2f3745cb81
+:END:
+* TOREAD Sampling
+:PROPERTIES:
+:ID:       f3824c0c-ad4b-4add-afeb-293427497f5d
+:END:
+** Basic Sampling Algorithms
+:PROPERTIES:
+:ID:       2e1b6ca3-e62d-4eed-a844-845260838707
+:END:
+*** Expectations
+:PROPERTIES:
+:ID:       1b0938b0-6e4b-4bf6-9723-aeff747662c5
+:END:
+*** Standard distributions
+:PROPERTIES:
+:ID:       b6b93d9a-e95a-462b-80c4-979a04bdc710
+:END:
+*** Rejection sampling
+:PROPERTIES:
+:ID:       6ecb1956-2d37-45b4-82de-053661446689
+:END:
+*** Adaptive rejection sampling
+:PROPERTIES:
+:ID:       2dbd0499-4f41-483f-8aca-a89b6392e9f3
+:END:
+*** Importance sampling
+:PROPERTIES:
+:ID:       02fddb79-ecc2-4508-8a38-294406f72f58
+:END:
+*** Sampling-importance-resampling
+:PROPERTIES:
+:ID:       39a17199-84f7-485f-9909-9ef974fd3fff
+:END:
+** Markov Chain Monte Carlo
+:PROPERTIES:
+:ID:       2c0e6179-2a85-4367-b46f-895458197b98
+:END:
+*** The Metropolis algorithm
+:PROPERTIES:
+:ID:       c5d7a0e7-32f1-4e67-8584-17815c3a70ae
+:END:
+**** Algorithm: Metropolis sampling
+:PROPERTIES:
+:ID:       4b315ee8-0bd9-4ebe-a2a7-8d59338ea96f
+:END:
+*** Markov chains
+:PROPERTIES:
+:ID:       8daeb78e-3bb5-4944-b339-6ac2b5cb9fa4
+:END:
+*** The Metropolis-Hastings algorithm
+:PROPERTIES:
+:ID:       7f6abbbb-8d75-420e-b8c5-c42f65e4b4d8
+:END:
+**** Algorithm: Metropolis-Hastings sampling
+:PROPERTIES:
+:ID:       714981cb-1b00-466e-b3df-f0cd66b0b591
+:END:
+*** Gibbs sampling
+:PROPERTIES:
+:ID:       25f05db5-b294-474c-a1df-cddb5ed862f9
+:END:
+**** Algorithm: Gibbs sampling
+:PROPERTIES:
+:ID:       845d1dbe-b50d-4b78-965d-69ef87fec86b
+:END:
+*** Ancestral sampling
+:PROPERTIES:
+:ID:       37c3fb73-b808-4ac1-8115-55b5b46fbb1a
+:END:
+** Langevin Sampling
+:PROPERTIES:
+:ID:       2deb1d76-0328-45d4-bc28-b49966feabe0
+:END:
+*** Energy-based models
+:PROPERTIES:
+:ID:       58a5ee64-ff54-4f8b-9c96-0db6d7edae57
+:END:
+*** Maximizing the likelihood
+:PROPERTIES:
+:ID:       0225bb4a-be61-4a2e-a4b7-2dfec6273ba4
+:END:
+*** Langevin dynamics
+:PROPERTIES:
+:ID:       54520d54-d36f-4337-9518-daef20480e6a
+:END:
+**** Algorithm: Langevin sampling
+:PROPERTIES:
+:ID:       2788aa1f-9940-4652-8c11-83263477316c
+:END:
+* TOREAD Discrete Latent Variables
+:PROPERTIES:
+:ID:       5ad255a2-2861-4eca-9742-1d9adc5b7e2a
+:END:
+** K-means Clustering
+:PROPERTIES:
+:ID:       1c3cd815-481a-458c-b138-5a2d56e5ae54
+:END:
+**** Algorithm: K-means algorithm
+:PROPERTIES:
+:ID:       c65a83b3-4200-4c9b-92cb-0821ce3e3a84
+:END:
+*** Image segmentation
+:PROPERTIES:
+:ID:       bbc7ac6e-a299-4864-82c5-36c074a92204
+:END:
+** Mixtures of Gaussians
+:PROPERTIES:
+:ID:       e8a0c1ac-2eaf-4c70-b602-0856e0113a25
+:END:
+*** Likelihood function
+:PROPERTIES:
+:ID:       5430ea11-f064-4f2a-bb31-f3e05fdc2959
+:END:
+*** Maximum likelihood
+:PROPERTIES:
+:ID:       381b3fc6-0ac9-46f4-a03d-70d344acaa68
+:END:
+** Expectation-Maximization Algorithm
+:PROPERTIES:
+:ID:       1e9c8c68-68ae-42d7-a280-5f75b91f5018
+:END:
+**** Algorithm: EM algorithm for a Gaussian mixture model
+:PROPERTIES:
+:ID:       db555207-2dc5-4d33-8695-6f3355234088
+:END:
+**** Algorithm: General EM algorithm
+:PROPERTIES:
+:ID:       7bc43f4c-281d-42c4-842d-6e59d5a471d1
+:END:
+*** Gaussian mixtures
+:PROPERTIES:
+:ID:       0cd7edb7-2bf5-4712-a555-f88e19851274
+:END:
+*** Relation to K-means
+:PROPERTIES:
+:ID:       e55fae2a-d1a5-47de-ab1e-6bdb456c09ee
+:END:
+*** Mixtures of Bernoulli distributions
+:PROPERTIES:
+:ID:       61776e8a-3d5c-4160-bc62-000fee7e992c
+:END:
+** Evidence Lower Bound
+:PROPERTIES:
+:ID:       f111b244-6686-43b9-bd9d-6d18b28ef231
+:END:
+*** EM revisited
+:PROPERTIES:
+:ID:       f4e91a5c-70e6-420f-8ef2-aa9500af77e2
+:END:
+*** Independent and identically distributed data
+:PROPERTIES:
+:ID:       6e62edff-d201-491c-850e-306639d5557d
+:END:
+*** Parameter priors
+:PROPERTIES:
+:ID:       4e6abd21-fa16-464b-9bf5-ae75259bae6e
+:END:
+*** Generalized EM
+:PROPERTIES:
+:ID:       c9c37abf-7a7e-4446-8aae-a2eaaf9ced15
+:END:
+*** Sequential EM
+:PROPERTIES:
+:ID:       3b674378-41b5-466e-bfd1-5d61ad817b18
+:END:
+* TOREAD Continuous Latent Variables
+:PROPERTIES:
+:ID:       31f08ba8-348b-49e0-a8c3-09b3d42197f5
+:END:
+** Principal Component Analysis
+:PROPERTIES:
+:ID:       c03a18bd-950a-4358-b279-4123f5858607
+:END:
+*** Maximum variance formulation
+:PROPERTIES:
+:ID:       f211ee4b-dd2e-4a5d-94e9-28e1e22ebbb9
+:END:
+*** Minimum-error formulation
+:PROPERTIES:
+:ID:       074b4443-e0f4-4bc6-a2f8-f8fbe6e0823a
+:END:
+*** Data compression
+:PROPERTIES:
+:ID:       5dc74561-46ae-4e49-a1dc-e58521ca90b5
+:END:
+*** Data whitening
+:PROPERTIES:
+:ID:       d899be13-4f5c-4968-b5c6-ba5d8921f22e
+:END:
+*** High-dimensional data
+:PROPERTIES:
+:ID:       cd117148-bd98-4526-ac19-ade500486c58
+:END:
+** Probabilistic Latent Variables
+:PROPERTIES:
+:ID:       ccf3373e-a128-4752-8fc6-a35e213f7261
+:END:
+*** Generative model
+:PROPERTIES:
+:ID:       b085d33d-b8ff-4e32-aa7b-e7a937761eb9
+:END:
+*** Likelihood function
+:PROPERTIES:
+:ID:       ae3e2bf8-aaad-4532-96be-285c0fc2d251
+:END:
+*** Maximum likelihood
+:PROPERTIES:
+:ID:       2c137439-7b6b-4d02-8e5c-d5079c93a97c
+:END:
+*** Factor analysis
+:PROPERTIES:
+:ID:       53e925e5-04e2-48b9-a7a5-3585080e5339
+:END:
+*** Independent component analysis
+:PROPERTIES:
+:ID:       8f251896-2507-4ee2-ba3e-30510012206c
+:END:
+*** Kalman filters
+:PROPERTIES:
+:ID:       fec0d435-02ec-4360-a6f8-8bdacdd48604
+:END:
+** Evidence Lower Bound
+:PROPERTIES:
+:ID:       0b5999ac-429c-46fb-b11e-9e0f362003de
+:END:
+*** Expectation maximization
+:PROPERTIES:
+:ID:       1b701d4a-70f2-4a99-bfec-88c76581621f
+:END:
+*** EM for PCA
+:PROPERTIES:
+:ID:       c6b30bc5-d7dc-4a45-a1c3-3dd1f36c30d3
+:END:
+*** EM for factor analysis
+:PROPERTIES:
+:ID:       965cbf95-11e1-413e-8ec9-81d7a1b7fb20
+:END:
+** Nonlinear Latent Variable Models
+:PROPERTIES:
+:ID:       29200765-b0cd-4af1-9146-5cf5e57c15bc
+:END:
+*** Nonlinear manifolds
+:PROPERTIES:
+:ID:       d03af306-9fa0-4bc8-8c55-b0e54a66a5e1
+:END:
+*** Likelihood function
+:PROPERTIES:
+:ID:       cc4397d2-a8fb-4303-97ec-145effabfa3d
+:END:
+*** Discrete data
+:PROPERTIES:
+:ID:       5527ff50-0623-409d-afca-06eb3f82cb64
+:END:
+*** Four approaches to generative modelling
+:PROPERTIES:
+:ID:       eb69e3f9-cc33-4c80-98d3-afaaf56cd8bb
+:END:
+* TOREAD Generative Adversarial Networks
+:PROPERTIES:
+:ID:       db466baa-5e91-47cc-b716-7456f9960fa5
+:END:
+** Adversarial Training
+:PROPERTIES:
+:ID:       cbf07cbc-e80e-4b16-862d-f007e978d42d
+:END:
+*** Loss function
+:PROPERTIES:
+:ID:       5b0d68c5-8f24-4583-bc67-9b51b2a2a862
+:END:
+*** GAN training in practice
+:PROPERTIES:
+:ID:       478917c4-bcdb-473e-99d0-8f3153fc30e8
+:END:
+** Image GANs
+:PROPERTIES:
+:ID:       4c894953-8101-4af5-8216-776535f669c3
+:END:
+*** CycleGAN
+:PROPERTIES:
+:ID:       bb164107-0dd5-499b-b8bd-4e642726eed5
+:END:
+* TOREAD Normalizing Flows
+:PROPERTIES:
+:ID:       cfdfd574-4fb5-4a76-8140-7d7ab197b563
+:END:
+** Coupling Flows
+:PROPERTIES:
+:ID:       198e9f9a-83d7-4f70-a37e-4b400001a6ce
+:END:
+** Autoregressive Flows
+:PROPERTIES:
+:ID:       439fd455-05e1-477c-b16d-ddbcdcba456d
+:END:
+** Continuous Flows
+:PROPERTIES:
+:ID:       8233c5c6-f640-478e-bc6e-842f565cfe20
+:END:
+*** Neural differential equations
+:PROPERTIES:
+:ID:       04369fe3-2a97-467d-abfe-33e83ba06214
+:END:
+*** Neural ODE backpropagation
+:PROPERTIES:
+:ID:       c402cc78-342b-47d4-b97e-1db45d4f2b08
+:END:
+*** Neural ODE flows
+:PROPERTIES:
+:ID:       3153fd38-fd1f-4ad0-951e-1f92dc68824a
+:END:
+* TOREAD Autoencoders
+:PROPERTIES:
+:ID:       b57e162a-309c-4f15-8fc2-17a0ab650501
+:END:
+** Deterministic Autoencoders
+:PROPERTIES:
+:ID:       d386dd1a-b6cf-4246-8aec-a1afaa11c42b
+:END:
+*** Linear autoencoders
+:PROPERTIES:
+:ID:       b43baf25-6397-4928-a82c-8498119f86bb
+:END:
+*** Deep autoencoders
+:PROPERTIES:
+:ID:       57a0ab13-2e88-45a5-826f-43df53084b3b
+:END:
+*** Sparse autoencoders
+:PROPERTIES:
+:ID:       b65db611-adb8-4609-8b85-0584459083bb
+:END:
+*** Denoising autoencoders
+:PROPERTIES:
+:ID:       d08c7d71-e6b4-4370-b683-b2cbc8140c5a
+:END:
+*** Masked autoencoders
+:PROPERTIES:
+:ID:       59d2065e-0efc-415a-a6ba-bd6a74128a88
+:END:
+** Variational Autoencoders
+:PROPERTIES:
+:ID:       80b67ac4-2f10-400d-8ce2-defc3a913d0a
+:END:
+*** Amortized inference
+:PROPERTIES:
+:ID:       7551447b-8671-4b50-8c73-e7c677a36796
+:END:
+*** The reparameterization trick
+:PROPERTIES:
+:ID:       f64f0566-5312-4aae-9ead-e81e7e19281f
+:END:
+**** Algorithm: Variational autoencoder training
+:PROPERTIES:
+:ID:       48c518f9-70bb-42d3-b63e-79a90a4820d2
+:END:
+* TOREAD Diffusion models
+:PROPERTIES:
+:ID:       1a0e327b-b0fe-4c8e-b7ae-32bd6209750e
+:END:
+** Forward Encoder
+:PROPERTIES:
+:ID:       99bce2ea-9253-44b9-927e-abe9c36055c0
+:END:
+*** Diffusion kernel
+:PROPERTIES:
+:ID:       80d1f185-20bf-4fb7-b465-c523c14e105f
+:END:
+*** Conditional distribution
+:PROPERTIES:
+:ID:       2e285221-9b0d-4d5e-92be-ba5663ed5e70
+:END:
+** Reverse Decoder
+:PROPERTIES:
+:ID:       b83f16dc-f6be-4627-9ade-5ef0cb6d1111
+:END:
+*** Training the decoder
+:PROPERTIES:
+:ID:       ea96337e-5590-46f6-848b-8c52fb6487ca
+:END:
+*** Evidence lower bound
+:PROPERTIES:
+:ID:       9d4d7f46-b871-45bd-80e4-c88e7227aa48
+:END:
+*** Rewriting the ELBO
+:PROPERTIES:
+:ID:       c0e49715-be8c-4416-985b-843b08afbab6
+:END:
+*** Predicting the noise
+:PROPERTIES:
+:ID:       e8b63b77-1074-4e5a-be44-cb9cf0ffd4d9
+:END:
+**** Algorithm: Training a denoising diffusion probabilistic model
+:PROPERTIES:
+:ID:       aa9002f7-e15b-4b2b-9794-359411d9c951
+:END:
+*** Generating new samples
+:PROPERTIES:
+:ID:       97c6912f-880c-4f56-90de-7a2f6e8f768a
+:END:
+**** Algorithm: Sampling from a denoising diffusion probabilistic model
+:PROPERTIES:
+:ID:       1d135959-478a-4127-8b90-d6628d11bab1
+:END:
+** Score Matching
+:PROPERTIES:
+:ID:       a08cb6ce-5152-42d3-9979-56157e1b5753
+:END:
+*** Score loss function
+:PROPERTIES:
+:ID:       ffb70576-6c46-458c-9de8-236c2e84d956
+:END:
+*** Modified score loss
+:PROPERTIES:
+:ID:       c5c8e182-efc9-40ed-af9e-a13f6dc358c1
+:END:
+*** Noise variance
+:PROPERTIES:
+:ID:       96d9e604-988e-485b-aa95-b83184166c30
+:END:
+*** Stochastic differential equations
+:PROPERTIES:
+:ID:       7f139ca5-3f6e-42df-99b8-b97145178b06
+:END:
+** Guided Diffusion
+:PROPERTIES:
+:ID:       20ea99a0-7e27-4f42-ac12-25425e7f0473
+:END:
+*** Classifier guidance
+:PROPERTIES:
+:ID:       724b27d4-80b9-4690-ab19-f53f211af828
+:END:
+*** Classifier-free guidance
+:PROPERTIES:
+:ID:       aaba747f-5ad3-405b-adf1-bbd3661043f8
+:END:
