@@ -438,6 +438,13 @@
 :PROPERTIES:
 :ID:       30bf5e8c-2037-462e-a6aa-c6fb7e158e95
 :END:
+:LOGBOOK:
+CLOCK: [2024-11-22 Fri 01:08]--[2024-11-22 Fri 01:56] =>  0:48
+:END:
+[[id:19b3da06-0b11-45c5-a384-dceadc10d934][Regression models]] that comprise linear combinations of /fixed/ nonlinear [[id:3b151533-7492-4cef-a991-5d314c089f2f][basis functions]] can be expressed as neural networks having a single layer of weight and bias parameters. [[id:191cd138-08dc-44cd-9b73-ba29e4cda227][Classification models]] that comprise linear combinations of /fixed/ nonlinear basis functions can be expressed as neural networks having a single layer of weight and bias parameters.
+#+begin_verse
+Given a sufficient number of suitably chosen basis functions, such linear models can approximate any given nonlinear transformation from inputs to outputs to *any desired accuracy.
+#+end_verse
 ** Limitations of Fixed Basis Functions
 :PROPERTIES:
 :ID:       710fb671-d355-493b-ac53-2a0932c09783
