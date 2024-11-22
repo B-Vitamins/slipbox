@@ -161,17 +161,17 @@ You will not be able to connect to peers from RED (and thus download data) if yo
 ** Ratio
 A *ratio* is a comparison between your downloaded and uploaded data (this is also known as a fraction). Dividing the amount of data you have uploaded by the amount of data you have downloaded gives you your ratio. A ratio of 1.0 is healthy because it means you have downloaded as much data as you have uploaded. Ratios significantly under 1.0 are unhealthy because it means that you are not contributing as much to the community as you are taking from it. If you have a ratio significantly above 1.0 consider adding bounty's on requests or participating in some of the snatching forum threads. We realize that it may be difficult to maintain a ratio on RED, so we have a ratio system to help out our users. Your *required ratio* is the ratio you must maintain in order to be able to keep downloading torrents. The required ratio is calculated based on how many torrents you are seeding and how much data you have downloaded. After a torrent has been added to the client and data has actually been transferred to other peers, the client reports the data statistics to the site. If you add a torrent to the client and no data is transferred, your statistics will not change. If you download a torrent twice, the data counts twice.
 | Amount downloaded | Required ratio (0% seeded) | Required ratio (100% seeded) |
-|-------------------+----------------------------+-------------------------------|
-| 0-5GB             | 0.00                       | 0.00                          |
-| 5-10GB            | 0.15                       | 0.00                          |
-| 10-20GB           | 0.20                       | 0.00                          |
-| 20-30GB           | 0.30                       | 0.05                          |
-| 30-40GB           | 0.40                       | 0.10                          |
-| 40-50GB           | 0.50                       | 0.20                          |
-| 50-60GB           | 0.60                       | 0.30                          |
-| 60-80GB           | 0.60                       | 0.40                          |
-| 80-100GB          | 0.60                       | 0.50                          |
-| 100+GB            | 0.60                       | 0.60                          |
+|-------------------+----------------------------+------------------------------|
+| 0-5GB             |                       0.00 |                         0.00 |
+| 5-10GB            |                       0.15 |                         0.00 |
+| 10-20GB           |                       0.20 |                         0.00 |
+| 20-30GB           |                       0.30 |                         0.05 |
+| 30-40GB           |                       0.40 |                         0.10 |
+| 40-50GB           |                       0.50 |                         0.20 |
+| 50-60GB           |                       0.60 |                         0.30 |
+| 60-80GB           |                       0.60 |                         0.40 |
+| 80-100GB          |                       0.60 |                         0.50 |
+| 100+GB            |                       0.60 |                         0.60 |
 Notice that your required ratio is much lower if you seed 100% of the torrents you download for at least 72 hours each week. In fact, you would have a required ratio of 0 until you download more than 20 GB if you seed all of your torrents! *NOTE: This does not mean you should only seed for 72 hours.* It is in your interest, particularly as a new user, to seed for as long as possible. This will help maintain your ratio and help keep content available for everyone.
 If you fall below your required ratio, you will be put on *ratio watch* for two weeks. If you are unable to improve your ratio in this time period, your *leeching privileges* (ability to download) will be disabled. In order to get your leeching privileges re-enabled, you can fill requests or upload new torrents, as well as continue to seed the torrents you have already downloaded. *DO NOT* upload torrents that are against the rules, like transcodes, mutt rips, or duplicates. Failing to follow the upload rules, especially when you are in ratio watch, will result in a warning. If you download more than 10 GB while on ratio watch, your leeching privileges will be immediately disabled.
 ** Freeleech and Neutral Leech
