@@ -5,12 +5,12 @@
 #+FILETAGS: :dlfc:literature:
 #+SETUPFILE: ~/.config/emacs/setup/setupfile.org
 #+BEGIN: clocktable :maxlevel 3 :scope nil :emphasize nil
-#+CAPTION: Clock summary at [2024-11-22 Fri 17:43]
+#+CAPTION: Clock summary at [2024-11-25 Mon 07:11]
 | Headline                                 | Time    |      |      |
 |------------------------------------------+---------+------+------|
-| *Total time*                             | *10:39* |      |      |
+| *Total time*                             | *29:44* |      |      |
 |------------------------------------------+---------+------+------|
-| Deep Neural Networks                     | 10:39   |      |      |
+| Deep Neural Networks                     | 29:44   |      |      |
 | \_  Limitations of Fixed Basis Functions |         | 7:53 |      |
 | \_    The curse of dimensionality        |         |      | 4:22 |
 | \_    High-dimensional spaces            |         |      | 0:04 |
@@ -21,6 +21,18 @@
 | \_    Universal approximation            |         |      | 0:13 |
 | \_    Hidden unit activation functions   |         |      | 0:34 |
 | \_    Weight-space symmetries            |         |      | 0:27 |
+| \_  Deep Networks                        |         | 4:19 |      |
+| \_    Hierarchical representations       |         |      | 0:44 |
+| \_    Distributed representations        |         |      | 0:10 |
+| \_    Representation learning            |         |      | 0:41 |
+| \_    Transfer learning                  |         |      | 1:11 |
+| \_    Contrastive learning               |         |      | 1:26 |
+| \_    General network architectures      |         |      | 0:05 |
+| \_    Tensors                            |         |      | 0:02 |
+| \_  Error Functions                      |         | 2:52 |      |
+| \_    Regression                         |         |      | 2:05 |
+| \_    Binary classification              |         |      | 0:35 |
+| \_    Multiclass classification          |         |      | 0:12 |
 #+END
 * TOREAD The Deep Learning Revolution
 :PROPERTIES:
@@ -451,6 +463,7 @@
 :ID:       30bf5e8c-2037-462e-a6aa-c6fb7e158e95
 :END:
 :LOGBOOK:
+CLOCK: [2024-11-23 Sat 23:00]--[2024-11-24 Sun 10:54] => 11:54
 CLOCK: [2024-11-22 Fri 01:08]--[2024-11-22 Fri 01:56] =>  0:48
 :END:
 Regression models that comprise linear combinations of /fixed/ nonlinear basis functions can be expressed as neural networks having a single layer of weight and bias parameters.that comprise linear combinations of /fixed/ nonlinear basis functions can be expressed as neural networks having a single layer of weight and bias parameters.
@@ -479,8 +492,7 @@ CLOCK: [2024-11-22 Fri 14:04]--[2024-11-22 Fri 17:33] =>  3:29
 CLOCK: [2024-11-22 Fri 02:30]--[2024-11-22 Fri 03:23] =>  0:53
 :END:
 The *curse of dimensionality* is an umbrella term for the difficulties of building regression and classification models in which the dimensionality of the input variable is large.
-#+NAME: Curse of dimensionality in a regression model
-#+begin_example
+
 For a \( D \) dimensional input variables \(\mathbf{x} \equiv (x_{i})_{i=1 \ldots D}\), consider a class of /basis functions/ \( (\phi_{i})_{i=1 \ldots D} \), \( (\phi_{ij})_{i,\,j =1 \ldots D}\), \( (\phi_{ijk})_{i,\,j,\,k =1 \ldots D}\), and so on that are defined as polynomials of the components of \( \mathbf{x} \):
 
 \begin{align*}
@@ -496,9 +508,7 @@ y(\mathbf{x},\,\mathbf{w})=w_{0}+\sum_{i=1}^{D} w_{i} x_{i}+\sum_{i=1}^{D} \sum_
 The growth in the number of independent coefficients for a polynomial of order \(M\) is \(\mathcal{O}\left(D^{M}\right)\): that is /exponential in the order/ \( M \) and /polynomial with the dimensionality/ \( D \). 
 
 As \( D \) is increased, a regression model with polynomial basis functions becomes infeasible due to the explosion in the number of independent parameters in the model.
-#+end_example
-#+NAME: Curse of dimensionality in a classification model
-#+begin_example
+
 Consider a set of \(N\) input points \((\mathbf{x}_n)_{n=1 \ldots N}\) of dimension \(D\) with associated class labels \(k_n \in (1, 2, \dots, K)\). Further suppose that \( \mathbf{x} \in I^{D} \subset \mathbb{R}^{D} \) and divide the interval \( I \) into \( S \) sub-intervals. This partitions the input space into \( S^{D} \) grid cells, say \( (V_{j})_{j=1 \ldots S^{D}} \). Consider a set of \( S^{D} \) basis functions defined as
 
 \begin{equation*}
@@ -518,7 +528,7 @@ y(\mathbf{x}, \, \mathbf{w})= \sum_{j=0}^{S^{D}} \phi_{j}(\mathbf{x}).
 The growth in the number of grid cells for \( S \) divisions of the interval \( I \) is \( \mathcal{O} (S^{D}) \): that is /exponential with the dimensionality/ \( D \) and /polynomial with the number of divisions \( S \) of the linear interval/.
 
 As \( D \) is increased, a classification model with a 'majority class' basis functions becomes infeasible due to the explosion in the amount of training data required \( N \sim \mathcal{O} (S^{D}) \) if the critical assumption that no grid cell should be empty is to continue to hold.
-#+end_example
+
 + Circumventing the *curse of dimensionality* requires basis functions that are functions of the input training data, i.e., \( \phi_{j} \equiv f(\mathbf{x}, (\mathbf{x}_{n})_{n=1 \ldots N}) \).
 *** High-dimensional spaces
 :PROPERTIES:
@@ -565,6 +575,41 @@ CLOCK: [2024-11-22 Fri 04:09]--[2024-11-22 Fri 05:34] =>  1:25
 :LOGBOOK:
 CLOCK: [2024-11-22 Fri 05:35]--[2024-11-22 Fri 06:04] =>  0:29
 :END:
+The construction of a neural network model having two layers of learnable parameters is described next. Begin by constructing \(M\) linear combinations of the input variables \(x_{1}, \ldots, x_{D}\) in the form
+
+\begin{align*}
+a_{j}^{(1)}=\sum_{i=0}^{D} w_{j i}^{(1)} x_{i} = \mathbf{w}_{j}^{(1)} \cdot \mathbf{x}, \quad x_{0} \equiv 1
+\end{align*}
+
+where \(j=0, \ldots, M\), and the superscript (1) indicates layer identity of the parameters.
+
+The parameters \(w_{j i}^{(1)}\) are *weights*, \(w_{j 0}^{(1)}\) are *biases*, and \(a_{j}^{(1)}\) are *pre-activations*. The preactivations \(a_{j}\) then serves as the argument of a /differentiable, possibly nonlinear/ *activation function* \(h(\cdot)\) and yields the *activations*
+
+\begin{align*}
+z_{j}^{(1)}=h\big(a_{j}^{(1)}\big)
+\end{align*}
+
+which represent the outputs of the basis functions in (6.1). In the context of neural networks, these basis functions are called hidden units.
+
+\begin{align*}
+z_{j}^{(1)}=h\left(\sum_{i=1}^{D} w_{j i}^{(1)} x_{i}+w_{j 0}^{(1)}\right) \tag{6.8}
+\end{align*}
+
+We will explore various choices for the nonlinear function \(h(\cdot)\) shortly, but here we note that provided the derivative \(h^{\prime}(\cdot)\) can be evaluated, then the overall network function will be differentiable.
+
+_Layer 2_
+
+Following (6.1), these values are again linearly combined to give
+
+\begin{align*}
+a_{k}^{(2)}=\sum_{j=1}^{M} w_{k j}^{(2)} \left[h\left(\sum_{i=1}^{D} w_{j i}^{(1)} x_{i}+w_{j 0}^{(1)}\right)\right] + w_{k 0}^{(2)} \tag{6.9}
+\end{align*}
+
+where \(k=1, \ldots, K\), and \(K\) is the total number of outputs. This transformation corresponds to the second layer of the network, and again the \(w_{k 0}^{(2)}\) are bias parameters. Finally, the \(\left\{a_{k}^{(2)}\right\}\) are transformed using an appropriate output-unit activation function \(f(\cdot)\) to give a set of network outputs \(y_{k}\).
+
+\begin{align*}
+y_k = f \left(\sum_{j=1}^{M} w_{k j}^{(2)} \left[h\left(\sum_{i=1}^{D} w_{j i}^{(1)} x_{i}+w_{j 0}^{(1)}\right)\right] + w_{k 0}^{(2)} \right)
+\end{align*}
 *** Parameter matrices
 :PROPERTIES:
 :ID:       fdb72b8d-858f-4f72-bce0-5903d1d7ed71
@@ -602,46 +647,254 @@ CLOCK: [2024-11-22 Fri 07:09]--[2024-11-22 Fri 07:10] =>  0:01
 :PROPERTIES:
 :ID:       1d52e00f-4e44-49b8-9e1a-7172b5614354
 :END:
+:LOGBOOK:
+CLOCK: [2024-11-24 Sun 23:07]--[2024-11-24 Sun 23:51] =>  0:44
+:END:
 *** Distributed representations
 :PROPERTIES:
 :ID:       7d949eb3-6c2b-4e2a-b0f0-dfee2e8c74f9
+:END:
+:LOGBOOK:
+CLOCK: [2024-11-24 Sun 23:51]--[2024-11-25 Mon 00:01] =>  0:10
 :END:
 *** Representation learning
 :PROPERTIES:
 :ID:       37a6709e-6d38-48fd-96d9-606d03bc3491
 :END:
+:LOGBOOK:
+CLOCK: [2024-11-25 Mon 00:01]--[2024-11-25 Mon 00:42] =>  0:41
+:END:
 *** Transfer learning
 :PROPERTIES:
 :ID:       902c1148-728b-4a72-8259-c26c0fcf2e48
 :END:
+:LOGBOOK:
+CLOCK: [2024-11-25 Mon 00:43]--[2024-11-25 Mon 01:54] =>  1:11
+:END:
+
+#+NAME: Transfer learning
+#+ATTR_LATEX: :environment definition
+#+begin_definition latex
+Transfer learning refers to the use of a neural network trained on some old task to solve a related new task, such that learning to solve the new task involves re-adjustment of only a subset of the neural network's parameters.
+#+end_definition
+
+In general, transfer learning can be used to improve performance on some task A, for which training data is in short supply, by using data from a related task B, for which data is more plentiful. The two tasks should have the same kind of inputs, and there should be some commonality between the tasks so that low-level features, or internal representations, learned from task B will be useful for task A.
+
+#+NAME: Pre-training
+#+ATTR_LATEX: :environment definition
+#+begin_definition latex
+The process of learning parameters using one task that are then applied to one or more other tasks is called pre-training.
+#+end_definition
+
+Note that for the new task, instead of applying stochastic gradient descent to the whole network, it is much more efficient to send the new training data once through the fixed pre-trained network so as to evaluate the training inputs in the new representation.
+
+#+NAME: Fine-tuning
+#+ATTR_LATEX: :environment definition
+#+begin_definition latex
+Fine-tuning is a method of pre-training in which the whole network is adapted to the data for task A. This is generally done with a very small learning rate for a limited number of iterations to ensure that the network does not over-fit to the relatively small data set available for the new task.
+#+end_definition
+
+#+NAME: Multitask learning
+#+ATTR_LATEX: :environment definition
+#+begin_definition latex
+Multitask learning refers to a neural network jointly learns more than one related task at the same time.
+#+end_definition
+
+#+NAME: Meta-learning
+#+ATTR_LATEX: :environment definition
+#+begin_definition latex
+
+#+end_definition
+
+#+NAME: Few-shot learning
+#+ATTR_LATEX: :environment definition
+#+begin_definition latex
+
+#+end_definition
+
+#+NAME: One-shot learning
+#+ATTR_LATEX: :environment definition
+#+begin_definition latex
+
+#+end_definition
+
 *** Contrastive learning
 :PROPERTIES:
 :ID:       d9ef9155-6a8c-42e8-98e0-013bd12f219b
 :END:
+:LOGBOOK:
+CLOCK: [2024-11-25 Mon 01:54]--[2024-11-25 Mon 03:20] =>  1:26
+:END:
+#+NAME: Contrastive learning
+#+ATTR_LATEX: :environment definition
+#+begin_definition latex
+Contrastive learning is a representation learning method in which certain pairs of inputs, referred to as positive pairs, are close in the embedding space, and other pairs of inputs, called negative pairs, are far apart.
+#+end_definition
+#+NAME: InfoNCE loss function
+#+ATTR_LATEX: :environment definition
+#+begin_definition latex
+Suppose we have a given data point \(\mathbf{x}\) called the anchor, for which we have specified another data point \(\mathbf{x}^{+}\) that together with \(\mathbf{x}\) makes up a positive pair. We must also specify a set of data points \(\left\{\mathbf{x}_{1}^{-}, \ldots, \mathbf{x}_{N}^{-}\right\}\)each of which makes up a negative pair with \(\mathbf{x}\). We now need a loss function that will reward close proximity between the representations of \(\mathbf{x}\) and \(\mathbf{x}^{+}\) while encouraging a large distance between each pair \(\left\{\mathbf{x}, \mathbf{x}_{n}^{-}\right\}\). One example of such a function, and the most commonly used loss function for contrastive learning, is called the InfoNCE loss (Gutmann and Hyvärinen, 2010; Oord, Li, and Vinyals, 2018), where NCE denotes 'noise contrastive estimation'. Suppose we have a neural network function \(\mathbf{f}_{\mathbf{w}}(\mathbf{x})\) that maps points from the input space \(\mathbf{x}\) to a representation space, governed by learnable parameters \(\mathrm{w}\). This representation is normalized so that \(\left\|\mathbf{f}_{\mathbf{w}}(\mathbf{x})\right\|=1\). Then, for a data point \(\mathbf{x}\), the InfoNCE loss is defined by
+
+\begin{align*}
+E(\mathbf{w})=-\ln \frac{\exp \left\{\mathbf{f}_{\mathbf{w}}(\mathbf{x})^{\top} \mathbf{f}_{\mathbf{w}}\left(\mathbf{x}^{+}\right)\right\}}{\exp \left\{\mathbf{f}_{\mathbf{w}}(\mathbf{x})^{\top} \mathbf{f}_{\mathbf{w}}\left(\mathbf{x}^{+}\right)\right\}+\sum_{n=1}^{N} \exp \left\{\mathbf{f}_{\mathbf{w}}(\mathbf{x})^{\top} \mathbf{f}_{\mathbf{w}}\left(\mathbf{x}_{n}^{-}\right)\right\}} \tag{6.20}
+\end{align*}
+
+Describe function behaviour.
+#+end_definition
+A particular contrastive learning algorithm is defined predominantly by how the positive and negative pairs are chosen, which is how we use our prior knowledge to specify what a good representation should be.
+#+NAME: Data corruption
+#+ATTR_LATEX: :environment definition
+#+begin_definition latex
+#+end_definition
+#+NAME: Unsupervised contrastive learning
+#+ATTR_LATEX: :environment definition
+#+begin_definition latex
+#+end_definition
+Unsupervised contrastive learning is more commonly refereed to as /instance discrimination/.
+#+NAME: Supervised contrastive learning
+#+ATTR_LATEX: :environment definition
+#+begin_definition latex
+#+end_definition
+#+NAME: Weakly-supervised contrastive learning
+#+ATTR_LATEX: :environment definition
+#+begin_definition latex
+#+end_definition
+\begin{align*}
+E(\mathbf{w})= & -\frac{1}{2} \ln \frac{\exp \left\{\mathbf{f}_{\mathbf{w}}\left(\mathbf{x}^{+}\right)^{\top} \mathbf{g}_{\theta}\left(\mathbf{y}^{+}\right)\right\}}{\exp \left\{\mathbf{f}_{\mathbf{w}}\left(\mathbf{x}^{+}\right)^{\top} \mathbf{g}_{\boldsymbol{\theta}}\left(\mathbf{y}^{+}\right)\right\}+\sum_{n=1}^{N} \exp \left\{\mathbf{f}_{\mathbf{w}}\left(\mathbf{x}_{n}^{-}\right)^{\top} \mathbf{g}_{\theta}\left(\mathbf{y}^{+}\right)\right\}} \\
+& -\frac{1}{2} \ln \frac{\exp \left\{\mathbf{f}_{\mathbf{w}}\left(\mathbf{x}^{+}\right)^{\top} \mathbf{g}_{\boldsymbol{\theta}}\left(\mathbf{y}^{+}\right)\right\}}{\exp \left\{\mathbf{f}_{\mathbf{w}}\left(\mathbf{x}^{+}\right)^{\top} \mathbf{g}_{\boldsymbol{\theta}}\left(\mathbf{y}^{+}\right)\right\}+\sum_{m=1}^{M} \exp \left\{\mathbf{f}_{\mathbf{w}}\left(\mathbf{x}^{+}\right)^{\top} \mathbf{g}_{\theta}\left(\mathbf{y}_{m}^{-}\right)\right\}}
+ \tag{6.21}
+\end{align*}
 *** General network architectures
 :PROPERTIES:
 :ID:       a9756bc1-be6e-40fb-9bd6-447ff9687303
+:END:
+:LOGBOOK:
+CLOCK: [2024-11-25 Mon 03:20]--[2024-11-25 Mon 03:25] =>  0:05
 :END:
 *** Tensors
 :PROPERTIES:
 :ID:       f8794ff1-5dec-4085-baff-599efdd19d7d
 :END:
+:LOGBOOK:
+CLOCK: [2024-11-25 Mon 03:26]--[2024-11-25 Mon 03:28] =>  0:02
+:END:
 ** Error Functions
 :PROPERTIES:
 :ID:       0df23e1b-7d74-470f-94e0-7335cd822177
 :END:
+| Model                      | Error function            | Outputs          |
+|----------------------------+---------------------------+------------------|
+| Regression                 | Sum-of-squares            | Linear           |
+| Binary classification      | Cross-entropy             | Logistic sigmoid |
+| Multi-class classification | Multi-class cross-entropy | Softmax          |
 *** Regression
 :PROPERTIES:
 :ID:       1fa63cf6-4f4f-475c-a5d4-026c95bd7dee
 :END:
+:LOGBOOK:
+CLOCK: [2024-11-25 Mon 04:27]--[2024-11-25 Mon 05:54] =>  1:27
+CLOCK: [2024-11-25 Mon 03:40]--[2024-11-25 Mon 04:18] =>  0:38
+:END:
+Consider multiple target variables \( \mathbf{t} \equiv (t_{k})_{k=1 \ldots K} \) so that for all \( k \) we have
+
+\begin{align*}
+p(t_{k} \mid \{t_{l \neq k}\}, \, \mathbf{x}, \, \mathbf{w}) = p(t_{k} \mid \mathbf{x}, \, \mathbf{w})
+\end{align*}
+
+and a shared noise variance \(\sigma^{2}\). The conditional distribution of the target values is given by
+
+\begin{align*}
+p(\mathbf{t} \mid \mathbf{x}, \mathbf{w})=\mathcal{N}\left(\mathbf{t} \mid \mathbf{y}(\mathbf{x}, \mathbf{w}), \sigma^{2} \mathbf{I}\right).
+\end{align*}
+
+For a data set of \(N\) i.i.d. observations \(\mathbf{X}=\left\{\mathbf{x}_{1}, \ldots, \mathbf{x}_{N}\right\}\) and corresponding target values \(\mathbf{T}=\left\{\mathbf{t}_{1}, \ldots, \mathbf{t}_{N}\right\}\), the /likelihood function/ and the /error function/ (*sum-of-squares*) are
+
+\begin{align*}
+p\left(\mathbf{T} \mid \mathbf{X}, \mathbf{w}, \sigma^{2}\right)=\prod_{n=1}^{N} p\left(\mathbf{t}_{n} \mid \mathbf{y} \left(\mathbf{x}_{n}, \mathbf{w}\right), \sigma^{2}\right), \quad E(\mathbf{w})=\frac{1}{2} \sum_{n=1}^{N}\left\|\mathbf{y}\left(\mathbf{x}_{n}, \mathbf{w}\right)-\mathbf{t}_{n}\right\|^{2}.
+\end{align*}
+
+A optimal value of \( \mathbf{w} \) is given by
+
+\begin{align*}
+\mathbf{w}^{\star} \equiv \operatorname{min}_{\mathbf{w}} E (\mathbf{w}), \quad \sigma^{2 \star}=\frac{1}{N K} \sum_{n=1}^{N}\left\|\mathbf{y}\left(\mathbf{x}_{n}, \mathbf{w}^{\star}\right)-\mathbf{t}_{n}\right\|^{2},
+\end{align*}
+
+where \(\operatorname{min}_{\mathbf{w}}\) is an arbitrary iterative optimization procedure. The assumption of conditional independence of the target variables, i.e., \( p(t_{k} \mid \{t_{l \neq k}\}, \, \mathbf{x}, \, \mathbf{w}) = p(t_{k} \mid \mathbf{x}, \, \mathbf{w}) \) for all \( k \) can be dropped at the expense of a slightly more complex procedure \(\operatorname{min}_{\mathbf{w}}\).
+
+In regression, we can view the network as having an output activation function that is the identity, so that \(y_{k}=a_{k}\). The corresponding sum-of-squares error function then has the property
+
+\begin{align*}
+\partial_{a_{k}} E = y_{k} - t_{k}.
+\end{align*}
 *** Binary classification
 :PROPERTIES:
 :ID:       df6663b2-3ecd-4118-b614-09a99eb87adf
 :END:
+:LOGBOOK:
+CLOCK: [2024-11-25 Mon 05:55]--[2024-11-25 Mon 06:26] =>  0:31
+CLOCK: [2024-11-25 Mon 04:19]--[2024-11-25 Mon 04:23] =>  0:04
+:END:
+
+Consider a single target variable \(t\) such that \(t=1\) denotes class \(\mathcal{C}_{1}\) and \(t=0\) denotes class \(\mathcal{C}_{2}\), and a neural network with a single output having a logistic sigmoid activation function (\(0 \leqslant y(\mathbf{x}, \mathbf{w}) \leqslant 1\)) so that
+
+\begin{align*}
+p\left(\mathcal{C}_{1} \mid \mathbf{x}\right) = y(\mathbf{x}, \mathbf{w}), \quad p\left(\mathcal{C}_{2} \mid \mathbf{x}\right) = 1-y(\mathbf{x}, \mathbf{w}).
+\end{align*}
+
+The conditional distribution of targets given inputs is a Bernoulli distribution of the form
+
+\begin{align*}
+p(t \mid \mathbf{x}, \mathbf{w})=y(\mathbf{x}, \mathbf{w})^{t}\{1-y(\mathbf{x}, \mathbf{w})\}^{1-t}
+\end{align*}
+
+
+\begin{align*}
+p(\mathbf{t} \mid \mathbf{x}, \mathbf{w})=\prod_{k=1}^{K} y_{k}(\mathbf{x}, \mathbf{w})^{t_{k}}\left[
+1-y_{k}(\mathbf{x}, \mathbf{w})\right]
+^{1-t_{k}} \tag{6.34}
+\end{align*}
+
+\begin{align*}
+E(\mathbf{w})=-\sum_{n=1}^{N}\left\{t_{n} \ln y_{n}+\left(1-t_{n}\right) \ln \left(1-y_{n}\right)\right\}
+\end{align*}
+
+\begin{align*}
+\partial_{a_{k}} E(\mathbf{w})= \partial_{a_{k}} \bigg(-\left\{t_{k} \ln \bigg[\frac{1}{1 + \exp(-a_{k})}\bigg] + \left(1-t_{k}\right) \ln \left(1-\bigg[\frac{1}{1 + \exp(-a_{k})}\bigg]\right)\right\} \bigg)
+\end{align*}
+
+where \(y_{n}\) denotes \(y\left(\mathbf{x}_{n}, \mathbf{w}\right)\).
+
+\begin{align*}
+E(\mathbf{w})=-\sum_{n=1}^{N} \sum_{k=1}^{K}\left\{t_{n k} \ln y_{n k}+\left(1-t_{n k}\right) \ln \left(1-y_{n k}\right)\right\} \tag{6.35}
+\end{align*}
+
+where \(y_{n k}\) denotes \(y_{k}\left(\mathbf{x}_{n}, \mathbf{w}\right)\).
 *** Multiclass classification
 :PROPERTIES:
 :ID:       dd72181a-87bb-4626-8774-f5d0570476be
 :END:
+:LOGBOOK:
+CLOCK: [2024-11-25 Mon 06:27]--[2024-11-25 Mon 06:39] =>  0:12
+:END:
+
+The conditional distribution of targets given inputs is of the form
+
+\begin{align*}
+p(t_{k} \mid \mathbf{x}, \mathbf{w})= \prod_{k} y_{k}(\mathbf{x}, \mathbf{w})^{t_k}
+\end{align*}
+
+Finally, we consider the standard multi-class classification problem in which each input is assigned to one of \(K\) mutually exclusive classes. The binary target variables \(t_{k} \in\{0,1\}\) have a 1-of-\(K\) coding scheme indicating the class, and the network outputs are interpreted as \(y_{k}(\mathbf{x}, \mathbf{w})=p\left(t_{k}=1 \mid \mathbf{x}\right)\), leading to the error function (5.80), which we reproduce here:
+
+\begin{align*}
+E(\mathbf{w})=-\sum_{n=1}^{N} \sum_{k=1}^{K} t_{k n} \ln y_{k}\left(\mathbf{x}_{n}, \mathbf{w}\right) \tag{6.36}
+\end{align*}
+
+The output-unit activation function, which corresponds to the canonical link, is given by the softmax function:
+\begin{align*}
+y_{k}(\mathbf{x}, \mathbf{w})=\frac{\exp \left(a_{k}(\mathbf{x}, \mathbf{w})\right)}{\sum_{j} \exp \left(a_{j}(\mathbf{x}, \mathbf{w})\right)} \tag{6.37}
+\end{align*}
+
+which satisfies \(0 \leqslant y_{k} \leqslant 1\) and \(\sum_{k} y_{k}=1\). Note that the \(y_{k}(\mathbf{x}, \mathbf{w})\) are unchanged if a constant is added to all of the \(a_{k}(\mathbf{x}, \mathbf{w})\), causing the error function to be constant for some directions in weight space. This degeneracy is removed if an appropriate regularization term is added to the error function.
 ** Mixture Density Networks
 :PROPERTIES:
 :ID:       eb6b4604-3219-4593-b927-e6b67f6e4bb5
@@ -674,7 +927,7 @@ CLOCK: [2024-11-22 Fri 07:09]--[2024-11-22 Fri 07:10] =>  0:01
 :PROPERTIES:
 :ID:       468c677d-f65e-4d40-b602-26b8d27361be
 :END:
-** Gr Descent Optimization
+** Gradient Descent Optimization
 :PROPERTIES:
 :ID:       25871829-5607-4dfd-aea4-b62db364af0c
 :END:
