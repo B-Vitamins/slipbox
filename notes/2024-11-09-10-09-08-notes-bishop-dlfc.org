@@ -5,12 +5,12 @@
 #+FILETAGS: :dlfc:literature:
 #+SETUPFILE: ~/.config/emacs/setup/setupfile.org
 #+BEGIN: clocktable :maxlevel 3 :scope nil :emphasize nil
-#+CAPTION: Clock summary at [2024-11-25 Mon 07:11]
-| Headline                                 | Time    |      |      |
+#+CAPTION: Clock summary at [2024-11-25 Mon 12:12]
+| Headline                                 |    Time |      |      |
 |------------------------------------------+---------+------+------|
-| *Total time*                             | *29:44* |      |      |
+| *Total time*                             | *31:08* |      |      |
 |------------------------------------------+---------+------+------|
-| Deep Neural Networks                     | 29:44   |      |      |
+| Deep Neural Networks                     |   29:44 |      |      |
 | \_  Limitations of Fixed Basis Functions |         | 7:53 |      |
 | \_    The curse of dimensionality        |         |      | 4:22 |
 | \_    High-dimensional spaces            |         |      | 0:04 |
@@ -33,6 +33,10 @@
 | \_    Regression                         |         |      | 2:05 |
 | \_    Binary classification              |         |      | 0:35 |
 | \_    Multiclass classification          |         |      | 0:12 |
+| Backpropagation                          |    1:24 |      |      |
+| \_  Evaluation of Gradients              |         | 1:24 |      |
+| \_    Single-layer networks              |         |      | 0:15 |
+| \_    General feed-forward networks      |         |      | 0:59 |
 #+END
 * TOREAD The Deep Learning Revolution
 :PROPERTIES:
@@ -995,14 +999,61 @@ which satisfies \(0 \leqslant y_{k} \leqslant 1\) and \(\sum_{k} y_{k}=1\). Note
 :PROPERTIES:
 :ID:       3b949160-76e2-4f9c-afee-f6065a7f0787
 :END:
+:LOGBOOK:
+CLOCK: [2024-11-25 Mon 09:44]--[2024-11-25 Mon 09:54] =>  0:10
+:END:
+
+Many error functions of practical interest admit a decomposition
+
+\begin{align*}
+E(\mathbf{w})=\sum_{n=1}^{N} E_{n}(\mathbf{w})
+\end{align*}
+
+over the data points in the training set. Evaluation of \(\nabla E_{n}(\mathbf{w})\) for a single data point, a subset of data points, or all of the data points in the training set can be used for stochastic, mini-batch, and batch gradient descent methods respectively.
+
 *** Single-layer networks
 :PROPERTIES:
 :ID:       59cf499e-14ff-4c18-b01d-a83858e79c21
 :END:
+:LOGBOOK:
+CLOCK: [2024-11-25 Mon 10:46]--[2024-11-25 Mon 11:01] =>  0:15
+:END:
+Consider the linear model \( y_{k} = \sum_{i} w_{ki} \cdot x_{i} \) with a sum-of-squares error function \( E=\frac{1}{2} \sum_{n} \sum_{k}\left(y_{n k}-t_{n k}\right)^{2} \), where \( y_{nk} = y_{k} (\mathbf{x}_{n}, \, \mathbf{w}) \) and \( t_{nk} \) is the associated target. Clearly \( E_{n}=\frac{1}{2} \sum_{k}\left(y_{n k}-t_{n k}\right)^{2} \) so that \( \partial_{w_{ji}} E_{n} = (y_{nj} - t_{nj}) x_{ni}  \). This can be interpreted as a /local/ computation involving the product of an /error signal/ \(y_{n j}-t_{n j}\) associated with the output end of the link \(w_{j i}\) and the variable \(x_{n i}\) associated with the input end of the link.
 *** General feed-forward networks
 :PROPERTIES:
 :ID:       1ab042da-d99b-4428-a929-96fdeb0a4c91
 :END:
+:LOGBOOK:
+CLOCK: [2024-11-25 Mon 11:13]--[2024-11-25 Mon 12:12] =>  0:59
+:END:
+Consider a feed-forward neural network with activation \( z_{j} \) and pre-activation \( a_{j} \) of unit \( j \) given by
+
+\begin{align*}
+z_{j}=h\left(a_{j}\right), \quad a_{j}=\sum_{i} w_{j i} z_{i}, \quad j > i.
+\end{align*}
+
+Here \(z_{i}\) is either the activation of another hidden unit or an input unit that sends a connection to unit \(j\), and \(w_{j i}\) is the weight associated with that connection. On transforming the pre-activation \( a_{j} \) with an activation function \( h(\cdot) \), we obtain either the activation of the unit \( j \), which may be another hidden unit or an output unit.
+
+We set the input units of the network to each data point in the training set, and calculate the activations of all of the hidden and output units in the network by repeated application of the above equations. This process is called /forward propagation/. We assume the error function admits the decomposition \( E = \sum_{n} E_{n} \) so that the derivative of \( E_{n} \) with respect to \( w_{ji} \) is given by \( \partial_{w_{ji}} E_{n} = \partial_{a_{nj}} E_{n} \cdot \partial_{w_{ji}} a_{nj} \). Notice that \( \partial_{w_{ji}} a_{nj} = z_{i} \). With \( \delta_{nj} \equiv \partial_{a_{nj}} E_{n} \), \( \partial_{w_{ji}} E_{n} \) reduces to \( \partial_{w_{ji}} E_{n} = \delta_{nj} \cdot z_{i} \). The variations in \(a_{nj}\) give rise to variations in the error function only through variations in the variables \(a_{nk}\) (the units \( k \) to which \( j \) sends connections). This allows the following rewrite for \( \delta_{nj} \)
+
+\begin{align*}
+\delta_{nj} \equiv \partial_{a_{nj}} E_{n} = \sum_{k} \partial_{a_{nk}} E_{n} \cdot \partial_{a_{nj}} a_{nk}, \quad j < k.
+\end{align*}
+
+First, we identify \( \delta_{nk} \equiv \partial_{a_{nk}} E_{n} \). Now, since \( a_{nk} = \sum_{j} w_{kj} z_{nj} = \sum_{j} w_{kj} h(a_{nj})\), it follows that \( \partial_{a_{nj}} a_{nk} = w_{kj}  \cdot \mathrm{D} h (a_{nj}) \). Substituting these two identities in the above equation yields the /backpropagation formula/:
+
+\begin{align*}
+\delta_{nj} (a_{nj}) = \mathrm{D} h (a_{nj}) \cdot \sum_{k} w_{kj} \cdot \delta_{nk}, \quad j < k.
+\end{align*}
+
+Given the use of [[id:9a05b798-55fa-403c-ac73-4e1ac1131484][canonical link functions]] for the output unit activation function, we have the error \( \delta_{nk} \) for the output unit \( k \)
+
+\begin{align*}
+\delta_{nk}=y_{nk}-t_{nk}.
+\end{align*}
+
+This error can then be propagated backward through the hidden units by use of the backpropagation formula to compute \( \delta_{nj} \) for all of the hidden units \( \delta_{nj} \). The derivative of \( E_{n} \) with respect to \( w_{ji} \) is then easily evaluated as \( \partial_{w_{ji}} E_{n} = \delta_{nj} \cdot z_{i} \).
+
 **** Algorithm: Backpropagation
 :PROPERTIES:
 :ID:       4f729515-5224-4ae0-bcba-7d72361a0d06
