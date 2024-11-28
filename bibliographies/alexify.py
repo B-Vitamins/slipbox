@@ -12,7 +12,7 @@ from fuzzywuzzy import fuzz
 from requests.exceptions import HTTPError, RequestException
 
 # Configuration for pyalex
-pyalex.config.email = "ayand@iisc.ac.in"
+pyalex.config.email = "ayan.molybdenum@gmail.com"
 pyalex.config.max_retries = 5
 pyalex.config.retry_backoff_factor = 0.3
 pyalex.config.retry_http_codes = [429, 500, 503]
@@ -21,7 +21,6 @@ pyalex.config.retry_http_codes = [429, 500, 503]
 TITLE_MATCH_THRESHOLD_HIGH = 90
 TITLE_MATCH_THRESHOLD_LOW = 50
 AUTHOR_MATCH_THRESHOLD = 70
-STOPWORDS = {"the", "of", "and", "a", "an", "in", "to", "on", "for", "with"}
 LOGGING_FORMAT = "%(asctime)s - %(message)s"
 
 # Logging configuration
@@ -83,9 +82,10 @@ def extract_year_from_filename(filename):
 
 
 def sort_bib_files_by_year(bib_files):
-    """Sorts the list of bib files based on the year extracted from their filenames."""
+    """Sorts the list of bib files from recent to old based on the year extracted from their filenames."""
     bib_files_with_years = []
     bib_files_without_years = []
+    
     for file in bib_files:
         filename = os.path.basename(file)
         year = extract_year_from_filename(filename)
@@ -93,14 +93,16 @@ def sort_bib_files_by_year(bib_files):
             bib_files_with_years.append((year, file))
         else:
             bib_files_without_years.append(file)
-    # Sort files with years
-    bib_files_with_years.sort(key=lambda x: x[0])
+    
+    # Sort files with years in descending order (recent to old)
+    bib_files_with_years.sort(key=lambda x: x[0], reverse=True)
+    
     # Extract sorted files
     sorted_files = [file for _, file in bib_files_with_years]
     # Append files without years at the end
     sorted_files.extend(bib_files_without_years)
+    
     return sorted_files
-
 
 def load_bib_file(bib_file_path):
     """Loads and parses a .bib file."""
@@ -130,49 +132,36 @@ def clean_bibtex_entry(entry):
             entry[field] = " ".join(entry[field].splitlines()).strip()
     return entry
 
+def clean_bibtex_entry(entry):
+    """Cleans newlines, leading/trailing spaces, and converts LaTeX to Unicode in all fields."""
+    for field in entry:
+        if isinstance(entry[field], str):
+            # Clean up any newlines and leading/trailing spaces
+            entry[field] = " ".join(entry[field].splitlines()).strip()
+    return entry
 
 def normalize_text(text):
-    """Normalize text by removing accents, stopwords, punctuation, and converting to lowercase."""
+    """Normalize text by removing accents and converting to lowercase."""
     text = unicodedata.normalize("NFKD", text)
     text = text.encode("ASCII", "ignore").decode()
+    text = re.sub(
+        r"\s+", " ", text
+    )  # Replace multiple spaces with single space
+    return text.lower().strip()
 
-    # Remove punctuation
-    text = text.translate(str.maketrans("", "", string.punctuation))
-
-    # Replace multiple spaces with a single space
-    text = re.sub(r"\s+", " ", text).strip().lower()
-
-    # Remove stopwords
-    words = text.split()
-    text = " ".join(word for word in words if word not in STOPWORDS)
-
-    return text
-
-
-def fuzzy_match_titles(title1, title2, weight_token=0.7, weight_partial=0.3):
-    """Check if two titles match using a hybrid fuzzy matching approach."""
+def fuzzy_match_titles(title1, title2):
+    """Check if two titles match using fuzzy matching."""
     try:
         # Handle NoneType cases by returning 0 for non-existent titles
         if not title1 or not title2:
             return 0
-
-        # Normalize titles
         title1_norm = normalize_text(title1)
         title2_norm = normalize_text(title2)
-
-        # Calculate individual fuzzy matching scores
-        token_ratio = fuzz.token_set_ratio(title1_norm, title2_norm)
-        partial_ratio = fuzz.partial_ratio(title1_norm, title2_norm)
-
-        # Combine scores with weighted average
-        combined_score = (weight_token * token_ratio) + (
-            weight_partial * partial_ratio
-        )
-        return combined_score
+        # Use token_set_ratio for better handling of word order
+        return fuzz.token_set_ratio(title1_norm, title2_norm)
     except Exception as e:
         logging.error(f"Error during title fuzzy matching: {e}")
         return 0
-
 
 def normalize_name(name):
     """Normalize names by removing accents, punctuation, and converting to lowercase."""
@@ -184,67 +173,11 @@ def normalize_name(name):
     )  # Replace multiple spaces with single space
     return name.lower().strip()
 
-
-def split_name_components(name):
-    """Split the name into first, middle (optional), and last components after normalization."""
-    name_parts = normalize_name(name).split()
-    if len(name_parts) == 1:
-        return "", "", name_parts[0]  # Assuming only last name is provided
-    elif len(name_parts) == 2:
-        return name_parts[0], "", name_parts[1]  # First and last name only
-    else:
-        return (
-            name_parts[0],
-            " ".join(name_parts[1:-1]),
-            name_parts[-1],
-        )  # First, middle(s), last
-
-
-def match_name_parts(bib_author, openalex_author):
-    """
-    Match name parts with flexible criteria:
-    - Exact or partial match for first name, allowing initials.
-    - Partial or initial match for middle name(s).
-    - Exact match for last name.
-    """
-    bib_first, bib_middle, bib_last = split_name_components(bib_author)
-    oa_first, oa_middle, oa_last = split_name_components(openalex_author)
-
-    # Match last name strictly with a high threshold
-    last_name_score = fuzz.ratio(bib_last, oa_last)
-    if last_name_score < 90:  # Require last name to match closely
-        return 0
-
-    # Match first name with flexibility for initials and partials
-    first_name_score = max(
-        fuzz.ratio(bib_first, oa_first), fuzz.partial_ratio(bib_first, oa_first)
-    )
-
-    # Match middle name(s) if available, allowing initials and partials
-    middle_name_score = (
-        100
-        if not bib_middle or not oa_middle
-        else max(
-            fuzz.ratio(bib_middle, oa_middle),
-            fuzz.partial_ratio(bib_middle, oa_middle),
-        )
-    )
-
-    # Weighted match: prioritize last name, then first, then middle
-    total_score = (
-        (0.5 * last_name_score)
-        + (0.3 * first_name_score)
-        + (0.2 * middle_name_score)
-    )
-    return total_score
-
-
 def fuzzy_match_authors(bibtex_authors, openalex_authors):
     """Fuzzy match author names and return the percentage of matched authors."""
     try:
         if not bibtex_authors or not openalex_authors:
             return 0
-
         normalized_bibtex_authors = [
             normalize_name(name) for name in bibtex_authors
         ]
@@ -252,21 +185,20 @@ def fuzzy_match_authors(bibtex_authors, openalex_authors):
             normalize_name(name) for name in openalex_authors
         ]
         matches = 0
-
         for bib_author in normalized_bibtex_authors:
-            # Find the best match in OpenAlex authors
+            # Find the best match in openalex authors
             match_scores = [
-                match_name_parts(bib_author, oa_author)
+                fuzz.partial_ratio(bib_author, oa_author)
                 for oa_author in normalized_openalex_authors
             ]
             if match_scores and max(match_scores) >= AUTHOR_MATCH_THRESHOLD:
                 matches += 1
-
+        if len(normalized_bibtex_authors) == 0:
+            return 0
         return (matches / len(normalized_bibtex_authors)) * 100
     except Exception as e:
         logging.error(f"Error during author fuzzy matching: {e}")
         return 0
-
 
 def fetch_openalex_works(title):
     """Fetch OpenAlex works for a given title."""
@@ -297,7 +229,7 @@ def fetch_openalex_works_by_dois(dois):
     batch_size = 50
     with requests.Session() as session:
         for i in range(0, len(processed_dois), batch_size):
-            batch = dois[i : i + batch_size]
+            batch = processed_dois[i : i + batch_size]
             pipe_separated_dois = "|".join(batch)
             url = f"https://api.openalex.org/works?filter=doi:{pipe_separated_dois}&per-page={batch_size}"
             try:
