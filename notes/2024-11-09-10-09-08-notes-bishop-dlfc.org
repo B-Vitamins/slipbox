@@ -1058,6 +1058,32 @@ This error can then be propagated backward through the hidden units by use of th
 :PROPERTIES:
 :ID:       4f729515-5224-4ae0-bcba-7d72361a0d06
 :END:
+\begin{algorithm}
+\caption{Backpropagation}\label{alg:backpropagation}
+\begin{algorithmic}[1]
+\Require Input vector $\mathbf{x}_n$, Network parameters $\mathbf{w}$, Error function $E_n(\mathbf{w})$ for input $\mathbf{x}_n$, Activation function $h(a)$
+\Ensure Error function derivatives $\left\{\frac{\partial E_n}{\partial w_{ji}}\right\}$
+\Statex
+\Comment{Forward propagation}
+\ForAll{hidden and output units $j$}
+    \State $a_j \gets \sum_i w_{ji} z_i$ \Comment{$z_i$ includes inputs $\{x_i\}$}
+    \State $z_j \gets h(a_j)$ \Comment{Activation function}
+\EndFor
+\Statex
+\Comment{Error evaluation}
+\ForAll{output units $k$}
+    \State $\delta_k \gets \frac{\partial E_n}{\partial a_k}$ \Comment{Compute errors}
+\EndFor
+\Statex
+\Comment{Backward propagation, in reverse order}
+\ForAll{hidden units $j$}
+    \State $\delta_j \gets h'(a_j) \sum_k w_{kj} \delta_k$ \Comment{Recursive backward evaluation}
+    \State $\frac{\partial E_n}{\partial w_{ji}} \gets \delta_j z_i$ \Comment{Evaluate derivatives}
+\EndFor
+\Statex
+\Return $\left\{\frac{\partial E_n}{\partial w_{ji}}\right\}$
+\end{algorithmic}
+\end{algorithm}
 *** A simple example
 :PROPERTIES:
 :ID:       98484c8a-fb89-47a3-aeda-5642f0126fcd
