@@ -16,7 +16,7 @@ config.retry_backoff_factor = 0.5
 config.retry_http_codes = [429, 500, 503]
 
 # Cache directory setup
-CACHE_DIR = Path.home() / "documents/store"
+CACHE_DIR = Path.home() / "store"
 CACHE_DIR.mkdir(exist_ok=True)
 
 # Configure logging
