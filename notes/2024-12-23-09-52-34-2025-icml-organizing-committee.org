@@ -1,0 +1,57 @@
+:PROPERTIES:
+:ID:       9a264f00-9f08-4312-93d6-042425403fbd
+:END:
+#+TITLE: 2025 ICML Organizing Committee
+#+FILETAGS: :fleeting:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+*General Chair*
+Aarti Singh (Carnegie Mellon University)
+
+*Program Chairs*
+Maryam Fazel (University of Washington)
+Daniel Hsu (Columbia University)
+Simon Lacoste-Julien (Mila, University of Montreal & Samsung SAIL Montreal)
+Virginia Smith (Carnegie Mellon University)
+
+*Workshop Chairs*
+Courtney Paquette (McGill University/Google DeepMind)
+Natalie Schluter (Apple MLR)
+Andrew Wilson (New York University)
+
+*Ethics Chairs*
+Kevin Jamieson (University of Washington)
+Lydia T. Liu (Princeton University)
+
+*Position Paper Track Chairs*
+Kiri Wagstaff
+Jerry Zhu (University of Wisconsin-Madison)
+
+*Accessibility and Diversity & Inclusion Chairs*
+Alexander D'Amour (Google DeepMind)
+Maria Skoularidou (Broad Institute)
+
+*Publications Chairs*
+Felix Berkenkamp (Bosch Center for AI)
+Tegan Maharaj (Mila (HEC))
+
+*Scientific Integrity Chair*
+Nihar Shah (Carnegie Mellon University)
+
+*Tutorial Chairs*
+Claire Monteleoni (INRIA Paris & University of Colorado Boulder)
+Claire Vernade (University of Tübingen)
+
+*Local Chair*
+Terri Auricchio (ICML Staff)
+
+*Workflow Chair*
+Zhenyu (Sherry) Xue (ICML)
+
+*Social Chairs*
+Luciana Benotti
+Kevin Leyton-Brown (University of British Columbia)
+
+*Communications Chairs*
+Katherine Gorman (Talking Machines)
+Amin Karbasi (Robust Intelligence & Yale) 

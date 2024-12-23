@@ -1,0 +1,43 @@
+:PROPERTIES:
+:ID:       6eadcea3-fabc-4824-9b61-89e024d936b3
+:END:
+#+TITLE: ICML 2025 Peer Review FAQ
+#+FILETAGS: :fleeting:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+* Becoming an area chair or reviewer
+
+*Q: I would like to volunteer to be an area chair or reviewer for ICML 2025. How can I do this?*
+
+A: Please fill out the following Google Form: https://forms.gle/n4SZYcxKopQoHnp27. (It will close December 27, 2024.) You will need to provide your OpenReview profile as part of this form submission.
+
+This form may also be used to register yourself as a reviewer to fulfill the Reciprocal Reviewing Requirement for submissions you have co-authored. (After December 27, we will use a different process for this.)
+
+*Q: What are the qualifications to be a reviewer for ICML?*
+
+A: Reviewers must have research experience equivalent to a second-year graduate student in machine learning or a related field. They must have been a primary author on at least two peer-reviewed conference or journal papers published in a related venue (e.g., ICML, NeurIPS, ICLR, UAI, AISTATS, COLT, ALT, JMLR, TMLR, CVPR, ICCV, ACL, NAACL, EMNLP – note that this not mean to be an exhaustive list). We strongly encourage each first-time reviewer to identify a ‘mentor’ (such as a research advisor or manager) who has both the necessary qualifications for and prior experience with reviewing, and who has agreed to oversee and assist the reviewer in their reviewing tasks.
+
+The research experience ensures the reviewer is to be able to competently evaluate a submission’s methodology, interpret findings and results, and to evaluate contributions in the context of prior works. Prior authorship ensures that the reviewer understands the peer review process (at least from the side of the authors) and the standards and conventions of composing reviews and corresponding with authors.
+
+*Q: What are the qualifications to be an area chair for ICML?*
+
+A: ACs (a.k.a. meta-reviewers) must have seniority at least at the level of a junior faculty member (e.g., assistant professor) in an academic institution or industry equivalent. They must have substantial prior experience with reviewing for peer-reviewed conferences or journals. They must also have expertise and/or broad knowledge in multiple major sub-areas of machine learning.
+
+The seniority and reviewing experience ensure that the AC is able to oversee and ensure the quality of work of several reviewers and provide feedback/guidance to reviewers where necessary. The expertise and broad knowledge ensure that the AC is able to judge the contributions and importance of the submissions relative to prior works and ultimately make recommendations about acceptance/rejection.
+
+*Q: What is the reviewing load for reviewers? Can I get a reduced reviewing load?*
+
+A: We are aiming for a load of around five submissions per reviewer. Unfortunately we are not allowing for reduced load reviewing this year.
+
+* Generative AI policy
+
+*Q: Why does ICML prohibit the use of Generative AI tools (including LLMs) in reviewing?*
+
+A: Privileged information—such as the submission themselves, reviews of the submissions, discussions about the submissions, etc.—may only be used for the purpose of reviewing. Therefore, we cannot allow this information to be submitted to external services such as Generative AI tools.
+
+The reviewing process is meant to obtain reviews from peer researchers who have read, understood, and evaluated the correctness and merits of the submissions. The credibility of ICML is damaged if reviews are automatically produced using Generative AI tools such as LLMs (whether they are accessed via an external service or on a local machine).
+
+* Other questions
+
+*Q: I have a question not answered on this page: [...]?*
+
+A: The ICML FAQ page answers a number of questions about icml.cc accounts, conference logistics, payment, registration, travel documents, etc. If you still cannot find the answer to your question, please use the following form to direct your question to the most appropriate organizer: https://icml.cc/Help/Contact. We will try our best to get back to you as soon as possible.

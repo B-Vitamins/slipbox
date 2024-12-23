@@ -1,0 +1,16 @@
+:PROPERTIES:
+:ID:       fc845e71-7afd-436f-8661-2d39399bc8c0
+:END:
+#+TITLE: ICML Diversity and Inclusion
+#+FILETAGS: :fleeting:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+The International Conference in Machine Learning aspires to foster an inclusive and welcoming community that recognizes and respects the inherent worth of every person. We take several steps to improve diversity, equity, and inclusion across several facets of conference participation.
+
+We work with grassroots organizations like Women in Machine Learning, Black in AI, Queer in AI, LatinX in AI, and Indigenous in AI to increase participation of underrepresented groups at the conference and to make the conference welcoming to everyone, regardless of their gender identity and expression, sexual orientation, race, disability, neurodivergence, religion, nationality, etc.
+
+In collaboration with affinity groups we organize affinity events including workshops, mentoring sessions, and socials. We are actively working to make the conference event itself more inclusive, for example, by promoting gender inclusive measures and supporting childcare, nursing mothers, and attendees with disabilities. We are also exploring options with the venue and caterers to ensure that everyone can have a positive, equitable experience while attending our conference.
+
+Finally, we work on implementing structural changes, such as the introduction of the [[id:c9833db0-2485-449b-8960-5bfdcfc9366e][Code of Conduct]] in 2018.
+
+If you have any questions, comments, or concerns, please reach out to =diversity-chairs@icml.cc=.

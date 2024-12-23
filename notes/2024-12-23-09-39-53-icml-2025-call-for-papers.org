@@ -1,0 +1,104 @@
+:PROPERTIES:
+:ID:       ba8efc37-3728-47e9-a2a9-c58316c7ddf4
+:END:
+#+TITLE: ICML 2025 Call For Papers
+#+FILETAGS: :fleeting:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+The 42nd International Conference on Machine Learning (ICML 2025) will be held in Vancouver, Canada, July 13–19, and is planned to be an in-person conference. In addition to the main conference sessions, the conference will include tutorials, workshops, and an expo.
+
+We invite submissions of papers on original and rigorous research of significant interest to the machine learning community for the main conference proceedings. All papers will be reviewed in a double-blind process and accepted papers will be presented at the conference. Papers must be prepared and submitted as a single file: 8 pages for the main paper, with unlimited pages for references, the impact statement, and appendices. There will be no separate deadline for the submission of supplementary material. The final versions of accepted papers will be allowed one extra page for the main paper. We require that, barring exceptional circumstances, at least one of the authors of accepted papers attend the conference in person to present the paper.
+
+See information on Author Instructions (coming soon), Style Files and an and an Example Paper.. Submitted papers that do not conform to these policies will be rejected without review.
+
+Topics of interest include (but are not limited to):
+
+    General Machine Learning (active learning, clustering, online learning, ranking, supervised, semi- and self-supervised learning, time series analysis, etc.)
+    Deep Learning (architectures, generative models, theory, etc.)
+    Evaluation (methodology, meta studies, replicability and validity, human-in-the-loop)
+    Theory of Machine Learning (statistical learning theory, bandits, game theory, decision theory, etc.)
+    Machine Learning Systems (e.g., improved implementation and scalability, hardware, libraries, distributed methods)
+    Optimization (convex and non-convex optimization, matrix/tensor methods, stochastic, online, non-smooth, composite, etc.)
+    Probabilistic Methods (Bayesian methods, graphical models, Monte Carlo methods, etc.)
+    Reinforcement Learning (e.g., decision and control, planning, hierarchical RL, robotics)
+    Trustworthy Machine Learning (causality, fairness, interpretability, privacy, robustness, safety, etc.)
+    Application-Driven Machine Learning (innovative techniques, problems, and datasets that are of interest to the machine learning community and driven by the needs of end-users in applications such as healthcare, physical sciences, biosciences, social sciences, sustainability and climate, etc.)
+
+Similar to last year, we also invite submissions of position papers. Please review the call for position papers; submissions will be handled separately from research paper submissions.
+
+Papers published at ICML are indexed in the Proceedings of Machine Learning Research through the Journal of Machine Learning Research.
+
+ 
+Important Dates and Submission Site
+
+    Submission site open: January 9, 2025.
+    Suggested OpenReview account creation deadline: January 9, 2025. (If you do not already have an OpenReview account, please register by this date, otherwise we cannot guarantee that your account will be activated in time.**)
+    Abstract submission deadline: January 23, 2025 AoE (Jan 24 2025 12 Noon UTC-0).
+    Full paper submission deadline: January 30, 2025 AoE (Jan 31 2025 12 Noon UTC-0).
+
+Abstracts and papers can be submitted through OpenReview: https://openreview.net/group?id=ICML.cc/2025/Conference 
+
+Note: position papers should be submitted through a separate OpenReview site, as outlined in the Call for Position Papers.
+
+**OpenReview: All authors must have an OpenReview account. It is strongly recommended that you sign-up for OpenReview (or associate your existing account) with an institutional email. If you sign up for OpenReview with an institutional email your account will be activated immediately; otherwise it can take up to 2 weeks for your account to be activated.
+
+ 
+
+ 
+Policies
+Deadlines:
+
+Abstract and paper submission deadlines are strict. In no circumstances will extensions be given.
+Changes to abstract/title/authorship:
+
+Authors should include a full title for their paper, complete author list, and complete abstract in the submission form by the abstract submission deadline. While it is possible to edit the title and abstract until the full paper submission deadline, submissions with “placeholder” abstracts that are substantially rewritten for the full submission risk being removed without consideration.
+
+The author list cannot be changed after the abstract deadline. After the abstract deadline, authors may be reordered, but any additions or removals must be justified in writing and approved on a case-by-case basis by the program chairs. Approval will be granted only in exceptional circumstances.
+Reciprocal Reviewing Requirement:
+
+**New this year: Qualified authors are required to review for ICML, according to the policies below.**
+
+    All submissions must have at least one author who is registered to review for ICML. The registered reviewer should be qualified to review according to the definition given in the Peer Review FAQ. If none of the authors are qualified under this definition, or if all of the authors are serving as SACs, ACs, or in other organizing roles for ICML 2025, then the submission is exempt from this requirement. Exemptions may be indicated at the time of the abstract submission.
+    Additionally, every author with 4 or more submissions must serve as a reviewer for ICML. Authors are exempt from this requirement if they are serving as an AC, SAC, or in other organizing roles for ICML 2025.
+    Authors may register as a reviewer by filling out the self-nomination form.
+
+Submissions that do not meet this reciprocal review requirement may be desk rejected. Additionally, reviewers who fail to adequately participate in the review process (e.g., not submitting reviews on time or submitting highly insufficient or inappropriate reviews) may have their own submissions desk rejected.
+
+Note: the reciprocal reivew requirement does not apply to papers submitted to the position paper track this year.
+Double-Blind Review:
+
+All submissions must be anonymized and may not contain any information with the intention or consequence of violating the double-blind reviewing policy.
+
+Authors are allowed to post versions of their work on preprint servers such as arXiv. They are also allowed to give talks on the work(s) submitted to ICML during the review. However, under no circumstances should the work be advertised as an ICML submission at any time during the review period, i.e., from the time the authors submit the paper to the communication of the accept/reject decisions. If the authors have posted or plan to post a non-anonymized version of the paper online before the ICML decisions are made, the submitted version must not refer to the non-anonymized version.
+Dual Submission:
+
+Authors may not submit papers that are identical, or substantially similar, to versions that have been previously published, accepted for publication, or submitted in parallel to other conferences or journals. Such submissions violate our dual submission policy, and the organizers have the right to reject such submissions, or to remove them from the proceedings. Any concurrent ICML submissions with an overlapping set of authors will also be treated as prior work (so, for example, if publishing one would render the other too incremental, then this may be considered grounds for rejection). Note that submissions that have been or are being presented at workshops without published proceedings do not violate the dual-submission policy.
+Reviewing Criteria:
+
+Submissions should report original and rigorous research of significant interest to the machine learning community. All claims must be clearly stated and supported by reproducible experiments and/or sound theoretical analysis. The contributions must be situated in context of the broader scientific and machine learning research literature, acknowledging and differentiating from relevant prior works as appropriate. See reviewer instructions for more information.
+Use of Generative AI:
+
+Authors are allowed to use generative AI tools such as Large Language Models (LLMs) to assist in writing or research. However, authors must take full responsibility for all content in their paper, including any content generated by AI tools that might be construed as plagiarism or scientific misconduct. We encourage authors to explain any notable ways in which these tools were used in their research methodology. LLMs are not eligible for authorship.
+Ethical Conduct for Peer Review:
+
+Authors are expected to follow standard ethical conduct for peer review. In particular:
+
+    Plagiarism in any form is forbidden.
+    Advertising work (e.g., in a talk, on social media) as being under submission to ICML during the review period is forbidden.
+    Any form of collusion, either direct or indirect (e.g., where authors cooperate with reviewers, ACs, or SACs to obtain favorable or unfavorable reviews) is forbidden.
+
+If you believe someone may be engaging in unethical conduct, please notify ICML by filling out the Ethics Violation Reporting form.
+
+All suspected unethical behaviors will be investigated by ICML’s oversight committee and individuals found violating the rules may face sanctions and/or have their submissions rejected. We will also collect names of individuals that are found to have violated ethics standards; if individuals representing conferences, journals, or other organizations request this list for decision making purposes, we may make this information available to them. See ICML’s Code of Conduct for additional details.
+Impact Statements:
+
+Authors are required to include a statement of the potential broader impact of their work, including its ethical aspects and future societal consequences. This statement should be in a separate section at the end of the paper (co-located with Acknowledgements, before References), and does not count toward the paper page limit. In many cases, where the ethical impacts and expected societal implications are those that are well established when advancing the field of Machine Learning, substantial discussion is not required, and a simple statement such as: 
+
+“This paper presents work whose goal is to advance the field of Machine Learning. There are many potential societal consequences of our work, none which we feel must be specifically highlighted here.”
+
+The above statement can be used verbatim in such cases, but we encourage authors to think about whether there is content which does warrant further discussion, as this statement will be apparent if the paper is later flagged for ethics review.
+
+In particular, Reviewers and ACs may flag submissions for ethics review. Flagged submissions will be sent to an ethics review committee for comments. Ethics reviewers do not have the authority to reject papers, but in extreme cases papers may be rejected by the program chairs on ethical grounds, regardless of scientific quality or contribution.
+Lay summaries:
+
+New this year: Authors of accepted papers will be required to submit a short “lay summary” of their work (also called "plain language summary") in OpenReview when submitting their camera-ready paper. As machine learning is becoming a more prevalent topic of interest in society, it is important to participate in science communication with the public. Lay summaries are increasingly common for scientific research in other public-facing fields such as medicine and healthcare. See this paper for guidelines. Additional details and examples will be provided prior to the camera-ready deadline.

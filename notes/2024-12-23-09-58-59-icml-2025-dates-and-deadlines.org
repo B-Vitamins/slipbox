@@ -1,0 +1,27 @@
+:PROPERTIES:
+:ID:       88af9d40-47f6-4b95-b447-9f2708f46b33
+:END:
+#+TITLE: ICML 2025 Dates and Deadlines
+#+FILETAGS: :fleeting:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+The Forty-Second annual conference is held from *Sunday, July 13th through Saturday, July 19th, 2025*, at the Vancouver Convention Center.
+
+- Expo :: Sunday, July 13th
+- Virtual Pass :: Monday, July 14th through Saturday, July 19th
+- Tutorials :: Monday, July 14th
+- Conference Sessions :: Tuesday, July 15th through Thursday, July 17th
+- Workshops :: Friday, July 18th through Saturday, July 19th
+
+*Dates and Deadlines*
+
++ _Attendees_:
+  - Registration Open :: October 20th, 2024, 01:30 AM IST
+  - Early pricing before this date :: June 1st, 2025 (Anywhere on Earth)
+  - Cancellation Deadline :: June 21st, 2025, 05:29 PM IST
+  - Registration Close :: July 18th, 2025, 09:30 AM IST
+
++ _Paper Submissions_:
+  - Paper Submissions Open on OpenReview :: January 10th, 2025, 05:29 AM IST
+  - Abstract Submission Deadline :: January 24th, 2025 (Anywhere on Earth)
+  - Full Paper Submission Deadline :: February 1st, 2025, 05:29 AM IST
