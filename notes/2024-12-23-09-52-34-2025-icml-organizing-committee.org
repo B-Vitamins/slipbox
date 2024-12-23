@@ -2,7 +2,7 @@
 :ID:       9a264f00-9f08-4312-93d6-042425403fbd
 :END:
 #+TITLE: 2025 ICML Organizing Committee
-#+FILETAGS: :fleeting:
+#+FILETAGS: :fleeting:icml:2025:
 #+SETUPFILE: ~/.config/emacs/setup/setupfile.org
 
 *General Chair*

@@ -2,7 +2,7 @@
 :ID:       994b9207-91b7-4d60-9a71-7e30e53a716c
 :END:
 #+TITLE: ICML 2025 Call For Tutorials
-#+FILETAGS: :fleeting:
+#+FILETAGS: :fleeting:icml:2025:
 #+SETUPFILE: ~/.config/emacs/setup/setupfile.org
 
 The ICML 2025 Organizing Committee invites proposals for tutorials to be given on Monday, July 14th 2025, immediately preceding the main conference.
@@ -11,17 +11,16 @@ We welcome proposals for tutorials on core machine learning topics and on topics
 
 We plan to host a mix of invited and submitted tutorials. We anticipate hosting nine tutorials. Each tutorial will be two hours long, and will be given by one or two presenters. Tutorial proposals should answer the following questions:
 
-    Title
-    Goals: What objectives does the tutorial serve? Why is it important to include it as a part of ICML 2025?
-    Brief description and outline: What will the tutorial be about? Please provide an outline of what you plan to cover, including references and details on how much time you will spend on each topic. We encourage the presenters to demonstrate coverage and representativeness of the chosen area of research, not to focus solely on their own results or tools. Should you decide on a creative format (e.g. including discussions or panels), please precisely justify and describe how you plan to execute it.
-    Target audience: Who is your target audience? How many participants do you expect to see? What kind of background do you expect them to have?
-    Presenters: Please include the names and email addresses of the presenters, along with brief bios and the description of each presenter’s expertise in the tutorial area.  If applicable, please mention relevant teaching experience on this topic, including summer schools or tutorials.  Each tutorial must be given by at most two main presenters. If additional presenters are needed, please describe their role. If available, please include samples of your past talks (or other relevant) slides or links to video recordings on the topic.
-    Previous tutorials: What are the related or similar tutorials presented in the past 3 years at ICML or at other venues? Please list the dates and venues, and describe the similarities and differences to the proposal.
-    The tutorial presenters need to strongly commit to present the tutorial in person (see submission form, no need to comment on it in the proposal itself). Note that ICML may be able to partially reimburse travel, lodging, and conference costs for tutorial presenters who would otherwise not be able to attend the conference.
++ *Title*
++ Goals :: What objectives does the tutorial serve? Why is it important to include it as a part of ICML 2025?
++ Brief description and outline :: What will the tutorial be about? Please provide an outline of what you plan to cover, including references and details on how much time you will spend on each topic. We encourage the presenters to demonstrate coverage and representativeness of the chosen area of research, not to focus solely on their own results or tools. Should you decide on a creative format (e.g. including discussions or panels), please precisely justify and describe how you plan to execute it.
++ Target audience :: Who is your target audience? How many participants do you expect to see? What kind of background do you expect them to have?
++ Presenters :: Please include the names and email addresses of the presenters, along with brief bios and the description of each presenter’s expertise in the tutorial area.  If applicable, please mention relevant teaching experience on this topic, including summer schools or tutorials.  Each tutorial must be given by at most two main presenters. If additional presenters are needed, please describe their role. If available, please include samples of your past talks (or other relevant) slides or links to video recordings on the topic.
++ Previous tutorials :: What are the related or similar tutorials presented in the past 3 years at ICML or at other venues? Please list the dates and venues, and describe the similarities and differences to the proposal.
++ The tutorial presenters need to *strongly commit to present the tutorial in person* (see submission form, no need to comment on it in the proposal itself). Note that ICML may be able to partially reimburse travel, lodging, and conference costs for tutorial presenters who would otherwise not be able to attend the conference.
 
- 
+Tutorial proposals should be submitted via [[https://docs.google.com/forms/d/e/1FAIpQLSfJ6BXYtHssL0Ul6-r1AhmwBxZ69VtNWXKuTtghgiLF9cfsbg/viewform][this form]] by February 10th 2025. Please submit a PDF of at most 4 pages excluding references (in any text format). Acceptance and rejection decisions will be announced by April 11th 2025.
 
-Tutorial proposals should be submitted via this form by February 10th 2025. Please submit a PDF of at most 4 pages excluding references (in any text format). Acceptance and rejection decisions will be announced by April 11th 2025.
 In case of any other questions, please contact us at tutorial-chairs@icml.cc.
 
 Tutorial Chairs, ICML 2025

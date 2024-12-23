@@ -2,7 +2,7 @@
 :ID:       fc845e71-7afd-436f-8661-2d39399bc8c0
 :END:
 #+TITLE: ICML Diversity and Inclusion
-#+FILETAGS: :fleeting:
+#+FILETAGS: :fleeting:icml:2025:
 #+SETUPFILE: ~/.config/emacs/setup/setupfile.org
 
 The International Conference in Machine Learning aspires to foster an inclusive and welcoming community that recognizes and respects the inherent worth of every person. We take several steps to improve diversity, equity, and inclusion across several facets of conference participation.

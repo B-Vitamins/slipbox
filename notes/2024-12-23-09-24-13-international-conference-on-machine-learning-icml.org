@@ -2,7 +2,7 @@
 :ID:       0e456e36-6ed7-423e-b082-c64edf25459d
 :END:
 #+TITLE:  International Conference on Machine Learning (ICML)
-#+FILETAGS: :literature:
+#+FILETAGS: :literature:icml:
 #+SETUPFILE: ~/.config/emacs/setup/setupfile.org
 
 The International Conference on Machine Learning (ICML) is the premier gathering of professionals dedicated to the advancement of the branch of artificial intelligence known as machine learning.

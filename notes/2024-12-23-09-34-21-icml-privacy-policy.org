@@ -2,7 +2,7 @@
 :ID:       74908522-ad05-4c10-995d-e846569b0313
 :END:
 #+TITLE: ICML Privacy Policy
-#+FILETAGS: :fleeting:
+#+FILETAGS: :fleeting:icml:2025:
 #+SETUPFILE: ~/.config/emacs/setup/setupfile.org
 
 Our Privacy Policy explains how information is collected, used, and disclosed by ICML, with respect to your access and use of our services, through our website or in connection with third party services.

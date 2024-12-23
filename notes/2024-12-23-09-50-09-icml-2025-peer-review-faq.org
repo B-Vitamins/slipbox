@@ -2,7 +2,7 @@
 :ID:       6eadcea3-fabc-4824-9b61-89e024d936b3
 :END:
 #+TITLE: ICML 2025 Peer Review FAQ
-#+FILETAGS: :fleeting:
+#+FILETAGS: :fleeting:icml:2025:
 #+SETUPFILE: ~/.config/emacs/setup/setupfile.org
 * Becoming an area chair or reviewer
 

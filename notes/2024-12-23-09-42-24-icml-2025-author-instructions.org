@@ -2,7 +2,7 @@
 :ID:       7dcdfcf9-a5f0-4a10-9e51-5d5eef191149
 :END:
 #+TITLE: ICML 2025 Author Instructions
-#+FILETAGS: :fleeting:
+#+FILETAGS: :fleeting:icml:2025:
 #+SETUPFILE: ~/.config/emacs/setup/setupfile.org
 * Paper Submissions
 

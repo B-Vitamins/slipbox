@@ -2,9 +2,10 @@
 :ID:       c9833db0-2485-449b-8960-5bfdcfc9366e
 :END:
 #+TITLE: ICML Code of Conduct
-#+FILETAGS: :fleeting:
+#+FILETAGS: :fleeting:icml:
 #+SETUPFILE: ~/.config/emacs/setup/setupfile.org
-#+DATE: [2020-07-09 Thu]
+
+[2020-07-09 Thu]
 
 The open exchange of ideas, the freedom of thought and expression, and respectful scientific debate are central to the goals of this conference on machine learning; this requires a community and an environment that recognizes and respects the inherent worth of every person.
 
@@ -22,4 +23,3 @@ Sponsors are equally subject to this Code of Conduct. In particular, sponsors sh
 *Reporting* If you have concerns related to your inclusion at that conference, or observe someone else's difficulties, or have any other concerns related to inclusion, please contact the Diversity and Inclusion co-chairs or the Conference HR Liaison.
 
 The Diversity and Inclusion co-chairs can be reached by email at =diversity-chairs@icml.cc=. The HR Liaison can be reached via the ICML Hotline at either =ICMLhotline@gmail.com= or *858-208-3810*. Conference volunteers will also have this contact information and can assist with connecting you to the co-chairs or the HR Liaison. Complaints and violations will be handled at the discretion of the Diversity & Inclusion co-chairs, general chair, HR Liaison, and the conference board. Reports made during the conference will be responded to in less than 24 hours; those at other times in less than two weeks. We are prepared and eager to help participants contact relevant help services, to escort them to a safe location, or to otherwise assist those experiencing harassment to feel safe for the duration of the conference. We gratefully accept feedback from the community on policy and actions; please contact us.
-

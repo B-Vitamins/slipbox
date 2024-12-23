@@ -2,7 +2,7 @@
 :ID:       88af9d40-47f6-4b95-b447-9f2708f46b33
 :END:
 #+TITLE: ICML 2025 Dates and Deadlines
-#+FILETAGS: :fleeting:
+#+FILETAGS: :fleeting:icml:2025:
 #+SETUPFILE: ~/.config/emacs/setup/setupfile.org
 
 The Forty-Second annual conference is held from *Sunday, July 13th through Saturday, July 19th, 2025*, at the Vancouver Convention Center.
