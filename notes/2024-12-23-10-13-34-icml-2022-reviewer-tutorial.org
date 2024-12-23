@@ -1,0 +1,88 @@
+:PROPERTIES:
+:ID:       ce931d52-eebf-4ecf-a96d-a3099f53c3bd
+:END:
+#+TITLE: ICML 2022 Reviewer Tutorial
+#+FILETAGS: :literature:icml:2025:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+#+begin_quote
+"Review the papers of others as you would wish your own to be reviewed" -- Mihir Bellare, [[https://youtu.be/SPVWSG7-i_E?t=1742)][IACR Distinguished Lecture: Caught in Between Theory and Practice]]
+#+end_quote
+
+This tutorial describes the review process and the expectations we have for ICML reviewers. A complementary slide deck is available here, with further explanations of the process and the expectations. In addition, the review form to be used is available here. The video linked above is also highly recommended. 
+
+The guiding principle for reviewing is that reviewing should create value for
+
+1) the authors, by giving them actionable feedback to potentially improve their papers;
+2) the community, by helping authors improve their papers and helping with the decisions to publish papers that advance our field.
+
+A critical aspect of this is the professional conduct of all ICML reviewers. In fact, unprofessional reviews can harm the community in multiple ways: frustrating authors (particularly students) who may slow down in their explorations, drop out of the field and/or end up reviewing more aggressively themselves as a result, loss of promising ideas that could advance the community, resubmission of very similar versions of the paper due to no detailed productive feedback, etc. Furthermore, reviewers are expected to follow the ethics guidelines of ICML 2022.
+
+From the perspective of a reviewer, the review process for ICML has the following parts:
+
++ Onboarding :: Accept the invitation in CMT and provide the information for CMT that will help the paper assignment (TPMS, google scholar id, subject areas, etc.). Indicate possible conflicts.
++ Paper assignment 1 :: Bid on papers. Once papers are assigned, flag any conflicts by communicating with the meta-reviewers. Also flag if a paper lies too far from your expertise to the degree that it will be hard to provide a good review. Please do this as quickly as possible, as the meta-reviewers need to find alternate reviewers.
++ Phase 1 reviewing :: Once the assignments are finalized, read the papers, carefully, critically but also with empathy. Write a professional review by filling out the rubrics of the review form. If needed, communicate with the meta-reviewer. Submit reviews in time.
++ Paper assignment 2 :: No further bidding is needed, otherwise the process is the same.
++ Phase 2 reviewing :: Same as in phase 1. Submit reviews in time. 
++ Rebuttal :: Reviews will be released to the authors, who will be given the chance to reply to specific issues (clarify points, explain misunderstandings).
++ Discussion :: Reviewers need to read the rebuttal and modify their reviews if necessary. The reviewers and the meta-reviewers should discuss contradictions if any between the reviews, the remaining contradictions if any between the reviews and the rebuttal, and any other points of uncertainty. 
+
+It is important to keep track of the deadlines. Any delays increase the load on your colleagues. Also, as always, reviewers are expected to be polite, respectful and overall professional in their conduct during the whole process. 
+
+How to start the review? Before starting to review a paper, read the review form and think about the aspects of the paper that need to be evaluated: (1) Novelty, relevance, significance, (2) Soundness, (3) Quality of writing/presentation, (4) Literature.
+
+Next, read the paper, thinking that you will need to provide an evaluation of the paper from these individual aspects. After reading the paper, make a list of the contributions claimed in the paper for yourself.
+
+For the “novelty, relevance and significance” aspect, answer the question: In what way does the paper advance our field? The right question to ask here is whether there are, or you can imagine readers in the community who could plausible benefit from reading the paper. Evaluate the overall ideas, techniques and results rather than focusing on a single aspect (e.g., merely beating state of the art in all aspects), although of course high novelty/significance in one of these may be sufficient.
+
+For the “soundness” aspect, check carefully the support for the contributions you identified. Each of them needs to be checked individually.
+
+For the “quality of writing/presentation” aspect, answer the question: Is the paper effective in explaining the contributions it makes? If not, how could it be improved? 
+
+For the “literature” aspect, consider whether the paper places the research presented into the context of current research. Note that papers cannot expect to cite other papers which have been made publicly available within a month before the paper submission deadline. Such recent papers should be considered as concurrent and simultaneous. Good judgement is necessary to decide whether a publication that has not yet been peer-reviewed should be cited. The guideline is to follow the best practices of the specific subfield; the meta-reviewer can help in each case with these. If a relevant publication is missed, but including it will not change the conclusions of the paper or it changes them in some minor way, the omission of the publication should be considered a minor issue.
+
+When writing the review, first write the summary of contributions. Follow by filling out each individual aspect evaluating it on its own merit, as much as this is possible. Finish by summarizing your review, listing the strengths and potential weaknesses, ranking them according to their importance for the acceptance of the paper.
+
+It is very important that the review clearly classifies any concern mentioned as either a major or a minor concern. A major concern is one that either invalidates one or more main contributions of the paper, or one that requires extensive changes to the paper and as such the revision would need to be re-reviewed. 
+
+A good practice is to read the paper first for identifying the main contributions, next for identifying the support for these, and finally check it again for identifying ways its presentation could be improved.
+
+A high quality review satisfies the points on the following checklist.
+
+* Review checklist
+- The paper is evaluated solely based on its relevance, soundness, novelty, completeness and the quality of writing/presentation.
+- The summary of the contributions in the review accurately and completely reflects the contributions of the paper (think about what the authors really wanted to say).
+- Each aspect of the paper identified by a separate question on the review form is evaluated on its own.
+- The review is focusing on the research in the paper in a constructive manner. The concerns raised are specific with enough details so that the authors can act on them, and they are informative for the meta-reviewer, senior meta-reviewer and program chairs.
+- The review identifies the strengths of the paper.
+- The concerns raised in the review are clearly separated into major (essential for publication) and minor (not essential for publication) ones. Issues that are trivial to fix and do not change the conclusion and correctness of the paper are designated as minor.
+- The claims that the review makes are precise enough and correct.
+- The claims that the review makes are backed up by evidence, and the evidence provided in the review is sufficient to understand the claims made in the review.
+- If a list of comments is used, the comments are numbered so that the authors can refer to them in their rebuttal if necessary.
+- Any references to parts of the paper are clearly identifiable (e.g., page/line numbers given).
+- The authors will find it easy to understand how the review suggests improvements to the paper.
+- The meta-reviewer will find the review detailed enough to help them make a decision. In particular, limitations of the review are clearly identified in the review.
+- The spelling and grammar in the review are checked.
+- The language of the review is polite, respectful, kind and professional (avoid any personal comments, e.g., do NOT write “Authors fail..” but write “The work fails to..”).
+- Double check for your own biases and objectivity. Did you adhere to the very first sentence of this tutorial?
+- The paper is held to the expectations mentioned in the paper writing best practices document.
+
+* Daniel Denett’s points about “How to compose a successful critical commentary”
+- You should attempt to re-express your target’s position so clearly, vividly, and fairly that your target says, “Thanks, I wish I’d thought of putting it that way.”
+- You should list any points of agreement (especially if they are not matters of general or widespread agreement).
+- You should mention anything you have learned from your target.
+- Only then are you permitted to say so much as a word of rebuttal or criticism.
+
+* Further resources
+- K. A. Nicholas, W. Gordon: [[https://agupubs.onlinelibrary.wiley.com/doi/epdf/10.1029/2011EO280001][A Quick Guide to Writing a Solid Peer Review]]
+- ICLR 2020 reviewer guidelines with links inside to [[https://sites.umiacs.umd.edu/elm/2016/02/01/mistakes-reviewers-make/][Mistakes Reviewers Make]], [[https://acl2017.wordpress.com/2017/02/23/last-minute-reviewing-advice/][Last Minute Reviewing Advice* from ACL 2017]], [[https://www.seas.upenn.edu/~nenkova/AreaChairsInstructions.pdf][Perspective from Instructions for Area Chairs]]
+- [[https://cvpr2020.thecvf.com/submission/main-conference/reviewer-guidelines][CVPR 2020 reviewer guidelines]]
+- [[http://cvpr2020.thecvf.com/sites/default/files/2019-09/CVPRReviewerTutorial.pptx][CVPR 2020 tutorial]]
+- [[https://mvaldenegro.github.io/files/LXCV-CVPR-2021-review-mentoring.pdf][How to Write Good Review]], LXCV-CVPR-2021 mentoring program, Matias Valdenegro
+- [[https://drive.google.com/file/d/1JCK8o_XR58YY5TdhKF7MaJfrvDJ7StXh/view][How to Write a Good Review, as a Newcomer to the Field]]
+- [[https://drive.google.com/file/d/1ydN247sEXjnP0P_JByf287ifXNcdoIBM/view][Novelty is in the Eye of the Beholder]], Konrad Schindler
+- CVPR 2000 tutorial: [[https://sites.google.com/view/making-reviews-great-again/][How to Write a Good Review?]]
+- [[https://www.themarginalian.org/2014/03/28/daniel-dennett-rapoport-rules-criticism/][Daniel Dennett's Rapoport Rules for Criticism]]
+- JMLR's [[https://www.jmlr.org/reviewer-resources.html][recommended readings]] for reviewers: not everything aligns with our guides, but the alignment is still quite good).
+- It may be useful to look at what is written for authors. In this spirit, Pat Langley's [[https://icml.cc/Conferences/2002/craft.html][Crafting Papers in Machine Learning]] (written for ICML 2002) is a nice read.

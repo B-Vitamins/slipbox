@@ -1,0 +1,149 @@
+:PROPERTIES:
+:ID:       987a82d1-de96-4dcc-8415-1e3f2c7c8baf
+:END:
+#+TITLE: ICML 2025 Reviewer Instructions
+#+FILETAGS: :fleeting:icml:2025:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+Thank you for serving on the ICML 2025 program committee, and welcome to the party!
+
+_Immediate TODO items:_
+- Please make sure you are available during the key reviewing periods and are able to meet the reviewing deadlines (see key dates below).
+- Please read the entirety of these reviewer instructions (this document), as well as these fun and informative [[https://researchonresearch.blog/2024/10/02/peer-reviewer-guidelines-memefied/][Peer Reviewing memes]].
+- Please carefully review the ethical conduct and use of generative AI policies (below).
+- The reviewer form has changed this year. Please go through the reviewer form (below) before beginning to review.
+
+* Responsibilities of Reviewers
+The responsibilities of a reviewer for ICML are as follows:
+- Indicate your areas of research expertise and “bid” on submissions to review.
+- Check your reviewing assignments and notify the overseeing area chair of any problems (e.g., conflicts of interest).
+- Carefully review the correctness and merits of the submissions you have been assigned. The review form this year is new and has specific items that you will be required to complete.
+- Read and acknowledge the Authors’ Responses.
+- Actively participate in discussions.
+
+* Key Dates
+- Bidding period: January 27–30, 2025
+- Full paper submission deadline: January 30, 2025
+- Submission assignment period: February 1–12, 2025
+- Reviewing period: February 13–March 13, 2025
+- Deadline for reviews: March 13, 2025
+- Authors’ response and discussion period: March 25–April 8, 2025
+- Deadline to acknowledge authors’ response: April 4, 2025
+- AC-reviewer discussion period: April 1–April 13, 2025
+- Author notification: May 1, 2025
+
+* Ethical Conduct for Peer Review
+Members of the program committee, including reviewers, are expected to follow standard ethical conduct for peer review. In particular, ICML prohibits:
+  - use of privileged information (e.g., information and discussions about submissions) for any purpose other than reviewing
+  - use of Generative AI tools in reviewing (as described below);
+  - all forms of collusion, whether explicit or tacit (e.g., an arrangement between authors and reviewers, ACs, or SACs to obtain favorable reviews).
+
+Use of Generative AI tools (such as LLMs) for reviewing is strictly prohibited. In particular, reviewers cannot use Generative AI tools to write their reviews, and reviewers cannot input any content from any submission or review into a Generative AI tool.
+
+Please also see the [[https://icml.cc/Conferences/2025/PublicationEthics][ethics guidelines]] of ICML 2025.
+
+If you believe someone may be engaging in unethical conduct, please notify ICML via the [[https://forms.gle/EHwjzdvijxn8ApXN7][Ethics Violation Reporting form]].
+
+All suspected unethical conduct will be investigated by ICML’s oversight committee. Individuals found violating the rules may face sanctions, have their own submissions rejected, etc.
+
+* Review Form
+** Summary
+- Briefly summarize the paper (including the main findings, main results, main algorithmic/conceptual ideas, etc. that the paper claims to contribute). This summary should not be used to critique the paper. A well-written summary should not be disputed by the authors of the paper or other readers.
+
+** Claims and Evidence
+- Are the claims made in the submission supported by clear and convincing evidence? If not, which claims are problematic and why?
+- Did you check the correctness of any proofs for theoretical claims? Please specify which ones, and discuss any issues.
+- Did you check the soundness/validity of any experimental designs or analyses? Please specify which ones, and discuss any issues.
+- Did you review the supplementary material? Which parts?
+
+** Relation to Prior Works
+- How are the key contributions of the paper related to the broader scientific literature? Be as specific in terms of prior related findings/results/ideas/etc.
+- Are there related works that are essential to understanding the (context for) key contributions of the paper, but are not currently cited/discussed in the paper? Be as specific in terms of prior related findings/results/ideas/etc. (Example: “The key contribution is a linear-time algorithm, and only cites a quadratic-time algorithm for the same problem as prior work, but there was also an O(n log n) time algorithm for this problem discovered last year, namely Algorithm 3 from [ABC’24] published in ICML 2024.”)
+- How well-versed are you with the literature related to this paper? (Examples: “I keep up with the literature in this area.”; “I am only familiar with a few key papers in this area, namely [ABC’02], [DEF’04], and [GHI’05].”) *Note: Your response to this item will not be visible to authors. Please also see instructions regarding concurrent work.*
+
+** Other Aspects
+- Enter any comments on other strengths and weaknesses of the paper, such as those concerning originality, significance, and clarity. We encourage you to be open-minded in terms of potential strengths. For example, originality may arise from creative combinations of existing ideas, application to a new domain, or removing restrictive assumptions from prior theoretical results.
+- If you have any other comments or suggestions (e.g., a list of typos), please write them here.
+
+** Questions for Authors
+- If you have any important questions for the authors, please carefully formulate them here. Please reserve your questions for cases where the response would likely change your evaluation of the paper, clarify a point in the paper that you found confusing, or address a critical limitation you identified. Please number your questions so authors can easily refer to them in the response, and explain how possible responses would change your evaluation of the paper.
+
+** Ethical Issues
+- If you believe there are ethical issues with this paper, please flag the paper for an ethics review. For guidance on when this is appropriate, please review the ethics guidelines.
+- If you flagged this paper for ethics review, what area of expertise would it be most useful for the ethics reviewer to have? Please click all that apply:
+  - Discrimination / Bias / Fairness Concerns
+  - Inappropriate Potential Applications & Impact (e.g., human rights concerns)
+  - Privacy and Security
+  - Legal Compliance (e.g., GDPR, copyright, terms of use)
+  - Research Integrity Issues (e.g., plagiarism)
+  - Responsible Research Practice (e.g., IRB, documentation, research ethics)
+  - Other
+- If you flagged this paper for an ethics review, please explain your concerns in detail.
+
+** Code of Conduct Acknowledgement
+Please affirm the following: While performing my duties as a reviewer (including writing reviews and participating in discussions), I have and will continue to abide by the ICML code of conduct.
+
+** Overall Recommendation
+Indicate an overall recommendation:
+1) *Strong accept*
+2) *Accept*
+3) *Weak accept* (i.e., leaning towards accept, but could also be rejected)
+4) *Weak reject* (i.e., leaning towards reject, but could also be accepted)
+5) *Reject*
+
+* Details of the Reviewing Process
+** Bidding
+During the bidding period, reviewers will indicate “bids” on (abstracts of) submissions they are interested in (and qualified for) reviewing. This process is done within OpenReview. These bids will be used, in part, to help with the assignment of submissions to reviewers.
+
+** Reviewing
+Once the assignments are finalized, reviewers should read the assigned submissions carefully, critically, and with empathy. Reviewers are encouraged (but not required) to read any Supplementary Material provided alongside their assigned submissions. Reviews should be provided in OpenReview by completing the items in the review form. All reviews must be submitted by the stated deadline.
+
+** Authors’ Responses
+After the reviewing deadline, authors are given the opportunity to respond to the initial reviews. They are encouraged to briefly clarify points, explain misunderstandings, etc. They are not expected to respond to every individual point in the reviews.
+
+After authors’ responses are posted, reviewers may engage in additional discussion with the authors, to follow-up on any remaining questions or concerns.
+
+Reviewers are expected to read and acknowledge the authors’ responses (e.g., by appropriately updating their reviews and checking an appropriate box) by the stated deadline.
+
+** AC-Reviewer Discussions
+Reviewers are encouraged to discuss the paper with each other by posting and responding to notes on OpenReview (visible only to Reviewers/ACs). This is especially important if there are important contradictions between reviews, or if any important aspects of the paper remain unclear to a reviewer. There is no need to wait for the ACs to initiate these discussions.
+
+Discussions will not be visible to authors, so reviewers are encouraged to appropriately update their reviews after discussions for the benefit of the authors.
+
+** Visibility
+Reviews and the discussion between reviewers and authors for all accepted papers will be made public on OpenReview after the reviewing period. Authors of rejected papers may also opt-in to this public release (and instructions for doing so will be made available later).
+
+The identities of the reviewers will be kept hidden from each other. They will be visible only to ACs, SACs, and program chairs.
+
+** Concurrent Works
+Authors cannot expect to discuss other papers that have only been made publicly available within four months of the submission deadline. (This cut-off is adopted from the [[https://aistats.org/aistats2025/reviewer_guidelines.html][AISTATS]] and [[https://iclr.cc/Conferences/2025/ReviewerGuide][ICLR]] reviewing instructions.) Such recent papers should be considered as concurrent and simultaneous. Good judgement is necessary to decide whether a paper that has not yet been peer-reviewed should be discussed. The guideline is to follow the best practices of the specific subfield; the Area Chair can help in each case with these.
+
+* Reviewer Guidelines
+(Adapted from the [[id:ce931d52-eebf-4ecf-a96d-a3099f53c3bd][ICML 2022 Reviewer Tutorial]].)
+#+begin_quote
+"Review the papers of others as you would wish your own to be reviewed" -- Mihir Bellare, [[https://youtu.be/SPVWSG7-i_E?t=1742)][IACR Distinguished Lecture: Caught in Between Theory and Practice]]
+#+end_quote
+
+** Guiding Principles and Professionalism
+The guiding principle for reviewing is that reviewing should create value for:
+
+1) the authors, by giving them actionable feedback to potentially improve their papers;
+2) the community, by helping authors improve their papers and helping with the decisions to publish papers that advance our field.
+
+A critical aspect of this is the professional conduct of all ICML reviewers. Reviewers are expected to be polite, respectful, and overall professional in their conduct during the whole process. Unprofessional reviews can harm the community in multiple ways: frustration for authors (particularly students) who may slow down in their research, drop out of the field, and/or end up reviewing unprofessionally themselves as a result; loss of promising ideas that could advance the community; resubmission of very similar versions of the paper due to lack of constructive feedback; and so on.
+
+** Tips for Reviewing
+Before starting to review a paper, (re-)read the Review Form, and think about the aspects of the paper that need to be evaluated.
+
+*Read the paper carefully, critically, and with empathy.* As you read, keep in mind that you will need to provide an evaluation of the paper via the Review Form, so it will likely help to take notes for yourself (e.g., highlight the main contributions, mark sections you will need to re-read or check more carefully in a subsequent pass).
+
+After reading the paper, *think carefully about whether the paper has properly substantiated the claimed contributions*. This may involve verifying proofs, checking whether hypotheses are actually tested by the experiments, checking whether empirical claims do indeed follow from empirical results, etc. This is often the most time-consuming part of the reviewing process. Good judgement is needed to determine the severity of any issues that you identify. It is helpful to point out minor issues that are easily fixed, but it is more important to focus on major issues that are critical to the main contributions.
+
+*Consider whether the paper places the research presented into the context of current research*. Assessments about a paper’s “originality” and “significance” often crucially depend on how the paper compares to prior works, and thus such prior works should be cited and discussed in the paper.
+
+Note that in many cases, it is difficult and often unnecessary to cite all related prior works. If some relevant prior works are missed, then think about whether or not including them would change the conclusions of the paper. Some omissions may be considered minor issues that are easily fixed.
+
+Please *give constructive comments and suggestions to the authors* to help them potentially improve their paper. In particular, any comments about strengths and weaknesses must be substantiated.
+
+** Other Resources
+Please see the [[id:ce931d52-eebf-4ecf-a96d-a3099f53c3bd][ICML 2022 Reviewer Tutorial]] and [[https://researchonresearch.blog/2024/10/02/peer-reviewer-guidelines-memefied/][Peer Reviewer Guidelines, Memefied]] for more tips, suggestions, and resources.
