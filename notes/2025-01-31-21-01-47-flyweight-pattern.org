@@ -1,0 +1,322 @@
+:PROPERTIES:
+:ID:       88bd49df-024f-4f5f-bf7f-0e46bc59ce6d
+:END:
+#+TITLE: Flyweight Pattern
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+* 1. Introduction and Historical Context
+
+The =Flyweight= pattern, classified under structural patterns, addresses scenarios where you have a massive number of similar objects that share common intrinsic state. By storing that state in a shared (flyweight) object, you can drastically reduce memory usage and instantiation overhead.
+
+Historically, =Flyweight= became popular in contexts like GUI text rendering. Imagine a text editor containing thousands of repeated characters. Instead of creating a separate glyph object for each occurrence of the letter “A,” the flyweight approach reuses a single “A glyph” object, storing only the letter shape and style once, while maintaining extrinsic data (like position, color changes) separately. The concept extends to numerous other domains: from game engines rendering many identical trees or particles, to large-scale data structures with repeated patterns.
+
+** 1.1 Why Use Flyweight?
+
+- =Memory Efficiency=: By sharing the common, unchanging (intrinsic) data among objects, you avoid duplicating large structures.
+
+- =Improved Performance=: Fewer objects can mean reduced instantiation or destruction costs, plus potential cache benefits if shared data is often accessed.
+
+- =Scalability=: In systems dealing with thousands or millions of similar objects (text glyphs, map tiles, game entities, etc.), =Flyweight= can be the difference between feasible memory usage and runaway resource consumption.
+
+** 1.2 Potential Pitfalls
+
+- =Complexity in Managing Extrinsic State=: The developer must carefully separate which state is intrinsic (shared, stored in the flyweight) and which is extrinsic (unique per use, stored externally or passed into methods).
+
+- =Thread-Safety Issues=: If multiple threads use the same flyweight objects, you must ensure that they only mutate extrinsic data safely, or that the intrinsic data is truly read-only.
+
+- =Overengineering=: For small-scale applications where memory usage is not a bottleneck, introducing Flyweight might add unnecessary complexity.
+
+When memory is tight or object counts are extremely high, =Flyweight= often shines as a powerful optimization strategy.
+
+* 2. Conceptual Motivation
+
+The classic textbook example is the text editor scenario. Each character in a document references a shared “glyph” object for shape data, which is the intrinsic state. Meanwhile, the character’s position or color is the extrinsic state, stored or passed in from elsewhere. As a result, thousands of “A” characters can reuse a single glyph object for “A,” rather than each having its own.
+
+Another domain is a game engine rendering a forest of identical trees. Each tree has the same model data (intrinsic) but different extrinsic data (coordinates, orientation, scale). Flyweight ensures that we store only one “tree model,” referencing it from each tree instance.
+
+* 3. Beginner Example (Rust)
+
+Let’s start with a simple Rust example, illustrating how Flyweight can handle repeated character glyphs in a pretend text rendering system. Although real text rendering in Rust might rely on crates like =rusttype= or =fontdue=, we’ll keep it conceptual.
+
+** 3.1 Motivating Scenario
+
+We have a large text file or document. Each character requires data about its shape, metrics, and possibly style details (font face, weight). Storing each character’s shape data individually would be wasteful, particularly for repeated letters. Instead, we maintain a glyph cache that reuses the same shape data for each unique character. The client code that draws text references the shape from the cache but stores position and color extrinsically.
+
+** 3.2 Code Example (Beginner, Rust)
+
+#+BEGIN_SRC rust
+use std::collections::HashMap;
+use std::sync::{Arc, Mutex};
+
+// The "intrinsic" data for a glyph: shape, metrics, possibly font ID
+#[derive(Debug, Clone)]
+struct GlyphData {
+    character: char,
+    shape_description: String, // placeholder for actual shape or path data
+}
+
+// The flyweight object: a reference-counted pointer to the glyph data
+// In real code, we might store additional metadata or a glyph ID
+#[derive(Clone)]
+struct GlyphFlyweight {
+    data: Arc<GlyphData>,
+}
+
+impl GlyphFlyweight {
+    fn new(character: char, shape_description: &str) -> Self {
+        let glyph_data = GlyphData {
+            character,
+            shape_description: shape_description.to_string(),
+        };
+        GlyphFlyweight {
+            data: Arc::new(glyph_data),
+        }
+    }
+
+    fn draw(&self, x: i32, y: i32, color: &str) {
+        println!(
+            "Drawing '{}' at ({},{}) with color {}. Shape: {}",
+            self.data.character, x, y, color, self.data.shape_description
+        );
+    }
+}
+
+// The "flyweight factory" that reuses glyph data
+struct GlyphFactory {
+    cache: Mutex<HashMap<char, GlyphFlyweight>>,
+}
+
+impl GlyphFactory {
+    fn new() -> Self {
+        GlyphFactory {
+            cache: Mutex::new(HashMap::new()),
+        }
+    }
+
+    fn get_glyph(&self, character: char) -> GlyphFlyweight {
+        let mut cache_guard = self.cache.lock().unwrap();
+        cache_guard
+            .entry(character)
+            .or_insert_with(|| {
+                println!("Creating new flyweight for '{}'", character);
+                GlyphFlyweight::new(character, &format!("shape_of_{}", character))
+            })
+            .clone()
+    }
+}
+
+// Example usage
+fn main() {
+    let factory = GlyphFactory::new();
+
+    let text = "BANANA";
+    let positions = vec![(10,10), (20,10), (30,10), (40,10), (50,10), (60,10)];
+
+    for (idx, ch) in text.chars().enumerate() {
+        let glyph = factory.get_glyph(ch);
+        // The extrinsic data: position, color
+        glyph.draw(positions[idx].0, positions[idx].1, "Yellow");
+    }
+}
+#+END_SRC
+
+*** 3.2.1 Explanation
+
+- =GlyphData=: Holds potentially large shape data, identified by character.  
+- =GlyphFlyweight=: Wraps a shared =Arc<GlyphData>=, so we can cheaply clone references to the same glyph data.  
+- =GlyphFactory=: A concurrency-safe cache. It returns a glyph flyweight for each character, creating a new one only if needed.  
+- =Extrinsic Data=: In draw, we pass x, y, color as extrinsic state unique to each usage.  
+- =Usage=: For “BANANA,” the factory creates glyphs for ‘B’, ‘A’, and ‘N’ only once each, reusing them as letters repeat.
+
+** 3.3 Observations
+
+This Rust example neatly shows how we store intrinsic glyph data once per character, while passing variable “extrinsic” data from the outside. Memory overhead is minimized by reusing shape data, important if text is large.
+
+* 4. Intermediate Example (Guile Scheme)
+
+For an intermediate scenario in Guile Scheme, we’ll model a small graphical system drawing repeated shapes (like circles or squares). Each shape type’s geometry is the intrinsic data, while position is extrinsic.
+
+** 4.1 Motivating Scenario
+
+Suppose we’re building a 2D scene with numerous repeated shapes. Instead of storing each shape’s geometry repeatedly, we keep a single “flyweight shape object” for each type, referencing it from the various drawn instances. We only store or pass extrinsic data like position or color from the outside.
+
+** 4.2 Code Example (Intermediate, Guile Scheme)
+
+#+BEGIN_SRC scheme
+(use-modules (oop goops))
+
+;; Let's define a <shape-flyweight> class to hold the 'intrinsic' shape data: a shape name, a size, etc.
+(define-class <shape-flyweight> ()
+  (name #:init-keyword #:name #:init-value "Unnamed")
+  (size #:init-keyword #:size #:init-value 10)
+  (color #:init-keyword #:color #:init-value "Black")
+  (define (draw (self) x y)
+    (format #t "Drawing shape '~a' at (~a,~a), size=~a, color=~a\n"
+            (slot-ref self 'name) x y (slot-ref self 'size) (slot-ref self 'color))))
+
+;; A shape-flyweight-factory that reuses shapes
+(define <shape-flyweight-factory>
+  (let ((cache (make-hash-table)))
+    (lambda (cmd . args)
+      (cond
+       ((eq? cmd 'get-flyweight)
+        (let* ((name (car args))
+               (key (string-append "shape:" name)))
+          (or (hash-ref cache key)
+              (let ((new-fly (make <shape-flyweight> #:name name #:size 10 #:color "Black")))
+                (hash-set! cache key new-fly)
+                new-fly))))
+       (else (error "Unknown command to shape-flyweight-factory" cmd))))))
+
+;; Let's define a function to draw many shapes with extrinsic positions
+(define (draw-scene shape-names positions)
+  (let ((factory <shape-flyweight-factory>))
+    (for-each
+     (lambda (pair)
+       (let ((name (car pair))
+             (coords (cdr pair)))
+         (let ((flyweight ((factory 'get-flyweight) name)))
+           ;; pass extrinsic info: x, y
+           (send flyweight 'draw (car coords) (cadr coords)))))
+     (map cons shape-names positions))))
+
+;; Example usage
+(let ((shape-names '("circle" "circle" "square" "circle" "square"))
+      (positions '((10 10) (20 20) (30 30) (40 50) (50 60))))
+  (draw-scene shape-names positions))
+#+END_SRC
+
+*** 4.2.1 Explanation
+
+- =<shape-flyweight>=: The class storing intrinsic shape data (name, size, default color). Its =draw= method is where we pass extrinsic data (x, y).  
+- =<shape-flyweight-factory>=: A closure with a hash table. The =get-flyweight= command returns or creates a shape by name. All “circle” shapes share one intrinsic object.  
+- =draw-scene=: We pair shape names with positions. For each shape name, we fetch the shared flyweight and pass in the extrinsic position.  
+- =Usage=: We repeatedly draw “circle” or “square,” referencing the same flyweight for each shape type. We skip storing large geometry data multiple times.
+
+** 4.3 Observations
+
+Even in Scheme, the pattern is consistent: intrinsic data is shared, extrinsic data is passed at usage time. The memory savings emerge if we draw many “circle” shapes, each with unique coordinates but the same geometry.
+
+* 5. Advanced Example (Python)
+
+Finally, we’ll illustrate a more advanced usage in Python, focusing on a geospatial mapping scenario. We’ll build a system that displays map tiles, many of which might share identical images or data but differ by location or small overlays.
+
+** 5.1 Motivating Scenario
+
+Imagine a web mapping application. The map is composed of tiles, each representing a portion of the map at a given zoom level. Many tiles might share the same base image if they’re from the same region or dataset, but each tile is placed at a different coordinate on the screen. By storing a single image resource per tile type, we cut memory usage drastically.
+
+** 5.2 Code Example (Advanced, Python)
+
+#+BEGIN_SRC python
+import random
+
+class TileData:
+    """Intrinsic data for a tile: e.g. the actual image or placeholder for it."""
+    def __init__(self, tile_type, zoom_level):
+        self.tile_type = tile_type
+        self.zoom_level = zoom_level
+        # In a real system, we might load an actual image from disk or a server
+        self.image_resource = f"Resource_for_{tile_type}_zoom_{zoom_level}"
+
+    def get_image(self):
+        return self.image_resource
+
+class TileFlyweight:
+    """Flyweight object that holds a reference to shared TileData."""
+    def __init__(self, tile_data):
+        self._tile_data = tile_data
+
+    def draw(self, x, y, overlay=None):
+        """Render the tile at map coordinate (x, y) with an optional overlay."""
+        # The extrinsic data is the tile's position and overlay info
+        base_img = self._tile_data.get_image()
+        print(f"Drawing tile '{base_img}' at {x},{y}, overlay={overlay or 'None'}")
+
+class TileFlyweightFactory:
+    """Manages a pool of flyweight tiles keyed by (tile_type, zoom_level)."""
+    _cache = {}
+
+    @classmethod
+    def get_flyweight(cls, tile_type, zoom_level):
+        key = (tile_type, zoom_level)
+        if key not in cls._cache:
+            print(f"[Factory] Creating new TileData for type={tile_type}, zoom={zoom_level}")
+            tile_data = TileData(tile_type, zoom_level)
+            cls._cache[key] = TileFlyweight(tile_data)
+        return cls._cache[key]
+
+# Example usage: building a large map with repeated tile types
+def build_map():
+    # We'll generate a 10x10 grid, each tile references a tile type and zoom level
+    tile_types = ["land", "water", "forest", "urban"]
+    zoom = 5
+    for y in range(10):
+        for x in range(10):
+            # pick a tile type at random to simulate variety
+            ttype = random.choice(tile_types)
+            # retrieve the shared flyweight
+            fly = TileFlyweightFactory.get_flyweight(ttype, zoom)
+            # The extrinsic data is the tile's grid coords and an optional overlay
+            overlay = None
+            if random.random() < 0.1:
+                overlay = "marker"  # 10% chance to place a marker
+            fly.draw(x, y, overlay)
+
+if __name__ == "__main__":
+    build_map()
+#+END_SRC
+
+*** 5.2.1 Explanation
+
+- =TileData=: The intrinsic data: tile type (“land,” “water,” etc.), zoom level, possibly an image resource.  
+- =TileFlyweight=: References a single TileData object. The draw method receives extrinsic data (map coords, overlay).  
+- =TileFlyweightFactory=: A class-level cache keyed by (tile_type, zoom_level). If a flyweight doesn’t exist for that combination, we create it once, then reuse it.  
+- =build_map()=: We create a 10×10 grid, pick random tile types, and retrieve the shared flyweight. Each tile might also have an extrinsic overlay marker. The factory ensures memory usage stays manageable if many tiles share the same tile type and zoom.
+
+** 5.3 Observations
+
+This advanced Python example mirrors a more real-world scenario in geospatial apps. By caching tile data, we avoid storing duplicate images for each tile. The extrinsic data (position, optional overlay) is unique per tile instance.
+
+* 6. Nuances, Variations, and Best Practices
+
+** 6.1 Intrinsic vs. Extrinsic State
+
+Properly identifying intrinsic vs. extrinsic state is critical. Intrinsic state is stored in the shared flyweight; extrinsic state must be provided externally (e.g., method parameters). Mistakes here can lead to concurrency issues or accidental overwriting of data.
+
+** 6.2 Factory and Caching
+
+A typical Flyweight implementation includes a factory or manager that returns existing flyweight objects for repeated requests. This ensures we never duplicate the same intrinsic data. The factory might also handle cleanup if some data is no longer needed, though many languages rely on garbage collection instead.
+
+** 6.3 Thread-Safety
+
+If multiple threads might request or mutate the same flyweight objects, design carefully. Often the intrinsic data is read-only, so that part is safe to share. The caching structure itself (like a HashMap) may need synchronization, as we saw in the Rust example with a =Mutex=.
+
+** 6.4 Overuse vs. Necessity
+
+Not every repetitive scenario warrants Flyweight. For smaller object counts or low memory usage constraints, it might be overkill. But when faced with truly large data sets (text, map tiles, repeated game models), Flyweight can be a crucial optimization.
+
+** 6.5 Memory Gains and Performance
+
+By ensuring repeated data is shared, you cut down memory usage drastically if the repeated portion is large. Performance also can improve from fewer allocations, though there is overhead in retrieving the shared objects (factory lookups or hashing). Typically, the net result is positive if usage is large scale.
+
+** 6.6 Testing a Flyweight System
+
+Test that your factory reuses objects properly and that extrinsic data is handled separately. Also consider stress tests or profiling to confirm memory and performance improvements. Watch out for concurrency pitfalls, especially if extrinsic data is stored in or near the flyweight.
+
+* 7. Real-World Usage
+
+- =Text Rendering=: Each character references a shared glyph data.  
+- =Game Engines=: Large volumes of identical objects (trees, particles, bullets) share the same mesh or texture.  
+- =Map Systems=: Repeated tile images at certain zoom levels (as in our Python example).  
+- =Symbol Interning=: Some languages or frameworks “intern” strings or symbols so that identical values map to the same internal object.  
+- =Data Structures=: Repeated sub-strings or sub-objects in a massive data set can share the same “flyweight node.”
+
+* 8. Conclusion
+
+The =Flyweight= pattern is a potent technique for memory optimization (and sometimes performance) in scenarios involving vast numbers of similar objects. By separating intrinsic (shared) and extrinsic (unique) state, you avoid duplicating large internal data for each instance. In each of our three examples:
+
+- =Beginner (Rust)=: A glyph caching system for text, storing shape data once per character.
+- =Intermediate (Guile Scheme)=: A shape drawing scenario, reusing shape data (“circle,” “square”), while passing extrinsic positions.
+- =Advanced (Python)=: A geospatial mapping system caching tile images, crucial for large map coverage.
+
+Across these examples, the same principle applies: store the large, unchanging data once in a shared object, and rely on external parameters or minimal references for instance-specific data. Where memory or object count is a constraint, =Flyweight= can provide a major advantage, helping software remain efficient at scale.
