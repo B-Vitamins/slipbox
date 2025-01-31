@@ -1,0 +1,537 @@
+:PROPERTIES:
+:ID:       8c049207-bee5-439f-a1fc-2b8626836b7c
+:END:
+#+TITLE: Event Sourcing Pattern
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+* 1. Introduction and Historical Context
+
+Event Sourcing is an architectural pattern in which all changes to an application’s state are stored as a log of events rather than overwriting the current state in place. In typical CRUD-based systems, each update modifies rows and columns, losing history and requiring “snapshots” or logs if historical data is needed. Event Sourcing flips that around: we store the sequence of domain events that happened—like “UserRegistered,” “PaymentMade,” “ItemAddedToCart.” The current state is derived from replaying or aggregating those events.
+
+This pattern is closely tied to CQRS (Command Query Responsibility Segregation) in many systems, but it can also stand alone. Historically, event sourcing gained momentum in the domain-driven design (DDD) community, especially for systems that need full audit trails or that are prone to complex domain logic. The approach has expanded further with the rise of microservices and distributed systems, where event logs can help with replication, recovery, or even “time-travel debugging.”
+
+** 1.1 Why Use Event Sourcing?
+
+- **Auditability**: By storing every domain event, you gain a perfect history of what changed and when. This is invaluable for compliance or debugging.
+- **Temporal Queries**: You can reconstruct the system’s state at any past point (“show me how the cart looked yesterday at 3pm”).
+- **Scalability**: In some cases, you can replay events on new read-models or microservices. This approach fosters building new queries or read-models without disturbing the “authoritative log.”
+- **Resilience**: If something goes wrong in your current state store, you can rebuild the entire state from the event log.
+
+** 1.2 Potential Pitfalls
+
+- **Growing Log**: As events accumulate, you might gather massive amounts of historical data. You often adopt “snapshotting” or archiving to manage storage.
+- **Complex Replay**: Replaying thousands or millions of events can be time-consuming. Typically, systems store occasional snapshots to skip replaying from the start of time.
+- **Schema Changes**: If your domain events evolve (fields added, removed) over time, you must handle old events. Versioning your events is essential.
+- **Immediate Consistency**: Because the “write path” commits events, but the “read path” might need time to update read-models, you might see eventual consistency in some queries.
+
+Despite these challenges, Event Sourcing is extremely powerful for domain-driven or distributed systems, especially where you want an audit log or the ability to reconstruct or replicate data in new ways.
+
+* 2. Conceptual Motivation
+
+Imagine you’re building a financial ledger. Each deposit or withdrawal is an event. Instead of updating a “balance” column directly, you store “Deposit($100),” “Withdrawal($20).” The current balance is derived by summing those events. If an error occurs, you can fix it by appending a new “Correction” event, without rewriting history. You always keep the chronological log. Similarly, if you want to build a new analytics system, you can replay all events from day one, generating an advanced analysis of user transactions. You never lost the intermediate states or partial data changes.
+
+In asynchronous or distributed contexts, event logs can be published to a message bus (like Kafka). Each microservice can maintain its own read-model or partial state, built from the same event stream. If a new service arises, it just replays the relevant events. This fosters a decoupled architecture: the “write side” only appends events, the “read side” or other services build states or queries from them at their own pace.
+
+* 3. Beginner Example (Haskell)
+
+We’ll start with a beginner demonstration in Haskell, focusing on building a small in-memory event store for a single domain type—“bank account” events, for instance—plus a method to apply them to derive the current state. We’ll illustrate how you might store events in a list or file, then replay them to get the final balance or transaction history.
+
+** 3.1 Motivating Scenario
+
+We want a miniature bank account domain. Each event is “Deposited amount” or “Withdrew amount.” We keep them in a sequence, and we can compute the current balance by folding over those events. For a “beginner-level” approach, we’ll just store them in an in-memory list, but we could easily write them to a file or database. We’ll show how we can reconstruct the final balance and also run queries like “What was the balance after 5th event?”
+
+** 3.2 Code Example (Beginner, Haskell)
+
+#+BEGIN_SRC haskell
+{-# LANGUAGE OverloadedStrings #-}
+
+module Main where
+
+import Control.Monad (foldM)
+import Data.Time (getCurrentTime, UTCTime)
+import Data.IORef
+
+data BankEvent = Deposited { amount :: Int, time :: UTCTime }
+               | Withdrew  { amount :: Int, time :: UTCTime }
+               deriving (Show)
+
+-- the domain state
+data BankState = BankState { balance :: Int }
+  deriving (Show)
+
+-- apply an event to derive new state
+applyEvent :: BankState -> BankEvent -> BankState
+applyEvent st (Deposited amt _) = st { balance = balance st + amt }
+applyEvent st (Withdrew amt _)  = st { balance = balance st - amt }
+
+-- We define an "EventStore" as a simple list of BankEvent in an IORef
+type EventStore = IORef [BankEvent]
+
+initEventStore :: IO EventStore
+initEventStore = newIORef []
+
+-- append an event
+appendEvent :: EventStore -> BankEvent -> IO ()
+appendEvent store evt = do
+  events <- readIORef store
+  writeIORef store (events ++ [evt])
+
+-- read all events
+getAllEvents :: EventStore -> IO [BankEvent]
+getAllEvents store = readIORef store
+
+-- derive current state by replaying events
+getCurrentState :: EventStore -> IO BankState
+getCurrentState store = do
+  events <- getAllEvents store
+  return $ foldl applyEvent (BankState 0) events
+
+-- usage
+main :: IO ()
+main = do
+  store <- initEventStore
+  now <- getCurrentTime
+  let e1 = Deposited 100 now
+  let e2 = Withdrew 30 now
+  appendEvent store e1
+  appendEvent store e2
+
+  st <- getCurrentState store
+  putStrLn $ "Current state: " ++ show st
+
+  -- let's do more
+  let e3 = Deposited 200 now
+  appendEvent store e3
+  finalSt <- getCurrentState store
+  putStrLn $ "After second deposit => " ++ show finalSt
+#+END_SRC
+
+** 3.2.1 Explanation
+
+- **BankEvent**: We define two event types, `Deposited` and `Withdrew`, each storing an amount and a time.
+- **applyEvent(...)**: We show how each event modifies the `BankState`, i.e., changing balance by adding or subtracting amount.
+- **EventStore**: Here, an `IORef [BankEvent]`. We define `appendEvent` to add an event to the list, `getAllEvents` to retrieve them, and `getCurrentState` to fold over them, building the final `BankState`.
+- **Usage**: We create the store, append events for deposit/withdraw, then query the final state. We see how the system never directly sets “balance,” but only appends domain events, from which we derive the final balance.
+
+** 3.3 Observations
+
+This is a minimal approach, but it captures the essence of event sourcing: store domain events in order, replay them to get the “truth.” We see how we can easily do “temporal queries” by partially folding the first N events. If we used a database or file instead of an in-memory list, we’d get a real persistent log. This approach also fosters a clear domain boundary: the domain logic resides in how events are defined and how they’re applied.
+
+* 4. Intermediate Example (Go)
+
+Next, we illustrate an intermediate usage in Go, focusing on a scenario that includes snapshots and multiple aggregates. We’ll store events in a file or in memory, plus keep snapshots to speed up state reconstruction. We’ll also demonstrate concurrency aspects: multiple goroutines might append events, then we eventually read the final state or older states.
+
+** 4.1 Motivating Scenario
+
+We want a small system that handles multiple “inventory item” aggregates (like items in a warehouse). Each item can have events like “StockAdded,” “StockRemoved.” We store them in a single event log but with an aggregateID so we know which item they belong to. For performance, we do occasional snapshots: every 10 events for an item, we store the item’s current quantity. Then, reconstructing an item’s state from scratch only requires reading from the last snapshot plus the subsequent events. We’ll show concurrency by letting multiple goroutines add events.
+
+** 4.2 Code Example (Intermediate, Go)
+
+#+BEGIN_SRC go
+package main
+
+import (
+    "fmt"
+    "sync"
+    "time"
+    "os"
+    "encoding/json"
+)
+
+// define event types
+type InventoryEvent struct {
+    AggregateID string
+    Type        string // "stockAdded", "stockRemoved"
+    Quantity    int
+    Timestamp   time.Time
+}
+
+// define state
+type InventoryState struct {
+    ItemID   string
+    Quantity int
+}
+
+// define snapshot
+type Snapshot struct {
+    ItemID     string
+    Quantity   int
+    EventIndex int // up to which event index this snapshot covers
+}
+
+type EventStore struct {
+    events    []InventoryEvent
+    snapshots map[string]Snapshot
+    mu        sync.Mutex
+    // in a real system, you'd store them on disk or DB
+}
+
+func NewEventStore() *EventStore {
+    return &EventStore{
+        events:    make([]InventoryEvent, 0),
+        snapshots: make(map[string]Snapshot),
+    }
+}
+
+// append an event
+func (es *EventStore) Append(e InventoryEvent) error {
+    es.mu.Lock()
+    defer es.mu.Unlock()
+    es.events = append(es.events, e)
+    idx := len(es.events) - 1
+
+    // maybe create snapshot if it's a multiple of 5 for that item
+    // (just a demonstration)
+    if idx % 5 == 0 {
+        // build current state
+        st := es.replayFor(e.AggregateID)
+        snap := Snapshot{
+            ItemID: e.AggregateID,
+            Quantity: st.Quantity,
+            EventIndex: idx,
+        }
+        es.snapshots[e.AggregateID] = snap
+    }
+    return nil
+}
+
+// replay state for a given aggregate
+func (es *EventStore) replayFor(itemID string) InventoryState {
+    // see if we have a snapshot
+    snap, has := es.snapshots[itemID]
+    startIndex := 0
+    var st InventoryState
+    if has {
+        st = InventoryState{ItemID: snap.ItemID, Quantity: snap.Quantity}
+        startIndex = snap.EventIndex + 1
+    } else {
+        st = InventoryState{ItemID: itemID, Quantity: 0}
+    }
+    for i := startIndex; i < len(es.events); i++ {
+        evt := es.events[i]
+        if evt.AggregateID == itemID {
+            switch evt.Type {
+            case "stockAdded":
+                st.Quantity += evt.Quantity
+            case "stockRemoved":
+                st.Quantity -= evt.Quantity
+            }
+        }
+    }
+    return st
+}
+
+func main() {
+    es := NewEventStore()
+
+    // let's define a function that concurrently updates inventory
+    var wg sync.WaitGroup
+    doUpdates := func(itemID string, count int) {
+        defer wg.Done()
+        for i := 0; i < count; i++ {
+            evt := InventoryEvent{
+                AggregateID: itemID,
+                Type: "stockAdded",
+                Quantity: 10,
+                Timestamp: time.Now(),
+            }
+            es.Append(evt)
+            time.Sleep(10 * time.Millisecond)
+        }
+    }
+
+    wg.Add(2)
+    go doUpdates("itemA", 7)
+    go doUpdates("itemB", 9)
+    wg.Wait()
+
+    // now let's see the final states
+    stA := es.replayFor("itemA")
+    stB := es.replayFor("itemB")
+    fmt.Printf("Final state itemA => %v\n", stA)
+    fmt.Printf("Final state itemB => %v\n", stB)
+
+    // in real system, we'd store events/snapshots to a file or DB
+    // e.g. json encode them
+    data, _ := json.MarshalIndent(es.events, "", "  ")
+    fmt.Printf("All events: %s\n", data)
+}
+#+END_SRC
+
+** 4.2.1 Explanation
+
+- **InventoryEvent**: Has `AggregateID`, `Type` (`"stockAdded"`, `"stockRemoved"`), `Quantity`, and a timestamp.
+- **EventStore**: Manages a slice of events and a map of snapshots. On each `Append`, we push the event. Potentially we create or update a snapshot after every 5 events. This is a naive demonstration.
+- **replayFor(itemID)**: We first load from a snapshot if present, then replay events from that snapshot index onward. This is an Event Sourcing approach with partial replays.
+- **Concurrency**: We have `mu sync.Mutex` to protect writes to the events slice. We spawn two goroutines that each do updates on a separate item. After they finish, we compute final states for each item.
+- **Usage**: We see how event sourcing can help if we want to know exactly how many times “stock was added” to itemA or itemB. We can store or retrieve the entire event log.
+
+** 4.3 Observations
+
+This is intermediate because we incorporate snapshots, multiple aggregates, concurrency, and a naive approach to partial replays. Real systems might do more sophisticated partitioning or indexing. The fundamental approach remains: each domain update is an event appended to a log, and we reconstruct state by applying events. We see how concurrency is handled around appending events, though in a real system we might use a queue or a more robust approach to parallel event writes.
+
+* 5. Advanced Example (Rust)
+
+Finally, we illustrate an advanced usage in Rust, focusing on building a more robust event-sourced system that includes command handling (for domain logic) and event publishing to other “subscribers.” We’ll integrate some asynchronous functionality (like using a background thread or an async runtime) to demonstrate how event logs can feed other parts of the system. This is advanced because we combine domain-level commands, a centralized event store, and an async subscription or projection.
+
+** 5.1 Motivating Scenario
+
+We want a system that processes commands like “PlaceOrder” or “CancelOrder” for an e-commerce domain. Each command leads to events like “OrderPlaced” or “OrderCanceled.” We store these events in an event store. Meanwhile, a “projection” or “subscriber” wants to maintain a read-model of open orders. We do this by listening to new events in an async task, applying them to a “orders projection.” This approach is typical in event-sourced plus CQRS solutions, where the write side appends domain events, and the read side uses them to maintain queries or states.
+
+** 5.2 Code Example (Advanced, Rust)
+
+#+BEGIN_SRC rust
+use std::sync::{Arc, Mutex};
+use std::thread;
+use std::collections::HashMap;
+use crossbeam::channel::{unbounded, Sender, Receiver};
+use chrono::{DateTime, Utc};
+
+// domain events
+#[derive(Debug, Clone)]
+enum OrderEvent {
+    OrderPlaced { order_id: String, amount: i32, time: DateTime<Utc> },
+    OrderCanceled { order_id: String, time: DateTime<Utc> },
+}
+
+// command
+enum OrderCommand {
+    PlaceOrder { order_id: String, amount: i32 },
+    CancelOrder { order_id: String },
+}
+
+// domain state for a single order
+#[derive(Debug, Clone)]
+struct OrderState {
+    order_id: String,
+    status: String, // "placed", "canceled"
+    amount: i32,
+}
+
+impl OrderState {
+    fn apply(&mut self, evt: &OrderEvent) {
+        match evt {
+            OrderEvent::OrderPlaced{order_id, amount, ..} => {
+                self.status = "placed".to_string();
+                self.amount = *amount;
+            }
+            OrderEvent::OrderCanceled{..} => {
+                self.status = "canceled".to_string();
+            }
+        }
+    }
+}
+
+// event store
+struct EventStore {
+    events: Mutex<Vec<OrderEvent>>,
+    // we can keep an event channel for subscribers
+    subscribers: Mutex<Vec<Sender<OrderEvent>>>,
+}
+
+impl EventStore {
+    fn new() -> Self {
+        EventStore {
+            events: Mutex::new(Vec::new()),
+            subscribers: Mutex::new(Vec::new()),
+        }
+    }
+
+    fn append(&self, evt: OrderEvent) {
+        {
+            let mut e = self.events.lock().unwrap();
+            e.push(evt.clone());
+        }
+        // notify subscribers
+        let subs = self.subscribers.lock().unwrap();
+        for s in subs.iter() {
+            s.send(evt.clone()).ok();
+        }
+    }
+
+    fn subscribe(&self) -> Receiver<OrderEvent> {
+        let (tx, rx) = unbounded();
+        {
+            let mut subs = self.subscribers.lock().unwrap();
+            subs.push(tx);
+        }
+        rx
+    }
+
+    fn load_all(&self) -> Vec<OrderEvent> {
+        let e = self.events.lock().unwrap();
+        e.clone()
+    }
+}
+
+// We'll define an "application" that handles commands
+struct OrderApp {
+    store: Arc<EventStore>,
+}
+
+impl OrderApp {
+    fn new(store: Arc<EventStore>) -> Self {
+        OrderApp { store }
+    }
+
+    fn handle_command(&self, cmd: OrderCommand) {
+        match cmd {
+            OrderCommand::PlaceOrder { order_id, amount } => {
+                let evt = OrderEvent::OrderPlaced {
+                    order_id,
+                    amount,
+                    time: Utc::now(),
+                };
+                self.store.append(evt);
+            }
+            OrderCommand::CancelOrder { order_id } => {
+                let evt = OrderEvent::OrderCanceled {
+                    order_id,
+                    time: Utc::now(),
+                };
+                self.store.append(evt);
+            }
+        }
+    }
+}
+
+// a "projection" that keeps track of the current state of each order
+struct OrdersProjection {
+    states: HashMap<String, OrderState>,
+}
+
+impl OrdersProjection {
+    fn new() -> Self {
+        OrdersProjection {
+            states: HashMap::new(),
+        }
+    }
+
+    fn apply(&mut self, evt: &OrderEvent) {
+        match evt {
+            OrderEvent::OrderPlaced { order_id, amount, .. } => {
+                let mut st = self.states.entry(order_id.clone())
+                    .or_insert(OrderState {
+                        order_id: order_id.clone(),
+                        status: "unknown".to_string(),
+                        amount: 0,
+                    });
+                st.apply(evt);
+            }
+            OrderEvent::OrderCanceled { order_id, .. } => {
+                let mut st = self.states.entry(order_id.clone())
+                    .or_insert(OrderState {
+                        order_id: order_id.clone(),
+                        status: "unknown".to_string(),
+                        amount: 0,
+                    });
+                st.apply(evt);
+            }
+        }
+    }
+
+    fn get_state(&self, order_id: &str) -> Option<&OrderState> {
+        self.states.get(order_id)
+    }
+}
+
+fn main() {
+    let store = Arc::new(EventStore::new());
+    let app = OrderApp::new(store.clone());
+
+    // let's create a projection that we'll update in a separate thread
+    let projection_rx = store.subscribe();
+    let mut projection = OrdersProjection::new();
+    let proj_handle = thread::spawn(move || {
+        // replay all existing events first
+        // (if we had any)
+        // then keep reading new events
+        while let Ok(evt) = projection_rx.recv() {
+            projection.apply(&evt);
+            println!("Projection updated => event: {:?}", evt);
+        }
+        println!("Projection thread done.");
+    });
+
+    // simulate some commands
+    app.handle_command(OrderCommand::PlaceOrder {
+        order_id: "order123".to_string(),
+        amount: 250,
+    });
+    app.handle_command(OrderCommand::PlaceOrder {
+        order_id: "order456".to_string(),
+        amount: 999,
+    });
+    app.handle_command(OrderCommand::CancelOrder {
+        order_id: "order123".to_string(),
+    });
+
+    // wait a bit
+    std::thread::sleep(std::time::Duration::from_secs(1));
+
+    // in a real system, we'd do a graceful shutdown
+    // The projection thread is blocked waiting for store channel closes
+    // or we can just end main
+    println!("Main done, ending.");
+}
+#+END_SRC
+
+** 5.2.1 Explanation
+
+- **OrderEvent**: We define `OrderPlaced` and `OrderCanceled` with time stamps. This is the domain event.
+- **EventStore**: We store events in `events: Mutex<Vec<OrderEvent>>`. We also keep a list of subscriber channels so that whenever we `append(...)`, we broadcast the event. This is the basis for building read-models or “projections.”
+- **OrdersProjection**: A separate data structure that replays events to maintain a `HashMap<String, OrderState>`. Each event modifies the relevant order. We call `st.apply(evt)`.
+- **OrderApp**: This is the “command handler.” It interprets commands like “PlaceOrder” into domain events. We do minimal domain logic here. In a real system, we might check if the order is already placed, etc.
+- **Subscription**: We do `store.subscribe()`, returning a channel from which we read new events. We spawn a thread to read from that channel indefinitely, calling `projection.apply(...)`. This is a typical asynchronous approach: the event log is the source of truth, read-model watchers subscribe to new events to keep their data updated.
+
+** 5.3 Observations
+
+This advanced example merges Event Sourcing with a CQRS-style approach. We see how multiple consumers can subscribe to the event log, each building their own projection. The pattern fosters asynchronous concurrency: each event is appended once, then fan-out to any subscribers that handle the partial data. Meanwhile, the system is flexible for further expansions, like distributing the store or storing events in a real database.
+
+* 6. Nuances, Variations, and Best Practices
+
+1. **Snapshot Strategies**  
+   For large volumes of events, you typically store snapshots of each aggregate at intervals, to avoid replay from day zero. The snapshots can be in a separate store or in the same event log as “snapshot events.”
+
+2. **Partitioning**  
+   In large systems, you might partition events by aggregate ID or by domain, so you can scale horizontally. Each partition or shard can handle its own event stream.
+
+3. **Schema Evolution**  
+   If an event’s shape changes, you must handle old versions. Typically, you store version numbers or adopt a “semantic version” approach that can handle missing fields.
+
+4. **Multi-Stream**  
+   Some systems keep separate streams per aggregate. Others keep one big stream with an “aggregate ID.” Both have pros and cons in terms of searching, partitioning, or atomic appends.
+
+5. **Complex Commands**  
+   In domain-driven designs, a command is validated, resulting in zero, one, or many domain events. This can be more advanced than the examples we showed, which are minimal.
+
+6. **Eventual Consistency**  
+   Because read-models (like queries) might be updated asynchronously after events are appended, queries might lag behind the “write side.” This is acceptable for many domains but requires careful user experience design.
+
+7. **Tooling**  
+   There’s a rich ecosystem of libraries or frameworks for event sourcing (like Axon in Java, Akka Persistence in Scala, or custom solutions). They handle many complexities for you.
+
+* 7. Real-World Usage
+
+- **Financial Systems**: Transactions are naturally events. Storing them as an event log ensures every deposit or withdrawal is tracked, letting you recast account balances or generate advanced statements.
+- **E-Commerce**: Orders, cancellations, shipments are events. You can build multiple read-models: inventory views, order status dashboards, or analytics.
+- **Microservices**: A central event log can serve as a “source of truth,” with each microservice replaying events to build local states. If a service fails or is newly introduced, it can catch up by reading from the log.
+- **Gaming**: Keeping track of game world changes (like “player picked up item,” “monster spawned”) as events. The server can replay states or do debugging.
+- **IoT**: Each sensor reading is an event. A large event store can feed analytics, machine learning pipelines, or real-time dashboards.
+
+* 8. Conclusion
+
+Event Sourcing is a powerful design pattern that reorganizes state management around domain events. By storing every change as an immutable event rather than overwriting state, you gain:
+
+- **Comprehensive Audit Trail**: All changes remain in the log.
+- **Reconstructable State**: You can replay or partially replay events to build new queries, fix logic, or debug.
+- **Scalable & Distributed**: Coupled with asynchronous broadcasting, event sourcing supports large systems, multiple read-models, and microservice expansions.
+- **Incremental Evolution**: If you need to fix a bug or add a new read-model, you just interpret the events differently or build a new projection.
+
+We showcased:
+
+- **Beginner (Haskell)**: A naive bank account scenario with an in-memory list of events. We apply them to get the final balance. This demonstrates the pattern’s fundamental principle of storing domain events, not direct state.
+- **Intermediate (Go)**: An inventory example with concurrency, multiple aggregates, and snapshots to speed up replays. We handle concurrency by locking an in-memory store, but real systems might store events in a real DB or queue.
+- **Advanced (Rust)**: A domain approach with commands (PlaceOrder, CancelOrder), events (OrderPlaced, OrderCanceled), an event store that notifies subscribers, and a projection that updates in a separate thread. This demonstrates a more “CQRS-like” architecture, with a read-model that updates asynchronously as events arrive.
+
+While event sourcing can be more complex than straightforward CRUD, especially around performance or schema evolution, it can unlock powerful capabilities for auditability, time travel queries, and extensible read-models. For domains that need a complete record of all changes—financial, e-commerce, analytics—Event Sourcing often proves transformative, delivering clarity, maintainability, and multi-service synergy in modern asynchronous architectures.
