@@ -1,0 +1,403 @@
+:PROPERTIES:
+:ID:       14fd67f1-f2e2-481d-88e1-975a1d125e6f
+:END:
+#+TITLE: Memento Pattern
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+* 1. Introduction and Historical Context
+
+The =Memento= pattern is a behavioral design pattern that solves the problem of providing undo/rollback or snapshot functionality without breaking encapsulation. Specifically, it allows you to capture an object’s internal state at a specific moment in time—and then restore that state later—without exposing that internal data to external code.
+
+Historically, software needing robust “undo” capabilities (e.g., text editors, drawing programs, or advanced forms) encountered a design conundrum: either expose the object’s entire internal details so a caretaker could store it, or find a more modular approach. The =Memento= pattern addresses this by letting the originator object produce a “memento” capturing its private state. The caretaker manipulates these mementos, but never looks inside them. If the caretaker wants to revert, it hands the memento back to the originator, which uses it to restore itself. This neatly preserves encapsulation while enabling flexible state snapshots.
+
+** 1.1 Why Use Memento?
+
+- =Undo/Redo Functionality=: Storing mementos at different points lets you revert or replay user actions with ease.
+- =Snapshot or Rollback=: In systems wanting a snapshot of data (like a save in a game), the Memento pattern formalizes that approach, letting you restore the snapshot without publicly exposing internals.
+- =Encapsulation=: The caretaker only sees the memento, not the originator’s internals. Only the originator can create or restore from its mementos, maintaining privacy.
+- =Time Travel or Checkpoints=: Mementos can act as checkpoints. If something fails, you revert to the last known good state.
+
+** 1.2 Potential Pitfalls
+
+- =Memory Usage=: Storing many mementos can be expensive if objects are large. Strategies like incremental snapshots or compression may be needed.
+- =Complex State=: If the object is large or references external resources, capturing/restoring can be tricky. You might need partial or specialized approaches.
+- =Concurrency=: Multiple threads handling mementos of the same originator requires consistent snapshots or locking to avoid inconsistencies.
+
+When used judiciously, Memento decouples undo/rollback logic from the object’s own code while preserving encapsulation. The caretaker (like an undo stack) can store and reapply mementos, and the originator remains in control of how it captures and restores state.
+
+* 2. Conceptual Motivation
+
+A classic example is a text editor with undo: each user action can produce a Memento capturing text and cursor position. If the user presses “undo,” the editor reverts to the last memento. Another scenario is a game that allows save game snapshots: the game object (or world state) can produce a memento for each save slot. If the player loads that slot, the originator reverts to that prior snapshot, all while its internals remain hidden from external code.
+
+* 3. Beginner Example (Guile Scheme)
+
+We begin with a beginner demonstration in Guile Scheme, focusing on a simple text editor scenario supporting undo via Memento. We show how we can store text plus cursor position, produce a Memento, and revert if needed.
+
+** 3.1 Motivating Scenario
+
+Imagine a tiny text editor storing a string and a cursor index. The user performs edits or moves the cursor. We want the user to be able to press “undo” to revert. With Memento, the editor can produce an opaque snapshot each time a user action completes, letting the caretaker revert.
+
+** 3.2 Code Example (Beginner, Guile Scheme)
+
+#+BEGIN_SRC scheme
+(use-modules (oop goops))
+
+;; 1) The 'Originator' class: <text-editor>
+(define-class <text-editor> ()
+  (text #:init-keyword #:text #:init-value "")
+  (cursor #:init-keyword #:cursor #:init-value 0))
+
+;; Helpers to modify state
+(define (set-text! editor new-text)
+  (set-slot-ref! editor 'text new-text))
+
+(define (move-cursor! editor pos)
+  (set-slot-ref! editor 'cursor (max 0 (min pos (string-length (slot-ref editor 'text))))))
+
+;; 2) Memento concept
+(define-class <editor-memento> ()
+  (snapshot-text #:init-keyword #:snapshot-text)
+  (snapshot-cursor #:init-keyword #:snapshot-cursor))
+
+;; 3) The text-editor can create/restore a memento
+(define (create-memento editor)
+  (make <editor-memento>
+        #:snapshot-text (slot-ref editor 'text)
+        #:snapshot-cursor (slot-ref editor 'cursor)))
+
+(define (restore-from-memento editor memento)
+  (set-text! editor (slot-ref memento 'snapshot-text))
+  (move-cursor! editor (slot-ref memento 'snapshot-cursor)))
+
+;; usage
+(let ((editor (make <text-editor>))
+      (history '()))
+  ;; initial text
+  (set-text! editor "Hello")
+  (move-cursor! editor 5)
+
+  ;; save memento
+  (set! history (cons (create-memento editor) history))
+
+  ;; do some changes
+  (set-text! editor "Hello, Scheme!")
+  (move-cursor! editor 13)
+
+  (set! history (cons (create-memento editor) history)) ;; another memento
+
+  (format #t "Current text: ~a, cursor: ~a\n"
+          (slot-ref editor 'text)
+          (slot-ref editor 'cursor))
+
+  ;; revert to last memento
+  (if (null? history)
+      (format #t "No history to revert\n")
+      (let ((mem (car history)))
+        (restore-from-memento editor mem)
+        (set! history (cdr history))))
+
+  (format #t "After undo, text: ~a, cursor: ~a\n"
+          (slot-ref editor 'text)
+          (slot-ref editor 'cursor)))
+#+END_SRC
+
+*** 3.2.1 Explanation
+
+- <text-editor>: The originator with text and cursor fields.
+- <editor-memento>: The Memento storing text and cursor snapshot. 
+- create-memento, restore-from-memento: The editor knows how to produce/restore snapshots. 
+- usage: We do changes, push each snapshot on =history=, then revert from the last snapshot, effectively “undoing.”
+
+** 3.3 Observations
+
+Minimal but shows how Memento works for a text editor. The caretaker is the code storing mementos in a list. The originator ensures only it can interpret or restore from them, preserving encapsulation.
+
+* 4. Intermediate Example (Rust)
+
+Next, a Rust scenario: a configuration manager that can store and revert settings to prior states. We incorporate a caretaker that manages multiple mementos, enabling the user to roll back if the new config fails.
+
+** 4.1 Motivating Scenario
+
+In a system with many application settings, we often revert to known good configurations if something breaks. The Memento pattern sees the config manager produce a snapshot, the caretaker hold these snapshots, and the user revert if needed.
+
+** 4.2 Code Example (Intermediate, Rust)
+
+#+BEGIN_SRC rust
+use std::collections::HashMap;
+
+#[derive(Clone, Debug)]
+struct ConfigState {
+    settings: HashMap<String, String>,
+}
+
+impl ConfigState {
+    fn new() -> Self {
+        ConfigState {
+            settings: HashMap::new(),
+        }
+    }
+}
+
+// The "Originator"
+struct ConfigManager {
+    state: ConfigState,
+}
+
+impl ConfigManager {
+    fn new() -> Self {
+        ConfigManager {
+            state: ConfigState::new(),
+        }
+    }
+
+    fn set_setting(&mut self, key: &str, value: &str) {
+        self.state.settings.insert(key.to_string(), value.to_string());
+    }
+
+    fn get_setting(&self, key: &str) -> Option<&String> {
+        self.state.settings.get(key)
+    }
+
+    fn save_state(&self) -> ConfigMemento {
+        ConfigMemento {
+            saved_state: self.state.clone(),
+        }
+    }
+
+    fn restore_state(&mut self, memento: &ConfigMemento) {
+        self.state = memento.saved_state.clone();
+    }
+}
+
+// The Memento
+struct ConfigMemento {
+    saved_state: ConfigState,
+}
+
+// The Caretaker
+struct Caretaker {
+    history: Vec<ConfigMemento>,
+}
+
+impl Caretaker {
+    fn new() -> Self {
+        Caretaker { history: Vec::new() }
+    }
+
+    fn save(&mut self, memento: ConfigMemento) {
+        self.history.push(memento);
+    }
+
+    fn restore(&mut self) -> Option<ConfigMemento> {
+        self.history.pop()
+    }
+}
+
+// usage
+fn main() {
+    let mut manager = ConfigManager::new();
+    let mut caretaker = Caretaker::new();
+
+    manager.set_setting("host", "localhost");
+    manager.set_setting("port", "8080");
+
+    caretaker.save(manager.save_state());
+
+    manager.set_setting("port", "9090");
+    caretaker.save(manager.save_state());
+
+    println!("Current port: {:?}", manager.get_setting("port")); // "9090"
+
+    // revert
+    if let Some(prev_snapshot) = caretaker.restore() {
+        manager.restore_state(&prev_snapshot);
+        println!("Restored port: {:?}", manager.get_setting("port")); // "8080"
+    }
+
+    // revert again
+    if let Some(prev_snapshot) = caretaker.restore() {
+        manager.restore_state(&prev_snapshot);
+        println!("Restored again, host: {:?}, port: {:?}", 
+                 manager.get_setting("host"),
+                 manager.get_setting("port"));
+    }
+}
+#+END_SRC
+
+*** 4.2.1 Explanation
+
+- ConfigState: A struct with settings. 
+- ConfigManager (originator): Has a ConfigState, can produce a ConfigMemento or restore from it.
+- ConfigMemento: The memento storing a copy of ConfigState. 
+- Caretaker: Maintains a stack of mementos for multi-step undo. 
+- usage: We set config items, store snapshots, change port, store another snapshot, then pop from caretaker to revert.
+
+** 4.3 Observations
+
+A typical config scenario. The caretaker can store multiple snapshots, letting us revert step by step. The originator remains the only code that knows how to interpret its mementos.
+
+* 5. Advanced Example (Python)
+
+Finally, a Python scenario for an advanced usage: a drawing program with a canvas that holds shapes. Each time we add or move shapes, we store a memento capturing the entire shape list. We can undo multiple times if desired.
+
+** 5.1 Motivating Scenario
+
+In a graphical editor, you have multiple shapes on a canvas. Each time the user moves a shape, changes its color, or adds/deletes shapes, we produce a memento. If the user wants to undo, we revert to the last snapshot. We might keep multiple snapshots for multi-level undo.
+
+** 5.2 Code Example (Advanced, Python)
+
+#+BEGIN_SRC python
+class Shape:
+    def __init__(self, shape_id, x, y, color="black"):
+        self.shape_id = shape_id
+        self.x = x
+        self.y = y
+        self.color = color
+
+    def __repr__(self):
+        return f"Shape({self.shape_id}, x={self.x}, y={self.y}, color={self.color})"
+
+class Canvas:
+    """Originator: can create mementos of internal shape list."""
+    def __init__(self):
+        self.shapes = []
+
+    def add_shape(self, shape):
+        self.shapes.append(shape)
+
+    def remove_shape(self, shape_id):
+        self.shapes = [s for s in self.shapes if s.shape_id != shape_id]
+
+    def move_shape(self, shape_id, new_x, new_y):
+        for s in self.shapes:
+            if s.shape_id == shape_id:
+                s.x, s.y = new_x, new_y
+                break
+
+    def change_color(self, shape_id, color):
+        for s in self.shapes:
+            if s.shape_id == shape_id:
+                s.color = color
+                break
+
+    def create_memento(self):
+        # Return a Memento containing a deep copy of shapes
+        shapes_copy = [Shape(s.shape_id, s.x, s.y, s.color) for s in self.shapes]
+        return CanvasMemento(shapes_copy)
+
+    def restore_memento(self, memento):
+        self.shapes = [Shape(s.shape_id, s.x, s.y, s.color) for s in memento.shapes_snapshot]
+
+    def __repr__(self):
+        return f"Canvas with shapes: {self.shapes}"
+
+class CanvasMemento:
+    """Memento: Stores a snapshot of the canvas's shapes."""
+    def __init__(self, shapes_snapshot):
+        self.shapes_snapshot = shapes_snapshot
+
+class Caretaker:
+    """Manages mementos in a stack for multi-step undo."""
+    def __init__(self):
+        self.history = []
+
+    def save_state(self, memento):
+        self.history.append(memento)
+
+    def undo(self):
+        if self.history:
+            return self.history.pop()
+        return None
+
+# Usage
+if __name__ == "__main__":
+    canvas = Canvas()
+    caretaker = Caretaker()
+
+    # create shapes
+    shape1 = Shape("circle", 10, 10)
+    canvas.add_shape(shape1)
+    shape2 = Shape("square", 20, 20, "red")
+    canvas.add_shape(shape2)
+
+    caretaker.save_state(canvas.create_memento())  # snapshot #1
+
+    # move shape
+    canvas.move_shape("circle", 15, 15)
+    caretaker.save_state(canvas.create_memento())  # snapshot #2
+
+    # change color
+    canvas.change_color("square", "blue")
+    caretaker.save_state(canvas.create_memento())  # snapshot #3
+
+    print("Current:", canvas)
+
+    # undo last
+    m = caretaker.undo()
+    if m:
+        canvas.restore_memento(m)
+    print("After 1 undo:", canvas)
+
+    # undo again
+    m = caretaker.undo()
+    if m:
+        canvas.restore_memento(m)
+    print("After 2 undos:", canvas)
+#+END_SRC
+
+*** 5.2.1 Explanation
+
+- =Shape=: Basic data with ID, coords, color.
+- =Canvas= (originator): Holds a list of shapes, can create a memento copying them or restore from one. 
+- =CanvasMemento=: The Memento, storing a snapshot of shapes.
+- =Caretaker=: A stack. Each time an action ends, we push a new snapshot. Undo pops the last snapshot to revert.
+- usage: We do multiple changes (add shapes, move shapes, recolor), capturing snapshots. Then we pop snapshots to revert step by step.
+
+** 5.3 Observations
+
+An advanced example with a more complex structure (a list of shape objects). The caretaker logic is still straightforward, but the concept holds: only Canvas can produce or restore shape data. The caretaker never sees the shape details—just the Memento object.
+
+* 6. Nuances, Variations, and Best Practices
+
+** 6.1 Handling Large or Complex States
+
+For big objects, storing full snapshots is expensive. Approaches include:
+
+- =Incremental Snapshots=: Storing only diffs or changes since the last snapshot.
+- =Reference Counting or Copy-On-Write=: Minimizing duplication if data is partially unchanged.
+
+** 6.2 Protecting Memento Privacy
+
+The pattern suggests the caretaker shouldn’t see inside the Memento. In strongly typed languages, you might keep the Memento’s fields private or scoped. In dynamic languages, you do so by convention or object arrangement. 
+
+** 6.3 Multiple Snapshots vs. Single
+
+You can keep multiple snapshots for multi-level undo or just one snapshot for a single checkpoint. The caretaker structure is flexible, e.g. a stack for multi-level, or a ring buffer for limited undo steps.
+
+** 6.4 Undo vs. Redo
+
+To implement redo, you might keep a second stack of undone states. When you revert from the top of the “undo” stack, you push that memento onto the “redo” stack. If user picks “redo,” you pop from redo and reapply. This is caretaker-level logic, not the originator’s.
+
+** 6.5 Memento vs. Command
+
+Command also can handle undo by storing data needed to “un-execute” an action. Memento, in contrast, captures the entire state, not just the delta. Sometimes they combine: each command might produce a partial memento for changed portions. The difference is that Memento typically stores all relevant state, while Command might store just enough to invert the operation.
+
+* 7. Real-World Usage
+
+- =Text Editors=: The canonical usage. Each time the user modifies text, we store a memento capturing text and cursor. Pressing undo reverts.
+- =Games=: Save game states or checkpoints. 
+- =Config & Preferences=: As in the Rust example, revert to older configs if a new config fails.
+- =Graphics or CAD=: Snapshots of shape positions or transformations for multi-step revert.
+- =Transaction or Financial Systems=: Might rely on partial or specialized snapshots for rollback.
+
+* 8. Conclusion
+
+The =Memento= pattern elegantly addresses scenarios needing undo or snapshot features while preserving the originator’s encapsulation. By letting the originator define how its state is captured or restored, external code remains ignorant of internal details. The caretaker merely stores and re-applies mementos, enabling multi-level undo, checkpointing, or advanced rollback logic.
+
+We illustrated:
+
+- =Beginner (Guile Scheme)=: A tiny text editor with text/cursor, caretaker storing a list of mementos.
+- =Intermediate (Rust)=: A config manager that can revert to previous states, caretaker storing a stack of snapshots.
+- =Advanced (Python)=: A drawing canvas with multiple shapes, caretaker storing shape list snapshots for multi-step undo.
+
+Whenever you need the power to revert an object to prior states, Memento offers a well-structured solution, letting you keep the caretaker’s logic separate from the originator’s details and ensuring each object retains control over how and what data is saved and restored.
