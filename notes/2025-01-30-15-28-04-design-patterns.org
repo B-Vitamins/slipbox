@@ -6,7 +6,6 @@
 #+SETUPFILE: ~/.config/emacs/setup/setupfile.org
 * Object-oriented-programming
 Design patterns, as popularized by the “Gang of Four” (Erich Gamma, Richard Helm, Ralph Johnson, and John Vlissides), represent time-tested solutions to common software design challenges. These patterns are not prescriptive blueprints but rather conceptual templates that guide developers toward building more robust, maintainable, and flexible systems. Below, we embark on a high-level narrative of each of the classic twenty-three patterns, grouped broadly under Creational, Structural, and Behavioral categories. While the descriptions include occasional illustrative snippets of code, the main focus is to illuminate the conceptual essence behind each pattern.
-
 Each of these twenty-three patterns embodies a distinct principle or method for solving perennial design problems. By articulating clear strategies for object creation, structural composition, and behavior coordination, the Gang of Four patterns form a foundational toolkit for object-oriented software design. The real power emerges not from memorizing them by name, but from understanding the conceptual “why” behind each pattern and recognizing when a given pattern can simplify or enhance your architecture.
 ** 1. Singleton
 
@@ -825,4 +824,364 @@ public class ConcreteElementA implements Element {
 #+END_SRC
 
 Through this setup, you decouple the “behaviors” from the “data structures.” New behaviors can be added simply by creating new visitor classes, rather than updating the data classes themselves. This can be a godsend for stable hierarchies where the set of element classes seldom changes, but new operations are frequently introduced. However, if you often add new element types, the =Visitor= pattern can become cumbersome, since each visitor needs extra methods to handle the new types. Nonetheless, in many domains—like compilers, interpreters, or any scenario with a well-defined object structure and a constant demand for new operations—the =Visitor= pattern is invaluable, elegantly organizing complex logic and maintaining the openness of the system to evolving requirements.
+
+* Asynchronous programming
+In modern software development, concurrency, asynchrony, and reactive design lie at the forefront, addressing challenges often absent or lightly touched upon in the original “Gang of Four” patterns. While the GoF’s 23 patterns remain fundamental in object-oriented contexts, distributed or event-driven systems require additional conceptual “tools.” Below is a curated list of such patterns, each tackling a classic problem in concurrency or reactive flows.
+The original GoF patterns primarily solved problems of object structure and inter-object communication in a single-process, imperative context. Today’s systems must handle parallelism (multi-core), distribution (microservices), event streams, and partial failures. This is where modern concurrency and reactive patterns step in. They often reapply or extend established design pattern ideas to high-level concurrency, resource management, or dataflow contexts.
+Below, we examine several commonly recognized patterns for concurrency, asynchrony, and reactive design. Though not an exhaustive “new GoF,” these patterns fill a similar role: providing a standardized vocabulary and blueprint for repeated solutions to concurrency or asynchronous challenges.
+** 1. Reactor
+
+The [[id:9985ab70-f7de-4b19-81e5-9e487fc0bf2d][Reactor Pattern]] models an event-driven mechanism in which a single thread (or a small pool of threads) waits for events and dispatches them to appropriate handlers. Typically used in non-blocking I/O frameworks, Reactor avoids creating a dedicated thread per connection/request, instead using an event loop to “react” to readiness signals (such as “socket is readable” or “timer fired”).
+
+*** 1.1 Why Use Reactor?
+- Scalability with many connections: Non-blocking I/O plus minimal threads can handle large concurrency.
+- Clear event structure: Each event (readable, writeable) maps to a handler routine, clarifying code.
+- Common in frameworks: Node.js’s underlying model or Java’s NIO frameworks rely on Reactor.
+
+*** 1.2 Typical Scenario
+A chat server that must accept thousands of client sockets might adopt Reactor. The main thread blocks on a select/poll/epoll call, obtains readiness events, and calls the relevant read or accept handler for each event.
+
+*** 1.3 Example (Conceptual Pseudocode)
+#+BEGIN_SRC java
+public class Reactor {
+    private Selector selector;
+    private Map<SelectionKey, EventHandler> handlers;
+
+    public Reactor() throws IOException {
+        this.selector = Selector.open();
+        this.handlers = new HashMap<>();
+    }
+
+    public void registerChannel(SelectableChannel channel, int ops, EventHandler handler)
+            throws ClosedChannelException {
+        SelectionKey key = channel.register(selector, ops);
+        handlers.put(key, handler);
+    }
+
+    public void run() throws IOException {
+        while (!Thread.interrupted()) {
+            selector.select();
+            Set<SelectionKey> selected = selector.selectedKeys();
+            for (SelectionKey key : selected) {
+                if (key.isValid()) {
+                    EventHandler handler = handlers.get(key);
+                    if (handler != null) {
+                        handler.handleEvent(key);
+                    }
+                }
+            }
+            selected.clear();
+        }
+    }
+}
+#+END_SRC
+
+Here, the =Reactor= runs an event loop, waiting on =selector.select()=. Once events occur, it dispatches them to an appropriate =EventHandler=. This pattern underpins Netty in Java, Node.js’s event loop, and more.
+
+** 2. Proactor
+
+The [[id:338d5de2-9091-4403-bb7c-b949ffafc5c7][Proactor Pattern]] is similar in spirit to Reactor but focuses on asynchronous completion rather than readiness. In a Proactor pattern, the system (OS or library) completes an I/O operation (like reading data) autonomously, then notifies your code with a “completion event.” You supply a callback or “completion handler;” once the operation finishes, your callback is invoked with the results.
+
+*** 2.1 Why Use Proactor?
+- You queue an operation (like reading from a socket) and continue. The OS or library notifies you upon completion.
+- Freed from partial reads: The OS handles the details of reading all requested bytes. Your code is simpler.
+- Windows I/O Completion Ports or certain asynchronous libraries adopt this approach.
+
+*** 2.2 Typical Scenario
+In Windows with I/O Completion Ports, you schedule read/write calls. When finished, the system calls your completion routine. This differs from Reactor’s readiness-based approach; Proactor is about completion-based notifications.
+
+*** 2.3 Example (Conceptual Pseudocode)
+#+BEGIN_SRC java
+public void asyncRead(Socket s, ByteBuffer buf, CompletionHandler handler) {
+    // OS or library enqueues the read operation
+    // Later calls handler.completed(bytesRead) or handler.failed(exception)
+}
+
+public class MyReadHandler implements CompletionHandler {
+    public void completed(Integer bytesRead) {
+        // handle data
+    }
+    public void failed(Throwable exc) {
+        // handle error
+    }
+}
+#+END_SRC
+
+Your logic is triggered only when the data read completes. This approach is used widely in Windows APIs and advanced cross-platform async libraries.
+
+** 3. Active Object
+
+The [[id:90fb55ac-b5c5-4d39-95d9-2bd89b783b9f][Active Object Pattern]] decouples method invocation from method execution. Instead of calling a method and blocking, you place the request into a queue. A separate thread (the active object) processes requests one at a time, possibly returning results via futures. This yields simpler concurrency logic, as the active object has a single-threaded style inside.
+
+*** 3.1 Why Use Active Object?
+- Thread safety: The active object runs on one thread, avoiding direct shared-state concurrency.
+- Non-blocking calls: The calling code sees an asynchronous method returning a future or an ID. The request is processed later in the active object’s thread.
+- Clear separation: You keep the concurrency logic in the active object, not in the client code.
+
+*** 3.2 Typical Scenario
+GUI frameworks or scheduling systems might adopt an active object so that all modifications to some resource happen on one thread. The rest of the system interacts via asynchronous requests.
+
+*** 3.3 Example (Conceptual)
+#+BEGIN_SRC java
+public class ActiveObject {
+    private BlockingQueue<MethodRequest> queue = new LinkedBlockingQueue<>();
+    private Thread worker;
+    
+    public ActiveObject() {
+        worker = new Thread(() -> runLoop());
+        worker.start();
+    }
+
+    public Future<Integer> doCalc(int x, int y) {
+        CompletableFuture<Integer> result = new CompletableFuture<>();
+        queue.add(new CalcRequest(x, y, result));
+        return result;
+    }
+
+    private void runLoop() {
+        while(true) {
+            MethodRequest req = queue.take();
+            req.call();
+        }
+    }
+}
+#+END_SRC
+
+Client calls =doCalc(x, y)=, gets a future. The request is enqueued. The worker thread eventually processes it, finishing the future. The pattern is widely used in frameworks that want single-threaded servicing but multiple external calls.
+
+** 4. Thread Pool
+
+[[id:7d56beb8-9110-4105-8e56-31ffa8f36192][Thread Pool Pattern]] is a concurrency pattern to reuse a fixed or dynamic pool of threads for short tasks. Instead of spawning a new thread for each task, tasks enter a queue and a set of worker threads processes them. Almost every language’s concurrency library includes a variation of this pattern (like Java’s Executors).
+
+*** 4.1 Why Use Thread Pool?
+- Performance: Avoid overhead of creating/destroying threads frequently.
+- Resource limits: Avoid indefinite thread growth, controlling concurrency level.
+- Simplicity for clients: They just submit tasks (like Runnables or callables), the pool handles scheduling.
+
+*** 4.2 Typical Scenario
+A server with many short requests, or a parallel system with numerous tasks. A thread pool ensures stable concurrency and efficient usage.
+
+*** 4.3 Example (Conceptual)
+#+BEGIN_SRC java
+public class ThreadPool {
+    private final BlockingQueue<Runnable> queue;
+    private final List<Thread> workers;
+
+    public ThreadPool(int poolSize) {
+        queue = new LinkedBlockingQueue<>();
+        workers = new ArrayList<>();
+        for(int i=0; i<poolSize; i++){
+            Thread t = new Thread(() -> workerRun());
+            t.start();
+            workers.add(t);
+        }
+    }
+    public void submit(Runnable task) {
+        queue.put(task);
+    }
+    private void workerRun() {
+        while(true) {
+            Runnable task = queue.take();
+            task.run();
+        }
+    }
+}
+#+END_SRC
+
+Clients do =pool.submit(task)=, the tasks are handled by the workers in turn.
+
+** 5. Future / Promise
+
+The [[id:0d0ef973-d842-4c03-a6dc-d15cf86bdec4][Future Pattern]] pattern represents a result of an asynchronous operation. The operation runs in the background; the future can be polled, waited on, or attached with callbacks to get the result once available. This pattern underlies many modern concurrency frameworks (e.g. Java’s =CompletableFuture=, JavaScript’s =Promise=).
+
+*** 5.1 Why Use Future/Promise?
+- Asynchronous returns: let the operation proceed in parallel, returning control immediately to the caller.
+- Composability: you can chain, map, or combine futures without blocking, building complex asynchronous logic.
+- Unified error handling: futures or promises can carry exceptions.
+
+*** 5.2 Typical Scenario
+An HTTP library might provide an async GET method returning a future. The caller attaches a callback that runs once the response arrives or an error occurs.
+
+*** 5.3 Example (Conceptual, JS-like)
+#+BEGIN_SRC javascript
+fetch("http://example.com/data")
+  .then(response => response.json())
+  .then(jsonData => console.log("Received:", jsonData))
+  .catch(err => console.error("Error:", err));
+#+END_SRC
+
+The pattern is ubiquitous in asynchronous code, from Java’s =CompletableFuture= to Rust’s =Future= traits.
+
+** 6. Actor Model
+
+The [[id:4eaa56e8-3e1a-4a22-8163-1a6f27bccc64][Actor Model Pattern]] organizes concurrent computation as a set of “actors,” each with its own private state and mailbox. Actors process messages one at a time, potentially creating more actors or sending messages. This eliminates shared-memory concurrency, focusing on message passing. Frameworks like Erlang OTP, Akka in Scala, or Rust’s actor libraries embody this approach.
+
+*** 6.1 Why Use Actor Model?
+- Concurrency safety: each actor is single-threaded internally, so no data races on its state. 
+- Scalability: you can distribute actors across multiple cores or machines.
+- Resilience: frameworks like Akka or Erlang OTP have “supervision strategies” for actors that crash, promoting fault tolerance.
+
+*** 6.2 Typical Scenario
+A chat system might spin up an actor per client or chat room. Each actor handles messages like “send message” or “join room” individually, enqueuing them in a mailbox.
+
+*** 6.3 Example (Conceptual Akka/Scala)
+#+BEGIN_SRC scala
+class ChatActor extends Actor {
+  def receive = {
+    case SendMessage(user, text) =>
+      // store or broadcast
+    case GetHistory(user) =>
+      // reply with chat log
+  }
+}
+#+END_SRC
+
+In actor systems, each actor’s “receive” method is triggered per message, guaranteeing sequential handling. The concurrency is message-driven, scaling well for big distributed systems.
+
+** 7. Event Sourcing
+
+The [[id:8c049207-bee5-439f-a1fc-2b8626836b7c][Event Sourcing Pattern]] stores all changes to application state as a sequence of events, rather than overwriting the current state. The system replays events to rebuild or project current state. Commonly used in microservices or domain-driven design to handle auditable, time-travel, or ephemeral data reconstruction.
+
+*** 7.1 Why Use Event Sourcing?
+- Audit log: you have the entire history of changes, enabling retroactive queries or debugging.
+- Rebuild state: if the system crashes or you need a new read model, replay events from the log.
+- Natural approach: many business domains revolve around events (transactions, reservations, etc.).
+
+*** 7.2 Typical Scenario
+A banking system might store each deposit or withdrawal as an event. The “account balance” is derived by summing the relevant deposit/withdraw events. Overwrites of the account’s row are avoided.
+
+*** 7.3 Example (Conceptual)
+#+BEGIN_SRC java
+public class Event {
+   public String type;
+   public Map<String, Object> data;
+   public long timestamp;
+}
+
+public class EventStore {
+   private List<Event> events = new ArrayList<>();
+   public void append(Event e) { events.add(e); }
+   public List<Event> replay() { return events; }
+}
+#+END_SRC
+
+When you want the state, you read all events relevant to that entity, applying them in order. This fosters strong auditability and “time travel” for debugging or analytics.
+
+** 8. Saga
+
+A [[id:1a801cd0-bd5b-4036-9bc2-61ba621ddba0][Saga Pattern]] handles distributed transactions in a microservice setting. Each step is a local transaction in one service. If a step fails, the saga runs compensating transactions in reverse order for the successfully completed steps, ensuring system-wide consistency without a global transaction manager.
+
+*** 8.1 Why Use Saga?
+- Solve the “distributed transaction” challenge: no global lock or 2-phase commit, but you can define partial rollback logic for each step.
+- Resilience: if step 3 fails, you revert steps 1-2 with “compensate” calls.
+- Common in order booking, travel booking, or any multi-service workflow.
+
+*** 8.2 Typical Scenario
+Booking a flight, hotel, and rental car. Each sub-reservation is a local transaction. If the rental step fails, you cancel flight, hotel, or do partial compensation.
+
+*** 8.3 Example (Conceptual)
+#+BEGIN_SRC java
+class SagaStep {
+   boolean execute();
+   void compensate();
+}
+
+class SagaCoordinator {
+   boolean runSaga(List<SagaStep> steps) {
+       List<SagaStep> executed = new ArrayList<>();
+       for(SagaStep step: steps){
+           if(step.execute()) {
+               executed.add(step);
+           } else {
+               for(int i=executed.size()-1; i>=0; i--){
+                   executed.get(i).compensate();
+               }
+               return false;
+           }
+       }
+       return true;
+   }
+}
+#+END_SRC
+
+The pattern ensures partial failures do not leave the system in an inconsistent state.
+
+** 9. Circuit Breaker
+
+A [[id:793b024f-d927-43ce-a0f9-352d032c1c96][Circuit Breaker Pattern]] prevents a service from making repeated calls to a failing or slow resource. Once a threshold of failures is reached, the breaker “opens,” and further calls immediately fail or return a fallback. After a timeout, the system tries again (the “half-open” state). If successful, the circuit closes again.
+
+*** 9.1 Why Use Circuit Breaker?
+- Avoid meltdown: if a downstream service is down, continuing to call it can cause thread or resource exhaustion.
+- Fail fast: once the circuit is open, you get immediate errors, letting the system degrade gracefully.
+- Common in microservices: frameworks like Hystrix, Resilience4j, or Istio sidecars rely on circuit breakers.
+
+*** 9.2 Typical Scenario
+A microservice calls a remote database or external API. If repeated timeouts occur, the circuit trips. The service returns an immediate error or fallback response, rather than waiting for each request to time out.
+
+*** 9.3 Example (Conceptual)
+#+BEGIN_SRC python
+class CircuitBreaker:
+    def __init__(self, threshold, timeout):
+        self.fail_count = 0
+        self.threshold = threshold
+        self.timeout = timeout
+        self.state = "CLOSED"
+        self.next_try_time = 0
+
+    def call(self, func, *args, **kwargs):
+        if self.state == "OPEN":
+            if time.time() < self.next_try_time:
+                raise Exception("Circuit open, failing fast.")
+            else:
+                # half-open test
+                return self.attempt_call(func, *args, **kwargs)
+        else:
+            return self.attempt_call(func, *args, **kwargs)
+
+    def attempt_call(self, func, *args, **kwargs):
+        try:
+            result = func(*args, **kwargs)
+            self.reset()
+            return result
+        except:
+            self.fail_count += 1
+            if self.fail_count >= self.threshold:
+                self.trip()
+            raise
+
+    def reset(self):
+        self.fail_count = 0
+        self.state = "CLOSED"
+
+    def trip(self):
+        self.state = "OPEN"
+        self.next_try_time = time.time() + self.timeout
+#+END_SRC
+
+** 10. Bulkhead
+
+The [[id:61d06010-35bc-4b1d-b351-28901e2ef1f8][Bulkhead Pattern]] pattern isolates resources so a failure or overload in one part does not cascade. It might mean separate thread pools for each subsystem, or distinct connection pools, ensuring each subsystem’s problems remain contained.
+
+*** 10.1 Why Use Bulkhead?
+- Limit blast radius: If “inventory” is overloaded, “payment” can still proceed with its own dedicated resources.
+- Controlled resource usage: Each partition has a concurrency limit or thread pool, preventing one subsystem from starving the rest.
+
+*** 10.2 Typical Scenario
+Microservice calls: you might define an “inventoryPool” with 10 threads and “paymentPool” with 5 threads. If inventory requests spike, they fill up the 10 threads, but payment stays unaffected with its own 5.
+
+*** 10.3 Example (Conceptual)
+#+BEGIN_SRC java
+ExecutorService paymentPool = Executors.newFixedThreadPool(5);
+ExecutorService inventoryPool = Executors.newFixedThreadPool(10);
+
+public void handlePayment(Runnable r) {
+   paymentPool.submit(r);
+}
+
+public void handleInventory(Runnable r) {
+   inventoryPool.submit(r);
+}
+#+END_SRC
+
+If inventory usage surges, it blocks only that pool, leaving the payment pool healthy.
 
