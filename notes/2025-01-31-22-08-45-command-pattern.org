@@ -1,0 +1,529 @@
+:PROPERTIES:
+:ID:       9c4d6c00-7b02-4a13-a25b-01b80211316d
+:END:
+#+TITLE: Command Pattern
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+* 1. Introduction and Historical Context
+
+The =Command= pattern is a behavioral pattern that encapsulates an action (i.e., a request to do something) into a separate, self-contained object. Rather than making a direct method call on a receiver, you create a Command object storing what should be done and to whom it should be done, plus any required parameters. This design emerges from the broader goal of decoupling the invoker of an action from the object that performs it, unlocking features like:
+
+- Undo/Redo: By keeping each command’s data, you can un-execute or re-execute that command later.
+- Queuing or Logging: Because commands are first-class objects, you can store them for replay or auditing.
+- Macro or Batch Commands: Multiple commands can be combined or scheduled.
+- Dynamic Reconfiguration: At runtime, you can assign different commands to UI elements or hotkeys, without changing the code that triggers them.
+
+Historically, =Command= was popularized in frameworks that handle UI actions (menus, buttons), text editor operations (undo/redo), or scheduling tasks in batch or job systems. By modeling “an action” as an object, the pattern elegantly addresses issues of reusability, maintainability, and open/closed design.
+
+** 1.1 Why Use Command?
+
+- =Undo/Redo=: Each command knows how to perform an action and also how to reverse it. By storing a history of commands, you can revert changes.
+
+- =Queueing or Logging=: Commands can be lined up, stored, or replayed, because the objects themselves hold the essential data.
+
+- =Macro Building=: Multiple commands can be combined into a single “macro” command, common in advanced productivity apps or games.
+
+- =Flexible Invocation=: You can define a command and pass it to different invokers. The invoker doesn’t care about how the action is performed internally.
+
+** 1.2 Potential Pitfalls
+
+- =Overhead=: Creating many small command objects can add complexity, especially if you don’t need advanced features like undo or macro.
+
+- =Synchronization=: If commands affect shared state, concurrency issues can arise if commands are queued or replayed in parallel.
+
+- =Designing “undo”=: If supporting undo, each command must store enough context to revert changes, which can be complex in systems with wide side effects.
+
+When the benefits of flexible, decoupled actions outweigh these complexities, =Command= is a powerful, elegant solution for software needing dynamic, pluggable, and possibly undoable actions.
+
+* 2. Conceptual Motivation
+
+A typical example is undo/redo in a text editor: each user action (typing, deleting, formatting) becomes a command object that can be executed or undone. Another scenario: menu items in a GUI—when the user clicks a menu item, a command runs. By storing the command in the menu item object, you can easily reassign or modify behavior without rewriting the UI or the underlying code.
+
+* 3. Beginner Example (Rust)
+
+We start with a beginner Rust scenario, focusing on a simple remote control or button concept that can execute commands. Each command implements a trait, storing references to the receiver plus any data needed.
+
+** 3.1 Motivating Scenario
+
+Consider a smart home remote control with buttons like “Light On,” “Light Off,” “Fan On,” “Fan Off.” Instead of coding each button with direct function calls, we define commands that hold the logic. This approach allows reassigning commands at runtime or storing them for macros/logging.
+
+** 3.2 Code Example (Beginner, Rust)
+
+#+BEGIN_SRC rust
+use std::collections::HashMap;
+
+// The Command trait: all commands must implement `execute()`
+trait Command {
+    fn execute(&self);
+}
+
+// Receivers
+struct Light {
+    name: String,
+}
+
+impl Light {
+    fn new(name: &str) -> Self {
+        Light { name: name.to_string() }
+    }
+    fn on(&self) {
+        println!("Light '{}' is now ON.", self.name);
+    }
+    fn off(&self) {
+        println!("Light '{}' is now OFF.", self.name);
+    }
+}
+
+struct Fan {
+    name: String,
+}
+
+impl Fan {
+    fn new(name: &str) -> Self {
+        Fan { name: name.to_string() }
+    }
+    fn start(&self) {
+        println!("Fan '{}' is now spinning.", self.name);
+    }
+    fn stop(&self) {
+        println!("Fan '{}' has stopped.", self.name);
+    }
+}
+
+// Concrete Commands
+struct LightOnCommand {
+    light: Light,
+}
+
+impl LightOnCommand {
+    fn new(light: Light) -> Self {
+        LightOnCommand { light }
+    }
+}
+
+impl Command for LightOnCommand {
+    fn execute(&self) {
+        self.light.on();
+    }
+}
+
+struct LightOffCommand {
+    light: Light,
+}
+
+impl LightOffCommand {
+    fn new(light: Light) -> Self {
+        LightOffCommand { light }
+    }
+}
+
+impl Command for LightOffCommand {
+    fn execute(&self) {
+        self.light.off();
+    }
+}
+
+struct FanStartCommand {
+    fan: Fan,
+}
+
+impl FanStartCommand {
+    fn new(fan: Fan) -> Self {
+        FanStartCommand { fan }
+    }
+}
+
+impl Command for FanStartCommand {
+    fn execute(&self) {
+        self.fan.start();
+    }
+}
+
+struct FanStopCommand {
+    fan: Fan,
+}
+
+impl FanStopCommand {
+    fn new(fan: Fan) -> Self {
+        FanStopCommand { fan }
+    }
+}
+
+impl Command for FanStopCommand {
+    fn execute(&self) {
+        self.fan.stop();
+    }
+}
+
+// Invoker: A simple remote control with slots for commands
+struct RemoteControl {
+    slots: HashMap<String, Box<dyn Command>>,
+}
+
+impl RemoteControl {
+    fn new() -> Self {
+        RemoteControl {
+            slots: HashMap::new(),
+        }
+    }
+
+    fn set_command(&mut self, button: &str, cmd: Box<dyn Command>) {
+        self.slots.insert(button.to_string(), cmd);
+    }
+
+    fn press_button(&self, button: &str) {
+        if let Some(cmd) = self.slots.get(button) {
+            cmd.execute();
+        } else {
+            println!("No command assigned to button '{}'", button);
+        }
+    }
+}
+
+fn main() {
+    // Create receivers
+    let living_room_light = Light::new("Living Room");
+    let bedroom_fan = Fan::new("Bedroom");
+
+    // Create commands
+    let living_room_light_on = Box::new(LightOnCommand::new(living_room_light));
+    let bedroom_fan_start = Box::new(FanStartCommand::new(bedroom_fan));
+
+    // Create a remote control and assign commands
+    let mut remote = RemoteControl::new();
+    remote.set_command("A", living_room_light_on);
+    remote.set_command("B", bedroom_fan_start);
+
+    // Test pressing buttons
+    remote.press_button("A");
+    remote.press_button("B");
+    remote.press_button("C"); // no command set
+}
+#+END_SRC
+
+*** 3.2.1 Explanation
+
+- =Command= Trait: Each command implements execute().  
+- Receivers: Light, Fan with methods on/off or start/stop.  
+- Commands: LightOnCommand, LightOffCommand, FanStartCommand, FanStopCommand hold references to their receivers and implement execute() to delegate.  
+- Invoker: RemoteControl has a HashMap of command slots. press_button fetches a command and executes it.  
+- Usage: We create commands, assign them to remote slots “A,” “B,” then press them. If a button has no assigned command, it reports none found.
+
+** 3.3 Observations
+
+This demonstration shows how Command decouples the remote’s buttons from the actual actions. We could easily store or log commands, or add undo later. The pattern is minimal yet powerful.
+
+* 4. Intermediate Example (Guile Scheme)
+
+Now, let’s illustrate an intermediate scenario in Guile Scheme: a text editor handling editing commands (InsertText, DeleteText) with optional undo. This is the classic usage of Command for user actions that are easily revertible.
+
+** 4.1 Motivating Scenario
+
+A text editor might store each user operation as a command so it can be undone or redone. Each command knows what text was inserted or deleted, plus where. Scheme’s functional style differs from typical OOP, but we can still emulate commands as objects or closures holding data.
+
+** 4.2 Code Example (Intermediate, Guile Scheme)
+
+#+BEGIN_SRC scheme
+(use-modules (oop goops))
+
+;; A simple 'document' class storing text.
+(define-class <document> ()
+  (content #:init-keyword #:content #:init-value ""))
+
+;; We'll define helper methods for the document
+(define (doc-insert! doc pos text)
+  (let ((old (slot-ref doc 'content)))
+    (set-slot-ref! doc 'content 
+                   (string-append (string-take old pos) text (string-drop old pos)))))
+
+(define (doc-delete! doc pos len)
+  (let ((old (slot-ref doc 'content)))
+    (set-slot-ref! doc 'content
+                   (string-append (string-take old pos)
+                                  (string-drop old (+ pos len))))))
+
+;; The 'Command' class
+(define-class <command> ()
+  (virtual (execute (self)) "perform the command")
+  (virtual (undo (self)) "undo the command"))
+
+;; Insert Command
+(define-class <insert-command> (<command>)
+  (document #:init-keyword #:document)
+  (position #:init-keyword #:position)
+  (text #:init-keyword #:text)
+  ;; store previous content slice for undo
+  (define old-text #f)
+
+  (define (execute (self))
+    (set! old-text "")
+    (doc-insert! (slot-ref self 'document)
+                 (slot-ref self 'position)
+                 (slot-ref self 'text)))
+
+  (define (undo (self))
+    (let ((doc (slot-ref self 'document))
+          (pos (slot-ref self 'position))
+          (txt (slot-ref self 'text)))
+      ;; remove the text that was inserted
+      (doc-delete! doc pos (string-length txt)))))
+
+;; Delete Command
+(define-class <delete-command> (<command>)
+  (document #:init-keyword #:document)
+  (position #:init-keyword #:position)
+  (length #:init-keyword #:length)
+  (define deleted-text #f)
+
+  (define (execute (self))
+    (let ((doc (slot-ref self 'document))
+          (pos (slot-ref self 'position))
+          (len (slot-ref self 'length)))
+      (set! deleted-text
+            (string-take (string-drop (slot-ref doc 'content) pos) len))
+      (doc-delete! doc pos len)))
+
+  (define (undo (self))
+    (let ((doc (slot-ref self 'document))
+          (pos (slot-ref self 'position)))
+      (doc-insert! doc pos deleted-text))))
+
+;; We'll keep a command history for undo
+(define history '())
+
+;; A function to execute a command, store it in history
+(define (execute-command cmd)
+  (send cmd 'execute)
+  (set! history (cons cmd history)))
+
+;; And a function to undo the last command
+(define (undo-last)
+  (if (null? history)
+      (display "No commands to undo.\n")
+      (let ((cmd (car history)))
+        (send cmd 'undo)
+        (set! history (cdr history))))))
+
+;; Example usage
+(let ((doc (make <document> #:content "")))
+  (execute-command (make <insert-command>
+                         #:document doc
+                         #:position 0
+                         #:text "Hello"))
+  (execute-command (make <insert-command>
+                         #:document doc
+                         #:position 5
+                         #:text " World"))
+  (display (slot-ref doc 'content)) (newline)
+
+  ;; let's undo the last insert
+  (undo-last)
+  (display (slot-ref doc 'content)) (newline)
+
+  ;; re-insert " World" by repeating command or new one
+  (execute-command (make <insert-command>
+                         #:document doc
+                         #:position 5
+                         #:text " Schemers"))
+  (display (slot-ref doc 'content)) (newline)
+
+  ;; now let's try deleting
+  (execute-command (make <delete-command>
+                         #:document doc
+                         #:position 0
+                         #:length 5))
+  (display (slot-ref doc 'content)) (newline)
+
+  ;; Undo the delete
+  (undo-last)
+  (display (slot-ref doc 'content)) (newline))
+#+END_SRC
+
+*** 4.2.1 Explanation
+
+- =Document=: Holds a string as content. doc-insert! and doc-delete! mutate the content.  
+- =<command>=: Abstract class with execute + undo.  
+- =<insert-command>=: On execute, inserts text; on undo, deletes that same text.  
+- =<delete-command>=: On execute, deletes text, storing it for re-insert in undo.  
+- =history=: A global list storing executed commands.  
+- Usage: We insert “Hello,” then “ World.” We undo the second insert. We do more inserts and deletions, each time seeing how the doc changes or reverts.
+
+** 4.3 Observations
+
+A typical text editor approach: each user action becomes a command. The pattern’s advantage is clear with undo. We could also add a redo stack or logging. Each command is self-contained, performing or unperforming a discrete change to the document.
+
+* 5. Advanced Example (Python)
+
+Finally, we push the pattern further in Python, illustrating a scenario of scheduling or queueing background tasks. Each Command represents a background job (compress, send email, etc.). We’ll see how we can queue, track, and re-run them if needed.
+
+** 5.1 Motivating Scenario
+
+Large systems often have background tasks: compressing files, sending emails, generating reports. By modeling each as a Command, we can store them in a queue, log them, or re-run them if they fail. This is powerful for concurrency or microservice architectures.
+
+** 5.2 Code Example (Advanced, Python)
+
+#+BEGIN_SRC python
+import time
+from abc import ABC, abstractmethod
+from queue import Queue
+from threading import Thread
+
+class Command(ABC):
+    """Abstract Command with optional undo and a method to run or re-run."""
+    @abstractmethod
+    def execute(self):
+        pass
+
+    def undo(self):
+        pass  # optional, not all commands implement undo
+
+    @property
+    def name(self):
+        return self.__class__.__name__
+
+# A job scheduler that can queue commands, run them in worker threads
+class JobScheduler:
+    def __init__(self):
+        self.task_queue = Queue()
+        self.stop_flag = False
+        self.thread = Thread(target=self.worker_loop)
+        self.thread.daemon = True
+
+    def start(self):
+        self.thread.start()
+
+    def stop(self):
+        self.stop_flag = True
+        # put a dummy command to unblock queue
+        self.task_queue.put(None)
+        self.thread.join()
+
+    def worker_loop(self):
+        while not self.stop_flag:
+            cmd = self.task_queue.get()
+            if cmd is None:
+                break
+            print(f"[Scheduler] Executing command: {cmd.name}")
+            cmd.execute()
+            self.task_queue.task_done()
+
+    def schedule(self, command: Command):
+        self.task_queue.put(command)
+
+    def wait_all(self):
+        self.task_queue.join()
+
+class FileCompressCommand(Command):
+    def __init__(self, file_path):
+        self.file_path = file_path
+
+    def execute(self):
+        # Real logic might compress a file to zip or something
+        time.sleep(0.5)
+        print(f"FileCompressCommand: Compressed file {self.file_path}")
+
+class EmailSendCommand(Command):
+    def __init__(self, recipient, subject, body):
+        self.recipient = recipient
+        self.subject = subject
+        self.body = body
+
+    def execute(self):
+        time.sleep(0.3)
+        print(f"EmailSendCommand: Sent '{self.subject}' to {self.recipient}")
+
+class BulkCommand(Command):
+    """A composite command that executes a list of sub-commands in sequence."""
+    def __init__(self, commands):
+        self.commands = commands
+
+    def execute(self):
+        print("BulkCommand: Executing sub-commands in sequence.")
+        for cmd in self.commands:
+            cmd.execute()
+
+# Demonstration
+if __name__ == "__main__":
+    scheduler = JobScheduler()
+    scheduler.start()
+
+    # schedule some single commands
+    scheduler.schedule(FileCompressCommand("/tmp/data1.txt"))
+    scheduler.schedule(FileCompressCommand("/tmp/data2.txt"))
+    scheduler.schedule(EmailSendCommand("user@example.com", "Greetings", "Hello from the system!"))
+
+    # schedule a bulk command (macro)
+    bulk_cmd = BulkCommand([
+        FileCompressCommand("/tmp/report.doc"),
+        EmailSendCommand("admin@example.com", "Report Ready", "Your report has been compressed."),
+    ])
+    scheduler.schedule(bulk_cmd)
+
+    # Wait for all tasks
+    scheduler.wait_all()
+
+    # stop the scheduler
+    scheduler.stop()
+    print("All scheduled commands have been processed.")
+#+END_SRC
+
+*** 5.2.1 Explanation
+
+- =Command= Base Class: We define execute(), optional undo(), and name property.  
+- =JobScheduler=: Maintains a queue of commands, processes them in a worker thread.  
+- Concrete Commands:
+   - FileCompressCommand: Simulates compressing a file.
+   - EmailSendCommand: Sends an email.
+   - BulkCommand: A macro that runs multiple commands in sequence.
+- Usage: We schedule commands in the queue. The scheduler calls execute() for each. We can store or replay commands, easily add new command types, or handle errors by re-queueing them.
+
+** 5.3 Observations
+
+This advanced example merges concurrency with the Command pattern. By turning each job into a command, the system can schedule, track, or rerun them. The code is flexible: we can add new job types by creating new command classes, or store commands for logs or retries.
+
+* 6. Nuances, Variations, and Best Practices
+
+** 6.1 Command vs. Strategy
+
+While both encapsulate “an action” in an object, =Command= typically denotes a single invocation with potential undo, whereas =Strategy= typically focuses on selecting one of multiple algorithms for repeated use. Command is about describing an operation plus its context (and possibly undo), whereas Strategy is about polymorphic algorithm families.
+
+** 6.2 Handling Undo
+
+If you need undo, each command must store enough state to revert changes. That can be straightforward for simple operations (like a text insert) but trickier for wide-reaching side effects. Sometimes a Memento pattern helps snapshot the prior state.
+
+** 6.3 Macro Commands
+
+A macro or composite command can hold multiple sub-commands, calling them in order. This approach is common in advanced user macros (productivity software, games) or combined operations that must be undone as a single unit.
+
+** 6.4 Persistence and Logging
+
+Commands can be serialized or logged for auditing or replay. In some event-sourced systems, user actions are essentially commands stored in an append-only log. This is powerful for debugging, analytics, or crash recovery.
+
+** 6.5 Overuse Danger
+
+If your operation is trivial or never needs replays, macros, or undo, a direct method call might suffice. The pattern’s strength lies in advanced features—like reconfiguration, logging, or concurrency. Without those needs, the extra classes might be overkill.
+
+* 7. Real-World Usage
+
+- =GUI Frameworks=: Menus, toolbars, or hotkeys each carry a command object that runs on user click/press, allowing easy re-binds or macros.
+- =Text Editors/Drawing Apps=: Each user operation is a command (insert, delete, format), enabling undo/redo.
+- =Job Queues/Task Schedulers=: As in our advanced Python example, each background job is a command object queued and executed by worker threads.
+- =Macro Recording=: Productivity software or games let you record a sequence of user actions (commands) to replay later.
+- =Network/Distributed=: Commands can be serialized, shipped to remote servers, and executed there.
+
+* 8. Conclusion
+
+The =Command= pattern elegantly encapsulates actions in objects. This decouples the invoker (like a button, menu, or scheduler) from the implementation details of the action, enabling advanced capabilities:
+
+- Undo/Redo: Each command can store data for reversing its effect.
+- Macro/Batch Execution: Commands can be combined into sequences.
+- Logging/Queuing: Because commands are first-class objects, they can be stored or re-executed easily.
+- Reconfiguration: The client or UI can swap commands at runtime without affecting underlying code.
+
+We illustrated:
+
+- =Beginner (Rust)=: A simple remote control example, showing how command objects decouple button invocations from the actual logic.
+- =Intermediate (Guile Scheme)=: A text editor with insert/delete commands that support undo—showcasing the classic usage of Command for user actions.
+- =Advanced (Python)=: A job scheduling system, where commands are queued for asynchronous execution, demonstrating how the pattern handles concurrency and macro commands gracefully.
+
+Wherever you need flexible or undoable actions, or you want to store, schedule, or replicate actions, the =Command= pattern can elegantly handle the complexity with minimal coupling and maximum extensibility.
