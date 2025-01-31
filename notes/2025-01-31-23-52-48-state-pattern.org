@@ -1,0 +1,359 @@
+:PROPERTIES:
+:ID:       aeae3810-8a95-432d-8f31-7d043f08a285
+:END:
+#+TITLE: State Pattern
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+* 1. Introduction and Historical Context
+
+The =State= pattern is a behavioral design pattern that allows an object to alter its behavior when its internal state changes. Observers of the object might not even see that it “switched classes,” but from the object’s perspective, it delegates certain operations to an internal “state” object that handles them. The classic example is a finite state machine: the context (the main object) can transition from one state to another, with each state implementing distinct behaviors for the same actions.
+
+Historically, developers often used large switch or if-else statements to handle state-driven behavior. This quickly becomes unwieldy if you have many states or complex transitions. By localizing state-specific logic in separate classes (or objects), the State pattern fosters clarity, maintainability, and an open-closed design. It is particularly common in UI workflow (e.g., a document that can be in “draft,” “moderation,” or “published” states) or protocol handlers (e.g., a network connection might have states “open,” “listening,” “closed,” each changing how incoming data is processed).
+
+** 1.1 Why Use State?
+
+- =Eliminate Conditionals=: Instead of scattering “if currentState == X do this, else if currentState == Y do that,” the pattern encapsulates each state’s behavior in a dedicated state object.
+- =Maintainability=: Each state is a separate class or object, so adding or modifying a state’s behavior does not require editing a single massive conditional structure.
+- =Dynamic Behavior=: The object can change its state at runtime, effectively changing how it responds to method calls. This can simulate large-scale finite state machines or complex workflows neatly.
+- =Open-Closed=: You can add new states by writing new classes, typically leaving existing states or transitions unaltered.
+
+** 1.2 Potential Pitfalls
+
+- =Number of Classes=: A complex state machine with many states can produce many classes. Some prefer table-driven or data-driven approaches if the design is very large.
+- =State Explosion=: If transitions are complicated, you might still face confusion about how states shift. Good naming and a clear transition scheme are key.
+- =Overengineering=: For small or trivial changes, a single if might suffice. The pattern shines when the differences among states are significant or transitions are many.
+
+When the system’s behavior changes significantly based on state, and you want to keep logic organized, =State= is powerful.
+
+* 2. Conceptual Motivation
+
+A typical scenario is a TCP connection with states “LISTENING,” “ESTABLISHED,” “CLOSED.” The same “send” method might do different things in each state, or might be disallowed in “CLOSED.” Rather than coding a big switch, the connection has a state pointer referencing a ConnectionState object. Each call to conn.send(data) delegates to state.send(data). If we transition from “ESTABLISHED” to “CLOSED,” we do conn.state = closedState. Future calls to conn.send then follow the closed logic. The pattern appears frequently in UI elements, workflow contexts, or protocol state machines.
+
+* 3. Beginner Example (Guile Scheme)
+
+We begin with a beginner demonstration in Guile Scheme: a traffic light that cycles among states “Red,” “Green,” “Yellow.” Each state object decides how to transition to the next color.
+
+** 3.1 Motivating Scenario
+
+A traffic light cycles Red → Green → Yellow → Red. We avoid a single class with if-else logic by storing a pointer to the current state. Each state implements next() to produce the next state.
+
+** 3.2 Code Example (Beginner, Guile Scheme)
+
+#+BEGIN_SRC scheme
+(use-modules (oop goops))
+
+;; We'll define a <traffic-light> class that references a current state object
+(define-class <traffic-light> ()
+  (state #:init-keyword #:state #:init-value #f))
+
+;; The state interface
+(define-class <light-state> ()
+  (virtual (next-state (self traffic-light)))
+  (virtual (color (self))))
+
+;; Concrete states: <red-state>, <green-state>, <yellow-state>
+
+(define-class <red-state> (<light-state>)
+  (define (next-state (self) traffic-light)
+    (set-slot-ref! traffic-light 'state (make <green-state>))
+    (slot-ref traffic-light 'state))
+  (define (color (self))
+    "Red"))
+
+(define-class <green-state> (<light-state>)
+  (define (next-state (self) traffic-light)
+    (set-slot-ref! traffic-light 'state (make <yellow-state>))
+    (slot-ref traffic-light 'state))
+  (define (color (self))
+    "Green"))
+
+(define-class <yellow-state> (<light-state>)
+  (define (next-state (self) traffic-light)
+    (set-slot-ref! traffic-light 'state (make <red-state>))
+    (slot-ref traffic-light 'state))
+  (define (color (self))
+    "Yellow"))
+
+;; utility to create a traffic light with initial red state
+(define (make-traffic-light)
+  (let ((tl (make <traffic-light>)))
+    (set-slot-ref! tl 'state (make <red-state>))
+    tl))
+
+;; usage
+(let ((light (make-traffic-light)))
+  (do ((i 1 (+ i 1)))
+      ((> i 5))
+    (format #t "Light is ~a\n" (send (slot-ref light 'state) 'color))
+    (send (slot-ref light 'state) 'next-state light)))
+#+END_SRC
+
+*** 3.2.1 Explanation
+
+- =<traffic-light>=: The context with a state slot.
+- =<light-state>=: The base class specifying next-state and color.
+- <red-state>, <green-state>, <yellow-state>: Each transitions to another state in next-state. color returns a string.
+- usage: We cycle states five times, printing color each cycle. The transitions are stored in each state class.
+
+** 3.3 Observations
+
+A minimal example of the pattern. The logic for each color’s next step is in that color’s state class, avoiding a big if-else chain in the traffic light. The traffic light is simply a container for “current state.”
+
+* 4. Intermediate Example (Python)
+
+Next, an intermediate scenario in Python: a media player that changes how =play()=, =pause()=, and =stop()= behave depending on whether it’s “Stopped,” “Playing,” or “Paused.” This is a common use of State for user-interface-driven objects.
+
+** 4.1 Motivating Scenario
+
+A media player with play, pause, stop buttons. If we’re in “stopped” state, pressing play transitions to “playing.” If “playing,” pressing pause transitions to “paused,” etc. Instead of a big switch on currentState, each state object implements the relevant logic.
+
+** 4.2 Code Example (Intermediate, Python)
+
+#+BEGIN_SRC python
+class MediaPlayerState:
+    """Base state class. Defines how to handle play, pause, stop."""
+    def play(self, player):
+        raise NotImplementedError
+    def pause(self, player):
+        raise NotImplementedError
+    def stop(self, player):
+        raise NotImplementedError
+    def state_name(self):
+        return self.__class__.__name__
+
+class StoppedState(MediaPlayerState):
+    def play(self, player):
+        print("StoppedState: Starting playback.")
+        player.change_state(PlayingState())
+    def pause(self, player):
+        print("StoppedState: Can't pause, already stopped.")
+    def stop(self, player):
+        print("StoppedState: Already stopped.")
+
+class PlayingState(MediaPlayerState):
+    def play(self, player):
+        print("PlayingState: Already playing.")
+    def pause(self, player):
+        print("PlayingState: Pausing.")
+        player.change_state(PausedState())
+    def stop(self, player):
+        print("PlayingState: Stopping.")
+        player.change_state(StoppedState())
+
+class PausedState(MediaPlayerState):
+    def play(self, player):
+        print("PausedState: Resuming playback.")
+        player.change_state(PlayingState())
+    def pause(self, player):
+        print("PausedState: Already paused.")
+    def stop(self, player):
+        print("PausedState: Stopping from paused.")
+        player.change_state(StoppedState())
+
+class MediaPlayer:
+    """Context: delegates to the current state."""
+    def __init__(self):
+        self.state = StoppedState()
+
+    def change_state(self, new_state):
+        print(f"Transition: {self.state.state_name()} -> {new_state.state_name()}")
+        self.state = new_state
+
+    def play(self):
+        self.state.play(self)
+    def pause(self):
+        self.state.pause(self)
+    def stop(self):
+        self.state.stop(self)
+
+if __name__ == "__main__":
+    player = MediaPlayer()
+    player.play()   # Stopped -> Playing
+    player.play()   # Already playing
+    player.pause()  # Playing -> Paused
+    player.pause()  # Already paused
+    player.play()   # Paused -> Playing
+    player.stop()   # Playing -> Stopped
+#+END_SRC
+
+*** 4.2.1 Explanation
+
+- =MediaPlayerState= base class with play/pause/stop. 
+- Concrete States: =StoppedState=, =PlayingState=, =PausedState=. Each implements these methods differently. 
+- =MediaPlayer= context: holds a =state=, delegates calls. The state calls player.change_state(...) to transition. 
+- usage: We do a sequence of calls. Each call’s effect depends on the current state, which might switch to another state.
+
+** 4.3 Observations
+
+This scenario is typical for an object with significantly different behaviors for the same methods depending on state. Each state is easy to read or modify. Adding a “fast-forward” state is straightforward: define a new class, handle relevant transitions, done.
+
+* 5. Advanced Example (Rust)
+
+Finally, for an advanced scenario in Rust, we illustrate a TCP-like connection with states “Closed,” “Listening,” “Established.” The same methods (listen, send_data, close) might behave differently depending on the current state or be disallowed. This example captures a more complex approach with transitions, demonstrating how states can store dynamic data or logic.
+
+** 5.1 Motivating Scenario
+
+A simplified TCP connection might be in “Closed” state by default, can transition to “Listening” if we call listen(), can accept data sending only when “Established,” and so forth. Instead of big conditionals in the connection logic, we keep each state in a separate struct implementing a common trait.
+
+** 5.2 Code Example (Advanced, Rust)
+
+#+BEGIN_SRC rust
+use std::rc::Rc;
+use std::cell::RefCell;
+
+// The trait for each connection state
+trait ConnectionState {
+    fn listen(&mut self, conn: &mut TcpConnection);
+    fn send_data(&mut self, conn: &mut TcpConnection, data: &str);
+    fn close(&mut self, conn: &mut TcpConnection);
+    fn state_name(&self) -> &str;
+}
+
+// The context: TcpConnection
+struct TcpConnection {
+    state: Box<dyn ConnectionState>,
+}
+
+impl TcpConnection {
+    fn new() -> Self {
+        TcpConnection {
+            state: Box::new(ClosedState),
+        }
+    }
+
+    fn set_state(&mut self, new_state: Box<dyn ConnectionState>) {
+        println!("Transition: {} -> {}", self.state.state_name(), new_state.state_name());
+        self.state = new_state;
+    }
+
+    fn listen(&mut self) {
+        self.state.listen(self);
+    }
+
+    fn send_data(&mut self, data: &str) {
+        self.state.send_data(self, data);
+    }
+
+    fn close(&mut self) {
+        self.state.close(self);
+    }
+}
+
+// Concrete states
+struct ClosedState;
+impl ConnectionState for ClosedState {
+    fn listen(&mut self, conn: &mut TcpConnection) {
+        println!("ClosedState: starting to listen.");
+        conn.set_state(Box::new(ListeningState));
+    }
+    fn send_data(&mut self, _conn: &mut TcpConnection, _data: &str) {
+        println!("ClosedState: can't send, connection is closed.");
+    }
+    fn close(&mut self, _conn: &mut TcpConnection) {
+        println!("ClosedState: already closed.");
+    }
+    fn state_name(&self) -> &str {
+        "Closed"
+    }
+}
+
+struct ListeningState;
+impl ConnectionState for ListeningState {
+    fn listen(&mut self, _conn: &mut TcpConnection) {
+        println!("ListeningState: already listening.");
+    }
+    fn send_data(&mut self, conn: &mut TcpConnection, data: &str) {
+        println!("ListeningState: establishing connection, then sending '{}'.", data);
+        conn.set_state(Box::new(EstablishedState));
+        // after establishing, call send again in the new state
+        conn.send_data(data);
+    }
+    fn close(&mut self, conn: &mut TcpConnection) {
+        println!("ListeningState: closing, going to Closed.");
+        conn.set_state(Box::new(ClosedState));
+    }
+    fn state_name(&self) -> &str {
+        "Listening"
+    }
+}
+
+struct EstablishedState;
+impl ConnectionState for EstablishedState {
+    fn listen(&mut self, _conn: &mut TcpConnection) {
+        println!("EstablishedState: can't listen, already connected.");
+    }
+    fn send_data(&mut self, _conn: &mut TcpConnection, data: &str) {
+        println!("EstablishedState: sending data => '{}'", data);
+    }
+    fn close(&mut self, conn: &mut TcpConnection) {
+        println!("EstablishedState: closing connection -> ClosedState.");
+        conn.set_state(Box::new(ClosedState));
+    }
+    fn state_name(&self) -> &str {
+        "Established"
+    }
+}
+
+// demonstration
+fn main() {
+    let mut conn = TcpConnection::new();
+    conn.listen(); // closed -> listening
+    conn.send_data("Hello World"); // listening -> established, then send
+    conn.send_data("Second message"); // established
+    conn.close(); // established -> closed
+    conn.close(); // already closed
+}
+#+END_SRC
+
+*** 5.2.1 Explanation
+
+- =ConnectionState= trait: listen, send_data, close, plus state_name for logging.
+- =TcpConnection= context: holds a Box<dyn ConnectionState>. The next state is assigned in transitions. 
+- States: =ClosedState=, =ListeningState=, =EstablishedState=, each implementing the trait differently, deciding transitions. 
+- usage: We do a sequence of calls (listen, send_data, close). Observing transitions. For example, if we try to send data while Listening, we first transition to Established, then actually send it.
+
+** 5.3 Observations
+
+This advanced scenario better illustrates a typical “protocol” usage. The pattern organizes states, each with distinct transitions, avoiding a large if-else block. We keep track of transitions in each method, set_state(...) changes the context’s state.
+
+* 6. Nuances, Variations, and Best Practices
+
+** 6.1 State vs. Strategy
+
+Both rely on polymorphism. Strategy typically deals with picking among multiple algorithms, while State deals with an object’s entire set of behaviors changing as its internal state. States often reference each other for transitions, whereas strategies typically do not.
+
+** 6.2 Storing Transitions
+
+In many examples, each state decides the next state. Alternatively, transitions can be stored in a table or be external to the states. The pattern is flexible, but localizing transitions in each state often clarifies design.
+
+** 6.3 Data Sharing Among States
+
+If states share lots of data, store that in the context object. The states can refer back to it as needed (like =conn= in our Rust example). This avoids duplicating data in each state.
+
+** 6.4 Large State Machines
+
+If your design has many states or transitions, or if you want to define transitions data-driven, you might prefer a table-based approach or use UML state charts. The State pattern is best for moderate or smaller designs that benefit from encapsulating each state’s logic in a class.
+
+** 6.5 Avoiding “If” Overuse
+
+The main reason to adopt State is to avoid huge multi-branch conditionals. Each state object is effectively an “if branch.” Just ensure you’re not rewriting big conditionals inside each state. The aim is clarity and modular logic.
+
+* 7. Real-World Usage
+
+- =UI Workflows=: e.g., a wizard might have states “step1,” “step2,” “finished,” each controlling what next() does.
+- =Network Protocols=: The advanced Rust example. A connection object transitions among states like “closed,” “listening,” “established.”
+- =Document Lifecycles=: A document can be “draft,” “review,” “published,” each restricting or enabling certain actions.
+- =Vending Machines=: States like “no coin,” “has coin,” “dispensing,” controlling how a “press button” action behaves.
+- =Workflow Engines=: A process might pass from state to state, each with distinct behaviors or transitions.
+
+* 8. Conclusion
+
+The =State= pattern thrives when objects must change behavior as they move among internal states, eliminating messy conditionals. By assigning each state’s logic to separate classes, you keep transitions explicit and your design open to extension. The context simply delegates calls to its current state, which can shift to other states as needed.
+
+We showcased:
+
+- =Beginner (Guile Scheme)=: A traffic light cycling (Red, Green, Yellow).
+- =Intermediate (Python)=: A media player with states Stopped, Playing, Paused, each handling play/pause/stop differently.
+- =Advanced (Rust)=: A TCP-like connection with states Closed, Listening, Established, each implementing listen/send/close in distinct ways.
+
+When your system’s logic depends heavily on dynamic state changes, with each state having unique operations or transition rules, the =State= pattern helps structure your code for clarity, flexibility, and maintainability, avoiding a sprawling chain of conditionals. 
