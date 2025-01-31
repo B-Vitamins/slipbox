@@ -1,0 +1,388 @@
+:PROPERTIES:
+:ID:       4e428218-ab20-4dd9-9995-fafa4fea43c5
+:END:
+#+TITLE: Iterator Pattern
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+* 1. Introduction and Historical Context
+
+The =Iterator= pattern is a behavioral pattern that provides a way to access the elements of an aggregate (like an array, list, or tree) sequentially without exposing its underlying representation. Often credited to the “Gang of Four,” the pattern helped standardize the concept of “external” iterators in languages that did not natively support advanced iteration constructs (like generator functions, coroutines, or for-each loops). Even in modern languages with built-in iteration, understanding the Iterator pattern remains valuable for:
+
+- =Custom Collections=: If you create a specialized data structure, you’ll likely want to provide a robust, consistent iteration interface.
+- =Separation of Concerns=: The collection’s internal logic stays hidden, while the iterator solely manages enumeration of elements.
+- =Multiple Traversal Strategies=: A single collection might want different iteration orders (e.g., in-order vs. pre-order for trees). The Iterator pattern can unify how those variants are created and used.
+- =Enhanced Maintainability=: By factoring out iteration logic into a dedicated class or function, you keep the container’s code simpler, open to changes in iteration strategy without rewriting the container.
+
+** 1.1 Why Use Iterator?
+
+- =Encapsulation=: Clients do not need to know the container’s internal structure (node pointers, array indices, etc.). The iterator presents a uniform “next” interface.
+
+- =Uniform Interface=: Different containers can present the same iteration interface, so client code handles them polymorphically.
+
+- =Multiple Traversal Support=: A container might offer multiple iterators (e.g., for different tree-traversal orders).
+
+- =Maintainability=: Putting iteration logic in a separate class or function keeps the container code clean and fosters open-closed design for new iteration approaches.
+
+** 1.2 Potential Pitfalls
+
+- =Overhead or Complexity=: If your language already provides iteration constructs, building your own iterator can be superfluous.
+
+- =Concurrent Modification=: Iterators may be invalidated if the underlying collection mutates during iteration. You might need concurrency checks or specialized designs.
+
+- =Multiple Iterators=: If the container supports multiple simultaneous iterators, watch for interactions—especially if the container can be modified.
+
+When you want consistent, flexible traversal of complex data structures, the Iterator pattern elegantly solves that problem, preserving encapsulation and enabling multiple iteration strategies.
+
+* 2. Conceptual Motivation
+
+A scenario: you have a custom data structure (like a skip list or graph). Client code wants a standard, clean way to get each element in turn, without manipulating internal details. The Iterator pattern encapsulates traversal in an external object that steps through the elements (often with methods like =next()=, =hasNext()=). This keeps the container’s innards hidden.
+
+* 3. Beginner Example (Python)
+
+We’ll start with a beginner-level Python example, illustrating a custom container with an external iterator object. Python’s built-in iteration is powerful, but we’ll mimic a simplified approach for clarity.
+
+** 3.1 Motivating Scenario
+
+Imagine a custom BookCollection that stores Book objects. We want a standard while loop style iteration (with =has_next=, =next=) akin to older OOP languages. This reveals how the Iterator pattern decouples the iteration mechanism from the container.
+
+** 3.2 Code Example (Beginner, Python)
+
+#+BEGIN_SRC python
+class Book:
+    def __init__(self, title, author):
+        self.title = title
+        self.author = author
+
+class BookCollection:
+    def __init__(self):
+        self._books = []
+
+    def add_book(self, book):
+        self._books.append(book)
+
+    def create_iterator(self):
+        return BookIterator(self._books)
+
+class BookIterator:
+    """A simple external iterator for BookCollection."""
+    def __init__(self, books):
+        self._books = books
+        self._index = 0
+
+    def has_next(self):
+        return self._index < len(self._books)
+
+    def next(self):
+        if not self.has_next():
+            raise StopIteration("No more books")
+        item = self._books[self._index]
+        self._index += 1
+        return item
+
+if __name__ == "__main__":
+    collection = BookCollection()
+    collection.add_book(Book("1984", "George Orwell"))
+    collection.add_book(Book("Brave New World", "Aldous Huxley"))
+    collection.add_book(Book("Fahrenheit 451", "Ray Bradbury"))
+
+    iterator = collection.create_iterator()
+    while iterator.has_next():
+        book = iterator.next()
+        print(f"Title: {book.title}, Author: {book.author}")
+#+END_SRC
+
+*** 3.2.1 Explanation
+
+- =BookCollection=: Our container storing Book objects in a list. 
+- =create_iterator()=: Produces a BookIterator referencing the collection’s list.
+- =BookIterator=: Manages an index, exposing =has_next()= and =next()=. 
+- Usage: We populate BookCollection, create BookIterator, then loop until the iterator is exhausted.
+
+** 3.3 Observations
+
+This example is rudimentary but demonstrates the pattern: a custom container producing an external iterator with a standard interface. Real Python code might exploit __iter__ or generator functions, but the principle stands.
+
+* 4. Intermediate Example (Guile Scheme)
+
+Next, we move to Guile Scheme with an in-order tree iterator. This is more interesting because the data structure is a binary tree (not a flat list), so the iteration strategy (in-order) must be defined explicitly.
+
+** 4.1 Motivating Scenario
+
+We have a binary tree of integers, and we want an in-order traversal. The user code shouldn’t see how the tree is structured; it only gets an iterator object that yields the integers in ascending order. This exemplifies how the Iterator pattern can hide internal complexity.
+
+** 4.2 Code Example (Intermediate, Guile Scheme)
+
+#+BEGIN_SRC scheme
+(use-modules (oop goops))
+
+;; Define a <tree-node> class with 'value', 'left', 'right'
+(define-class <tree-node> ()
+  (value #:init-keyword #:value)
+  (left #:init-keyword #:left #:init-value #f)
+  (right #:init-keyword #:right #:init-value #f))
+
+;; A function to insert into a BST for demonstration
+(define (bst-insert root val)
+  (if (not root)
+      (make <tree-node> #:value val)
+      (let ((node root))
+        (if (< val (slot-ref node 'value))
+            (set-slot-ref! node 'left 
+                           (bst-insert (slot-ref node 'left) val))
+            (set-slot-ref! node 'right
+                           (bst-insert (slot-ref node 'right) val)))
+        node)))
+
+;; The <tree-iterator> that yields nodes in ascending (in-order)
+(define-class <tree-iterator> ()
+  (stack #:init-keyword #:stack #:init-value '())
+  (current #:init-keyword #:current #:init-value #f)
+
+  (define (push-left (node) st)
+    (let loop ((n node) (acc st))
+      (if (not n)
+          acc
+          (loop (slot-ref n 'left) (cons n acc)))))
+
+  (define (init-iterator (self) root)
+    (set! (slot-ref self 'stack) (push-left root '())))
+
+  (define (has-next? (self))
+    (or (slot-ref self 'stack) (slot-ref self 'current)))
+
+  (define (next (self))
+    (let ((st (slot-ref self 'stack))
+          (cur (slot-ref self 'current)))
+      (cond
+       (cur
+        (set-slot-ref! self 'current #f)
+        (slot-ref cur 'value))
+       ((not st)
+        #f)
+       (else
+        (let ((node (car st)))
+          (set-slot-ref! self 'stack (cdr st))
+          (let ((pushed (push-left (slot-ref node 'right) '())))
+            (if pushed
+                (set-slot-ref! self 'stack (append pushed (slot-ref self 'stack)))))
+          (slot-ref node 'value)))))))
+
+;; A function to create a tree-iterator from a root
+(define (make-tree-iterator root)
+  (let ((it (make <tree-iterator>)))
+    (send it 'init-iterator root)
+    it))
+
+;; example usage
+(let ((root #f))
+  (for-each (lambda (n) (set! root (bst-insert root n))) '(5 3 7 2 4 6 8))
+  (let ((it (make-tree-iterator root)))
+    (while (send it 'has-next?)
+      (let ((val (send it 'next)))
+        (display val) (display " ")))))
+#+END_SRC
+
+*** 4.2.1 Explanation
+
+- <tree-node>: Basic BST node with value, left, right.
+- bst-insert: Helper to insert a value into a BST for building demonstration data.
+- <tree-iterator>: Maintains a stack and possibly a current node, implements =has-next?= and =next=. 
+- init-iterator: Initially pushes left descendants of root onto the stack, so the first pop is the smallest element.
+- next: pops from stack, pushes the right node’s left branch, returns the popped node’s value.
+- Usage: We build a BST with [5, 3, 7, 2, 4, 6, 8], then create an iterator. We repeatedly call next until no more. The output is sorted: 2 3 4 5 6 7 8.
+
+** 4.3 Observations
+
+This scenario highlights how the pattern elegantly handles more complex data structures (a BST). The iteration strategy is encapsulated in the <tree-iterator> class, so BST insertion or structure is not directly exposed to the client.
+
+* 5. Advanced Example (Rust)
+
+Finally, a Rust example at an advanced level, illustrating multiple iteration strategies for a single container. We might define a “Graph” struct providing BFS or DFS iterators, each implementing the standard =Iterator= trait.
+
+** 5.1 Motivating Scenario
+
+We have a graph used for various tasks. Some code wants BFS iteration from a start node; others want DFS. We want to keep adjacency lists or node arrays hidden. By implementing BFSIterator and DFSIterator, each implementing the =Iterator= trait, we present multiple traversal strategies in a single container.
+
+** 5.2 Code Example (Advanced, Rust)
+
+#+BEGIN_SRC rust
+use std::collections::{HashMap, VecDeque};
+
+// We'll represent a graph as adjacency lists: node -> list of neighbors
+pub struct Graph {
+    adjacency: HashMap<u32, Vec<u32>>, // integer node IDs
+}
+
+impl Graph {
+    pub fn new() -> Self {
+        Graph {
+            adjacency: HashMap::new(),
+        }
+    }
+    pub fn add_edge(&mut self, src: u32, dst: u32) {
+        self.adjacency.entry(src).or_insert_with(Vec::new).push(dst);
+    }
+
+    // BFS and DFS iterators:
+    pub fn bfs_iterator(&self, start: u32) -> BfsIterator {
+        BfsIterator::new(self, start)
+    }
+    pub fn dfs_iterator(&self, start: u32) -> DfsIterator {
+        DfsIterator::new(self, start)
+    }
+}
+
+// BFS iterator
+pub struct BfsIterator<'a> {
+    graph: &'a Graph,
+    visited: HashMap<u32, bool>,
+    queue: VecDeque<u32>,
+}
+
+impl<'a> BfsIterator<'a> {
+    fn new(graph: &'a Graph, start: u32) -> Self {
+        let mut visited = HashMap::new();
+        visited.insert(start, true);
+        let mut queue = VecDeque::new();
+        queue.push_back(start);
+        BfsIterator {
+            graph,
+            visited,
+            queue,
+        }
+    }
+}
+
+impl<'a> Iterator for BfsIterator<'a> {
+    type Item = u32;
+    fn next(&mut self) -> Option<Self::Item> {
+        if let Some(node) = self.queue.pop_front() {
+            if let Some(neighbors) = self.graph.adjacency.get(&node) {
+                for &n in neighbors {
+                    if !self.visited.contains_key(&n) {
+                        self.visited.insert(n, true);
+                        self.queue.push_back(n);
+                    }
+                }
+            }
+            Some(node)
+        } else {
+            None
+        }
+    }
+}
+
+// DFS iterator
+pub struct DfsIterator<'a> {
+    graph: &'a Graph,
+    visited: HashMap<u32, bool>,
+    stack: Vec<u32>,
+}
+
+impl<'a> DfsIterator<'a> {
+    fn new(graph: &'a Graph, start: u32) -> Self {
+        let mut visited = HashMap::new();
+        visited.insert(start, true);
+        let mut stack = Vec::new();
+        stack.push(start);
+        DfsIterator {
+            graph,
+            visited,
+            stack,
+        }
+    }
+}
+
+impl<'a> Iterator for DfsIterator<'a> {
+    type Item = u32;
+    fn next(&mut self) -> Option<Self::Item> {
+        if let Some(node) = self.stack.pop() {
+            if let Some(neighbors) = self.graph.adjacency.get(&node) {
+                for &n in neighbors {
+                    if !self.visited.contains_key(&n) {
+                        self.visited.insert(n, true);
+                        self.stack.push(n);
+                    }
+                }
+            }
+            Some(node)
+        } else {
+            None
+        }
+    }
+}
+
+// demonstration
+fn main() {
+    let mut graph = Graph::new();
+    graph.add_edge(1, 2);
+    graph.add_edge(1, 3);
+    graph.add_edge(2, 4);
+    graph.add_edge(3, 5);
+    graph.add_edge(2, 5);
+
+    println!("BFS from 1:");
+    for node in graph.bfs_iterator(1) {
+        println!("Visited {}", node);
+    }
+
+    println!("DFS from 1:");
+    for node in graph.dfs_iterator(1) {
+        println!("Visited {}", node);
+    }
+}
+#+END_SRC
+
+*** 5.2.1 Explanation
+
+- Graph: A container storing adjacency info in a HashMap. 
+- BFSIterator, DFSIterator: Each has a visited structure plus a queue/stack. next() returns the next node in BFS or DFS order.
+- We implement the =Iterator= trait, so client code can do for node in graph.bfs_iterator(1). 
+- Usage: We build a small graph, demonstrate BFS from node 1, then DFS from node 1.
+
+** 5.3 Observations
+
+This advanced scenario underscores how the Iterator pattern can handle multiple traversal strategies. The container remains private, offering BFS or DFS iteration. The client code picks the desired approach and uses a standard iteration syntax.
+
+* 6. Nuances, Variations, and Best Practices
+
+** 6.1 Internal vs. External Iterators
+
+- External Iterator: The client controls iteration (via has_next, next). More flexible but can be more code.
+- Internal Iterator: The container calls a callback or closure for each item. In languages like Python or Rust, for loops often hide the pattern internally.
+
+** 6.2 Handling Concurrent Modification
+
+If the container changes while an iterator is in use, you can break the iteration. Some designs adopt “fail-fast” or “fail-safe” approaches. Others lock or snapshot the container. 
+
+** 6.3 Multiple Iteration Orders
+
+Trees or graphs often supply multiple iterators (in-order, pre-order, BFS, DFS). This is a classic advantage of the Iterator pattern. Each iteration approach is a separate iterator class or function.
+
+** 6.4 Language-Specific Integrations
+
+In Python, you typically define __iter__ and __next__ for iteration. In Rust, you implement the =Iterator= trait. But conceptually, it’s still the same pattern. The container remains sealed; the iteration logic is in a separate place.
+
+** 6.5 Overuse Danger
+
+If your language already provides strong iteration constructs (like Python lists or Rust slices), you might not need to implement a custom iterator. The pattern truly shines for custom data structures or specialized iteration behavior.
+
+* 7. Real-World Usage
+
+- =Built-in Collections=: Standard library structures typically provide iterators. That is the official usage of the pattern.
+- =Custom Trees or Graphs=: As in our examples, BFS, DFS, or specialized orders. 
+- =Database Cursors=: Many DB APIs expose a “cursor” object that yields rows. That is effectively an iterator. 
+- =Composite Trees=: The Composite pattern might produce a tree of objects. An iterator can unify how you traverse them. 
+- =Infinite Streams=: In some functional/lazy contexts, an iterator can yield infinite sequences (like a repeating pattern). The for loop stops whenever the client is satisfied.
+
+* 8. Conclusion
+
+The =Iterator= pattern remains foundational for decoupling a collection’s internal representation from client code that needs sequential access to its elements. By moving iteration logic into an iterator object or trait, you can unify how your containers are traversed, add multiple iteration strategies, and protect internal data structures from direct manipulation.
+
+We showcased:
+
+- =Beginner (Python)=: A “BookCollection” with an external iterator managing a current index.
+- =Intermediate (Guile Scheme)=: An in-order tree iterator for a BST, demonstrating more complex data structure traversal.
+- =Advanced (Rust)=: A “Graph” struct providing BFS and DFS iterators, each implementing Rust’s =Iterator= trait.
+
+Wherever you need flexible, encapsulated iteration—especially if you want multiple traversal orders or unique iteration logic—the Iterator pattern is an elegant, time-tested solution, preserving container encapsulation and offering a uniform traversal interface.
