@@ -1,0 +1,347 @@
+:PROPERTIES:
+:ID:       0d0ef973-d842-4c03-a6dc-d15cf86bdec4
+:END:
+#+TITLE: Future Pattern
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+* 1. Introduction and Historical Context
+
+A Future (or Promise) is an asynchronous design concept that represents a “placeholder” for a value that will eventually become available. Instead of blocking a thread until a computation or I/O operation finishes, you can return a future object immediately. That future can be queried or “awaited” later, or you can attach callbacks that run once the value is set. The concept was popularized by languages like MultiLisp (futures) or by early concurrency frameworks that wanted a simpler approach than manual threads or callbacks. Over time, many languages—Java, C++, JavaScript, Rust, Haskell—have integrated a Future/Promise-based approach for asynchronous tasks.
+
+** 1.1 Why Use Futures / Promises?
+
+- Non-Blocking: The caller can start a lengthy operation (like a network request or file read) and immediately get a future/promise, continuing other work while the operation completes in parallel.
+- Simplified Chaining: Instead of deeply nested callbacks (“callback hell”), you can chain calls: future.then(...).then(...). This fosters a more linear approach to asynchronous code.
+- Error Handling: Many future/promise libraries unify success and failure paths in a single abstraction, letting you handle exceptions or rejections in an elegant manner.
+- Inter-Language Familiarity: Because futures/promises are widely used across languages, adopting them in your architecture can make code more understandable and standardized for a broad range of developers.
+
+** 1.2 Potential Pitfalls
+
+- Memory and Lifecycle: If a future or promise is never completed (like an operation that never finishes), you can leak resources or block other code.
+- Overuse: For trivial tasks, sprinkling futures everywhere might clutter code. A synchronous approach may be simpler if no concurrency is needed.
+- Deadlocks: If multiple futures depend on each other in a cycle, you can get a classic concurrency deadlock scenario.
+- Complex Error Semantics: Some future/promise frameworks might handle errors by callbacks or rejections. Handling them consistently can be tricky if your code is large.
+
+Nevertheless, futures and promises remain central to many modern concurrency frameworks (like JavaScript async/await, Rust’s async/.await, Scala’s Future, or Haskell’s IO-wrapped monadic concurrency) precisely because they unify asynchronous logic in a more streamlined way than raw threads or manual callbacks.
+
+* 2. Conceptual Motivation
+
+Imagine you have a web application that must query a remote service and a local database at once to build a page. Instead of blocking on the remote service call, you can spawn both queries concurrently, returning two futures to the main logic. When both futures complete, you combine results. This approach can significantly reduce total latency if the queries run in parallel. Similarly, in a GUI environment, you might do a complex operation in the background, returning a future that the UI can “await” or attach a callback to when done, so the UI remains responsive.
+
+A Future is typically a read-only handle to the result, while a Promise (or “Completer”) is the writable side used by the code that eventually sets the result. Some languages unify them in a single object, while others separate them. The essence is always the same: “launch operation → return future → later (on success/failure) → the future is completed.”
+
+* 3. Beginner Example (Go)
+
+We’ll start with a beginner demonstration in Go. Although Go typically uses goroutines and channels for concurrency, we can still build a “future-like” interface that returns a channel or struct representing future results. Our example is a small “async fetch” scenario: a function that spawns a goroutine to do an HTTP GET, returning a “future” (or channel) from which we can retrieve the result later. Then we’ll chain it with a second operation (like parsing the data) in a future as well.
+
+** 3.1 Motivating Scenario
+
+We want to fetch a URL asynchronously, returning a future. Then we transform (parse) the data in another future, demonstrating a basic “then” or “map” approach. Finally, we block or “await” the final result, printing it. This is a direct translation of the Future/Promise pattern in a language that normally uses channels + goroutines.
+
+** 3.2 Code Example (Beginner, Go)
+
+#+BEGIN_SRC go
+package main
+
+import (
+    "fmt"
+    "io/ioutil"
+    "net/http"
+    "time"
+    "strings"
+)
+
+// We'll define a "Future" type as a channel that yields either (string, error).
+type FutureResult struct {
+    dataChan chan result
+}
+
+type result struct {
+    data string
+    err  error
+}
+
+// Create a function that returns a future for an HTTP GET
+func AsyncFetch(url string) *FutureResult {
+    fr := &FutureResult{dataChan: make(chan result, 1)}
+
+    go func() {
+        // do the fetch
+        resp, err := http.Get(url)
+        if err != nil {
+            fr.dataChan <- result{"", err}
+            return
+        }
+        defer resp.Body.Close()
+        bytes, err := ioutil.ReadAll(resp.Body)
+        if err != nil {
+            fr.dataChan <- result{"", err}
+            return
+        }
+        fr.dataChan <- result{string(bytes), nil}
+    }()
+
+    return fr
+}
+
+// We'll define a method that "maps" the future result, returning a new future
+// e.g. parse the data in some manner
+func (fr *FutureResult) ThenParse() *FutureResult {
+    newFr := &FutureResult{dataChan: make(chan result, 1)}
+    go func() {
+        r := <-fr.dataChan
+        if r.err != nil {
+            newFr.dataChan <- r
+            return
+        }
+        // parse the data, let's say just counting lines
+        lines := strings.Count(r.data, "\n")
+        newFr.dataChan <- result{fmt.Sprintf("Line count: %d", lines), nil}
+    }()
+    return newFr
+}
+
+// We'll define a blocking method to retrieve the final result
+func (fr *FutureResult) Await() (string, error) {
+    r := <-fr.dataChan
+    return r.data, r.err
+}
+
+func main() {
+    f := AsyncFetch("https://example.com")
+    parsedFuture := f.ThenParse()
+
+    // we can do other stuff in main
+    fmt.Println("Fetching asynchronously...")
+
+    data, err := parsedFuture.Await()
+    if err != nil {
+        fmt.Println("Error:", err)
+        return
+    }
+    fmt.Println("Parsed data:", data)
+}
+#+END_SRC
+
+** 3.2.1 Explanation
+
+- `FutureResult`: We define a struct containing a `dataChan` that eventually yields a `result{data, err}`.
+- `AsyncFetch(url)`: We spawn a goroutine that does `http.Get(url)`, reads the body, then sends `(data, err)` down `fr.dataChan`. The caller gets the future immediately.
+- `ThenParse()`: We do a simple “chaining” approach: once the first future arrives, parse the data. The result is a new future. In real code, you might do JSON parsing or another transformation.
+- `Await()`: We block reading `fr.dataChan`, returning the final string or error.
+- Usage: We do `AsyncFetch(...)`, chain it with `ThenParse()`, then eventually `Await()` the final result. This is a minimal demonstration in Go of a “future/promise style” approach.
+
+** 3.3 Observations
+
+Go concurrency often uses direct channels. But we can implement a Future/Promise style for code clarity or a consistent asynchronous approach. The snippet is straightforward but shows the hallmark steps: create a future, do work in a goroutine, store the result, offer chaining, and eventually await.
+
+* 4. Intermediate Example (Rust)
+
+Now we illustrate an intermediate usage in Rust. Modern Rust heavily employs async/await plus futures. We’ll show how to define asynchronous tasks that produce futures, then chain them or combine them in an asynchronous workflow. We rely on `tokio` or an equivalent runtime.
+
+** 4.1 Motivating Scenario
+
+We want to do a small scenario: fetch data from a “URL” (simulated by a sleep), then process it, returning a second future. We’ll chain these operations in an async function. The final code is run in a `#[tokio::main]` context. This highlights how Rust’s language-level async and the `Future` trait unify concurrency in a safe, typed manner.
+
+** 4.2 Code Example (Intermediate, Rust)
+
+#+BEGIN_SRC rust
+use std::time::Duration;
+use tokio::time::sleep;
+use anyhow::Result;
+
+// an async function returning a future
+async fn fetch_data(url: &str) -> Result<String> {
+    // simulate network call by sleeping
+    println!("Fetching from {}", url);
+    sleep(Duration::from_millis(500)).await;
+    // pretend we got data
+    Ok(format!("Data from {}", url))
+}
+
+// a second async function that processes data
+async fn process_data(data: String) -> Result<usize> {
+    println!("Processing data: {:?}", data);
+    // pretend we do something expensive
+    sleep(Duration::from_millis(300)).await;
+    Ok(data.len())
+}
+
+#[tokio::main]
+async fn main() -> Result<()> {
+    let url = "http://example.com";
+
+    // future #1: fetch data
+    let data = fetch_data(url).await?;
+    // chain: once data is fetched, process it
+    let length = process_data(data).await?;
+    println!("Final result, length is: {}", length);
+
+    Ok(())
+}
+#+END_SRC
+
+** 4.2.1 Explanation
+
+- `fetch_data(url)`: An async function, returning `Result<String>`. We simulate a 500ms delay, then produce data. Under the hood, this is a `Future<Output=Result<String>>`.
+- `process_data(...)`: Another async function, returns `Result<usize>`. We do a 300ms delay, then return the string length.
+- We call `fetch_data(url).await?`, get the string, then call `process_data(data).await?`, get the length. We print it.
+- `#[tokio::main]`: Provides an async entry point. The code is more “synchronous” in syntax but is asynchronous behind the scenes, thanks to Rust’s `Future` trait and the tokio runtime.
+
+** 4.3 Observations
+
+We see Rust’s comfortable integration of futures. The user writes normal `async fn`, the compiler transforms them into state machines. The `await` calls yield back to the runtime if the future is not ready, enabling concurrency with other tasks. The Future concept is fully embraced, though hidden behind the friendly syntax.
+
+* 5. Advanced Example (Haskell)
+
+Lastly, we push the pattern further with an advanced scenario in Haskell. We’ll build or mimic a concurrency approach that returns a “Promise” or “Future,” letting us run multiple computations in parallel, unify results, handle possible errors, and chain further steps. We demonstrate how to do it from scratch using MVar or IORef or simply rely on a library approach.
+
+** 5.1 Motivating Scenario
+
+We want to run two or three parallel computations, each returning an `Int` or a partial result, then unify them. This code is more advanced: we define a minimal “promise” type, spawn threads to set it, then let the user chain or combine results. We’ll show an approach that handles error capturing as well, using Haskell’s `SomeException`.
+
+** 5.2 Code Example (Advanced, Haskell)
+
+#+BEGIN_SRC haskell
+{-# LANGUAGE OverloadedStrings #-}
+module Main where
+
+import Control.Concurrent
+import Control.Exception (SomeException, try)
+import Control.Monad (void)
+import Data.IORef
+
+-- A "Promise" that eventually holds a result or an error
+data Promise a = Promise {
+    resultRef :: IORef (Maybe (Either SomeException a))
+}
+
+-- create a new empty promise
+newPromise :: IO (Promise a)
+newPromise = do
+    ref <- newIORef Nothing
+    return $ Promise ref
+
+-- 'fulfill' the promise
+fulfill :: Promise a -> Either SomeException a -> IO ()
+fulfill (Promise ref) val = do
+    atomicWriteIORef ref (Just val)
+
+-- 'await' blocks until the promise is fulfilled
+await :: Promise a -> IO (Either SomeException a)
+await (Promise ref) = do
+    let loop = do
+          val <- readIORef ref
+          case val of
+            Just x -> return x
+            Nothing -> do
+              threadDelay 100000
+              loop
+    loop
+
+-- launch an async job returning a Promise
+launchAsync :: IO a -> IO (Promise a)
+launchAsync action = do
+    p <- newPromise
+    _ <- forkIO $ do
+        e <- try action
+        fulfill p e
+    return p
+
+-- We'll define a helper to chain a promise into another
+chain :: Promise a -> (a -> IO b) -> IO (Promise b)
+chain pa f = do
+    pb <- newPromise
+    _ <- forkIO $ do
+        resA <- await pa
+        case resA of
+          Left err -> fulfill pb (Left err)
+          Right val -> do
+            e <- try (f val)
+            fulfill pb e
+    return pb
+
+main :: IO ()
+main = do
+    putStrLn "Starting advanced future/promise in Haskell."
+
+    promise1 <- launchAsync $ do
+      threadDelay 500000
+      putStrLn "Task1 done"
+      return (42 :: Int)
+
+    -- let's chain an operation that doubles the value
+    promise2 <- chain promise1 $ \x -> do
+      threadDelay 200000
+      putStrLn "Chained op"
+      return (x * 2)
+
+    -- wait for the final result
+    res2 <- await promise2
+    case res2 of
+      Left e -> putStrLn $ "Error: " ++ show e
+      Right v -> putStrLn $ "Final result: " ++ show v
+#+END_SRC
+
+** 5.2.1 Explanation
+
+- `chain pa f`: We define a function that takes a `Promise a` and a function `(a -> IO b)`. It returns `Promise b`. Under the hood, we spawn a thread that `await`s `pa`, checks for error or success. If success, we run `f val`. We put that result in the new promise. This effectively does “pa.then(f).”
+- `launchAsync`: Creates a new promise, spawns a thread that calls `action`, then sets the promise to that result. This is the foundation of our asynchronous tasks.
+- We illustrate a “Task1” returning `42` after half a second, then chain a step that doubles the value. We finally `await` the chained promise, printing the result. 
+- If any step fails, we store `Left e` (the error) in the next promise, so the chain short-circuits.
+
+** 5.3 Observations
+
+We see a fully “from scratch” approach to futures in Haskell, with chaining, error capturing, asynchronous threads, and a minimal approach to “awaiting.” Real code might rely on a library like `async` or `stm` for a more integrated approach. The pattern, though, remains: “We produce a promise, do work in a separate thread, store success or error, let the user chain or await.”
+
+* 6. Nuances, Variations, and Best Practices
+
+1. **Callbacks vs. await**  
+   Many languages hide chaining behind `async/await`. Both revolve around the same concept: “We have a future, eventually it completes.” The difference is syntax vs. function chaining.
+
+2. **Error Handling**  
+   Some future/promise frameworks unify success/failure in the same pipeline (like Rust’s `Result<T, E>`). Others require an error callback. Keep the approach consistent to avoid lost or unhandled errors.
+
+3. **Completer vs. Promise**  
+   The pattern often splits “promise” (the read side) from “completer/future resolver” (the write side). This fosters clarity about who sets the result and who reads it.
+
+4. **Cancellation**  
+   Some advanced future systems let you “cancel” a future if it’s unneeded. This typically requires the underlying operation to be cancelable. Otherwise, you might do a best-effort approach or just ignore the result.
+
+5. **Parallel Composition**  
+   A common pattern is “launch multiple futures in parallel, then await them all.” Many libraries offer a “join all” or “zip.” This is vital for concurrency patterns like “fetch data from multiple services, combine results.”
+
+6. **Performance**  
+   While futures avoid blocking, the overhead of scheduling or storing partial states can be nontrivial. For large volumes of short tasks, simpler concurrency might suffice. For complex I/O or CPU tasks, futures typically excel.
+
+7. **Memory Leaks**  
+   If a promise is never fulfilled or a future never awaited, references might accumulate. Ensure each future or promise eventually completes or is canceled.
+
+* 7. Real-World Usage
+
+- **JavaScript**: ES6 introduced `Promise`, heavily used for async calls in browser or Node.js. `async/await` builds on it, letting devs chain or handle errors with a synchronous style.
+- **Java**: `CompletableFuture` is a robust approach for asynchronous tasks, with combinators like `thenApply`, `exceptionally`.
+- **C++**: `std::future` and `std::promise` exist, plus libraries like Folly or Boost with advanced features.
+- **Scala or Kotlin**: Offer built-in `Future` or coroutines that revolve around the same concept of eventually producing a value.
+- **Rust**: Heavily uses futures with `async/await`, plus a poll-based approach in the background for concurrency tasks.
+- **Haskell**: Various concurrency libraries revolve around monadic or asynchronous workflows, sometimes calling them “futures” or “promises.”
+
+* 8. Conclusion
+
+The Future / Promise pattern is a cornerstone of modern asynchronous programming. By allowing code to launch an operation and immediately receive a handle that will eventually yield the result, you move away from synchronous blocking and messy callback nesting. Over the years, many languages have built advanced syntax and frameworks on top of futures, enabling a more intuitive approach to concurrency—composing operations, chaining transformations, handling partial failures, all within a unified approach.
+
+We showcased:
+
+1. **Beginner (Go)**: A minimal future-like structure using channels, with `ThenParse()` and final `Await()`. Go uses goroutines and channels, but we replicate a promise style for clarity.
+2. **Intermediate (Rust)**: `async/await` with `tokio`, demonstrating how Rust’s language-level futures unify concurrency. Under the hood is a poll-based system, but code appears synchronous with `await`.
+3. **Advanced (Haskell)**: We manually constructed a “Promise” type using IORef and forkIO, a more low-level approach in a purely functional setting. Real Haskell code might use existing concurrency libraries, but the example shows how you can do it from scratch, capturing the essence of a future/promise in a purely functional environment.
+
+Regardless of language or framework details, the pattern’s essence remains:
+
+- You initiate an asynchronous operation.
+- You get back a future that represents the eventual result.
+- You (or your code) can attach callbacks, chain transformations, or await the result in a structured manner.
+- The result eventually arrives (or fails), fulfilling or rejecting the promise/future.
+
+When used well, futures/promises can unify concurrency flows, reduce callback complexity, and handle partial failures gracefully. They’re thus a vital pattern in asynchronous or event-driven architectures across the modern programming landscape.
+
