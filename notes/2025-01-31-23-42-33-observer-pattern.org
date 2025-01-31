@@ -1,0 +1,337 @@
+:PROPERTIES:
+:ID:       8f1bf5e3-53d1-47d6-add4-4894cf4893f2
+:END:
+#+TITLE: Observer Pattern
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+* 1. Introduction and Historical Context
+
+The =Observer= pattern, also known as Publish-Subscribe or Dependents, is a behavioral design pattern that establishes a one-to-many relationship: when one object (the subject) changes state, all its registered observers are notified and updated automatically. Instead of requiring the subject to hold explicit references to each observer (or vice versa), the pattern defines a subscription/notification mechanism, preserving loose coupling.
+
+Historically, =Observer= gained prominence through GUI frameworks, where a data model might have multiple views or widgets. When the model changes, each view must refresh. Rather than the model referencing all those views directly, it simply notifies them through a well-defined interface. Over time, the pattern proved invaluable in any event-driven architecture or scenario needing reactive updates, from stock tickers to logging systems.
+
+** 1.1 Why Use Observer?
+
+- =Decoupling=: Subjects do not need to know details of who’s listening or how many observers exist; they simply broadcast changes.
+- =One-to-Many Relationship=: A single subject can have any number of observers, each responding in its own way.
+- =Open-Closed Principle=: You can add new observers without altering the subject’s code, only by hooking into the subscription mechanism.
+- =Event-Driven=: For systems revolving around state changes or reactive logic, Observer is a clean solution that organizes updates into discrete notifications.
+
+** 1.2 Potential Pitfalls
+
+- =Notification Storm=: If many observers exist or if an observer triggers further changes, notifications can cascade, leading to complex update chains.
+- =Order of Updates=: If the order of observer updates matters, you must define or manage it, possibly dealing with concurrency issues.
+- =Memory/Leaks=: Observers that forget to unsubscribe may remain in the subject’s list, never getting freed.
+
+Despite these challenges, =Observer= remains a core approach when decoupled, reactive behavior is desired across multiple interested parties.
+
+* 2. Conceptual Motivation
+
+A classic scenario: a data model with multiple views. Whenever the data changes (e.g., an integer increments), each view (progress bar, label, chart) must update. Instead of referencing these views directly, the model notifies them all through an observer interface. Another scenario is a stock price feed—one feed, multiple observers (charts, alerts, AI modules). The feed just broadcasts changes, ignoring who or why they receive them.
+
+* 3. Beginner Example (Rust)
+
+We begin with a straightforward Rust demonstration: a TemperatureStation as the subject, with multiple observers like a console display or logger. When the temperature changes, it notifies them all.
+
+** 3.1 Motivating Scenario
+
+Imagine a weather station measuring temperature. Multiple “displays” or “loggers” want to know when it changes. We’ll implement a trait =TemperatureObserver=, letting the station call =update= on each observer.
+
+** 3.2 Code Example (Beginner, Rust)
+
+#+BEGIN_SRC rust
+use std::rc::Rc;
+
+// 1) Observer trait
+trait TemperatureObserver {
+    fn update(&self, new_temp: f64);
+}
+
+// 2) Subject: TemperatureStation
+struct TemperatureStation {
+    observers: Vec<Rc<dyn TemperatureObserver>>,
+    current_temp: f64,
+}
+
+impl TemperatureStation {
+    fn new() -> Self {
+        TemperatureStation {
+            observers: Vec::new(),
+            current_temp: 0.0,
+        }
+    }
+
+    fn add_observer(&mut self, obs: Rc<dyn TemperatureObserver>) {
+        self.observers.push(obs);
+    }
+
+    fn set_temperature(&mut self, temp: f64) {
+        self.current_temp = temp;
+        self.notify_observers();
+    }
+
+    fn notify_observers(&self) {
+        for obs in &self.observers {
+            obs.update(self.current_temp);
+        }
+    }
+}
+
+// 3) Concrete observers
+struct ConsoleDisplay;
+
+impl TemperatureObserver for ConsoleDisplay {
+    fn update(&self, new_temp: f64) {
+        println!("ConsoleDisplay: new temperature is {}°C", new_temp);
+    }
+}
+
+struct LogWriter;
+
+impl TemperatureObserver for LogWriter {
+    fn update(&self, new_temp: f64) {
+        println!("LogWriter: temperature recorded => {}", new_temp);
+    }
+}
+
+// demonstration
+fn main() {
+    let mut station = TemperatureStation::new();
+
+    // observers
+    let console = Rc::new(ConsoleDisplay);
+    let logger = Rc::new(LogWriter);
+
+    station.add_observer(console);
+    station.add_observer(logger);
+
+    // update temperature
+    station.set_temperature(25.5);
+    station.set_temperature(26.7);
+}
+#+END_SRC
+
+*** 3.2.1 Explanation
+
+- =TemperatureObserver= trait: =update(new_temp)= is the single method.
+- =TemperatureStation= subject: stores a list of observer references and calls =update= on each when temperature changes.
+- =ConsoleDisplay=, =LogWriter= as two distinct observers.
+- usage: We create a station, add two observers, then set the temperature. Each observer prints or logs changes.
+
+** 3.3 Observations
+
+A minimal example that clarifies the essence of Observer: the subject calls each observer’s update method. The =Vec= of trait objects allows multiple observers. In real code, you might manage concurrency or removal of observers differently, but the pattern remains the same.
+
+* 4. Intermediate Example (Python)
+
+Next, a Python example that generalizes Observer into a multi-topic publish-subscribe system. Observers can subscribe to specific “topics,” ensuring that only relevant observers get notified.
+
+** 4.1 Motivating Scenario
+
+We have a news aggregator that broadcasts stories under topics (“Sports,” “Finance,” “Tech”). Observers (like sports fans, finance analysts) subscribe only to relevant topics. The aggregator does not track who these observers are beyond storing them in topic-labeled lists.
+
+** 4.2 Code Example (Intermediate, Python)
+
+#+BEGIN_SRC python
+class NewsSubject:
+    """Manages subscriptions by topic and notifies relevant observers."""
+    def __init__(self):
+        self.subscribers = {}  # topic -> list of observers
+
+    def subscribe(self, topic, observer):
+        if topic not in self.subscribers:
+            self.subscribers[topic] = []
+        self.subscribers[topic].append(observer)
+
+    def unsubscribe(self, topic, observer):
+        if topic in self.subscribers:
+            self.subscribers[topic].remove(observer)
+
+    def publish_news(self, topic, content):
+        print(f"[NewsSubject] Publishing '{content}' on topic '{topic}'.")
+        if topic in self.subscribers:
+            for obs in self.subscribers[topic]:
+                obs.update(topic, content)
+
+class NewsObserver:
+    """Abstract base for observers."""
+    def update(self, topic, content):
+        raise NotImplementedError
+
+class SportsFan(NewsObserver):
+    def __init__(self, name):
+        self.name = name
+    def update(self, topic, content):
+        print(f"{self.name} (SportsFan) sees {topic} news: {content}")
+
+class FinanceAnalyst(NewsObserver):
+    def update(self, topic, content):
+        print(f"FinanceAnalyst analyzing {topic} story: {content}")
+
+if __name__ == "__main__":
+    subject = NewsSubject()
+    
+    alice = SportsFan("Alice")
+    bob = SportsFan("Bob")
+    charlie = FinanceAnalyst()
+
+    subject.subscribe("Sports", alice)
+    subject.subscribe("Sports", bob)
+    subject.subscribe("Finance", charlie)
+
+    subject.publish_news("Sports", "Local team wins finals")
+    subject.publish_news("Finance", "Stock market hits record high")
+    subject.publish_news("Technology", "New smartphone announced")
+#+END_SRC
+
+*** 4.2.1 Explanation
+
+- =NewsSubject= keeps a dict of topic -> [observers]. On =publish_news=, it calls =update(topic, content)= on each observer that subscribed to that topic.
+- =SportsFan=, =FinanceAnalyst= are concrete observers. 
+- usage: We create a subject, attach observers to specific topics, then publish news items. Observers only get events matching their topics.
+
+** 4.3 Observations
+
+This extends the Observer pattern with a multi-topic approach, commonly referred to as “publish-subscribe.” The pattern remains: the subject is decoupled from the observers’ logic, pushing events to them. Observers can pick which topics interest them.
+
+* 5. Advanced Example (Guile Scheme)
+
+Finally, an advanced scenario in Guile Scheme, demonstrating a reactive dataflow system with multiple “subjects” and “observers” forming a mini network. This approach is reminiscent of a small “spreadsheet” or reactive library, where changes in one cell cause downstream computations to update.
+
+** 5.1 Motivating Scenario
+
+We want a system in which “cells” can be raw data or computed from other cells. When a raw cell changes, it notifies its observers (computed cells). They recalc and notify their own observers, and so on. This creates a chain of observer notifications forming a reactive dataflow.
+
+** 5.2 Code Example (Advanced, Guile Scheme)
+
+#+BEGIN_SRC scheme
+(use-modules (oop goops))
+
+;; <subject> as a concept that stores observers
+(define-class <subject> ()
+  (observers #:init-value '()))
+
+(define (subject-add-observer! subj obs)
+  (set-slot-ref! subj 'observers (cons obs (slot-ref subj 'observers))))
+
+(define (subject-notify! subj)
+  (for-each (lambda (o)
+              (send o 'update subj))
+            (slot-ref subj 'observers)))
+
+;; We define <cell> as a subject with a numeric 'value'
+(define-class <cell> (<subject>)
+  (value #:init-keyword #:value #:init-value 0)
+
+  (define (set-value (self) newval)
+    (set-slot-ref! self 'value newval)
+    (subject-notify! self)))
+
+  (define (get-value (self))
+    (slot-ref self 'value)))
+
+;; <computed-cell> that observes other cells
+(define-class <computed-cell> (<subject>)
+  (depends-on #:init-keyword #:depends-on #:init-value '())
+  (compute-fn #:init-keyword #:compute-fn)
+  (value #:init-value 0)
+
+  (define (initialize (self . args))
+    (next-method)
+    (for-each (lambda (dep)
+                (subject-add-observer! dep self))
+              (slot-ref self 'depends-on))
+    (send self 'recalc))
+
+  (define (update (self) changed-subject)
+    (send self 'recalc))
+
+  (define (recalc (self))
+    (let ((vals (map (lambda (dep) (slot-ref dep 'value))
+                     (slot-ref self 'depends-on))))
+      (set-slot-ref! self 'value ((slot-ref self 'compute-fn) vals))
+      (subject-notify! self)))
+
+  (define (get-value (self))
+    (slot-ref self 'value)))
+
+;; usage
+(let* ((a (make <cell> #:value 2))
+       (b (make <cell> #:value 3))
+       ;; sum cell that depends on A and B
+       (sum-cell (make <computed-cell>
+                       #:depends-on (list a b)
+                       #:compute-fn (lambda (vals) (apply + vals))))
+       ;; product cell that depends on sum-cell and b
+       (prod-cell (make <computed-cell>
+                        #:depends-on (list sum-cell b)
+                        #:compute-fn (lambda (vals) (apply * vals)))))
+  (format #t "Initial: A=~a, B=~a, sum=~a, product=~a\n"
+          (slot-ref a 'value)
+          (slot-ref b 'value)
+          (send sum-cell 'get-value)
+          (send prod-cell 'get-value))
+
+  (send a 'set-value 10)
+  (format #t "After a=10: sum=~a, product=~a\n"
+          (send sum-cell 'get-value)
+          (send prod-cell 'get-value))
+
+  (send b 'set-value 5)
+  (format #t "After b=5: sum=~a, product=~a\n"
+          (send sum-cell 'get-value)
+          (send prod-cell 'get-value)))
+#+END_SRC
+
+*** 5.2.1 Explanation
+
+- <subject>: A base class with an =observers= list plus subject-add-observer!/subject-notify! functions.
+- <cell>: A numeric cell that can be set with =set-value=. On change, it calls subject-notify! to notify watchers.
+- <computed-cell>: A cell that depends on other cells. In =initialize=, it subscribes to each dependency. On =update=, it recalculates. Then it calls subject-notify! in case others depend on it.
+- usage: We define two normal cells (a=2, b=3), a sum-cell depends on [a,b], a product-cell depends on [sum,b]. Changing a triggers sum to recalc, then product sees sum changed, etc. This chain of observer calls forms a reactive dataflow.
+
+** 5.3 Observations
+
+A small reactive system: each <computed-cell> acts as an observer of its dependencies, while also being a subject if other cells or UI components observe it. We see how Observer can model cascades of updates in a “spreadsheet-like” manner.
+
+* 6. Nuances, Variations, and Best Practices
+
+** 6.1 Observer vs. Pub-Sub vs. Reactive
+
+Observer is sometimes conflated with pub-sub. The difference can be in how the subject references observers or how subscription is managed, but functionally they share the same idea: a one-to-many event push. Reactive frameworks extend these ideas with advanced operators, but the core pattern is still Observer at heart.
+
+** 6.2 Unsubscribe or “Weak References”
+
+If an observer never unsubscribes, you might keep a stale reference in the subject’s observer list, causing potential memory leaks. Some solutions: explicit =remove_observer= calls, or in languages like .NET, “weak” event references so the GC can collect unreachable observers.
+
+** 6.3 Push vs. Pull
+
+Push model: the subject sends updated data to observers. Pull model: the observer gets a generic “update” call, then asks the subject for new data. Either is valid. The choice depends on whether you prefer the subject to broadcast specific data or let observers pull only what they need.
+
+** 6.4 Observing Multiple Subjects
+
+An observer can watch multiple subjects. It typically receives an identity of which subject triggered the update. The advanced Scheme example demonstrated a formula cell that depends on multiple source cells.
+
+** 6.5 Concurrency and Ordering
+
+When multiple threads or multiple subjects are involved, concurrency can complicate the Observer pattern. Some solutions queue notifications, while others define a strict ordering. Also, if observers can trigger subject updates themselves, you might get cyclical updates. Strategies like topological sorting or preventing re-entrancy might be necessary.
+
+* 7. Real-World Usage
+
+- =GUI Data Binding=: Model changes notify views or controllers. 
+- =Event Systems=: Many frameworks or libraries define “listeners” or “subscribers” for a variety of events.
+- =Spreadsheet/Reactive Models=: As in the advanced scheme example, each cell or node in a reactive graph observes its inputs.
+- =Stock Tickers=: One stock feed, many watchers. 
+- =Logging/Analytics=: Observers can subscribe to events for logging or analytics.
+
+* 8. Conclusion
+
+The =Observer= pattern elegantly addresses the need for multiple objects to stay in sync or react to a subject’s state changes, while preserving decoupling. By standardizing how observers register and get updates, you can add or remove observers with minimal fuss, or broadcast multiple types of events or data. This fosters a flexible, event-driven, open architecture.
+
+We have shown:
+
+- =Beginner (Rust)=: A simple subject broadcasting temperature updates to multiple observers (console/log).
+- =Intermediate (Python)=: A multi-topic publish-subscribe approach, letting observers subscribe only to relevant “channels.”
+- =Advanced (Guile Scheme)=: A reactive mini-spreadsheet scenario, where cells form a dataflow network by observing each other.
+
+Whenever a scenario demands that multiple components respond to a single object’s changes or events, the Observer pattern (and variations like pub-sub) provides a robust, decoupled solution that stands the test of time.
