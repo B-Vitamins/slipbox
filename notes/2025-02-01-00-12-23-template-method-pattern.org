@@ -1,0 +1,324 @@
+:PROPERTIES:
+:ID:       e06f57ac-05f3-4bf2-afba-15b52a48138d
+:END:
+#+TITLE: Template Method Pattern
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+* 1. Introduction and Historical Context
+
+The =Template Method= pattern is a behavioral design pattern that defines the skeleton of an algorithm in a method, deferring certain steps to subclasses (or overriding methods in derived classes). The pattern ensures that the high-level structure (the “template”) remains the same, while individual steps can be customized. Historically, Template Method was popularized in early object-oriented frameworks like ET++ or MacApp, where a framework would define the general flow (like painting a window) but let derived classes override specific hooks (like drawing content).
+
+** 1.1 Why Use Template Method?
+
+- =Enforce an Invariant Sequence=: If you have an algorithm composed of multiple steps that always happen in a particular order, but some steps differ among subclasses, Template Method helps lock down that order.
+- =Partial Override=: Subclasses can “fill in the blanks” for only the variable parts of the algorithm, leaving the rest intact.
+- =Avoid Code Duplication=: The repeated structure (like “open file → parse data → close file”) can be written once in the base class, with only the parse step or a few steps overridden for different data formats.
+- =Frameworks=: Many UI or application frameworks rely on Template Method in base classes, with “virtual” hooks for specialized behavior. The framework calls those hooks in a fixed order.
+
+** 1.2 Potential Pitfalls
+
+- =Inheritance Coupling=: Template Method often uses inheritance. Overuse can lead to deep or complicated class hierarchies with many hook methods.
+- =Rigid Sequence=: The top-level method in the base class fixes the sequence of steps. Changing that order might require editing the base, impacting all subclasses.
+- =Name Collisions=: Each step might be a protected or abstract method. Subclasses must carefully implement them. In large designs, it’s easy to get lost if the pattern is heavily used.
+
+When you see repeated algorithms whose outline is the same but certain steps differ, Template Method can unify that structure in a single method, factoring out variant steps to overridden methods.
+
+* 2. Conceptual Motivation
+
+A canonical example: a “DataParser” base class with parseFile() implementing “openFile → readData → parseRecords → closeFile.” Subclasses override parseRecords() to handle different formats (CSV, JSON, etc.). Possibly also override openFile() if needed. The rest of the flow is consistent. This approach centralizes the shared structure while letting subclasses differentiate only the relevant parts.
+
+* 3. Beginner Example (Rust)
+
+We’ll start with a Rust scenario at a beginner level, illustrating a report generation template method. The base trait method outlines the steps (fetch data → process → format → output), while each step is implemented or overridden by a concrete struct.
+
+** 3.1 Motivating Scenario
+
+Suppose generating different kinds of reports: “financial,” “HR,” “inventory,” etc. Each must do basically: 1) fetch data, 2) process or aggregate it, 3) format results, 4) output. By using Template Method, we keep that skeleton in one trait method, letting each struct handle specialized steps.
+
+** 3.2 Code Example (Beginner, Rust)
+
+#+BEGIN_SRC rust
+use std::fmt::Debug;
+
+trait ReportGenerator {
+    fn generate_report(&self) {
+        // template method
+        let data = self.fetch_data();
+        let processed = self.process_data(data);
+        let formatted = self.format_data(processed);
+        self.output_report(formatted);
+    }
+
+    fn fetch_data(&self) -> Vec<String>;
+    fn process_data(&self, data: Vec<String>) -> Vec<String>;
+    fn format_data(&self, data: Vec<String>) -> String;
+
+    // default final step
+    fn output_report(&self, report_content: String) {
+        println!("{}", report_content);
+    }
+}
+
+struct FinanceReport;
+impl ReportGenerator for FinanceReport {
+    fn fetch_data(&self) -> Vec<String> {
+        println!("FinanceReport: Fetching financial data...");
+        vec!["Q1=1000".into(), "Q2=2000".into()]
+    }
+
+    fn process_data(&self, data: Vec<String>) -> Vec<String> {
+        println!("FinanceReport: Summarizing data...");
+        data
+    }
+
+    fn format_data(&self, data: Vec<String>) -> String {
+        println!("FinanceReport: Formatting as CSV...");
+        data.join(",")
+    }
+}
+
+struct HRReport;
+impl ReportGenerator for HRReport {
+    fn fetch_data(&self) -> Vec<String> {
+        println!("HRReport: Fetching employee data...");
+        vec!["Emp1=Active".into(), "Emp2=Inactive".into()]
+    }
+
+    fn process_data(&self, data: Vec<String>) -> Vec<String> {
+        println!("HRReport: filtering employees...");
+        data.into_iter().filter(|d| d.contains("Active")).collect()
+    }
+
+    fn format_data(&self, data: Vec<String>) -> String {
+        println!("HRReport: creating fancy text...");
+        format!("HR Active:\n{}", data.join("\n"))
+    }
+}
+
+fn main() {
+    let fin = FinanceReport;
+    println!("=== Finance Report ===");
+    fin.generate_report();
+
+    let hr = HRReport;
+    println!("=== HR Report ===");
+    hr.generate_report();
+}
+#+END_SRC
+
+*** 3.2.1 Explanation
+
+- =ReportGenerator= trait: The =generate_report()= is the template method, calling fetch_data, process_data, format_data, and output_report in order.
+- =FinanceReport=, =HRReport= override the steps with domain-specific logic. 
+- usage: We create each struct, call generate_report(). The skeleton is the same, but the details differ.
+
+** 3.3 Observations
+
+A neat example: each struct invests specialized logic in fetch/process/format, while the overall order is in generate_report. The pattern ensures no duplication of that flow across report types.
+
+* 4. Intermediate Example (Guile Scheme)
+
+An intermediate scenario in Guile Scheme: a data processing pipeline that includes a template method “runPipeline() => openFile, parseData, analyze, output.” Different pipeline classes handle different file formats or analysis, but the main pipeline structure is stable.
+
+** 4.1 Motivating Scenario
+
+We might parse CSV vs. JSON vs. XML. The skeleton: openFile → parse → analyze → output is the same. The pattern keeps that skeleton in a base method. Each subclass handles the specialized parse, analysis, etc.
+
+** 4.2 Code Example (Intermediate, Guile Scheme)
+
+#+BEGIN_SRC scheme
+(use-modules (oop goops))
+
+;; Base class: <pipeline>
+(define-class <pipeline> ()
+  (virtual (run-pipeline (self filename)))
+  (virtual (open-file (self filename)))
+  (virtual (parse-data (self raw)))
+  (virtual (analyze (self parsed)))
+  (virtual (output-result (self result))))
+
+;; We'll define run-pipeline as a method on <pipeline>
+(define-method (run-pipeline (self <pipeline>) filename)
+  (let* ((raw (send self 'open-file filename))
+         (parsed (send self 'parse-data raw))
+         (analysis (send self 'analyze parsed)))
+    (send self 'output-result analysis)))
+
+;; Concrete pipelines
+
+(define-class <csv-pipeline> (<pipeline>)
+  (define (open-file (self) filename)
+    (display (string-append "CSV: Opening " filename "\n"))
+    (call-with-input-file filename
+      (lambda (port) (read-string #f port))))
+
+  (define (parse-data (self) raw)
+    (display "CSV: parse lines, split by commas.\n")
+    (let ((lines (string-tokenize raw #\newline)))
+      (map (lambda (line) (string-tokenize line #\,)) lines)))
+
+  (define (analyze (self) parsed)
+    (display "CSV: counting lines.\n")
+    (length parsed))
+
+  (define (output-result (self) result)
+    (format #t "CSV pipeline result: ~a lines\n" result)))
+
+(define-class <json-pipeline> (<pipeline>)
+  (define (open-file (self) filename)
+    (display (string-append "JSON: Opening " filename "\n"))
+    (call-with-input-file filename
+      (lambda (port) (read-string #f port))))
+
+  (define (parse-data (self) raw)
+    (display "JSON: pretend parse.\n")
+    (list (cons 'json-doc raw)))
+
+  (define (analyze (self) parsed)
+    (display "JSON: analyzing doc length.\n")
+    (length (cdar parsed)))
+
+  (define (output-result (self) result)
+    (format #t "JSON pipeline result: ~a chars\n" result)))
+
+;; usage
+(let ((csv (make <csv-pipeline>))
+      (json (make <json-pipeline>)))
+  (send csv 'run-pipeline "data.csv")
+  (send json 'run-pipeline "data.json"))
+#+END_SRC
+
+*** 4.2.1 Explanation
+
+- =<pipeline>=: The base class with a run-pipeline method that calls open-file, parse-data, analyze, output-result in that sequence.
+- =<csv-pipeline>, <json-pipeline>=: Each overrides the steps for CSV or JSON. 
+- usage: We create pipeline objects, call (run-pipeline “filename”), each step’s logic specialized by the subclass.
+
+** 4.3 Observations
+
+We see how the pattern organizes data ingestion steps, ensuring the pipeline’s overall structure is consistent. Each pipeline type changes only the specific methods.
+
+* 5. Advanced Example (Python)
+
+Finally, for advanced usage, a test framework scenario in Python that uses a template method approach reminiscent of JUnit or Python’s unittest. The base “TestCase” defines runTest(), calling setUp, test, tearDown in order. Subclasses override those steps.
+
+** 5.1 Motivating Scenario
+
+Think of a custom test framework: each test has a =setUp()= method, a =test()= method, and a =tearDown()= method. The framework calls them in a strict sequence so no step is forgotten or mis-ordered. This approach is a classic example of Template Method.
+
+** 5.2 Code Example (Advanced, Python)
+
+#+BEGIN_SRC python
+class BaseTestCase:
+    """
+    The template method 'runTest()' defines:
+    1) setUp
+    2) test
+    3) tearDown
+    Optionally handle exceptions or skip logic.
+    """
+    def runTest(self):
+        self.setUp()
+        try:
+            self.test()
+        except Exception as e:
+            self.handleException(e)
+        finally:
+            self.tearDown()
+
+    def setUp(self):
+        pass
+
+    def test(self):
+        raise NotImplementedError("Subclasses must implement test()")
+
+    def tearDown(self):
+        pass
+
+    def handleException(self, e):
+        print(f"Exception in test: {e}")
+
+class ExampleTest1(BaseTestCase):
+    def setUp(self):
+        print("ExampleTest1: setUp() init resources")
+
+    def test(self):
+        print("ExampleTest1: test() performing checks...")
+
+    def tearDown(self):
+        print("ExampleTest1: tearDown() release resources")
+
+class ExampleTest2(BaseTestCase):
+    def setUp(self):
+        print("ExampleTest2: setUp() other init")
+
+    def test(self):
+        print("ExampleTest2: test() do advanced checks")
+
+    def tearDown(self):
+        print("ExampleTest2: tearDown() cleaning up")
+
+class FailingTest(BaseTestCase):
+    def test(self):
+        print("FailingTest: test() about to fail")
+        raise RuntimeError("Simulated test failure")
+
+if __name__ == "__main__":
+    tests = [ExampleTest1(), ExampleTest2(), FailingTest()]
+    for t in tests:
+        print(f"--- Running {t.__class__.__name__} ---")
+        t.runTest()
+        print()
+#+END_SRC
+
+*** 5.2.1 Explanation
+
+- =BaseTestCase= has a runTest() method (the template) calling setUp, test, handleException if needed, and tearDown in a guaranteed order.
+- =ExampleTest1=, =ExampleTest2=, =FailingTest= override the steps they need. 
+- usage: We instantiate each test, call runTest. The user sees each step happen in the correct sequence. If test() raises an exception, handleException is invoked.
+
+** 5.3 Observations
+
+A real reflection of how many testing frameworks handle the flow of setUp/test/tearDown. Each test is a subclass, overriding relevant methods, while the template method in the base ensures consistent structure.
+
+* 6. Nuances, Variations, and Best Practices
+
+** 6.1 Inheritance vs. Composition
+
+Template Method usually depends on inheritance. In modern languages with first-class functions, you could pass steps as lambdas to a “template function.” That’s more akin to Strategy or hook patterns. But Template Method’s essence is about a class hierarchy with a base method calling local or overridden sub-methods.
+
+** 6.2 Hook Methods
+
+A “hook method” might be optional. For example, you might have an empty method in the base class that does nothing, letting the subclass override it only if needed. This is common in frameworks (like onResized or onStop) that are optional.
+
+** 6.3 Final Methods
+
+In some languages, you can mark the template method as final so it cannot be overridden. The child classes only override the steps. This ensures the overall skeleton remains intact.
+
+** 6.4 Single vs. Multiple Variation Points
+
+Sometimes only one or two steps vary. That’s still valid. The skeleton method calls the main shared logic plus the one step that might differ. This approach is lighter but still fits the pattern.
+
+** 6.5 Overuse
+
+For a short or trivial method with minimal variation, the overhead of a base class plus overridden steps might be overkill. The pattern is best for stable, longer sequences with noticeable variation steps.
+
+* 7. Real-World Usage
+
+- =Data Parsers=: “open -> read -> parse -> close,” each format overriding parseRecords or openFile if needed.
+- =Framework Lifecycles=: UI frameworks or game frameworks define a “run loop” but let you override onStart, onStop, etc. 
+- =Testing Frameworks=: The advanced Python example demonstrates setUp/test/tearDown used by frameworks like unittest or JUnit.
+- =Build Tools=: A generic build process “clean -> compile -> test -> package,” but each project can override certain steps.
+- =Database Access=: “connect -> start transaction -> do queries -> commit or rollback -> close,” with certain steps possibly specialized by subclass.
+
+* 8. Conclusion
+
+The =Template Method= pattern is a staple solution for scenarios where an algorithm has a fixed sequence of steps but certain steps vary among implementations. By centralizing the skeleton in a single “template” method, you keep the method’s flow consistent while delegating variations to subclasses (or derived structures). This fosters code reuse, clarity, and an open-closed approach to expansions.
+
+We illustrated:
+
+- =Beginner (Rust)=: A report generation example with (fetch, process, format, output), each step overridden by different report types, while =generate_report()= is the stable skeleton.
+- =Intermediate (Guile Scheme)=: A data pipeline with a =run-pipeline= method that calls openFile, parseData, analyze, output. Subclasses handle CSV vs. JSON differently.
+- =Advanced (Python)=: A test framework approach (like a simplified JUnit), ensuring the sequence setUp → test → tearDown is enforced, but each test class can override the relevant hooks.
+
+When your code calls for a stable overall procedure with varied sub-steps, the Template Method pattern elegantly captures that logic in a base class, letting each subclass override or refine only what’s necessary, ensuring consistency across different implementations and reducing duplication in your codebase.
