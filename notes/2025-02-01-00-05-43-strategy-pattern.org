@@ -1,0 +1,413 @@
+:PROPERTIES:
+:ID:       3844e7e7-f771-4e95-b7c3-e78b6f2becbc
+:END:
+#+TITLE: Strategy Pattern
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+* 1. Introduction and Historical Context
+
+The =Strategy= pattern is a behavioral design pattern that defines a family of algorithms (or behaviors), encapsulates each one, and makes them interchangeable. In doing so, it lets the algorithm vary independently from the clients that use it. Historically, developers often found themselves writing large if-else or switch statements to pick among different methods (e.g., sorting algorithms, payment strategies, compression techniques). The Strategy pattern offers a more elegant, object-oriented approach to that problem.
+
+By encapsulating each algorithm in its own class that implements a common interface, we keep the calling code (the “context”) from being cluttered with these branching conditions. Instead, the context is simply given (or can dynamically select) which “strategy” object to use. That fosters:
+
+- =Open-Closed Principle=: Adding a new strategy rarely requires changing the existing context code—just define a new strategy class implementing the same interface.
+- =Testability=: Each strategy is an isolated piece of logic, easily unit-tested.
+- =Runtime Flexibility=: The client can swap out strategies on the fly, enabling dynamic or user-driven choice of algorithm.
+
+** 1.1 Why Use Strategy?
+
+- =Eliminate Conditionals=: Instead of embedding many branches or conditions to select among algorithms, the context holds a reference to a strategy object.
+- =Different but Related Behaviors=: If your system can do the same kind of task (e.g., sorting) in multiple ways, each with different performance or constraints, Strategy helps keep them all consistent.
+- =Runtime or Configuration-Driven=: The best algorithm can be chosen at runtime (like picking a faster approach for smaller data sets, or a memory-efficient approach for large data sets).
+- =Test or Maintenance=: If each strategy is in its own class, you can add new or remove old strategies with minimal ripple effect.
+
+** 1.2 Potential Pitfalls
+
+- =Too Many Strategies=: If you define a separate strategy class for every trivial variation, you could end up with class bloat.
+- =Overhead=: Each strategy is an object or function reference. In tight loops or performance-critical code, the overhead of dynamic dispatch might matter (though in many modern languages, this is negligible compared to the clarity gained).
+- =Context-Strategy Coupling=: The context must hold a reference to a strategy and use it. That’s typically minimal overhead but still means the strategy can’t exist without a context or interface contract.
+
+When you have multiple ways to accomplish a task, want to avoid big conditionals, or foresee changes in how the algorithm is chosen, Strategy can elegantly handle that complexity in a cleanly decoupled design.
+
+* 2. Conceptual Motivation
+
+A typical example is a sorting framework: define a SortStrategy interface with a =sort(data)= method. Then QuickSortStrategy, MergeSortStrategy, BubbleSortStrategy each implement it. The context (like a DataManager) holds a reference to the chosen strategy. If the user or data profile changes, we can pick a different strategy. Another scenario: an e-commerce platform with multiple payment strategies—credit card, PayPal, crypto, etc.—all implementing a common pay(amount) interface. The rest of the system just calls pay() on the active strategy.
+
+* 3. Beginner Example (Python)
+
+We begin with a beginner demonstration in Python, illustrating a payment scenario: a cart or checkout context that can pick among different payment strategies (credit card, PayPal, etc.) for the final transaction.
+
+** 3.1 Motivating Scenario
+
+An online store might handle multiple payment types. Without Strategy, you might embed logic in =checkout()= with conditionals for each type. As the store evolves, more methods appear, and code grows unwieldy. By adopting Strategy, each payment approach goes in its own class, letting the store context “choose or be assigned” a strategy.
+
+** 3.2 Code Example (Beginner, Python)
+
+#+BEGIN_SRC python
+from abc import ABC, abstractmethod
+
+class PaymentStrategy(ABC):
+    """Strategy interface for payment processing."""
+    @abstractmethod
+    def pay(self, amount):
+        pass
+
+class CreditCardPayment(PaymentStrategy):
+    def __init__(self, card_number, card_holder):
+        self.card_number = card_number
+        self.card_holder = card_holder
+
+    def pay(self, amount):
+        print(f"Charging ${amount:.2f} to credit card {self.card_number} (Holder: {self.card_holder}).")
+
+class PayPalPayment(PaymentStrategy):
+    def __init__(self, paypal_account):
+        self.paypal_account = paypal_account
+
+    def pay(self, amount):
+        print(f"Paying ${amount:.2f} using PayPal account {self.paypal_account}.")
+
+class CryptoPayment(PaymentStrategy):
+    def __init__(self, wallet_address):
+        self.wallet_address = wallet_address
+
+    def pay(self, amount):
+        print(f"Transferring ${amount:.2f} in crypto to wallet {self.wallet_address}.")
+
+class CheckoutContext:
+    """Context that uses a PaymentStrategy to process the payment."""
+    def __init__(self, strategy: PaymentStrategy):
+        self.strategy = strategy
+        self.cart_total = 0.0
+
+    def add_item(self, price):
+        self.cart_total += price
+
+    def set_strategy(self, strategy: PaymentStrategy):
+        self.strategy = strategy
+
+    def checkout(self):
+        print("Checking out. Cart total:", self.cart_total)
+        self.strategy.pay(self.cart_total)
+        self.cart_total = 0
+
+# Demonstration
+if __name__ == "__main__":
+    # user picks credit card
+    card_strategy = CreditCardPayment("4111-1111-1111-1111", "Alice")
+    context = CheckoutContext(card_strategy)
+    context.add_item(9.99)
+    context.add_item(19.99)
+    context.checkout()
+
+    # user changes mind to PayPal
+    paypal_strategy = PayPalPayment("alice@paypal.com")
+    context.set_strategy(paypal_strategy)
+    context.add_item(39.99)
+    context.add_item(10.00)
+    context.checkout()
+
+    # user tries crypto
+    crypto_strategy = CryptoPayment("XYZ-123-ABC")
+    context.set_strategy(crypto_strategy)
+    context.add_item(100.0)
+    context.checkout()
+#+END_SRC
+
+*** 3.2.1 Explanation
+
+- =PaymentStrategy=: The strategy interface with a single pay(amount) method.
+- Concrete Strategies: =CreditCardPayment=, =PayPalPayment=, =CryptoPayment=, each implementing pay differently.
+- Context: =CheckoutContext= holds a reference to a PaymentStrategy plus a cart total. The user adds items, picks a strategy, calls checkout(), and the strategy’s pay() logic runs.
+- usage: We attach credit card strategy, then PayPal, then crypto. The context remains the same, but the payment logic changes.
+
+** 3.3 Observations
+
+A straightforward usage of Strategy: we keep the “how to pay” logic in separate classes, while the context focuses on “when to pay.” If new payment types arise, we create new strategy classes. We do not modify existing code.
+
+* 4. Intermediate Example (Rust)
+
+Now, an intermediate scenario in Rust: a sorting context that picks among multiple sorting strategies (e.g., quicksort, mergesort, bubble sort) depending on data size or user preference. This is a typical example where Strategy is used for algorithm selection.
+
+** 4.1 Motivating Scenario
+
+We have a collection manager that occasionally needs to sort data. The manager shouldn’t contain sorting logic or branching. Instead, it holds a reference to a “sort strategy.” If needed, the user or the manager itself can switch strategies (like quicksort for small arrays, mergesort for large ones, or bubble sort for demonstration).
+
+** 4.2 Code Example (Intermediate, Rust)
+
+#+BEGIN_SRC rust
+use std::fmt::Debug;
+
+trait SortStrategy {
+    fn sort<T: Ord + Debug>(&self, data: &mut [T]);
+}
+
+// Concrete Strategies
+
+struct QuickSort;
+impl SortStrategy for QuickSort {
+    fn sort<T: Ord + Debug>(&self, data: &mut [T]) {
+        quicksort(data);
+    }
+}
+
+struct MergeSort;
+impl SortStrategy for MergeSort {
+    fn sort<T: Ord + Debug>(&self, data: &mut [T]) {
+        mergesort(data);
+    }
+}
+
+struct BubbleSort;
+impl SortStrategy for BubbleSort {
+    fn sort<T: Ord + Debug>(&self, data: &mut [T]) {
+        bubble_sort(data);
+    }
+}
+
+struct SortContext {
+    strategy: Box<dyn SortStrategy>,
+}
+
+impl SortContext {
+    fn new(strategy: Box<dyn SortStrategy>) -> Self {
+        SortContext { strategy }
+    }
+
+    fn set_strategy(&mut self, strategy: Box<dyn SortStrategy>) {
+        self.strategy = strategy;
+    }
+
+    fn do_sort<T: Ord + Debug>(&self, data: &mut [T]) {
+        self.strategy.sort(data);
+    }
+}
+
+// Sample sorting algorithms
+
+fn quicksort<T: Ord + Debug>(data: &mut [T]) {
+    if data.len() <= 1 { return; }
+    let pivot_idx = partition(data);
+    let (left, right) = data.split_at_mut(pivot_idx);
+    quicksort(left);
+    quicksort(&mut right[1..]);
+}
+
+fn partition<T: Ord + Debug>(data: &mut [T]) -> usize {
+    let pivot_index = data.len() - 1;
+    let pivot_val = &data[pivot_index];
+    let mut store_index = 0;
+    for i in 0..pivot_index {
+        if data[i] < *pivot_val {
+            data.swap(i, store_index);
+            store_index += 1;
+        }
+    }
+    data.swap(store_index, pivot_index);
+    store_index
+}
+
+fn mergesort<T: Ord + Debug>(data: &mut [T]) {
+    if data.len() > 1 {
+        let mid = data.len() / 2;
+        let (left, right) = data.split_at_mut(mid);
+        mergesort(left);
+        mergesort(right);
+        merge(left, right);
+    }
+}
+
+fn merge<T: Ord + Debug>(left: &mut [T], right: &mut [T]) {
+    let mut temp = Vec::with_capacity(left.len() + right.len());
+    let mut i = 0;
+    let mut j = 0;
+    while i < left.len() && j < right.len() {
+        if left[i] <= right[j] {
+            temp.push(std::mem::replace(&mut left[i], unsafe { std::mem::zeroed() }));
+            i += 1;
+        } else {
+            temp.push(std::mem::replace(&mut right[j], unsafe { std::mem::zeroed() }));
+            j += 1;
+        }
+    }
+    while i < left.len() {
+        temp.push(std::mem::replace(&mut left[i], unsafe { std::mem::zeroed() }));
+        i += 1;
+    }
+    while j < right.len() {
+        temp.push(std::mem::replace(&mut right[j], unsafe { std::mem::zeroed() }));
+        j += 1;
+    }
+    let (ltemp, rtemp) = temp.split_at_mut(left.len());
+    left.copy_from_slice(ltemp);
+    right.copy_from_slice(rtemp);
+}
+
+fn bubble_sort<T: Ord + Debug>(data: &mut [T]) {
+    let len = data.len();
+    for i in 0..len {
+        for j in 0..(len - i - 1) {
+            if data[j] > data[j + 1] {
+                data.swap(j, j + 1);
+            }
+        }
+    }
+}
+
+fn main() {
+    let mut context = SortContext::new(Box::new(QuickSort));
+
+    let mut data = vec![10, 7, 8, 9, 1, 5];
+    println!("Original: {:?}", data);
+    context.do_sort(&mut data);
+    println!("After QuickSort: {:?}", data);
+
+    let mut data2 = vec![10, 7, 8, 9, 1, 5];
+    context.set_strategy(Box::new(MergeSort));
+    context.do_sort(&mut data2);
+    println!("After MergeSort: {:?}", data2);
+
+    let mut data3 = vec![10, 7, 8, 9, 1, 5];
+    context.set_strategy(Box::new(BubbleSort));
+    context.do_sort(&mut data3);
+    println!("After BubbleSort: {:?}", data3);
+}
+#+END_SRC
+
+*** 4.2.1 Explanation
+
+- =SortStrategy= trait: =sort(&self, data)= is the method. 
+- Concrete Strategies: QuickSort, MergeSort, BubbleSort, each calls a separate function. 
+- =SortContext= holds a Box<dyn SortStrategy>. The user can do_sort(...) with the current strategy, or set_strategy(...) to switch. 
+- usage: We create a context with quicksort, run on data, then switch to mergesort, then bubble sort. Each approach is fully encapsulated in a separate class.
+
+** 4.3 Observations
+
+We unify different algorithms behind a single interface, letting the context remain lean. The pattern’s advantage is the clarity and easy extensibility. New strategies simply appear as new types implementing SortStrategy.
+
+* 5. Advanced Example (Guile Scheme)
+
+Finally, for an advanced Guile Scheme scenario, let’s define a machine learning pipeline that can apply different “feature selection” or “model training” strategies. The system picks from multiple sophisticated algorithms or approaches. This demonstrates how Strategy can handle domain logic elegantly.
+
+** 5.1 Motivating Scenario
+
+A ML pipeline might do feature selection or dimensionality reduction with different methods: PCA, feature hashing, LASSO-based selection, etc. We keep the pipeline’s code generic: it only calls “transform(data).” The chosen strategy determines how the data is actually transformed.
+
+** 5.2 Code Example (Advanced, Guile Scheme)
+
+#+BEGIN_SRC scheme
+(use-modules (oop goops))
+
+;; We'll define <feature-selection-strategy> with a 'transform' method
+(define-class <feature-selection-strategy> ()
+  (virtual (transform (self dataset)) 
+           "Transform dataset, returning new dataset."))
+
+;; Concrete strategies:
+
+(define-class <pca-strategy> (<feature-selection-strategy>)
+  (define (transform (self) dataset)
+    (format #t "Applying PCA: reduce dimensionality.\n")
+    (let ((cols (car dataset))) ;; assume dataset as (columns . rows)
+      (let ((new-cols (take cols (floor (/ (length cols) 2)))))
+        (cons new-cols '())))))
+
+(define-class <feature-hash-strategy> (<feature-selection-strategy>)
+  (define (transform (self) dataset)
+    (format #t "Applying feature hashing.\n")
+    (let ((cols (car dataset)))
+      (let ((hashed-cols (map (lambda (c) (string-append "hash_" c)) cols)))
+        (cons hashed-cols '())))))
+
+(define-class <filter-strategy> (<feature-selection-strategy>)
+  (define (transform (self) dataset)
+    (format #t "Applying filter-based selection (drop last col).\n")
+    (let ((cols (car dataset)))
+      (cons (take cols (- (length cols) 1)) '()))))
+
+;; Our ML pipeline "Context"
+(define-class <ml-pipeline> ()
+  (strategy #:init-keyword #:strategy)
+  (dataset #:init-keyword #:dataset #:init-value #f)
+  
+  (define (set-strategy (self) new-strategy)
+    (set-slot-ref! self 'strategy new-strategy))
+
+  (define (load-data (self) ds)
+    (format #t "Loading dataset with columns: ~a\n" (car ds))
+    (set-slot-ref! self 'dataset ds))
+
+  (define (run (self))
+    (if (not (slot-ref self 'dataset))
+        (format #t "No dataset loaded, skipping.\n")
+        (let ((ds (slot-ref self 'dataset)))
+          (let ((transformed ((slot-ref self 'strategy) 'transform ds)))
+            (format #t "After transform, columns: ~a\n" (car transformed))
+            (format #t "Training model on transformed data.\n"))))))
+
+;; demonstration
+(let* ((initial-data (cons '("col1" "col2" "col3" "col4") '()))
+       (pipeline (make <ml-pipeline>
+                       #:strategy (make <pca-strategy>))))
+  (send pipeline 'load-data initial-data)
+  (send pipeline 'run)
+
+  (send pipeline 'set-strategy (make <feature-hash-strategy>))
+  (send pipeline 'run)
+
+  (send pipeline 'set-strategy (make <filter-strategy>))
+  (send pipeline 'run))
+#+END_SRC
+
+*** 5.2.1 Explanation
+
+- <feature-selection-strategy>: The Strategy interface, with transform(dataset).
+- Concrete Strategies: <pca-strategy>, <feature-hash-strategy>, <filter-strategy>, each modifies columns differently. 
+- <ml-pipeline> context: The user can set-strategy(...) or load-data, then run. The pipeline calls strategy.transform, logs the new columns, then “trains the model.”
+- usage: We load initial data (four columns). We run with PCA, then feature hashing, then a filter-based approach. Each transform is distinct, but the pipeline code remains the same.
+
+** 5.3 Observations
+
+We handle more advanced domain logic: each strategy modifies the data differently. The pipeline is decoupled from how transformations happen. If we add a new approach (“autoencoder dimension reduction”), we define a new strategy class, no changes to the pipeline.
+
+* 6. Nuances, Variations, and Best Practices
+
+** 6.1 Strategy vs. State
+
+Both rely on polymorphism. The difference: Strategy typically concerns how to pick among multiple interchangeable algorithms. State focuses on an object whose entire behavior changes based on internal conditions. In Strategy, you can switch algorithms at will, whereas in State, the object transitions among states.
+
+** 6.2 Null or Default Strategies
+
+Sometimes you define a “no-op” or “default” strategy if no explicit choice is given. This avoids null references. The context always has a valid strategy object, simplifying code.
+
+** 6.3 Caching or Reuse
+
+If creating strategy objects is expensive, a system might store them in a registry or singleton. The pattern is unaffected: the context just obtains the strategy from somewhere. The logic that picks strategies is up to you.
+
+** 6.4 Multi-Strategy?
+
+Sometimes you chain multiple strategies or apply them in sequence. Then you might define a “composite strategy” that calls sub-strategies in order. This can be done elegantly, but be mindful that it can blur lines with other patterns if it becomes complicated.
+
+** 6.5 Parameterizing Strategies
+
+A strategy can hold parameters controlling how it does its work (like pivot selection in quicksort). The context remains ignorant of these details, just calling strategy.sort(...). This fosters a clean separation of concerns.
+
+* 7. Real-World Usage
+
+- =Sorting, Searching, Compression=: We pick among multiple algorithms, as in the Rust example.
+- =Payment or Pricing=: Different ways to compute cost or handle payment (like the Python checkout).
+- =Rendering=: A shape might be rendered differently: vector-based, raster-based, each a distinct strategy.
+- =Data Validation=: A context might apply different sanitization or validation strategies to user input.
+- =AI or ML=: As in the advanced Scheme example, different feature selection or model training strategies.
+
+* 8. Conclusion
+
+The =Strategy= pattern encapsulates multiple algorithms behind a single interface, letting the context (the user of these algorithms) remain uncluttered by branching logic. Each strategy can be tested or developed independently, furthering maintainability. When the system wants to open itself to new ways of performing a task (like new sorting methods, new payment methods), the pattern is a prime choice.
+
+We demonstrated:
+
+- =Beginner (Python)=: A payment scenario, substituting credit card, PayPal, or crypto strategies, each implementing the same PaymentStrategy interface.
+- =Intermediate (Rust)=: A sorting context picking among QuickSort, MergeSort, or BubbleSort, with each approach in a separate class implementing a trait.
+- =Advanced (Guile Scheme)=: An ML pipeline applying different feature selection transforms, each as a separate strategy, letting the pipeline remain generic.
+
+Wherever you need the ability to swap out algorithms or “ways of doing something” without changing the core logic, Strategy stands out as a well-structured, easy-to-extend solution. By isolating each algorithm in its own class or object, you preserve clarity, testability, and a strong open-closed design ethos.
