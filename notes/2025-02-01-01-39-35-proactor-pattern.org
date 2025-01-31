@@ -1,0 +1,368 @@
+:PROPERTIES:
+:ID:       338d5de2-9091-4403-bb7c-b949ffafc5c7
+:END:
+#+TITLE: Proactor Pattern
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+* 1. Introduction and Historical Context
+
+The Proactor pattern is a behavioral design solution for asynchronous or event-driven systems, closely related to the Reactor pattern. While Reactor revolves around readiness notifications (the OS or event loop telling you “this socket is ready to read”), Proactor focuses on completion notifications: you initiate an asynchronous operation (like a read or write), and the OS or I/O framework calls you back when the operation is fully completed.
+
+Historically, the Proactor pattern gained traction on systems that supported true asynchronous I/O natively (like Windows’s I/O Completion Ports or certain advanced POSIX AIO). In such environments, you queue an operation (e.g., “read 100 bytes from file descriptor X”), and the OS eventually notifies you, “Here are your 100 bytes!” This differs from a Reactor-based approach where you get “FD is readable, you can read some bytes now,” so you do the actual read in your code. Proactor effectively outsources the blocking portion of the operation to the OS or library and calls back once the entire operation is done, giving you a more streamlined approach for certain classes of asynchronous tasks.
+
+** 1.1 Why Use Proactor?
+- Full Asynchrony: Your code doesn’t manually read or write; you request an operation, and you’re called back with results. This can simplify logic that would otherwise handle partial reads/writes.
+- Performance: In some operating systems (like Windows IOCP), Proactor can yield significant performance gains for high-throughput servers because the OS does the heavy lifting.
+- Cleaner Separation: Because you do not handle readiness yourself, you can often write code that “fires off a read,” then receives the data in a callback, avoiding the complexity of partial buffering or incremental reads.
+- Fits High-Level Async Models: Many modern frameworks (like .NET’s async/await or some advanced I/O libraries) internally use a Proactor approach. This can lead to simpler “await readFile(...)” code in your high-level logic.
+
+** 1.2 Potential Pitfalls
+- OS Dependency: True asynchronous I/O or “completion-based” approaches vary by platform. On some UNIX-like systems, standard networking is readiness-based. A pure Proactor approach might be emulated, but not always natively available.
+- Complex or Rare: Because Reactor is more widely supported by default (select, epoll, kqueue, etc.), Proactor might require specialized OS calls (like Windows’ I/O Completion Ports or advanced AIO). This can limit portability.
+- Debugging: As with any asynchronous model, tracing calls from “operation launched” to “completion callback” can be difficult. Logging and robust instrumentation are crucial.
+- Thread Pool or Callback Hell: The system typically runs completions in a thread pool or callback context, possibly leading to concurrency issues or deeply nested callbacks if poorly structured.
+
+Despite these challenges, Proactor remains extremely powerful for certain environments or frameworks. If the OS or library can handle the blocking part, your code might become simpler, focusing on the “what to do when done” logic, rather than partial readiness handling.
+
+* 2. Conceptual Motivation
+
+Imagine an FTP server on Windows using I/O Completion Ports: when a client issues a command to fetch a large file, you can call an asynchronous read on the file from disk, then do an asynchronous send on the network socket. The OS, behind the scenes, reads data into a buffer and writes it to the socket, eventually calling your completion routine: “Your read+send is done.” You can handle success or error. You never do partial reads or partial writes; the OS ensures each operation completes fully (or fails) before your callback is triggered. That’s Proactor in action.
+
+Another scenario might be a database client library on an OS that supports asynchronous calls for queries. You might do a “startQuery(params),” then your callback is invoked with the full result set or an error. The pattern fosters an event that is not “the socket is ready to read” but rather “the read operation is done, here’s the data.”
+
+Essentially, the Proactor model allows your code to revolve around the notion of “Launch Operation → OS does it → OS calls your completion routine.” This is distinct from Reactor, which says “OS tells me it’s ready → I do the read now.” The difference is subtle but can shift the entire approach to concurrency.
+
+* 3. Beginner Example (Haskell)
+
+We’ll start with a Haskell demonstration at a beginner level, focusing on a conceptual Proactor approach using a library that simulates or provides asynchronous callbacks. Haskell is interesting because it’s strongly typed and functional, but we can still show a simplified Proactor-like pattern. Our example will revolve around asynchronous reading from multiple file handles or from network connections, returning results via callbacks or monadic continuations.
+
+** 3.1 Motivating Scenario
+Suppose we have a Haskell program that needs to asynchronously read data from multiple sources (like files or sockets), where the underlying OS or runtime can do the blocking for us. We want to queue a read operation, and once it completes, a callback runs with the data. This is a simplified version of Proactor in Haskell, relying on a pretend library or concurrency approach.
+
+** 3.2 Code Example (Beginner, Haskell)
+#+BEGIN_SRC haskell
+{-# LANGUAGE OverloadedStrings #-}
+
+module Main where
+
+import Control.Concurrent
+import Control.Monad (forever)
+import qualified Data.ByteString as BS
+import Data.IORef
+import System.IO
+
+-- We'll define a naive "AsyncOperation" type to represent an operation
+data AsyncOperation = ReadOp Handle (BS.ByteString -> IO ())  -- handle + completion callback
+
+-- We'll define a 'Proactor'-like loop that processes these operations
+proactorLoop :: IORef [AsyncOperation] -> IO ()
+proactorLoop opsRef = do
+  ops <- readIORef opsRef
+  case ops of
+    [] -> do
+      threadDelay 100000  -- no ops, let's wait a bit
+    (ReadOp h callback : rest) -> do
+      -- remove it from the list
+      writeIORef opsRef rest
+      -- perform the read in a separate thread or block here
+      buf <- BS.hGetSome h 1024
+      -- call the callback with the data
+      callback buf
+  proactorLoop opsRef
+
+-- We'll define a function to queue an operation
+queueRead :: IORef [AsyncOperation] -> Handle -> (BS.ByteString -> IO ()) -> IO ()
+queueRead opsRef h cb = do
+  modifyIORef opsRef (\ops -> ops ++ [ReadOp h cb])
+
+-- Example usage: we open two files, queue asynchronous reads, and handle them
+main :: IO ()
+main = do
+  h1 <- openFile "file1.txt" ReadMode
+  h2 <- openFile "file2.txt" ReadMode
+
+  opsRef <- newIORef []
+
+  -- Start the proactor loop in a separate thread
+  forkIO $ proactorLoop opsRef
+
+  -- queue a read from h1
+  queueRead opsRef h1 $ \data1 -> do
+    putStrLn "Read from file1:"
+    print data1
+
+  -- queue a read from h2
+  queueRead opsRef h2 $ \data2 -> do
+    putStrLn "Read from file2:"
+    print data2
+
+  -- keep main thread alive
+  forever $ threadDelay 1000000
+#+END_SRC
+
+** 3.2.1 Explanation
+- =AsyncOperation= represents a “read op,” storing a handle and a callback.
+- =proactorLoop= repeatedly checks the IORef for operations. If none, it sleeps. If some exist, it pops one, does a blocking read (in real code, we might spawn another thread or use OS async), then calls the callback with the data.
+- =queueRead= appends an operation with a callback to the list.
+- The example reads from two files asynchronously, printing the data in callbacks.
+
+** 3.3 Observations
+Though Haskell typically uses advanced concurrency or async libraries, this example demonstrates how we can conceptualize a Proactor pattern in a functional language. Real OS-level asynchrony might differ, but the principle—“fire off read, eventually callback with full data”—remains.
+
+* 4. Intermediate Example (Rust)
+
+We now present a Rust scenario that better reflects a genuine Proactor approach. We emulate the notion of “queueing an operation, the OS or library handles it, then calls us when done.” In practice, Windows IOCP or certain async libraries do this. We’ll illustrate a partial code snippet that “submits a read op” and eventually triggers a callback or fills a future with the result.
+
+** 4.1 Motivating Scenario
+We want a small library that can do an async read from a =TcpStream=, without the user doing partial readiness reads. The user calls “read X bytes,” we eventually call them back with the data. We emulate a Proactor approach: we queue the read in a worker thread or OS-level async if available, calling the user’s callback upon completion.
+
+** 4.2 Code Example (Intermediate, Rust)
+#+BEGIN_SRC rust
+use std::io;
+use std::io::{Read, Write};
+use std::net::{TcpListener, TcpStream};
+use std::sync::{Arc, Mutex};
+use std::thread;
+use std::time::Duration;
+use std::collections::VecDeque;
+
+type CompletionCallback = Box<dyn FnOnce(io::Result<Vec<u8>>) + Send>;
+
+struct AsyncOp {
+    stream: TcpStream,
+    len: usize,
+    callback: CompletionCallback,
+}
+
+// A naive "Proactor" that processes queued read ops
+struct Proactor {
+    ops: Arc<Mutex<VecDeque<AsyncOp>>>,
+}
+
+impl Proactor {
+    fn new() -> Self {
+        Proactor {
+            ops: Arc::new(Mutex::new(VecDeque::new())),
+        }
+    }
+
+    // We'll simulate an async read request of a certain length
+    fn async_read(&self, stream: TcpStream, len: usize, callback: CompletionCallback) {
+        let mut ops = self.ops.lock().unwrap();
+        ops.push_back(AsyncOp { stream, len, callback });
+    }
+
+    fn run(&self) {
+        let ops_ref = Arc::clone(&self.ops);
+        thread::spawn(move || {
+            loop {
+                let maybe_op = {
+                    let mut ops = ops_ref.lock().unwrap();
+                    ops.pop_front()
+                };
+                match maybe_op {
+                    None => {
+                        thread::sleep(Duration::from_millis(100));
+                    }
+                    Some(mut async_op) => {
+                        let mut buf = vec![0u8; async_op.len];
+                        let res = async_op.stream.read_exact(&mut buf)
+                            .map(|_| buf);
+                        (async_op.callback)(res);
+                    }
+                }
+            }
+        });
+    }
+}
+
+fn main() -> io::Result<()> {
+    let proactor = Proactor::new();
+    proactor.run();
+
+    let listener = TcpListener::bind("127.0.0.1:5555")?;
+    thread::spawn(move || {
+        if let Ok((mut client, addr)) = listener.accept() {
+            println!("Server accepted client: {}", addr);
+            client.write_all(b"Hello from server!").unwrap();
+        }
+    });
+
+    let stream = TcpStream::connect("127.0.0.1:5555")?;
+    proactor.async_read(
+        stream.try_clone().unwrap(),
+        18,
+        Box::new(|res| {
+            match res {
+                Ok(data) => println!("Client received: {}", String::from_utf8_lossy(&data)),
+                Err(e) => eprintln!("Error: {}", e),
+            }
+        })
+    );
+
+    thread::sleep(Duration::from_secs(3));
+    Ok(())
+}
+#+END_SRC
+
+** 4.2.1 Explanation
+- =Proactor= stores a queue of read operations, each with a callback. The =run()= spawns a worker thread that blocks reading the data, then calls the callback. This is a simplified approach. Real OS-level async might truly be non-blocking. 
+- =async_read(...)=: The user “submits” an operation specifying the stream, length, and callback. The data structure is appended to the queue. 
+- On completing the read, we call the callback with the entire data. 
+- In the example, we do a server that sends “Hello from server!”, and a client that requests to read 18 bytes. The callback prints the data once read is complete.
+
+** 4.3 Observations
+While this is a toy approach (the worker actually blocks on each read), it demonstrates the essence: user code says “Read me X bytes, call me when done.” The logic is “Proactor-like,” with a single queue for operations. Real Proactor on Windows IOCP is more sophisticated, letting the OS truly handle the read asynchronously. But the pattern stands: you “post” an operation, eventually get a completion callback or result.
+
+* 5. Advanced Example (Go)
+
+Finally, let’s push the pattern further in Go, showing a “download manager” that uses a completion-based approach. We’ll unify multiple concurrent downloads, each returning a channel or callback upon finishing, so user code sees a “Proactor” style: they request a “download this file,” eventually the system calls them back or signals completion.
+
+** 5.1 Motivating Scenario
+We want a manager for multiple file downloads. The user calls “AsyncDownload(url, file),” the system spawns or schedules the operation, eventually delivering a result (success or error) in a channel. This is reminiscent of Proactor: the user doesn’t do partial receives from the network. The library handles the entire download, then signals completion.
+
+** 5.2 Code Example (Advanced, Go)
+#+BEGIN_SRC go
+package main
+
+import (
+    "fmt"
+    "io"
+    "net/http"
+    "os"
+    "sync"
+)
+
+type DownloadOp struct {
+    url      string
+    filename string
+    doneChan chan error
+}
+
+type DownloadManager struct {
+    opsChan chan *DownloadOp
+    wg      sync.WaitGroup
+}
+
+func NewDownloadManager(parallel int) *DownloadManager {
+    dm := &DownloadManager{
+        opsChan: make(chan *DownloadOp),
+    }
+    for i := 0; i < parallel; i++ {
+        go dm.worker()
+    }
+    return dm
+}
+
+func (dm *DownloadManager) worker() {
+    for op := range dm.opsChan {
+        err := downloadFile(op.url, op.filename)
+        op.doneChan <- err
+    }
+}
+
+func (dm *DownloadManager) AsyncDownload(url, filename string) <-chan error {
+    op := &DownloadOp{
+        url: url,
+        filename: filename,
+        doneChan: make(chan error, 1),
+    }
+    dm.opsChan <- op
+    return op.doneChan
+}
+
+func (dm *DownloadManager) Close() {
+    close(dm.opsChan)
+}
+
+func downloadFile(url, filename string) error {
+    resp, err := http.Get(url)
+    if err != nil {
+        return err
+    }
+    defer resp.Body.Close()
+
+    f, err := os.Create(filename)
+    if err != nil {
+        return err
+    }
+    defer f.Close()
+
+    _, err = io.Copy(f, resp.Body)
+    return err
+}
+
+func main() {
+    dm := NewDownloadManager(3)
+
+    done1 := dm.AsyncDownload("https://example.com/file1.jpg", "file1.jpg")
+    done2 := dm.AsyncDownload("https://example.com/file2.jpg", "file2.jpg")
+
+    err1 := <-done1
+    if err1 != nil {
+        fmt.Println("Download 1 error:", err1)
+    } else {
+        fmt.Println("Download 1 complete!")
+    }
+
+    err2 := <-done2
+    if err2 != nil {
+        fmt.Println("Download 2 error:", err2)
+    } else {
+        fmt.Println("Download 2 complete!")
+    }
+
+    dm.Close()
+}
+#+END_SRC
+
+** 5.2.1 Explanation
+- =DownloadManager= spawns a certain number of worker goroutines that block reading from =opsChan= for new “DownloadOp.” 
+- =AsyncDownload(...)= constructs a new operation with a channel for the result, enqueues it. The worker goroutine does =downloadFile(...)=, then sends the error (if any) on =doneChan=.
+- This approach is “Proactor-like”: user code calls “AsyncDownload,” eventually the “completion event” is a channel read. They do not manually read partial data from the socket. The manager handles the entire operation “behind the scenes” and signals completion.
+
+** 5.3 Observations
+Go’s concurrency is straightforward here: each worker is effectively “doing the blocking calls.” In a more advanced system, we might use real async if the OS or library supports it, but the conceptual approach stands: The user simply says “start download,” eventually receiving “download done.” The user’s code does not manually handle partial reads or poll readiness. It sees an entire operation as “one piece.”
+
+* 6. Nuances, Variations, and Best Practices
+
+1. Proactor vs. Reactor
+   - =Proactor=: You do not read or write manually. The OS or library completes the entire operation, calls your callback with final results.
+   - =Reactor=: You get “readiness” events, do partial reads/writes in your code.
+
+2. OS Support
+   - Windows IOCP is a prime Proactor use case. On Linux/BSD, epoll/kqueue are more readiness-based, though you can emulate Proactor with user-space threads or advanced AIO calls.
+
+3. Callback vs. Future
+   - The user code might provide a callback or might get a future/promise. The pattern is the same: “async start → eventually done.” The rest is syntax or library design.
+
+4. Large Data
+   - Because Proactor tries to do the entire operation in one shot, some OSes or libraries might do partial completions if the data is huge or interrupted. You might need repeated calls anyway. 
+   - On Windows IOCP, you typically specify a buffer. If the read is bigger than that, you must do multiple requests or chunking.
+
+5. Worker Threads
+   - If the OS truly supports asynchronous I/O, you might not need user threads for the I/O itself. If not, a library might mimic Proactor by using a pool of threads that block, then call your callback. That’s conceptually Proactor from the user’s perspective, though physically it might rely on blocking calls in a pool.
+
+6. Debugging & Logging
+   - As always with async, you need thorough logs. You might see “operation started at T=123, completed at T=128 with result,” so you can track performance or failures.
+
+7. Combining Patterns
+   - You can combine Proactor with e.g. an Active Object: each method call is an async operation. Or with Strategy for how you handle data once read. Or with a pipeline of coroutines, each triggered on “operation done.”
+
+* 7. Real-World Usage
+- Windows IO Completion Ports: The canonical example of a Proactor-based approach. You queue an async read/write, get a completion callback (or pop from the IOCP queue) with results.
+- Asynchronous File I/O: In advanced OS calls or libraries, you might do a “launch read -> OS calls you back.” 
+- .NET Async: .NET’s asynchronous methods often reflect an internal Proactor if the OS supports it, or a partial approach otherwise. The user sees a single “await readFile(...).”
+- Async Database or Cloud APIs: For example, an async library might let you do “begin query,” returning a future. The library or OS does the blocking, eventually providing a callback with the entire result set.
+
+* 8. Conclusion
+
+The Proactor pattern stands as the completion-based counterpart to Reactor. Instead of your code responding to partial readiness, you request an entire operation, with the OS or library completing it behind the scenes, finally calling your completion routine (or fulfilling a future/promise). This can simplify code that otherwise juggles partial reads or writes, especially in environments that truly support asynchronous I/O natively.
+
+Our examples demonstrated:
+
+- *Beginner (Haskell)*: A toy proactor approach with an IORef queue of read operations, each with a callback, demonstrating “launch operation → eventual callback.” 
+- *Intermediate (Rust)*: A single worker thread approach for queued read ops, letting the user code do “Proactor-like” calls. In real systems, Windows IOCP or advanced calls handle this, but the pattern is the same: “fire off operation, get results in callback.” 
+- *Advanced (Go)*: A “download manager” that hides partial reads from the user. The user calls “AsyncDownload,” eventually receiving an error or success via a channel. The user never manually deals with partial data or readiness.
+
+While Reactor is more common on POSIX systems, Proactor thrives on Windows or advanced frameworks that truly do asynchronous operations. Both patterns revolve around event-driven concurrency. But Proactor spares you from manually doing each read/write chunk, letting the OS or library handle it fully, then calling you once the entire operation completes. In the right environment, that leads to simpler, more direct asynchronous code. 
