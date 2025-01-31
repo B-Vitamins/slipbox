@@ -1,0 +1,391 @@
+:PROPERTIES:
+:ID:       2f980302-ef4e-4e0d-972e-73873f8365e3
+:END:
+#+TITLE: Factory Method Pattern
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+* 1. Introduction and Historical Context
+
+The =Factory Method= is historically one of the fundamental creational patterns in object-oriented software design, as popularized by the so-called “Gang of Four” (Gamma, Helm, Johnson, and Vlissides). Its premise is relatively straightforward: instead of a client class instantiating objects directly (e.g., via a =new= constructor call), it delegates that responsibility to a dedicated “factory method.” This method is usually defined in a parent or abstract class, while subclasses override it to instantiate specific product objects.
+
+Why bother with this additional layer of indirection? The short answer is to decouple the client from concrete implementations. The client operates solely with an interface or abstract base class, leaving the details of which concrete class to create up to the factory method. Over time, as you introduce new product types or refine existing ones, you can do so without rippling changes through the rest of the code base. Moreover, this approach fosters open-closed design: the system can be open to new product variants yet closed to modifications in existing classes.
+
+Yet the =Factory Method= pattern can be more subtle than it first appears. A naive user might see it as simply returning newly constructed objects from a function, but advanced usage often intertwines with inheritance hierarchies, data-driven decisions, or dynamic runtime conditions that can drastically shape how the factory method is structured. We’ll delve into these intricacies in the examples that follow, each exemplifying different complexities and language idioms.
+
+* 2. Conceptual Motivation
+
+Imagine you’re building a framework or library that processes various forms of input data. Each data format—like CSV, JSON, or XML—requires specialized logic for parsing. If you let client code call a particular parser constructor directly, you force the client to choose which parser class to instantiate. This, in turn, scatters knowledge of your available formats throughout the code base. If you add or remove a parser type, you risk having to update many parts of your system.
+
+The =Factory Method= pattern solves this by localizing object creation in an abstract “creator” class. Subclasses of this creator each implement a specialized factory method that returns a relevant parser object. Clients only interact with a high-level method—something like =processFile(File file)=—without worrying about which parser instance is being used internally. This keeps the system flexible, modular, and more easily testable.
+
+Additionally, from a code comprehension perspective, the pattern fosters an architecture where “what is being created” and “how it is consumed” are distinctly partitioned. The client’s code can remain almost oblivious to the specific product. This not only helps with code maintainability but can also reduce the overhead of knowledge a developer needs to tackle one slice of the system.
+
+* 3. Beginner Example (Guile Scheme)
+
+Let’s start our exploration in Guile Scheme. Although Scheme is known for its functional style, it does support modules, first-class procedures, and an object system (GOOPS). Our “factory method” will be expressed in a way that might differ from a purely object-oriented approach seen in languages like Java or C#. Nonetheless, the underlying concept remains the same: we will define a uniform interface for product creation and then allow specialized implementations to produce different “product” objects.
+
+** 3.1 Motivating Scenario
+
+Suppose we’re building a small text-processing tool in Scheme. We’d like to handle two input modes: interactive text (provided by the user at runtime) or lines from a file. Both eventually feed a standard “processing pipeline.” A naive approach might require explicit branching: =(if interactive? (create-interactive-parser) (create-file-parser))= scattered throughout the code. Instead, we’ll unify creation under a “creator” procedure that dispatches to the correct parser factory.
+
+** 3.2 Code Example (Beginner, in Guile Scheme)
+
+#+BEGIN_SRC scheme
+;; We define a protocol (interface) for our parser products:
+(define (parse-text parser text)
+  "Generic function that delegates parsing to the parser's method."
+  ((parser 'parse) text))
+
+;; Let's define two kinds of product parsers:
+(define (make-interactive-parser)
+  (lambda (msg)
+    (case msg
+      ((parse)
+       (lambda (input)
+         (string-append "Interactive parse of: " input)))
+      (else (error "Unknown message to interactive parser")))))
+
+(define (make-file-parser)
+  (lambda (msg)
+    (case msg
+      ((parse)
+       (lambda (input)
+         (string-append "File parse of: " input)))
+      (else (error "Unknown message to file parser")))))
+
+;; Now, the "factory creator" function, which decides how to make a parser.
+;; In classical OOP terms, this would be the "factory method" in an abstract class.
+(define (create-parser source-type)
+  (cond
+    ((string=? source-type "interactive") (make-interactive-parser))
+    ((string=? source-type "file")       (make-file-parser))
+    (else (error "Unsupported source type"))))
+#+END_SRC
+
+*** 3.2.1 Commentary
+
+- =Parser Interface=: We simulate an interface with a higher-order function =parse-text=. It takes a =parser= and some text, then calls =(parser 'parse')=, which is effectively a method invocation in a dynamic, message-passing style.
+
+- =Concrete Products=: =make-interactive-parser= and =make-file-parser= are “factories” that each return a closure capturing the parser behavior. They respond to =(parser 'parse')= by returning a procedure that does the actual text manipulation.
+
+- =The Factory Creator=: =create-parser= is the single function where the logic of “which parser to create” is decided based on =source-type=. If you want to add a new parser (for instance, a “network-stream parser”), you’d add a new branch here, leaving the rest of your system unaltered.
+
+** 3.3 Usage Example
+
+#+BEGIN_SRC scheme
+(define my-parser (create-parser "interactive"))
+(parse-text my-parser "Hello World")
+;; => "Interactive parse of: Hello World"
+
+(define file-parser (create-parser "file"))
+(parse-text file-parser "Line1\nLine2\n")
+;; => "File parse of: Line1
+;;                  Line2
+;;    "
+#+END_SRC
+
+** 3.4 Observations
+
+Even in a functional environment, the essence of =Factory Method= remains: a single point of product creation logic, easily extended for new product types. Scheme’s closures can elegantly represent different “subclasses.” While it’s a simplified demonstration, it underscores that the pattern’s real force comes from decoupling creation from usage.
+
+* 4. Intermediate Example (Rust)
+
+Rust, with its focus on memory safety and zero-cost abstractions, offers interesting perspectives on design patterns. Traditional object-oriented patterns often shift shape in Rust, which encourages traits, generics, and ownership rules over classical inheritance. Nevertheless, we can still realize a =Factory Method= approach by using traits to define “products” and a struct (or trait) to define the “creator.”
+
+** 4.1 Motivating Scenario
+
+Imagine we want to parse logs from different environments: a simple textual log format vs. a more advanced JSON-based log format. We expect to get these logs from either a local system or from a remote server. Each environment might produce logs that require specialized logic. Our application’s job is to interpret these logs in a uniform way—maybe for analysis or debugging. The =Factory Method= helps unify how these log parsers are created while letting us cleanly slot in new parser types later.
+
+** 4.2 Code Example (Intermediate, in Rust)
+
+#+BEGIN_SRC rust
+use std::fmt;
+
+// A trait that defines the behavior for our log parser products:
+trait LogParser {
+    fn parse_line(&self, line: &str) -> String;
+    fn parser_name(&self) -> &str;
+}
+
+// Concrete products:
+struct TextLogParser;
+impl LogParser for TextLogParser {
+    fn parse_line(&self, line: &str) -> String {
+        format!("TextLogParser handled: {}", line)
+    }
+    fn parser_name(&self) -> &str {
+        "TextLogParser"
+    }
+}
+
+struct JsonLogParser;
+impl LogParser for JsonLogParser {
+    fn parse_line(&self, line: &str) -> String {
+        // This is a naive representation for demonstration
+        format!("JsonLogParser handled JSON line: {}", line)
+    }
+    fn parser_name(&self) -> &str {
+        "JsonLogParser"
+    }
+}
+
+// Now define a trait that acts like the "creator" in the Factory Method pattern:
+trait LogParserFactory {
+    fn create_parser(&self) -> Box<dyn LogParser>;
+    fn get_factory_name(&self) -> &str;
+}
+
+// Concrete factories that produce specific parser types:
+struct TextLogParserFactory;
+impl LogParserFactory for TextLogParserFactory {
+    fn create_parser(&self) -> Box<dyn LogParser> {
+        Box::new(TextLogParser)
+    }
+    fn get_factory_name(&self) -> &str {
+        "TextLogParserFactory"
+    }
+}
+
+struct JsonLogParserFactory;
+impl LogParserFactory for JsonLogParserFactory {
+    fn create_parser(&self) -> Box<dyn LogParser> {
+        Box::new(JsonLogParser)
+    }
+    fn get_factory_name(&self) -> &str {
+        "JsonLogParserFactory"
+    }
+}
+
+// A function that uses a factory to parse some logs:
+fn process_logs(factory: &dyn LogParserFactory, log_lines: &[&str]) {
+    let parser = factory.create_parser();
+    println!("Using parser from factory: {}", factory.get_factory_name());
+    for line in log_lines {
+        println!("{}", parser.parse_line(line));
+    }
+}
+
+fn main() {
+    let text_factory = TextLogParserFactory;
+    let json_factory = JsonLogParserFactory;
+
+    let text_logs = vec!["Log entry 1", "Log entry 2"];
+    let json_logs = vec!["{\"event\":\"start\"}", "{\"event\":\"stop\"}"];
+
+    // Use the text parser factory
+    process_logs(&text_factory, &text_logs);
+
+    // Swap in the JSON parser factory
+    process_logs(&json_factory, &json_logs);
+}
+#+END_SRC
+
+*** 4.2.1 Commentary
+
+- =LogParser Trait=: Defines the interface that all parser products implement, akin to the abstract product in classical OOP.
+
+- =Concrete Parsers=: =TextLogParser= and =JsonLogParser= each implement =LogParser=, customizing the =parse_line= method.
+
+- =Factory Trait=: =LogParserFactory= mirrors the role of the “creator.” It demands a =create_parser()= function returning a boxed trait object. This approach is typical in Rust when you want dynamic polymorphism across different implementing types.
+
+- =Concrete Factories=: =TextLogParserFactory= and =JsonLogParserFactory= each produce the corresponding parser object. Notice how the rest of the system only deals with traits, never referencing a specific parser type directly.
+
+- =Usage=: In =process_logs()=, we pass the chosen factory. We get a parser from it, then parse lines. Swapping factories is trivially done by passing a different factory instance.
+
+** 4.3 Nuances
+
+Rust’s strong type system and strict memory rules can sometimes steer you away from patterns like =Factory Method= or inheritance-based design. However, when you want to dynamically choose among multiple product types at runtime, a trait-based factory approach is valid and can be quite clean. One must be mindful of performance overhead from dynamic dispatch (=Box<dyn LogParser>=), but for many applications, this cost is negligible compared to the clarity gained.
+
+* 5. Advanced Example (Python)
+
+For our advanced-level illustration, we’ll return to Python, but with a scenario that incorporates additional complexities like concurrency and environmental configuration. Python’s dynamic nature often encourages simpler pattern usage, but we’ll push the concept further here, illustrating ways to configure factories at runtime and add plugin-like extensibility.
+
+** 5.1 Motivating Scenario
+
+Consider a web scraping framework that can fetch data from multiple websites. Each website might have distinct HTML structures, authentication steps, and pagination logic. We want an overarching =ScraperFactory= that decides which specialized scraper to produce based on environment configuration or runtime signals. We also want the freedom to load new scraper types dynamically—say, from separate modules or plugin directories—without rewriting core code.
+
+** 5.2 Code Example (Advanced, in Python)
+
+#+BEGIN_SRC python
+import threading
+import time
+import importlib
+
+class BaseScraper:
+    """Abstract base class for specialized web scrapers."""
+    def scrape(self):
+        raise NotImplementedError("Subclasses must implement 'scrape' method.")
+
+class NewsSiteScraper(BaseScraper):
+    """Scraper for a fictional news site."""
+    def scrape(self):
+        time.sleep(0.5)
+        return "Scraped news site data"
+
+class RetailSiteScraper(BaseScraper):
+    """Scraper for a fictional retail site."""
+    def scrape(self):
+        time.sleep(0.5)
+        return "Scraped retail site data"
+
+class DynamicScraperFactory:
+    """
+    A flexible factory that can produce scraper instances based on a type string.
+    It can also load new scraper modules at runtime if needed.
+    """
+    def __init__(self):
+        # Lock to handle concurrency
+        self._lock = threading.Lock()
+        # A registry to map string keys to classes
+        self._scraper_registry = {
+            "news": NewsSiteScraper,
+            "retail": RetailSiteScraper,
+        }
+
+    def register_scraper(self, scraper_key, scraper_class):
+        """
+        Allows extension or plugin-based scraping classes to register themselves.
+        For concurrency safety, we acquire a lock.
+        """
+        with self._lock:
+            self._scraper_registry[scraper_key] = scraper_class
+
+    def load_plugin(self, module_name, class_name):
+        """
+        Dynamically load a scraper class from a given module and register it.
+        Example usage might be: load_plugin("myplugins.realestate", "RealEstateScraper")
+        """
+        with self._lock:
+            module = importlib.import_module(module_name)
+            new_class = getattr(module, class_name)
+            key = class_name.lower()
+            self._scraper_registry[key] = new_class
+
+    def create_scraper(self, scraper_key):
+        """
+        Factory Method: returns an instance of the requested scraper.
+        If the scraper_key is unknown, raises an exception.
+        """
+        with self._lock:
+            if scraper_key not in self._scraper_registry:
+                raise ValueError(f"No registered scraper for key: {scraper_key}")
+            return self._scraper_registry[scraper_key]()
+
+def perform_scrape(factory, key):
+    scraper = factory.create_scraper(key)
+    result = scraper.scrape()
+    print(f"Scraped using {key}: {result}")
+
+def main():
+    # Initialize the factory
+    factory = DynamicScraperFactory()
+
+    # Potentially load new scrapers at runtime
+    # For demonstration, let's assume there's a plugin with a 'BlogScraper' class
+    # factory.load_plugin("external_plugins.blog_scraper", "BlogScraper")
+
+    # Launch multiple threads that concurrently request scrapers
+    threads = []
+    for key in ["news", "retail", "news", "retail"]:
+        thread = threading.Thread(target=perform_scrape, args=(factory, key))
+        threads.append(thread)
+        thread.start()
+
+    # Wait for all threads to complete
+    for t in threads:
+        t.join()
+
+    # Demonstrate registering a new scraper directly
+    class MockScraper(BaseScraper):
+        def scrape(self):
+            return "Mocked data"
+
+    factory.register_scraper("mock", MockScraper)
+    perform_scrape(factory, "mock")
+
+if __name__ == "__main__":
+    main()
+#+END_SRC
+
+*** 5.2.1 Commentary
+
+- =Abstract Base Class=: =BaseScraper= sets the contractual interface for all concrete scrapers, ensuring they provide a =scrape= method.
+
+- =Concrete Products=: =NewsSiteScraper= and =RetailSiteScraper= each implement the scraping logic.
+
+- =Factory Class=: =DynamicScraperFactory= acts as our advanced factory. It holds a registry—a dictionary mapping string keys (like "news" or "retail") to classes. By storing them in this registry, we effectively emulate the classical =Factory Method= approach. The twist is we can dynamically update this registry at runtime.
+
+- =Thread Safety=: We use a lock (=self._lock=) to protect accesses and modifications to =_scraper_registry=. This ensures that concurrent threads can safely request new scrapers without corrupting shared data.
+
+- =Plugin Mechanism=: =load_plugin= uses Python’s =importlib= to load modules and classes on the fly. This is a demonstration of how you might incorporate a plugin architecture into the pattern, letting new product variants appear dynamically.
+
+- =Threaded Demo=: In =main()=, we spin up threads that all call =perform_scrape=, showcasing concurrency. The pattern ensures each thread gets an appropriate scraper instance.
+
+** 5.3 Advantages
+
+- =Extensibility=: Adding new scraper classes is as simple as registering them under a unique key.
+
+- =Loose Coupling=: Callers of the =DynamicScraperFactory= never directly import or construct scraper classes, making the system more modular.
+
+- =Runtime Flexibility=: Even after deployment, new scrapers can be introduced and loaded, which can be crucial in fast-moving environments where site structures and scraping strategies evolve rapidly.
+
+** 5.4 Limitations
+
+- =Registry Bloat=: Over time, a large registry can become unwieldy if many ephemeral scrapers come and go.
+
+- =No Guarantee of Performance=: Dynamically loading modules can have overhead, especially if done frequently.
+
+- =Testing Complexity=: The dynamic nature can complicate unit testing unless carefully managed with mocks or pre-configured stubs.
+
+* 6. Nuances, Variations, and Best Practices
+
+Having explored the =Factory Method= pattern in three distinct contexts, let’s draw out the broader lessons and less obvious intricacies that can arise in real-world usage:
+
+** 6.1 Avoiding “Excessive Subclassing”
+
+One common critique is that the =Factory Method= pattern can proliferate classes—particularly if you create a separate factory subclass for each product type. In many cases, a single factory class might produce multiple product variants by switching on parameters. Alternatively, if you anticipate many variants but seldom change them, it might be more straightforward to use a static function with conditionals. The pattern is helpful primarily when new product types appear frequently over time and you want to keep changes localized.
+
+** 6.2 Distinguishing Factory Method from Abstract Factory
+
+The =Factory Method= is sometimes confused with =Abstract Factory=. While =Factory Method= typically deals with the creation of one type of product at a time (albeit with multiple variants), =Abstract Factory= focuses on families of related products (e.g., =createButton()= and =createTextField()= might both be part of one “GUI factory”). That said, they share a core similarity: decoupling object creation from object usage. Their difference lies in scope and structure, so always confirm which best fits your scenario.
+
+** 6.3 Hybrid Approaches
+
+In some systems, you might see a “factory method” partially combined with dependency injection. Instead of the object itself deciding which subclass to create, an external configuration might specify the factory subclass to load. This hybrid approach can further reduce coupling and is common in frameworks like Spring (Java) or large-scale Python applications with container-based injection. In Rust, you might rely on advanced macros or generics, or pass trait objects around, to accomplish a similar effect.
+
+** 6.4 Testing Implications
+
+Like many creational patterns, the =Factory Method= can improve testability by removing direct references to concrete classes in your logic. This allows you to mock or substitute the factory if needed. For instance, you could pass a “TestParserFactory” that generates mock parser instances. This approach is especially powerful in Rust or strongly typed languages, since it ensures compile-time checks. In Python or Scheme, you can do something similar by overriding the registry or swapping function references.
+
+** 6.5 “Method” vs. “Object” Factories
+
+Some architects prefer a dedicated “factory object” (like the =DynamicScraperFactory= we saw) rather than a “factory method” inside an abstract base class. Technically, both approaches are variations of the same principle. The difference is mostly organizational: do you embed the creation logic in the same class that uses the products (classical approach) or do you keep a separate factory object in your system architecture?
+
+** 6.6 Recognizing Factory Methods in the Wild
+
+You may come across factory methods outside of a formal “factory pattern” discussion whenever you see code that calls, for example, =SomeClass.createSomething(...)= or =MyFramework.getParser(...)=. Often, the method name hints that it’s providing you with a new object, but from a set of possible implementations. Toolkits that handle file or image I/O (like Java’s ImageIO) frequently exhibit a factory-like approach. The hallmark is that the calling code does not specify which actual product subclass is used; it simply requests the correct “type” or “format,” and the library decides internally which class to instantiate.
+
+* 7. Real-World Usage
+
+Factories are ubiquitous in real-world software:
+
+- =UI Libraries=: Many UI toolkits let you request a widget from a function like =createButton("type")=. The library decides which native widget or custom widget class to return.
+
+- =Persistence Layers=: ORMs often have factory methods that produce different Repository or DAO objects based on the entity type or underlying data source.
+
+- =Document Editors=: Some text editors or IDEs might register multiple “document handlers.” The system calls a factory method to create the right handler for a given file type.
+
+- =Plugin Systems=: Many plugin architectures revolve around a registry, which is effectively a dynamic factory method. Each plugin registers the classes it can produce; the host app calls a single function to produce the desired plugin type.
+
+The pattern truly shines in contexts where new product variants keep appearing over time, but where the existing code base (especially code that processes or uses the product) should remain relatively stable and unaffected.
+
+* 8. Conclusion
+
+The =Factory Method= pattern stands as a testament to one of software engineering’s evergreen goals: separating the “what” from the “how.” By centralizing object creation, we reduce the client’s dependence on concrete classes and allow new product variants to slip seamlessly into an existing architecture. Each of our three examples—Scheme, Rust, and Python—underscores the same principle, despite stark language differences:
+
+- In Scheme, closures can mimic inheritance-like behavior, ensuring the creation logic is isolated in a single “factory function.”
+- In Rust, traits and trait objects facilitate a robust approach that avoids polluting your code with explicit match statements all over. Instead, you rely on a dedicated factory trait to produce the correct parser or product.
+- In Python, the pattern can evolve into a dynamic registry-based system, enabling not just simple product creation but also concurrency handling, plugin loading, and runtime configuration.
+
+At its best, the =Factory Method= pattern is subtle. It can look deceptively simple—just returning a newly constructed object from a function. But in large-scale applications, it’s the difference between a system tightly coupled to individual classes and one that gracefully adapts to new classes, new modules, and new features. By mastering its fundamentals—knowing its distinctions from =Abstract Factory=, recognizing the testing benefits it can confer, and understanding how to mitigate potential complexities—you’ll ensure that your code remains both open to extensions and stable for the long haul.
