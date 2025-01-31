@@ -1,0 +1,455 @@
+:PROPERTIES:
+:ID:       7f4bd13b-48c4-4828-8adf-cd2631a0e00c
+:END:
+#+TITLE: Mediator Pattern
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+* 1. Introduction and Historical Context
+
+The =Mediator= pattern is a behavioral design pattern that aims to reduce chaotic dependencies and direct coupling among multiple objects. Instead of objects referencing each other directly—and thus forming a tangle of interconnections—Mediator suggests introducing a mediator object that coordinates their interactions. Each object communicates with the mediator, which then relays or orchestrates behavior among other participants as needed.
+
+Historically, GUI frameworks popularized this pattern: for example, a dialog box with multiple widgets. Instead of each widget referencing and updating each other’s state, the pattern advocated having a “mediator” (the dialog or a dedicated “FormMediator”) that receives widget events and updates or commands other widgets. This keeps the code simpler and more maintainable, rather than scattering references among all widgets. Over time, Mediator has been recognized as a general approach whenever you want to manage complex inter-object communications in a decoupled way.
+
+** 1.1 Why Use Mediator?
+
+- =Reduced Coupling=: Objects that would otherwise reference each other directly now only reference the mediator. This fosters a star structure (objects → mediator) instead of a mesh.
+
+- =Single Control Point=: The mediator can enforce logic and constraints in one place, rather than distributing them across multiple classes.
+
+- =Easier Maintenance=: If you want to change how objects interact, you typically adjust the mediator code rather than rummaging through every participant’s class.
+
+- =Clearer Communication=: The pattern centralizes inter-object flow, making it clearer how objects talk to one another.
+
+** 1.2 Potential Pitfalls
+
+- =Mediator Overgrowth=: The mediator can become very large if it handles too many interactions, potentially turning into a “god object.”
+
+- =Reduced Flexibility=: By centralizing interactions, you might lose direct synergy if objects could more simply communicate point-to-point.
+
+- =Design Trade-offs=: Some prefer alternative patterns like Observer for event-based communications. Mediator is best when you have a small set of interdependent objects that otherwise would form messy dependencies.
+
+When an application’s logic involves multiple objects interacting in intricate ways, and you need them decoupled, the Mediator pattern can bring order by funneling logic into a single orchestrator.
+
+* 2. Conceptual Motivation
+
+A typical example is a GUI dialog with various widgets (buttons, text fields, checkboxes). When one widget’s state changes, it might need to enable or disable others, or fill in text fields. If all widgets reference each other directly, the code becomes entangled. Introducing a mediator (the dialog or a specialized object) ensures each widget notifies the mediator of events, and the mediator decides what other widgets to update. This preserves a single control hub and prevents direct widget-to-widget references.
+
+* 3. Beginner Example (Rust)
+
+We’ll start with a beginner Rust demonstration, modeling a “login dialog” scenario. We have a username field, a password field, and a login button. The mediator ensures the button is enabled only if both fields are non-empty.
+
+** 3.1 Motivating Scenario
+
+In many UIs, certain controls must be synchronized. For instance, the “Login” button should only be active if username and password fields are not empty. Instead of having these fields directly reference each other or the button, we let a mediator handle all that logic.
+
+** 3.2 Code Example (Beginner, Rust)
+
+#+BEGIN_SRC rust
+use std::rc::Rc;
+use std::cell::RefCell;
+
+// Define a trait that each component can call to notify mediator
+trait Mediator {
+    fn notify(&self, sender_id: &str, event: &str);
+}
+
+// Components: TextField and Button
+struct TextField {
+    id: String,
+    text: String,
+    mediator: Rc<dyn Mediator>,
+}
+
+impl TextField {
+    fn new(id: &str, mediator: Rc<dyn Mediator>) -> Self {
+        TextField {
+            id: id.to_string(),
+            text: String::new(),
+            mediator
+        }
+    }
+
+    fn set_text(&mut self, value: &str) {
+        self.text = value.to_string();
+        // notify mediator of "textChanged"
+        self.mediator.notify(&self.id, "textChanged");
+    }
+
+    fn get_text(&self) -> &str {
+        &self.text
+    }
+}
+
+struct Button {
+    id: String,
+    enabled: bool,
+    mediator: Rc<dyn Mediator>,
+}
+
+impl Button {
+    fn new(id: &str, mediator: Rc<dyn Mediator>) -> Self {
+        Button {
+            id: id.to_string(),
+            enabled: false,
+            mediator
+        }
+    }
+    fn set_enabled(&mut self, e: bool) {
+        self.enabled = e;
+    }
+    fn click(&self) {
+        if self.enabled {
+            println!("{} clicked! Initiating login...", self.id);
+            // notify mediator that button was clicked
+            self.mediator.notify(&self.id, "click");
+        } else {
+            println!("{} is disabled, can't click.", self.id);
+        }
+    }
+}
+
+// The Mediator implementation: LoginDialog
+struct LoginDialog {
+    username_field: RefCell<TextField>,
+    password_field: RefCell<TextField>,
+    login_button: RefCell<Button>,
+}
+
+impl LoginDialog {
+    fn new() -> Rc<Self> {
+        // We create placeholder references first
+        let mediator = Rc::new(LoginDialog {
+            username_field: RefCell::new(TextField {
+                id: String::new(),
+                text: String::new(),
+                mediator: Rc::new(()) as Rc<dyn Mediator>,
+            }),
+            password_field: RefCell::new(TextField {
+                id: String::new(),
+                text: String::new(),
+                mediator: Rc::new(()) as Rc<dyn Mediator>,
+            }),
+            login_button: RefCell::new(Button {
+                id: String::new(),
+                enabled: false,
+                mediator: Rc::new(()) as Rc<dyn Mediator>,
+            }),
+        });
+        // Now fill them properly
+        {
+            let username_field = TextField::new("username", mediator.clone());
+            let password_field = TextField::new("password", mediator.clone());
+            let login_button = Button::new("loginBtn", mediator.clone());
+
+            mediator.username_field.replace(username_field);
+            mediator.password_field.replace(password_field);
+            mediator.login_button.replace(login_button);
+        }
+        mediator
+    }
+
+    fn get_username_field(&self) -> &RefCell<TextField> {
+        &self.username_field
+    }
+    fn get_password_field(&self) -> &RefCell<TextField> {
+        &self.password_field
+    }
+    fn get_login_button(&self) -> &RefCell<Button> {
+        &self.login_button
+    }
+}
+
+impl Mediator for LoginDialog {
+    fn notify(&self, sender_id: &str, event: &str) {
+        // If text changed in either field, check if both fields are non-empty
+        if event == "textChanged" {
+            let user = self.username_field.borrow().get_text();
+            let pass = self.password_field.borrow().get_text();
+            let mut btn = self.login_button.borrow_mut();
+            if !user.is_empty() && !pass.is_empty() {
+                btn.set_enabled(true);
+            } else {
+                btn.set_enabled(false);
+            }
+        } else if event == "click" && sender_id == "loginBtn" {
+            println!("Mediator handling login flow...");
+            // possibly do validations, etc.
+        }
+    }
+}
+
+// usage
+fn main() {
+    let dialog = LoginDialog::new();
+
+    {
+        let mut user_field = dialog.get_username_field().borrow_mut();
+        user_field.set_text("Alice");
+    }
+    {
+        let mut pass_field = dialog.get_password_field().borrow_mut();
+        pass_field.set_text(""); // empty password
+    }
+
+    {
+        let btn = dialog.get_login_button().borrow();
+        btn.click(); // button is disabled
+    }
+
+    // now set password
+    {
+        let mut pass_field = dialog.get_password_field().borrow_mut();
+        pass_field.set_text("secret");
+    }
+
+    {
+        let btn = dialog.get_login_button().borrow();
+        btn.click(); // button is enabled, triggers mediator's login flow
+    }
+}
+#+END_SRC
+
+*** 3.2.1 Explanation
+
+- =Mediator= trait: The interface each mediator must implement, with notify(sender_id, event).
+- Participants: TextField and Button, each referencing the mediator. They call mediator.notify(...) when events occur.
+- LoginDialog: The mediator that holds references to the fields and button. On textChanged, it checks if both fields are non-empty, enabling/disabling the button. On click from the button, it triggers login logic.
+- Usage: We create a =LoginDialog=. We fill username and password, watch the mediator enable or disable the button accordingly, then see how the click event triggers the mediator’s flow.
+
+** 3.3 Observations
+
+A typical UI scenario. Each component is simpler, calling notify() on the mediator. The pattern ensures that no direct references between the TextFields and the Button exist, only references to the mediator.
+
+* 4. Intermediate Example (Guile Scheme)
+
+We move to an intermediate example in Guile Scheme: a chat room mediator, where multiple user objects broadcast messages by contacting the mediator, which then relays them to other users.
+
+** 4.1 Motivating Scenario
+
+In a chat system, multiple user objects each hold a reference to a mediator (the chat room). Instead of user references to each other, the user sends a message to the mediator, and the mediator broadcasts it. This keeps each user decoupled from other users.
+
+** 4.2 Code Example (Intermediate, Guile Scheme)
+
+#+BEGIN_SRC scheme
+(use-modules (oop goops))
+
+;; We'll define <mediator> as a concept with 'broadcast'
+(define-class <mediator> ()
+  (virtual (broadcast (self sender message)) "handle broadcasted message from sender"))
+
+;; A <user> that references a mediator
+(define-class <user> ()
+  (name #:init-keyword #:name)
+  (mediator #:init-keyword #:mediator)
+
+  (define (send-message (self) msg)
+    (let ((med (slot-ref self 'mediator)))
+      ((med 'broadcast) self msg)))
+
+  (define (receive-message (self) from msg)
+    (format #t "~a receives message from ~a: ~a\n"
+            (slot-ref self 'name)
+            (slot-ref from 'name)
+            msg)))
+
+;; The ChatRoom as mediator: a closure that stores users
+(define chatroom
+  (let ((users (make-hash-table)))
+    (lambda (cmd . args)
+      (cond
+       ((eq? cmd 'register)
+        (let ((u (car args)))
+          (hash-set! users (slot-ref u 'name) u)))
+       ((eq? cmd 'broadcast)
+        (let ((sender (car args))
+              (message (cadr args)))
+          ;; send message to all other users
+          (for-each (lambda (k)
+                      (let ((u (hash-ref users k)))
+                        (if (not (eq? u sender))
+                            (send u 'receive-message sender message))))
+                    (hash-keys users))))
+       (else (error "Unknown command to chatroom" cmd))))))
+
+;; usage
+(let ((alice (make <user> #:name "Alice" #:mediator chatroom))
+      (bob   (make <user> #:name "Bob"   #:mediator chatroom))
+      (cindy (make <user> #:name "Cindy" #:mediator chatroom)))
+  ;; register them
+  (chatroom 'register alice)
+  (chatroom 'register bob)
+  (chatroom 'register cindy)
+
+  (send alice 'send-message "Hi everyone!")
+  (send bob 'send-message "Hello Alice and Cindy!")
+  (send cindy 'send-message "This is so convenient."))
+#+END_SRC
+
+*** 4.2.1 Explanation
+
+- =<mediator>=: A conceptual base with a broadcast method.
+- =<user>=: Each user has a name, a mediator, a send-message method that calls (mediator 'broadcast), and a receive-message method to handle inbound messages.
+- chatroom: We define a closure storing users in a hash table. On 'register, we store the user. On 'broadcast, we iterate all users, telling them to receive-message except the sender.
+- Usage: We create three users referencing chatroom, register them, and have them send messages. The mediator (chatroom) routes each message to the others.
+
+** 4.3 Observations
+
+This is the classic “chat room mediator.” Each participant references only the mediator, never each other. The mediator manages how messages are routed.
+
+* 5. Advanced Example (Python)
+
+Finally, for an advanced scenario in Python, we’ll demonstrate a domain workflow mediator: multiple domain objects (Order, Inventory, Billing, Notification) each referencing the mediator, which orchestrates interactions so they remain decoupled.
+
+** 5.1 Motivating Scenario
+
+Consider an e-commerce-like workflow: an order object might need inventory checks, billing confirmation, and user notifications. Without a mediator, each object might hold references to the others, making the system messy. A single mediator, “WorkflowMediator,” can centralize the logic of “when an order item is added, check inventory,” “when payment is done, mark order paid,” “when order is paid, send notifications,” etc.
+
+** 5.2 Code Example (Advanced, Python)
+
+#+BEGIN_SRC python
+class Mediator:
+    """Abstract mediator for domain objects to notify, so it can coordinate responses."""
+    def notify(self, sender, event, data=None):
+        pass
+
+class Order:
+    def __init__(self, mediator):
+        self.mediator = mediator
+        self.status = "New"  # e.g. 'New', 'Paid', 'Shipped'
+        self.items = []
+
+    def add_item(self, item):
+        self.items.append(item)
+        # Notify mediator that an item was added
+        self.mediator.notify(self, "OrderItemAdded", item)
+
+    def mark_paid(self):
+        self.status = "Paid"
+        self.mediator.notify(self, "OrderPaid")
+
+class Inventory:
+    def __init__(self, mediator):
+        self.mediator = mediator
+        self.stock = {}  # item -> quantity
+
+    def add_stock(self, item, qty):
+        self.stock[item] = self.stock.get(item, 0) + qty
+
+    def reserve(self, item):
+        # reduce stock by 1 if available
+        if self.stock.get(item, 0) > 0:
+            self.stock[item] -= 1
+            return True
+        return False
+
+class Billing:
+    def __init__(self, mediator):
+        self.mediator = mediator
+
+    def process_payment(self, amount):
+        print(f"Billing: processed payment of ${amount}")
+        # notify success
+        self.mediator.notify(self, "PaymentSuccess")
+
+class NotificationService:
+    def __init__(self, mediator):
+        self.mediator = mediator
+
+    def send_confirmation(self, message):
+        print(f"Notification: {message}")
+
+class WorkflowMediator(Mediator):
+    """Coordinates order creation, inventory reservation, payment, notifications."""
+    def __init__(self):
+        self.order = Order(self)
+        self.inventory = Inventory(self)
+        self.billing = Billing(self)
+        self.notification = NotificationService(self)
+
+    def notify(self, sender, event, data=None):
+        if sender == self.order and event == "OrderItemAdded":
+            item = data
+            success = self.inventory.reserve(item)
+            if not success:
+                print(f"Mediator: item '{item}' not in stock, cannot add.")
+        elif sender == self.order and event == "OrderPaid":
+            print("Mediator: order is paid, sending confirmation.")
+            self.notification.send_confirmation("Your order has been paid!")
+        elif sender == self.billing and event == "PaymentSuccess":
+            print("Mediator: PaymentSuccess received from Billing.")
+            self.order.mark_paid()
+        # Additional events can be handled as needed
+
+# usage
+if __name__ == "__main__":
+    mediator = WorkflowMediator()
+    # set up some inventory
+    mediator.inventory.add_stock("Book", 2)
+    mediator.inventory.add_stock("Pen", 5)
+
+    # add items to order
+    mediator.order.add_item("Book")
+    mediator.order.add_item("Book")
+    mediator.order.add_item("Book")  # third Book not in stock
+    mediator.order.add_item("Pen")
+
+    # process payment
+    mediator.billing.process_payment(29.99)
+#+END_SRC
+
+*** 5.2.1 Explanation
+
+- =Mediator= base class: has notify(sender, event, data). 
+- Participants:
+  - =Order=: Manages items, calls mediator on “OrderItemAdded,” “OrderPaid.”
+  - =Inventory=: Reserves stock, etc.
+  - =Billing=: On PaymentSuccess, notifies mediator, which then marks order paid.
+  - =NotificationService=: Sends out confirmations when mediator decides.
+- =WorkflowMediator=: Orchestrates all logic. On “OrderItemAdded,” tries to reserve inventory. If “OrderPaid,” it sends confirmations. If “PaymentSuccess,” it calls order.mark_paid.
+- Usage: We build a mediator with an order, inventory, billing, notification. We set inventory, add items to the order, process payment, observe the mediator’s coordination.
+
+** 5.3 Observations
+
+This advanced scenario shows a domain-level mediator. Instead of each domain object referencing each other, they only reference the mediator. The mediator’s logic ensures that the domain objects remain simpler, focusing on their own responsibilities.
+
+* 6. Nuances, Variations, and Best Practices
+
+** 6.1 Mediator vs. Observer
+
+Mediator can resemble Observer if you handle events. But Mediator typically orchestrates multi-object logic in one place, whereas Observer is about broadcasting events to many listeners. They can coexist, but Mediator is explicitly about controlling interactions among participants.
+
+** 6.2 Risk of “God Object”
+
+If the mediator takes on too many responsibilities, it can become monolithic. Keep it focused on inter-object communications needed to avoid direct references, not on every piece of domain logic.
+
+** 6.3 Complex Flows vs. Simple Interactions
+
+If interactions among objects are minimal or direct references are simpler, a mediator might be overkill. The pattern truly shines when multiple participants have complex interactions that would otherwise create a web of references.
+
+** 6.4 Testing Mediator Logic
+
+One advantage is that the mediator centralizes multi-object interactions, so you can test it by mocking or stubbing participants. The participants themselves remain simpler, each focusing on its own domain logic.
+
+** 6.5 Implementation Variations
+
+Some designs prefer “colleague” classes referencing a mediator. Others might rely on external signals or event bus approaches. The core idea is consistent: participants avoid referencing each other directly, delegating interaction to a central coordinator.
+
+* 7. Real-World Usage
+
+- =GUI Dialogs=: The classic example, as in our Rust login scenario. A mediator (the dialog) orchestrates events among controls.
+- =Chat Rooms=: Each user references the mediator (chat room), which broadcasts messages to other users.
+- =Workflow or Domain Coordination=: As in the advanced Python scenario, multiple domain objects remain decoupled, letting a mediator handle the “glue logic.”
+- =Game Entities=: A “controller” or “director” can handle complex interactions between game objects, preventing them from referencing each other directly.
+- =Air Traffic Control=: Planes don’t talk to each other directly; they talk to the tower (mediator).
+
+* 8. Conclusion
+
+The =Mediator= pattern is invaluable when numerous objects must coordinate or react to each other in intricate ways, and you want to avoid direct, tangled references. By introducing a mediator, you centralize inter-object logic, simplifying each participant’s code. They only reference the mediator, notifying it of events and receiving instructions. This fosters a simpler “hub-and-spoke” architecture rather than a fully interconnected mesh.
+
+We illustrated:
+
+- =Beginner (Rust)=: A login dialog scenario, where the mediator coordinates text fields and a button.
+- =Intermediate (Guile Scheme)=: A chat room mediator example, broadcasting messages among multiple user objects.
+- =Advanced (Python)=: A workflow mediator unifying domain objects (Order, Inventory, Billing, Notification) in an e-commerce-like scenario.
+
+Wherever you see multiple objects needing complex interaction without forming direct references, consider the Mediator pattern. It keeps each object focused on its own domain tasks, leaving multi-party communication to a central orchestrator, significantly easing maintenance and extension.
