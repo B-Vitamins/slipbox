@@ -1,0 +1,509 @@
+:PROPERTIES:
+:ID:       ee27ded8-71e3-4815-8c8a-f3a8b154ac2d
+:END:
+#+TITLE: Builder Pattern
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+* 1. Introduction and Historical Context
+
+The =Builder= pattern is often explained as a technique for constructing complex objects step by step, allowing clients to produce different variants or representations of that object using the same construction process. While it may seem akin to a multi-argument constructor at first glance, the key differentiator is that =Builder= encapsulates the construction steps in a separate object, thereby decoupling the product’s internal complexity from the client.
+
+Historically, the =Builder= has been closely associated with the creation of “composite” or “aggregate” objects—such as complex dialog boxes in GUI programming or specialized data structures that need to be assembled in layers. Early texts and frameworks in the object-oriented design domain showcased it particularly for scenarios involving multiple optional parameters, nested objects, and the possibility of partial or incremental construction.
+
+Its popularity rose as developers recognized that large constructors in languages like Java or C++ lead to the “telescoping constructor” problem, where each new feature or parameter spawns more variants of constructor signatures. The =Builder= pattern alleviates this, offering a fluid or stepwise approach to setting fields. Modern usage extends well beyond the typical “Telescoping Constructors,” frequently intersecting with method chaining, data immutability, and domain-specific languages (DSLs).
+
+** 1.1 Why Use a Builder?
+
+A few highlights explain why the =Builder= pattern often makes sense:
+
+1. ==Readable Construction==: You can break down object creation into discrete, logically named steps rather than jamming everything into a single constructor call.
+
+2. ==Multiple Representations==: If you need to create different “flavors” or representations of the same object type (e.g., an HTML vs. Markdown version of a report), you can employ the same set of building steps, but alter how each step is executed.
+
+3. ==Isolation of Complexity==: The pattern encapsulates the construction logic in a separate class (the builder). This keeps the product itself simpler and reduces duplication of setup code across client classes.
+
+4. ==Immutability and Safety==: Particularly in languages that favor immutable objects, the =Builder= allows you to accumulate necessary state in a mutable builder object, then instantiate a final immutable product once all data is ready.
+
+** 1.2 Common Pitfalls
+
+- ==Overengineering==: If your object is small or straightforward, a builder may be an unnecessary layer. The overhead of creating a separate builder class, with multiple chainable methods, can complicate simple tasks.
+
+- ==Inconsistent State if Steps Are Optional==: If certain steps are optional or can happen in different orders, you must handle partial or invalid states. Method chaining can sometimes mask the need for crucial building steps.
+
+- ==Maintenance Overhead==: Introducing a new field in the product often requires changes in both the product class and the builder class (or classes, if multiple variants exist). In large systems, a mismatch between product fields and builder steps can cause confusion.
+
+Despite these issues, the =Builder= pattern thrives in scenarios where the product’s complexity or the variety of possible configurations outweighs the cost of implementing a specialized builder abstraction.
+
+* 2. Conceptual Motivation
+
+Picture a scenario where you are generating a house or game level with myriad optional features: number of floors, materials for walls, presence of gardens, balconies, or special finishing touches. If you rely on a single constructor with many parameters, you end up with a monstrous signature that’s both unwieldy and easy to misuse. Alternatively, you might rely on a series of factory methods or setters, but that can scatter the setup logic throughout your code.
+
+The =Builder= pattern consolidates these steps in one place. It also can neatly separate the concept of a “director” (the orchestrator that calls builder steps in a certain sequence) from the “builder” (the class that knows how to actually implement each step). If you have multiple ways to “direct” the building (e.g., a “Luxury House Director,” a “Budget House Director”), they could each call the same builder methods in different orders. Or if you want different types of houses—maybe a “Concrete House Builder” vs. a “Wooden House Builder”—the directors remain the same, but the builder code changes the specifics for each step.
+
+* 3. Beginner Example (Python)
+
+We begin with a simple, Pythonic take on the =Builder= pattern. Python’s dynamic nature often lends itself to simpler solutions, but the following example demonstrates how a “classic” builder approach can help when you have an object with many optional attributes.
+
+** 3.1 Motivating Scenario
+
+Suppose we’re building a configuration object for a web service. This configuration might include a hostname, port number, SSL settings, optional authentication credentials, and various timeouts. Rather than forcing the user to pass all these values to a constructor, we present a builder that reads naturally. The final product (==WebServiceConfig==) might be immutable once built, ensuring safety and consistency after creation.
+
+** 3.2 Code Example (Beginner, Python)
+
+#+BEGIN_SRC python
+class WebServiceConfig:
+    def __init__(self, hostname, port, use_ssl, auth_token, timeout, retries):
+        self.hostname = hostname
+        self.port = port
+        self.use_ssl = use_ssl
+        self.auth_token = auth_token
+        self.timeout = timeout
+        self.retries = retries
+
+    def __str__(self):
+        return (f"WebServiceConfig("
+                f"hostname={self.hostname}, "
+                f"port={self.port}, "
+                f"use_ssl={self.use_ssl}, "
+                f"auth_token={'****' if self.auth_token else None}, "
+                f"timeout={self.timeout}, "
+                f"retries={self.retries})")
+
+class WebServiceConfigBuilder:
+    def __init__(self):
+        # Initialize with default values
+        self._hostname = "localhost"
+        self._port = 80
+        self._use_ssl = False
+        self._auth_token = None
+        self._timeout = 30
+        self._retries = 3
+
+    def hostname(self, hostname):
+        self._hostname = hostname
+        return self
+
+    def port(self, port):
+        self._port = port
+        return self
+
+    def use_ssl(self, use_ssl):
+        self._use_ssl = use_ssl
+        return self
+
+    def auth_token(self, token):
+        self._auth_token = token
+        return self
+
+    def timeout(self, timeout):
+        self._timeout = timeout
+        return self
+
+    def retries(self, retries):
+        self._retries = retries
+        return self
+
+    def build(self):
+        # Create the immutable product
+        return WebServiceConfig(
+            hostname=self._hostname,
+            port=self._port,
+            use_ssl=self._use_ssl,
+            auth_token=self._auth_token,
+            timeout=self._timeout,
+            retries=self._retries
+        )
+
+# Example usage:
+if __name__ == "__main__":
+    builder = WebServiceConfigBuilder()
+    config = (builder
+              .hostname("api.example.com")
+              .port(443)
+              .use_ssl(True)
+              .auth_token("secret-token-123")
+              .build())
+
+    print(config)
+#+END_SRC
+
+*** 3.2.1 Explanation
+
+- ==WebServiceConfig==: The product class, storing all configuration details. Notice its constructor can accept multiple parameters, but we do not want clients to call it directly with a big list of arguments all the time.
+
+- ==WebServiceConfigBuilder==: The builder that accumulates data. We provide chainable setter methods named after each property (like ==hostname()==, ==port()==, etc.), each returning ==self==. This method-chaining style is common in Python builder patterns.
+
+- ==Defaults==: We set default values in the builder’s ==__init__==. The client can override them with chain calls if desired.
+
+- ==build()==: This method finalizes the object creation, returning a new ==WebServiceConfig== instance. This instance can be treated as immutable: after creation, we do not typically mutate it.
+
+** 3.3 Observations
+
+This simple example clarifies how the =Builder= pattern addresses the “telescoping constructor” problem. We neatly sidestep the complexity of numerous optional parameters by chaining intuitive methods. It’s also easy to add new configuration fields: just add new builder methods and pass them into the product’s constructor.
+
+* 4. Intermediate Example (Guile Scheme)
+
+We move next to Guile Scheme, illustrating how a =Builder= might work in a more functional environment. Here, we’ll craft a scenario involving a step-by-step creation of complex data—say, an XML Document. We’ll emulate a builder that accumulates child elements, attributes, and textual content in an internal structure, then finalizes into a single consistent XML string or tree.
+
+** 4.1 Motivating Scenario
+
+We might be in a context where we generate XML-based output for a configuration file, a document, or a report. Each XML element can have nested child elements, attributes, and textual nodes. Doing this by hand can lead to unwieldy code with string concatenations. By adopting a builder pattern, we can systematically construct our XML data, then produce a final textual representation or internal tree structure.
+
+** 4.2 Code Example (Intermediate, Guile Scheme)
+
+#+BEGIN_SRC scheme
+;;; We assume we have Guile's standard environment.
+;;; We'll implement a simplistic XML builder approach.
+
+;; Let's define a structure to hold the partial XML data:
+(define-record-type <xml-element>
+  (make-xml-element name attributes children)
+  xml-element?
+  (name xml-element-name)             ;; string
+  (attributes xml-element-attributes) ;; alist of (attribute . value)
+  (children xml-element-children))    ;; list of <xml-element> or strings
+
+;; A builder object will hold a root element reference and let us modify or nest child elements.
+;; For demonstration, we'll store the current "focus" of the builder as a stack that allows nesting.
+
+(define (xml->string elem)
+  "Converts the <xml-element> record to a string representation."
+  (cond
+   ((string? elem)
+    elem)
+   ((xml-element? elem)
+    (let* ((name (xml-element-name elem))
+           (atts (xml-element-attributes elem))
+           (children (xml-element-children elem)))
+      (string-append
+       "<" name
+       (if (null? atts)
+           ""
+           (apply string-append
+                  (map (lambda (a)
+                         (format #f " ~a=\"~a\"" (car a) (cdr a)))
+                       atts)))
+       ">"
+       (apply string-append (map xml->string children))
+       "</" name ">")))
+   (else
+    (error "Unknown XML node type" elem))))
+
+;; The Builder:
+(define (make-xml-builder root-name)
+  (let ((root (make-xml-element root-name '() '()))
+        (stack '())) ;; We'll keep a stack for "current element" contexts
+    (define (enter-element name)
+      ;; Add a new child to the current element, then make that child the new context
+      (let* ((current (if (null? stack) root (car stack))))
+        (let ((child (make-xml-element name '() '())))
+          (set-xml-element-children! current (append (xml-element-children current) (list child)))
+          (set! stack (cons child stack)))))
+
+    (define (leave-element)
+      ;; Return to the parent context
+      (if (not (null? stack))
+          (set! stack (cdr stack)) ;; Pop
+          (error "Can't leave element: no parent context.")))
+
+    (define (add-attribute key value)
+      ;; Add an attribute to the current element
+      (let ((current (if (null? stack) root (car stack))))
+        (set-xml-element-attributes! current
+                                     (cons (cons key value)
+                                           (xml-element-attributes current)))))
+
+    (define (add-text text)
+      ;; Add a text node child to the current element
+      (let ((current (if (null? stack) root (car stack))))
+        (set-xml-element-children! current
+                                   (append (xml-element-children current) (list text)))))
+
+    (define (build)
+      ;; Return the root element, which is presumably fully built
+      root)
+
+    ;; Return an association list of builder methods
+    (list (cons 'enter-element enter-element)
+          (cons 'leave-element leave-element)
+          (cons 'add-attribute add-attribute)
+          (cons 'add-text add-text)
+          (cons 'build build))))
+
+;; Helper procedures to call methods on the builder
+(define (xmlb-enter builder name)
+  ((assoc-ref builder 'enter-element) name)
+  builder)
+
+(define (xmlb-leave builder)
+  ((assoc-ref builder 'leave-element))
+  builder)
+
+(define (xmlb-attr builder key value)
+  ((assoc-ref builder 'add-attribute) key value)
+  builder)
+
+(define (xmlb-text builder txt)
+  ((assoc-ref builder 'add-text) txt)
+  builder)
+
+(define (xmlb-build builder)
+  ((assoc-ref builder 'build)))
+
+;; Example usage:
+(let ((builder (make-xml-builder "root")))
+  (xmlb-enter builder "child")
+  (xmlb-attr builder "class" "highlight")
+  (xmlb-text builder "Some text here")
+  (xmlb-leave builder)
+  (xmlb-enter builder "anotherChild")
+  (xmlb-text builder "Additional text")
+  (xmlb-leave builder)
+
+  (let ((final-xml (xmlb-build builder)))
+    (display (xml->string final-xml)) (newline)))
+#+END_SRC
+
+*** 4.2.1 Explanation
+
+- ==<xml-element> Record==: A simple structure holds a ==name==, ==attributes== (an alist), and ==children== (which can be either strings or more <xml-element> records).
+
+- ==Builder==: ==make-xml-builder== returns a set of closures that collectively manage an internal data structure (the root element plus a stack for nested elements). It provides methods like ==enter-element==, ==add-attribute==, ==add-text==, and eventually ==build==.
+
+- ==Method Calls==: Because Scheme is not purely object-oriented by default, we store these methods in an association list and retrieve them with ==assoc-ref==. This is a functional style reminiscent of “message passing” or dynamic dispatch in Lisp.
+
+- ==Chaining==: We wrote small helper functions (==xmlb-enter==, ==xmlb-attr==, etc.) that invoke the closures, returning ==builder== again so we can chain calls. This technique simulates a method-chaining interface in Scheme.
+
+- ==Finalization==: ==xmlb-build== returns the completed root element. We then pass it to ==xml->string== to produce a final textual representation of the XML document.
+
+** 4.3 Observations
+
+Even in a Lisp environment, the essence of the =Builder= pattern stands: we accumulate state in a builder object (or a set of closures) and eventually produce a complex data structure. We demonstrate nested element handling, which can be quite cumbersome if done with manual string concatenations or disorganized sets of functions.
+
+* 5. Advanced Example (Rust)
+
+Finally, let’s dive into an advanced usage scenario in Rust, where we’ll incorporate concurrency, partial builds, and method chaining. We’ll build a ==Report== object that has multiple optional sections. Some sections might be heavy computations that we want to build in parallel. This advanced example underscores how the =Builder= pattern can help orchestrate an elaborate, multi-step creation process.
+
+** 5.1 Motivating Scenario
+
+Imagine a data analytics system that produces a complex ==Report==. The report can have optional sections: a summary, statistics, charts, or a conclusion. Generating each section may be time-consuming or reliant on external data. We’d like to let users selectively add sections, and then have the final ==build()== method produce a cohesive ==Report== object. Furthermore, we want the possibility of building certain sections concurrently if desired.
+
+** 5.2 Code Example (Advanced, Rust)
+
+#+BEGIN_SRC rust
+use std::thread;
+use std::sync::{Arc, Mutex};
+use std::time::Duration;
+
+// The final product: a Report with multiple optional sections.
+#[derive(Debug)]
+struct Report {
+    title: String,
+    summary: Option<String>,
+    statistics: Option<String>,
+    charts: Option<String>,
+    conclusion: Option<String>,
+}
+
+impl Report {
+    fn new(title: String, summary: Option<String>, statistics: Option<String>,
+           charts: Option<String>, conclusion: Option<String>) -> Self {
+        Report { title, summary, statistics, charts, conclusion }
+    }
+}
+
+// The Builder:
+struct ReportBuilder {
+    title: String,
+    summary: Option<String>,
+    statistics: Option<String>,
+    charts: Option<String>,
+    conclusion: Option<String>,
+}
+
+impl ReportBuilder {
+    fn new(title: &str) -> Self {
+        ReportBuilder {
+            title: title.to_string(),
+            summary: None,
+            statistics: None,
+            charts: None,
+            conclusion: None,
+        }
+    }
+
+    fn with_summary(mut self, text: &str) -> Self {
+        self.summary = Some(text.to_string());
+        self
+    }
+
+    fn with_statistics(mut self, data: &str) -> Self {
+        // For demonstration, we might pretend building stats is resource-intensive
+        self.statistics = Some(format!("Stats computed from: {}", data));
+        self
+    }
+
+    fn with_charts(mut self, chart_data: &str) -> Self {
+        self.charts = Some(format!("Chart created with: {}", chart_data));
+        self
+    }
+
+    fn with_conclusion(mut self, text: &str) -> Self {
+        self.conclusion = Some(text.to_string());
+        self
+    }
+
+    fn build(self) -> Report {
+        // Construct the final, immutable Report object
+        Report::new(
+            self.title,
+            self.summary,
+            self.statistics,
+            self.charts,
+            self.conclusion,
+        )
+    }
+}
+
+// A more advanced usage: build certain sections concurrently
+fn build_report_concurrently(title: &str, use_charts: bool) -> Report {
+    // We'll share a builder among threads using Arc<Mutex<..>>:
+    let builder = Arc::new(Mutex::new(ReportBuilder::new(title)));
+
+    let summary_handle = {
+        let b_clone = Arc::clone(&builder);
+        thread::spawn(move || {
+            let mut lock = b_clone.lock().unwrap();
+            // Simulate some delay
+            thread::sleep(Duration::from_millis(100));
+            lock.summary = Some("Concurrent summary creation".to_string());
+        })
+    };
+
+    let stats_handle = {
+        let b_clone = Arc::clone(&builder);
+        thread::spawn(move || {
+            let mut lock = b_clone.lock().unwrap();
+            thread::sleep(Duration::from_millis(150));
+            lock.statistics = Some("Calculated stats from concurrency test".to_string());
+        })
+    };
+
+    let charts_handle = if use_charts {
+        let b_clone = Arc::clone(&builder);
+        Some(thread::spawn(move || {
+            let mut lock = b_clone.lock().unwrap();
+            thread::sleep(Duration::from_millis(120));
+            lock.charts = Some("Charts from concurrency test".to_string());
+        }))
+    } else {
+        None
+    };
+
+    // Wait for threads to finish
+    summary_handle.join().unwrap();
+    stats_handle.join().unwrap();
+    if let Some(h) = charts_handle {
+        h.join().unwrap();
+    }
+
+    // Now we can take the lock again and do final build steps or conclusion
+    let mut main_lock = builder.lock().unwrap();
+    main_lock.conclusion = Some("Report built concurrently using threads".to_string());
+    let final_report = main_lock.build();
+    final_report
+}
+
+fn main() {
+    // Simple usage
+    let report = ReportBuilder::new("Monthly Report")
+        .with_summary("This month was great!")
+        .with_statistics("Data set #42")
+        .with_charts("Revenue vs. Expenses")
+        .with_conclusion("We should expand next month.")
+        .build();
+
+    println!("Simple built report: {:#?}", report);
+
+    // Advanced concurrency usage
+    let concurrent_report = build_report_concurrently("Concurrent Report", true);
+    println!("Concurrently built report: {:#?}", concurrent_report);
+}
+#+END_SRC
+
+*** 5.2.1 Explanation
+
+- ==Product==: ==Report== is a struct containing multiple optional fields: ==summary==, ==statistics==, ==charts==, ==conclusion==. We keep them as ==Option<String>== to highlight that they may be absent.
+
+- ==Builder==: ==ReportBuilder== holds a mutable form of these same fields. We provide chainable methods (==with_summary()==, ==with_statistics()==, ==with_charts()==, etc.), each returning ==Self==.
+
+- ==build()==: The builder’s ==build()== method finalizes the object creation, returning an immutable ==Report==.
+
+- ==Concurrency==: The function ==build_report_concurrently== shows how you can use an ==Arc<Mutex<ReportBuilder>>== to let multiple threads fill in different parts of the builder. Each thread takes a lock, mutates the relevant part, then sleeps to simulate a heavy calculation. After all threads finish, we finalize the build. The result is a consistent ==Report== object that includes concurrently built sections.
+
+- ==Trade-offs==: Note that concurrency here is simplistic: only one thread can hold the lock at a time, so partial concurrency is limited by that. A more sophisticated approach might give each thread its own partial builder, then merge results. Nevertheless, this demonstrates how the =Builder= pattern can coordinate complex or asynchronous steps in an advanced scenario.
+
+** 5.3 Observations
+
+Rust’s ownership model requires that to share mutable data across threads, we protect it with a mutex or other concurrency primitives. The =Builder= pattern remains recognizable: a separate object that holds partial state and eventually yields a final product. Adapting it to concurrency is quite natural—each step is well-defined and localizable, so parallel tasks can fill in different parts of the builder if carefully synchronized.
+
+* 6. Nuances, Variations, and Best Practices
+
+** 6.1 The Director Role
+
+Many textbook examples mention a “director” class or object that orchestrates calls to the builder. For instance, a “HouseDirector” might define ==constructLuxuryHouse()== by calling ==builder.addGarden().addPool().paint("white")==, while a “BudgetHouseDirector” might define another method for a simpler variant. In modern usage, developers often fold the director’s responsibilities into the builder or distribute them among client code, especially if each usage scenario is unique. But for repeated sequences or standardized “recipes,” a director can keep your builder usage DRY.
+
+** 6.2 Immutability and Thread Safety
+
+If your final product needs to be immutable after construction, the builder approach is especially beneficial. You can keep the product’s fields private, expose them read-only, and rely on the builder to set everything upfront. This ensures no partial states leak out. The concurrency example in Rust capitalizes on that principle by limiting how the product is created. Once built, the ==Report== is fully formed and safe to share among threads.
+
+** 6.3 Avoiding Overuse
+
+The pattern can add clutter if your object is trivial. A single constructor or simple factory method might suffice for small or stable objects. The pattern’s overhead makes sense if:
+
+- There are multiple optional or mandatory steps.
+- The object is large, or the user experience of creation benefits from chaining.
+- You anticipate multiple “recipes” or different ways to produce the same type of object.
+
+** 6.4 Fluent APIs vs. Builders
+
+Some languages provide a “fluent API” style, where an object’s own methods return ==this== (or a reference to itself), letting you chain calls. This can resemble a builder, but typically modifies the object directly rather than storing partial state in a separate builder. A “true” builder typically constructs a new product object, preserving the original product’s immutability. Still, the boundaries can blur.
+
+** 6.5 Variation: Builder with Polymorphic ==build()==
+
+Some advanced frameworks support multiple product subtypes from the same builder, depending on the steps taken. For example, if you never call ==withCharts()==, you get a simpler “LiteReport,” but if you do call it, you get a “FullReport.” This can be done with polymorphic creation or by parameterizing the final build. The complexity is ensuring type safety. In a language like Rust, this might involve generic constraints or enumerations. In dynamic languages, you might simply branch logic in ==build()==.
+
+** 6.6 Recognizing Builder in Code
+
+Look for a class or set of functions that accumulate parameters, either through chainable calls or multiple “set” methods, culminating in a single ==build()== or ==create()== method that returns a fully constructed object. Another giveaway is the presence of partial or optional states leading to a single final call. If the final product’s constructor is private or protected, that also suggests a =Builder= controlling creation.
+
+* 7. Real-World Usage
+
+You can observe the =Builder= pattern in many popular libraries, particularly where complex objects or configurations are involved:
+
+- ==UI Layouts==: Some frameworks let you build up a UI layout step by step (adding panels, specifying constraints, etc.) before rendering the final screen.
+
+- ==Complex Domain Models==: Domain-driven design solutions, especially in typed languages, often use ==Builders== to ensure consistent domain objects.
+
+- ==Persistence or Query Builders==: Many ORMs or database libraries use a ==Query Builder== approach, letting you chain method calls to specify tables, columns, conditions, groupings, and so forth, culminating in an ==execute()== or ==fetch()== call.
+
+- ==Serialization/Deserialization==: Some libraries let you piece together objects from incoming data in a builder pattern, step by step, verifying constraints along the way.
+
+- ==Logging==: Creating a logging “record” or structured event can sometimes follow a builder pattern, setting fields or metadata, then finalizing the log entry.
+
+In short, any domain that manages configuration-laden, multi-step creation processes can benefit from a carefully designed =Builder= approach.
+
+* 8. Conclusion
+
+The =Builder= pattern presents a robust, flexible strategy for assembling complex or multi-part objects. By disentangling construction logic from the product’s own code, it addresses the perennial challenge of “constructor bloat” and fosters a more expressive style of object creation. Whether it’s in a dynamic language like Python (where method chaining can feel second-nature), a Lisp-like environment such as Guile Scheme (where we compose closures or specialized record structures), or a type-centric systems language like Rust (where concurrency and immutability are prime considerations), the =Builder= pattern remains highly relevant.
+
+In our three examples, we’ve seen:
+
+- ==Python (Beginner)==: A straightforward chainable =Builder= that gracefully handles numerous optional parameters for a web service configuration.
+
+- ==Guile Scheme (Intermediate)==: A creative approach to constructing XML documents, leveraging a closure-based “method table” to simulate object-oriented building.
+
+- ==Rust (Advanced)==: A concurrency-aware builder for reports, showcasing how multi-threaded steps can populate different fields before finally constructing an immutable product.
+
+Across these languages and contexts, the essence of =Builder= remains the same: break down a complex creation process into understandable steps, allow the client to orchestrate or combine those steps as needed (optionally with a separate “director”), and then yield a final, coherent product that’s guaranteed to be valid and consistent. This pattern’s importance is only magnified by the growing complexity of today’s software systems, where controlling object creation not only improves code clarity but can also be essential for performance, maintainability, and correctness.
