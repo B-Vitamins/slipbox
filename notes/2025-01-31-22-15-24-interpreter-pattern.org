@@ -1,0 +1,624 @@
+:PROPERTIES:
+:ID:       7295a94f-37c0-43a5-8609-e4fe09640585
+:END:
+#+TITLE: Interpreter Pattern
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+* 1. Introduction and Historical Context
+
+The =Interpreter= pattern is a behavioral design pattern that provides a way to define a language’s grammar and interpret statements or expressions in that language. Typically, you model each grammar rule (or symbol) as a class or structure in your code. When you pass an input expression (in textual or tokenized form) to your “interpreter,” it recursively processes the structure, evaluating or performing the described actions.
+
+Historically, =Interpreter= found use in early domain-specific languages (DSLs), small expression evaluators, or rule engines. Rather than using a large parser generator or scattering logic across many classes, developers realized they could represent each grammar element (like “AddExpression,” “VariableExpression,” “IfStatement,” etc.) as an object implementing an interpret() or similar method. This approach is especially compelling if:
+
+- You have a relatively small or stable DSL.
+- You want to quickly embed or evolve logic for how to parse and evaluate that DSL.
+- You prefer object-oriented or direct in-code approaches over external parser frameworks.
+
+** 1.1 Why Use Interpreter?
+
+- =Simplicity for Small Grammars=: If your DSL’s grammar is modest, building a custom set of classes for each rule can be straightforward and easily extended.
+
+- =Readability=: Each grammar rule is a self-contained class, clarifying the domain logic. New rules can be added as new classes, preserving open-closed design.
+
+- =Embedded DSL=: Some DSLs are tightly coupled to your application domain. By keeping them in code, you can ensure they stay aligned with your data structures or domain model.
+
+- =Natural Recursion=: Many grammars are recursive (like arithmetic expressions). An object-based interpreter is a direct way to handle nested structures.
+
+** 1.2 Potential Pitfalls
+
+- =Large Grammars=: If your language is big or changes frequently, you might end up with many classes or an unwieldy structure. Tools like ANTLR or parser generators may be more appropriate.
+
+- =Performance=: Recursive interpretation can be slower than code generation or table-driven methods. For large inputs, it may become a bottleneck.
+
+- =Maintenance Overhead=: Each new rule may demand new classes. If the DSL changes often, you’ll be modifying code frequently.
+
+If your DSL is relatively stable, moderate in size, and you appreciate direct in-code logic, =Interpreter= can be a neat solution. Otherwise, consider parser libraries or partial solutions.
+
+* 2. Conceptual Motivation
+
+A canonical example is an arithmetic expression DSL. You define node classes for Number, Add, Mul, etc., each with interpret() that recursively calls sub-nodes. Another scenario is a Boolean expression DSL with AND, OR, NOT. Or you might have a small “configuration script” DSL with if conditions, assignments, or prints. Typically, each node in the grammar knows how to “interpret itself,” calling interpret on its sub-nodes when needed.
+
+* 3. Beginner Example (Python)
+
+We begin with a simple scenario in Python, illustrating how we might interpret a Boolean expression DSL like (TRUE AND (FALSE OR TRUE)). The grammar includes literal booleans plus operators: AND, OR, NOT. Each operator or literal is a small class.
+
+** 3.1 Motivating Scenario
+
+Imagine a config or rule language where expressions are only TRUE, FALSE, AND, OR, NOT (plus parentheses for grouping). We’ll parse them manually into a small AST. Each node implements evaluate() returning a bool. The pattern suits a small, stable grammar.
+
+** 3.2 Code Example (Beginner, Python)
+
+#+BEGIN_SRC python
+class BoolExpression:
+    """Abstract base for Boolean expressions."""
+    def evaluate(self) -> bool:
+        raise NotImplementedError
+
+class LiteralTrue(BoolExpression):
+    def evaluate(self) -> bool:
+        return True
+
+class LiteralFalse(BoolExpression):
+    def evaluate(self) -> bool:
+        return False
+
+class NotExpression(BoolExpression):
+    def __init__(self, operand: BoolExpression):
+        self.operand = operand
+
+    def evaluate(self) -> bool:
+        return not self.operand.evaluate()
+
+class AndExpression(BoolExpression):
+    def __init__(self, left: BoolExpression, right: BoolExpression):
+        self.left = left
+        self.right = right
+
+    def evaluate(self) -> bool:
+        return self.left.evaluate() and self.right.evaluate()
+
+class OrExpression(BoolExpression):
+    def __init__(self, left: BoolExpression, right: BoolExpression):
+        self.left = left
+        self.right = right
+
+    def evaluate(self) -> bool:
+        return self.left.evaluate() or self.right.evaluate()
+
+# usage
+if __name__ == "__main__":
+    # Build (TRUE AND (FALSE OR TRUE))
+    expr1 = AndExpression(LiteralTrue(),
+                          OrExpression(LiteralFalse(), LiteralTrue()))
+    # Evaluate
+    print("expr1 =>", expr1.evaluate())  # True AND (False OR True) => True
+
+    # Build NOT expr1
+    expr2 = NotExpression(expr1)
+    print("expr2 =>", expr2.evaluate())  # NOT True => False
+#+END_SRC
+
+*** 3.2.1 Explanation
+
+- =BoolExpression= is the abstract class with evaluate().
+- Concrete Expressions: LiteralTrue, LiteralFalse, NotExpression, AndExpression, OrExpression. Each node calls evaluate() on sub-nodes or returns a literal boolean.
+- Usage: We manually build the AST for (TRUE AND (FALSE OR TRUE)). evaluate() recurses. Then we wrap it in a NotExpression.
+
+** 3.3 Observations
+
+A straightforward example for small DSLs. If we want more operators (XOR, NAND, etc.), we’d add more classes. If we parse from textual input, we’d do a mini parse function building these nodes.
+
+* 4. Intermediate Example (Guile Scheme)
+
+For an intermediate scenario in Guile Scheme, we’ll interpret a basic arithmetic DSL, e.g. (x + (3 * y)) or (2 - 5). We’ll parse expressions from s-expressions, build an AST, and evaluate them in a context that maps variables to values.
+
+** 4.1 Motivating Scenario
+
+Consider a config or rule environment that uses expressions like (x + (3 * y)) or (10 / 2). We define node classes for Number, Var, Binary, each with evaluate(context). Then we parse the s-expressions recursively into these nodes and interpret them.
+
+** 4.2 Code Example (Intermediate, Guile Scheme)
+
+#+BEGIN_SRC scheme
+(use-modules (oop goops)
+             (srfi srfi-1)
+             (system base))
+
+;; 1) define <expr> as an abstract class with 'evaluate'
+(define-class <expr> ()
+  (virtual (evaluate (self context)) "Interpret in a context returning a number"))
+
+;; 2) concrete nodes:
+
+(define-class <number-node> (<expr>)
+  (value #:init-keyword #:value #:init-value 0)
+
+  (define (evaluate (self) context)
+    (slot-ref self 'value)))
+
+(define-class <var-node> (<expr>)
+  (name #:init-keyword #:name #:init-value #f)
+
+  (define (evaluate (self) context)
+    (let ((val (hash-ref context (slot-ref self 'name) #f)))
+      (if val
+          val
+          0))))
+
+(define-class <binary-node> (<expr>)
+  (op #:init-keyword #:op)
+  (left #:init-keyword #:left)
+  (right #:init-keyword #:right)
+
+  (define (evaluate (self) context)
+    (let ((lval (evaluate (slot-ref self 'left) context))
+          (rval (evaluate (slot-ref self 'right) context)))
+      (case (slot-ref self 'op)
+        (('+) (+ lval rval))
+        (('-) (- lval rval))
+        (('*) (* lval rval))
+        (('/) (if (= rval 0)
+                  (error "Divide by zero")
+                  (inexact->exact (floor (/ lval rval)))))
+        (else (error "Unknown operator" (slot-ref self 'op)))))))
+
+;; 3) naive parser for s-expr like (+ x (* 3 y))
+
+(define (parse-expr expr)
+  (cond
+   ((number? expr) (make <number-node> #:value expr))
+   ((symbol? expr) (make <var-node> #:name (symbol->string expr)))
+   ((list? expr)
+    (let ((op (car expr)))
+      (cond
+       ((eq? op '+) (make <binary-node> #:op '+ 
+                          #:left (parse-expr (cadr expr))
+                          #:right (parse-expr (caddr expr))))
+       ((eq? op '-) (make <binary-node> #:op '-
+                          #:left (parse-expr (cadr expr))
+                          #:right (parse-expr (caddr expr))))
+       ((eq? op '*) (make <binary-node> #:op '*
+                          #:left (parse-expr (cadr expr))
+                          #:right (parse-expr (caddr expr))))
+       ((eq? op '/) (make <binary-node> #:op '/
+                          #:left (parse-expr (cadr expr))
+                          #:right (parse-expr (caddr expr))))
+       (else (error "Unknown operator in parse: " op)))))
+   (else (error "Invalid expression form" expr))))
+
+;; usage
+(let ((expr1 '(+ x (* 3 y))) ;; means x + (3 * y)
+      (ctx (make-hash-table)))
+  (hash-set! ctx "x" 2)
+  (hash-set! ctx "y" 5)
+
+  (let ((ast (parse-expr expr1)))
+    (format #t "expr1 => ~a\n" (evaluate ast ctx))  ;; 2 + (3*5) => 17
+
+    ;; change y=10
+    (hash-set! ctx "y" 10)
+    (format #t "With y=10 => ~a\n" (evaluate ast ctx))  ;; => 32
+    ))
+#+END_SRC
+
+*** 4.2.1 Explanation
+
+- <expr>: The base class with evaluate(context).
+- <number-node>, <var-node>, <binary-node>: Each interprets itself (literal, variable lookup, or operator combine).
+- parse-expr: Recursively reads a Scheme list. E.g., '(+ x (* 3 y)).
+- Usage: We evaluate x + (3*y) with x=2, y=5 => 17, then y=10 => 32.
+
+** 4.3 Observations
+
+A minimal arithmetic DSL in Scheme. The pattern is direct: each node knows how to interpret itself in a context. If we wanted more operators or a multi-statement approach, we’d define more node classes or parse functions. Good for stable, modest DSLs.
+
+* 5. Advanced Example (Rust)
+
+Finally, for an advanced scenario, we show a minimal script with statements (assign, print, if) plus expressions, akin to a small “domain config” or “mini script.” We’ll do tokenization, AST building, and interpretation in Rust.
+
+** 5.1 Motivating Scenario
+
+We want a tiny scripting language: x = 5; y = 3; if (x - y) { print(x + (y * 2)) }. We define node structs for statements (Assign, Print, If) and for expressions, plus a parser that tokenizes and builds the AST. Then we interpret them in a context storing variables.
+
+** 5.2 Code Example (Advanced, Rust)
+
+#+BEGIN_SRC rust
+use std::collections::HashMap;
+
+////////////////////////////////////
+// 1) Context for variables
+////////////////////////////////////
+#[derive(Default)]
+struct Context {
+    vars: HashMap<String, i64>,
+}
+
+impl Context {
+    fn set_var(&mut self, name: &str, value: i64) {
+        self.vars.insert(name.to_string(), value);
+    }
+    fn get_var(&self, name: &str) -> i64 {
+        *self.vars.get(name).unwrap_or(&0)
+    }
+}
+
+////////////////////////////////////
+// 2) Expressions
+////////////////////////////////////
+trait Expr {
+    fn evaluate(&self, ctx: &mut Context) -> i64;
+}
+
+struct NumberExpr {
+    value: i64,
+}
+
+impl NumberExpr {
+    fn new(value: i64) -> Self {
+        NumberExpr { value }
+    }
+}
+impl Expr for NumberExpr {
+    fn evaluate(&self, _ctx: &mut Context) -> i64 {
+        self.value
+    }
+}
+
+struct VarExpr {
+    name: String,
+}
+
+impl VarExpr {
+    fn new(name: &str) -> Self {
+        VarExpr { name: name.to_string() }
+    }
+}
+impl Expr for VarExpr {
+    fn evaluate(&self, ctx: &mut Context) -> i64 {
+        ctx.get_var(&self.name)
+    }
+}
+
+struct BinaryExpr {
+    left: Box<dyn Expr>,
+    op: String,
+    right: Box<dyn Expr>,
+}
+
+impl BinaryExpr {
+    fn new(left: Box<dyn Expr>, op: &str, right: Box<dyn Expr>) -> Self {
+        BinaryExpr {
+            left,
+            op: op.to_string(),
+            right,
+        }
+    }
+}
+impl Expr for BinaryExpr {
+    fn evaluate(&self, ctx: &mut Context) -> i64 {
+        let lv = self.left.evaluate(ctx);
+        let rv = self.right.evaluate(ctx);
+        match self.op.as_str() {
+            "+" => lv + rv,
+            "-" => lv - rv,
+            "*" => lv * rv,
+            "/" => {
+                if rv == 0 {
+                    eprintln!("Warning: divide by zero, returning 0");
+                    0
+                } else {
+                    lv / rv
+                }
+            }
+            _ => panic!("Unknown operator {}", self.op),
+        }
+    }
+}
+
+////////////////////////////////////
+// 3) Statements
+////////////////////////////////////
+trait Stmt {
+    fn execute(&self, ctx: &mut Context);
+}
+
+struct AssignStmt {
+    var_name: String,
+    expr: Box<dyn Expr>,
+}
+
+impl AssignStmt {
+    fn new(var_name: &str, expr: Box<dyn Expr>) -> Self {
+        AssignStmt {
+            var_name: var_name.to_string(),
+            expr,
+        }
+    }
+}
+impl Stmt for AssignStmt {
+    fn execute(&self, ctx: &mut Context) {
+        let val = self.expr.evaluate(ctx);
+        ctx.set_var(&self.var_name, val);
+    }
+}
+
+struct PrintStmt {
+    expr: Box<dyn Expr>,
+}
+
+impl PrintStmt {
+    fn new(expr: Box<dyn Expr>) -> Self {
+        PrintStmt { expr }
+    }
+}
+impl Stmt for PrintStmt {
+    fn execute(&self, ctx: &mut Context) {
+        let val = self.expr.evaluate(ctx);
+        println!("{}", val);
+    }
+}
+
+struct IfStmt {
+    condition: Box<dyn Expr>,
+    then_part: Vec<Box<dyn Stmt>>,
+}
+
+impl IfStmt {
+    fn new(condition: Box<dyn Expr>, then_part: Vec<Box<dyn Stmt>>) -> Self {
+        IfStmt { condition, then_part }
+    }
+}
+impl Stmt for IfStmt {
+    fn execute(&self, ctx: &mut Context) {
+        let cond_val = self.condition.evaluate(ctx);
+        if cond_val != 0 {
+            for stmt in &self.then_part {
+                stmt.execute(ctx);
+            }
+        }
+    }
+}
+
+////////////////////////////////////
+// 4) A naive parser (for demonstration)
+////////////////////////////////////
+#[derive(Debug)]
+enum Token {
+    Ident(String),
+    Number(i64),
+    Symbol(String),
+    Eof,
+}
+
+struct Parser {
+    tokens: Vec<Token>,
+    pos: usize,
+}
+
+impl Parser {
+    fn new(tokens: Vec<Token>) -> Self {
+        Parser { tokens, pos: 0 }
+    }
+
+    fn peek(&self) -> &Token {
+        if self.pos < self.tokens.len() {
+            &self.tokens[self.pos]
+        } else {
+            &Token::Eof
+        }
+    }
+
+    fn get(&mut self) -> Token {
+        let tk = self.peek().clone();
+        self.pos += 1;
+        tk
+    }
+
+    fn parse_program(&mut self) -> Vec<Box<dyn Stmt>> {
+        let mut stmts = Vec::new();
+        while !matches!(self.peek(), Token::Eof) {
+            if let Some(s) = self.parse_statement() {
+                stmts.push(s);
+            }
+        }
+        stmts
+    }
+
+    fn parse_statement(&mut self) -> Option<Box<dyn Stmt>> {
+        match self.peek() {
+            Token::Eof => None,
+            Token::Ident(id) => {
+                // assume assignment: ID = expr
+                let var = id.clone();
+                self.get(); // consume ident
+                let eq = self.get();
+                match eq {
+                    Token::Symbol(sym) if sym == "=" => {
+                        let expr = self.parse_expr();
+                        Some(Box::new(AssignStmt::new(&var, expr)))
+                    }
+                    _ => panic!("Syntax error: expected '=' after identifier"),
+                }
+            }
+            Token::Ident(cmd) if cmd == "print" => {
+                // parse 'print expr'
+                self.get(); // consume 'print'
+                let expr = self.parse_expr();
+                Some(Box::new(PrintStmt::new(expr)))
+            }
+            Token::Ident(cmd) if cmd == "if" => {
+                // if expr { stmts }
+                self.get(); // consume 'if'
+                let cond_expr = self.parse_expr();
+                let block_start = self.get();
+                match block_start {
+                    Token::Symbol(sym) if sym == "{" => {
+                        // parse statements until '}'
+                        let mut then_stmts = Vec::new();
+                        while !matches!(self.peek(), Token::Symbol(s) if s == "}") {
+                            if let Some(s) = self.parse_statement() {
+                                then_stmts.push(s);
+                            }
+                        }
+                        let close_brace = self.get();
+                        if let Token::Symbol(sym) = close_brace {
+                            if sym != "}" {
+                                panic!("Missing '}' after if block");
+                            }
+                        } else {
+                            panic!("Missing '}' after if block");
+                        }
+                        Some(Box::new(IfStmt::new(cond_expr, then_stmts)))
+                    }
+                    _ => panic!("Expected '{' after 'if' condition"),
+                }
+            }
+            _ => panic!("Unknown statement start: {:?}", self.peek()),
+        }
+    }
+
+    fn parse_expr(&mut self) -> Box<dyn Expr> {
+        // parse additive
+        let mut left = self.parse_term();
+        loop {
+            match self.peek() {
+                Token::Symbol(sym) if sym == "+" || sym == "-" => {
+                    let op = if let Token::Symbol(s) = self.get() { s } else { unreachable!() };
+                    let right = self.parse_term();
+                    left = Box::new(BinaryExpr::new(left, &op, right));
+                }
+                _ => break,
+            }
+        }
+        left
+    }
+
+    fn parse_term(&mut self) -> Box<dyn Expr> {
+        let mut left = self.parse_factor();
+        loop {
+            match self.peek() {
+                Token::Symbol(sym) if sym == "*" || sym == "/" => {
+                    let op = if let Token::Symbol(s) = self.get() { s } else { unreachable!() };
+                    let right = self.parse_factor();
+                    left = Box::new(BinaryExpr::new(left, &op, right));
+                }
+                _ => break,
+            }
+        }
+        left
+    }
+
+    fn parse_factor(&mut self) -> Box<dyn Expr> {
+        // parse parentheses, number, or var
+        let tk = self.get();
+        match tk {
+            Token::Number(n) => Box::new(NumberExpr::new(n)),
+            Token::Ident(name) => Box::new(VarExpr::new(&name)),
+            Token::Symbol(sym) if sym == "(" => {
+                let expr = self.parse_expr();
+                let closing = self.get();
+                match closing {
+                    Token::Symbol(s) if s == ")" => expr,
+                    _ => panic!("Missing closing parenthesis"),
+                }
+            }
+            _ => panic!("Unexpected token in factor: {:?}", tk),
+        }
+    }
+}
+
+////////////////////////////////////
+// 5) Tokenizer
+////////////////////////////////////
+fn tokenize(code: &str) -> Vec<Token> {
+    let mut tokens = Vec::new();
+    let re = regex::Regex::new(r"(\bif\b|\bprint\b|[a-zA-Z]\w*|[0-9]+|[\+\-\*/=(){}]|if|\S)").unwrap();
+    for cap in re.find_iter(code) {
+        let s = cap.as_str();
+        if let Ok(num) = s.parse::<i64>() {
+            tokens.push(Token::Number(num));
+        } else if s == "+" || s == "-" || s == "*" || s == "/" || s == "="
+               || s == "(" || s == ")" || s == "{" || s == "}" {
+            tokens.push(Token::Symbol(s.into()));
+        } else if s == "if" || s == "print" {
+            tokens.push(Token::Ident(s.into()));
+        } else if regex::Regex::new(r"^[a-zA-Z]\w*$").unwrap().is_match(s) {
+            tokens.push(Token::Ident(s.into()));
+        } else {
+            eprintln!("Unknown token: {}", s);
+        }
+    }
+    tokens
+}
+
+fn main() {
+    // A small script in our DSL:
+    // x = 5
+    // y = 3
+    // if (x - y) {
+    //   print (x + (y * 2))
+    // }
+    // print (x + y)
+
+    let code = r#"
+    x = 5
+    y = 3
+    if (x - y) {
+      print (x + (y * 2))
+    }
+    print (x + y)
+    "#;
+
+    let tokens = tokenize(code);
+    let mut parser = Parser::new(tokens);
+    let program = parser.parse_program();
+
+    let mut ctx = Context::default();
+
+    // interpret
+    for stmt in program {
+        stmt.execute(&mut ctx);
+    }
+
+    println!("Final context: {:?}", ctx.vars);
+}
+#+END_SRC
+
+*** 5.2.1 Explanation
+
+- Context: A struct storing variable bindings in a HashMap.
+- Expressions: A trait Expr with evaluate(&mut Context) -> i64. We have NumberExpr, VarExpr, BinaryExpr.
+- Statements: Another trait Stmt with execute(&mut Context). We define AssignStmt, PrintStmt, IfStmt.
+- Parser: A naive approach with token scanning, then recursive-descent for statements and expressions. 
+- Usage: We parse a small script with assignment, if statements, print statements, then interpret it in a context. The pattern merges with basic compiler design but stays small enough to illustrate the approach.
+
+** 5.3 Observations
+
+This advanced scenario shows the =Interpreter= pattern in a more complex mini-language with tokenization, statements, expressions, conditionals. Real interpreters might be larger or might rely on parser libraries, but the pattern stands: each node type has an interpret or evaluate method.
+
+* 6. Nuances, Variations, and Best Practices
+
+- =Small vs. Large Grammars=: For modest DSLs, Interpreter is fine. For big or ever-evolving grammars, parser generators or advanced approaches may be better.
+- =Merging with Other Patterns=: Some designs use the Visitor pattern to define multiple operations (print, interpret, optimize) on the AST. If your grammar is stable, that’s an alternative approach.
+- =Performance=: Repeatedly interpreting large structures can be slow. Techniques like code generation or rewriting might help if performance is critical.
+- =Testing=: Each node class is easily testable. The parse logic can be tested with example inputs, ensuring the AST and interpretations are correct.
+- =Maintenance=: If your DSL or grammar changes often, prepare for frequent modifications to node classes and parse code. For stable DSLs, it’s typically not an issue.
+
+* 7. Real-World Usage
+
+- =Configuration DSLs=: For small script-like configs or rule definitions, you can embed an interpreter directly in your code.
+- =Math / Boolean Expression Parsers=: As in the beginner examples, perfect for small expression-based logic.
+- =Search Query Parsers=: If you define a custom query language (title contains 'X'), you can parse it with =Interpreter=.
+- =Game Scripting=: For partial or small in-game scripting, a direct AST interpreter is straightforward.
+- =Learning / Prototyping=: If you want to teach or prototype compiler/interpreter concepts, the pattern is a direct approach.
+
+* 8. Conclusion
+
+The =Interpreter= pattern provides a direct, object-oriented method to define and evaluate small DSLs or grammars. Each grammar rule becomes a node class, with an interpret method. For stable, modest DSLs, this can be quite maintainable. Larger grammars or frequently changing specs may push you toward parser generators or partial code-generation approaches.
+
+We showcased:
+
+1. =Beginner (Python)=: A tiny boolean DSL with expressions like LiteralTrue, LiteralFalse, And, Or, Not.
+2. =Intermediate (Guile Scheme)=: A small arithmetic DSL for expressions like (x + (3 * y)), demonstrating a parse-expr approach and node classes for number, var, binary.
+3. =Advanced (Rust)=: A mini “script” language with statements (assign, print, if) plus expressions, tokenization, AST building, and interpretation in a context.
+
+Wherever you have a small domain language to parse and execute—like a config, a specialized rule set, or an expression syntax—=Interpreter= can keep your grammar logic explicit and integrated in code. For quick, moderate DSLs, it’s an elegant, proven technique to handle parsing, AST construction, and interpretation seamlessly.
