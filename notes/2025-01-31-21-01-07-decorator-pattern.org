@@ -1,0 +1,424 @@
+:PROPERTIES:
+:ID:       09ffcf00-0ec6-4963-ab86-e9690fb77a89
+:END:
+#+TITLE: Decorator Pattern
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+* 1. Introduction and Historical Context
+
+The =Decorator= pattern is a structural design pattern aimed at dynamically adding responsibilities or features to an object without modifying its underlying class. Unlike static inheritance—where new behavior is “baked” into subclasses at compile-time—Decorator allows you to wrap an existing object at runtime with one or more “decorators,” each contributing additional state or logic.
+
+Historically, =Decorator= emerged as a flexible means to avoid the combinatorial explosion of subclasses that arises when you want to add different features or enhancements to a base class. Instead of creating a new subclass for every combination of features (e.g., “WindowWithScrollbarAndBorder”), you can build small wrappers (scrollbar decorator, border decorator) that can be layered around a Window. This approach keeps your system more open to extension and reduces code duplication.
+
+** 1.1 Why Use Decorator?
+
+- =Runtime Flexibility=: Decorators can be applied, removed, or reordered on the fly, letting you adapt an object’s behavior or presentation based on changing conditions.
+
+- =Avoid Monolithic Subclassing=: Instead of building one giant subclass to handle every possible combination of responsibilities, use small, single-responsibility decorators that you can stack.
+
+- =Open-Closed Principle=: Decorator fosters an “open for extension, closed for modification” mindset. You add new features via decorators rather than altering the original component code.
+
+** 1.2 Potential Pitfalls
+
+- =Deep Wrapping=: When many decorators are stacked, debugging can become tricky, as behavior might be distributed across multiple layers.
+
+- =Awkward Interface Requirements=: The Decorator pattern often requires that decorators and the concrete component implement the same interface. If that interface is large or changes frequently, you might have to replicate many methods in each decorator class.
+
+- =Inadvertent Breaking of Identity=: Some languages or frameworks rely on an object’s identity. Wrapping the object can obscure that identity if code expects a direct reference to the original.
+
+Despite these nuances, =Decorator= remains a powerful, flexible approach to layering features around objects at runtime.
+
+* 2. Conceptual Motivation
+
+A classic example is a GUI system where you have a =Window= object but might want to add a scrollbar or border. Instead of creating =ScrollingWindow=, =BorderedWindow=, =ScrollingBorderedWindow=, etc., you can define =ScrollbarDecorator= and =BorderDecorator= classes that wrap a Window reference. Each decorator implements =draw()=, calling the wrapped object’s =draw()= and adding its own rendering logic.
+
+Another widely known scenario is a coffee shop ordering system, where you have a =Coffee= interface (=getCost()=, =getIngredients()=) and optional extras like Milk, Sugar, or WhippedCream. Rather than enumerating a class for each combination, each topping is a decorator that wraps the base coffee.
+
+* 3. Beginner Example (Rust)
+
+We begin with a beginner-level example in Rust, focusing on a logging system. We’ll show how Decorator can be used to add functionality like timestamping or formatting to a base logger at runtime, without introducing multiple specialized logger subclasses.
+
+** 3.1 Motivating Scenario
+
+Our Rust application has a trait =Logger= with a method =log(message: &str)=. We have a basic =ConsoleLogger= that prints messages to the console. But we also want to optionally add features like:
+
+- Timestamped logging: Prepend each message with a timestamp.
+- Level-based logging: Filter or label messages according to severity levels.
+
+We could build multiple variants—=TimestampedConsoleLogger=, =LevelConsoleLogger=, =TimestampedLevelConsoleLogger=, etc. Instead, we can define decorators that wrap any =Logger= implementation and add these behaviors dynamically.
+
+** 3.2 Code Example (Beginner, Rust)
+
+#+BEGIN_SRC rust
+use std::time::{SystemTime, UNIX_EPOCH};
+use std::sync::Arc;
+
+// 1) The Logger trait
+trait Logger {
+    fn log(&self, message: &str);
+}
+
+// 2) A basic ConsoleLogger
+struct ConsoleLogger;
+
+impl Logger for ConsoleLogger {
+    fn log(&self, message: &str) {
+        println!("{}", message);
+    }
+}
+
+// 3) Decorator base - implements Logger and holds a reference to another Logger
+struct LoggerDecorator {
+    component: Arc<dyn Logger>,
+}
+
+impl LoggerDecorator {
+    fn new(component: Arc<dyn Logger>) -> Self {
+        LoggerDecorator { component }
+    }
+}
+
+impl Logger for LoggerDecorator {
+    fn log(&self, message: &str) {
+        // Default behavior: pass through to the wrapped component
+        self.component.log(message);
+    }
+}
+
+// 4) Concrete decorators
+
+// A timestamp decorator
+struct TimestampLogger {
+    component: Arc<dyn Logger>,
+}
+
+impl TimestampLogger {
+    fn new(component: Arc<dyn Logger>) -> Self {
+        TimestampLogger { component }
+    }
+}
+
+impl Logger for TimestampLogger {
+    fn log(&self, message: &str) {
+        let start = SystemTime::now().duration_since(UNIX_EPOCH).unwrap();
+        let timestamp = start.as_secs();
+        let new_message = format!("[{}] {}", timestamp, message);
+        self.component.log(&new_message);
+    }
+}
+
+// A level decorator
+#[derive(Copy, Clone)]
+enum LogLevel {
+    INFO,
+    WARNING,
+    ERROR,
+}
+
+struct LevelLogger {
+    component: Arc<dyn Logger>,
+    level: LogLevel,
+}
+
+impl LevelLogger {
+    fn new(component: Arc<dyn Logger>, level: LogLevel) -> Self {
+        LevelLogger { component, level }
+    }
+}
+
+impl Logger for LevelLogger {
+    fn log(&self, message: &str) {
+        let level_str = match self.level {
+            LogLevel::INFO => "INFO",
+            LogLevel::WARNING => "WARNING",
+            LogLevel::ERROR => "ERROR",
+        };
+        let new_message = format!("[{}] {}", level_str, message);
+        self.component.log(&new_message);
+    }
+}
+
+// 5) Demonstration
+fn main() {
+    let base_logger = Arc::new(ConsoleLogger);
+
+    //  Add a timestamp decorator
+    let ts_logger = Arc::new(TimestampLogger::new(base_logger.clone()));
+
+    // Add a level decorator on top of the timestamp
+    let info_logger = Arc::new(LevelLogger::new(ts_logger.clone(), LogLevel::INFO));
+
+    base_logger.log("This is a raw message.");
+    ts_logger.log("This message has a timestamp.");
+    info_logger.log("This message has a timestamp and an INFO level.");
+
+    // You could also invert the layering: first level, then timestamp, etc.
+}
+#+END_SRC
+
+*** 3.2.1 Explanation
+
+- =Logger= Trait: Our abstraction for logging.  
+- =ConsoleLogger=: A concrete “component” that prints messages to stdout.  
+- =Decorator Base=: =LoggerDecorator= shows the typical structure: it holds a reference to a =Logger=. In Rust, we often skip a “decorator base” class in favor of separate decorators, but we’ve included it here for clarity.  
+- =Concrete Decorators=: =TimestampLogger= and =LevelLogger= each hold an =Arc<dyn Logger>= reference, implementing new logic in =log()=. Then they delegate to the wrapped logger.  
+- =Usage=: We wrap =ConsoleLogger= in =TimestampLogger=, and that result in =LevelLogger=. Each call to =info_logger.log()= runs through two decorators before eventually calling the console logger. The layering is flexible and minimal.
+
+** 3.3 Observations
+
+This basic Rust example demonstrates the essence of Decorator: layering new behaviors around a consistent interface. The synergy of =Arc= references ensures each decorator can hold a pointer to the next. One can imagine adding more decorators (e.g., file logging, color coding) with minimal fuss.
+
+* 4. Intermediate Example (Guile Scheme)
+
+For an intermediate example, we’ll shift to Guile Scheme and illustrate how Decorator can be used in a HTTP request handling scenario, where each decorator could add or transform request data before passing it along.
+
+** 4.1 Motivating Scenario
+
+We have a conceptual “request handler” interface in Scheme that processes incoming HTTP requests, returning a response. The base handler might do something trivial, like echo the request or serve static files. We want to add decorators for tasks like authentication checks, logging, or caching. Rather than building a monolithic “Auth+Logging+Cache” handler, we can chain small decorators that each do one job.
+
+** 4.2 Code Example (Intermediate, Guile Scheme)
+
+#+BEGIN_SRC scheme
+;;; We'll define a minimal "handler" interface using closures.
+;;; A handler is a procedure that takes a request and returns a response string.
+
+;; Our "request" is just a string for demo. In reality, you'd parse method, headers, etc.
+;; Our "handler" type: (lambda (req) => response)
+
+;; 1) Base Handler: an echo server
+(define (make-echo-handler)
+  (lambda (req)
+    (string-append "Echo: " req)))
+
+;; 2) Decorator constructor
+;; We'll define a procedure that takes a "handler" and returns a new "handler" that does something extra.
+(define (wrap-logging decorator-name handler)
+  (lambda (req)
+    (display (string-append "[LOG:" decorator-name "] request = " req "\n"))
+    (handler req)))  ;; pass request along
+
+;; 3) Another decorator: authorization check
+(define (wrap-auth token-required handler)
+  (lambda (req)
+    ;; Suppose we expect the request to contain "token=XYZ"
+    (if (string-contains req token-required)
+        (handler req)
+        "403 Forbidden - Invalid token")))
+
+;; 4) Usage: let's chain them
+(let* ((base (make-echo-handler))
+       (logged (wrap-logging "BasicLog" base))
+       (secured (wrap-auth "token=ABC123" logged))
+       ;; we can add more wraps if needed
+       )
+  ;; Try some requests
+  (display (string-append "Response 1: " (secured "GET /page token=ABC123") "\n"))
+  (display (string-append "Response 2: " (secured "GET /page no-token") "\n")))
+#+END_SRC
+
+*** 4.2.1 Explanation
+
+- =Handler Concept=: We treat a handler as a simple lambda (lambda (req) => response). This is effectively our “component interface.”  
+- =Base Handler=: =make-echo-handler= returns a lambda that just echoes the request.  
+- =Decorator Factories=: Each “wrap-*” function returns a new lambda that performs extra logic, then calls the original handler. For instance, =wrap-logging= logs the request, while =wrap-auth= checks a token in the request string.  
+- =Chaining=: We first wrap the base with logging, producing =logged=. Then we wrap that with auth checks, producing =secured=. Now calls to =secured= pass through both decorators before hitting the echo handler.  
+- =Usage=: We see how a valid token results in a normal echo response, while a missing token yields a forbidden response. The logging decorator prints logs along the way.
+
+** 4.3 Observations
+
+Even though Scheme is not an object-oriented language, the Decorator pattern thrives when you have a function-based “component” and you want to wrap or chain transformations around it. Each closure plays the role of a decorator, adding behavior before calling the next function. This underscores the pattern’s conceptual power beyond OOP paradigms.
+
+* 5. Advanced Example (Python)
+
+Finally, we’ll shift to an advanced example in Python, demonstrating how Decorator can manage a data stream with multiple layers of processing (e.g., encryption, compression, buffering). We’ll also see how Python’s built-in =functools.wraps= or class-based decorators can produce sophisticated layering.
+
+** 5.1 Motivating Scenario
+
+You have a system where data must be written to or read from an underlying stream (e.g., a file, socket, or memory buffer). You want to optionally apply features like:
+
+- =Compression=: Gzip or some algorithm.
+- =Encryption=: A simple XOR cipher or real encryption.
+- =Buffering=: To reduce I/O overhead.
+
+Rather than building specialized classes for every combination (e.g., =EncryptedCompressedBufferedStream=), you can define individual decorators for compression, encryption, or buffering, each wrapping an existing stream. We’ll illustrate a simplified approach focusing on the concept rather than a fully secure or production-quality code.
+
+** 5.2 Code Example (Advanced, Python)
+
+#+BEGIN_SRC python
+class DataStream:
+    """The component interface for reading and writing data."""
+    def write(self, data: bytes):
+        raise NotImplementedError
+
+    def read(self, num_bytes: int) -> bytes:
+        raise NotImplementedError
+
+class FileDataStream(DataStream):
+    """A simple concrete component that writes to a file."""
+    def __init__(self, filename, mode='wb+'):
+        self.file = open(filename, mode)
+
+    def write(self, data: bytes):
+        self.file.write(data)
+        self.file.flush()
+
+    def read(self, num_bytes: int) -> bytes:
+        return self.file.read(num_bytes)
+
+    def close(self):
+        self.file.close()
+
+# The Decorator base
+class StreamDecorator(DataStream):
+    """Decorator that holds a reference to a DataStream."""
+    def __init__(self, wrappee: DataStream):
+        self.wrappee = wrappee
+
+    def write(self, data: bytes):
+        self.wrappee.write(data)
+
+    def read(self, num_bytes: int) -> bytes:
+        return self.wrappee.read(num_bytes)
+
+class BufferingStream(StreamDecorator):
+    def __init__(self, wrappee: DataStream, buffer_size=64):
+        super().__init__(wrappee)
+        self.buffer_size = buffer_size
+        self.buffer = bytearray()
+
+    def write(self, data: bytes):
+        self.buffer.extend(data)
+        if len(self.buffer) >= self.buffer_size:
+            self.flush()
+
+    def flush(self):
+        if self.buffer:
+            self.wrappee.write(self.buffer)
+            self.buffer.clear()
+
+    def read(self, num_bytes: int) -> bytes:
+        # If the buffer is empty, read from underlying stream
+        # Real buffering logic can be more complex
+        return self.wrappee.read(num_bytes)
+
+    def close(self):
+        self.flush()
+        # If underlying supports close, we can call it
+        if hasattr(self.wrappee, 'close'):
+            self.wrappee.close()
+
+class XorEncryptionStream(StreamDecorator):
+    def __init__(self, wrappee: DataStream, key: int):
+        super().__init__(wrappee)
+        self.key = key
+
+    def write(self, data: bytes):
+        # Simple XOR
+        encrypted = bytes([b ^ self.key for b in data])
+        self.wrappee.write(encrypted)
+
+    def read(self, num_bytes: int) -> bytes:
+        encrypted = self.wrappee.read(num_bytes)
+        decrypted = bytes([b ^ self.key for b in encrypted])
+        return decrypted
+
+class UpperCaseStream(StreamDecorator):
+    """Another demonstration of data transformation."""
+    def write(self, data: bytes):
+        upper = data.upper()
+        self.wrappee.write(upper)
+
+    def read(self, num_bytes: int) -> bytes:
+        original = self.wrappee.read(num_bytes)
+        return original.upper()
+
+# Demonstration
+if __name__ == "__main__":
+    # Let's create a file-based stream
+    file_stream = FileDataStream("demo.dat")
+
+    # Decorate it with XOR encryption with key=0x55, then buffering
+    encrypted_stream = XorEncryptionStream(file_stream, 0x55)
+    buffered_stream = BufferingStream(encrypted_stream, buffer_size=10)
+
+    # Write data
+    buffered_stream.write(b"Hello, Decorator Pattern!\nThis is a test...\n")
+    # Force the buffer to flush
+    buffered_stream.flush()
+
+    # If we want to read from the same stream, let's reposition
+    file_stream.file.seek(0)
+
+    # We can read via the same chain
+    read_data = buffered_stream.read(50)
+    print("Decrypted read data:", read_data)
+
+    # Let's also chain an uppercase transformation
+    upper_stream = UpperCaseStream(buffered_stream)
+    file_stream.file.seek(0)
+    read_data_upper = upper_stream.read(50)
+    print("Decrypted + uppercase data:", read_data_upper)
+
+    # Clean up
+    if hasattr(buffered_stream, 'close'):
+        buffered_stream.close()
+#+END_SRC
+
+*** 5.2.1 Explanation
+
+- =DataStream=: The core interface for reading and writing byte data.  
+- =FileDataStream=: A concrete component that interacts with a physical file.  
+- =StreamDecorator=: Holds a =DataStream= reference, passing calls through by default.  
+- =BufferingStream=: Buffers writes until a certain size is reached, then flushes them to the underlying stream.  
+- =XorEncryptionStream=: A toy encryption scheme that XORs all bytes with a key in both write() and read().  
+- =UpperCaseStream=: Another data transformation that simply uppercases data.  
+- =Usage=: We chain them in the order: File -> XOR -> Buffering. Then optionally add an uppercase transformation on top. The layering is flexible, each layer’s code remains minimal.
+
+** 5.3 Observations
+
+This advanced example showcases how Decorator can manage complex transformations and layering in a data pipeline. Each decorator is responsible for a single aspect (buffering, encryption, uppercase). By mixing and matching them, we achieve powerful functionality without creating specialized classes for every combination.
+
+* 6. Nuances, Variations, and Best Practices
+
+** 6.1 Decorator vs. Inheritance
+
+Decorator is often described as an alternative to subclassing. Subclassing extends behavior at compile-time in a static manner, while Decorator extends it at runtime in a flexible, combinatorial fashion. In languages without multiple inheritance, Decorator is typically simpler than trying to juggle multiple base classes.
+
+** 6.2 Chaining Decorators
+
+One hallmark of Decorator is the possibility to chain multiple decorators in sequence. The order can matter (e.g., do you compress first or encrypt first?). In some cases, reordering them might produce drastically different results. This is both a strength (flexibility) and a caution (you must track the layering carefully).
+
+** 6.3 Identity Issues
+
+If code expects a certain object identity or type, wrapping it in a decorator changes that. In strongly typed languages, you may need an interface or a shared trait so that both the decorator and the base type are recognized as the same. In dynamic languages like Python, this is simpler, but you might still lose direct access to the underlying object unless you provide a means to unwrap or pass calls.
+
+** 6.4 Performance Considerations
+
+Decorator typically adds an extra function call per “layer,” which is negligible in most cases. For performance-critical code, stacking many decorators might cause overhead. If that overhead matters, you may consider more specialized solutions or minimize the layering depth.
+
+** 6.5 Testing Decorators
+
+Because decorators can be stacked, thorough testing often involves verifying each decorator in isolation (unit tests) and then testing final combinations or layering (integration tests). Some decorators might rely on the output of previous ones, so watch out for unexpected interactions.
+
+** 6.6 Overuse Danger
+
+While Decorator is elegant, overusing it can lead to complicated call stacks. If you frequently layer half a dozen decorators, your code may become harder to debug. In these cases, it might be more transparent to incorporate certain features in a single specialized class or to rely on a simpler mechanism if the features are always used together.
+
+* 7. Real-World Usage
+
+- =IO Streams=: Java’s I/O library is a canonical example, with classes like =BufferedInputStream=, =DataInputStream=, =ZipInputStream=, etc. They all implement the same interface and wrap each other.
+
+- =GUI Widgets=: Adding scrollbars, borders, shadows, or decorations around a base UI component.
+
+- =Network Protocol Wrappers=: If you have a base TCP socket, you can decorate it with SSL encryption, then with a bandwidth limiter, etc.
+
+- =Function Composition=: In functional programming, “decorator” logic can be seen in higher-order functions that wrap other functions with logging or caching.
+
+- =Logging and Monitoring=: Add a “monitoring” decorator that times method calls or logs parameters, while keeping the core logic in the base class or function.
+
+* 8. Conclusion
+
+The =Decorator= pattern remains a versatile way to extend or augment object functionality dynamically, sidestepping the rigid constraints of subclassing. By wrapping an existing component in one or more decorators, each with a singular responsibility, you achieve flexible composition of behaviors. The pattern is especially beneficial when you anticipate a wide variety of feature combinations that would otherwise lead to a combinatorial explosion of subclasses. 
+
+Through the three examples—Rust for a simple logging system, Guile Scheme for chaining HTTP request-handling behaviors, and Python for a multi-layer data stream pipeline—we see how Decorator elegantly unifies the concept of “wrapping” objects for new functionality. Each example underscores the pattern’s adaptability, letting you add, remove, or reorder layers of behavior without changing the original codebase or building endless specialized classes. By carefully planning the interface and respecting potential pitfalls (like deep wrapping), Decorator can keep your system open to extension and closed to modification, fostering cleaner, more modular designs.
