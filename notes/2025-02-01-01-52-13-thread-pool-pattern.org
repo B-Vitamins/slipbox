@@ -1,0 +1,415 @@
+:PROPERTIES:
+:ID:       7d56beb8-9110-4105-8e56-31ffa8f36192
+:END:
+#+TITLE: Thread Pool Pattern
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+* 1. Introduction and Historical Context
+
+The Thread Pool pattern addresses a common concurrency challenge: you have numerous tasks that need execution, but creating a separate thread for each can be wasteful or downright infeasible. Instead, you keep a fixed (or dynamic) pool of threads that retrieve tasks from a shared queue. Once a thread finishes a task, it picks another from the queue, reusing the same thread over and over. This approach amortizes the overhead of creating/destroying threads, controls concurrency levels (preventing thrashing), and often simplifies resource usage.
+
+Historically, as servers scaled to handle thousands of requests, naive “one thread per request” solutions ran into issues with memory overhead, context-switching costs, and scheduling inefficiency. Thread Pool rose to prominence in C/C++ and Java, culminating in standard libraries like Java’s Executors or frameworks like boost::asio in C++. Over time, languages like Go (with goroutines) or Haskell (with lightweight threads) have made concurrency more direct, yet the conceptual impetus remains: limit the number of OS threads, maximize throughput, and avoid overhead or meltdown under load.
+
+** 1.1 Why Use Thread Pool?
+- Performance: Creating threads is expensive. Reusing a small pool drastically reduces overhead if tasks are short-lived or frequent.
+- Resource Control: You limit concurrency to a known number of threads, preventing the system from being overwhelmed if tasks arrive in large bursts.
+- Simplified Programming: Instead of manual concurrency logic for each call, you dispatch tasks to a pool. The pool handles scheduling and concurrency.
+- Scalability: Many servers, job schedulers, or parallel processing frameworks revolve around a thread pool architecture.
+
+** 1.2 Potential Pitfalls
+- Queue Buildup: If tasks arrive faster than the pool can handle them, the queue can grow unbounded, leading to potential memory or latency issues.
+- Task Coupling: If tasks do blocking calls or wait for each other, you can get deadlocks or reduced concurrency. A thread pool is only as effective as tasks’ concurrency-friendliness.
+- Complex Tuning: Deciding the pool size (fixed or dynamic) might require experimentation. Too few threads leads to underutilization; too many leads to context-switch overhead.
+- Task Lifetime: Large or CPU-bound tasks can hog threads, starving other tasks. Sometimes you need sub-pools or a more advanced scheduling approach.
+
+Despite these issues, Thread Pool remains a fundamental concurrency solution for any system that deals with numerous small or medium tasks, from web servers to batch job frameworks.
+
+* 2. Conceptual Motivation
+
+A typical scenario is a web server receiving multiple requests. If each request spawns a thread, you risk meltdown if the site is hammered by thousands of requests. A Thread Pool architecture keeps, say, 100 worker threads. Each request is placed in a queue. As soon as a worker becomes free, it pops the next request and processes it. The system remains stable—requests might queue up, but the server uses a known, manageable number of threads.
+
+Another scenario is a parallel or asynchronous job runner: you have tasks to process (like image transformations or data merges). Instead of launching a new thread for each, you feed them into a pool. Once a worker is idle, it picks up the next job. Meanwhile, the rest of your application can keep scheduling new tasks without worrying about unbounded thread creation.
+
+* 3. Beginner Example (Haskell)
+
+We’ll start with a simple Haskell demonstration, focusing on building a minimal Thread Pool for running tasks. While Haskell has lightweight threads (forkIO) that are quite efficient, it can still be instructive to see how a “manual” thread pool might look, managing tasks in a queue and controlling concurrency explicitly.
+
+** 3.1 Motivating Scenario
+Suppose we need to process a list of “jobs” that each do some IO-bound or short-lifetime work, and we want to limit concurrency to a set number of worker threads. We’ll define a small pool structure that spawns n worker threads, each pulling tasks from an STM TQueue. This approach ensures we do not spawn a new thread for each job. The code is “toy-level” but demonstrates the pattern.
+
+** 3.2 Code Example (Beginner, Haskell)
+
+#+BEGIN_SRC haskell
+{-# LANGUAGE OverloadedStrings #-}
+module Main where
+
+import Control.Concurrent
+import Control.Concurrent.STM
+import Control.Monad (replicateM_, forever)
+import Data.Text (Text)
+import qualified Data.Text.IO as TIO
+import System.Random
+import Text.Printf
+
+type Task = IO ()
+
+data ThreadPool = ThreadPool {
+    taskQueue :: TQueue Task
+}
+
+-- Create a new thread pool with 'n' workers
+newThreadPool :: Int -> IO ThreadPool
+newThreadPool n = do
+    q <- newTQueueIO
+    let pool = ThreadPool q
+    -- spawn n worker threads
+    replicateM_ n (forkIO (workerLoop q))
+    return pool
+
+workerLoop :: TQueue Task -> IO ()
+workerLoop q = forever $ do
+    task <- atomically $ readTQueue q
+    task  -- run the task
+
+-- submit a task to the pool
+submitTask :: ThreadPool -> Task -> IO ()
+submitTask (ThreadPool q) task = atomically $ writeTQueue q task
+
+-- usage example
+main :: IO ()
+main = do
+    pool <- newThreadPool 3  -- 3 worker threads
+
+    -- let's schedule 10 tasks that do random "work"
+    forM_ [1..10] $ \i -> do
+      submitTask pool (makeTask i)
+
+    -- wait a bit to let tasks finish
+    threadDelay (3 * 1000000)
+    putStrLn "All tasks submitted, main ends."
+
+makeTask :: Int -> IO ()
+makeTask i = do
+    delay <- randomRIO (500000, 1500000) :: IO Int
+    printf "Task %d started\n" i
+    threadDelay delay
+    printf "Task %d finished\n" i
+#+END_SRC
+
+** 3.2.1 Explanation
+- =ThreadPool=: We store a single TQueue of Task. Each Task is an IO action.
+- =newThreadPool(n)=: Creates =n= worker threads, each repeatedly reading from the queue and running tasks. 
+- =submitTask= enqueues a task in the queue. The worker eventually picks it up.
+- The usage code spawns 3 workers, then schedules 10 tasks that randomly sleep. We wait so tasks can finish.
+
+** 3.3 Observations
+Even though Haskell can handle concurrency differently, this snippet clarifies the basic Thread Pool approach: a queue plus multiple worker threads. The advantage is controlling concurrency (only 3 tasks can run concurrently). The downside is that we do not have advanced scheduling or feedback loops. For many real Haskell apps, you might rely on the runtime’s concurrency model or third-party libraries, but understanding the core pattern is essential for customizing concurrency-limiting behavior.
+
+* 4. Intermediate Example (Go)
+
+Next, we illustrate an intermediate usage in Go. Go typically uses “goroutines,” which are lighter-weight than OS threads. Nevertheless, a “Thread Pool” concept can still be relevant if we want to limit concurrency. We’ll demonstrate a scenario where we want a certain maximum parallel tasks. We’ll also incorporate a “worker returning results” approach, showing how the pattern can handle tasks that produce data for further processing.
+
+** 4.1 Motivating Scenario
+Imagine a system that processes requests for, say, “image transformations” or “HTTP requests to external APIs.” We want to ensure only 5 tasks run concurrently, even though we might queue more than 5. Once a task completes, a worker picks the next. We also want each worker to send a result (or error) back to the caller. This demonstrates an augmented “Thread Pool with result channels.”
+
+** 4.2 Code Example (Intermediate, Go)
+
+#+BEGIN_SRC go
+package main
+
+import (
+    "fmt"
+    "math/rand"
+    "sync"
+    "time"
+)
+
+// a "job" that returns some result
+type Job struct {
+    ID int
+    // some input data, e.g. "url" or "parameters"
+}
+
+// a "result" struct for the job
+type Result struct {
+    JobID int
+    Output string
+}
+
+// we define a pool struct
+type ThreadPool struct {
+    jobs    chan Job
+    results chan Result
+    wg      sync.WaitGroup
+}
+
+// create a threadpool with 'n' workers
+func NewThreadPool(n int) *ThreadPool {
+    tp := &ThreadPool{
+        jobs:    make(chan Job),
+        results: make(chan Result),
+    }
+    // spawn n workers
+    for i := 0; i < n; i++ {
+        tp.wg.Add(1)
+        go tp.worker(i)
+    }
+    return tp
+}
+
+// worker function
+func (tp *ThreadPool) worker(workerID int) {
+    defer tp.wg.Done()
+    for job := range tp.jobs {
+        // do the "work"
+        output := processJob(workerID, job)
+        res := Result{JobID: job.ID, Output: output}
+        tp.results <- res
+    }
+}
+
+// method to close the pool
+func (tp *ThreadPool) Shutdown() {
+    close(tp.jobs)
+    // wait for all workers to finish
+    tp.wg.Wait()
+    close(tp.results)
+}
+
+// "submit" a job
+func (tp *ThreadPool) Submit(job Job) {
+    tp.jobs <- job
+}
+
+// a function to retrieve results in a separate goroutine or in main
+func (tp *ThreadPool) Results() <-chan Result {
+    return tp.results
+}
+
+// example "processJob"
+func processJob(workerID int, job Job) string {
+    // simulate random time
+    delay := time.Duration(rand.Intn(1000)) * time.Millisecond
+    time.Sleep(delay)
+    return fmt.Sprintf("Worker %d processed job %d in %v", workerID, job.ID, delay)
+}
+
+func main() {
+    rand.Seed(time.Now().UnixNano())
+
+    tp := NewThreadPool(3) // 3 workers
+    // we might process results in a separate goroutine
+    go func() {
+        for res := range tp.Results() {
+            fmt.Println("Got result:", res.Output)
+        }
+        fmt.Println("Results channel closed.")
+    }()
+
+    // submit some jobs
+    for i := 1; i <= 10; i++ {
+        tp.Submit(Job{ID: i})
+    }
+
+    // let's wait a bit, then shutdown
+    time.Sleep(2 * time.Second)
+    tp.Shutdown()
+
+    fmt.Println("All done.")
+}
+#+END_SRC
+
+** 4.2.1 Explanation
+- =ThreadPool=: Has a jobs channel for tasks, results channel for outcomes, plus a WaitGroup for worker threads.
+- =NewThreadPool(n)= spawns n workers. Each worker loop processes jobs from =tp.jobs=, eventually sending results to =tp.results=. 
+- =Shutdown()= closes jobs, waits for all workers, then closes results. 
+- =Submit()= enqueues a job. 
+- =Results()= returns a channel over which the user can range for results. 
+- The usage code spawns a result-reading goroutine, then enqueues 10 jobs. After 2s, we shut down. We see how each worker processes some of the tasks and outputs results.
+
+** 4.3 Observations
+This example demonstrates a typical Thread Pool approach in Go, bridging tasks with a concurrency limit. Even though Go uses goroutines, the pattern is valuable if we want only n tasks in parallel. The code is more advanced than the Haskell version, as we handle both a job queue and a results queue, plus a well-defined “shutdown” procedure ensuring all tasks finish. This is a common approach for microservices or local concurrency tasks that have to unify “task distribution” with “result retrieval.”
+
+* 5. Advanced Example (Rust)
+
+Finally, we illustrate an advanced usage in Rust. Rust’s concurrency model is explicit about ownership, references, and thread safety. We’ll show how to build a “dynamic or resizable thread pool” that can scale up or down based on load. We also incorporate a mechanism for cancelling tasks or timing out, demonstrating a more complex scenario.
+
+** 5.1 Motivating Scenario
+We have a system that processes tasks from an external queue, but the load can fluctuate. If the queue is large, we want more worker threads. If it’s small, we want fewer. Also, we want the ability to “cancel” tasks that exceed a certain time limit or that become irrelevant. We’ll keep a partial demonstration focusing on the structure, not a fully robust library. The code uses crossbeam or standard concurrency primitives to manage a set of worker threads, with each thread checking for “shutdown” or “scaling down” signals.
+
+** 5.2 Code Example (Advanced, Rust)
+
+#+BEGIN_SRC rust
+use std::sync::{Arc, Mutex, Condvar, atomic::{AtomicBool, Ordering}};
+use std::collections::VecDeque;
+use std::thread;
+use std::time::{Duration, Instant};
+
+type Task = Box<dyn FnOnce() + Send + 'static>;
+
+struct ThreadPool {
+    inner: Arc<PoolInner>,
+}
+
+struct PoolInner {
+    tasks: Mutex<VecDeque<Task>>,
+    cond: Condvar,
+    // dynamic pool management
+    current_threads: Mutex<usize>,
+    max_threads: usize,
+    min_threads: usize,
+    shutdown: AtomicBool,
+}
+
+impl ThreadPool {
+    fn new(min_threads: usize, max_threads: usize) -> Self {
+        let inner = Arc::new(PoolInner {
+            tasks: Mutex::new(VecDeque::new()),
+            cond: Condvar::new(),
+            current_threads: Mutex::new(0),
+            max_threads,
+            min_threads,
+            shutdown: AtomicBool::new(false),
+        });
+
+        let pool = ThreadPool { inner };
+        for _ in 0..min_threads {
+            pool.spawn_worker();
+        }
+        pool
+    }
+
+    fn spawn_worker(&self) {
+        let inner = Arc::clone(&self.inner);
+        {
+            let mut c = inner.current_threads.lock().unwrap();
+            *c += 1;
+        }
+        thread::spawn(move || {
+            worker_loop(inner);
+        });
+    }
+
+    pub fn submit<F>(&self, f: F)
+    where
+        F: FnOnce() + Send + 'static,
+    {
+        let mut tasks = self.inner.tasks.lock().unwrap();
+        tasks.push_back(Box::new(f));
+        self.inner.cond.notify_one();
+
+        // maybe spawn more worker if under max
+        let queue_len = tasks.len();
+        let current = *self.inner.current_threads.lock().unwrap();
+        if queue_len > current && current < self.inner.max_threads {
+            // spawn an additional worker
+            self.spawn_worker();
+        }
+    }
+
+    pub fn shutdown(&self) {
+        self.inner.shutdown.store(true, Ordering::SeqCst);
+        self.inner.cond.notify_all();
+    }
+}
+
+fn worker_loop(inner: Arc<PoolInner>) {
+    loop {
+        let mut tasks = inner.tasks.lock().unwrap();
+        // wait until there's a task or we're shutting down
+        while tasks.is_empty() && !inner.shutdown.load(Ordering::SeqCst) {
+            tasks = inner.cond.wait(tasks).unwrap();
+        }
+        // check shutdown
+        if inner.shutdown.load(Ordering::SeqCst) {
+            break;
+        }
+        let task = tasks.pop_front();
+        drop(tasks);
+        if let Some(t) = task {
+            // run it
+            t();
+        }
+
+        // if tasks is small, maybe scale down
+        // (this is just a demonstration; real logic might be more advanced)
+        // e.g. if queue is empty for a while, we might break
+    }
+
+    // on break
+    {
+        let mut c = inner.current_threads.lock().unwrap();
+        *c -= 1;
+    }
+}
+
+fn main() {
+    let pool = ThreadPool::new(2, 5);
+
+    // schedule tasks
+    for i in 0..10 {
+        let ii = i;
+        pool.submit(move || {
+            println!("Task {} started", ii);
+            thread::sleep(Duration::from_millis(500));
+            println!("Task {} finished", ii);
+        });
+    }
+
+    thread::sleep(Duration::from_secs(3));
+    pool.shutdown();
+    println!("Main done, requested shutdown.");
+}
+#+END_SRC
+
+** 5.2.1 Explanation
+- =ThreadPool=: We store an Arc<PoolInner> containing a queue, condition variable, worker count, min/max threads, and a shutdown flag.
+- =spawn_worker()=: increments the worker count, spawns a thread running =worker_loop(...)=. 
+- =submit(...)= pushes a new task, notifies the condvar, then checks if we should spawn more workers (if queue_len > current threads and current < max). 
+- =worker_loop= processes tasks. On shutdown, breaks out. On exit, we decrement the worker count. 
+- Usage: We create a pool with min_threads=2, max_threads=5, enqueue 10 tasks. Some tasks might cause the pool to spawn up to 5 workers if the queue gets large. After some time, we shutdown.
+
+** 5.3 Observations
+This advanced Rust approach is more robust, with dynamic thread management. The core pattern remains: we have a queue of tasks, multiple threads pulling from it. We add a bit of logic to spawn new threads if the queue grows. We also demonstrate a controlled shutdown. Real production code might do more sophisticated scaling or time-based idle worker removal, but this code demonstrates the advanced usage of Thread Pool in a lower-level language.
+
+* 6. Nuances, Variations, and Best Practices
+
+1. Fixed vs. Dynamic Size
+   Many thread pools are fixed-size, e.g. “8 threads, no more, no less.” Others adapt to load up to a max. This can be crucial for systems that experience bursty traffic.
+
+2. Task Priorities
+   Sometimes you need a priority queue so urgent tasks jump ahead. This is more advanced but can be integrated if scheduling approach demands it.
+
+3. Bounded Queues
+   If you can’t risk indefinite memory usage, you might use a bounded queue. If it’s full, =submit= calls may block or fail. This ensures tasks do not pile up unbounded.
+
+4. Livelock/Deadlock
+   If tasks in the queue wait for each other in a cycle, the entire system can freeze. Usually you design tasks to be short or independent.
+
+5. Nested Submits
+   A task might “submit” more tasks to the same pool. That can be fine if tasks are small, but be mindful of potential queue explosions.
+
+6. Return Values
+   Some pools handle tasks that produce results. The “task object” might store a promise/future or channel for the result. Worker sets the result once done. We saw a partial example in the Go code with results channel.
+
+7. Performance Tuning
+   The ideal pool size often equals the number of CPU cores for CPU-bound tasks. If tasks are I/O-bound, you might use more threads. Many frameworks provide advanced heuristics or runtime tuning.
+
+* 7. Real-World Usage
+- Web Servers: Handling incoming HTTP requests with a pool of worker threads, each picking the next request from a queue. E.g., older versions of Apache, or certain Nginx worker processes.
+- Database Connection Pools: Conceptually similar, though not quite the same. Typically a “pool of resources,” each resource used by tasks in turn. The concurrency-limiting principle is analogous.
+- Batch Processing: A job scheduler might push tasks into a thread pool for parallel execution, ensuring the system doesn’t spawn unbounded threads.
+- GUI Tools: Some UI frameworks have a background worker pool for short tasks (like image loading or data fetches) so the main UI thread remains responsive.
+- Microservices: Some microservices implement a “server thread pool” for gRPC or TCP requests, ensuring no meltdown if the service is hammered by requests.
+
+* 8. Conclusion
+
+The Thread Pool pattern is a foundational concurrency tool that fosters controlled parallelism, resource efficiency, and simplicity in scheduling tasks. By reusing a limited set of threads, you reduce overhead from thread creation/destruction, avoid meltdown from unbounded concurrency, and unify the way tasks are queued and handled.
+
+We showed how:
+
+- *Beginner (Haskell)*: We used an STM TQueue to store tasks, spawning =n= worker threads that read tasks in a loop. This clarifies the fundamental principle of reusing threads for multiple tasks.
+- *Intermediate (Go)*: We built a pool that also collects results from tasks, letting the user handle them in a separate goroutine. We introduced a “shut down gracefully” approach as well.
+- *Advanced (Rust)*: We demonstrated a more dynamic pool that can spawn additional threads if the queue grows. This approach shows how a pool can adapt to load, plus how we handle a safe shutdown with a concurrency-limited design in a lower-level language.
+
+In all these examples, the essence is the same: a queue of tasks, multiple workers pulling tasks from the queue, and a mechanism to shut down or expand threads as needed. If you regularly handle short tasks or want to unify concurrency for repeated operations, Thread Pool is a robust, time-tested pattern that helps your system remain both responsive and resource-conscious—the hallmark of well-designed asynchronous applications.
