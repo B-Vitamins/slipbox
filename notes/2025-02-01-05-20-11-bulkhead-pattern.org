@@ -1,0 +1,420 @@
+:PROPERTIES:
+:ID:       61d06010-35bc-4b1d-b351-28901e2ef1f8
+:END:
+#+TITLE: Bulkhead Pattern
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+* 1. Introduction and Historical Context
+
+The Bulkhead pattern is about resource isolation. The term comes from naval engineering, where a ship is divided into watertight compartments (bulkheads), so if one compartment is breached, water doesn’t flood the entire vessel. Similarly, in software or distributed systems, the Bulkhead pattern suggests assigning distinct pools of resources (threads, connections, memory, or concurrency slots) to different modules, features, or user groups. If one portion of the system is hammered with requests or hits a meltdown, the rest of the system remains unaffected, thanks to these compartmentalized resource pools.
+
+Historically, large web applications discovered that if, for instance, the “search” feature saturates the entire thread pool or connection pool, then “checkout” or “account management” also become blocked. By adopting Bulkhead, each feature or service obtains a bounded subset of threads or connections, ensuring that a meltdown in one area can’t starve everything else. This concept pairs naturally with other resilience patterns like Circuit Breaker (fail fast on a failing remote service) and Thread Pool (where each pool can be further subdivided or dedicated to separate concerns).
+
+** 1.1 Why Use Bulkhead?
+
+- Prevent Resource Starvation: If a single subsystem or feature experiences a usage spike or slowdown, it can’t deplete the entire thread or connection pool for the entire app.
+- Increased Reliability: Other parts of the system remain responsive even if one subsystem is overloaded or stuck in slow calls.
+- Better QoS: You can assign priority-based or feature-based resource compartments. For instance, “premium users” might get a bigger pool than “free tier.”
+- Simplicity: Instead of building a single giant pool that dynamically must handle all demands, the Bulkhead approach more simply partitions resources into compartments.
+
+** 1.2 Potential Pitfalls
+
+- Resource Wastage: If one compartment remains underused and another is oversubscribed, you might not reallocate resources easily.
+- Complex Tuning: Deciding how many threads or connections to allocate per subsystem can be nontrivial, especially under changing loads.
+- Granularity: Over-partitioning can lead to many small pools, each with overhead. Under-partitioning might yield less isolation.
+- Overlapping Pools: If some resources are truly shared, you might not get a perfect isolation.
+
+Despite these complexities, Bulkhead is a key pattern for microservices, large distributed apps, or any system aiming to limit the “blast radius” of partial failures or traffic spikes.
+
+* 2. Conceptual Motivation
+
+Imagine you have a hotel reservation site with various features: “search for hotels,” “view user profile,” “process credit card payments,” etc. If “search” is hammered by thousands of requests, you don’t want “payment” calls to starve for threads or DB connections. By adopting Bulkhead, you define separate resource compartments:
+
+- A search thread pool limited to 50 threads.
+- A payments thread pool limited to 10 threads.
+- A profile thread pool of 5 threads.
+
+Now, if search is hammered, it uses up its 50 threads, but the payments or profile tasks still have threads available, keeping essential user actions responsive. In a “global” approach with 65 total threads, search could hog all 65, crippling the entire site. With Bulkhead, we contain search overload. This approach also fosters more explicit capacity planning, ensuring each subsystem’s concurrency is well-bounded.
+
+* 3. Beginner Example (Rust)
+
+** 3.1 Motivating Scenario
+
+We’ll start with a Rust demonstration focusing on a small web-like scenario with two endpoints: “upload” and “report.” We adopt a naive approach: separate an “upload thread pool” from a “report thread pool,” ensuring that if “upload” gets hammered, we still have threads for “report.” This is a “beginner” level snippet: single process, local approach, but it exemplifies the Bulkhead concept.
+
+** 3.2 Code Example (Beginner, Rust)
+
+#+BEGIN_SRC rust
+use std::sync::{Arc, Mutex};
+use std::thread;
+use std::time::Duration;
+use crossbeam::channel::{unbounded, Receiver, Sender};
+
+enum Request {
+    Upload(String),  // represent file content
+    Report(String),  // represent query
+}
+
+fn main() {
+    // We'll define two separate thread pools: one for Upload, one for Report
+    let (upload_tx, upload_rx) = unbounded::<Request>();
+    let (report_tx, report_rx) = unbounded::<Request>();
+
+    // spawn a small pool for uploads
+    let upload_threads = 2;
+    for i in 0..upload_threads {
+        let rxc = upload_rx.clone();
+        thread::spawn(move || {
+            loop {
+                match rxc.recv() {
+                    Ok(req) => handle_upload(req, i),
+                    Err(_) => break,
+                }
+            }
+        });
+    }
+
+    // spawn a smaller pool for reports
+    let report_threads = 1;
+    for i in 0..report_threads {
+        let rxc = report_rx.clone();
+        thread::spawn(move || {
+            loop {
+                match rxc.recv() {
+                    Ok(req) => handle_report(req, i),
+                    Err(_) => break,
+                }
+            }
+        });
+    }
+
+    // let's simulate requests
+    upload_tx.send(Request::Upload("File1".into())).unwrap();
+    upload_tx.send(Request::Upload("File2".into())).unwrap();
+    report_tx.send(Request::Report("RevenueLastWeek".into())).unwrap();
+
+    // heavy usage of upload
+    for i in 0..5 {
+        upload_tx.send(Request::Upload(format!("MoreFile{}", i))).unwrap();
+    }
+
+    thread::sleep(Duration::from_secs(3));
+    println!("Main done.");
+}
+
+fn handle_upload(req: Request, worker_id: usize) {
+    if let Request::Upload(data) = req {
+        println!("Upload worker {} handling upload: {}", worker_id, data);
+        // simulate time
+        thread::sleep(Duration::from_millis(500));
+        println!("Upload worker {} finished upload: {}", worker_id, data);
+    }
+}
+
+fn handle_report(req: Request, worker_id: usize) {
+    if let Request::Report(query) = req {
+        println!("Report worker {} handling report: {}", worker_id, query);
+        thread::sleep(Duration::from_millis(1000));
+        println!("Report worker {} finished report: {}", worker_id, query);
+    }
+}
+#+END_SRC
+
+** 3.2.1 Explanation
+
+- **Separate Pools**: We define an unbounded channel for “upload” requests, another for “report.” We spawn a mini pool (2 threads) for uploads, (1 thread) for reports.
+- **Isolation**: If “upload” gets hammered, that saturates the 2 “upload worker threads,” but the single “report worker” is unaffected. That’s the bulkhead concept.
+- **Implementation**: We simply read requests from the respective channels. Real code might use a library for thread pools or concurrency scheduling.
+- **Usage**: We send some “Upload” requests, then a “Report,” then more “Upload.” The separate channels + worker sets keep them from interfering.
+
+** 3.3 Observations
+
+This “beginner” snippet captures the essence of the Bulkhead pattern: separate concurrency compartments for different tasks. We used separate channels and threads. The same approach can scale for multiple endpoints or “services,” each with its own resource pool. Real systems might measure concurrency not only by threads but also by limiting DB connections, memory usage, or queue depths.
+
+* 4. Intermediate Example (Haskell)
+
+** 4.1 Motivating Scenario
+
+We next illustrate a Haskell scenario, focusing on bulkheads for different “user tiers.” Suppose we have “premium” vs. “basic” users accessing a service that can run expensive computations. We want to ensure premium users always have some concurrency available, even if basic users swamp the system. We define separate worker pools or concurrency limits for each tier. This is an “intermediate” example because we’ll incorporate concurrency with STM, building a small library that enforces concurrency limits per tier.
+
+** 4.2 Code Example (Intermediate, Haskell)
+
+#+BEGIN_SRC haskell
+{-# LANGUAGE OverloadedStrings #-}
+module Main where
+
+import Control.Concurrent
+import Control.Concurrent.STM
+import Control.Monad (forM_)
+import Data.Text (Text)
+import qualified Data.Text.IO as TIO
+import System.Random
+import Text.Printf
+
+data Tier = Premium | Basic
+  deriving (Eq, Show, Ord)
+
+-- We'll define a Bulkhead manager that has concurrency slots for each tier
+-- For simplicity, we store "slots" in two separate semaphores
+data Bulkhead = Bulkhead {
+    premiumSlots :: TVar Int,
+    basicSlots   :: TVar Int,
+    maxPremium   :: Int,
+    maxBasic     :: Int
+}
+
+initBulkhead :: Int -> Int -> IO Bulkhead
+initBulkhead premSlots basSlots = do
+  pv <- newTVarIO premSlots
+  bv <- newTVarIO basSlots
+  return $ Bulkhead pv bv premSlots basSlots
+
+-- We'll define a function that tries to "acquire" a slot for a given tier
+acquireSlot :: Bulkhead -> Tier -> IO Bool
+acquireSlot bh tier = atomically $ do
+  case tier of
+    Premium -> do
+      s <- readTVar (premiumSlots bh)
+      if s > 0
+         then writeTVar (premiumSlots bh) (s-1) >> return True
+         else return False
+    Basic -> do
+      s <- readTVar (basicSlots bh)
+      if s > 0
+         then writeTVar (basicSlots bh) (s-1) >> return True
+         else return False
+
+-- release a slot
+releaseSlot :: Bulkhead -> Tier -> IO ()
+releaseSlot bh tier = atomically $ do
+  case tier of
+    Premium -> do
+      s <- readTVar (premiumSlots bh)
+      writeTVar (premiumSlots bh) (s+1)
+    Basic -> do
+      s <- readTVar (basicSlots bh)
+      writeTVar (basicSlots bh) (s+1)
+
+-- define a "process request" function that uses the bulkhead
+processRequest :: Bulkhead -> Tier -> String -> IO ()
+processRequest bh tier req = do
+  ok <- acquireSlot(bh) tier
+  if not ok
+    then do
+      printf "Tier %s: No slot available => rejecting request '%s'\n"
+             (show tier) req
+    else do
+      printf "Tier %s: running request '%s'\n" (show tier) req
+      threadDelay 1000000  -- simulate some work
+      printf "Tier %s: done request '%s'\n" (show tier) req
+      releaseSlot bh tier
+
+-- usage
+main :: IO ()
+main = do
+  bh <- initBulkhead 2 3
+  -- let's spawn some threads that do requests
+  let doReq tier name = processRequest bh tier name
+  forM_ [1..4] $ \i -> forkIO $ doReq Premium (printf "premium-%d" i)
+  forM_ [1..6] $ \i -> forkIO $ doReq Basic (printf "basic-%d" i)
+
+  -- let's do more
+  threadDelay 5_000_000
+  putStrLn "Main done."
+#+END_SRC
+
+** 4.2.1 Explanation
+
+- **Bulkhead**: We define concurrency “slots” for premium and basic. Each is stored in a `TVar Int`. The maximum number of concurrent tasks is set by these slot counts.
+- **acquireSlot**: If the relevant slot count is > 0, we decrement and return `True`. Otherwise, we return `False`.
+- **processRequest**: We attempt to `acquireSlot`. If we fail, we reject the request. If we succeed, we do some “work,” then `releaseSlot`. That’s the Bulkhead approach: separate concurrency capacity for each tier.
+- **Usage**: We create a Bulkhead with 2 premium slots, 3 basic slots. We spawn 4 premium requests, 6 basic requests concurrently. Because premium has only 2 slots, the 3rd or 4th premium request might wait (or if we coded immediate reject, might be refused). Basic has 3 slots.
+
+** 4.3 Observations
+
+This is an intermediate example because we see how Haskell’s concurrency and STM can handle a tier-based resource partition. If “basic” gets hammered, they only have 3 concurrency slots. Meanwhile, “premium” is unaffected with 2. We can easily expand the concept to more tiers or different resource types. The pattern ensures no single group saturates all concurrency, preserving some capacity for each group.
+
+* 5. Advanced Example (Go)
+
+** 5.1 Motivating Scenario
+
+We now build an advanced scenario in Go: a distributed microservice environment with multiple “services,” each with a set of “bulkhead compartments” for different request types. We’ll demonstrate how we might unify multiple resources: a thread pool plus a database connection pool. If one request type saturates the DB connections, we still want other request types to remain functional. We do a simplified version of multi-resource Bulkhead but use a single process for demonstration.
+
+** 5.2 Code Example (Advanced, Go)
+
+#+BEGIN_SRC go
+package main
+
+import (
+    "fmt"
+    "sync"
+    "sync/atomic"
+    "time"
+    "errors"
+    "math/rand"
+)
+
+// define a "resource pool" interface
+type ResourcePool interface {
+    Acquire() error
+    Release()
+}
+
+// let's define a DB conn pool that has "n" connections for each request type
+type DBPool struct {
+    mu sync.Mutex
+    totalConns int
+    used int
+}
+
+func NewDBPool(n int) *DBPool {
+    return &DBPool{totalConns: n, used: 0}
+}
+
+func (db *DBPool) Acquire() error {
+    db.mu.Lock()
+    defer db.mu.Unlock()
+    if db.used >= db.totalConns {
+        return errors.New("DB pool exhausted")
+    }
+    db.used++
+    return nil
+}
+
+func (db *DBPool) Release() {
+    db.mu.Lock()
+    defer db.mu.Unlock()
+    db.used--
+}
+
+// we'll define a "BulkheadCompartment" that has a thread limit + DB pool limit
+type BulkheadCompartment struct {
+    name string
+    concurrencyLimit int
+    currentCount int32 // atomic
+    dbPool *DBPool
+}
+
+func newCompartment(name string, concurrency int, dbconns int) *BulkheadCompartment {
+    return &BulkheadCompartment{
+        name: name,
+        concurrencyLimit: concurrency,
+        currentCount: 0,
+        dbPool: NewDBPool(dbconns),
+    }
+}
+
+// attempt to do work inside the compartment
+func (bc *BulkheadCompartment) doWork(fn func()) error {
+    // check concurrency
+    old := atomic.AddInt32(&bc.currentCount, 1)
+    if old >= int32(bc.concurrencyLimit) {
+        // revert
+        atomic.AddInt32(&bc.currentCount, -1)
+        return fmt.Errorf("compartment %s concurrency full", bc.name)
+    }
+
+    // check DB
+    errDB := bc.dbPool.Acquire()
+    if errDB != nil {
+        atomic.AddInt32(&bc.currentCount, -1)
+        return fmt.Errorf("compartment %s DB full: %v", bc.name, errDB)
+    }
+
+    // do actual work
+    fn()
+
+    // release
+    bc.dbPool.Release()
+    atomic.AddInt32(&bc.currentCount, -1)
+    return nil
+}
+
+func main() {
+    rand.Seed(time.Now().UnixNano())
+    // define two compartments: "analytics" and "checkout"
+    // "analytics" has concurrency=2, db conns=2
+    // "checkout" has concurrency=3, db conns=2
+    analytics := newCompartment("analytics", 2, 2)
+    checkout  := newCompartment("checkout", 3, 2)
+
+    // spawn tasks
+    var wg sync.WaitGroup
+
+    doAnalytics := func(id int) {
+        defer wg.Done()
+        err := analytics.doWork(func() {
+            fmt.Printf("Analytics-%d start\n", id)
+            time.Sleep(time.Duration(rand.Intn(500)+100) * time.Millisecond)
+            fmt.Printf("Analytics-%d end\n", id)
+        })
+        if err != nil {
+            fmt.Printf("Analytics-%d => error: %v\n", id, err)
+        }
+    }
+
+    doCheckout := func(id int) {
+        defer wg.Done()
+        err := checkout.doWork(func() {
+            fmt.Printf("Checkout-%d start\n", id)
+            time.Sleep(time.Duration(rand.Intn(500)+100) * time.Millisecond)
+            fmt.Printf("Checkout-%d end\n", id)
+        })
+        if err != nil {
+            fmt.Printf("Checkout-%d => error: %v\n", id, err)
+        }
+    }
+
+    for i := 0; i < 5; i++ {
+        wg.Add(1)
+        go doAnalytics(i)
+    }
+    for i := 0; i < 6; i++ {
+        wg.Add(1)
+        go doCheckout(i)
+    }
+
+    wg.Wait()
+    fmt.Println("All done.")
+}
+#+END_SRC
+
+** 5.2.1 Explanation
+
+- **BulkheadCompartment**: We define a concurrency limit (`concurrencyLimit`) and a DB connection pool (`dbPool`). This means each request using this compartment must get a concurrency “slot” plus a DB conn from `dbPool`.
+- **doWork(fn)**: We first do an atomic increment to check concurrency. If we exceed limit, we revert. Then we do a `dbPool.Acquire()`. If that fails, we revert concurrency count. If both succeed, we run the function. Then we release. This is a multi-resource bulkhead.
+- **Usage**: We create 2 compartments: “analytics” (2 concurrency, 2 DB conns) and “checkout” (3 concurrency, 2 DB conns). We spawn tasks that do “analytics” or “checkout.” We see that each compartment has separate concurrency and DB resources. If “analytics” is hammered, it can’t consume concurrency or DB resources allocated to “checkout.”
+- **Error Handling**: If we exceed concurrency or DB usage in a compartment, we fail fast. Real code might queue or degrade differently.
+
+** 5.3 Observations
+
+This advanced example merges concurrency plus multiple resource types in one “compartment,” providing a robust Bulkhead approach. We see that “analytics” tasks never starve “checkout” tasks of concurrency or DB connections, and vice versa. This fosters a stable system if “analytics” usage spikes.
+
+* 6. Nuances, Variations, and Best Practices
+
+1. Which Resources?: Bulkheads can apply to threads, memory (limit object creation per subsystem), network sockets, DB connections, or any constrained resource.
+2. Reject or Queue?: If a compartment is full, do we reject requests or queue them? If we queue them, we risk eventually running out of memory if the queue is unbounded. A bounded queue can be used, or a “fail fast” approach (like Circuit Breaker).
+3. Adaptive Reallocation: Some advanced systems reallocate resources among compartments dynamically based on usage or priority. This can be complex but yields better resource utilization.
+4. Monitoring: Tracking the compartments’ usage and rejections is crucial. Observing which compartments get saturated can help you tune or scale your architecture.
+5. Granularity: Overly fine partitions might be messy, while a single partition might defeat the purpose. Common approaches: separate “bulkheads” by service function, user tier, or domain boundary.
+6. Integration with Other Patterns: Bulkhead often pairs with Thread Pool (each compartment has a custom pool), Circuit Breaker (fail quickly if a service is offline), and Rate Limiting (limit requests per user or subsystem).
+7. Testing: Stress tests or chaos engineering can see if one subsystem meltdown truly remains contained. If it bleeds into other compartments, your partitioning might be incomplete.
+
+* 7. Real-World Usage
+
+- **Microservices**: Each microservice might have a separate DB connection pool for each domain function or user group. If “analytics” calls spike, other calls remain unaffected.
+- **Web Servers**: Distinct thread pools for background tasks vs. user-facing requests, ensuring user requests remain responsive if background tasks are slow.
+- **Resource-Intensive Processes**: In data pipelines, if one pipeline stage is hammered, we ensure it can’t starve the entire pipeline’s CPU or memory.
+- **User-Tier Prioritization**: Premium users get a dedicated pool, so free user surges don’t degrade premium experience.
+
+* 8. Conclusion
+
+The Bulkhead pattern is about compartmentalizing resources so that the failure or saturation of one subsystem doesn’t sink the entire application. By assigning distinct resource pools or concurrency limits, you ensure partial meltdown remains partial, not complete. This pattern is fundamental for building robust, large-scale, or multi-feature systems, particularly in microservices or monolithic apps with varying functionalities.
+
+We showcased:
+
+- **Beginner (Rust)**: A naive scenario with separate channels + threads for “upload” vs. “report,” ensuring concurrency isolation.
+- **Intermediate (Haskell)**: A “bulkhead manager” with concurrency slots for “premium” vs. “basic” tiers. We used STM to manage slot acquisition/release, demonstrating tier-based resource compartments.
+- **Advanced (Go)**: A multi-resource approach (threads + DB connections) in each “compartment,” ensuring “analytics” tasks can’t starve “checkout” tasks or DB connections, and vice versa.
+
+When used carefully, Bulkhead fosters a more resilient, predictable system under load, localizing the impact of surging demands or partial slowdowns. Configuring the right concurrency or resource limits for each compartment can be tricky, requiring performance monitoring, but the payoff is a system that gracefully withstands partial disruptions rather than failing globally. By combining Bulkheads with other patterns (Circuit Breaker, Rate Limiting, etc.), you can craft highly robust asynchronous or distributed architectures that degrade gracefully under load or partial failures.
