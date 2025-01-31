@@ -1,0 +1,428 @@
+:PROPERTIES:
+:ID:       4e86dd61-2b46-4f15-ab3f-b97e0efce7ac
+:END:
+#+TITLE: Prototype Pattern
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+* 1. Introduction and Historical Context
+
+Among the classic Gang of Four patterns, the =Prototype= pattern occupies a unique position because it focuses on object duplication rather than direct instantiation. Traditionally, object creation has been handled by direct =new= calls (or constructors) and by the related =Factory= patterns. The =Prototype= pattern, in contrast, says: instead of creating objects directly, clone an existing “prototype” object whenever we need a new instance. Each cloned object can then be customized slightly, but the bulk of the setup is already done in the prototype.
+
+Historically, =Prototype= was championed in environments where object creation was especially expensive—imagine a graphical editor that manages vast numbers of shape objects, or a complex parsing routine that needs many nodes of a certain type. Rather than re-running lengthy initialization code or rediscovering all parameters, you keep a single, well-configured instance and then clone it whenever more instances are required. This approach can reduce overhead, centralize configuration, and facilitate runtime expansion of “types” without changing the code that uses them.
+
+** 1.1 Why Use Prototype?
+
+1. =Performance=: Cloning a ready-made object can be much faster than constructing a fresh one, especially if initialization involves heavyweight operations (e.g., reading data from disk, establishing network connections, or performing expensive computations).
+
+2. =Runtime Flexibility=: The pattern allows new object “types” to appear at runtime. Instead of having to code factories or constructors for every sub-type, you can just store a new prototype in a registry. If you need a specialized variant, you can clone it on demand.
+
+3. =Avoiding Constructor Hell=: Some objects carry many initialization parameters. Using prototypes can sidestep repeated constructor arguments. Once you set up a “base” instance, cloning it yields consistent copies without re-specifying everything.
+
+** 1.2 Common Pitfalls
+
+- =Shallow vs. Deep Copy=: One of the biggest challenges is deciding whether to do a shallow clone (copying references for nested objects) or a deep clone (recursively copying the entire object graph). A shallow clone might be faster but can introduce shared, mutable state. A deep clone can solve that but is more complex and potentially expensive.
+
+- =Complex Object Graphs=: The more complex your object’s internal structure—especially if it references external resources or cyclical references—the trickier it can be to implement a correct =clone= method.
+
+- =Not Always Necessary=: For simple objects or in well-structured code using factories, you might not need the =Prototype= pattern. Overusing it could introduce confusion about where objects come from and who “owns” them.
+
+Despite these caveats, =Prototype= can be a powerful solution in specialized scenarios where duplication of fully or partially configured instances is more convenient—or more efficient—than repeatedly calling constructors.
+
+* 2. Conceptual Motivation
+
+Imagine a graphical document editor that manipulates shapes: circles, rectangles, text blocks, etc. Each shape can have many properties—colors, gradients, positions, rotation, text content, and so on. Creating a shape from scratch might involve a complex constructor or multiple property setters. Instead, we can store “prototype” shapes for each type in a registry. When the user wants a new circle, we clone the “circle prototype,” set a few parameters (e.g., the radius or fill color), and add it to the canvas. This approach centralizes how shapes are configured by default and speeds up creation when dealing with large numbers of shapes.
+
+Alternatively, in a game context, you might have different “enemy” prototypes. Each has certain AI parameters, base stats, and textures. When spawning a new wave of enemies, you simply clone the relevant prototype. This also simplifies adding new enemy types at runtime: the game engine can load prototypes from a data file, then clone them on demand without requiring updated code for each enemy class.
+
+* 3. Beginner Example (Python)
+
+We’ll begin with a straightforward Python example illustrating how to implement =Prototype= for simple shape objects in a basic graphics tool. We’ll do shallow copies first, keeping in mind the potential pitfalls if we wanted deeper copying.
+
+** 3.1 Motivating Scenario
+
+We have a small 2D editor that manipulates multiple shapes: circles and rectangles. Each shape might store a color, position, and size. We create a prototype for each shape type and keep them in a registry. Whenever a user wants a new shape, they request it from the registry, which clones the prototype and returns the fresh instance.
+
+** 3.2 Code Example (Beginner, Python)
+
+#+BEGIN_SRC python
+import copy
+
+class Shape:
+    def __init__(self, color, x, y):
+        self.color = color
+        self.x = x
+        self.y = y
+
+    def clone(self):
+        # Shallow copy by default, which is fine for basic fields
+        return copy.copy(self)
+
+    def __str__(self):
+        return f"{self.__class__.__name__}(color={self.color}, x={self.x}, y={self.y})"
+
+class Circle(Shape):
+    def __init__(self, color, x, y, radius):
+        super().__init__(color, x, y)
+        self.radius = radius
+
+    def clone(self):
+        # Shallow copy of a circle
+        return copy.copy(self)
+
+    def __str__(self):
+        return (f"Circle(color={self.color}, x={self.x}, y={self.y}, "
+                f"radius={self.radius})")
+
+class Rectangle(Shape):
+    def __init__(self, color, x, y, width, height):
+        super().__init__(color, x, y)
+        self.width = width
+        self.height = height
+
+    def clone(self):
+        # Shallow copy of a rectangle
+        return copy.copy(self)
+
+    def __str__(self):
+        return (f"Rectangle(color={self.color}, x={self.x}, y={self.y}, "
+                f"width={self.width}, height={self.height})")
+
+
+class PrototypeRegistry:
+    def __init__(self):
+        self._prototypes = {}
+
+    def register_prototype(self, key, prototype):
+        self._prototypes[key] = prototype
+
+    def get_prototype(self, key):
+        prototype = self._prototypes.get(key)
+        if prototype is None:
+            raise ValueError(f"No prototype registered under key: {key}")
+        return prototype.clone()
+
+# Example Usage
+if __name__ == "__main__":
+    circle_prototype = Circle("red", 10, 10, 5)
+    rect_prototype = Rectangle("blue", 0, 0, 100, 50)
+
+    registry = PrototypeRegistry()
+    registry.register_prototype("small_red_circle", circle_prototype)
+    registry.register_prototype("blue_rectangle", rect_prototype)
+
+    # Cloning a small red circle
+    shape1 = registry.get_prototype("small_red_circle")
+    shape1.x = 50  # We can tweak some fields after cloning
+    print(shape1)
+
+    # Cloning a blue rectangle
+    shape2 = registry.get_prototype("blue_rectangle")
+    shape2.width = 200
+    print(shape2)
+#+END_SRC
+
+*** 3.2.1 Explanation
+
+- =Shape= base class: Defines attributes =color=, =x=, =y=. The =clone()= method delegates to =copy.copy=.
+
+- =Concrete Shapes=: =Circle= and =Rectangle= each store additional fields (=radius= for circles, =width= and =height= for rectangles). They override =clone()= but still rely on shallow copying with =copy.copy=.
+
+- =Prototype Registry=: We keep a dictionary mapping string keys to prototype objects. Calling =get_prototype(key)= returns a clone of the stored prototype, allowing runtime creation without calling any constructor directly.
+
+- =Usage=: We create prototypes once (a “=small_red_circle=,” a “=blue_rectangle=”), store them in the registry, and then request new objects by cloning. Each clone can be customized after creation. This pattern is especially handy if new prototypes appear at runtime (e.g., loaded from user preferences).
+
+** 3.3 Observations
+
+This example is “beginner level” because it demonstrates the canonical concept. A more advanced scenario might use deeper copying, especially if shapes had nested lists or references to shared resources. For many straightforward cases, shallow copies suffice.
+
+* 4. Intermediate Example (Guile Scheme)
+
+We move to Guile Scheme, showcasing a functional take on prototypes. Although Scheme is not traditionally class-based, it can still apply the =Prototype= pattern through closure-based or record-based clones. We’ll imagine a scenario involving document templates stored as prototypes, which can be cloned and customized.
+
+** 4.1 Motivating Scenario
+
+Consider a text processing system that manages multiple document “templates,” each with certain default headings, formatting, and optional placeholders. Users can request a copy of a template, fill in placeholders, and produce a final document. Instead of reconstructing each template from scratch, we can store them as “prototypes” and clone them when a new document is needed.
+
+** 4.2 Code Example (Intermediate, Guile Scheme)
+
+#+BEGIN_SRC scheme
+;; We use record types and closures to emulate the concept of a "prototype."
+
+(define-record-type <document-template>
+  (make-document-template title sections placeholders)
+  document-template?
+  (title doc-template-title)
+  (sections doc-template-sections)
+  (placeholders doc-template-placeholders))
+
+;; A function to clone a <document-template> record. We'll do a shallow copy here.
+(define (clone-document-template tmpl)
+  (make-document-template
+   (doc-template-title tmpl)
+   (doc-template-sections tmpl)
+   (doc-template-placeholders tmpl)))
+
+;; The "registry" for prototypes in our system:
+(define templates-registry (make-hash-table))
+
+(define (register-template key template)
+  (hash-set! templates-registry key template))
+
+(define (clone-template key)
+  (let ((tmpl (hash-ref templates-registry key #f)))
+    (if tmpl
+        (clone-document-template tmpl)
+        (error "No template found for key" key))))
+
+;; A procedure to fill placeholders in a <document-template>, producing final text.
+(define (fill-template tmpl data)
+  (let* ((title (doc-template-title tmpl))
+         (sections (doc-template-sections tmpl))
+         (ph (doc-template-placeholders tmpl)))
+    ;; We'll do a naive substitution for demonstration:
+    (define (substitute str)
+      (fold (lambda (placeholder result)
+              (let ((val (hash-ref data placeholder "")))
+                (string-replace result
+                                (string-append "{" placeholder "}")
+                                val)))
+            str
+            (hash-keys data)))
+    ;; Build the final text:
+    (string-append "Title: " (substitute title) "\n\n"
+                   (apply string-append
+                          (map (lambda (s)
+                                 (string-append (substitute s) "\n"))
+                               sections)))))
+
+;; Example usage:
+(let ((default-tmpl
+       (make-document-template
+        "Meeting Notes - {date}"
+        '("Attendees: {attendees}"
+          "Agenda: {agenda}"
+          "Key Decisions:")
+        '("date" "attendees" "agenda"))))
+  ;; Register this prototype under a key
+  (register-template "meeting-notes" default-tmpl)
+
+  ;; Clone and fill
+  (let ((meeting-doc (clone-template "meeting-notes")))
+    (let ((doc-str
+           (fill-template meeting-doc
+                          (list->hash-table
+                           '(("date" . "2025-02-10")
+                             ("attendees" . "Alice, Bob, Carol")
+                             ("agenda" . "Project Updates")))))))
+      (display doc-str) (newline))))
+#+END_SRC
+
+*** 4.2.1 Explanation
+
+- =<document-template>= Record: Holds fields for a title, a list of sections, and a list of placeholders.
+
+- =clone-document-template=: Creates a shallow copy of the record. We skip deep copying for simplicity; if sections or placeholders were lists, we might want to consider whether to duplicate them or share them.
+
+- =Registry=: =templates-registry= is a global hash table mapping a key (e.g., "meeting-notes") to a template record.
+
+- =clone-template=: Retrieves the record from the registry, then calls =clone-document-template= to produce a new instance.
+
+- =fill-template=: Performs a naive string substitution, replacing placeholders like ={date}= with actual values from a hash table.
+
+- =Usage=: We register a default “=meeting-notes=” template, then clone it. This approach demonstrates how new documents (i.e., new “instances”) are produced by duplication rather than re-building from scratch.
+
+** 4.3 Observations
+
+This example underscores the Prototype’s utility in a functional environment: we keep a library of standard objects (templates), clone them as needed, and finalize them. The principle is the same: we avoid re-constructing each document’s layout or structure. We do, however, have to remain mindful of shallow vs. deep copy if sections or placeholders were themselves large or mutable data structures.
+
+* 5. Advanced Example (Rust)
+
+For the advanced scenario, we’ll explore how =Prototype= can help in a game engine setting, where we store prototypes for complex entities with potentially nested or dynamic data. We’ll also address deeper copying and concurrency concerns, which often arise in games that spawn many entities in parallel.
+
+** 5.1 Motivating Scenario
+
+Imagine a 2D or 3D game engine that manages different “enemy” types. Each enemy might have unique assets (sprites, behaviors), stats, or AI parameters. The engine reads these from configuration files at runtime, storing each as a prototype. When the game spawns a new wave of enemies, it can clone the relevant prototypes in parallel, adjusting only position or difficulty as needed.
+
+** 5.2 Code Example (Advanced, Rust)
+
+#+BEGIN_SRC rust
+use std::collections::HashMap;
+use std::sync::{Arc, Mutex};
+use std::thread;
+
+// An AI behavior struct with nested data
+#[derive(Clone, Debug)]
+struct AIBehavior {
+    aggression_level: f32,
+    patrol_route: Vec<(i32, i32)>,
+}
+
+// The "Enemy" struct
+#[derive(Clone, Debug)]
+struct Enemy {
+    name: String,
+    health: i32,
+    speed: f32,
+    ai: AIBehavior,
+    // Potentially more fields: sprite assets, etc.
+}
+
+impl Enemy {
+    fn new(name: &str, health: i32, speed: f32, ai: AIBehavior) -> Self {
+        Enemy {
+            name: name.to_string(),
+            health,
+            speed,
+            ai,
+        }
+    }
+
+    fn update_position(&self) {
+        // Example method that might use speed or AI data
+        // In a real engine, you'd have x,y or transform data
+        println!("{} moves at speed {}", self.name, self.speed);
+    }
+}
+
+// A registry storing prototypes keyed by name
+#[derive(Default)]
+struct PrototypeRegistry {
+    prototypes: HashMap<String, Enemy>,
+}
+
+impl PrototypeRegistry {
+    fn register_prototype(&mut self, key: &str, prototype: Enemy) {
+        self.prototypes.insert(key.to_string(), prototype);
+    }
+
+    fn clone_prototype(&self, key: &str) -> Option<Enemy> {
+        self.prototypes.get(key).map(|enemy| enemy.clone())
+    }
+}
+
+fn main() {
+    // Setup registry
+    let mut registry = PrototypeRegistry::default();
+
+    // Create an AI behavior
+    let basic_ai = AIBehavior {
+        aggression_level: 0.8,
+        patrol_route: vec![(0,0), (10,0), (10,10)],
+    };
+
+    let stealth_ai = AIBehavior {
+        aggression_level: 0.2,
+        patrol_route: vec![(5,5), (5,10), (2,8)],
+    };
+
+    // Register some enemy prototypes
+    let grunt = Enemy::new("Grunt", 100, 1.5, basic_ai.clone());
+    let assassin = Enemy::new("Assassin", 80, 2.5, stealth_ai.clone());
+
+    registry.register_prototype("grunt", grunt);
+    registry.register_prototype("assassin", assassin);
+
+    // Parallel spawn example
+    let registry_arc = Arc::new(registry);
+    let mut handles = vec![];
+
+    for i in 0..5 {
+        let reg = Arc::clone(&registry_arc);
+        let handle = thread::spawn(move || {
+            let clone_key = if i % 2 == 0 { "grunt" } else { "assassin" };
+            if let Some(mut enemy_clone) = reg.clone_prototype(clone_key) {
+                // Modify just the name for uniqueness
+                enemy_clone.name = format!("{} #{}", enemy_clone.name, i);
+                enemy_clone.update_position();
+                println!("Spawned: {:?}", enemy_clone);
+            } else {
+                println!("No prototype found for key: {}", clone_key);
+            }
+        });
+        handles.push(handle);
+    }
+
+    // Wait for threads
+    for h in handles {
+        h.join().unwrap();
+    }
+}
+#+END_SRC
+
+*** 5.2.1 Explanation
+
+- =AIBehavior=: A nested struct storing an =aggression_level= and a =patrol_route=. We derive =Clone=, so calling =clone()= on =AIBehavior= produces a deep copy for the =Vec<(i32, i32)>=.
+
+- =Enemy=: Also derived from =Clone=. This ensures that copying an =Enemy= produces a new copy of its name, AI, and other fields. Because =AIBehavior= is also cloned, it’s effectively a “deep copy” of the relevant data.
+
+- =PrototypeRegistry=: A =HashMap<String, Enemy>= storing prototypes. A real game might load many such prototypes from JSON or TOML configurations. The =clone_prototype= method returns a fresh copy each time, which you can then customize.
+
+- =Parallel Spawning=: We wrap the registry in an =Arc= so multiple threads can access it concurrently (the registry itself is not mutated after creation, aside from the initial setup). Each thread retrieves a prototype, clones it, and modifies it slightly before spawning it in the game world.
+
+- =Potential Pitfalls=: If the =Enemy= struct contained references to external resources (e.g., textures, file handles), we’d have to consider whether to do shallow references (i.e., share them) or perform more elaborate copying. The combination of =Arc=, =Mutex=, or manual reference management would come into play.
+
+** 5.3 Observations
+
+This advanced Rust scenario underscores that =Prototype= thrives in contexts where repeated instantiation of complex objects is required. We can handle concurrency by storing prototypes in a shared structure, then creating clones in parallel. The derived =Clone= trait in Rust elegantly acts like a built-in mechanism for the =Prototype= pattern, as long as your struct fields themselves implement =Clone=.
+
+* 6. Nuances, Variations, and Best Practices
+
+** 6.1 Shallow vs. Deep Cloning
+
+One of the central debates around =Prototype= is how deep the cloning process should go:
+
+- =Shallow Copy=: Copying only top-level fields, while references to nested objects remain shared. This is simpler and faster, but can cause unexpected mutations if you assume each clone is fully independent.
+
+- =Deep Copy=: Recursively duplicating all nested data. This yields fully independent copies, but is more expensive and can be tricky with cyclic references or external resources.
+
+- =Selective Copy=: Some fields might be cloned deeply (e.g., data structures that must be unique per clone), while others remain references or IDs for shared resources (e.g., read-only assets like textures).
+
+Each approach must align with the domain’s semantics: do you want multiple clones to share sub-objects (e.g., a single sprite texture) or do they truly need distinct sub-objects (e.g., a private array that must differ per clone)?
+
+** 6.2 Registry vs. Polymorphic Cloning
+
+While our examples used a “registry” approach, it’s also common to see polymorphic prototypes in an inheritance-based language. For instance, each class implements a =clone()= method returning the correct subclass. This is a direct manifestation of the pattern described by the Gang of Four. In languages with strong type systems like Rust, or in functional environments like Scheme, we might not rely on inheritance but still replicate the concept by storing or passing around “cloneable” objects.
+
+** 6.3 Editing the Prototype at Runtime
+
+One advantage of =Prototype= is that you can tweak the prototype object mid-game or mid-session, and all subsequent clones inherit those changes. This is extremely powerful if you have a modding system or dynamic environment. You must, however, be careful about concurrency and ensuring that existing clones aren’t unexpectedly affected by partially shared data.
+
+** 6.4 Alternatives and Overuse
+
+In simpler scenarios, a =Factory Method= or =Abstract Factory= might suffice if the creation logic is straightforward or if you don’t need runtime customization. If you primarily need dynamic copying and a class-level =clone()= method is easy to maintain, you might not need a dedicated “prototype registry.” The pattern shines most when:
+
+1. You frequently need new objects with the same or mostly the same configuration.
+2. You want to add new “types” (prototypes) at runtime without changing your code.
+3. Creation from scratch is costly or tedious.
+4. You have complicated object graphs that should be (largely) duplicated for each new instance.
+
+** 6.5 Recognizing Prototype in Real Code
+
+- =Document/Template Systems=: Systems that store base templates and produce new documents by “duplicating” them.
+
+- =Graphics or Game Engines=: Often storing standard object configurations (particles, NPCs, projectiles, UI elements) to be cloned.
+
+- =GUI Frameworks=: For instance, a “duplicate widget” feature for user convenience, implemented via prototype-like cloning.
+
+- =Database or ORM Tools=: Some frameworks let you replicate an existing entity record in memory to produce new records, effectively cloning certain fields.
+
+When you notice an application that keeps “base objects” around and calls something like =clone=, =copy=, or =duplicate= to create fresh instances, that’s a strong sign of a =Prototype= pattern at play.
+
+* 7. Real-World Usage
+
+- =Graphic Editors / CAD Software=: Cloning shapes, images, or layers to build repetitive elements quickly.
+- =Games and Simulations=: Spawning large numbers of similar entities, each with slight variations, without reconstructing from scratch.
+- =Templates/Document Systems=: Cloning a standard invoice, letter, or configuration template.
+- =Deep Copy Libraries=: Some languages provide built-in or library-based deep copy utilities that can be leveraged to implement =Prototype=.
+- =Data Science Pipelines=: Where you might copy partially prepared dataset objects or transformations for branching analyses.
+
+* 8. Conclusion
+
+The =Prototype= pattern addresses a unique niche in software design: object creation by cloning an existing instance, rather than by direct construction. This approach can drastically simplify code when objects are expensive or complex to initialize, or when new “types” appear dynamically. Our three examples in Python, Guile Scheme, and Rust illustrate the pattern’s adaptability across paradigms:
+
+- =Python (Beginner)=: Simple shape classes cloned via =copy.copy=, registered in a “prototype registry.”
+- =Guile Scheme (Intermediate)=: A record-based approach for document templates, demonstrating how functional languages can replicate or store partial data in a registry for cloning.
+- =Rust (Advanced)=: Demonstrating concurrency and deeper cloning of nested data structures (like AI behavior), especially relevant to performance-intensive scenarios such as game development.
+
+Throughout, the core concept remains: keep a well-configured “prototype” object and duplicate it when you need more of its kind. This spares your program from repetitive construction details, unifies object creation logic, and can yield performance benefits. As always, the key is to balance those benefits against the complexity of managing clone semantics (shallow vs. deep) and ensuring that the pattern is genuinely needed. When used judiciously, the =Prototype= pattern can elegantly unify runtime flexibility, performance, and maintainable design.
