@@ -1,0 +1,456 @@
+:PROPERTIES:
+:ID:       793b024f-d927-43ce-a0f9-352d032c1c96
+:END:
+#+TITLE: Circuit Breaker Pattern
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+* 1. Introduction and Historical Context
+
+A Circuit Breaker is a resilience pattern designed to protect a system from repeated attempts to call a remote service or resource that is consistently failing or slow. In normal operation, the circuit is “closed,” allowing calls to pass. If too many failures or timeouts happen, the circuit “opens,” and further calls fail fast (or return an immediate fallback) rather than tying up resources or compounding the failure. After a timeout or partial successes, the circuit moves to “half-open,” testing if the remote service has recovered. If successful calls occur, the circuit closes again; otherwise it re-opens. This approach is reminiscent of an electrical circuit breaker protecting from overload.
+
+Historically, Circuit Breaker emerged in distributed systems, especially with microservices. If service A calls service B, which is down or responding very slowly, naive code repeatedly tries B, hogging threads or saturating queues. With a circuit breaker, once B is deemed “unhealthy,” A immediately returns an error or fallback, preserving resources. Over time, Netflix’s Hystrix popularized this pattern in mainstream microservice architecture. Many modern frameworks (like Spring Cloud, resilience4j in Java, or custom solutions in Rust, Go, etc.) incorporate a circuit breaker as a standard resilience measure.
+
+** 1.1 Why Use Circuit Breaker?
+
+- Prevent Cascading Failures: If a downstream service is failing, calls accumulate timeouts. This can meltdown the entire system. A circuit breaker “fails fast” after threshold failures.
+- Resource Protection: Minimizes threads or connections wasted on unresponsive calls.
+- Automatic Recovery: The circuit moves to half-open and tests the remote service after some time, re-closing if it recovers.
+- Better User Experience: Instead of indefinite waits, you can quickly return a fallback or partial data, letting the user continue.
+
+** 1.2 Potential Pitfalls
+
+- Configuration: Setting thresholds (like how many failures in a row open the circuit) or timeouts (how long to remain open) can be tricky.
+- False Positives: If the threshold is too low, a momentary glitch might open the circuit unnecessarily. If it’s too high, you might keep pounding a dead service.
+- Shared State: If you have multiple callers of the same remote service, do you have a single circuit for them all or one circuit per caller? This depends on your architecture.
+- Fallback Complexity: If calls fail fast, the system might degrade gracefully, but you must still define partial or no responses. Some code might rely on the real result.
+
+Nevertheless, Circuit Breaker is a hallmark pattern for microservices or asynchronous systems that rely on external calls. It fosters robust, fault-tolerant architectures.
+
+* 2. Conceptual Motivation
+
+Imagine a payment microservice that calls a credit check service for each transaction. If the credit check service slows or becomes unreachable, repeated calls from the payment service can time out, blocking threads or saturating memory. Meanwhile, the user sees a spinning wheel. With a circuit breaker, after (say) 5 consecutive timeouts, the breaker opens. Future calls immediately fail or return a fallback “unknown credit status,” letting the system handle that gracefully. The user might see a quick “Service is temporarily unavailable, please try again.” Meanwhile, after 30 seconds, the breaker tries a test call to see if the credit check recovers. If it works, the circuit closes and normal calls resume. This approach is simpler, more resource-friendly, and yields better overall reliability than indefinitely hammering a dead service.
+
+* 3. Beginner Example (Haskell)
+
+** 3.1 Motivating Scenario
+
+We will create a Haskell demonstration in which a function “callService” calls a hypothetical remote service to fetch data. We wrap a circuit breaker around it, storing state in a mutable reference (like an IORef). The circuit can be in states: Closed, Open, or HalfOpen. We define a threshold for failures and a timeout for the open state. This is a minimal approach: we do everything in a single process, ignoring real networking, but it shows how you might track failures, open the breaker, then half-open after a delay.
+
+** 3.2 Code Example (Beginner, Haskell)
+
+#+BEGIN_SRC haskell
+{-# LANGUAGE OverloadedStrings #-}
+module Main where
+
+import Control.Concurrent (threadDelay, forkIO)
+import Control.Concurrent.STM
+import Control.Monad (forever)
+import Data.Time.Clock (getCurrentTime, addUTCTime, UTCTime)
+
+data CBState = Closed { failureCount :: Int }
+             | Open   { reopenTime :: UTCTime } 
+             | HalfOpen
+             deriving Show
+
+data CircuitBreaker = CircuitBreaker {
+    stateVar :: TVar CBState,
+    failThreshold :: Int,
+    openDuration :: Int -- in seconds
+}
+
+-- We'll define a function that attempts the "remote call"
+-- but might fail arbitrarily
+simulateService :: IO Bool
+simulateService = do
+  -- let's pretend it fails 1 in 3 times
+  return False -- to demonstrate fail
+  -- for a real random approach, do randomRIO etc.
+
+callWithCircuit :: CircuitBreaker -> IO (Either String Bool)
+callWithCircuit cb = atomically (readTVar (stateVar cb)) >>= \st -> case st of
+    Open reopenT -> do
+      now <- getCurrentTime
+      if now >= reopenT then do
+        -- transition to HalfOpen
+        atomically $ writeTVar (stateVar cb) HalfOpen
+        attemptCall cb
+      else
+        return (Left "Circuit is open, failing fast.")
+    HalfOpen -> attemptCall cb
+    Closed fc -> attemptCall cb
+
+attemptCall :: CircuitBreaker -> IO (Either String Bool)
+attemptCall cb = do
+  -- do the real or simulated call
+  success <- simulateService
+  if success then do
+    atomically $ do
+      st <- readTVar (stateVar cb)
+      case st of
+        HalfOpen -> writeTVar (stateVar cb) (Closed 0)
+        Closed fc -> writeTVar (stateVar cb) (Closed 0) -- reset failure count
+        _ -> return ()
+    return (Right True)
+  else do
+    -- we have a failure
+    atomically $ do
+      st <- readTVar (stateVar cb)
+      case st of
+        HalfOpen -> do
+          -- open the circuit
+          now <- unsafeIOToSTM getCurrentTime
+          let openT = addUTCTime (fromIntegral (openDuration cb)) now
+          writeTVar (stateVar cb) (Open openT)
+        Closed fc -> do
+          let fc2 = fc + 1
+          if fc2 >= failThreshold cb
+            then do
+              now <- unsafeIOToSTM getCurrentTime
+              let openT = addUTCTime (fromIntegral (openDuration cb)) now
+              writeTVar (stateVar cb) (Open openT)
+            else
+              writeTVar (stateVar cb) (Closed fc2)
+        Open _ -> return ()
+    return (Left "Remote call failed.")
+
+initCircuit :: Int -> Int -> IO CircuitBreaker
+initCircuit threshold duration = do
+  stVar <- newTVarIO (Closed 0)
+  return $ CircuitBreaker stVar threshold duration
+
+main :: IO ()
+main = do
+  cb <- initCircuit 2 5 -- threshold=2 fails, open for 5 seconds
+  putStrLn "Start test of circuit breaker..."
+
+  let loop = do
+        res <- callWithCircuit cb
+        print res
+        threadDelay 1000000
+        loop
+
+  loop
+#+END_SRC
+
+** 3.2.1 Explanation
+
+- **CBState**: We define `Closed { failureCount }`, `Open { reopenTime }`, or `HalfOpen`.
+- **callWithCircuit**: We read the state. If it’s Open, we check if the reopen time has passed. If not, fail fast. If passed, we switch to HalfOpen and do a call. If Closed, we do a call.
+- **attemptCall**: We do the “remote call” (here we do a simple `simulateService` that always returns `False` for demonstration). If success, we set fails=0 or close the circuit. If fail, we increment fails or open the circuit if threshold is reached. If we’re in HalfOpen and fail, we open the circuit.
+- **Usage**: We do repeated calls in a loop. The circuit quickly hits the threshold and opens for 5 seconds, failing fast. Then after 5 seconds, we half-open, test again, etc.
+
+** 3.3 Observations
+
+This minimal Haskell code shows the circuit’s state transitions. We used STM to store the state in a TVar, ensuring concurrency safety. The code is “beginner” because it’s a single process simulation, but it captures the typical logic. A real system might incorporate a real remote call, random success/fail, or store circuit states in an external store if multiple processes share the same circuit.
+
+* 4. Intermediate Example (Rust)
+
+** 4.1 Motivating Scenario
+
+We’ll do a Rust scenario with a more advanced approach: multiple concurrent “clients” calling a remote function behind a circuit breaker library. The library can handle concurrency so that once the circuit is open, all callers get an immediate error, while one caller attempts to test the service in half-open. We’ll store state in `Arc<Mutex<...>>`, track success/fail stats, and demonstrate a naive approach for concurrency.
+
+** 4.2 Code Example (Intermediate, Rust)
+
+#+BEGIN_SRC rust
+use std::sync::{Arc, Mutex};
+use std::time::{Instant, Duration};
+use std::thread;
+use rand::Rng;
+
+enum CircuitState {
+    Closed { fails: u32 },
+    Open { next_try: Instant },
+    HalfOpen,
+}
+
+struct CircuitBreaker {
+    state: Arc<Mutex<CircuitState>>,
+    fail_threshold: u32,
+    reset_timeout: Duration,
+}
+
+impl CircuitBreaker {
+    fn new(threshold: u32, timeout: Duration) -> Self {
+        CircuitBreaker {
+            state: Arc::new(Mutex::new(CircuitState::Closed { fails: 0 })),
+            fail_threshold: threshold,
+            reset_timeout: timeout,
+        }
+    }
+
+    fn call_service(&self) -> Result<(), &'static str> {
+        let mut st = self.state.lock().unwrap();
+        match &mut *st {
+            CircuitState::Open { next_try } => {
+                // check if we can half-open
+                if Instant::now() >= *next_try {
+                    // move to half-open
+                    *st = CircuitState::HalfOpen;
+                } else {
+                    return Err("circuit open, fail fast");
+                }
+            }
+            _ => {}
+        }
+        drop(st); // release lock before calling
+
+        // do the actual call
+        let success = self.remote_call_sim();
+        if success {
+            // success => reset fails if half-open or closed
+            let mut st2 = self.state.lock().unwrap();
+            match &mut *st2 {
+                CircuitState::HalfOpen => {
+                    *st2 = CircuitState::Closed { fails: 0 };
+                }
+                CircuitState::Closed { fails } => {
+                    *fails = 0;
+                }
+                _ => {}
+            }
+            Ok(())
+        } else {
+            // fail
+            let mut st3 = self.state.lock().unwrap();
+            match &mut *st3 {
+                CircuitState::Closed { fails } => {
+                    *fails += 1;
+                    if *fails >= self.fail_threshold {
+                        *st3 = CircuitState::Open {
+                            next_try: Instant::now() + self.reset_timeout,
+                        };
+                    }
+                }
+                CircuitState::HalfOpen => {
+                    *st3 = CircuitState::Open {
+                        next_try: Instant::now() + self.reset_timeout,
+                    };
+                }
+                CircuitState::Open {..} => {
+                    // already open
+                }
+            }
+            Err("service fail")
+        }
+    }
+
+    fn remote_call_sim(&self) -> bool {
+        // 50% chance fail
+        rand::thread_rng().gen_bool(0.5)
+    }
+}
+
+fn main() {
+    let breaker = CircuitBreaker::new(3, Duration::from_secs(5));
+
+    let mut handles = Vec::new();
+    for i in 0..10 {
+        let b_clone = breaker.clone();
+        let h = thread::spawn(move || {
+            let res = b_clone.call_service();
+            println!("Thread {} => {:?}", i, res);
+        });
+        handles.push(h);
+        thread::sleep(Duration::from_millis(500));
+    }
+
+    for h in handles {
+        h.join().unwrap();
+    }
+    println!("End of main");
+}
+#+END_SRC
+
+** 4.2.1 Explanation
+
+- **CircuitState**: We define `Closed { fails }`, `Open { next_try }`, `HalfOpen`.
+- **call_service(...)**:
+  - We lock the state. If open, check if next_try is passed. If not, fail fast. If passed, half-open.
+  - We do a “remote_call_sim()`. If success, reset fails or close the circuit. If fail, increment fails or open. If half-open fail, re-open.
+- **Concurrency**: We create multiple threads calling `breaker.call_service()` in quick succession. If the service keeps failing, the circuit will open, returning immediate error. After 5s, half-open, etc.
+- **Usage**: We do 10 calls in separate threads. The code logs success/fail or “circuit open.”
+
+** 4.3 Observations
+
+This intermediate example shows a concurrency-aware circuit breaker that locks on each call to update the state. We do a naive approach with a single `Arc<Mutex<...>>`. Real libraries might do more advanced metrics (like rolling windows for fail ratio), might return ephemeral tokens for half-open calls, etc. The logic remains typical: closed→accumulate fails→open→time passes→half-open test call→close or open again.
+
+* 5. Advanced Example (Go)
+
+** 5.1 Motivating Scenario
+
+We conclude with an advanced usage in Go. We’ll build a distributed scenario with multiple instances of a “Gateway” microservice that calls a “Payment” microservice, each Gateway maintaining a local circuit breaker. We might use a pub-sub or load balancer approach so that each Gateway has its own breaker state. We demonstrate some features like a health-check approach: once open, we do a separate goroutine that attempts a “ping” call every few seconds. If it works, we close. If not, we remain open.
+
+** 5.2 Code Example (Advanced, Go)
+
+#+BEGIN_SRC go
+package main
+
+import (
+    "fmt"
+    "net/http"
+    "time"
+    "sync"
+    "errors"
+    "math/rand"
+)
+
+type CBState int
+const (
+    CBClosed CBState = iota
+    CBOpen
+    CBHalfOpen
+)
+
+type CircuitBreaker struct {
+    mu            sync.Mutex
+    state         CBState
+    failCount     int
+    failThreshold int
+    openUntil     time.Time
+    halfOpenTrial bool
+    resetTimeout  time.Duration
+}
+
+// create new circuit
+func NewCircuitBreaker(threshold int, reset time.Duration) *CircuitBreaker {
+    return &CircuitBreaker{
+        state: CBClosed,
+        failCount: 0,
+        failThreshold: threshold,
+        resetTimeout: reset,
+    }
+}
+
+// main call
+func (cb *CircuitBreaker) DoRequest(client *http.Client, url string) error {
+    cb.mu.Lock()
+    state := cb.state
+    if state == CBOpen {
+        if time.Now().After(cb.openUntil) {
+            // move half open
+            cb.state = CBHalfOpen
+        } else {
+            cb.mu.Unlock()
+            return errors.New("circuit open, fail fast")
+        }
+    }
+    cb.mu.Unlock()
+
+    // attempt
+    err := doHTTPRequest(client, url)
+    cb.mu.Lock()
+    defer cb.mu.Unlock()
+
+    if err == nil {
+        // success
+        switch cb.state {
+        case CBHalfOpen:
+            // close
+            cb.state = CBClosed
+            cb.failCount = 0
+        case CBClosed:
+            cb.failCount = 0
+        }
+        return nil
+    } else {
+        // fail
+        switch cb.state {
+        case CBClosed:
+            cb.failCount++
+            if cb.failCount >= cb.failThreshold {
+                cb.state = CBOpen
+                cb.openUntil = time.Now().Add(cb.resetTimeout)
+            }
+        case CBHalfOpen:
+            cb.state = CBOpen
+            cb.openUntil = time.Now().Add(cb.resetTimeout)
+        }
+        return err
+    }
+}
+
+func doHTTPRequest(client *http.Client, url string) error {
+    // simulate random
+    if rand.Float32() < 0.4 {
+        return errors.New("simulated network error")
+    }
+    // real or test call
+    // for demonstration, we do nothing
+    time.Sleep(100 * time.Millisecond)
+    return nil
+}
+
+// usage: multiple Gateways calling the same Payment service
+func main() {
+    rand.Seed(time.Now().UnixNano())
+    cb1 := NewCircuitBreaker(3, 5*time.Second)
+    cb2 := NewCircuitBreaker(2, 5*time.Second)
+    client := &http.Client{}
+
+    for i := 0; i < 10; i++ {
+        go func(id int) {
+            err := cb1.DoRequest(client, "http://payment.local/charge")
+            fmt.Printf("Gateway1-%d => %v\n", id, err)
+        }(i)
+        time.Sleep(200 * time.Millisecond)
+    }
+
+    for i := 0; i < 10; i++ {
+        go func(id int) {
+            err := cb2.DoRequest(client, "http://payment.local/charge")
+            fmt.Printf("Gateway2-%d => %v\n", id, err)
+        }(i)
+        time.Sleep(150 * time.Millisecond)
+    }
+
+    // let them run
+    time.Sleep(8 * time.Second)
+    fmt.Println("Main done.")
+}
+#+END_SRC
+
+** 5.2.1 Explanation
+
+- **CircuitBreaker**: We store state (`CBClosed`, `CBOpen`, `CBHalfOpen`), a failCount, thresholds, a time for openUntil, etc.
+- **DoRequest(...):** If open and not yet time, we fail fast. If open but time has passed, we half-open. We attempt the request. If success, we close or reset failCount. If fail, we open if closed or remain open if half-open. We do it all under a `sync.Mutex`.
+- **doHTTPRequest**: We simulate a 40% fail. Real code would do `http.Get(...).`
+- **Usage**: We spawn multiple goroutines in two different Gateways (cb1, cb2), each calling the same “http://payment.local/charge.” They log if they succeed or if the circuit is open. Over time, each circuit might open, remain open for 5s, half-open, re-check, etc.
+
+** 5.3 Observations
+
+This advanced Go example uses multiple circuit breakers, each belonging to a “Gateway.” We simulate distributed environment. Real code might do health-check threads, logs, etc. The pattern remains the same: track fails, open the circuit if threshold is reached, re-check after resetTimeout, etc.
+
+* 6. Nuances, Variations, and Best Practices
+
+1. Per-Endpoint Breakers: Typically, you define a circuit breaker per remote endpoint or group of calls. If you have many calls, you may want a finer approach for each distinct service.
+
+2. Rolling Windows: Instead of a raw fail count, some designs track a ratio of successes/fails in a rolling time window (like “failRate > 50% => open”). This is more dynamic.
+
+3. Half-Open Behavior: Some libraries let only a single test request pass in half-open, or they might let a limited number of test calls. The pattern can vary.
+
+4. Fallbacks: If the circuit is open, you might return a fallback response or partial data. If you do that, ensure the calling code knows it’s degrade mode.
+
+5. Distributed Shared State: If you want to share circuit state across multiple nodes or processes, you need a distributed store or aggregator. This can be more complex. Often each node has its own local circuit.
+
+6. Integration with Metrics: Tying circuit breaker events to a monitoring system is crucial. You want to see how often it opens, how many requests are failing, etc.
+
+7. Testing: Include chaos or random failures. Observe if the circuit indeed fails fast after threshold, and recovers properly.
+
+* 7. Real-World Usage
+
+- **Microservices**: Each microservice calling external services might keep a circuit breaker for each remote endpoint. Tools like Hystrix, resilience4j are common in Java.
+- **Cloud**: AWS Lambda or GCP Functions calling external APIs might implement a simple circuit breaker to avoid meltdown if the external API is down.
+- **IoT**: If an IoT gateway calls a central server that occasionally fails, a circuit breaker can keep the gateway from stalling.
+- **Game Servers**: If the server calls a match-making or authentication service that fails, the breaker can fail fast.
+
+* 8. Conclusion
+
+The Circuit Breaker pattern is a resilience approach to handle repeated calls to a failing or slow resource. By opening after threshold failures, the system spares resources and provides a fast fail instead of indefinite timeouts. Over time, it tries a test call (half-open) to see if the resource has recovered. If yes, it closes the circuit. If no, it remains open. This fosters robust, fault-tolerant microservice or asynchronous designs.
+
+We demonstrated:
+
+- **Beginner (Haskell)**: A single-process circuit breaker that updates state in an IORef or TVar. We show how we track fails, open the circuit, wait a time, half-open, etc.
+- **Intermediate (Rust)**: A concurrency-friendly approach with an Arc<Mutex> storing the circuit state. Multiple threads can call the same breaker. We do a naive 50% fail simulation, illustrating typical logic for close→open→half-open transitions.
+- **Advanced (Go)**: A scenario with multiple Gateways, each with its own circuit to the Payment service. We see how each gateway might open after enough fails, remain open for 5 seconds, then half-open. This is typical in distributed systems where each node has a local breaker.
+
+Using a Circuit Breaker is key whenever a remote resource can fail or slow, and your architecture needs to prevent the entire system from meltdown. If you set thresholds and timeouts wisely, you get improved stability, fail-fast behavior, and a better overall user experience. Overly aggressive or naive configurations might hamper your system’s availability, so thorough testing is essential. In large-scale asynchronous or microservice environments, a Circuit Breaker is usually part of standard resilience patterns (alongside Retries, Bulkheads, Timeouts, etc.) to ensure your system can degrade gracefully under partial failures.
