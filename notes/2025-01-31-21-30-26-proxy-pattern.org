@@ -1,0 +1,324 @@
+:PROPERTIES:
+:ID:       5325c120-4529-4c5c-b0a2-773321eda53e
+:END:
+#+TITLE: Proxy Pattern
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+* 1. Introduction and Historical Context
+
+The =Proxy= pattern is a structural design pattern in object-oriented programming, used to provide a stand-in or “placeholder” object that controls access to another underlying “real” object. Rather than the client code communicating directly with the target object, it interacts with the proxy, which can add extra behavior—such as caching, lazy loading, access control, remote access, or logging—before eventually forwarding requests to the real object.
+
+Historically, the concept of a proxy emerged from distributed systems and resource management. For example, in remote method invocation (RMI), the local proxy object stands in for a remote server object. Another classic usage is virtual proxies that defer loading an expensive resource until absolutely necessary. Over time, =Proxy= has become a staple pattern whenever you need some measure of indirection—particularly in frameworks and libraries that manage resources, security, or concurrency in a transparent manner.
+
+** 1.1 Why Use a Proxy?
+
+- =Controlled Access=: If the real object is sensitive or resource-intensive, the proxy can decide who can use it, or under which conditions it is loaded.
+
+- =Lazy Instantiation=: A virtual proxy can wrap an object that’s expensive to create (e.g., a large image or database connection), creating it only when it’s first needed.
+
+- =Additional Behavior=: Proxies can add logging, caching, concurrency controls, usage metering, or other cross-cutting concerns without polluting the real object’s code.
+
+- =Remote Access=: In distributed systems, the client may hold a proxy that hides the details of network calls to a remote server object.
+
+** 1.2 Potential Pitfalls
+
+- =Added Complexity=: Introducing a proxy is an extra layer of indirection. Debugging might become trickier if you have to figure out whether issues lie in the real object or in the proxy’s logic.
+
+- =Interface Duplication=: Typically, the proxy must implement the same interface as the real subject, which can be repetitive if that interface is large.
+
+- =Performance Overhead=: Each proxy call can be an extra function call or logic step. Usually negligible, but in tight loops or high-performance code, you might notice it.
+
+Where the benefits of controlling or augmenting access to an object outweigh these drawbacks, =Proxy= is often an elegant solution.
+
+* 2. Conceptual Motivation
+
+A straightforward motivating scenario is lazy loading of a large image file. Suppose you have an application that might display multiple high-resolution images, but only some are actually needed. A =VirtualImageProxy= object can stand in for the real =HighResImage= object. When client code calls =display()=, the proxy checks if the real image is already loaded; if not, it loads it on the spot. This yields faster initial loading times and better memory usage.
+
+Another prime example is a protection proxy, where the proxy checks user credentials or usage limits before delegating calls to a real service. This is seen in many security frameworks, which wrap restricted resources with a permission-checking layer.
+
+* 3. Beginner Example (Python)
+
+Let’s begin with a basic usage scenario in Python: Virtual Proxy for lazy loading. We’ll illustrate a =VirtualImageProxy= that stands in for an expensive =HighResImage=. This is a typical textbook demonstration of how the pattern can reduce resource usage by delaying instantiation.
+
+** 3.1 Motivating Scenario
+
+An art gallery application displays thumbnails of many large images. The user can click on a thumbnail to see a high-resolution version. We don’t want to load all high-resolution images at startup. Instead, we want a proxy that defers actual image loading until the user requests to display it.
+
+** 3.2 Code Example (Beginner, Python)
+
+#+BEGIN_SRC python
+class Image:
+    """An interface for images."""
+    def display(self):
+        raise NotImplementedError
+
+class HighResImage(Image):
+    """The real subject, potentially large in memory or expensive to load."""
+    def __init__(self, filename):
+        self.filename = filename
+        print(f"Loading high-resolution image from {filename}...")
+        # Simulate expensive load
+        self.data = f"BinaryDataOf-{filename}"
+
+    def display(self):
+        print(f"Displaying high-resolution image: {self.filename}")
+
+class VirtualImageProxy(Image):
+    """A proxy that defers loading of the actual HighResImage until display time."""
+    def __init__(self, filename):
+        self.filename = filename
+        self._real_image = None
+
+    def display(self):
+        # Only load when display is called
+        if not self._real_image:
+            print(f"Proxy: no real image loaded yet. Loading now...")
+            self._real_image = HighResImage(self.filename)
+        self._real_image.display()
+
+# Example usage
+if __name__ == "__main__":
+    # Creating a proxy for an image
+    image1 = VirtualImageProxy("artwork_large.png")
+
+    # The real image isn't loaded yet. Only when we call display
+    print("Now we decide to display the image.")
+    image1.display()
+    # subsequent display calls won't reload
+    image1.display()
+#+END_SRC
+
+*** 3.2.1 Explanation
+
+- =Image= Interface: Both the real image and the proxy implement Image, ensuring the client can call =display()= interchangeably.  
+- =HighResImage= (Real Subject): Loading is expensive, simulated in =__init__=.  
+- =VirtualImageProxy= (Proxy): Holds only a filename, defers creating =HighResImage= until display() is called.  
+- =Usage=: The user code sees only an Image-like object; the first display triggers actual loading, subsequent calls skip reloading.
+
+** 3.3 Observations
+
+This is the canonical illustration of a virtual proxy: memory and load time are optimized by deferring creation of the real, heavy object until strictly necessary.
+
+* 4. Intermediate Example (Rust)
+
+We’ll demonstrate an intermediate scenario in Rust involving a protection proxy or access control proxy. Our code defines a Database trait and a DatabaseProxy that checks credentials before allowing queries.
+
+** 4.1 Motivating Scenario
+
+An internal application queries a database for certain data. We only want authorized users to see certain tables or records. Instead of embedding the checks directly in the Database code, we create a proxy that intercepts queries and validates credentials, letting the real DB remain simple.
+
+** 4.2 Code Example (Intermediate, Rust)
+
+#+BEGIN_SRC rust
+use std::collections::HashMap;
+
+// The database trait
+trait Database {
+    fn query(&self, user: &str, query_str: &str) -> Option<String>;
+}
+
+// The real subject: a simple in-memory database
+struct RealDatabase {
+    data: HashMap<String, String>,
+}
+
+impl RealDatabase {
+    fn new() -> Self {
+        let mut data_map = HashMap::new();
+        data_map.insert("users".to_string(), "user_data_table".to_string());
+        data_map.insert("payments".to_string(), "payment_info_table".to_string());
+        RealDatabase { data: data_map }
+    }
+}
+
+impl Database for RealDatabase {
+    fn query(&self, _user: &str, query_str: &str) -> Option<String> {
+        println!("RealDatabase: Executing query '{}'", query_str);
+        // For simplicity, just check if the query_str is a key in the map
+        self.data.get(query_str).cloned()
+    }
+}
+
+// Proxy that checks if the user is "admin"
+struct AuthProxy {
+    real_db: RealDatabase,
+}
+
+impl AuthProxy {
+    fn new(db: RealDatabase) -> Self {
+        AuthProxy { real_db: db }
+    }
+
+    fn is_authorized(user: &str) -> bool {
+        user == "admin"
+    }
+}
+
+impl Database for AuthProxy {
+    fn query(&self, user: &str, query_str: &str) -> Option<String> {
+        if AuthProxy::is_authorized(user) {
+            println!("AuthProxy: User '{}' is authorized. Forwarding query.", user);
+            self.real_db.query(user, query_str)
+        } else {
+            println!("AuthProxy: User '{}' is NOT authorized. Query blocked.", user);
+            None
+        }
+    }
+}
+
+// Demonstration:
+fn main() {
+    let real_db = RealDatabase::new();
+    let proxy_db = AuthProxy::new(real_db);
+
+    let user1 = "bob";
+    let user2 = "admin";
+
+    let result1 = proxy_db.query(user1, "users");
+    println!("Result for bob => {:?}", result1);
+
+    let result2 = proxy_db.query(user2, "payments");
+    println!("Result for admin => {:?}", result2);
+}
+#+END_SRC
+
+*** 4.2.1 Explanation
+
+- =Database Trait=: The uniform interface for querying data.  
+- =RealDatabase= (Real Subject): Stores data in a HashMap. query just logs and returns.  
+- =AuthProxy= (Proxy): On query calls, it verifies if user == “admin.” If yes, delegates; else blocks.  
+- =Usage=: We create a RealDatabase, wrap it in AuthProxy, then test queries from “bob” and “admin.” The proxy logs whether the user is authorized and either calls the real DB or denies.
+
+** 4.3 Observations
+
+This is a classic protection proxy pattern. The real DB code remains free of security logic, focusing on data retrieval. The proxy stands in for it, implementing the same trait but adding credential checks.
+
+* 5. Advanced Example (Guile Scheme)
+
+Finally, we’ll illustrate an advanced usage in Guile Scheme for a remote proxy that stands in for an object living in another process or host. We’ll simulate minimal “network calls” to show how the proxy hides distribution details.
+
+** 5.1 Motivating Scenario
+
+We have a distributed system where the real object (a data service) runs remotely. Our local code wants to call getData(key) as though it’s local. The proxy object in Scheme can handle a simulated “network” call, returning results from the remote service.
+
+** 5.2 Code Example (Advanced, Guile Scheme)
+
+#+BEGIN_SRC scheme
+(use-modules (oop goops)
+             (srfi srfi-1))
+
+;; 1) Define an interface <remote-service> with a 'get-data' method
+(define-class <remote-service> ()
+  (virtual (get-data (self key)) "Retrieve data by key from remote or local source"))
+
+;; 2) Real service: Suppose it's actually a local server function
+(define-class <real-remote-service> (<remote-service>)
+  (data #:init-keyword #:data #:init-value '())
+
+  ;; store data in an alist (key . value)
+  (define (get-data (self) key)
+    (let ((found (assq key (slot-ref self 'data))))
+      (if found
+          (cdr found)
+          (string-append "No data found for key: " (symbol->string key))))))
+
+;; 3) Proxy class: <remote-service-proxy>, which simulates a network call
+(define-class <remote-service-proxy> (<remote-service>)
+  (remote-address #:init-keyword #:remote-address #:init-value "127.0.0.1:9999")
+  (network-simulation #:init-keyword #:network-simulation)
+  (define real-subject #f)
+
+  (define (get-data (self) key)
+    ;; Instead of direct call, we simulate a network request if not connected
+    (if (not real-subject)
+        (begin
+          (format #t "Proxy: connecting to remote address ~a...\n"
+                  (slot-ref self 'remote-address))
+          (set! real-subject ((slot-ref self 'network-simulation) 'connect
+                              (slot-ref self 'remote-address)))))
+    ;; now we have a real-subject, so let's simulate a "remote" call
+    (format #t "Proxy: sending request over the wire for key '~a'\n" (symbol->string key))
+    (send real-subject 'get-data key)))
+
+;; 4) We'll define a procedure that simulates "network-simulation"
+;; The 'connect' command returns an instance of <real-remote-service>.
+(define (make-network-simulation data-alist)
+  (lambda (cmd . args)
+    (case cmd
+      ((connect)
+       (let ((address (car args)))
+         (format #t "Simulating network connect to ~a, returning real service.\n" address)
+         ;; create the real service with data
+         (make <real-remote-service> #:data data-alist)))
+      (else (error "Unknown network-simulation command" cmd)))))
+
+;; Example usage
+(let* ((data-sim '((apple . "Green Apple")
+                   (banana . "Yellow Banana")
+                   (car . "Blue Car")))
+       (net-sim (make-network-simulation data-sim))
+       (proxy (make <remote-service-proxy>
+                    #:remote-address "10.0.0.5:8888"
+                    #:network-simulation net-sim)))
+
+  (display (send proxy 'get-data 'apple)) (newline)
+  (display (send proxy 'get-data 'banana)) (newline)
+  (display (send proxy 'get-data 'car)) (newline))
+#+END_SRC
+
+*** 5.2.1 Explanation
+
+- =<remote-service>=: Base interface with a get-data method.  
+- =<real-remote-service>= (Real Subject): Actually stores data in an alist.  
+- =<remote-service-proxy>= (Proxy): On get-data calls, first ensures we’re “connected” (i.e., we have a real subject). Then simulates sending a request over the wire, eventually delegating to the real subject.  
+- make-network-simulation: A closure that “connects” to an address, returning <real-remote-service>.  
+- Usage: The client calls (send proxy 'get-data 'banana), and the proxy logs network connection once, then subsequent calls skip reconnection.
+
+** 5.3 Observations
+
+We see a remote proxy scenario: the local object acts like the remote service, while actually forwarding calls. Real code might use sockets or HTTP requests. The pattern’s essence is that the client sees a local service interface, but behind the scenes it’s a proxy forwarding to a remote object.
+
+* 6. Nuances, Variations, and Best Practices
+
+** 6.1 Different Kinds of Proxies
+
+- =Virtual Proxy=: Delays creation or loading of a resource.  
+- =Protection Proxy=: Checks permissions or usage constraints.  
+- =Remote Proxy=: Represents an object over a network.  
+- =Caching or Smart Reference Proxy=: Adds caching or special reference management.
+
+** 6.2 Interface or Implementation?
+
+In classical OOP, the proxy and real subject share the same interface. In languages like Python, you might do dynamic method forwarding. In strongly typed languages (Rust, Java, C#), you typically define an interface/trait that both the real subject and the proxy implement.
+
+** 6.3 Potential Overhead
+
+Each proxy call adds a layer of function calls or logic. Usually small, but in hot loops or performance-critical code, that overhead might matter. Weigh the pros and cons.
+
+** 6.4 Testing a Proxy
+
+Because a proxy is intended to be transparent, you can often reuse the same tests that expect the real subject. But if your proxy adds new logic (e.g., caching, security checks), test those specifically. With advanced proxies (remote, concurrency), thorough integration tests are essential.
+
+** 6.5 Overuse Danger
+
+Don’t wrap everything in a proxy if you only need direct usage. The pattern is best when there’s a specific reason—such as controlling or optimizing access. Overuse can complicate debugging and obscure your code’s flow.
+
+* 7. Real-World Usage
+
+- =Lazy Loading=: In resource-heavy apps, objects representing large files or databases might be proxied so they load on demand only.  
+- =Security / Firewalls=: A firewall or security layer can present a proxy interface, verifying credentials or usage logs.  
+- =RPC / RMI=: Many distributed systems auto-generate proxy code that appears local but calls remote objects.  
+- =Caching Layers=: A proxy might store recent results, calling the real object only when the cache is invalid or expired.  
+- =Reference Counting or Smart Pointers=: Certain memory management approaches act as a kind of proxy, controlling object lifetime or references.
+
+* 8. Conclusion
+
+The =Proxy= pattern is a go-to solution whenever you want to intercept or augment interactions with an underlying object without changing the client’s code or the object’s code. By introducing a layer of indirection, you can implement lazy loading, access control, caching, network transparency, or monitoring in a seamless, object-oriented fashion. The client sees an interface identical to the real subject, but each call passes through the proxy, enabling additional logic.
+
+We’ve illustrated:
+
+- =Beginner (Python)=: A Virtual Proxy that delays loading a large image until display() is called.  
+- =Intermediate (Rust)=: A Protection Proxy controlling database queries by checking user credentials, letting the real DB remain purely about data.  
+- =Advanced (Guile Scheme)=: A Remote Proxy scenario simulating network calls in a distributed environment, letting the client treat remote services as if local.
+
+Across all examples, =Proxy= elegantly addresses the need for extra behavior or control “in front” of a real object. When used carefully, it helps maintain a clean separation of concerns, reduces duplication of logic, and provides powerful cross-cutting features without complicating the underlying subject or client. 
