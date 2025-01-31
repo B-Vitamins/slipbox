@@ -1,0 +1,356 @@
+:PROPERTIES:
+:ID:       4edd1378-4e28-46cc-b2b2-b06081043ad5
+:END:
+#+TITLE: Adapter Pattern
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+* 1. Introduction and Historical Context
+
+The =Adapter= pattern is a structural pattern in the canon of object-oriented design, alongside patterns like Facade, Bridge, and Composite. It addresses a fundamental issue: incompatible interfaces. Suppose you have an existing class or service—often from a third-party library or legacy system—that provides the functionality you need, but in a format (method signatures, data structures, etc.) that your application doesn’t expect. You could:
+
+1. Rewrite the existing class, altering its interface to match your needs.  
+2. Change your application code to match the library’s interface.  
+3. **Or** slip in an =Adapter=: a small layer that translates calls and data structures from your application’s expected interface into the library’s interface.
+
+Historically, the =Adapter= pattern rose to prominence in early object-oriented programming when developers frequently integrated external libraries that predated modern design norms. By wrapping these libraries in an adapter class, large codebases could adopt new functionality without rewriting from scratch. Over time, the pattern proved invaluable for bridging discrepancies between systems, ensuring reusability and loose coupling in many domains—from GUI frameworks that unify input device APIs to audio processing libraries that map different audio codecs behind a single interface.
+
+** 1.1 Why Use an Adapter?
+
+1. =Reusing Legacy or Third-Party Code=: Often, you cannot change a library’s interface directly. An adapter “converts” it, letting your system treat that library as if it matched your own protocols.
+
+2. =Separation of Concerns=: You avoid “polluting” your main application logic with knowledge of the library’s specifics. Instead, all translation details live in the adapter.
+
+3. =Incremental Migration=: If your code depends on an old interface but you want to adopt a new library or API, an adapter lets you do so gradually, bridging the gap until the migration is complete.
+
+4. =Multiple Interface Mismatches=: If you have multiple services with slightly different method signatures, adapters can unify them into a single, consistent interface.
+
+** 1.2 Common Pitfalls
+
+- =Excessive Adapters=: Overly frequent use of adapters may signal an architecture that is not well-planned or integrated. If you find yourself building adapters for every small mismatch, reevaluate the higher-level design.
+
+- =Performance Overhead=: In some performance-sensitive scenarios (like tight loops), the small overhead of an adapter’s “translation” layer can add up. Generally, though, this overhead is minimal compared to the overall complexity savings.
+
+- =Ongoing Maintenance=: If the third-party library evolves or your own interface changes significantly, the adapter must keep up. This is usually simpler than rewriting large portions of code, but it’s still another piece of code to maintain.
+
+* 2. Conceptual Motivation
+
+A typical example involves audio playback. You might have a “MediaPlayer” interface that your application uses: it expects a method =play(fileName, audioType)=. Meanwhile, the actual audio processing might be done by a sophisticated third-party library offering something like =loadFile(fileName)=, then =startPlayback()=, or even a more complex sequence. By wrapping that library in a “MediaAdapter,” you effectively give it the same =play(fileName, audioType)= signature that your code expects. The adapter calls the library’s methods in the correct sequence, bridging any data or method mismatches.
+
+Another scenario is when your system expects data in a certain structure (say, JSON), but the library you’re integrating uses XML. An adapter might transform XML to JSON on the fly, isolating that complexity from the rest of your code. The hallmark of an Adapter is that your application believes it’s calling a method on a “native” interface, while under the hood, the request is re-routed to a different interface or library.
+
+* 3. Beginner Example (Python)
+
+We’ll begin with a straightforward Python scenario that demonstrates how a simple adapter can unify two different approaches to text formatting in an application.
+
+** 3.1 Motivating Scenario
+
+Imagine we have a codebase that uses a single interface for generating text-based reports:
+
+#+BEGIN_SRC python
+class TextFormatter:
+    def format_text(self, raw_text: str) -> str:
+        raise NotImplementedError("format_text() must be implemented by subclasses")
+#+END_SRC
+
+Our application expects an object of type =TextFormatter=, which has a single method =format_text()=. However, we’ve discovered a robust third-party library for text formatting that provides a class =FancyFormatter= with a method =transformText(text)=. We want to adopt =FancyFormatter= inside our code without rewriting everything that references =TextFormatter=. Let’s see how an adapter might help.
+
+** 3.2 Code Example (Beginner, Python)
+
+#+BEGIN_SRC python
+# Suppose this is a third-party class we cannot modify:
+class FancyFormatter:
+    def __init__(self, style):
+        self.style = style
+
+    def transformText(self, text):
+        return f"[{self.style.upper()}] {text} [{self.style.lower()}]"
+
+# Our application's expected interface:
+class TextFormatter:
+    def format_text(self, raw_text: str) -> str:
+        raise NotImplementedError
+
+# The Adapter:
+class FancyFormatterAdapter(TextFormatter):
+    def __init__(self, style):
+        self.fancy = FancyFormatter(style)
+
+    def format_text(self, raw_text: str) -> str:
+        # Internally call the fancy transformText method
+        return self.fancy.transformText(raw_text)
+
+# Usage in the application:
+def print_document(formatter: TextFormatter, text: str):
+    formatted = formatter.format_text(text)
+    print(f"Formatted Document:\n{formatted}")
+
+if __name__ == "__main__":
+    # We "adapt" FancyFormatter with style 'bold'
+    adapter = FancyFormatterAdapter("bold")
+    print_document(adapter, "Hello, world!")
+
+    # We could easily swap to a different style
+    adapter2 = FancyFormatterAdapter("italic")
+    print_document(adapter2, "Second document")
+#+END_SRC
+
+*** 3.2.1 Explanation
+
+- =Third-Party Library=: =FancyFormatter= has a =transformText(text)= method plus some =style= attribute. We can’t change it or unify it with =TextFormatter=.
+
+- =Application Interface=: =TextFormatter= demands =format_text(). Our code calls =format_text()= to produce output.
+
+- =Adapter=: =FancyFormatterAdapter= implements =TextFormatter= by delegating to =FancyFormatter=. This is the essence of “Adaptee + Adapter.” The =format_text= method translates calls from “our interface” to “their interface.”
+
+- =Usage=: Our existing =print_document= function is none the wiser. It’s using an object that appears to implement =TextFormatter=. Meanwhile, we’ve swapped in =FancyFormatter= through the adapter.
+
+** 3.3 Observations
+
+This demonstrates the simplest “class adapter” scenario. We see how the application’s perspective remains unaltered, while the adapter does the bridging. Overhead is minimal, but the benefits are clear: we harness new or external functionality without modifying our application’s code or the external library.
+
+* 4. Intermediate Example (Guile Scheme)
+
+In Scheme, which is not natively object-oriented, you can still apply the Adapter pattern by wrapping procedures or modules. We’ll illustrate how you might adapt an existing HTTP client library that returns raw data into a higher-level interface your application expects.
+
+** 4.1 Motivating Scenario
+
+Let’s say your Scheme application has a “fetch resource” interface defined as:
+
+#+BEGIN_SRC scheme
+;; (fetch-resource url) -> content
+#+END_SRC
+
+returning a string or data structure. However, you find a robust third-party (or legacy) Scheme module that uses:
+
+#+BEGIN_SRC scheme
+;; (http-get url) -> (status-code, headers, body)
+#+END_SRC
+
+We need a small “adapter” that hides those extraneous details (status code, headers) and matches our simpler =fetch-resource= interface.
+
+** 4.2 Code Example (Intermediate, Guile Scheme)
+
+#+BEGIN_SRC scheme
+;; Pretend this is a third-party or legacy module we can't change:
+;; We'll define a procedure that returns multiple values or a list
+(define (legacy-http-get url)
+  (values 200 '((Content-Type . "text/plain")) (string-append "Data from " url)))
+
+;; Our application's expected interface is:
+;; (fetch-resource url) -> string
+
+;; We'll define an adapter that wraps legacy-http-get to provide that interface.
+(define (make-http-adapter)
+  (lambda (msg . args)
+    (cond
+     ((eq? msg 'fetch-resource)
+      (let ((url (car args)))
+        (call-with-values
+            (lambda () (legacy-http-get url))
+          (lambda (status headers body)
+            ;; We ignore status and headers, just returning body
+            body))))
+     (else
+      (error "Unsupported message to HTTP adapter" msg)))))
+
+;; Example usage in an application:
+(define (use-resource fetcher url)
+  (let ((content (fetcher 'fetch-resource url)))
+    (display (string-append "Received content:\n" content "\n"))))
+
+;; Demonstration:
+(let ((adapter (make-http-adapter)))
+  (use-resource adapter "http://example.com/resource1")
+  (use-resource adapter "http://example.com/resource2"))
+#+END_SRC
+
+*** 4.2.1 Explanation
+
+- =Legacy Procedure=: =legacy-http-get= returns multiple values: (status-code, headers, body). We cannot modify it.
+
+- =Wanted Interface=: A single function or closure that we call with =(fetch-resource url)= must return the content string.
+
+- =Adapter Closure=: =make-http-adapter= returns a closure that dispatches on =msg=. If =msg= is 'fetch-resource, we call =legacy-http-get=, capturing the body from the multiple return values and ignoring the rest. This is the “adapter logic.”
+
+- =Usage=: =use-resource= calls =(fetcher 'fetch-resource url)=, and the adapter responds as though it were a “native” fetcher. The application remains simple and is decoupled from the details of =legacy-http-get=.
+
+** 4.3 Observations
+
+Even though Scheme lacks “classes,” the Adapter pattern remains relevant: we have a mismatch between the existing procedure’s signature and the one our system wants. A closure (or set of closures) can handle the translation. The principle is the same: code that expects a certain interface calls it, while the adapter calls another interface behind the scenes.
+
+* 5. Advanced Example (Rust)
+
+Now let’s explore a more advanced scenario in Rust, focusing on two subsystems that must interoperate: a custom logger interface vs. a popular third-party logging crate. We’ll incorporate concurrency and show how adapters can also manage resource lifetimes or synchronization aspects.
+
+** 5.1 Motivating Scenario
+
+Assume your Rust application has an established logging interface:
+
+#+BEGIN_SRC rust
+trait AppLogger {
+    fn log_info(&self, message: &str);
+    fn log_error(&self, message: &str);
+}
+#+END_SRC
+
+But a new developer wants to adopt a specialized logging library with a different interface, e.g., one that calls write(level, msg) or uses macros like log::info! and log::error!. We can create an adapter that implements =AppLogger= yet delegates to the external library or structure.
+
+** 5.2 Code Example (Advanced, Rust)
+
+#+BEGIN_SRC rust
+use std::sync::{Arc, Mutex};
+
+// 1) Our application-defined logger interface
+trait AppLogger {
+    fn log_info(&self, message: &str);
+    fn log_error(&self, message: &str);
+}
+
+// 2) Suppose this is a third-party logger that we want to integrate
+struct ThirdPartyLogger {
+    level_threshold: u8, // 0 for error only, 1 for info & error, 2 for debug, etc.
+}
+
+impl ThirdPartyLogger {
+    fn new(level_threshold: u8) -> Self {
+        ThirdPartyLogger { level_threshold }
+    }
+
+    fn write_log(&self, level: &str, msg: &str) {
+        // Basic check against threshold, then print
+        let numeric_level = match level {
+            "ERROR" => 0,
+            "INFO" => 1,
+            "DEBUG" => 2,
+            _ => 99,
+        };
+        if numeric_level <= self.level_threshold {
+            println!("[{level}] {msg}");
+        }
+    }
+}
+
+// 3) The Adapter
+struct LoggerAdapter {
+    // We'll store a reference-counted, possibly shared logger
+    third_party: Arc<Mutex<ThirdPartyLogger>>
+}
+
+impl LoggerAdapter {
+    fn new(tp: Arc<Mutex<ThirdPartyLogger>>) -> Self {
+        LoggerAdapter { third_party: tp }
+    }
+}
+
+// Implement our "AppLogger" trait on the adapter
+impl AppLogger for LoggerAdapter {
+    fn log_info(&self, message: &str) {
+        // Acquire lock, delegate
+        let logger = self.third_party.lock().unwrap();
+        logger.write_log("INFO", message);
+    }
+
+    fn log_error(&self, message: &str) {
+        let logger = self.third_party.lock().unwrap();
+        logger.write_log("ERROR", message);
+    }
+}
+
+// 4) Our application code that expects "AppLogger"
+fn process_data(logger: &dyn AppLogger, data: &str) {
+    if data.is_empty() {
+        logger.log_error("No data provided!");
+    } else {
+        logger.log_info("Starting processing...");
+        // ... do stuff ...
+        logger.log_info("Processing finished.");
+    }
+}
+
+fn main() {
+    // Create the third-party logger
+    let third_party_logger = Arc::new(Mutex::new(ThirdPartyLogger::new(1)));
+
+    // Create the adapter
+    let adapter = LoggerAdapter::new(Arc::clone(&third_party_logger));
+
+    // Our application code sees only the "AppLogger" interface
+    process_data(&adapter, "");
+    process_data(&adapter, "Some data...");
+}
+#+END_SRC
+
+*** 5.2.1 Explanation
+
+- =AppLogger=: The trait our code expects, with =log_info= and =log_error= methods.
+
+- =ThirdPartyLogger=: The library we want to integrate. It only has =write_log(level, msg)= plus a threshold. We do not control it.
+
+- =LoggerAdapter=: Implements the =AppLogger= trait, bridging calls to =ThirdPartyLogger=. We store a reference to the third-party logger in an Arc<Mutex<ThirdPartyLogger>> for concurrency.
+
+- =Usage=: =process_data= sees only a &dyn AppLogger. We pass =adapter= to it. The rest of the code remains ignorant of the third-party details.
+
+** 5.3 Observations
+
+This advanced Rust example underscores how Adapter not only aligns interfaces but can also manage concurrency or reference-counting issues. The fundamental principle remains: the client code relies on a trait (=AppLogger=), and the adapter implements that trait by delegating calls to a third-party structure with a different interface.
+
+* 6. Nuances, Variations, and Best Practices
+
+** 6.1 Class Adapter vs. Object Adapter
+
+- =Class Adapter=: Typically uses inheritance (e.g., in Java or C++). The adapter extends the “adaptee” class and implements the target interface. This only works if you can subclass the adaptee, which might not always be possible or desirable.
+
+- =Object Adapter=: Relies on composition: the adapter has a reference to the adaptee (as in our examples). This approach is more flexible because you don’t need to inherit from the adaptee’s class.
+
+In Python, the difference rarely arises due to duck typing. In Rust, we typically do object adapters by referencing a struct. In Scheme, we rely on closure or record composition.
+
+** 6.2 Bi-Directional Adapters
+
+In some complex scenarios, you might want an adapter that lets two systems talk to each other in both directions. This can get complicated, as it might require symmetrical translation logic. Often, it’s cleaner to use two single-direction adapters rather than one that tries to do everything.
+
+** 6.3 Handling Data Transformations
+
+Sometimes, adapting a method call is straightforward, but data transformation might be tricky—like converting XML to JSON. If your adapter must do heavy data transformations, carefully separate that code into helper functions or submodules. Large, monolithic adapters can hide important logic or become unwieldy.
+
+** 6.4 Potential Overhead
+
+Adapter usually adds only negligible overhead (an extra function call or data mapping). For performance-critical tasks (like real-time audio processing), ensure that this overhead is acceptable. Typically, the clarity and maintainability from using an adapter outweigh the small cost.
+
+** 6.5 Recognizing Adapter in the Wild
+
+It’s common to see a class named something like =XYZAdapter= (e.g., =JdbcAdapter=, =LegacyServiceAdapter=) that implements your code’s native interface while holding or referencing a “legacy” or “external” object. If you see code that re-routes method calls from one object to another with signature translation, that’s the Adapter pattern in action. Another clue is if the adapter has lines like “# convert enumerated type A to enumerated type B” or “# ignore parameter X because the library doesn’t support it.” That bridging is exactly what adapters do.
+
+** 6.6 Alternatives or Overuse
+
+Sometimes, the mismatch between two systems is small enough that a single function or minor code snippet can handle it. Full-blown adapters shine when the mismatch is systemic—multiple calls or deeply different semantics. Overuse of adapters can lead to layering bloat.
+
+** 6.7 Testing an Adapter
+
+Because the adapter typically exposes the same interface as the rest of your system, it’s straightforward to test: reuse existing tests that expect your standard interface, but provide them the adapter instance. Also consider direct unit tests for the adapter’s data-transform logic if it’s complex. For concurrency or resource management concerns (like in Rust), test that locks or lifetimes are handled properly.
+
+* 7. Real-World Usage
+
+- =Integration with Third-Party Libraries=: A “PayPalAdapter” that implements your “PaymentProcessor” interface, bridging calls to the PayPal API.
+
+- =Bridging Legacy Systems=: Wrapping a database driver that uses an older API so that new code sees a modern interface.
+
+- =GUI Toolkits=: Where input events or widget classes differ across platforms, an adapter can unify them.
+
+- =Communication Protocols=: Converting from one message format (JSON) to another (XML) or bridging two networking protocols (raw sockets vs. a higher-level API).
+
+- =Logging or Metrics=: If your code expects a certain logging trait but you want to adopt a popular logging framework, an adapter can unify them.
+
+* 8. Conclusion
+
+The =Adapter= pattern is indispensable when reconciling two incompatible interfaces without rewriting large portions of code. Its essence is straightforward: define a thin wrapper that translates from your application’s expected interface to the library’s or legacy code’s interface. Yet this simple concept yields powerful benefits in terms of system maintainability, testability, and incremental modernization.
+
+We’ve surveyed three examples in ascending complexity:
+
+1. =Python (Beginner)=: Adapting a third-party “fancy text formatter” into a simpler =TextFormatter= interface. This is the classic minimal usage of an adapter, bridging a single method mismatch.
+
+2. =Guile Scheme (Intermediate)=: Using closures to adapt a “legacy-http-get” procedure that returns (status, headers, body) into a simpler (fetch-resource url) -> body interface. Even in a functional, non-OOP language, the pattern thrives.
+
+3. =Rust (Advanced)=: Bridging a =ThirdPartyLogger= with your application’s =AppLogger= trait while handling concurrency. The adapter manages lock acquisition, log levels, and ensures the client code remains ignorant of the third-party details.
+
+Beyond these examples, the Adapter pattern appears routinely in real-world code, from bridging platform differences in UI frameworks to interfacing with foreign data structures. The pattern’s hallmark is preserving the calling code’s interface while enabling use of a foreign or legacy system. When you see an “XYZAdapter” class or an object that “stands in” for another library, you’re likely seeing this pattern at work. By mastering the nuances—like deciding between class vs. object adapter or handling data transformations—developers can keep their architectures clean, robust, and open to future integrations.
