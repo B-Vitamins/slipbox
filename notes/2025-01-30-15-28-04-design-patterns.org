@@ -1,0 +1,828 @@
+:PROPERTIES:
+:ID:       929d2156-85f9-415d-a242-88e9974dfc46
+:END:
+#+TITLE: Design Patterns
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+* Object-oriented-programming
+Design patterns, as popularized by the “Gang of Four” (Erich Gamma, Richard Helm, Ralph Johnson, and John Vlissides), represent time-tested solutions to common software design challenges. These patterns are not prescriptive blueprints but rather conceptual templates that guide developers toward building more robust, maintainable, and flexible systems. Below, we embark on a high-level narrative of each of the classic twenty-three patterns, grouped broadly under Creational, Structural, and Behavioral categories. While the descriptions include occasional illustrative snippets of code, the main focus is to illuminate the conceptual essence behind each pattern.
+
+Each of these twenty-three patterns embodies a distinct principle or method for solving perennial design problems. By articulating clear strategies for object creation, structural composition, and behavior coordination, the Gang of Four patterns form a foundational toolkit for object-oriented software design. The real power emerges not from memorizing them by name, but from understanding the conceptual “why” behind each pattern and recognizing when a given pattern can simplify or enhance your architecture.
+** 1. Singleton
+
+The [[id:72fc402d-9bbf-4e5c-80a5-5bc142c584b1][Singleton Pattern]] ensures that a class has only one instance throughout the system’s lifetime, providing a global point of access to that instance. One might imagine scenarios where a single resource must coordinate activities across different parts of an application—like a centralized logging mechanism or a configuration manager. By restricting instantiation, you guarantee consistency and prevent resource duplication or conflict.
+
+At its heart, the =Singleton= relies on a private constructor (or some variation that blocks uncontrolled construction) and a static method to retrieve the sole existing instance. The pattern’s power lies in its simplicity, although it has frequently been criticized for overuse and potential hidden dependencies. Critics note that =Singletons= can act like global variables, tying together code in ways that make testing or future alteration more difficult. Nonetheless, when used judiciously, it can simplify certain designs by providing a clear, singular conduit to critical shared data.
+
+Consider a scenario where you want exactly one configuration object to hold application-wide settings. The =Singleton= pattern lets you create a static =getInstance()= method that either constructs the object lazily at first call or instantiates it eagerly at class load time. As a brief illustration:
+
+#+BEGIN_SRC java
+public class ConfigurationManager {
+    private static final ConfigurationManager instance = new ConfigurationManager();
+    
+    private ConfigurationManager() {
+        // Private constructor prevents direct instantiation
+    }
+    
+    public static ConfigurationManager getInstance() {
+        return instance;
+    }
+
+    // Configuration-specific methods...
+}
+#+END_SRC
+
+Here, you see that outside code cannot directly invoke =new ConfigurationManager()=. The single instance is controlled and served exclusively by =getInstance()=. Because the pattern centralizes certain key operations or data, it can simplify access in contexts where a single resource must reliably orchestrate shared behavior. For complex applications, =Singleton= can become a stepping stone toward more sophisticated design patterns, but it's a crucial base concept in understanding how objects can be managed for efficiency and consistency.
+
+** 2. Factory Method
+
+The [[id:2f980302-ef4e-4e0d-972e-73873f8365e3][Factory Method Pattern]] deals with object creation in a way that separates the decision of which specific class to instantiate from the code that needs the object. By delegating instantiation to a dedicated method, the pattern allows subclasses or concrete implementations to decide the exact class of object to be produced. This approach becomes especially relevant in systems where the type of object required may vary depending on context, configuration, or user input.
+
+Conceptually, you could imagine a scenario where different product variants share a common interface or superclass, yet each variant is best constructed by a different routine. The =Factory Method= encapsulates that routine in a method—often called =createProduct()= or something similar—ensuring the client never explicitly deals with =new= for those classes. This insulates the client from concrete class names and fosters code extensibility. If tomorrow you introduce a new kind of product, you only need to create or modify a subclass that implements its own version of the factory method.
+
+For instance, consider a simple dialog framework where you might have =WindowsDialog= and =WebDialog=, each producing different buttons but requiring a shared interface called =Button=. You could have:
+
+#+BEGIN_SRC java
+abstract class Dialog {
+    abstract Button createButton();
+
+    public void render() {
+        Button okButton = createButton();
+        okButton.render();
+    }
+}
+
+class WindowsDialog extends Dialog {
+    @Override
+    Button createButton() {
+        return new WindowsButton();
+    }
+}
+#+END_SRC
+
+By relying on the =createButton()= factory method, the =render()= process remains the same, yet the exact type of button depends on which subclass is in play. As a result, client code that calls =dialog.render()= stays blissfully unaware of how or which button gets made. The elegance of =Factory Method= lies in offering a transparent extension mechanism. If later you add =MacDialog=, you would only implement a new =createButton()= method returning =MacButton=. The rest of the system remains oblivious to the new product’s specifics, preserving maintainability and flexibility.
+
+** 3. Abstract Factory
+
+The [[id:aed76314-677a-4b1b-9427-afef01e4227a][Abstract Factory Pattern]] extends the idea of handling object creation by grouping related factories under a single conceptual umbrella. Whereas the =Factory Method= often focuses on one product type at a time, the =Abstract Factory= pattern deals with families of products meant to be used together. The motivation is that a system should not need to know exactly which family of products it is dealing with at compile time, and it should avoid mixing and matching products from different families inadvertently.
+
+Picture a software suite that needs to generate graphical interface components in multiple “themes.” Each theme would include consistent designs for windows, buttons, checkboxes, and scrollbars. If the code erroneously combines a “Dark” theme button with a “Light” theme scrollbar, the interface looks disjointed. The =Abstract Factory= ensures that once you pick a certain theme factory, you retrieve compatible components across the board.
+
+Concretely, an =AbstractFactory= interface could define methods like =createButton()=, =createCheckbox()=, and =createWindow()=. Implementations such as =DarkThemeFactory= and =LightThemeFactory= would each return products that fit their respective themes. The client holds a reference to the abstract factory but never sees the internals of the product creation. For example:
+
+#+BEGIN_SRC java
+public interface GUIFactory {
+    Button createButton();
+    Checkbox createCheckbox();
+}
+
+public class DarkThemeFactory implements GUIFactory {
+    public Button createButton() { return new DarkButton(); }
+    public Checkbox createCheckbox() { return new DarkCheckbox(); }
+}
+#+END_SRC
+
+When the client code is configured to use the =DarkThemeFactory=, it gains a consistent set of dark-themed UI elements. If, during runtime, the system needs to switch to a light theme, it simply swaps factories, again letting the rest of the code remain agnostic. The real virtue of =Abstract Factory= is how it preserves architectural clarity. Complex systems often have multiple product families, and forcing them into a single creation schema can be messy. By grouping these products in an overarching factory, you sidestep the complexity of cross-product compatibility issues and keep your code base flexible in the face of new requirements or theme expansions.
+
+** 4. Builder
+
+The [[id:ee27ded8-71e3-4815-8c8a-f3a8b154ac2d][Builder Pattern]] tackles the complexity of constructing intricate objects step by step, often allowing for multiple representations or configurations of the final product. When an object has numerous fields or nested sub-objects, simply providing a constructor with a long parameter list can be unwieldy. =Builder= addresses this by segmenting the construction process into discrete stages, each focusing on setting up different parts of the object. This encourages readable, maintainable client code, especially when different variations of the object require different subsets of fields or specialized configurations.
+
+Imagine you need to assemble a complex =Car= object that has an engine, wheels, onboard computer, and a variety of optional features. One user might want a basic sedan with standard interior, while another might need a luxury SUV with an advanced sound system and sunroof. Instead of a massive constructor that tries to handle every optional piece, a builder approach provides methods that handle each aspect in isolation. After specifying the needed components step-by-step, the client calls a =build()= or =getResult()= method to retrieve the fully constructed object.
+
+A typical structure might involve a =CarBuilder= interface with methods like =setEngine()=, =setGPS()=, =setSeats()=, while concrete builder classes produce variants such as a sports car or a family minivan. For instance:
+
+#+BEGIN_SRC java
+public class CarBuilder {
+    private String engine;
+    private int seats;
+    private boolean gps;
+
+    public CarBuilder setEngine(String type) {
+        this.engine = type;
+        return this;
+    }
+
+    public CarBuilder setSeats(int number) {
+        this.seats = number;
+        return this;
+    }
+
+    public CarBuilder setGPS(boolean enable) {
+        this.gps = enable;
+        return this;
+    }
+
+    public Car build() {
+        return new Car(engine, seats, gps);
+    }
+}
+#+END_SRC
+
+Chaining the methods helps the code read more naturally, mirroring the conceptual process of assembling a car. The overall benefit is clarity: each step in the =Builder= pattern describes a portion of the object’s configuration, and you end up with a cohesive product whose construction process is both flexible and transparent. This approach not only makes it easy to produce multiple variations of an object, but also fosters code reuse, as the same builder components can be re-parameterized or extended to address new construction needs in the future.
+
+** 5. Prototype
+
+The [[id:4e86dd61-2b46-4f15-ab3f-b97e0efce7ac][Prototype Pattern]] addresses the creation of new objects by cloning a prototype instance, rather than by instantiating classes directly. In other words, instead of writing code that explicitly calls a constructor each time, you create a base “prototype” object and then produce additional objects by copying that prototype. This is especially useful in systems that frequently create complex objects that can be duplicated cheaply compared to constructing them from scratch.
+
+One scenario might be a system that manages a large variety of document types, each with distinct default settings. Rather than forcing a central factory to know the ins and outs of each document’s configuration, you could store a master copy of each type. Whenever a new instance is required, your code clones the relevant prototype. This tactic spares you the trouble of re-initializing every detail for each new document.
+
+Typically, an interface like =Cloneable= or a method such as =clone()= is central to the pattern’s execution. Concrete classes that implement the prototype logic handle the specifics of copying internal fields and state. Consider this fragment:
+
+#+BEGIN_SRC java
+public abstract class Shape {
+    public int x;
+    public int y;
+
+    public Shape() {}
+
+    public Shape(Shape target) {
+        if (target != null) {
+            this.x = target.x;
+            this.y = target.y;
+        }
+    }
+
+    public abstract Shape clone();
+}
+#+END_SRC
+
+In derived classes, the =clone()= method duplicates not only basic fields but any specialized fields relevant to that shape. When your client needs a new shape of the same type, it simply calls =existingShape.clone()=, receiving a fully formed copy. This arrangement has a neat byproduct: you can add new shape subtypes without adjusting a centralized “creation logic.” The new subtype merely has to manage its own cloning routine.
+
+=Prototypes= can also bring performance benefits when the cost of constructing an object is high. Copying a configured prototype might be dramatically faster than building from zero. Still, some caution is warranted. If an object references external resources or deep object graphs, a true deep copy becomes more complex to implement. Nevertheless, in contexts like graphical editors, game development, or document management systems, the =Prototype= pattern can streamline object creation while keeping the code base flexible and uncoupled.
+
+** 6. Adapter
+
+The [[id:4edd1378-4e28-46cc-b2b2-b06081043ad5][Adapter Pattern]] focuses on converting the interface of one class into an interface that the client expects, effectively bridging incompatible components. If two software modules have similar functionality but mismatch in method signatures or usage protocols, an =Adapter= can step in to provide a middle layer that translates calls and data structures on the fly.
+
+Imagine a scenario where you have an advanced audio player that expects data in a particular format but you discover a cutting-edge library that outputs audio frames in a different format. Direct integration may be challenging because the new library doesn’t adhere to your existing interface. Rather than modifying the library code or your entire audio player, the =Adapter= pattern suggests creating a small wrapper class that listens to the old interface but internally communicates with the incompatible object or library.
+
+For example:
+
+#+BEGIN_SRC java
+public class AdvancedPlayerAdapter implements MediaPlayer {
+    private AdvancedPlayer advancedPlayer;
+
+    public AdvancedPlayerAdapter(AdvancedPlayer advancedPlayer) {
+        this.advancedPlayer = advancedPlayer;
+    }
+
+    @Override
+    public void play(String audioType, String fileName) {
+        advancedPlayer.loadFile(fileName);
+        advancedPlayer.play();
+    }
+}
+#+END_SRC
+
+Here, =AdvancedPlayer= may use a method signature like =loadFile()= followed by =play()=, whereas the =MediaPlayer= interface expects a single method =play(String audioType, String fileName)=. The =AdvancedPlayerAdapter= transforms this single call into the necessary steps required by =AdvancedPlayer=. This avoids rewriting established code or forking the new library.
+
+=Adapters= prove invaluable for legacy integration or third-party library usage. They preserve the client’s expectations while accommodating changes or discrepancies in external modules. Conceptually, they highlight the principle that most software subsystems evolve independently; an =Adapter= acknowledges that not everyone speaks the same language but fosters communication with minimal friction. In large-scale projects, the =Adapter= pattern also isolates incompatibility issues in one place, keeping the rest of the code base uncluttered by special-case logic. This is the essence of the pattern: bridging differences to ensure smooth, cohesive operation.
+
+** 7. Bridge
+
+The [[id:4da00e69-9aff-4dff-8ad2-3846f89f6806][Bridge Pattern]] addresses the issue of preventing a proliferation of subclasses by separating an abstraction from its implementation. When an abstraction can have multiple variations, and each variation can be implemented in different ways, you can end up with a combinatorial explosion of classes. The =Bridge= pattern structures these relationships so that you can develop the abstraction and its implementation independently, reducing complexity and improving flexibility.
+
+Conceptually, you can think of the pattern in scenarios where you have a =Shape= hierarchy (=Circle=, =Square=, etc.) and multiple ways to render them (using different graphics APIs, for example). One naive approach might be to create specialized subclasses like =VectorCircle=, =RasterCircle=, =VectorSquare=, =RasterSquare=, and so on. Each time you add a shape or a rendering style, you expand the class tree dramatically. =Bridge= circumvents this by defining a stable interface for the abstraction—like =Shape=—and a separate interface for the implementation—like =Renderer=. A shape holds a reference to a renderer, and the shape calls upon that renderer when it needs to perform the actual drawing.
+
+For instance:
+
+#+BEGIN_SRC java
+public interface Renderer {
+    void renderCircle(float radius);
+}
+
+public class VectorRenderer implements Renderer {
+    public void renderCircle(float radius) {
+        System.out.println("Drawing a circle of radius " + radius + " in vector format.");
+    }
+}
+
+public abstract class Shape {
+    protected Renderer renderer;
+    public Shape(Renderer renderer) {
+        this.renderer = renderer;
+    }
+    public abstract void draw();
+}
+
+public class Circle extends Shape {
+    private float radius;
+    public Circle(Renderer renderer, float radius) {
+        super(renderer);
+        this.radius = radius;
+    }
+    public void draw() {
+        renderer.renderCircle(radius);
+    }
+}
+#+END_SRC
+
+By “bridging” the abstraction =Shape= with the implementation =Renderer=, you only create new shape subclasses to represent fundamentally new shapes. To support a new rendering approach, you write a new =Renderer= implementation. You don’t multiply shape-by-renderer classes. The advantage is that you can swap out or extend either dimension with minimal friction. =Bridge= is particularly effective when dealing with cross-platform or cross-technology systems, where the high-level abstraction must stay consistent, but the technical detail of how it’s executed can change.
+
+** 8. Composite
+
+The [[id:da5c1814-72d0-4f9b-814f-a2790c1a2196][Composite Pattern]] unifies the treatment of individual objects and collections of objects in a hierarchical structure. It’s particularly useful for representing part-whole relationships, such as a tree structure of graphical user interface components, file directories, or organizational charts. The key idea is that an individual component and a container (which might hold further components) both present the same interface, allowing clients to handle them uniformly.
+
+Consider a classic example involving graphics: you may have primitive shapes, like circles and lines, as well as groups of these shapes, arranged into larger pictures. The =Composite= pattern suggests giving both =Shape= and =ShapeGroup= a common interface, perhaps something like =draw()= or =move()=. Then, if you hold a reference to something typed as =Shape=, it could be a single circle or it could be a group of many shapes, but you don’t need to care which it is at runtime.
+
+A short conceptual snippet might look like:
+
+#+BEGIN_SRC java
+public interface Graphic {
+    void draw();
+}
+
+public class Circle implements Graphic {
+    public void draw() {
+        System.out.println("Drawing a circle");
+    }
+}
+
+public class CompoundGraphic implements Graphic {
+    private List<Graphic> children = new ArrayList<>();
+
+    public void add(Graphic child) {
+        children.add(child);
+    }
+
+    public void draw() {
+        for (Graphic child : children) {
+            child.draw();
+        }
+    }
+}
+#+END_SRC
+
+The composite object, =CompoundGraphic=, manages a list of child graphics, but itself still implements the same =Graphic= interface. Consequently, client code that calls =draw()= on a =Graphic= reference is oblivious to whether it’s dealing with a simple circle or a nested structure of shapes. This uniformity leads to elegantly recursive designs. It simplifies code that handles complex object hierarchies, since you don’t write specialized logic for single objects versus collections. Instead, you rely on the composite approach to propagate method calls through the structure in a consistent manner. The =Composite= pattern thus elegantly captures the notion that sometimes, you want to treat a group of objects in the same way you treat a lone object.
+
+** 9. Decorator
+
+The [[id:09ffcf00-0ec6-4963-ab86-e9690fb77a89][Decorator Pattern]] wraps objects dynamically, adding behavior or features without modifying the original class. Unlike inheritance, which is static and affects every instance of a subclass, =Decorators= let you compose behaviors on a per-object basis at runtime. This makes them ideal for scenarios where you want to customize or layer responsibilities on objects without creating a combinatorial explosion of subclasses.
+
+A classic analogy is found in a coffee shop scenario. Imagine a =Coffee= interface that can be implemented by various base coffee types, like =Espresso= or =Decaf=. If you want to add milk, sugar, whipped cream, and so forth, you could either create a new subclass for every combination or you could adopt =Decorator=. In the latter case, you define a =CoffeeDecorator= that also implements =Coffee= but holds an internal reference to the =Coffee= it is decorating. By calling the wrapped object’s methods and then adding its own logic (like extra cost or a descriptive label), a decorator can keep layering on as many flavors or features as needed.
+
+A concise snippet could look like:
+
+#+BEGIN_SRC java
+public interface Coffee {
+    double getCost();
+    String getIngredients();
+}
+
+public class SimpleCoffee implements Coffee {
+    public double getCost() { return 1.0; }
+    public String getIngredients() { return "Coffee"; }
+}
+
+public abstract class CoffeeDecorator implements Coffee {
+    protected Coffee decoratedCoffee;
+    public CoffeeDecorator(Coffee c) {
+        this.decoratedCoffee = c;
+    }
+}
+
+public class MilkDecorator extends CoffeeDecorator {
+    public MilkDecorator(Coffee c) {
+        super(c);
+    }
+    public double getCost() {
+        return decoratedCoffee.getCost() + 0.5;
+    }
+    public String getIngredients() {
+        return decoratedCoffee.getIngredients() + ", Milk";
+    }
+}
+#+END_SRC
+
+When you decorate a simple coffee with milk, whipped cream, and sugar, you effectively build an object pipeline that cumulatively modifies the cost and ingredients. =Decorator=’s power lies in its flexibility and transparency. You can add or remove layers of decoration at will, mixing them to get custom behaviors. Clients interact with the final decorated object as if it were a straightforward instance of =Coffee=, so the complexity of the layering remains encapsulated. This pattern exemplifies the open-closed principle, as the original class is left unmodified, yet extended with new capabilities.
+
+** 10. Facade
+
+The [[id:3c33204f-0f31-4e51-86b8-8b3fc844a70c][Facade Pattern]] simplifies interactions with a complex subsystem by providing a unified interface. Large software subsystems often contain numerous intricate classes, each with its own behaviors and dependencies. Clients that need to work with such subsystems can be overwhelmed by their complexity, or forced to navigate a labyrinth of class interactions. A =Facade= steps in as a “front door” that aggregates the essential functionality of the subsystem into a single high-level interface, shielding clients from internal details.
+
+Picture a multimedia conversion library that includes a host of classes for reading, decoding, buffering, encoding, and writing different media formats. While extremely powerful, it can be daunting to use. By implementing a facade like =VideoConverterFacade=, you compress the complexities of all these smaller components into a set of straightforward methods—e.g. =convertToMp4(String filePath)=—that orchestrate the subsystem behind the scenes.
+
+Conceptually, you might see something like:
+
+#+BEGIN_SRC java
+public class VideoConverterFacade {
+    private CodecFactory codecFactory;
+    private AudioMixer audioMixer;
+
+    public VideoConverterFacade() {
+        this.codecFactory = new CodecFactory();
+        this.audioMixer = new AudioMixer();
+    }
+
+    public File convertVideo(String fileName, String format) {
+        VideoFile file = new VideoFile(fileName);
+        Codec codec = codecFactory.extract(file);
+        VideoFile buffer = audioMixer.fix(file);
+        return codecFactory.convert(buffer, format);
+    }
+}
+#+END_SRC
+
+Clients simply call =convertVideo()=, getting a ready-to-use file without needing to juggle the details of codecs, bitrates, or error handling. =Facades= provide clarity and reduce the learning curve, especially in large systems or legacy code bases. It’s also common to see multiple facades, each focusing on a particular area of functionality, so as to avoid turning a single facade into another form of monolithic complexity. Importantly, a =Facade= is not meant to replace the underlying subsystem’s capabilities. Clients who need fine-grained control can still bypass it. Instead, the facade fosters the principle of least knowledge, offering a curated, simplified set of operations that handle most routine needs without exposing the entire underlying architecture.
+
+** 11. Flyweight
+
+The [[id:88bd49df-024f-4f5f-bf7f-0e46bc59ce6d][Flyweight Pattern]] deals with efficiently sharing objects that are otherwise costly to create or store in large numbers. It’s centered on the notion of extracting and reusing a shared “intrinsic” state among multiple instances, while allowing “extrinsic” state—specific details that vary per instance—to be managed externally. By doing so, you can drastically reduce memory usage when dealing with huge volumes of objects that share common data.
+
+Consider a text editor that needs to display the same character glyph hundreds of times in a document. Storing a separate glyph object for every single character would be redundant, as many of them share the same shape. =Flyweight= suggests storing one glyph object per unique character and letting it hold the intrinsic data, like the font representation, while external details such as the character’s position, color, or size are specified at runtime. This means that instead of hundreds of duplicated objects, you only store one object per unique character type.
+
+A simple example might look like:
+
+#+BEGIN_SRC java
+public class CharacterFlyweight {
+    private char symbol;
+    // Intrinsic state: symbol shape, basic metrics
+
+    public CharacterFlyweight(char symbol) {
+        this.symbol = symbol;
+    }
+
+    public void draw(Graphics context, int x, int y, Color color) {
+        // Use intrinsic symbol data
+        // The x, y, and color represent extrinsic state
+    }
+}
+
+public class FlyweightFactory {
+    private Map<Character, CharacterFlyweight> cache = new HashMap<>();
+
+    public CharacterFlyweight getFlyweight(char symbol) {
+        if(!cache.containsKey(symbol)) {
+            cache.put(symbol, new CharacterFlyweight(symbol));
+        }
+        return cache.get(symbol);
+    }
+}
+#+END_SRC
+
+When a new character is needed, the factory checks if it has a =CharacterFlyweight= for that symbol. If not, it creates one, stores it, and returns the reference. If it does exist, it simply returns the cached instance. Because each flyweight object is reused by multiple “clients,” the system’s overall memory footprint is substantially reduced. The main challenge lies in carefully delineating what goes into the intrinsic state vs. what must remain external, to avoid accidental data collisions. Nonetheless, when well-managed, =Flyweight= is indispensable for systems like text editors, gaming engines, or any application that grapples with a massive population of similar objects requiring efficient representation.
+
+** 12. Proxy
+
+A [[id:5325c120-4529-4c5c-b0a2-773321eda53e][Proxy Pattern]] acts as a stand-in or placeholder for another object, controlling access to it in some way. Unlike the =Adapter=, which primarily deals with interface mismatches, the =Proxy= pattern focuses on adding a layer of indirection to manage responsibilities such as remote access, lazy initialization, logging, caching, or security checks. The proxy presents the same interface as the underlying “real” object, so to the client, it appears to be working directly with that object.
+
+Imagine you have a heavy or sensitive resource, such as a high-resolution image stored on a network server. You might not want to fully load that image every time you create an =Image= object in your application. A =Proxy= can store a reference to the remote image and retrieve it only when needed, deferring expensive operations until the last possible moment. Once fetched, the =Proxy= might also cache the image data, so subsequent requests are faster.
+
+A sample snippet could be:
+
+#+BEGIN_SRC java
+public interface Image {
+    void display();
+}
+
+public class RealImage implements Image {
+    private String fileName;
+
+    public RealImage(String fileName) {
+        this.fileName = fileName;
+        loadImageFromDisk();
+    }
+
+    public void display() {
+        System.out.println("Displaying " + fileName);
+    }
+
+    private void loadImageFromDisk() {
+        System.out.println("Loading " + fileName);
+    }
+}
+
+public class ProxyImage implements Image {
+    private String fileName;
+    private RealImage realImage;
+
+    public ProxyImage(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public void display() {
+        if(realImage == null){
+            realImage = new RealImage(fileName);
+        }
+        realImage.display();
+    }
+}
+#+END_SRC
+
+The =ProxyImage= is identical to =RealImage= in interface, but behind the scenes, it creates the =RealImage= object only when =display()= is called for the first time. This arrangement can also be adapted to monitor or filter requests before passing them on to the real service, making it ideal for implementing security checks or concurrency controls. By adhering to the same interface, the =Proxy= pattern ensures minimal disruption to client code, while granting you the power to introduce additional layers of logic that govern access to the underlying resource.
+
+** 13. Chain of Responsibility
+
+The [[id:5a921048-8098-49ad-81ab-a1285a06ee09][Chain of Responsibility Pattern]] arranges a series of potential request handlers in a sequence, allowing each handler the chance to process a request before passing it along the chain if it declines. This results in decoupling the sender of a request from the receiver, since the sender doesn’t need to know which object in the chain will handle its request. Each handler typically decides whether to process or to pass the request onward based on specific conditions.
+
+A useful analogy is the customer support system, where requests might first go to an automated bot for common queries, and if it fails to resolve the issue, the request is passed to a first-level support agent, then to a second-level specialist, and so forth. Or consider an event-handling system in a GUI framework: a low-level mouse click event might be handled by a button if it falls within the button’s bounds, otherwise it moves up to a panel or window. Each handler has the opportunity to say, “Yes, I can manage this event,” or “I’ll delegate it to the next link in the chain.”
+
+A short coding illustration might be:
+
+#+BEGIN_SRC java
+public abstract class Handler {
+    private Handler next;
+
+    public Handler linkWith(Handler next) {
+        this.next = next;
+        return next;
+    }
+
+    public abstract boolean handle(String request);
+
+    protected boolean handleNext(String request) {
+        if (next == null) {
+            return true;
+        }
+        return next.handle(request);
+    }
+}
+
+public class AuthenticationHandler extends Handler {
+    public boolean handle(String request) {
+        if(request.equals("authenticated")) {
+            System.out.println("Authentication passed.");
+            return handleNext(request);
+        }
+        System.out.println("Authentication failed.");
+        return false;
+    }
+}
+#+END_SRC
+
+You can keep chaining such handlers together, each focusing on its own domain—logging requests, checking access rights, validating data integrity. If a handler processes the request, it can either stop the chain or pass the request further, depending on the design. The greatest advantage of =Chain of Responsibility= is that it fosters loose coupling and opens the door for flexible configurations of handlers. Adding or removing a handler, or changing their order, becomes straightforward. The client simply feeds the request into the first link of the chain, and the chain takes care of the rest, distributing responsibilities across discrete, maintainable objects.
+
+** 14. Command
+
+The [[id:9c4d6c00-7b02-4a13-a25b-01b80211316d][Command Pattern]] encapsulates an action as an object. Rather than directly invoking methods on receivers, you store all the necessary information for performing an operation—such as method name, the target object, and parameter values—inside a command object. This approach decouples objects that issue requests from objects that execute those requests, enabling capabilities like undo/redo, queuing, logging, or dynamic reconfiguration of commands.
+
+One might think of a text editor’s “undo” feature. Each user action—typing a letter, deleting a selection, applying bold formatting—could be captured as a =Command= object that knows how to perform and un-perform the action. The editor can maintain a history of these commands, allowing users to revert to a prior state. Additionally, if you have an interactive UI where buttons correspond to certain actions, you can attach different command objects to those buttons at runtime without altering the button code.
+
+A basic outline:
+
+#+BEGIN_SRC java
+public interface Command {
+    void execute();
+}
+
+public class PasteCommand implements Command {
+    private Editor editor;
+
+    public PasteCommand(Editor editor) {
+        this.editor = editor;
+    }
+
+    public void execute() {
+        editor.paste();
+    }
+}
+#+END_SRC
+
+This =PasteCommand= can be scheduled, logged, or undone if the editor supports an appropriate method, because the operation logic is self-contained. The pattern is frequently employed in menu systems, remote controllers, macros, or job scheduling frameworks. The decoupling effect is powerful, allowing you to treat commands as first-class entities that can be manipulated, stored, or combined in ways that direct method calls cannot easily accommodate. It also fosters a modular approach to system design, since changes to how an action is carried out do not affect the components that issue the command.
+
+** 15. Interpreter
+
+The [[id:7295a94f-37c0-43a5-8609-e4fe09640585][Interpreter Pattern]] defines a way to evaluate sentences in a language by building an internal representation (often in the form of an abstract syntax tree, or AST) and assigning meanings to its symbols. Although not as commonly used as some other patterns, the =Interpreter= pattern becomes highly relevant when you need to parse a domain-specific language (DSL) or a specialized grammar within an application. Each grammar rule can be mapped to a class in the system, and together these classes recursively interpret the meaning of sentences or expressions.
+
+Picture a simple rule-based system that processes math expressions involving addition and multiplication. You might have classes like =NumberExpression=, =AddExpression=, and =MultiplyExpression=. Each class implements an =interpret()= method that returns a numerical result. By chaining these objects together, you create a tree structure reflecting the grammar of the language. For example, the expression =3 + (5 * 2)= can be converted into an AST where an =AddExpression= node has a left child of =NumberExpression(3)= and a right child of a =MultiplyExpression(5, 2)=.
+
+A quick conceptual snippet:
+
+#+BEGIN_SRC java
+public interface Expression {
+    int interpret();
+}
+
+public class NumberExpression implements Expression {
+    private int number;
+
+    public NumberExpression(int number) {
+        this.number = number;
+    }
+
+    public int interpret() {
+        return number;
+    }
+}
+
+public class AddExpression implements Expression {
+    private Expression left;
+    private Expression right;
+
+    public AddExpression(Expression left, Expression right) {
+        this.left = left;
+        this.right = right;
+    }
+
+    public int interpret() {
+        return left.interpret() + right.interpret();
+    }
+}
+#+END_SRC
+
+While building a bespoke interpreter can be a powerful solution for domain-specific scenarios, it is often more straightforward to use existing parser generators or libraries for larger, more complex languages. Still, the =Interpreter= pattern elegantly demonstrates how to embed a language’s grammar and evaluation logic directly into an object-oriented design. Each rule is encapsulated in a class, and the entire grammar is reflected in a structured, composable hierarchy of objects. This fosters code that closely mirrors the conceptual model of the language, improving readability and maintainability, especially for small to medium-scale interpreters.
+
+** 16. Iterator
+
+The [[id:4e428218-ab20-4dd9-9995-fafa4fea43c5][Iterator Pattern]] provides a systematic way to traverse elements in a collection without exposing its underlying representation. Different data structures—like arrays, linked lists, or trees—store and access elements in distinct ways. Rather than forcing the client to manage these differences, an iterator unifies access by offering sequential =next= and =hasNext= methods (or their equivalents).
+
+You can see this in action in most high-level languages where a for-each style loop or an =Iterator= interface is employed. The pattern keeps collection details private, letting users iterate without a deeper understanding of how elements are actually arranged. Imagine a =SocialNetwork= class that stores user profiles in various ways. With an iterator, you gain a single, straightforward interface to move through those profiles, even if some live in a hash map and others in a complex graph structure.
+
+A simplified example:
+
+#+BEGIN_SRC java
+public interface Iterator<T> {
+    boolean hasNext();
+    T next();
+}
+
+public interface Collection<T> {
+    Iterator<T> createIterator();
+}
+
+public class ConcreteIterator implements Iterator<String> {
+    private String[] items;
+    private int position = 0;
+
+    public ConcreteIterator(String[] items) {
+        this.items = items;
+    }
+
+    public boolean hasNext() {
+        return position < items.length;
+    }
+
+    public String next() {
+        return items[position++];
+    }
+}
+#+END_SRC
+
+Here, =ConcreteIterator= hides any internal indexing details. The user simply checks if another element is available and fetches it. If you introduced a new data structure, you’d supply a matching iterator that respects the same interface. This design fosters flexibility: you can switch or upgrade the internal representation of your collection without affecting client code that relies on the =Iterator= interface. Furthermore, you can build specialized iterators for filtering, skipping, or other traversal behaviors, all without modifying the collection’s core logic.
+
+** 17. Mediator
+
+The [[id:7f4bd13b-48c4-4828-8adf-cd2631a0e00c][Mediator Pattern]] pattern coordinates interactions among a set of objects that would otherwise be tightly coupled. By introducing a mediator object, you keep these colleagues from referring to each other directly, instead funneling communication through the mediator. This approach can simplify complex communications by centralizing control logic in one place, making systems more maintainable and robust to changes.
+
+A fitting example is a graphical user interface with several controls. Let’s say you have a dialog box with text fields, buttons, and checkboxes. Selecting or editing one control might affect what happens in another, potentially leading to a web of direct references. The =Mediator= pattern says: let each control notify the mediator of events, and let the mediator decide how the other controls should respond. If you need to alter the interaction logic—like disabling a button until a required text field is filled—you do so in the mediator, without rewriting code in each control.
+
+A snippet could look like:
+
+#+BEGIN_SRC java
+public interface Mediator {
+    void notify(Component sender, String event);
+}
+
+public class ConcreteMediator implements Mediator {
+    private Button okButton;
+    private TextBox textBox;
+
+    public ConcreteMediator(Button okButton, TextBox textBox) {
+        this.okButton = okButton;
+        this.textBox = textBox;
+        this.okButton.setMediator(this);
+        this.textBox.setMediator(this);
+    }
+
+    public void notify(Component sender, String event) {
+        if(sender == textBox && event.equals("textChanged")){
+            okButton.setEnabled(!textBox.getText().isEmpty());
+        }
+    }
+}
+#+END_SRC
+
+In this example, the =ConcreteMediator= receives notifications from its components. If the text changes in the =TextBox=, the mediator checks if the =okButton= should be enabled or not. The =TextBox= or =Button= class doesn’t need to know about each other’s methods or states; they merely inform the mediator when something happens. This centralization reduces chaos in the codebase, especially as the number of interdependent UI controls grows. While the mediator itself can become more complex if it accumulates many rules, it keeps that complexity localized, avoiding entangling the entire system of colleagues.
+
+** 18. Memento
+
+The [[id:14fd67f1-f2e2-481d-88e1-975a1d125e6f][Memento Pattern]] captures an object’s internal state at a particular moment in time so it can be restored to that state later. This is crucial for implementing features like undo/redo in applications such as text editors, drawing programs, or even complex simulations. The main challenge is to protect the internal details of the object from outside interference while still providing a mechanism to retrieve and store those details.
+
+A good real-world analogy is a snapshot feature in certain software, where you can capture the program’s entire configuration, then revert if something goes wrong. The =Memento= pattern formalizes this idea. It typically involves three participants: the originator (the object whose state is being captured), the memento (the snapshot of state), and the caretaker (the entity responsible for storing the memento but not interfering with its content). The caretaker doesn’t look inside the memento; it just holds onto it.
+
+For instance:
+
+#+BEGIN_SRC java
+public class Editor {
+    private String text;
+    private int cursorPosition;
+
+    public EditorState saveState() {
+        return new EditorState(text, cursorPosition);
+    }
+
+    public void restoreState(EditorState state) {
+        this.text = state.getText();
+        this.cursorPosition = state.getCursorPosition();
+    }
+}
+
+public class EditorState {
+    private final String text;
+    private final int cursorPosition;
+
+    public EditorState(String text, int cursorPosition) {
+        this.text = text;
+        this.cursorPosition = cursorPosition;
+    }
+    
+    public String getText() {
+        return text;
+    }
+
+    public int getCursorPosition() {
+        return cursorPosition;
+    }
+}
+#+END_SRC
+
+Here, =EditorState= acts as the memento, capturing the text and cursor position. The =Editor= remains the originator, using =saveState()= and =restoreState()= to manage its own snapshots. Meanwhile, an external manager (the caretaker) might store these states on a stack for undo purposes. This design ensures that the editor’s state can be preserved without letting external code meddle with it. The caretaker, in turn, can handle multiple states, enabling time-travel functionality. By embracing the =Memento= pattern, you achieve a robust mechanism for state rollback without exposing the innards of the originator object, keeping the system modular and secure.
+
+** 19. Observer
+
+The [[id:8f1bf5e3-53d1-47d6-add4-4894cf4893f2][Observer Pattern]] establishes a one-to-many relationship between objects, such that when one object (the subject) changes its state, all its dependents (observers) are notified and updated automatically. This arrangement fosters loose coupling between the subject and its observers, because the subject does not need to know the specifics of who or what is observing it—it merely broadcasts notifications.
+
+A classic scenario is a graphical user interface where multiple widgets or displays need to refresh when underlying data changes. By making that data source the subject, it can push change notifications whenever its state is updated. Each widget can then decide how best to reflect this change, possibly re-rendering or recalculating its own display.
+
+A typical structure would be:
+
+#+BEGIN_SRC java
+public interface Observer {
+    void update(String eventData);
+}
+
+public class ConcreteObserver implements Observer {
+    private String observerState;
+    public void update(String eventData) {
+        this.observerState = eventData;
+        System.out.println("Observer received update: " + eventData);
+    }
+}
+
+public class Subject {
+    private List<Observer> observers = new ArrayList<>();
+
+    public void attach(Observer o) {
+        observers.add(o);
+    }
+
+    public void notifyObservers(String eventData) {
+        for (Observer o : observers) {
+            o.update(eventData);
+        }
+    }
+}
+#+END_SRC
+
+In this snippet, a =Subject= manages a list of observers. Whenever something noteworthy happens (like a state change), the subject calls =notifyObservers(eventData)=. Each observer is free to handle the new data in its own way. This pattern is also known as =Publish-Subscribe= or =Dependents= in various contexts, and it is used extensively for event-driven architectures. The advantage is a clear separation of concerns: the subject focuses on its domain logic, while observers handle the consequences of changes. As a result, you can add or remove observers dynamically without altering the subject’s code, and you can easily reuse or repurpose observers across different subjects as your application evolves.
+
+** 20. State
+
+The [[id:aeae3810-8a95-432d-8f31-7d043f08a285][State Pattern]] allows an object to alter its behavior when its internal state changes. This pattern is particularly powerful in scenarios where an object’s logic can be partitioned into distinct states, each with its own set of rules or behaviors. Rather than scattering conditional checks across the object’s methods, you encapsulate each state in its own class, with the main object delegating to the current state.
+
+An often-cited example is a media player or a TCP connection. A TCP connection might have states like =Established=, =Listening=, =Closed=, and each state dictates how the connection responds to events like =send()=, =close()=, or =ackReceived()=. Shifting from one state to another transitions the object’s behavior in a clean, modular way.
+
+A simple code fragment might be:
+
+#+BEGIN_SRC java
+public interface State {
+    void handleRequest();
+}
+
+public class ConcreteStateA implements State {
+    public void handleRequest() {
+        System.out.println("State A handling request, transitioning to State B.");
+        // Possibly transition to another state
+    }
+}
+
+public class Context {
+    private State state;
+
+    public Context(State initialState) {
+        this.state = initialState;
+    }
+
+    public void setState(State state) {
+        this.state = state;
+    }
+
+    public void request() {
+        state.handleRequest();
+    }
+}
+#+END_SRC
+
+When the context (=Context=) receives a request, it simply hands it off to the current =State= object. That state can process the request, execute any relevant actions, and set a new state on the context if the situation calls for it. The beauty of the pattern is that adding a new state or refining existing ones doesn’t pollute the context class with extra conditionals or branching logic. Each state class is self-contained, specifying exactly what happens in that state and how transitions occur. This fosters clarity and extensibility, especially when dealing with complex state machines where procedural approaches might become tangled in lengthy =if-else= statements.
+
+** 21. Strategy
+
+The [[id:3844e7e7-f771-4e95-b7c3-e78b6f2becbc][Strategy Pattern]] defines a family of algorithms, encapsulates each one, and makes them interchangeable at runtime. It enables you to vary the algorithm independently of clients that use it. If you have a set of related behaviors, and different variants of those behaviors might be applied under different conditions, then =Strategy= is a strong candidate.
+
+Picture a sorting framework where you can apply multiple sorting strategies—quick sort, merge sort, bubble sort—depending on the context (like data size or level of pre-sorting). Instead of building a single sorting function riddled with conditionals, you provide a =SortStrategy= interface and multiple concrete implementations. The client code delegates the sorting task to one of these strategies, possibly chosen at runtime based on performance metrics or user preferences.
+
+An abbreviated version could be:
+
+#+BEGIN_SRC java
+public interface Strategy {
+    int doOperation(int num1, int num2);
+}
+
+public class OperationAdd implements Strategy {
+    public int doOperation(int num1, int num2) {
+        return num1 + num2;
+    }
+}
+
+public class OperationMultiply implements Strategy {
+    public int doOperation(int num1, int num2) {
+        return num1 * num2;
+    }
+}
+
+public class Context {
+    private Strategy strategy;
+    public Context(Strategy strategy) {
+        this.strategy = strategy;
+    }
+
+    public int executeStrategy(int num1, int num2) {
+        return strategy.doOperation(num1, num2);
+    }
+}
+#+END_SRC
+
+Here, the =Context= can be plugged with either =OperationAdd= or =OperationMultiply=. When =executeStrategy()= is called, the chosen strategy handles the computation. The client can swap strategies without changing the rest of the code. This fosters compliance with the open-closed principle, as adding new strategies typically requires creating a new class, not modifying existing logic. The pattern also keeps responsibilities clear: each strategy focuses on a single algorithm, and the context orchestrates when and how to invoke it.
+
+** 22. Template Method
+
+The [[id:e06f57ac-05f3-4bf2-afba-15b52a48138d][Template Method Pattern]] outlines the skeleton of an algorithm within a method, letting subclasses override certain steps without changing the overall flow. It’s a way to enforce a particular sequence of operations while allowing specific variations of those steps in derived classes. By encapsulating the invariant parts in a base class method, you define the algorithm’s structure once, and let subclasses implement or refine the variable parts.
+
+A common example is a data mining application, where you might have steps like =openFile()=, =extractData()=, =analyzeData()=, =closeFile()=. Regardless of file format or data type, the sequence—open, extract, analyze, close—remains consistent. Subclasses that specialize in CSV files, JSON files, or XML files can override the relevant steps while preserving the overarching template.
+
+In code:
+
+#+BEGIN_SRC java
+public abstract class DataProcessor {
+    public final void process() {
+        readData();
+        processData();
+        saveData();
+    }
+
+    protected abstract void readData();
+    protected abstract void processData();
+    protected void saveData() {
+        System.out.println("Saving data in the standard format.");
+    }
+}
+
+public class CsvDataProcessor extends DataProcessor {
+    protected void readData() {
+        System.out.println("Reading data from CSV file.");
+    }
+    protected void processData() {
+        System.out.println("Processing CSV data.");
+    }
+}
+#+END_SRC
+
+The =process()= method in =DataProcessor= is declared =final=, ensuring subclasses cannot alter the method’s order of operations. They only fill in details in methods like =readData()= and =processData()=. The pattern thus encourages a controlled form of extensibility. Developers can supply new implementations for those abstract steps as needed, but the overall process remains uniform. This can be pivotal for maintaining consistent workflows in frameworks, libraries, or large-scale systems where certain operations must occur in a predefined sequence to guarantee stability or correctness.
+
+** 23. Visitor
+
+The [[id:38a4e870-6f63-4c0c-a6bf-f7c6d7c47309][Visitor Pattern]] separates an algorithm from the objects on which it operates by letting you place new operations in a separate visitor object. In effect, this pattern allows adding behaviors to classes without modifying them, while still leveraging double dispatch to handle different object types distinctly. A visitor traverses a set of objects—in a data structure or object hierarchy—and performs operations that are specific to each object type.
+
+One scenario is an abstract syntax tree in a compiler, where each node type (e.g., =VariableNode=, =AssignmentNode=, =ExpressionNode=) might require distinct logic for printing, type checking, or optimization. Instead of embedding these algorithms directly in each node class, you can implement them in separate visitors. Each node class provides an =accept(Visitor v)= method that calls =visit(this)=, passing a reference to itself. The visitor implements overloaded =visit()= methods for each node type.
+
+A simplified code view:
+
+#+BEGIN_SRC java
+public interface Visitor {
+    void visit(ConcreteElementA element);
+    void visit(ConcreteElementB element);
+}
+
+public class ConcreteVisitor1 implements Visitor {
+    public void visit(ConcreteElementA element) {
+        System.out.println("Visitor 1 processing Element A.");
+    }
+    public void visit(ConcreteElementB element) {
+        System.out.println("Visitor 1 processing Element B.");
+    }
+}
+
+public interface Element {
+    void accept(Visitor visitor);
+}
+
+public class ConcreteElementA implements Element {
+    public void accept(Visitor visitor) {
+        visitor.visit(this);
+    }
+}
+#+END_SRC
+
+Through this setup, you decouple the “behaviors” from the “data structures.” New behaviors can be added simply by creating new visitor classes, rather than updating the data classes themselves. This can be a godsend for stable hierarchies where the set of element classes seldom changes, but new operations are frequently introduced. However, if you often add new element types, the =Visitor= pattern can become cumbersome, since each visitor needs extra methods to handle the new types. Nonetheless, in many domains—like compilers, interpreters, or any scenario with a well-defined object structure and a constant demand for new operations—the =Visitor= pattern is invaluable, elegantly organizing complex logic and maintaining the openness of the system to evolving requirements.
+
