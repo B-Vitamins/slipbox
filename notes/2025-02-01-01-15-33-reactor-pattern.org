@@ -1,0 +1,399 @@
+:PROPERTIES:
+:ID:       9985ab70-f7de-4b19-81e5-9e487fc0bf2d
+:END:
+#+TITLE: Reactor Pattern
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+* Introduction and Historical Context
+The Reactor pattern is a foundational solution for asynchronous, event-driven I/O. Rather than spawning one thread per connection or operation, a Reactor-based system runs a small number of threads (often just one), waiting on an operating system call (like =select=, =epoll=, or =kqueue=) for I/O readiness events. When an event occurs (like “socket X is readable”), the Reactor dispatches that event to a corresponding “handler” (or “callback”). This approach can drastically reduce overhead and simplify concurrency in high-scale servers or GUIs.
+
+Historically, Reactor can be traced back to the C10K challenge (handling 10,000 concurrent connections). Early servers used naive “one thread per connection,” which didn't scale well. Reactor offered a model where a single thread monitors readiness for multiple connections, then calls the correct handler. Frameworks like ACE in C++, Node.js’s libuv, Netty in Java, or Nginx all embody Reactor-like designs for asynchronous I/O.
+
+** 1.1 Why Use Reactor?
+- Scalability: A single or small set of threads can handle thousands of connections, each in non-blocking mode, drastically reducing context switches.
+- Resource Efficiency: Instead of many blocked threads, we have a single event loop that waits for readiness signals.
+- Simplified Concurrency: If one thread controls the I/O, you can often avoid complicated locking. Just ensure each handler is short and non-blocking.
+- Library/Framework Backbone: Many asynchronous frameworks embed Reactor beneath language-level async or event-based APIs.
+
+** 1.2 Potential Pitfalls
+- Complex Event Flows: Handling partial reads/writes or dealing with “callback hell” can complicate code if not structured carefully.
+- Single Thread Bound: If your handlers do heavy CPU tasks, they block the whole loop. Offload big tasks to worker threads.
+- Timers/Signals: Extending Reactor to handle timeouts, signals, or other OS events requires additional logic.
+- Debugging Async: As with any asynchronous approach, tracking logic flow across callbacks requires robust logging or special tooling.
+
+When used wisely, Reactor underpins many high-performance or low-latency systems, unifying readiness-based event demultiplexing and dispatch in a single loop or minimal threads.
+
+* 2. Conceptual Motivation
+Imagine a chat server with 10,000 clients. A naive “thread per connection” approach yields 10,000 mostly idle threads, each waiting on I/O. Instead, a Reactor loop calls select or epoll, sees which socket is readable, and dispatches to that socket’s “read handler.” Overhead is reduced; concurrency is replaced by event-based dispatch. The logic for each client resides in a small callback.
+
+Similarly, a GUI event loop is effectively a Reactor: one thread waits for OS events, then calls the relevant widget method. No “thread per widget” is needed.
+
+Hence, the Reactor pattern:
+
+1. Has an event demultiplexer (the OS or library) that blocks for readiness events.
+2. Maintains a set (or map) of socket/FD → handler.
+3. On readiness, calls the handler’s method for that event (readable, writable, etc.).
+4. Handlers do short, non-blocking tasks. If needed, they schedule further writes or pass data off to worker threads.
+
+This single-thread loop can manage thousands of connections if each handler call is brief, making Reactor a staple in I/O-bound systems.
+
+* 3. Beginner Example (Python)
+We start with a minimal Python echo server using the =selectors= module. This is not production-grade, but it demonstrates the pattern: a single thread, an event loop, multiple handlers (for server acceptance and for client echo).
+
+** 3.1 Motivating Scenario
+We want a multi-connection echo server that avoids a “thread per client.” Instead, we run a single Reactor loop that calls =selector.select()=, returning readiness events, and then calls a corresponding “handle_read()” method.
+
+** 3.2 Code Example (Beginner, Python)
+#+BEGIN_SRC python
+import socket
+import selectors
+
+class EchoHandler:
+    def __init__(self, conn, addr):
+        self.conn = conn
+        self.addr = addr
+
+    def handle_read(self, sel):
+        data = self.conn.recv(1024)
+        if data:
+            self.conn.sendall(data)
+        else:
+            print(f"Closing {self.addr}")
+            sel.unregister(self.conn)
+            self.conn.close()
+
+class Reactor:
+    def __init__(self):
+        self.selector = selectors.DefaultSelector()
+
+    def register(self, conn, handler):
+        self.selector.register(conn, selectors.EVENT_READ, handler)
+
+    def run(self):
+        print("Reactor running. Ctrl+C to exit.")
+        while True:
+            events = self.selector.select()
+            for key, _ in events:
+                handler = key.data
+                handler.handle_read(self.selector)
+
+def accept_connection(sock, reactor):
+    conn, addr = sock.accept()
+    conn.setblocking(False)
+    print("Accepted", addr)
+    handler = EchoHandler(conn, addr)
+    reactor.register(conn, handler)
+
+def main():
+    reactor = Reactor()
+
+    server_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    server_sock.bind(('0.0.0.0', 5555))
+    server_sock.listen()
+    server_sock.setblocking(False)
+
+    class AcceptHandler:
+        def handle_read(self, sel):
+            accept_connection(server_sock, reactor)
+
+    reactor.register(server_sock, AcceptHandler())
+    reactor.run()
+
+if __name__ == "__main__":
+    main()
+#+END_SRC
+
+** 3.2.1 Explanation
+- =Reactor= uses =selectors= for event demultiplexing. The =run()= method loops on =select()= and dispatches to the correct =handle_read()= method.
+- =EchoHandler= does the actual echo logic for each client. If no data, it closes the connection and unregisters it.
+- The server socket has an =AcceptHandler= that, on readiness, calls =accept_connection()= to create new connections. Each connection is assigned an =EchoHandler=, then =register()=ed with the Reactor.
+
+** 3.3 Observations
+This is the simplest Reactor approach: one loop, many sockets. Each readiness event is mapped to a handler method. The user code is small but flexible, easily extended to more complex logic (like partial reads or writes). Python’s =asyncio= is a more advanced version of this concept under the hood.
+
+* 4. Intermediate Example (Go)
+We move to Go, known for goroutines and channels rather than direct event loops. Still, we can illustrate Reactor with epoll calls via =x/sys/unix=, bridging readiness detection and goroutines for heavier tasks. This is a somewhat “low-level” approach in Go, but it demonstrates how Reactor can appear in a concurrency-rich language.
+
+** 4.1 Motivating Scenario
+We want a multi-connection echo server with epoll. We'll keep a single event loop for readiness, but upon each =read= event, we spawn a goroutine to handle the data, preventing the main loop from blocking if the handler does more work. This “hybrid concurrency” merges Reactor with goroutine-based concurrency.
+
+** 4.2 Code Example (Intermediate, Go)
+#+BEGIN_SRC go
+package main
+
+import (
+    "fmt"
+    "net"
+    "os"
+    "syscall"
+    "golang.org/x/sys/unix"
+    "sync"
+)
+
+type Handler interface {
+    OnReadable(fd int)
+}
+
+type Reactor struct {
+    epfd int
+    handlers map[int]Handler
+    mu sync.Mutex
+}
+
+func NewReactor() (*Reactor, error) {
+    epfd, err := unix.EpollCreate1(0)
+    if err != nil {
+        return nil, err
+    }
+    return &Reactor{
+        epfd: epfd,
+        handlers: make(map[int]Handler),
+    }, nil
+}
+
+func (r *Reactor) Register(fd int, h Handler) error {
+    r.mu.Lock()
+    defer r.mu.Unlock()
+    ev := &unix.EpollEvent{Events: unix.EPOLLIN, Fd: int32(fd)}
+    if err := unix.EpollCtl(r.epfd, unix.EPOLL_CTL_ADD, fd, ev); err != nil {
+        return err
+    }
+    r.handlers[fd] = h
+    return nil
+}
+
+func (r *Reactor) Run() {
+    var events = make([]unix.EpollEvent, 16)
+    for {
+        n, err := unix.EpollWait(r.epfd, events, -1)
+        if err != nil && err != syscall.EINTR {
+            fmt.Println("EpollWait error:", err)
+            return
+        }
+        r.mu.Lock()
+        for i := 0; i < n; i++ {
+            fd := int(events[i].Fd)
+            if h, ok := r.handlers[fd]; ok {
+                go h.OnReadable(fd)
+            }
+        }
+        r.mu.Unlock()
+    }
+}
+
+type EchoHandler struct {
+    conn net.Conn
+}
+
+func (eh *EchoHandler) OnReadable(fd int) {
+    buf := make([]byte, 1024)
+    n, err := eh.conn.Read(buf)
+    if err != nil {
+        fmt.Println("read error:", err)
+        eh.conn.Close()
+        return
+    }
+    if n > 0 {
+        eh.conn.Write(buf[:n])
+    } else {
+        eh.conn.Close()
+    }
+}
+
+func main() {
+    reactor, err := NewReactor()
+    if err != nil {
+        fmt.Println("Failed to create Reactor:", err)
+        return
+    }
+
+    go reactor.Run()
+
+    ln, err := net.Listen("tcp", ":5555")
+    if err != nil {
+        fmt.Println("Listen error:", err)
+        return
+    }
+    defer ln.Close()
+
+    for {
+        conn, err := ln.Accept()
+        if err != nil {
+            fmt.Println("Accept error:", err)
+            continue
+        }
+        tcpConn, ok := conn.(*net.TCPConn)
+        if !ok {
+            fmt.Println("Not a TCPConn!")
+            conn.Close()
+            continue
+        }
+        file, err := tcpConn.File()
+        if err != nil {
+            fmt.Println("TCPConn.File error:", err)
+            conn.Close()
+            continue
+        }
+        fd := int(file.Fd())
+        unix.SetNonblock(fd, true)
+
+        handler := &EchoHandler{conn: conn}
+        reactor.Register(fd, handler)
+    }
+}
+#+END_SRC
+
+** 4.2.1 Explanation
+- =Reactor= manages an epoll FD, a map of FD→Handler, and =Register= for new FDs. The =Run()= loop calls =EpollWait=, then spawns a goroutine calling =OnReadable(...)= for each event.
+- =EchoHandler= does a read/write echo or closes on error or EOF.
+- =main()= runs =reactor.Run()= in one goroutine, while the main goroutine listens for connections. Each accepted =TCPConn= is converted to a file descriptor and registered with epoll.
+
+** 4.3 Observations
+While Go’s typical concurrency style differs, this example proves Reactor can be used if we want direct epoll control. We combine a small event loop with goroutines for logic. Real code might do partial reads, more robust token assignment, or use a library that abstracts this.
+
+* 5. Advanced Example (Rust)
+Finally, let’s illustrate a multi-resource Reactor in Rust, possibly integrating sockets and timers in one loop. We’ll do a partial snippet with =mio= or a similar crate, acknowledging that real production code might prefer =tokio= or =async-std=.
+
+** 5.1 Motivating Scenario
+We want a single loop to handle:
+- A listening socket for new connections,
+- Possibly existing client sockets for read/write,
+- Timers or other custom events
+The code is partial but shows how we unify multiple event sources in a single poll loop, each with its own “Handler” object.
+
+** 5.2 Code Example (Advanced, Rust)
+#+BEGIN_SRC rust
+use mio::{Events, Poll, Token, Interest, net::TcpListener};
+use std::collections::HashMap;
+use std::io::{Read, Write};
+use std::time::{Duration, Instant};
+
+const SERVER: Token = Token(0);
+const TIMER: Token = Token(1);
+
+trait Handler {
+    fn on_ready(&mut self, event: &mio::event::Event, poll: &mut Poll);
+}
+
+struct MyReactor {
+    poll: Poll,
+    events: Events,
+    handlers: HashMap<Token, Box<dyn Handler>>,
+    next_token_id: usize,
+}
+
+impl MyReactor {
+    fn new() -> std::io::Result<Self> {
+        Ok(MyReactor {
+            poll: Poll::new()?,
+            events: Events::with_capacity(128),
+            handlers: HashMap::new(),
+            next_token_id: 2,
+        })
+    }
+
+    fn register_handler<S: mio::event::Source + ?Sized>(
+        &mut self,
+        source: &mut S,
+        token: Token,
+        interest: Interest,
+        handler: Box<dyn Handler>,
+    ) -> std::io::Result<()> {
+        self.poll.registry().register(source, token, interest)?;
+        self.handlers.insert(token, handler);
+        Ok(())
+    }
+
+    fn run(&mut self) -> std::io::Result<()> {
+        loop {
+            self.poll.poll(&mut self.events, Some(Duration::from_secs(5)))?;
+            for event in &self.events {
+                let t = event.token();
+                if let Some(h) = self.handlers.get_mut(&t) {
+                    h.on_ready(event, &mut self.poll);
+                }
+            }
+        }
+    }
+}
+
+struct EchoConnection {
+    // ...
+}
+
+impl Handler for EchoConnection {
+    fn on_ready(&mut self, event: &mio::event::Event, poll: &mut Poll) {
+        if event.is_readable() {
+            // read data, write back
+        }
+    }
+}
+
+struct ServerHandler {
+    listener: TcpListener,
+}
+
+impl Handler for ServerHandler {
+    fn on_ready(&mut self, event: &mio::event::Event, poll: &mut Poll) {
+        if event.is_readable() {
+            // accept new connections, register them with the reactor
+        }
+    }
+}
+
+struct TimerHandler {
+    last_tick: Instant,
+}
+
+impl Handler for TimerHandler {
+    fn on_ready(&mut self, event: &mio::event::Event, poll: &mut Poll) {
+        // handle a custom timer event or re-arm
+    }
+}
+
+fn main() -> std::io::Result<()> {
+    let mut reactor = MyReactor::new()?;
+
+    let mut listener = TcpListener::bind("127.0.0.1:5555".parse().unwrap())?;
+    reactor.register_handler(&mut listener, SERVER, Interest::READABLE, Box::new(ServerHandler { listener }))?;
+
+    // Insert a timer handler with token TIMER
+    reactor.handlers.insert(TIMER, Box::new(TimerHandler { last_tick: Instant::now() }));
+
+    reactor.run()
+}
+#+END_SRC
+
+** 5.2.1 Explanation
+- =MyReactor= wraps a =Poll= from =mio= and an =Events= buffer. We store a map token→Handler. The code is partial but indicative of how a Rust Reactor might unify multiple resources.
+- =ServerHandler=, =EchoConnection=, =TimerHandler= each implement =Handler=, so that on readiness, they do the appropriate action (accept, read/write, or a timer-based housekeeping).
+- We show how to register them with tokens =SERVER= or =TIMER=. For new connections, we might generate more tokens, attach more =EchoConnection= objects, etc.
+- In reality, you’d store references more carefully, handle partial writes, remove tokens when done, etc.
+
+** 5.3 Observations
+Rust’s =mio= is a classic Reactor library. The code above is typical of “roll your own event loop.” Higher-level frameworks like =tokio= build upon this, layering tasks, futures, and scheduling on top. The pattern remains Reactor: readiness-based event loop, dispatch to a “handler” per resource.
+
+* 6. Nuances, Variations, and Best Practices
+
+- Reactor vs. Proactor: Reactor is readiness-based, while Proactor (common on Windows IOCP) is completion-based. In modern libraries, you might see a hybrid or an abstraction layer that hides the difference.
+- Single vs. multi-thread Reactor: Typically single-thread is simplest. For multi-core scaling, you might spawn multiple Reactors or multiple poll loops, each handling a subset of connections.
+- Handling Timers, signals, etc.: A robust Reactor must handle more than sockets. Many system calls or libraries let you unify timeouts, signals, or other events in the same event loop.
+- Offloading CPU tasks: If a handler does heavy computation, it can block the loop. Offload such tasks to worker threads or a pool, returning quickly to the event loop to remain responsive.
+- Observability and logs: Debugging asynchronous flows requires good logs or instrumentation. Tools that visualize readiness events are invaluable.
+- Real frameworks: Node.js, Nginx, Netty, Twisted in Python, or even some game engines rely on Reactor or Reactor-like underpinnings. They typically add a lot of convenience layers over the raw pattern.
+
+* 7. Real-World Usage
+- Node.js: Single-thread event loop with =libuv= (a cross-platform Reactor). Each readiness event calls the relevant callback or promise.
+- Nginx: A single (or small set of) event loop(s) handle all connections via epoll/kqueue, enabling extremely high concurrency for HTTP/HTTPS serving.
+- Java’s Netty: A sophisticated event-driven networking framework that uses multiple Reactor loops (one or more “boss” loop(s) for accept, plus “worker” loops for read/write).
+- GUI frameworks: The main thread event loop is a Reactor, where OS events are demultiplexed to widget callbacks.
+
+* 8. Conclusion
+The Reactor pattern stands as a cornerstone of asynchronous and event-driven design. By delegating readiness detection to a single event loop and storing a “handler” or “callback” for each resource, it eliminates the overhead of “thread per connection,” while elegantly orchestrating concurrency for I/O-bound systems. Each resource (socket, file, timer) is polled for readiness, and the appropriate handler is invoked, often in a single thread or small thread pool. We showcased:
+
+- Beginner (Python): A minimal multi-connection echo server using =selectors=, demonstrating the essence of Reactor with a single loop, multiple handlers.
+- Intermediate (Go): A partial epoll-based example bridging Reactor readiness dispatch with goroutines for concurrency.
+- Advanced (Rust): A multi-resource approach using =mio= to unify sockets and timers in a single poll loop, showing how a single Reactor can handle different event sources in a low-level but high-performance manner.
+
+Though many modern environments provide =async/await= or actor-style concurrency that abstract away some details, the underlying concept of “readiness-based event loop + dispatch to correct handler” endures as the Reactor pattern. It remains crucial for building scalable, non-blocking I/O systems, from servers to GUIs to embedded event loops.
