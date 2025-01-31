@@ -1,0 +1,421 @@
+:PROPERTIES:
+:ID:       4eaa56e8-3e1a-4a22-8163-1a6f27bccc64
+:END:
+#+TITLE: Actor Model Pattern
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+* 1. Introduction and Historical Context
+
+The Actor Model is a concurrency paradigm first formalized by Carl Hewitt in the 1970s, designed around actors—isolated entities that handle messages sequentially, modify their own state or create more actors, and send messages to other actors. Each actor:
+
+- Processes messages one at a time in a single-threaded manner, thus avoiding data races on its internal state.
+- Communicates only via messages, never by directly sharing memory or references.
+- Potentially creates more actors or updates its “behavior” in response to certain messages.
+
+This model drastically simplifies concurrency logic: no direct locks or conditions, no partial data races. Instead, you build a system as a network (or graph) of actors exchanging messages asynchronously. Many modern frameworks—Erlang/Elixir with their processes, Akka in Scala/Java, Actix in Rust—use the Actor Model to handle large-scale concurrency or distributed systems. The approach fosters resilience, as each actor can fail independently, and fosters clarity, because every piece of state belongs to exactly one actor.
+
+** 1.1 Why Use the Actor Model?
+
+- Isolation: Each actor’s state is private, updated only by its own mailbox of messages. This drastically reduces concurrency bugs.
+- Scalability: Actors can be distributed across threads, processes, or machines. The same message-based approach works for local concurrency or cluster-level distribution.
+- Resilience: In frameworks like Erlang/Elixir or Akka, an actor can crash without taking down the rest of the system. Supervisors can restart or reroute messages.
+- Simplicity of Communication: Instead of shared memory, you think in terms of “send message A to actor X.” This is conceptually simpler in large-scale systems.
+
+** 1.2 Potential Pitfalls
+
+- Message Overheads: If your system has high-frequency, tiny messages, the overhead of sending them can hamper performance.
+- Mailbox Buildup: If an actor receives messages faster than it can process them, its queue may grow unbounded, leading to memory pressure.
+- Distributed Complexity: If you distribute actors across machines, you must handle partial failures, network partitions, etc. Some frameworks help with that, but it’s still nontrivial.
+- Debugging: Tracing a message’s path from sender to multiple recipients can be tricky, requiring specialized logging or debugging tools.
+
+Nonetheless, the Actor Model remains extremely powerful for concurrency, particularly in distributed or large-scale systems that need robust fault-tolerance.
+
+* 2. Conceptual Motivation
+
+Imagine you’re building a chat system with thousands of users. Each “user” might be represented by an actor. They each hold their personal state (like a username, a list of joined rooms). If user A sends a message to user B, we dispatch it to B’s actor mailbox. B’s actor processes it in order with other messages. This approach avoids direct shared data structures for rooms or user lists. Each chat room might be an actor that stores its own membership and dispatches messages to the relevant user actors. The approach is straightforward to scale: you can run many actors per machine or replicate them across a cluster if your runtime supports that. The same model suits banking (an actor for each account), games (actors for each player or entity), or IoT devices (actors for each sensor).
+
+* 3. Beginner Example (Rust)
+
+We begin with a simple Rust scenario, focusing on building a minimal actor system that spawns multiple actor “tasks.” Each actor has a mailbox (channel) and processes messages in a single-threaded loop. This example is “beginner-level,” so we’ll keep the code short, but enough to illustrate how we define actors, send messages, and handle them sequentially.
+
+** 3.1 Motivating Scenario
+
+Suppose we want a small “counter actor” that can increment or get its current value. We might spawn multiple counters, each running in its own asynchronous loop. We’ll emulate a toy actor framework with a struct `CounterActor`, a message enum, and some concurrency primitives. The system we build is ephemeral—just to show how an actor receives messages and responds.
+
+** 3.2 Code Example (Beginner, Rust)
+
+#+BEGIN_SRC rust
+use std::sync::{Arc, Mutex};
+use std::thread;
+use std::sync::mpsc::{self, Sender, Receiver};
+
+enum CounterMsg {
+    Inc(i32),
+    Get(Sender<i32>),
+    Quit,
+}
+
+struct CounterActor {
+    inbox: Receiver<CounterMsg>,
+}
+
+impl CounterActor {
+    fn new(inbox: Receiver<CounterMsg>) -> Self {
+        CounterActor { inbox }
+    }
+
+    fn run(mut self) {
+        let mut count = 0;
+        while let Ok(msg) = self.inbox.recv() {
+            match msg {
+                CounterMsg::Inc(delta) => {
+                    count += delta;
+                    println!("Count updated to {}", count);
+                }
+                CounterMsg::Get(reply_to) => {
+                    reply_to.send(count).ok();
+                }
+                CounterMsg::Quit => {
+                    println!("Actor shutting down.");
+                    break;
+                }
+            }
+        }
+    }
+}
+
+fn main() {
+    // create channel for the actor
+    let (tx, rx) = mpsc::channel();
+    // spawn the actor
+    thread::spawn(|| {
+        let actor = CounterActor::new(rx);
+        actor.run();
+    });
+
+    // use the actor
+    tx.send(CounterMsg::Inc(5)).unwrap();
+    tx.send(CounterMsg::Inc(3)).unwrap();
+
+    let (resp_tx, resp_rx) = mpsc::channel();
+    tx.send(CounterMsg::Get(resp_tx)).unwrap();
+    let val = resp_rx.recv().unwrap();
+    println!("Got value from actor: {}", val);
+
+    // shut down
+    tx.send(CounterMsg::Quit).unwrap();
+}
+#+END_SRC
+
+** 3.2.1 Explanation
+
+- **CounterMsg**: Our message enum can be `Inc(i32)`, `Get(Sender<i32>)`, or `Quit`. This is a typical actor approach—one object representing a queue of messages, each with a type and data.
+- **CounterActor**: Holds the inbox: `Receiver<CounterMsg>`. In `run()`, it loops over messages. If `Inc`, we update count. If `Get`, we send the count back. If `Quit`, we break.
+- **Main**: We create an `mpsc` channel for messages, spawn a thread that calls `actor.run()`. We send `Inc(5)`, `Inc(3)`, then a `Get(...)` with another channel to retrieve the result. Finally, we send `Quit`.
+
+** 3.3 Observations
+
+This is the barest form of an actor system: each actor is basically a loop receiving messages from a dedicated queue. The code is “beginner” in that it’s short, but it shows the fundamental idea: no direct concurrency on `count`, no locks needed. The “actor” is effectively a single function that processes an infinite stream of typed messages, each of which can do or return something.
+
+* 4. Intermediate Example (Haskell)
+
+We next illustrate a more advanced scenario in Haskell: a system with multiple actors that can send messages to each other. This will demonstrate more of the “actor network” concept. We’ll define a minimal “ActorRef” system, let’s call it “actor library,” showing how multiple actors might coordinate. The code is intermediate because Haskell’s concurrency can be done with channels or mailboxes plus monadic composition.
+
+** 4.1 Motivating Scenario
+
+Imagine we have a “master” actor that delegates tasks to multiple “worker” actors. Each worker does some computing or I/O, then reports back to the master. We’ll define the actor system so that each actor is a separate thread with a mailbox, and we’ll define an “ActorRef a” type for sending messages of type `a`.
+
+** 4.2 Code Example (Intermediate, Haskell)
+
+#+BEGIN_SRC haskell
+{-# LANGUAGE OverloadedStrings #-}
+module Main where
+
+import Control.Concurrent
+import Control.Concurrent.STM
+import Control.Monad (forM_)
+import Data.Text (Text)
+import qualified Data.Text.IO as TIO
+import System.Random
+
+-- We'll define a type for "ActorRef" that can send messages of type 'a'
+newtype ActorRef a = ActorRef (a -> IO ())
+
+-- define a function to spawn an actor
+spawnActor :: (a -> IO ()) -> IO (ActorRef a)
+spawnActor handler = do
+  -- we'll create a TQueue
+  q <- newTQueueIO
+  -- worker loop
+  _ <- forkIO $ actorLoop q handler
+  return $ ActorRef (\msg -> atomically $ writeTQueue q msg)
+
+actorLoop :: TQueue a -> (a -> IO ()) -> IO ()
+actorLoop q handler = do
+  msg <- atomically $ readTQueue q
+  handler msg
+  actorLoop q handler
+
+-- define message types for master/worker
+data WorkerMsg = DoWork Int (ActorRef WorkerResult)
+data WorkerResult = WorkDone Int
+
+data MasterMsg = WorkerFinished Int
+
+-- let's define a worker actor function
+workerBehavior :: WorkerMsg -> IO ()
+workerBehavior (DoWork taskId replyTo) = do
+  -- simulate random time
+  delay <- randomRIO (500000, 1500000)
+  threadDelay delay
+  -- notify done
+  let result = WorkDone taskId
+  send replyTo result
+
+-- define a master actor that receives "MasterMsg"
+-- We'll keep track of how many tasks we expect, how many done
+masterBehavior :: Int -> IO (ActorRef MasterMsg, IO ())
+masterBehavior totalTasks = do
+  countVar <- newMVar 0
+  let handle (WorkerFinished taskId) = do
+        modifyMVar_ countVar (\c -> return (c+1))
+        c2 <- readMVar countVar
+        putStrLn $ "Master: worker finished " ++ show taskId
+        if c2 == totalTasks
+          then putStrLn "All tasks completed!"
+          else return ()
+  ref <- spawnActor handle
+  -- no special "stop" method here, but we can define one if needed
+  return (ref, return ())
+
+-- We'll define a helper to "send"
+send :: ActorRef a -> a -> IO ()
+send (ActorRef f) msg = f msg
+
+main :: IO ()
+main = do
+  -- master expects let's say 3 tasks
+  (masterRef, _) <- masterBehavior 3
+
+  -- spawn 3 worker actors
+  workerRefs <- mapM (const $ spawnActor workerBehavior) [1..3]
+
+  -- send tasks to each worker
+  forM_ [1..3] $ \taskId -> do
+    let i = taskId - 1
+    let w = workerRefs !! i
+    send w (DoWork taskId (ActorRef (\(WorkDone tid) ->
+           send masterRef (WorkerFinished tid)
+        )))
+
+  -- sleep a bit, let them finish
+  threadDelay 3_000_000
+  putStrLn "Main done."
+#+END_SRC
+
+** 4.2.1 Explanation
+
+- `spawnActor`: Creates a TQueue plus a worker thread that loops reading messages, passing them to a handler. We return `ActorRef`, a function that enqueues messages.
+- `WorkerMsg`: `DoWork Int (ActorRef WorkerResult)`. The worker does some “work,” then sends a `WorkDone` to the `ActorRef`.
+- `workerBehavior`: Waits a random time, then sends the result. 
+- `masterBehavior`: Expects `MasterMsg`, i.e. `WorkerFinished Int`. Tracks how many tasks are done. 
+- Usage: We spawn 3 worker actors, send them tasks. Each “DoWork” includes an ActorRef to the master so the worker can signal completion. The master increments a count. If all tasks are done, it prints “All tasks completed!”
+
+** 4.3 Observations
+
+This multi-actor scenario is more advanced than the single-actor one. We see how to pass references around, how the code remains free of direct concurrency on shared data. Each actor is a single loop receiving messages. The pattern is reminiscent of large frameworks (like Akka), but we manually coded a minimal version in Haskell.
+
+* 5. Advanced Example (Go)
+
+We present an advanced usage in Go, focusing on a “supervisor” approach. We demonstrate how we might handle actor restarts upon failure, reminiscent of Erlang or Akka. This code is more advanced because it involves multiple actors (children) plus a supervisor that reacts to errors, restarts children, or scales them.
+
+** 5.1 Motivating Scenario
+
+In a robust system, you might want an actor to handle ephemeral tasks, but if it crashes or panics, the system can’t be destroyed. Instead, a “supervisor” actor restarts the child actor. This is a hallmark of advanced actor frameworks. We’ll do a simplified “supervisor restarts child on error” scenario in Go.
+
+** 5.2 Code Example (Advanced, Go)
+
+#+BEGIN_SRC go
+package main
+
+import (
+    "fmt"
+    "sync"
+    "time"
+    "math/rand"
+    "errors"
+)
+
+// define messages: supervisor -> child or child -> supervisor
+type ChildMsg struct {
+    Kind  string
+    Payload interface{}
+}
+
+type SupervisorMsg struct {
+    ChildID int
+    Err     error
+}
+
+type ChildSpec struct {
+    id  int
+    msgChan chan ChildMsg
+}
+
+type Supervisor struct {
+    children map[int]ChildSpec
+    supChan  chan SupervisorMsg
+    nextID   int
+    mu       sync.Mutex
+}
+
+func NewSupervisor() *Supervisor {
+    s := &Supervisor{
+        children: make(map[int]ChildSpec),
+        supChan: make(chan SupervisorMsg),
+        nextID: 0,
+    }
+    go s.loop()
+    return s
+}
+
+func (s *Supervisor) loop() {
+    for msg := range s.supChan {
+        fmt.Printf("Supervisor sees child %d error: %v\n", msg.ChildID, msg.Err)
+        s.mu.Lock()
+        // remove the child from the map
+        delete(s.children, msg.ChildID)
+        // let's auto-restart
+        s.mu.Unlock()
+        newID := s.SpawnChild()
+        fmt.Printf("Supervisor restarted child with new ID %d\n", newID)
+    }
+}
+
+func (s *Supervisor) SpawnChild() int {
+    s.mu.Lock()
+    childID := s.nextID
+    s.nextID++
+    s.mu.Unlock()
+
+    msgChan := make(chan ChildMsg)
+    spec := ChildSpec{id: childID, msgChan: msgChan}
+    s.mu.Lock()
+    s.children[childID] = spec
+    s.mu.Unlock()
+
+    go childActor(childID, msgChan, s.supChan)
+    return childID
+}
+
+// we can define a method to send a message to a child
+func (s *Supervisor) SendToChild(childID int, msg ChildMsg) {
+    s.mu.Lock()
+    c, ok := s.children[childID]
+    s.mu.Unlock()
+    if ok {
+        c.msgChan <- msg
+    } else {
+        fmt.Printf("No child with id %d\n", childID)
+    }
+}
+
+// the child actor
+func childActor(id int, inbox chan ChildMsg, supChan chan SupervisorMsg) {
+    fmt.Printf("Child %d started\n", id)
+    for {
+        select {
+        case msg, ok := <-inbox:
+            if !ok {
+                // channel closed
+                return
+            }
+            switch msg.Kind {
+            case "doWork":
+                // randomly fail
+                if rand.Float32() < 0.3 {
+                    // let's simulate failure
+                    supChan <- SupervisorMsg{ChildID: id, Err: errors.New("random child failure")}
+                    return
+                } else {
+                    fmt.Printf("Child %d processed work: %v\n", id, msg.Payload)
+                }
+            }
+        }
+    }
+}
+
+func main() {
+    rand.Seed(time.Now().UnixNano())
+    sup := NewSupervisor()
+
+    // spawn 2 child actors
+    c1 := sup.SpawnChild()
+    c2 := sup.SpawnChild()
+
+    // send them messages
+    for i := 1; i <= 5; i++ {
+        sup.SendToChild(c1, ChildMsg{"doWork", fmt.Sprintf("task-%d-c1", i)})
+        sup.SendToChild(c2, ChildMsg{"doWork", fmt.Sprintf("task-%d-c2", i)})
+        time.Sleep(500 * time.Millisecond)
+    }
+
+    // wait a bit, let them fail or be restarted
+    time.Sleep(5 * time.Second)
+    fmt.Println("Main ends.")
+}
+#+END_SRC
+
+** 5.2.1 Explanation
+
+- **Supervisor**: We store a map of child ID -> ChildSpec, plus a channel `supChan` for receiving errors from children. On receiving a message about child failure, we remove that child and spawn a new one.
+- **Child Actor**: A for loop reading from `inbox`. If a message is “doWork,” there’s a 30% chance of “failure,” upon which it sends a `SupervisorMsg` and returns. Otherwise, it processes the work. 
+- **Usage**: We spawn two children, repeatedly send them “doWork” messages. Some of them fail. The supervisor sees the failure, logs it, removes the child from the map, then calls `SpawnChild()` to replace it. 
+- **Advanced**: This example demonstrates fault tolerance. The child is ephemeral, can crash, and the supervisor re-spawns a new child with a new ID. This is reminiscent of the “let it crash” philosophy in Erlang.
+
+** 5.3 Observations
+
+We see a more advanced or robust approach to actor concurrency: the system can handle partial failures gracefully. The code is reminiscent of a minimal version of Erlang/Elixir’s or Akka’s “supervisor trees.” This code is “advanced” because we combine concurrency, message passing, dynamic child creation, error handling, and restarts. Real frameworks might do more sophisticated state passing or keep track of crash frequency. But the pattern is clear: each child is an actor with a mailbox, the supervisor is itself an actor that handles error signals and restarts children, ensuring the system stays up.
+
+* 6. Nuances, Variations, and Best Practices
+
+1. **Actor Identity**  
+   In some frameworks, actors have stable addresses (like a PID in Erlang). In others, we do ephemeral references. In advanced systems, you might need a registry or name service.
+
+2. **Supervision Strategies**  
+   Systems like Erlang/Elixir or Akka define how to handle child failures: "one-for-one" restarts only the failing child, "one-for-all" restarts all siblings. This can drastically change behavior in complex systems.
+
+3. **Performance**  
+   Each actor has a mailbox, so if your system has many small messages, you might need to optimize. Or you can batch messages, or reduce the number of actors. 
+   But for typical usage, the overhead is acceptable given the clarity and concurrency benefits.
+
+4. **Stateful vs. Stateless**  
+   Actors often store persistent state (like a user’s session data). Alternatively, they can be ephemeral or stateless, passing data around. In general, the main value is the concurrency boundary they define.
+
+5. **Distribution**  
+   If you need a distributed cluster of actors, you need a network layer. Some frameworks handle it seamlessly (like Akka cluster or Erlang distribution). This is an advanced scenario but extremely powerful for large-scale systems.
+
+6. **Load Balancing**  
+   You may design "router" actors that distribute messages across multiple child actors, each of which is identical. This can handle more load or parallelism. The pattern remains purely message-based.
+
+7. **Testing**  
+   Testing actor-based systems might require you to simulate or step through message exchanges. Some frameworks offer test harnesses that let you manually feed messages in a controlled manner, or replicate partial failures. Good logging or instrumentation is vital.
+
+* 7. Real-World Usage
+
+- **Erlang/Elixir**: Entirely actor-based. Each process is an actor, each with its own mailbox. Fault tolerance is built in. Telecom systems, messaging platforms rely on it for high reliability.
+- **Akka (Scala/Java)**: A widely used actor framework that can scale from a single machine concurrency to fully distributed "Akka cluster" solutions. Offers advanced routing, persistence, and supervision.
+- **Actix (Rust)**: A high-performance actor system in Rust, used for building servers or services with strong type safety and concurrency guarantees.
+- **IoT**: Each sensor might be an actor, sending data to aggregator actors. This is a neat approach that can scale as you add more sensors or aggregator nodes.
+
+* 8. Conclusion
+
+The Actor Model stands as a fundamental approach for simplifying concurrency by isolating mutable state and passing messages among single-threaded “actors.” By removing direct shared-memory concurrency, code becomes more structured, testable, and resilient. From small examples (like a single “counter actor”) to advanced supervision trees that handle partial failures and restarts, the actor paradigm remains a potent tool for building robust, scalable systems.
+
+We showcased:
+
+- **Beginner (Rust)**: A minimal “counter actor” using an `mpsc` channel. The actor runs in a thread, reading messages. This underscores the simplest form of an actor loop.
+- **Intermediate (Haskell)**: A master-worker scenario, with multiple worker actors sending results to a master. We define references (`ActorRef`), spawn them, pass references around. The system demonstrates multi-actor coordination.
+- **Advanced (Go)**: A supervisor pattern that restarts child actors upon failure, reminiscent of Erlang or Akka supervision. This approach handles partial failures gracefully, keeping the system alive.
+
+Across all these examples, the Actor Model’s core idea is consistent: each actor has a mailbox, processes messages sequentially, and can maintain local state or spawn more actors. This concurrency model can scale from single-node concurrency to distributed clusters, all while maintaining clarity around ownership, fault tolerance, and message flow. As software grows in complexity, the Actor Model’s emphasis on isolation, asynchronous messages, and well-defined boundaries continues to be a powerful solution for concurrency and reliability. 
