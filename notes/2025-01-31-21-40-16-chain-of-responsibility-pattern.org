@@ -1,0 +1,475 @@
+:PROPERTIES:
+:ID:       5a921048-8098-49ad-81ab-a1285a06ee09
+:END:
+#+TITLE: Chain of Responsibility Pattern
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+* 1. Introduction and Historical Context
+
+The =Chain of Responsibility= (CoR) pattern belongs to the behavioral category of design patterns. It defines a chain of potential handlers for a request, where each handler decides either to handle the request or to pass it along to the next link in the chain. By doing so, the CoR pattern decouples the sender of a request from its eventual receiver. The client dispatches a request into the chain, and the chain itself determines which handler (if any) will take action.
+
+Historically, CoR emerged as a solution to the problem of hard-coded conditionals. Suppose you have code that tries if statements in sequence: “Check if admin can handle; if not, check if super-admin can handle; if not, check if system can handle,” etc. That logic can quickly become unwieldy, especially as the number of potential handlers grows. The CoR pattern reifies each condition into a distinct object (a “handler”), allowing you to reorder or insert new handlers by simply rearranging links in the chain, rather than editing a monolithic conditional structure.
+
+** 1.1 Why Use Chain of Responsibility?
+
+- =Flexibility in Handler Sequencing=: Because handlers are objects, you can easily rearrange their order or add/remove them without rewriting a central method.
+
+- =Loose Coupling=: The client doesn’t need to know which handler will ultimately process its request—only that it can “submit” to the chain.
+
+- =Multiple Potential Receivers=: If you want a request to be possibly handled by more than one entity (or by the first that meets certain criteria), CoR captures that logic elegantly.
+
+- =Open-Closed Principle=: You can add new handlers by creating new classes and inserting them into the chain, without modifying existing handlers.
+
+** 1.2 Potential Pitfalls
+
+- =Unclear End=: If the chain is very long or cyclical, you risk performance overhead or infinite loops. Ensuring a well-defined chain (and exit conditions if unhandled) is crucial.
+
+- =Debugging=: Tracing where and how a request gets handled can become trickier as the chain grows or is built dynamically.
+
+- =Overkill for Simple Conditionals=: If you only have a small set of fixed checks, a few if statements might suffice. Introducing a chain of objects might be overengineering.
+
+Used sensibly, CoR keeps request-handling code modular, testable, and open to extension—qualities that many real-world systems benefit from when dealing with dynamic or evolving sets of potential request receivers.
+
+* 2. Conceptual Motivation
+
+A classic example is help-desk escalation: a user’s support request might first go to a chatbot or knowledge base. If that doesn’t resolve the issue, it escalates to first-level support, then second-level, then a manager. Each step is a “handler,” deciding whether it can handle the request or pass it along. Another well-known scenario is GUI event handling: an event passes from the clicked control to its parent if unhandled, and so on, until something resolves it or it hits the top-level window.
+
+* 3. Beginner Example (Guile Scheme)
+
+Let’s start with a simple Guile Scheme scenario illustrating CoR. We’ll handle a series of numbers that need processing, where each handler either acts on a certain condition (e.g., even numbers) or defers to the next.
+
+** 3.1 Motivating Scenario
+
+Suppose we have transformations: if a number is even, double it; if divisible by 3, triple it; else log it as unchanged. Each rule is a separate handler in a chain. The client just feeds numbers into the chain, letting each handler either handle or pass on.
+
+** 3.2 Code Example (Beginner, Guile Scheme)
+
+#+BEGIN_SRC scheme
+(use-modules (oop goops))
+
+;; 1) Define a <handler> class with a 'next' slot for the next link in the chain
+(define-class <handler> ()
+  (next #:init-keyword #:next #:init-value #f)
+  
+  (virtual (handle (self n)) 
+           "Attempt to handle number n, or pass it along if not handled"))
+
+;; A helper to pass to the next link
+(define (call-next self n)
+  (let ((nxt (slot-ref self 'next)))
+    (if nxt
+        (send nxt 'handle n)
+        n)))  ;; if there's no next, we just return n as final
+
+;; 2) Concrete handlers:
+
+;; For even numbers: double them
+(define-class <even-handler> (<handler>)
+  (define (handle (self) n)
+    (if (even? n)
+        (* 2 n)
+        (call-next self n))))
+
+;; For multiples of 3: triple them
+(define-class <triple-handler> (<handler>)
+  (define (handle (self) n)
+    (if (= 0 (modulo n 3))
+        (* 3 n)
+        (call-next self n))))
+
+;; A default handler that doesn't transform the number
+(define-class <default-handler> (<handler>)
+  (define (handle (self) n)
+    (format #t "No special handling for ~a. Returning as is.\n" n)
+    (call-next self n)))
+
+;; Example usage
+(let* ((h1 (make <even-handler>))
+       (h2 (make <triple-handler> #:next h1))
+       (h3 (make <default-handler> #:next h2)))
+  ;; h3 -> h2 -> h1 chain in reverse order
+  (for-each
+   (lambda (num)
+     (let ((result (send h3 'handle num)))
+       (format #t "Input: ~a => Output: ~a\n" num result)))
+   '(1 2 3 4 6 7 9 12 15)))
+#+END_SRC
+
+*** 3.2.1 Explanation
+
+- =<handler>=: The base class, storing a reference to next. handle is a virtual.  
+- =call-next=: A function that calls the next handler if present, or returns n if we’re at the end.  
+- =<even-handler>, <triple-handler>, <default-handler>=: Each tries to handle based on a condition (even, divisible by 3, etc.), else delegates.  
+- Chain Building: We nest them, with <default-handler> calling <triple-handler>, which calls <even-handler>.  
+- Usage: We feed numbers into the top of the chain (h3). Each handler either acts or defers.
+
+** 3.3 Observations
+
+This simple demonstration clarifies the mechanics of CoR. The client interacts with the chain head; each link either processes or passes the request along. We could easily reorder or expand the chain if more rules appear.
+
+* 4. Intermediate Example (Python)
+
+Now, let’s do a more realistic Python scenario: a help-desk escalation system, where requests flow from first-level support to second-level, then a specialist or final logger.
+
+** 4.1 Motivating Scenario
+
+A tech company’s help desk has multiple tiers. Each tier can handle certain severities or categories. If a request surpasses its ability, it escalates. The Chain of Responsibility ensures that the user code only calls handle(request) once, not caring which tier ultimately handles it.
+
+** 4.2 Code Example (Intermediate, Python)
+
+#+BEGIN_SRC python
+class SupportRequest:
+    def __init__(self, description, severity):
+        self.description = description
+        self.severity = severity  # e.g., 1=low, 2=medium, 3=high
+        self.handled = False
+
+    def __str__(self):
+        return f"[{self.severity}] {self.description}"
+
+class Handler:
+    """Abstract handler class with a reference to the next handler."""
+    def __init__(self, successor=None):
+        self.successor = successor
+
+    def handle(self, request: SupportRequest):
+        """Attempt to handle the request or pass it along."""
+        raise NotImplementedError
+
+    def pass_to_next(self, request: SupportRequest):
+        """Call successor if exists."""
+        if self.successor:
+            self.successor.handle(request)
+
+# Concrete handlers
+
+class LevelOneSupport(Handler):
+    def handle(self, request: SupportRequest):
+        if request.severity == 1:
+            print(f"LevelOneSupport: Handling {request}")
+            request.handled = True
+        else:
+            print("LevelOneSupport: Can't handle, passing to next.")
+            self.pass_to_next(request)
+
+class LevelTwoSupport(Handler):
+    def handle(self, request: SupportRequest):
+        if request.severity == 2:
+            print(f"LevelTwoSupport: Handling {request}")
+            request.handled = True
+        else:
+            print("LevelTwoSupport: Can't handle, passing to next.")
+            self.pass_to_next(request)
+
+class SpecialistTeam(Handler):
+    def handle(self, request: SupportRequest):
+        if request.severity == 3:
+            print(f"SpecialistTeam: Handling {request}")
+            request.handled = True
+        else:
+            print("SpecialistTeam: Can't handle, passing to next.")
+            self.pass_to_next(request)
+
+class FinalLogger(Handler):
+    """A default/terminal handler that logs unhandled requests."""
+    def handle(self, request: SupportRequest):
+        if not request.handled:
+            print(f"FinalLogger: No one could handle {request}")
+        else:
+            print(f"FinalLogger: Request '{request}' was handled upstream.")
+
+# Example usage
+if __name__ == "__main__":
+    chain = LevelOneSupport(
+                LevelTwoSupport(
+                    SpecialistTeam(
+                        FinalLogger()
+                    )
+                )
+            )
+
+    requests = [
+        SupportRequest("Password reset", 1),
+        SupportRequest("Server outage", 3),
+        SupportRequest("Software installation", 2),
+        SupportRequest("Unknown hardware glitch", 5)
+    ]
+
+    for r in requests:
+        chain.handle(r)
+        print("----")
+#+END_SRC
+
+*** 4.2.1 Explanation
+
+- =SupportRequest=: Encapsulates the request’s description and severity.  
+- =Handler= Base Class: Stores successor, defines handle() as abstract, pass_to_next() for delegation.  
+- =LevelOneSupport=, =LevelTwoSupport=, =SpecialistTeam=, =FinalLogger=: Each tries to handle certain severities or logs unhandled requests if reached.  
+- Chain Building: We nest them in a chain: L1 -> L2 -> Specialist -> FinalLogger.  
+- Usage: We feed requests with various severities. Each is either handled by the appropriate level or ends up at FinalLogger as unhandled.
+
+** 4.3 Observations
+
+This help desk scenario is more realistic, showcasing how each tier in a chain tries or defers. The client only calls chain.handle(), not caring which level eventually solves the request.
+
+* 5. Advanced Example (Rust)
+
+Finally, an advanced scenario in Rust: a dynamic logging pipeline. Each link in the chain can filter or transform logs, possibly passing them along for additional processing. We’ll highlight concurrency-friendly references and how to build the chain programmatically.
+
+** 5.1 Motivating Scenario
+
+Consider an application with logs of varying levels or categories. We want a chain of log handlers: some might filter out debug logs, others might format messages, others might forward them to a remote server. Each handler can decide to process or pass on. The user code only calls the chain’s handle(event).
+
+** 5.2 Code Example (Advanced, Rust)
+
+#+BEGIN_SRC rust
+use std::sync::{Arc, Mutex};
+
+#[derive(Debug, Clone)]
+enum LogLevel {
+    INFO,
+    WARN,
+    ERROR,
+}
+
+#[derive(Debug, Clone)]
+struct LogEvent {
+    level: LogLevel,
+    message: String,
+    handled: bool,
+}
+
+trait LogHandler: Send + Sync {
+    fn handle(&self, event: &mut LogEvent);
+    fn set_next(&mut self, next: Option<Arc<Mutex<dyn LogHandler>>>);
+}
+
+struct BaseHandler {
+    next: Option<Arc<Mutex<dyn LogHandler>>>,
+}
+
+impl BaseHandler {
+    fn new() -> Self {
+        BaseHandler { next: None }
+    }
+
+    fn pass_to_next(&self, event: &mut LogEvent) {
+        if let Some(next_handler) = &self.next {
+            let mut guard = next_handler.lock().unwrap();
+            guard.handle(event);
+        }
+    }
+}
+
+impl LogHandler for BaseHandler {
+    fn handle(&self, _event: &mut LogEvent) {
+        // do nothing, an abstract base
+    }
+
+    fn set_next(&mut self, next: Option<Arc<Mutex<dyn LogHandler>>>) {
+        self.next = next;
+    }
+}
+
+// A handler that prints INFO logs to console
+struct InfoConsoleHandler {
+    base: BaseHandler,
+}
+
+impl InfoConsoleHandler {
+    fn new() -> Self {
+        InfoConsoleHandler {
+            base: BaseHandler::new(),
+        }
+    }
+}
+
+impl LogHandler for InfoConsoleHandler {
+    fn handle(&self, event: &mut LogEvent) {
+        if !event.handled && matches!(event.level, LogLevel::INFO) {
+            println!("InfoConsoleHandler: {}", event.message);
+            event.handled = true;
+        }
+        self.base.pass_to_next(event);
+    }
+    fn set_next(&mut self, next: Option<Arc<Mutex<dyn LogHandler>>>) {
+        self.base.set_next(next);
+    }
+}
+
+// A handler that writes WARN logs to a file
+struct WarnFileHandler {
+    base: BaseHandler,
+    filename: String,
+}
+
+impl WarnFileHandler {
+    fn new(filename: &str) -> Self {
+        WarnFileHandler {
+            base: BaseHandler::new(),
+            filename: filename.to_string(),
+        }
+    }
+}
+
+impl LogHandler for WarnFileHandler {
+    fn handle(&self, event: &mut LogEvent) {
+        if !event.handled && matches!(event.level, LogLevel::WARN) {
+            println!("WarnFileHandler: writing to {} => {}", self.filename, event.message);
+            event.handled = true;
+        }
+        self.base.pass_to_next(event);
+    }
+    fn set_next(&mut self, next: Option<Arc<Mutex<dyn LogHandler>>>) {
+        self.base.set_next(next);
+    }
+}
+
+// A handler that pages an operator on ERROR
+struct ErrorPagerHandler {
+    base: BaseHandler,
+    pager_number: String,
+}
+
+impl ErrorPagerHandler {
+    fn new(pager_number: &str) -> Self {
+        ErrorPagerHandler {
+            base: BaseHandler::new(),
+            pager_number: pager_number.to_string(),
+        }
+    }
+}
+
+impl LogHandler for ErrorPagerHandler {
+    fn handle(&self, event: &mut LogEvent) {
+        if !event.handled && matches!(event.level, LogLevel::ERROR) {
+            println!("ErrorPagerHandler: paging {} => {}", self.pager_number, event.message);
+            event.handled = true;
+        }
+        self.base.pass_to_next(event);
+    }
+    fn set_next(&mut self, next: Option<Arc<Mutex<dyn LogHandler>>>) {
+        self.base.set_next(next);
+    }
+}
+
+// A fallback that logs unhandled events
+struct FallbackHandler {
+    base: BaseHandler,
+}
+
+impl FallbackHandler {
+    fn new() -> Self {
+        FallbackHandler {
+            base: BaseHandler::new(),
+        }
+    }
+}
+
+impl LogHandler for FallbackHandler {
+    fn handle(&self, event: &mut LogEvent) {
+        if !event.handled {
+            println!("FallbackHandler: Unhandled => {}", event.message);
+        }
+        // end chain
+    }
+    fn set_next(&mut self, next: Option<Arc<Mutex<dyn LogHandler>>>) {
+        self.base.set_next(next);
+    }
+}
+
+fn main() {
+    // Create handlers
+    let info_console = Arc::new(Mutex::new(InfoConsoleHandler::new()));
+    let warn_file = Arc::new(Mutex::new(WarnFileHandler::new("warnings.log")));
+    let error_pager = Arc::new(Mutex::new(ErrorPagerHandler::new("555-1234")));
+    let fallback = Arc::new(Mutex::new(FallbackHandler::new()));
+
+    // Build chain: info -> warn -> error -> fallback
+    {
+        let mut head = info_console.lock().unwrap();
+        head.set_next(Some(warn_file.clone()));
+    }
+    {
+        let mut h2 = warn_file.lock().unwrap();
+        h2.set_next(Some(error_pager.clone()));
+    }
+    {
+        let mut h3 = error_pager.lock().unwrap();
+        h3.set_next(Some(fallback.clone()));
+    }
+
+    let log_events = vec![
+        LogEvent { level: LogLevel::INFO, message: "Starting system...".to_string(), handled: false },
+        LogEvent { level: LogLevel::WARN, message: "High memory usage".to_string(), handled: false },
+        LogEvent { level: LogLevel::ERROR, message: "System crash!".to_string(), handled: false },
+        LogEvent { level: LogLevel::INFO, message: "Rebooting...".to_string(), handled: false },
+        LogEvent { level: LogLevel::ERROR, message: "Lost data connection".to_string(), handled: false },
+    ];
+
+    for mut evt in log_events {
+        let mut chain_head = info_console.lock().unwrap();
+        chain_head.handle(&mut evt);
+        println!("--------------");
+    }
+}
+#+END_SRC
+
+*** 5.2.1 Explanation
+
+- =LogEvent=: Our request object with level (INFO/WARN/ERROR), message, and a handled bool.  
+- =LogHandler= Trait: Each link in the chain implements handle(event). We store next as an Option<Arc<Mutex<dyn LogHandler>>> for concurrency.  
+- =BaseHandler=: Provides pass_to_next logic, storing next. Concrete handlers embed a BaseHandler.  
+- Concrete Handlers: InfoConsoleHandler, WarnFileHandler, ErrorPagerHandler, FallbackHandler. Each checks if the event is relevant, sets handled, or passes to next.  
+- Chain Building: We link them up in a chain.  
+- Usage: Each event is fed to the chain’s head. The chain tries to find a matching handler, or fallback logs unhandled events.
+
+** 5.3 Observations
+
+This advanced Rust example merges CoR with concurrency-friendly references, dynamic trait objects, and flexible chain composition. We see how handlers can be locked and used in a multi-thread scenario if needed, while the core chain-of-responsibility logic remains the same.
+
+* 6. Nuances, Variations, and Best Practices
+
+** 6.1 Single vs. Multiple Handlers
+
+Some CoR setups stop processing once a handler takes action; others let each handler do partial processing in sequence. Both are valid. Decide whether only the first handler that matches conditions should handle the request, or if multiple handlers can contribute.
+
+** 6.2 Termination Conditions
+
+When the chain ends, you might define a fallback handler that logs or discards unhandled requests, or you could return an error if no one handles it. Ensure your chain has no unintended cycles.
+
+** 6.3 Construction
+
+Chain building can be manual (like we did) or data-driven, letting you load handler configurations from a file or environment. This is common in frameworks that let you specify a pipeline of middlewares or filters in config.
+
+** 6.4 Debugging
+
+Because requests can skip from one handler to another, using logs or debugging flags can help trace which handler responded. Alternatively, you might store “handled_by” in the request object for clarity.
+
+** 6.5 Overuse Dangers
+
+If logic is trivial, an if/else might suffice. The pattern’s advantage appears when you have multiple, potentially reorderable or optional handlers. If that’s not your scenario, a chain might add complexity.
+
+* 7. Real-World Usage
+
+- =UI Event Bubbling=: A click event tries the focused control, else goes up to the parent, etc., until a container handles it or it hits the root window.
+
+- =Logging/Middleware Pipelines=: Each link might filter or transform logs; if it doesn’t handle them, it passes them along. Similar logic applies in web frameworks’ middleware.
+
+- =Workflow or Approval Processes=: A document might pass from one manager to another, each deciding whether to approve or pass up the chain.
+
+- =Network Protocol Handling=: A packet might pass through layers of a protocol stack, each deciding whether it applies or must be forwarded up.
+
+- =Request Processing in Microservices=: Some frameworks define a chain of filters or interceptors that each can handle or pass requests.
+
+* 8. Conclusion
+
+The =Chain of Responsibility= pattern streamlines and modularizes request processing by letting multiple handlers, each with a specialized condition or logic, sequentially examine a request. The client merely sends the request into the chain, avoiding knowledge of who (if anyone) will handle it. This fosters extensibility—new handlers can be inserted—and clarity, compared to monolithic if/else structures.
+
+We explored:
+
+- =Beginner (Guile Scheme)=: A toy numeric transformation chain, showing the fundamental structure.
+- =Intermediate (Python)=: A help-desk escalation system, each support level tries or defers, eventually logging unhandled issues.
+- =Advanced (Rust)=: A logging pipeline with concurrency-friendly references, dynamic trait objects, and an arbitrarily composable chain of handlers.
+
+In each case, the Chain of Responsibility’s value lies in the decoupling of request senders from request receivers, plus the easy insertion, removal, or rearranging of handlers. When your system has flexible or growing sets of conditions, CoR can be a powerful architectural pattern, preserving open/closed design principles while enabling robust, maintainable code.
