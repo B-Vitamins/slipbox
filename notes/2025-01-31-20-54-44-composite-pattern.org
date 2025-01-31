@@ -1,0 +1,411 @@
+:PROPERTIES:
+:ID:       da5c1814-72d0-4f9b-814f-a2790c1a2196
+:END:
+#+TITLE: Composite Pattern
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+
+* 1. Introduction and Historical Context
+
+The =Composite= pattern is a structural design pattern from the classic “Gang of Four” catalog. Its central purpose is to let you treat *individual objects* (often called *leaves*) and *compositions of those objects* (called *composites*) in a uniform way, under a common interface. In simpler terms, =Composite= merges the concept of a leaf node and a container node into one overarching abstraction, typically with methods such as =addChild()=, =removeChild()=, and shared operations like =draw()= or =getSize()=.
+
+Historically, =Composite= proved invaluable for software managing hierarchical data. For instance, in file systems, you want to treat files (leaves) and directories (composites) uniformly—e.g., each has a =getSize()= method. Similarly, in GUIs, you might have base components (buttons, labels) and containers (panels, windows), both implementing a standard “component” interface that includes operations like “render” or “handle events.” The pattern helps avoid special-casing logic for single items vs. collections in the client code.
+
+** 1.1 Why Use Composite?
+
+- =Uniform Treatment=: If the system sees only an abstract “component” interface, it can handle leaves and composites identically, avoiding complicated branching logic.
+
+- =Arbitrary Tree Depth=: Because each composite can itself hold children that might be leaves or further composites, the hierarchical structure can be nested as deeply as required. Code that manipulates or traverses the hierarchy remains consistent.
+
+- =Extensibility=: Adding new leaf or composite types usually requires no modification to the code that traverses or manipulates them, as long as they adhere to the same interface.
+
+** 1.2 Pitfalls
+
+- =Overkill in Flat Structures=: If your data is not naturally hierarchical, adopting Composite can bloat your design. The pattern really shines only when a part-whole relationship is central.
+
+- =Security / Access Concerns=: If each node in the hierarchy offers =addChild()=, you must ensure that leaves do not inadvertently accept children or that the interface is carefully managed.
+
+- =Cycle Prevention=: Composite typically assumes a strict tree (acyclic graph). You must ensure that references do not accidentally form cycles, or you’ll break assumptions about how the pattern is used (e.g., summing sizes or recursively calling =draw()=).
+
+When used judiciously, =Composite= elegantly captures hierarchical relationships, from file directories to GUI component trees to organizational charts, enabling simpler client code that sees only the uniform “component” interface.
+
+* 2. Conceptual Motivation
+
+A common illustration is a file system: both files and directories conform to the same interface (e.g., =FileSystemNode=) with a method like =getSize()=. A file knows its size directly, while a directory sums the sizes of its child nodes. Client code that computes the total size of a node doesn’t need to know if it’s dealing with a leaf (file) or composite (directory). Another frequent example is a GUI widget hierarchy, where each widget has =draw()= or =handleEvent()= methods. A leaf widget (button, checkbox) can implement them in a straightforward way, while a composite container calls the same methods on each child, recursively.
+
+Below, we explore three code examples at increasing levels of sophistication, but in *different* languages than usual: first, a beginner-level example in *Guile Scheme*, then an intermediate-level example in *Rust*, and finally an advanced example in *Python*.
+
+* 3. Beginner Example (Guile Scheme)
+
+In this simple scenario, we’ll model shapes. Some shapes (like =Circle=) are leaves. Others (like =CompositeShape=) are containers holding child shapes. The =Composite= pattern ensures that our client code can call =draw= or =move= on any shape, oblivious as to whether it’s a leaf or composite.
+
+** 3.1 Motivating Scenario
+
+A small 2D drawing application in Scheme might allow the user to combine shapes into groups, then manipulate them all at once (moving or rotating a group). With =Composite=, we unify single shapes and groups of shapes under a single “shape” interface. That way, the rest of the application code can call `(draw shape)` or `(move shape dx dy)` without branching.
+
+** 3.2 Code Example (Beginner, Guile Scheme)
+
+#+BEGIN_SRC scheme
+(use-modules (oop goops))
+
+;; 1) Define the top-level component interface:
+(define-class <shape> ()
+  (virtual (draw (self)) "Draw the shape on screen")
+  (virtual (move (self) dx dy) "Move the shape by dx, dy"))
+
+;; 2) Leaf class: <circle>, a simple shape
+(define-class <circle> (<shape>)
+  (radius #:init-keyword #:radius #:init-value 1)
+  (x #:init-keyword #:x #:init-value 0)
+  (y #:init-keyword #:y #:init-value 0)
+
+  (define (draw (self))
+    (format #t "Drawing a circle at (~a, ~a) with radius ~a.\n"
+            (slot-ref self 'x) (slot-ref self 'y) (slot-ref self 'radius)))
+
+  (define (move (self) dx dy)
+    (slot-set! self 'x (+ (slot-ref self 'x) dx))
+    (slot-set! self 'y (+ (slot-ref self 'y) dy))))
+
+;; 3) Composite class: <composite-shape>, which can hold many child shapes
+(define-class <composite-shape> (<shape>)
+  (children #:init-keyword #:children #:init-value '())
+
+  (define (draw (self))
+    (format #t "Drawing CompositeShape containing ~a shapes:\n"
+            (length (slot-ref self 'children)))
+    (for-each (lambda (child)
+                (draw child))
+              (slot-ref self 'children)))
+
+  (define (move (self) dx dy)
+    (for-each (lambda (child)
+                (move child dx dy))
+              (slot-ref self 'children))))
+
+;; 4) Helper functions for the composite shape:
+(define (composite-add! composite-shape child)
+  (let ((lst (slot-ref composite-shape 'children)))
+    (slot-set! composite-shape 'children (cons child lst))))
+
+;; Example usage
+(let ((circle1 (make <circle> #:x 5 #:y 5 #:radius 2))
+      (circle2 (make <circle> #:x 10 #:y 10 #:radius 3))
+      (group (make <composite-shape>)))
+  (composite-add! group circle1)
+  (composite-add! group circle2)
+
+  (draw circle1)
+  (draw group)
+
+  (move group 2 2)
+  (draw group))
+#+END_SRC
+
+*** 3.2.1 Explanation
+
+- =<shape>=: The abstract parent class with =draw= and =move= methods.  
+- =<circle>=: A leaf shape. Its =draw= prints a message, and its =move= modifies x,y coordinates.  
+- =<composite-shape>=: A container storing a list of children. The =draw= method prints a summary, then calls =draw= on each child, while =move= delegates to each child’s =move= method.  
+- =Usage=: We create two circles, add them to a composite shape, and demonstrate uniform calls to =draw= and =move=. We never need to check if something is a leaf or composite; we just call =draw= on it.
+
+** 3.3 Observations
+
+Even in Scheme, we see how =Composite= fosters a neat “part-whole” relationship. The client code doesn’t need specialized logic to handle groups vs. single shapes. This approach can scale if we add further shapes (triangles, polygons) or embed composite shapes within composites.
+
+* 4. Intermediate Example (Rust)
+
+Next, let’s examine how the =Composite= pattern manifests in Rust. We’ll build a small file system model, where each node can be a file (leaf) or a directory (composite). The pattern will unify how we get size or print structure, ensuring we don’t branch on whether a node is a file vs. directory.
+
+** 4.1 Motivating Scenario
+
+A mock file manager in Rust might handle both files and directories. Each node implements a trait =FileSystemNode= with methods like =get_size()=, =print_structure()=, etc. A =File= (leaf) has a fixed size, while a =Directory= (composite) sums the sizes of its children. This is the textbook example of the pattern in a strongly typed language.
+
+** 4.2 Code Example (Intermediate, Rust)
+
+#+BEGIN_SRC rust
+use std::sync::{Arc, Mutex};
+
+trait FileSystemNode {
+    fn name(&self) -> &str;
+    fn get_size(&self) -> u64;
+    fn print_structure(&self, indent: usize);
+}
+
+// Leaf: File
+struct File {
+    name: String,
+    size: u64,
+}
+
+impl File {
+    fn new(name: &str, size: u64) -> Self {
+        File {
+            name: name.to_string(),
+            size,
+        }
+    }
+}
+
+impl FileSystemNode for File {
+    fn name(&self) -> &str {
+        &self.name
+    }
+
+    fn get_size(&self) -> u64 {
+        self.size
+    }
+
+    fn print_structure(&self, indent: usize) {
+        let prefix = " ".repeat(indent);
+        println!("{}File: {}, size={}", prefix, self.name, self.size);
+    }
+}
+
+// Composite: Directory
+struct Directory {
+    name: String,
+    children: Vec<Arc<Mutex<dyn FileSystemNode>>>,
+}
+
+impl Directory {
+    fn new(name: &str) -> Self {
+        Directory {
+            name: name.to_string(),
+            children: vec![],
+        }
+    }
+
+    fn add(&mut self, node: Arc<Mutex<dyn FileSystemNode>>) {
+        self.children.push(node);
+    }
+}
+
+impl FileSystemNode for Directory {
+    fn name(&self) -> &str {
+        &self.name
+    }
+
+    fn get_size(&self) -> u64 {
+        self.children
+            .iter()
+            .map(|child| child.lock().unwrap().get_size())
+            .sum()
+    }
+
+    fn print_structure(&self, indent: usize) {
+        let prefix = " ".repeat(indent);
+        println!(
+            "{}Directory: {} ({} children)",
+            prefix, self.name, self.children.len()
+        );
+        for child in &self.children {
+            child.lock().unwrap().print_structure(indent + 2);
+        }
+    }
+}
+
+fn main() {
+    let file1 = Arc::new(Mutex::new(File::new("file1.txt", 1200))) as Arc<Mutex<dyn FileSystemNode>>;
+    let file2 = Arc::new(Mutex::new(File::new("file2.log", 800))) as Arc<Mutex<dyn FileSystemNode>>;
+
+    let mut documents = Directory::new("documents");
+    documents.add(file1.clone());
+    documents.add(file2.clone());
+
+    let documents_arc = Arc::new(Mutex::new(documents)) as Arc<Mutex<dyn FileSystemNode>>;
+
+    let file3 = Arc::new(Mutex::new(File::new("notes.md", 100))) as Arc<Mutex<dyn FileSystemNode>>;
+
+    let mut root_dir = Directory::new("root");
+    root_dir.add(documents_arc.clone());
+    root_dir.add(file3.clone());
+
+    let root_arc = Arc::new(Mutex::new(root_dir)) as Arc<Mutex<dyn FileSystemNode>>;
+
+    {
+        let root_guard = root_arc.lock().unwrap();
+        root_guard.print_structure(0);
+        println!("Total size: {}", root_guard.get_size());
+    }
+}
+#+END_SRC
+
+*** 4.2.1 Explanation
+
+- =FileSystemNode= Trait: A uniform interface for both =File= (leaf) and =Directory= (composite).  
+- =File= (leaf): =get_size()= returns a fixed integer, while =print_structure()= just prints details.  
+- =Directory= (composite): Holds a list of child nodes, each implementing =FileSystemNode=. Summing sizes is a matter of iterating over children. The =print_structure()= method recursively prints each child.  
+- =Arc<Mutex<>>= usage: We store trait objects in concurrency-friendly wrappers so multiple directories or threads can share them. This is typical in Rust, though it makes the code more verbose.  
+- =Usage=: We build a small file system with a root directory containing “documents” and a file “notes.md.” We call =print_structure()= and =get_size()= without caring if a node is file or directory, exemplifying the composite advantage.
+
+** 4.3 Observations
+
+Rust’s trait objects and concurrency considerations add overhead to a typical Composite. Yet the pattern remains: each node adheres to the same trait. We unify the notion of leaf vs. composite, letting the client treat them equally. This is precisely how real file managers or hierarchical data structures can be modeled elegantly.
+
+* 5. Advanced Example (Python)
+
+Finally, we’ll illustrate an advanced scenario in Python where we manage a GUI widget tree that not only handles uniform drawing, but also event delegation. This highlights how =Composite= can unify both rendering and interaction logic across nested panels and widgets.
+
+** 5.1 Motivating Scenario
+
+A GUI system might have leaf widgets (buttons, text fields) and container widgets (panels, windows). Each container can hold child widgets, recursively. The =Composite= approach ensures that every widget—leaf or container—exposes the same interface: e.g. =draw()=, =handle_event()=. The system can then operate on them polymorphically, letting container widgets delegate logic to their children.
+
+** 5.2 Code Example (Advanced, Python)
+
+#+BEGIN_SRC python
+class Widget:
+    """The component interface that both leaves and composites implement."""
+    def draw(self):
+        raise NotImplementedError
+
+    def handle_event(self, event):
+        raise NotImplementedError
+
+class Button(Widget):
+    """A leaf widget."""
+    def __init__(self, name):
+        self.name = name
+
+    def draw(self):
+        print(f"[Button: {self.name}] is drawn.")
+
+    def handle_event(self, event):
+        if event == f"click:{self.name}":
+            print(f"Button '{self.name}' clicked.")
+        # If event doesn't match, do nothing.
+
+class Panel(Widget):
+    """A composite widget that holds child widgets."""
+    def __init__(self, name):
+        self.name = name
+        self.children = []
+
+    def add_child(self, child: Widget):
+        self.children.append(child)
+
+    def remove_child(self, child: Widget):
+        self.children.remove(child)
+
+    def draw(self):
+        print(f"[Panel: {self.name}] is drawn. It has {len(self.children)} children.")
+        for child in self.children:
+            child.draw()
+
+    def handle_event(self, event):
+        # The panel might handle some events itself
+        if event.startswith("click:"):
+            print(f"Panel '{self.name}' sees a click event. Delegating to children.")
+        for child in self.children:
+            child.handle_event(event)
+
+class Window(Panel):
+    """A top-level window, also a composite, that might handle special events."""
+    def __init__(self, title):
+        super().__init__(title)
+
+    def handle_event(self, event):
+        if event == f"close:{self.name}":
+            print(f"Window '{self.name}' is closing.")
+            return
+        super().handle_event(event)
+
+# Usage example
+if __name__ == "__main__":
+    main_window = Window("MainWindow")
+
+    top_panel = Panel("TopPanel")
+    main_window.add_child(top_panel)
+
+    # Two buttons in top panel
+    open_button = Button("OpenFile")
+    save_button = Button("SaveFile")
+    top_panel.add_child(open_button)
+    top_panel.add_child(save_button)
+
+    # Another panel in main window
+    side_panel = Panel("SidePanel")
+    settings_button = Button("Settings")
+    side_panel.add_child(settings_button)
+
+    main_window.add_child(side_panel)
+
+    # Draw everything
+    main_window.draw()
+
+    # Simulate events
+    events = [
+        "click:OpenFile",
+        "click:Settings",
+        "close:MainWindow",
+        "click:SaveFile"
+    ]
+
+    for evt in events:
+        print(f"\nEVENT => {evt}")
+        main_window.handle_event(evt)
+#+END_SRC
+
+*** 5.2.1 Explanation
+
+- =Widget=: The base “component” interface with =draw()=, =handle_event()=.  
+- =Button= (leaf): Has a name, draws a short message, and only handles events relevant to its name.  
+- =Panel= (composite): Holds children, draws them, and passes events along. In real code, it might handle layout or local logic, but we keep it simple.  
+- =Window= (composite): Another container, specialized as a top-level window that can intercept a =close:WindowName= event and stop further handling if the window closes.  
+- =Usage=: We build a tree of widgets—=Window= -> =Panel= -> =Buttons=, plus another =Panel=—then =draw()= once to see everything. Events are delegated: a click event is passed down until the relevant leaf acts, or the window intercepts a close event.
+
+** 5.3 Observations
+
+This advanced example highlights how Composite can unify not just “rendering” but also “event handling.” Each widget in the hierarchy sees or delegates events in a consistent manner. The structure can be arbitrarily nested, but from the perspective of external code, you just have a single =Widget= reference. This is the hallmark of Composite’s power.
+
+* 6. Nuances, Variations, and Best Practices
+
+** 6.1 Handling Leaves vs. Composites
+
+In many implementations, leaves do not meaningfully implement =addChild()= or =removeChild()=. Some designs leave them as no-ops or throw exceptions if called on a leaf. Alternatively, you can split your interface into a “component” and “container” sub-interfaces, though that partly undermines the uniform approach.
+
+** 6.2 Managing Parent References
+
+In some designs, child nodes store a pointer/reference to their parent for layout or other computations. This can be helpful but also introduces risk of cycles if not carefully managed. If you do keep parent pointers, be mindful of memory ownership or potential reference loops.
+
+** 6.3 Concurrency
+
+If the composite structure changes frequently in a multi-threaded environment, you may need locking or atomic references. For instance, in our Rust file system, we used =Arc<Mutex<...>>= to ensure safe shared access. Scheme or Python might require different concurrency models or GIL-related constraints.
+
+** 6.4 Composite vs. Chain of Responsibility
+
+Though unrelated in many respects, these two patterns can intersect. For instance, a =Composite= structure might pass events up or down a chain in a manner reminiscent of Chain of Responsibility. The distinction is that Composite focuses on part-whole relationships, while Chain of Responsibility is about hooking up a chain of possible handlers.
+
+** 6.5 Overuse Warnings
+
+If your structure is actually flat or you have no genuine need to unify single objects and object groups, Composite might be overkill. Resist forcing every scenario into a tree model just because it’s conceptually neat. Focus on whether a hierarchical, part-whole scenario truly exists.
+
+** 6.6 Recognizing Composite in Code
+
+Look for classes or traits that unify leaf and container objects, each implementing the same “component interface.” Often you see a container class storing a list of children. Methods like =draw()=, =get_size()=, or =handle_event()= are typically implemented recursively in the composite class, while leaves implement them trivially.
+
+** 6.7 Testing a Composite
+
+The pattern aids testing: you can build small or large hierarchies and invoke the same methods on them, verifying that containers delegate calls to their children while leaves act alone. This uniformity tends to simplify large integration or system tests that operate over complex trees.
+
+* 7. Real-World Usage
+
+- =GUI Toolkits=: Possibly the largest domain for Composite, where container widgets hold child widgets, all implementing a common interface for rendering and input.
+
+- =File Systems=: Directories (composite) contain files (leaves) and possibly more directories, with code for summing sizes or enumerating contents unified under a single interface.
+
+- =Organizational Charts=: A department might contain sub-departments or employees. Each node has methods like =get_headcount()= or =get_budget()=.
+
+- =Scene Graphs in Games=: Node-based transforms, where each node can hold sub-nodes. Leaves might be geometry, while composites hold sets of geometry or transforms.
+
+* 8. Conclusion
+
+The =Composite= pattern elegantly solves the problem of handling single objects and groups of objects under the same interface. Whether you’re dealing with shapes in Scheme, files in Rust, or GUI widgets in Python, the core benefit is the same: you avoid branching logic that distinguishes “leaf vs. container” every time, because each node in the hierarchy implements the same method set, albeit differently (leaves do it directly, composites delegate to children).
+
+We saw:
+
+- =Beginner (Guile Scheme)=: A shape hierarchy with <circle> (leaf) and <composite-shape> (composite). The pattern unifies drawing and moving shapes.
+- =Intermediate (Rust)=: A file system model with a trait-based approach, where both files and directories implement the same =FileSystemNode= trait. Directories sum sizes or recursively print structure.
+- =Advanced (Python)=: A GUI widget tree that handles not only rendering but also event delegation. Leaf widgets do minimal event checks, while composite widgets pass events down to children.
+
+In each example, the Composite pattern’s ability to unify part and whole fosters cleaner, more extensible code. It’s a boon whenever you find your domain model naturally forming a hierarchy, be it geometric, filesystem-like, organizational, or UI-based. By capturing that hierarchy in code with minimal duplication, you ensure that your system remains flexible to new node types (leaves or containers) and that client code can remain elegantly simple. When you see code that manipulates “a node” in a structure—never caring if it’s a single item or a container with children—you’re likely looking at a well-implemented =Composite=.
