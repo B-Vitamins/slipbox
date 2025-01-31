@@ -1,0 +1,495 @@
+:PROPERTIES:
+:ID:       1a801cd0-bd5b-4036-9bc2-61ba621ddba0
+:END:
+#+TITLE: Saga Pattern
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+* 1. Introduction and Historical Context
+
+The Saga pattern is a distributed transaction model that coordinates multiple local transactions in different services (or components) without using a global lock or two-phase commit. Instead of a single ACID transaction spanning them all, Sagas break the workflow into a sequence of steps (like “Create order,” “Charge credit,” “Reserve inventory,” …). If any step fails, the Saga runs compensation steps to undo or mitigate changes from the previous successful steps. This yields an eventually consistent outcome while avoiding the complexities (and potential blocking) of a global transaction.
+
+Sagas were first described in the 1980s in the context of long-lived business transactions, then gained traction in microservices architecture. For instance, e-commerce orders might need to update an “orders” service, a “payments” service, and an “inventory” service. Instead of a single distributed transaction (which can be fragile and complex at scale), a Saga orchestrates each step. If a step fails, the prior steps are rolled back via designated “compensation” steps.
+
+** 1.1 Why Use Sagas?
+
+- Avoid Global Locks: In distributed systems with many services, a 2-phase commit can hamper performance or risk partial failure. Sagas allow each service to run a local transaction.
+- Resilience: If the final step fails, you can rollback by sending compensating actions to prior services. Each service remains mostly independent in how it does local transactions.
+- Scalability: Sagas scale well because each service executes short transactions. The saga itself might be orchestrated centrally or choreographed via events.
+- Business Logic: Many real business processes are “multi-step with partial rollback.” A Saga maps nicely onto that.
+
+** 1.2 Potential Pitfalls
+
+- Complex Compensation: Writing correct “undo” logic for each step can get tricky, especially if the domain is complicated.
+- Eventual Consistency: The system might be briefly inconsistent until the Saga completes or rolls back. This is normal, but you must handle it in your design.
+- Orchestration vs. Choreography: In an orchestrated saga, a central “orchestrator” drives each step. In a choreographed saga, each service listens to events and decides the next step. Either can get messy if not well-structured.
+- Partial Undo: Some steps might be non-reversible. You need a careful design for compensation or an approach to represent partial failures.
+
+Despite these challenges, Sagas remain vital whenever you have multi-step distributed workflows that must remain consistent but cannot easily use global transactions—especially in microservices or serverless environments.
+
+* 2. Conceptual Motivation
+
+Consider an online travel booking system: the user wants a flight, a hotel, and a rental car. You have three separate services:
+
+1. Flight service: Book flights.
+2. Hotel service: Reserve rooms.
+3. Car service: Reserve vehicles.
+
+If each is physically distinct, you can’t just do a single global transaction. Instead, you do a Saga: “Book flight → Book hotel → Book car.” If booking the car fails, you must “cancel the flight” and “cancel the hotel.” Each local booking is a committed transaction in that service. The Saga ensures that if the final step fails, it triggers the appropriate “undo” steps. That’s the essence of Saga.
+
+* 3. Beginner Example (Go)
+
+** 3.1 Motivating Scenario
+
+We’ll create a Go scenario that simulates a multi-step “order creation” Saga in a simplified e-commerce environment. We have two services—Payment and Inventory—and an orchestrator that calls each in turn. If inventory fails, we do a compensation in Payment to refund. This is a minimal approach to show how a Saga works.
+
+** 3.2 Code Example (Beginner, Go)
+
+#+BEGIN_SRC go
+package main
+
+import (
+    "errors"
+    "fmt"
+    "sync"
+)
+
+type PaymentService struct {
+    mu        sync.Mutex
+    balances  map[string]int
+}
+
+func NewPaymentService() *PaymentService {
+    return &PaymentService{
+        balances: make(map[string]int),
+    }
+}
+
+func (ps *PaymentService) charge(userID string, amount int) error {
+    ps.mu.Lock()
+    defer ps.mu.Unlock()
+    bal, ok := ps.balances[userID]
+    if !ok {
+        bal = 1000 // assume default
+        ps.balances[userID] = bal
+    }
+    if bal < amount {
+        return errors.New("insufficient funds")
+    }
+    ps.balances[userID] = bal - amount
+    fmt.Printf("PaymentService: charged user %s => new balance %d\n", userID, ps.balances[userID])
+    return nil
+}
+
+// compensation: refund
+func (ps *PaymentService) refund(userID string, amount int) {
+    ps.mu.Lock()
+    defer ps.mu.Unlock()
+    ps.balances[userID] = ps.balances[userID] + amount
+    fmt.Printf("PaymentService: refunded user %s => new balance %d\n", userID, ps.balances[userID])
+}
+
+type InventoryService struct {
+    mu       sync.Mutex
+    stock    map[string]int
+}
+
+func NewInventoryService() *InventoryService {
+    return &InventoryService{
+        stock: map[string]int{"widget": 5, "gadget": 2},
+    }
+}
+
+func (inv *InventoryService) reserve(item string, qty int) error {
+    inv.mu.Lock()
+    defer inv.mu.Unlock()
+    current, ok := inv.stock[item]
+    if !ok || current < qty {
+        return errors.New("not enough stock")
+    }
+    inv.stock[item] = current - qty
+    fmt.Printf("InventoryService: reserved %d of %s => remaining %d\n", qty, item, inv.stock[item])
+    return nil
+}
+
+// compensation: release reservation
+func (inv *InventoryService) release(item string, qty int) {
+    inv.mu.Lock()
+    defer inv.mu.Unlock()
+    inv.stock[item] = inv.stock[item] + qty
+    fmt.Printf("InventoryService: released %d of %s => remaining %d\n", qty, item, inv.stock[item])
+}
+
+type SagaOrchestrator struct {
+    payment *PaymentService
+    inv     *InventoryService
+}
+
+func (s *SagaOrchestrator) placeOrderSaga(userID string, item string, qty int, amount int) error {
+    // step 1: charge user
+    err := s.payment.charge(userID, amount)
+    if err != nil {
+        return err
+    }
+    // step 2: reserve inventory
+    err = s.inv.reserve(item, qty)
+    if err != nil {
+        // compensation for step 1
+        s.payment.refund(userID, amount)
+        return err
+    }
+
+    // if we had more steps, we'd continue
+    // if everything is good, saga is complete
+    fmt.Printf("Saga success: order placed for %s => item %s x %d, cost %d\n",
+        userID, item, qty, amount)
+    return nil
+}
+
+func main() {
+    payment := NewPaymentService()
+    inv := NewInventoryService()
+    saga := &SagaOrchestrator{payment, inv}
+
+    // place an order
+    err := saga.placeOrderSaga("userA", "widget", 2, 200)
+    if err != nil {
+        fmt.Println("Saga failed:", err)
+    }
+    // try something that fails inventory
+    err2 := saga.placeOrderSaga("userA", "gadget", 3, 300) // gadget stock=2
+    if err2 != nil {
+        fmt.Println("Saga failed:", err2)
+    }
+}
+#+END_SRC
+
+** 3.2.1 Explanation
+
+- **PaymentService** and **InventoryService**: Each has local state (balances, stock). We do “charge” or “reserve.” If charge fails or stock is insufficient, we return an error.
+- **Compensation**: If `inventory.reserve(...)` fails, the orchestrator calls `payment.refund(...)`. That’s the Saga’s “rollback” for step 1.
+- **SagaOrchestrator**: Orchestration approach. If step 1 fails, we stop. If step 2 fails, we do the compensation for step 1. If more steps existed, we’d chain them in the same manner.
+- **Usage**: We attempt a successful order for 2 “widget.” Then we attempt an order for 3 “gadget,” which fails stock check. The orchestrator does a refund compensation.
+
+** 3.3 Observations
+
+This is beginner because it’s a minimal example: only two steps, direct orchestration, no advanced concurrency. Nonetheless, it captures the essence of Saga: multiple local transactions, each with a forward action and a possible compensation if a subsequent step fails.
+
+* 4. Intermediate Example (Haskell)
+
+** 4.1 Motivating Scenario
+
+We’ll do a Haskell scenario with a more “choreographed” saga approach. Instead of a single orchestrator, each “service” listens to events, does its local step, and publishes new events. If a failure occurs, we publish a “compensation event” that other services interpret. This is an intermediate approach because it shows how choreography can lead to multiple services reacting to an event bus. We’ll do a simplified version in memory, with concurrency to simulate distributed logic.
+
+** 4.2 Code Example (Intermediate, Haskell)
+
+#+BEGIN_SRC haskell
+{-# LANGUAGE OverloadedStrings #-}
+module Main where
+
+import Control.Concurrent
+import Control.Concurrent.STM
+import Control.Monad (forever)
+import Data.Text (Text)
+import qualified Data.Text.IO as TIO
+import Data.List (delete)
+
+-- We'll define a global "event bus" as a TChan of SagaEvent
+data SagaEvent = StartBooking String Int  -- user, seats
+               | BookFlight String Int
+               | FlightBooked String Int
+               | FlightFail String
+               | CancelFlight String Int
+               | RefundUser String Int
+               deriving (Show)
+
+type EventBus = TChan SagaEvent
+
+-- We'll define a "Payment Service" as an actor that listens for "BookFlight" or "CancelFlight"
+paymentService :: EventBus -> IO ()
+paymentService bus = do
+  forever $ do
+    evt <- atomically $ readTChan bus
+    case evt of
+      BookFlight user seats -> do
+        -- let's assume random success/fail
+        putStrLn $ "PaymentService: user " ++ user ++ " asked to pay for seats " ++ show seats
+        if seats > 5
+          then do
+            putStrLn "PaymentService: Payment fail => seats > 5"
+            atomically $ writeTChan bus (FlightFail user)
+          else do
+            putStrLn "PaymentService: Payment success"
+            atomically $ writeTChan bus (FlightBooked user seats)
+      CancelFlight user seats -> do
+        putStrLn $ "PaymentService: Received CancelFlight => RefundUser for " ++ user
+        atomically $ writeTChan bus (RefundUser user seats)
+      _ -> return ()
+
+-- We'll define "Flight Service" that listens for "FlightBooked" or "FlightFail"
+flightService :: EventBus -> IO ()
+flightService bus = do
+  forever $ do
+    evt <- atomically $ readTChan bus
+    case evt of
+      FlightBooked user seats -> do
+        putStrLn $ "FlightService: seats reserved for user " ++ user ++ " seats=" ++ show seats
+      FlightFail user -> do
+        -- if flight fails, do nothing more here
+        putStrLn $ "FlightService: got flight fail for user " ++ user
+      _ -> return ()
+
+-- We'll define a "UserAccount" that listens for "RefundUser"
+userAccount :: EventBus -> IO ()
+userAccount bus = do
+  forever $ do
+    evt <- atomically $ readTChan bus
+    case evt of
+      RefundUser user seats -> do
+        putStrLn $ "UserAccount: refunded user " ++ user ++ " for seats " ++ show seats
+      _ -> return ()
+
+-- We'll define "Saga Orchestrator" in a choreographic style
+-- Actually, let's define the user "startBooking" by writing "StartBooking" to bus
+-- Then Payment picks it up as "BookFlight"
+orchestrator :: EventBus -> IO ()
+orchestrator bus = do
+  forever $ do
+    evt <- atomically $ readTChan bus
+    case evt of
+      StartBooking user seats -> do
+        putStrLn $ "Orchestrator sees StartBooking => sending BookFlight"
+        atomically $ writeTChan bus (BookFlight user seats)
+      _ -> return ()
+
+main :: IO ()
+main = do
+  bus <- newTChanIO
+
+  -- spawn services
+  forkIO $ paymentService bus
+  forkIO $ flightService bus
+  forkIO $ userAccount bus
+  forkIO $ orchestrator bus
+
+  -- now let's do some attempts
+  atomically $ writeTChan bus (StartBooking "alice" 3)
+  atomically $ writeTChan bus (StartBooking "bob" 6) -- fail seats>5 => flightFail => no seats
+  threadDelay 2_000_000
+  -- user "bob" didn't get seats, no flight booked
+  -- note Payment fails, so triggers "FlightFail"
+  -- or we might want a CancelFlight if partial ?
+
+  -- let's do a forced cancel
+  atomically $ writeTChan bus (CancelFlight "alice" 3)
+
+  threadDelay 2_000_000
+  putStrLn "Main done"
+#+END_SRC
+
+** 4.2.1 Explanation
+
+- **SagaEvent**: We define various events like `StartBooking`, `BookFlight`, `FlightBooked`, `FlightFail`, `CancelFlight`, `RefundUser`. Each service picks up relevant events.
+- **Choreography**:
+  - orchestrator sees `StartBooking`, writes `BookFlight`.
+  - paymentService sees `BookFlight`, tries to pay; success => `FlightBooked`, fail => `FlightFail`.
+  - flightService sees `FlightBooked`, logs seats reserved. If `FlightFail`, it does nothing more.
+  - If `CancelFlight`, paymentService does `RefundUser`.
+  - userAccount sees `RefundUser`, logs or performs a refund.
+- **Usage**: We do `(StartBooking "alice" 3)` which triggers a normal flow. Then `(StartBooking "bob" 6)` fails. We see “PaymentService: Payment fail => seats>5 => FlightFail.” Then we do `CancelFlight "alice" 3`, which triggers a refund.
+- **Saga**: The entire multi-service sequence for booking seats is orchestrated by message passing, not a single transaction. If a partial step fails, we do a “FlightFail” or “CancelFlight => RefundUser.”
+
+** 4.3 Observations
+
+This Haskell code is intermediate because it showcases a choreography approach for a Saga. Each service listens to an event bus and reacts. The “orchestrator” is minimal, just bridging “StartBooking => BookFlight.” Real systems might have more advanced logic, or they might do pure choreography with no single orchestrator at all. The takeaway: each step either publishes success events or compensation events. The system remains eventually consistent.
+
+* 5. Advanced Example (Rust)
+
+** 5.1 Motivating Scenario
+
+We’ll do an advanced scenario in Rust that uses an orchestrator approach for a multi-step saga with explicit compensation logic and possible concurrency for steps. We might define a “Booking” saga with multiple steps: “reserve seat,” “charge payment,” “send ticket,” each step returning a result. If any fail, we run compensations in reverse order. We’ll show a small framework that can chain steps and track success/failure, leveraging concurrency channels or async. This is advanced because we’re building a generic saga runner that can handle multiple steps programmatically.
+
+** 5.2 Code Example (Advanced, Rust)
+
+#+BEGIN_SRC rust
+use std::sync::{Arc, Mutex};
+use std::collections::VecDeque;
+
+// define a step: forward operation + compensation
+type SagaStepResult = Result<(), String>;
+type ForwardAction = Box<dyn Fn() -> SagaStepResult + Send + Sync>;
+type CompensationAction = Box<dyn Fn() -> SagaStepResult + Send + Sync>;
+
+struct SagaStep {
+    forward: ForwardAction,
+    compensate: CompensationAction,
+}
+
+struct Saga {
+    steps: Vec<SagaStep>,
+}
+
+impl Saga {
+    fn new() -> Self {
+        Saga { steps: Vec::new() }
+    }
+
+    fn add_step(mut self, forward: ForwardAction, compensate: CompensationAction) -> Self {
+        self.steps.push(SagaStep { forward, compensate });
+        self
+    }
+
+    fn execute(&self) -> SagaStepResult {
+        let mut completed = Vec::new();
+        // execute forward steps in order
+        for step in &self.steps {
+            match (step.forward)() {
+                Ok(_) => {
+                    completed.push(step);
+                }
+                Err(e) => {
+                    // run compensations in reverse
+                    for done_step in completed.iter().rev() {
+                        let _ = (done_step.compensate)();
+                    }
+                    return Err(format!("Saga failed on forward step: {}", e));
+                }
+            }
+        }
+        Ok(())
+    }
+}
+
+// Some mock "services"
+struct PaymentService {
+    balance: i32,
+}
+
+impl PaymentService {
+    fn charge(&mut self, amt: i32) -> SagaStepResult {
+        if self.balance < amt {
+            Err("Not enough balance".to_string())
+        } else {
+            self.balance -= amt;
+            println!("PaymentService: charged {} => new balance {}", amt, self.balance);
+            Ok(())
+        }
+    }
+    fn refund(&mut self, amt: i32) -> SagaStepResult {
+        self.balance += amt;
+        println!("PaymentService: refunded {} => new balance {}", amt, self.balance);
+        Ok(())
+    }
+}
+
+struct BookingService {
+    seats_available: i32,
+}
+
+impl BookingService {
+    fn reserve(&mut self, seats: i32) -> SagaStepResult {
+        if self.seats_available < seats {
+            Err("Not enough seats".to_string())
+        } else {
+            self.seats_available -= seats;
+            println!("BookingService: reserved {} seats => left {}", seats, self.seats_available);
+            Ok(())
+        }
+    }
+    fn release(&mut self, seats: i32) -> SagaStepResult {
+        self.seats_available += seats;
+        println!("BookingService: released {} seats => left {}", seats, self.seats_available);
+        Ok(())
+    }
+}
+
+fn main() {
+    let mut pay = PaymentService { balance: 500 };
+    let mut book = BookingService { seats_available: 10 };
+
+    // let's define a saga for a user wanting 4 seats at cost=200
+    let seats = 4;
+    let cost = 200;
+
+    let s = Saga::new()
+        .add_step(
+            Box::new(|| {
+                pay.charge(cost)
+            }),
+            Box::new(|| {
+                pay.refund(cost)
+            }),
+        )
+        .add_step(
+            Box::new(|| {
+                book.reserve(seats)
+            }),
+            Box::new(|| {
+                book.release(seats)
+            }),
+        );
+
+    match s.execute() {
+        Ok(()) => println!("Saga success!"),
+        Err(e) => println!("Saga failure: {}", e),
+    }
+
+    // see final states
+    println!("Payment final balance: {}", pay.balance);
+    println!("Booking final seats: {}", book.seats_available);
+}
+#+END_SRC
+
+** 5.2.1 Explanation
+
+- **Saga**: A list of `SagaStep`, each with a forward action and a compensation action. `execute()` runs them in order. If a forward fails, we run compensations in reverse. This is the classic Saga logic.
+- **PaymentService, BookingService**: Each can do a forward operation (`charge`, `reserve`) and a compensation (`refund`, `release`).
+- **Saga::add_step(...)**: We add pairs of closures for forward/compensation. The closures call the service’s methods. In real code, we’d handle capturing references or states more robustly.
+- **Usage**: We define a saga that charges the user `cost=200`, then reserves `seats=4`. If any step fails, we do the compensations in reverse. We see the final states.
+
+** 5.3 Observations
+
+This is an advanced example because we build a general saga library (a minimal version) that can chain arbitrary forward/compensation steps. In production, you might store the saga state, handle partial restarts if the process crashes, or distribute steps across microservices. The essence is the same: if step N fails, we run steps N-1, N-2, etc. compensation. We’re in an asynchronous environment, but we do a synchronous “execute()” approach here. In a real system, we might do concurrency or scheduling.
+
+* 6. Nuances, Variations, and Best Practices
+
+1. Orchestration vs. Choreography
+   - Orchestration: A central “saga orchestrator” calls each service in sequence, performing compensation if needed.
+   - Choreography: Each service publishes or subscribes to events. If a failure event is published, relevant services do their own compensation.
+   - Some systems do a hybrid approach.
+
+2. Idempotent Operations
+   - If you must rerun a compensation step or a forward step, it’s best if these operations are idempotent. That way, partial retrials or concurrency issues are safer.
+
+3. Failure Handling
+   - Not every step can be undone. You might define partial rollbacks or advanced business logic for “store credit if we can’t truly revert,” etc.
+
+4. Timeouts
+   - If a step never responds, your saga might get stuck. Some systems define a deadline or a fallback compensation after a certain time.
+
+5. Persistence
+   - Real sagas store their state in a durable store, so if the orchestrator restarts, it can resume.
+
+6. Complex Flows
+   - Some sagas aren’t strictly linear. They have branching or concurrency among steps. This can be handled with more advanced logic, e.g. partial merges or “all of these steps in parallel, then if any fails, we do partial compensation.”
+
+7. Testing
+   - To test sagas thoroughly, you need to test each step’s success/failure path and the corresponding compensation. This can be quite elaborate.
+
+* 7. Real-World Usage
+
+- **E-commerce**: Payment, inventory, shipping, notifications in separate services. The saga ensures the order is fully processed or all changes undone.
+- **Travel Booking**: Flight, hotel, car. Each is a local commit. If the car fails, the flight and hotel are canceled.
+- **Banking**: A multi-account transfer might do “withdraw from account A,” “deposit to account B.” If deposit fails, you do a “compensation” that re-deposits to A.
+- **Microservices**: Any scenario with multiple services that must remain consistent but can’t use a global transaction. Sagas are a primary pattern.
+
+* 8. Conclusion
+
+The Saga pattern offers a robust approach to multi-step distributed workflows or transactions, ensuring partial failures result in compensation rather than leaving the system in a half-updated state. Each step is a local transaction with its own commit, followed (if needed) by a “reverse” step. Instead of a heavy two-phase commit or global lock, we rely on orchestrated or choreographed steps that preserve consistency in an eventually consistent manner.
+
+We showcased:
+
+- **Beginner (Go)**: A minimal orchestrated saga for placing an order. If inventory fails, we do a “refund” compensation. This shows the straightforward approach of a central orchestrator.
+- **Intermediate (Haskell)**: A choreographed approach with an event bus: each service listens to relevant events, publishes success/failure events. The saga emerges from those distributed reactions.
+- **Advanced (Rust)**: A generic saga library with forward/compensation pairs. We build a multi-step “charge, then reserve seats,” demonstrating a standard approach for orchestrated sagas that can handle multiple steps. If any step fails, we reverse the completed steps in order.
+
+While Sagas can be tricky to implement—particularly for concurrency, partial undo, or advanced step logic—the payoff is a design that’s more resilient, scalable, and flexible than trying to lock everything in a single global transaction. Sagas reflect real business processes more closely, especially in distributed or microservice architectures where each service has its own data store and local transactions. Understanding Sagas and their compensation logic is essential for building robust, fault-tolerant systems at scale.
