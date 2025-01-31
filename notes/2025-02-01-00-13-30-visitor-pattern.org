@@ -1,0 +1,443 @@
+:PROPERTIES:
+:ID:       38a4e870-6f63-4c0c-a6bf-f7c6d7c47309
+:END:
+#+TITLE: Visitor Pattern
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+* 1. Introduction and Historical Context
+
+The =Visitor= pattern is a behavioral pattern designed to help when you have a stable class hierarchy (or object structure) and you want to define multiple operations on these objects without constantly modifying their classes. Typically, you have a set of objects each implementing an “accept” method that receives a “visitor.” That visitor, in turn, implements “visit” methods for each concrete object type. In effect, it’s a form of double dispatch: the object calls back into the visitor, telling it which type of object it is, so the visitor can run the correct code.
+
+Historically, Visitor emerged to solve a particular problem: if you have a complex object hierarchy (like an abstract syntax tree in a compiler) and you frequently need new operations (like printing, type-checking, or optimization), you might not want to pollute each node class with these methods. Instead, you define a Visitor class for each new operation. Each node class implements accept(Visitor v), which calls v.visit(this). The pattern fosters:
+
+- =Open-Closed for Operations=: You can add new operations by adding new visitors, without editing each node class for that operation.
+- =Separate Behavior from Objects=: Node classes only define how to accept a visitor, not every possible operation upon them.
+- =Double Dispatch=: Both the node type and the visitor type combine to find the correct =visitNodeX= method, removing the need for downcasting or big if-else structures.
+
+However, if you add new node types frequently, you must update all existing visitors to handle them. So Visitor is best when the object structure is relatively stable, while new operations on that structure proliferate over time.
+
+** 1.1 Why Use Visitor?
+
+- =Multiple Distinct Operations=: If you have many separate operations on a stable set of classes, burying them in each class means constant modification. With Visitor, you define each operation in a new visitor.
+- =Separate Behavior from Objects=: If the node classes are stable, you can keep them thin by delegating new tasks to visitors, each implementing specialized behavior.
+- =Avoid Downcasts=: Without Visitor, you might downcast from a base type to a concrete type for certain tasks. With double dispatch, the object calls back to the visitor’s specialized method automatically.
+- =Complex Structures=: Trees or object graphs with many node types can be elegantly handled by a visitor that implements a specialized routine for each node type.
+
+** 1.2 Potential Pitfalls
+
+- =Changing Node Hierarchy=: If you add a new node type, you must update all visitors with =visitNewNodeType(...)=. This can be cumbersome if new node types appear often.
+- =Tight Coupling=: The visitor must know about each concrete node class. In big systems, you must carefully manage the approach to not become overwhelming.
+- =Maintenance Overhead=: Each visitor must handle each node type. For many node types, that’s a lot of methods. This is exactly the trade-off: stable nodes but many new operations => good. Unstable nodes => not so good.
+
+When you see a stable set of node classes but a constant influx of new operations, the Visitor is a strong choice for clarity, maintainability, and open-closed design.
+
+* 2. Conceptual Motivation
+
+A classic example is a compiler AST: nodes for =VariableNode=, =AssignmentNode=, =IfNode=, etc. Instead of implementing “print,” “typeCheck,” “optimize” in each node class, you define a “PrintVisitor,” “TypeCheckVisitor,” “OptimizeVisitor,” each with specialized methods for each node type. Another scenario is a document structure (like shapes or paragraphs in a doc editor) where multiple visitors do tasks like “export to HTML,” “export to PDF,” “spell-check,” etc.
+
+* 3. Beginner Example (Guile Scheme)
+
+We’ll start with a beginner demonstration in Guile Scheme, modeling shapes (Circle, Square) with a visitor that can do different tasks (like compute area, or draw). Each shape calls the relevant =visitCircle= or =visitSquare= method on the visitor.
+
+** 3.1 Motivating Scenario
+
+We have a small shape hierarchy. We’d like to add new operations frequently (area, draw, export, etc.). Instead of modifying Circle and Square each time, we define a shape visitor for each new operation. The shapes remain stable, each implementing accept(visitor).
+
+** 3.2 Code Example (Beginner, Guile Scheme)
+
+#+BEGIN_SRC scheme
+(use-modules (oop goops))
+
+;; 1) shape classes
+
+(define-class <shape> ()
+  (virtual (accept (self visitor))))
+
+(define-class <circle> (<shape>)
+  (radius #:init-keyword #:radius)
+  
+  (define (accept (self) visitor)
+    ((visitor 'visitCircle) self)))
+
+(define-class <square> (<shape>)
+  (side #:init-keyword #:side)
+
+  (define (accept (self) visitor)
+    ((visitor 'visitSquare) self)))
+
+;; 2) define a visitor with messages
+
+(define (make-area-visitor)
+  (lambda (cmd . args)
+    (case cmd
+      ((visitCircle)
+       (let ((c (car args)))
+         (let ((r (slot-ref c 'radius)))
+           (format #t "Circle area=~a\n" (* 3.14159 r r)))))
+      ((visitSquare)
+       (let ((s (car args)))
+         (let ((side (slot-ref s 'side)))
+           (format #t "Square area=~a\n" (* side side)))))
+      (else (error "Unknown visit command" cmd)))))
+
+(define (make-draw-visitor)
+  (lambda (cmd . args)
+    (case cmd
+      ((visitCircle)
+       (let ((c (car args)))
+         (format #t "Drawing circle radius=~a\n"
+                 (slot-ref c 'radius))))
+      ((visitSquare)
+       (let ((s (car args)))
+         (format #t "Drawing square side=~a\n"
+                 (slot-ref s 'side))))
+      (else (error "Unknown visit command" cmd))))))
+
+;; usage
+(let ((shapes (list (make <circle> #:radius 5)
+                    (make <square> #:side 10)
+                    (make <circle> #:radius 2))))
+  (let ((area-vis (make-area-visitor))
+        (draw-vis (make-draw-visitor)))
+    (for-each (lambda (sh) (send sh 'accept area-vis))
+              shapes)
+    (for-each (lambda (sh) (send sh 'accept draw-vis))
+              shapes)))
+#+END_SRC
+
+*** 3.2.1 Explanation
+
+- <circle>, <square> each implement =accept(self, visitor)= by calling visitor’s relevant method, e.g. =visitor 'visitCircle= self. 
+- Visitors are closures implementing messages like 'visitCircle, 'visitSquare in a case statement. 
+- usage: We create shapes, pass them to area or draw visitors.
+
+** 3.3 Observations
+
+A minimal example: each shape is stable with a single =accept= method. We can add more visitors (like “saveToFileVisitor”) without editing Circle or Square. If we add a new shape type, though, we must add a new case in each existing visitor.
+
+* 4. Intermediate Example (Python)
+
+Next, an intermediate scenario in Python: a document element hierarchy with paragraphs, images, tables. We define multiple visitors for new operations (HTML export, spell-check, etc.). The structure is stable, but operations keep appearing.
+
+** 4.1 Motivating Scenario
+
+We have a doc with paragraphs, images, tables. We want to do “export to HTML,” “spell-check,” possibly “export to PDF.” Instead of adding these methods in each class, we define visitors, each with specialized logic. This is typical if the set of elements is stable, but the operations multiply.
+
+** 4.2 Code Example (Intermediate, Python)
+
+#+BEGIN_SRC python
+class DocumentElement:
+    def accept(self, visitor):
+        raise NotImplementedError
+
+class Paragraph(DocumentElement):
+    def __init__(self, text):
+        self.text = text
+
+    def accept(self, visitor):
+        visitor.visit_paragraph(self)
+
+class Image(DocumentElement):
+    def __init__(self, filename):
+        self.filename = filename
+
+    def accept(self, visitor):
+        visitor.visit_image(self)
+
+class Table(DocumentElement):
+    def __init__(self, rows):
+        self.rows = rows
+
+    def accept(self, visitor):
+        visitor.visit_table(self)
+
+class DocumentVisitor:
+    def visit_paragraph(self, paragraph: Paragraph):
+        raise NotImplementedError
+    def visit_image(self, image: Image):
+        raise NotImplementedError
+    def visit_table(self, table: Table):
+        raise NotImplementedError
+
+class HtmlExportVisitor(DocumentVisitor):
+    def visit_paragraph(self, paragraph):
+        print(f"<p>{paragraph.text}</p>")
+    def visit_image(self, image):
+        print(f"<img src='{image.filename}'/>")
+    def visit_table(self, table):
+        print("<table>")
+        for row in table.rows:
+            print("<tr>", end="")
+            for cell in row:
+                print(f"<td>{cell}</td>", end="")
+            print("</tr>")
+        print("</table>")
+
+class SpellCheckVisitor(DocumentVisitor):
+    def visit_paragraph(self, paragraph):
+        if "teh" in paragraph.text:
+            print("SpellCheck: Found 'teh' -> 'the'")
+        else:
+            print("SpellCheck: paragraph OK")
+    def visit_image(self, image):
+        print("SpellCheck: ignoring image")
+    def visit_table(self, table):
+        for i, row in enumerate(table.rows):
+            for j, cell in enumerate(row):
+                if "teh" in cell:
+                    print(f"SpellCheck: Found 'teh' in table cell {i},{j}")
+
+if __name__ == "__main__":
+    elements = [
+        Paragraph("This is a paragraph with teh word."),
+        Image("diagram.png"),
+        Table([["Cell1", "Cell2"], ["Cell with teh", "Another cell"]])
+    ]
+
+    print("=== HTML Export ===")
+    html_vis = HtmlExportVisitor()
+    for elem in elements:
+        elem.accept(html_vis)
+
+    print("\n=== SpellCheck ===")
+    spell_vis = SpellCheckVisitor()
+    for elem in elements:
+        elem.accept(spell_vis)
+#+END_SRC
+
+*** 4.2.1 Explanation
+
+- DocumentElement is the base interface with accept(visitor).
+- Paragraph, Image, Table define accept by calling visitor.visit_paragraph(self), etc.
+- DocumentVisitor is the “visitor interface.” Concrete visitors like HtmlExportVisitor or SpellCheckVisitor define specialized visit methods for each element type.
+- usage: We build a list of elements, pass them to each visitor. The pattern ensures we easily add new operations (like “PdfExportVisitor”) without editing each element class.
+
+** 4.3 Observations
+
+Each new operation is a new visitor class implementing =visit_paragraph=, =visit_image=, =visit_table=. If we add a new node type =Video=, we must update all visitors with =visit_video=, but we don’t break existing code if no new visitors are needed.
+
+* 5. Advanced Example (Rust)
+
+Finally, an advanced Rust scenario with a compiler-like AST: nodes =Number=, =Add=, =Multiply=, each implementing accept. We define multiple visitors for tasks: printing the expression or evaluating it. This scenario shows how to handle double dispatch in Rust’s strongly typed environment.
+
+** 5.1 Motivating Scenario
+
+In a compiler or expression parser, you get an AST with various node types. You might define new operations like “print AST,” “evaluate,” “type-check,” etc. Instead of putting them all in each node, we define visitors. If we want to add a new node type, we must define a new =visitNewNode= method in each visitor, but we can add new visitors easily.
+
+** 5.2 Code Example (Advanced, Rust)
+
+#+BEGIN_SRC rust
+use std::rc::Rc;
+
+trait Expr {
+    fn accept(&self, visitor: &mut dyn ExprVisitor);
+}
+
+// Concrete node types
+
+struct Number {
+    value: i32,
+}
+
+impl Number {
+    fn new(value: i32) -> Self {
+        Number { value }
+    }
+}
+
+impl Expr for Number {
+    fn accept(&self, visitor: &mut dyn ExprVisitor) {
+        visitor.visit_number(self);
+    }
+}
+
+struct Add {
+    left: Rc<dyn Expr>,
+    right: Rc<dyn Expr>,
+}
+
+impl Add {
+    fn new(left: Rc<dyn Expr>, right: Rc<dyn Expr>) -> Self {
+        Add { left, right }
+    }
+}
+
+impl Expr for Add {
+    fn accept(&self, visitor: &mut dyn ExprVisitor) {
+        visitor.visit_add(self);
+    }
+}
+
+struct Multiply {
+    left: Rc<dyn Expr>,
+    right: Rc<dyn Expr>,
+}
+
+impl Multiply {
+    fn new(left: Rc<dyn Expr>, right: Rc<dyn Expr>) -> Self {
+        Multiply { left, right }
+    }
+}
+
+impl Expr for Multiply {
+    fn accept(&self, visitor: &mut dyn ExprVisitor) {
+        visitor.visit_multiply(self);
+    }
+}
+
+// Visitor trait
+trait ExprVisitor {
+    fn visit_number(&mut self, num: &Number);
+    fn visit_add(&mut self, add: &Add);
+    fn visit_multiply(&mut self, mul: &Multiply);
+}
+
+// Concrete visitors
+
+struct PrintVisitor {
+    result: String,
+}
+
+impl PrintVisitor {
+    fn new() -> Self {
+        PrintVisitor {
+            result: String::new(),
+        }
+    }
+
+    fn get_result(&self) -> &str {
+        &self.result
+    }
+}
+
+impl ExprVisitor for PrintVisitor {
+    fn visit_number(&mut self, num: &Number) {
+        self.result.push_str(&format!("{}", num.value));
+    }
+    fn visit_add(&mut self, add: &Add) {
+        self.result.push('(');
+        add.left.accept(self);
+        self.result.push_str(" + ");
+        add.right.accept(self);
+        self.result.push(')');
+    }
+    fn visit_multiply(&mut self, mul: &Multiply) {
+        self.result.push('(');
+        mul.left.accept(self);
+        self.result.push_str(" * ");
+        mul.right.accept(self);
+        self.result.push(')');
+    }
+}
+
+struct EvalVisitor {
+    stack: Vec<i32>,
+}
+
+impl EvalVisitor {
+    fn new() -> Self {
+        EvalVisitor { stack: vec![] }
+    }
+    fn get_result(&mut self) -> i32 {
+        self.stack.pop().unwrap_or(0)
+    }
+}
+
+impl ExprVisitor for EvalVisitor {
+    fn visit_number(&mut self, num: &Number) {
+        self.stack.push(num.value);
+    }
+    fn visit_add(&mut self, add: &Add) {
+        add.left.accept(self);
+        add.right.accept(self);
+        let r = self.stack.pop().unwrap();
+        let l = self.stack.pop().unwrap();
+        self.stack.push(l + r);
+    }
+    fn visit_multiply(&mut self, mul: &Multiply) {
+        mul.left.accept(self);
+        mul.right.accept(self);
+        let r = self.stack.pop().unwrap();
+        let l = self.stack.pop().unwrap();
+        self.stack.push(l * r);
+    }
+}
+
+// usage
+fn main() {
+    // Build expr: (3 + (4 * 2))
+    let expr = Rc::new(
+        Add::new(
+            Rc::new(Number::new(3)) as Rc<dyn Expr>,
+            Rc::new(
+                Multiply::new(
+                    Rc::new(Number::new(4)),
+                    Rc::new(Number::new(2))
+                )
+            ) as Rc<dyn Expr>
+        )
+    ) as Rc<dyn Expr>;
+
+    let mut printer = PrintVisitor::new();
+    expr.accept(&mut printer);
+    println!("Expression: {}", printer.get_result());
+
+    let mut evaluator = EvalVisitor::new();
+    expr.accept(&mut evaluator);
+    println!("Value: {}", evaluator.get_result());
+}
+#+END_SRC
+
+*** 5.2.1 Explanation
+
+- =Expr= trait: has =accept(&self, visitor)=. 
+- Node types: =Number=, =Add=, =Multiply=. Each implements accept by calling visitor.visit_number(self), etc. 
+- =ExprVisitor= trait: one method per node type. This is how double dispatch is implemented in Rust. 
+- =PrintVisitor= builds a string representation, =EvalVisitor= calculates numeric results via a stack approach. 
+- usage: We create (3 + (4 * 2)), print it, then evaluate it. The pattern elegantly keeps logic out of node classes.
+
+** 5.3 Observations
+
+In the advanced scenario, we see a classic usage in compilers or expression frameworks. We can define many visitors (like “OptimizeVisitor,” “TypeCheckVisitor”) that handle each node type differently, with minimal changes to the node classes themselves. This is ideal if the set of node types is stable but operations keep growing.
+
+* 6. Nuances, Variations, and Best Practices
+
+** 6.1 Double Dispatch
+
+Visitor is essentially double dispatch. If your language doesn’t natively support it, the pattern calls node.accept(visitor) => visitor.visitConcreteNode(node). This ensures each combination is resolved properly, avoiding casts or large if-else blocks for each node type.
+
+** 6.2 Changing Node Hierarchy
+
+If you frequently add new node types, you must update all visitors. This overhead can be large. Some solutions are reflection-based or partial usage if node types are ephemeral. Typically, you use the pattern when node types are stable but new operations appear often.
+
+** 6.3 Maintaining Encapsulation
+
+Visitor might break encapsulation if it needs access to private node data. Usually, node classes either provide public getters or friend relationships. This is a trade-off in design. Alternatively, you let nodes call relevant methods with the data. But typically, visitors do look at node fields.
+
+** 6.4 Return Values or Parameterized Visitors
+
+We can define visitors that return a value, e.g., in the Rust =EvalVisitor= storing partial results in a stack. Another approach is to define each =visitXxx()= method to return a value, so each node returns a result. Both are valid design choices. The pattern remains the same.
+
+** 6.5 Acyclic Visitor
+
+A specialized version, the “acyclic visitor,” avoids the requirement that each visitor implements methods for all node types. Instead, you can define default or dynamic fallback methods. That can reduce overhead in some designs, but can complicate dispatch logic.
+
+* 7. Real-World Usage
+
+- =Compiler AST=: Possibly the biggest classic usage. E.g., printing, type-checking, code generation, or optimization each as a distinct visitor for a stable set of AST node types.
+- =Document Structures=: Paragraphs, images, tables, etc. Each new operation (spell-check, exporting) is a new visitor, as in the intermediate example.
+- =Graphic Scenes=: A scene graph might have shapes, lights, cameras. A visitor can handle bounding-box calculation, culling, rendering passes, or pick detection.
+- =File Directories=: A folder/file hierarchy might define =accept=, letting visitors do indexing or compression across the structure.
+- =UI Trees=: Some frameworks define a =visitWidget= approach for different widget subtypes to handle layout or painting in a single external visitor.
+
+* 8. Conclusion
+
+The =Visitor= pattern addresses scenarios where you have a stable set of object types (like shape or AST node classes) but anticipate adding many new operations that act on them. By implementing a double dispatch mechanism, each node calls the visitor’s specialized method, centralizing each operation’s logic in one place rather than scattering it across each node class. This fosters an open-closed approach for new operations but requires revisiting all visitors if you add new node types.
+
+We presented:
+
+- =Beginner (Guile Scheme)=: A shape hierarchy (Circle, Square) with “area” and “draw” visitors, showing minimal usage.
+- =Intermediate (Python)=: A document hierarchy (Paragraph, Image, Table) with “HTML export” and “SpellCheck” visitors, typical of doc or element-based usage.
+- =Advanced (Rust)=: A small compiler-like AST with Number, Add, Multiply, visited by PrintVisitor or EvalVisitor, illustrating a fully realized double-dispatch approach for different operations.
+
+Whenever you have a stable object hierarchy but new operations keep emerging, the Visitor pattern is a neat solution that keeps your code from exploding with repeated logic in each node class. By pushing each operation into a distinct visitor, you preserve node classes as stable containers while easily expanding the set of operations with minimal friction.
