@@ -1,0 +1,383 @@
+:PROPERTIES:
+:ID:       90fb55ac-b5c5-4d39-95d9-2bd89b783b9f
+:END:
+#+TITLE: Active Object Pattern
+#+FILETAGS: :concept:
+#+SETUPFILE: ~/.config/emacs/setup/setupfile.org
+* 1. Introduction and Historical Context
+
+The Active Object pattern addresses concurrency by decoupling method invocation (the caller’s perspective) from method execution (the actual concurrency logic). In other words, when a client calls a method on an active object, it doesn’t run the method immediately in the client’s thread. Instead, that call is packaged into a method request (often containing arguments and possibly a future/promise for the result), queued within the Active Object, and eventually executed by a dedicated worker thread or “servant.” The caller can continue without blocking, retrieving results asynchronously later.
+
+Historically, Active Object emerged in distributed or embedded systems, especially in languages or frameworks where large-scale concurrency with shared-state was complicated. Instead of using locks or semaphores for concurrency control, the object’s state is guarded by an internal single-threaded “servant.” Method calls become tasks that run in that single thread. This fosters a simpler, method-based interface for concurrency, while the pattern internally handles scheduling, synchronization, and optional return values. Over time, languages like C++ (with the ACE library) or Java used Active Object in scenarios like GUI event dispatch or real-time data processing. The pattern remains relevant for asynchronous tasks in modern times, especially if you want a “logical” method-calling interface rather than direct lock-based concurrency.
+
+** 1.1 Why Use Active Object?
+- Thread-Safety: The active object’s internal data can remain unsynchronized, because only one worker thread manipulates that data. Externally, clients see normal method calls, which become queued requests.
+- Asynchronous Method Calls: The caller never blocks in the method. Instead, it enqueues a request. If a result is needed, we might store it in a future/promise object.
+- Encapsulation: The concurrency logic (like scheduling, worker threads, or queueing) is hidden behind the active object’s facade.
+- High-Level: Instead of messing with raw concurrency primitives, you treat the object as if it’s synchronous, while under the hood it’s fully asynchronous.
+
+** 1.2 Potential Pitfalls
+- Potential Overhead: Each method call becomes an enqueued request, which might add overhead if you do many trivial calls.
+- Debugging: The real concurrency is “hidden” in the queueing or worker logic. Tracing a method call from invocation to execution can require logs or additional instrumentation.
+- One Worker or Many?: Typically you have a single worker thread for an active object. If you need parallelism for multiple requests, you might spawn multiple worker threads or separate active objects. But that adds complexity.
+- Request Buildup: If the worker cannot keep up with incoming requests, the queue might grow large, leading to potential memory usage spikes or slow responses.
+
+Despite these challenges, Active Object is a powerful concurrency pattern that can yield simpler “logical” code for the client, especially if you prefer an OOP or “RPC-like” approach for concurrency.
+
+* 2. Conceptual Motivation
+
+Imagine you have a bank account object that must handle multiple requests (like deposit, withdraw, getBalance) concurrently from many clients. Instead of introducing locks in each method, you can implement an Active Object for BankAccount:
+
+- The BankAccount is not manipulated directly. Instead, you call `account.deposit(100)`, which enqueues a “deposit(100)” request in a thread-safe queue.
+- A servant or single worker thread pops requests from that queue. Because only that thread modifies the `balance` field, no further synchronization is needed.
+- If a request returns a value (like getBalance), the request might store a promise that the worker sets upon finishing, letting the caller eventually read the result from a future.
+
+This approach ensures that no two deposit/withdraw requests run simultaneously, so you have a safe concurrency model. The cost is that each request is queued and processed in sequence, which can be fine if you want to avoid direct lock-based concurrency or if you want to keep the data extremely consistent in a single worker.
+
+* 3. Beginner Example (Go)
+
+We begin with a simple scenario in Go: we’ll illustrate an “Active Object” that manages a small data structure (like a counter) but is invoked from multiple goroutines. Instead of using locks directly, each method call is turned into a “request” that the object’s single worker goroutine processes in order.
+
+** 3.1 Motivating Scenario
+Suppose you have a shared counter object, with methods Inc() and Get(). Instead of a naive approach with a sync.Mutex, we adopt Active Object: each method call is enqueued, processed by a single worker. We’ll see how the client can store a channel or callback to retrieve results from “Get.”
+
+** 3.2 Code Example (Beginner, Go)
+#+BEGIN_SRC go
+package main
+
+import (
+    "fmt"
+    "sync"
+    "time"
+)
+
+// We'll define a request type
+type request struct {
+    op        string
+    value     int
+    replyChan chan int
+}
+
+// The active object
+type ActiveCounter struct {
+    requests chan request
+    // no direct concurrency needed, because only one goroutine handles state
+    count    int
+}
+
+func NewActiveCounter() *ActiveCounter {
+    ac := &ActiveCounter{
+        requests: make(chan request, 100),
+        count: 0,
+    }
+    // start worker
+    go ac.loop()
+    return ac
+}
+
+func (ac *ActiveCounter) loop() {
+    for req := range ac.requests {
+        switch req.op {
+        case "inc":
+            ac.count += req.value
+        case "get":
+            // send back the current count
+            req.replyChan <- ac.count
+        }
+    }
+}
+
+// inc increments the counter
+func (ac *ActiveCounter) Inc(val int) {
+    // Fire and forget
+    ac.requests <- request{op: "inc", value: val}
+}
+
+// get retrieves the current value, returning it
+func (ac *ActiveCounter) Get() int {
+    reply := make(chan int)
+    ac.requests <- request{op: "get", replyChan: reply}
+    return <-reply
+}
+
+// usage
+func main() {
+    c := NewActiveCounter()
+
+    var wg sync.WaitGroup
+    for i := 0; i < 5; i++ {
+        wg.Add(1)
+        go func(id int) {
+            defer wg.Done()
+            for j := 0; j < 10; j++ {
+                c.Inc(1)
+                time.Sleep(10 * time.Millisecond)
+            }
+            fmt.Printf("Goroutine %d done\n", id)
+        }(i)
+    }
+    wg.Wait()
+
+    finalVal := c.Get()
+    fmt.Println("Final count:", finalVal)
+}
+#+END_SRC
+
+** 3.2.1 Explanation
+- =request=: We define a small struct to represent method calls: operation name, optional value, and a replyChan for returning results if needed.
+- =ActiveCounter=: The single “active object.” It has a requests channel plus an integer `count`. The worker goroutine in `loop()` reads each request, modifies `count` or returns it. Because only that goroutine sees `count`, no locks are needed.
+- =Inc()= enqueues a “inc” request. =Get()= enqueues a “get” request with a reply channel. We wait on that channel for the result, effectively blocking the caller only until the worker processes it.
+- Usage: We spawn multiple goroutines that call `Inc()`. Eventually we call `Get()` to retrieve the final value.
+
+** 3.3 Observations
+This example highlights how straightforward concurrency can be if each “method call” is a queued request. The single worker ensures no data race. The overhead is an extra channel message per method call, but we avoid complexity with locks or partial concurrency. The pattern suits many scenarios where you want an OOP-like concurrency approach.
+
+* 4. Intermediate Example (Haskell)
+
+Next, we illustrate an intermediate usage in Haskell, focusing on a scenario where we have a “task queue” active object. This approach merges Haskell’s concurrency (via STM or channels) with an Active Object style that provides a “job-submission interface.” Haskell is purely functional, but we can show how to structure the logic so that each “job” is a method request processed by a single “worker” controlling some state.
+
+** 4.1 Motivating Scenario
+We want a small “task runner” that manages a certain “resource” (like a file handle or a set of connections). Each method call, such as writeToFile or closeFile, is queued in the active object. The single thread ensures we do not overlap writes. We can also return results via MVar or STM. We’ll keep an example focusing on writing lines to a file.
+
+** 4.2 Code Example (Intermediate, Haskell)
+#+BEGIN_SRC haskell
+{-# LANGUAGE OverloadedStrings #-}
+module Main where
+
+import Control.Concurrent
+import Control.Concurrent.STM
+import System.IO
+import Data.Text (Text)
+import qualified Data.Text.IO as TIO
+
+-- We'll define a 'Request' type for our active object
+data Request = WriteReq Text (TMVar ())   -- line to write plus a "done" signal
+             | CloseReq (TMVar ())
+
+-- Our active object handle
+data FileWriter = FileWriter {
+    requestChan :: TQueue Request
+}
+
+-- Create a new FileWriter for the specified file path
+newFileWriter :: FilePath -> IO FileWriter
+newFileWriter path = do
+  q <- newTQueueIO
+  -- spawn worker
+  _ <- forkIO (activeWorker q path)
+  return (FileWriter q)
+
+-- The worker logic
+activeWorker :: TQueue Request -> FilePath -> IO ()
+activeWorker q path = withFile path WriteMode $ \h -> do
+    loop h
+  where
+    loop h = do
+      req <- atomically $ readTQueue q
+      case req of
+        WriteReq line doneVar -> do
+          TIO.hPutStrLn h line
+          atomically $ putTMVar doneVar ()
+          loop h
+        CloseReq doneVar -> do
+          -- end
+          atomically $ putTMVar doneVar ()
+          return ()
+
+-- The "methods"
+
+writeLine :: FileWriter -> Text -> IO ()
+writeLine fw line = do
+  doneVar <- newEmptyTMVarIO
+  atomically $ writeTQueue (requestChan fw) (WriteReq line doneVar)
+  -- wait for the operation to complete
+  atomically $ takeTMVar doneVar
+
+closeFile :: FileWriter -> IO ()
+closeFile fw = do
+  doneVar <- newEmptyTMVarIO
+  atomically $ writeTQueue (requestChan fw) (CloseReq doneVar)
+  -- wait for close
+  atomically $ takeTMVar doneVar
+
+-- usage
+main :: IO ()
+main = do
+  fw <- newFileWriter "output.txt"
+  writeLine fw "Hello from Haskell"
+  writeLine fw "Active Object is interesting"
+  closeFile fw
+  putStrLn "File writing complete."
+#+END_SRC
+
+** 4.2.1 Explanation
+- =Request= enumerates either =WriteReq= with a =TMVar ()= for completion, or a =CloseReq= for shutting down.
+- =FileWriter= is the user’s handle. Internally, we have a =TQueue Request= plus a worker thread in =activeWorker=.
+- For each =WriteReq=, we do the actual writing, then signal the doneVar so the caller can proceed. 
+- The user calls =writeLine= or =closeFile=, each enqueuing a request, then waiting for the doneVar if they want synchronous completion. The actual concurrency is all in the single worker thread.
+
+** 4.3 Observations
+We see how the single worker ensures no data races on the file handle. Haskell’s concurrency is typically robust, but the Active Object approach remains consistent: each “method call” is a queued request with optional results. The user sees a simple function call, while concurrency is hidden behind a single loop.
+
+* 5. Advanced Example (Rust)
+
+Finally, a Rust scenario at an advanced level: an Active Object that manages a data structure where each method can return a Future or handle asynchronous completions. We might use a library like =tokio= or =async-std= for scheduling, but we’ll do a simplified version showing how you might structure an “active” approach with concurrency, a queue, and method requests that produce results.
+
+** 5.1 Motivating Scenario
+We want an in-memory key-value store that multiple tasks can concurrently read or write. Instead of direct locks, we adopt an Active Object approach: all calls are queued, one worker thread performs the operations, and for read operations we return a channel or future so the caller eventually gets the result. This can be extended to a distributed or persistent store, but we’ll keep it in-memory for brevity.
+
+** 5.2 Code Example (Advanced, Rust)
+#+BEGIN_SRC rust
+use std::collections::HashMap;
+use std::sync::{Arc, Mutex};
+use std::thread;
+use std::time::Duration;
+
+use crossbeam::channel::{unbounded, Sender, Receiver};
+
+enum Request {
+    Put(String, String, crossbeam::channel::Sender<()>),
+    Get(String, crossbeam::channel::Sender<Option<String>>),
+    Quit,
+}
+
+struct ActiveKV {
+    sender: Sender<Request>,
+}
+
+impl ActiveKV {
+    fn new() -> Self {
+        let (tx, rx) = unbounded::<Request>();
+        let kv = KVWorker::new(rx);
+        // spawn worker
+        thread::spawn(move || kv.run());
+        ActiveKV { sender: tx }
+    }
+
+    // "put" method
+    fn put(&self, key: String, value: String) {
+        let (done_tx, done_rx) = unbounded::<()>();
+        self.sender.send(Request::Put(key, value, done_tx)).unwrap();
+        // wait for it to complete
+        done_rx.recv().unwrap();
+    }
+
+    // "get" method that returns Option<String>
+    fn get(&self, key: String) -> Option<String> {
+        let (resp_tx, resp_rx) = unbounded::<Option<String>>();
+        self.sender.send(Request::Get(key, resp_tx)).unwrap();
+        resp_rx.recv().ok().flatten()
+    }
+
+    fn stop(&self) {
+        self.sender.send(Request::Quit).ok();
+    }
+}
+
+struct KVWorker {
+    rx: Receiver<Request>,
+    store: HashMap<String, String>,
+}
+
+impl KVWorker {
+    fn new(rx: Receiver<Request>) -> Self {
+        KVWorker { rx, store: HashMap::new() }
+    }
+
+    fn run(mut self) {
+        while let Ok(req) = self.rx.recv() {
+            match req {
+                Request::Put(k, v, done_chan) => {
+                    self.store.insert(k, v);
+                    done_chan.send(()).ok();
+                }
+                Request::Get(k, resp_chan) => {
+                    let val = self.store.get(&k).cloned();
+                    resp_chan.send(val).ok();
+                }
+                Request::Quit => {
+                    println!("KVWorker shutting down.");
+                    break;
+                }
+            }
+        }
+    }
+}
+
+// usage
+fn main() {
+    let active_kv = ActiveKV::new();
+
+    // simulate concurrency
+    let kv_clone1 = active_kv.clone();
+    let t1 = thread::spawn(move || {
+        kv_clone1.put("foo".into(), "bar".into());
+        kv_clone1.put("baz".into(), "qux".into());
+    });
+
+    let kv_clone2 = active_kv.clone();
+    let t2 = thread::spawn(move || {
+        thread::sleep(Duration::from_millis(100));
+        let val = kv_clone2.get("foo".into());
+        println!("Thread2 got 'foo' => {:?}", val);
+    });
+
+    t1.join().unwrap();
+    t2.join().unwrap();
+
+    let final_val = active_kv.get("baz".into());
+    println!("Main got 'baz' => {:?}", final_val);
+
+    active_kv.stop();
+}
+#+END_SRC
+
+** 5.2.1 Explanation
+- =ActiveKV= is the user-facing object, with methods =put= and =get= that queue requests in a crossbeam channel, returning a channel for results. 
+- =KVWorker= runs in a dedicated thread, owns a =HashMap=, processes =Put= or =Get= requests. Because it’s single-threaded for that store, we skip locks on the map. 
+- The user sees a straightforward “put(key, val)” or “get(key),” behind the scenes it’s an asynchronous request. If we wanted truly non-blocking, we might store a future or do partial waiting. 
+- Usage: We spawn threads that call put, get. The store remains concurrency-safe because each request is handled in the single worker.
+
+** 5.3 Observations
+This advanced Rust code merges the Active Object approach with typical concurrency channels. The map is safe from concurrent writes, as we never share it outside the worker. Each method call is a request that becomes queued, producing a result channel for “get.” This pattern can scale to bigger scenarios, or you can define multiple workers if you want partitioned concurrency.
+
+* 6. Nuances, Variations, and Best Practices
+
+1. One Worker vs. Many
+   - Typically, an active object has a single worker. If you need parallel execution, you might do multiple workers or multiple active objects sharding your data. That reintroduces concurrency between shards.
+
+2. Return Values
+   - If methods return something, your request often includes a promise/future/chan. The worker sets it once done. The caller can block or poll for it. 
+   - Alternatively, you might do callback-based approaches.
+
+3. Bounded vs. Unbounded Queues
+   - If your system can be flooded with requests, an unbounded queue might lead to memory issues. Some designs adopt a bounding approach or backpressure.
+
+4. Method Granularity
+   - Large or time-consuming “methods” can block subsequent requests, because the single worker is busy. Sometimes that’s acceptable. If not, you might break tasks into smaller “micro-operations.”
+
+5. Minimal Coupling
+   - The user typically only sees “public methods.” They don’t see the concurrency or locks. This fosters a clean interface. But debugging might be trickier if you need to see how requests are queued.
+
+6. Combining Patterns
+   - Command is often used to store each method request as a “command object.”
+   - Memento can handle storing or restoring state in the worker.
+   - Observer can be used if the active object wants to notify watchers of state changes each time a method completes.
+
+* 7. Real-World Usage
+- Banking or Payment: A single “account object” that processes deposit/withdraw requests in order, ensuring no data race on the balance.
+- GUI: Some frameworks treat the GUI thread as an active object. All widget method calls post events to the main thread. 
+- Logging: A single-threaded “log object” that processes writes in order, eliminating concurrency issues with file output. 
+- Workflow or Cloud Services: A remote service might accept method calls as messages, processing them in a single-threaded or single-event context.
+
+* 8. Conclusion
+
+The Active Object pattern is a concurrency strategy that gives you a method-based interface for asynchronous calls, while under the hood, a single worker (or limited set) processes these calls in order. This design eliminates direct locks on internal state, simplifying correctness at the cost of queue overhead and potential bottlenecks if tasks are large or frequent.
+
+We illustrated:
+
+- *Beginner (Go)*: A “counter” example where each request is an operation on a single “count.” Multiple goroutines queue increments or retrieves, all processed by one worker goroutine.
+- *Intermediate (Haskell)*: A file-writer scenario with a TQueue of requests (write lines or close), each returning a TMVar for result. The single worker does actual I/O, ensuring no concurrency issues on the file handle.
+- *Advanced (Rust)*: A key-value store. Each put/get is a request with a channel, processed by a single worker that owns a HashMap. We avoid locks on the map by ensuring only the worker modifies it.
+
+By adopting Active Object, you can present an OOP or method-based concurrency approach that hides the complexities of scheduling, synchronization, or lock-based concurrency from clients. The pattern remains a powerful solution when your concurrency model can revolve around a single worker or a small set of workers, each guaranteeing consistent access to an object’s state without risk of data races or intricate locking. 
